@@ -1,0 +1,64 @@
+.flexBox {
+  background: #fdfdfd;
+}
+.authCard {
+  min-width: 400px;
+  max-width: 500px;
+  margin: 0 auto;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #DDD;
+  border-radius: 10px;
+  box-shadow: none;
+  text-align: center;
+  ion-img {
+    width: 150px;
+    display: block;
+    margin: 0 auto;
+  }
+  ion-card-title {
+    font-family: 'auth-title';
+    font-size: 3em;
+  }
+  ion-card-subtitle {
+    font-family: 'auth-title';
+    font-size: 1.2em;
+  }
+  ion-card-content {
+    padding-top: 16px;
+    .errorBox {
+      padding-left: 10px;
+      margin-bottom: 20px;
+      text-align: left;
+      border-left: 2px solid var(--ion-color-danger);
+    }
+    ion-icon {
+      padding-top: 4px;
+      padding-right: 5px;
+      font-size: 1.3em;
+    }
+    .privacyPolicyAcceptanceRow {
+      margin-top: 15px;
+      font-size: 0.9em;
+      ion-checkbox {
+        vertical-align: bottom;
+        margin-right: 3px;
+      }
+    }
+    ion-button {
+      margin-top: 15px;
+    }
+    .smallCaseButton {
+      text-transform: none;
+      letter-spacing: normal;
+      font-size: 1em;
+    }
+    .ideaLogo {
+      width: 30px;
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+  }
+}
