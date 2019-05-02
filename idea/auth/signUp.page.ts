@@ -52,7 +52,7 @@ export class IDEASignUpPage {
       this.errorMsg = this.t.instant('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
     // output the error, if there was one
     if (this.errorMsg) {
-      this.message.error(this.t.instant('IDEA.AUTH.REGISTRATION_FAILED'));
+      this.message.error('IDEA.AUTH.REGISTRATION_FAILED');
       return;
     }
     // start the registration
@@ -60,14 +60,14 @@ export class IDEASignUpPage {
     this.auth.register(this.email, this.password)
     .then(() => {
       this.loading.hide();
-      this.message.success(this.t.instant('IDEA.AUTH.REGISTRATION_COMPLETED'));
+      this.message.success('IDEA.AUTH.REGISTRATION_COMPLETED');
       this.goToAuth();
     })
     .catch(err => {
       this.loading.hide();
       // show the unexpected error on screen (english)
       this.errorMsg = err.message;
-      this.message.error(this.t.instant('IDEA.AUTH.REGISTRATION_FAILED'));
+      this.message.error('IDEA.AUTH.REGISTRATION_FAILED');
     });
   }
 

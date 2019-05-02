@@ -11,5 +11,4 @@ const IDEA_AWS_COGNITO_WEB_CLIENT_ID = 'ABC';
 const IDEA_AUTH_REGISTRATION_POSSIBLE = false;
 const IDEA_AUTH_WEBSITE = 'https://iter-idea.com';
 
-const IDEA_ERROR_REPORTING_API_URL =
-  'https://9ssilq3yzh.execute-api.eu-west-2.amazonaws.com/prod/errorReporting';
+const IDEA_ERROR_REPORTING_API_URL = 'https://9ssilq3yzh.execute-api.eu-west-2.amazonaws.com/prod/errorReporting';

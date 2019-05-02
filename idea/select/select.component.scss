@@ -1,0 +1,22 @@
+.selectItem {
+  .description {
+    min-height: 20px;
+    color: var(--ion-color-dark-tint);
+    width: 100%;
+  }
+  .placeholder {
+    color: var(--ion-color-medium);
+  }
+  .selectIcon {
+    margin: 20px 5px 0 0;
+    font-size: 1.2rem;
+    color: var(--ion-color-medium);
+  }
+  .obligatory {
+    font-size: 1.1em;
+    color: var(--ion-color-danger);
+  }
+}
+.selectable {
+  cursor: pointer
+}

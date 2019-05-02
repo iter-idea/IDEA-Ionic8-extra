@@ -71,8 +71,110 @@
       "PRIVACY_POLICY_HINT": "Read our Privacy Policy",
       "PRIVACY_POLICY_URL": "https://www.iubenda.com/privacy-policy/21156025"
     },
+    "CALENDAR": {
+      "RESET": "Reset",
+      "MONTH": "Month",
+      "YEAR": "Year",
+      "MONDAY_SHORT": "Mon",
+      "TUESDAY_SHORT": "Tue",
+      "WEDNESDAY_SHORT": "Wed",
+      "THURSDAY_SHORT": "Thu",
+      "FRIDAY_SHORT": "Fri",
+      "SATURDAY_SHORT": "Sat",
+      "SUNDAY_SHORT": "Sun",
+      "SET_DATE": "Set a date",
+      "SET_TIME": "Set a time"
+    },
+    "SELECT": {
+      "CLOSE_WITHOUT_SELECTING": "Close without selecting anything",
+      "SEARCH": "Search",
+      "CLEAR_SELECTION": "Clear selection",
+      "NO_ELEMENTS_FOUND": "No elements found",
+      "SELECT_": "Select {{suggestion}}"
+    },
+    "CHECKER": {
+      "DONE": "Done",
+      "ALL": "All",
+      "NONE": "None",
+      "NUM_ELEMENTS_SELECTED": "{{num}} elements selected",
+      "NO_ELEMENTS_FOUND": "No elements found",
+      "SEARCH": "Search",
+      "CLOSE_WITHOUT_SELECTING": "Close without selecting anything",
+      "DESELECT_ALL": "Deselect all",
+      "SELECT_ALL": "Select all",
+      "CONFIRM_SELECTION": "Confirm your selection"
+    },
     "LOADING": {
       "PLEASE_WAIT": "Please wait..."
+    },
+    "LANGUAGE_PICKER": {
+      "APP_WILL_RESTART": "The app will restart"
+    },
+    "SIGNATURE": {
+      "SIGNATURE": "Signature",
+      "SIGNATORY": "Signatory",
+      "NAME_AND_SURNAME": "Name and surname",
+      "SIGNATURE_EXPLANATION": "Draw the signature here below",
+      "VERIFY_SIGNATORY_AND_SIGNATURE": "Verify signatory and signature",
+      "CANCEL": "Cancel",
+      "SAVE_SIGNATURE": "Save the signature",
+      "CLEAR_SIGNATURE": "Clear the signature"
+    },
+    "CUSTOM_FIELDS": {
+      "FIELDS_TYPES": {
+        "STRING": "Short text",
+        "NUMBER": "Number",
+        "BOOLEAN": "Yes / No",
+        "TEXT": "Long text",
+        "ENUM": "Choice"
+      },
+      "OBLIGATORY": "Obligatory",
+      "CHOICES": "Possible choices",
+      "DEFAULT": "Default value",
+      "NEW_FIELD": "New field",
+      "CHOOSE_A_KEY": "Choose a name for the field",
+      "DUPLICATED_KEY": "A field with that name already exists",
+      "MANAGE_FIELD": "Manage field",
+      "NAME": "Name",
+      "TYPE": "Type",
+      "DESCRIPTION": "Description",
+      "OPTIONAL": "Optional",
+      "ENUM": "Choices (separate the values with commas)",
+      "MIN": "Minimum",
+      "MAX": "Maximum",
+      "FIELD_DELETION_ALERT": "The field will be irreversibly deleted",
+      "REMOVE_FIELD": "Remove the field",
+      "CLOSE_WITHOUT_SAVING": "Close without saving",
+      "UPDATE_FIELD": "Update the field",
+      "SAVE": "Save"
+    },
+    "OFFLINE": {
+      "YOU_ARE_OFFLINE": "You are offline",
+      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Features are reduced",
+      "OFFLINE_MANAGER": "Offline manager",
+      "LAST_SYNC": "Last sync",
+      "LOADING": "Loading...",
+      "SYNC_NOW": "Sync now",
+      "ERROR_DURING_LAST_SYNC": "There was an error during the last synchronization; please try again.",
+      "UPLOAD": "Upload",
+      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "The actions created offline must be uploaded online",
+      "DOWNLOAD": "Download",
+      "DOWNLOAD_RESOURCES_EXPLANATION": "List of the resources available when offline",
+      "NOW": "Now",
+      "SYNC_IN_PROGRESSS": "Synchronization in progress",
+      "NUM_ELEMENTS_TO_SYNC": "Number of element to sync",
+      "REQUEST_FAILED": "Request failed; try again or delete it",
+      "NO_ELEMENTS_TO_UPLOAD": "No elements to upload",
+      "DELETION_IS_IRREVERSIBLE": "The deletion is irreversible"
+    },
+    "LIST": {
+      "LIST": "List",
+      "ELEMENT": "Element",
+      "NEW_ELEMENT": "New element",
+      "NO_ELEMENTS_IN_LIST": "No elements in the list",
+      "DELETE_ELEMENT": "Delete element",
+      "SAVE_AND_CLOSE": "Save and close",
+      "CANCEL_AND_CLOSE": "Cancel and close"
     }
   }
 }

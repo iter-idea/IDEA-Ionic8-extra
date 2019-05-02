@@ -66,7 +66,7 @@ export class IDEASignInPage {
       this.loading.hide();
       if (err.name === 'UserNotConfirmedException')
         this.errorMsg = this.t.instant('IDEA.AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
-      this.message.error(this.t.instant('IDEA.AUTH.AUTHENTICATION_FAILED'));
+      this.message.error('IDEA.AUTH.AUTHENTICATION_FAILED');
     });
   }
 

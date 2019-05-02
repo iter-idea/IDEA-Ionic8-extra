@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar
+    class="ideaToolbar"
+  >
+    <ion-buttons
+      slot="start"
+    >
+      <ion-button
+        [title]="t.instant('IDEA.CHECKER.CLOSE_WITHOUT_SELECTING')"
+        (click)="cancel()"
+      >
+        <ion-icon
+          slot="icon-only"
+          name="ios-arrow-down"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar
+      [debounce]="100"
+      [placeholder]="placeholder || t.instant('IDEA.CHECKER.SEARCH')"
+      (ionInput)="filterChecks($event)"
+    ></ion-searchbar>
+    <ion-buttons
+      slot="end"
+    >
+      <ion-button
+        [title]="t.instant('IDEA.CHECKER.DESELECT_ALL')"
+        (click)="checkAll(false)"
+      >
+        <ion-icon
+          slot="icon-only"
+          name="square-outline"
+        ></ion-icon>
+      </ion-button>
+      <ion-button
+        [title]="t.instant('IDEA.CHECKER.SELECT_ALL')"
+        (click)="checkAll(true)"
+      >
+        <ion-icon
+          slot="icon-only"
+          name="checkbox-outline"
+        ></ion-icon>
+      </ion-button>
+      <ion-button
+        [title]="t.instant('IDEA.CHECKER.CONFIRM_SELECTION')"
+        (click)="confirm()"
+      >
+        {{ 'IDEA.CHECKER.DONE' | translate }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list
+    class="checksList"
+  >
+    <ion-item
+      lines="none"
+      *ngIf="!filteredChecks.length"
+    >
+      <ion-label>
+        <i>
+          {{ noElementsFoundText || ('IDEA.CHECKER.NO_ELEMENTS_FOUND' | translate) }}
+        </i>
+      </ion-label>
+    </ion-item>
+    <ion-item
+      tappable
+      class="check"
+      *ngFor="let check of filteredChecks"
+    >
+      <ion-checkbox
+        slot="start"
+        [(ngModel)]="check.checked"
+      ></ion-checkbox>
+      <ion-label>
+        {{ check.name }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -30,12 +30,12 @@ export class IDEAForgotPasswordPage {
     this.auth.forgotPassword(this.email)
     .then(() => {
       this.loading.hide();
-      this.message.success(this.t.instant('IDEA.AUTH.PASSWORD_RESET_CODE_SENT'));
+      this.message.success('IDEA.AUTH.PASSWORD_RESET_CODE_SENT');
       this.goToConfirmPassword();
     })
     .catch(() => {
       this.loading.hide();
-      this.message.error(this.t.instant('IDEA.AUTH.USER_NOT_FOUND'));
+      this.message.error('IDEA.AUTH.USER_NOT_FOUND');
     });
   }
 

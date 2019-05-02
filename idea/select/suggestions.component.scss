@@ -1,0 +1,8 @@
+.suggestionsList {
+  .suggestion {
+    --background: white;
+  }
+  .suggestion.selected {
+    --background: #eee;
+  }
+}

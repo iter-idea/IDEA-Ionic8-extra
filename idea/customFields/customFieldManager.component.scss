@@ -1,0 +1,15 @@
+.fieldAttributesList {
+  ion-list-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    color: var(--ion-color-primary);
+  }
+  .fieldHasError {
+    border-bottom: 2px solid var(--ion-color-danger-shade) !important;
+    .item-inner .label {
+      color: var(--ion-color-danger-shade);
+      font-weight: 500;
+    }
+  }
+}

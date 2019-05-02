@@ -11,8 +11,7 @@ declare const IDEA_API_ID: string;
 declare const IDEA_API_REGION: string;
 declare const IDEA_API_VERSION: string;
 
-export const API_URL =
-  `https://${IDEA_API_ID}.execute-api.${IDEA_API_REGION}.amazonaws.com/${IDEA_API_VERSION}`;
+export const API_URL = `https://${IDEA_API_ID}.execute-api.${IDEA_API_REGION}.amazonaws.com/${IDEA_API_VERSION}`;
 
 /**
  * To communicate with an AWS's API Gateway istance.

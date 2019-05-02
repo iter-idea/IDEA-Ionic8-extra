@@ -31,20 +31,20 @@ export class IDEAResendLinkPage {
     this.errorMsg = null;
     if (!this.email) {
       this.errorMsg = this.t.instant('IDEA.AUTH.EMAIL_OBLIGATORY');
-      this.message.error(this.t.instant('IDEA.AUTH.SENDING_FAILED'));
+      this.message.error('IDEA.AUTH.SENDING_FAILED');
       return;
     }
     this.loading.show();
     this.auth.resendConfirmationCode(this.email)
     .then(() => {
       this.loading.hide();
-      this.message.success(this.t.instant('IDEA.AUTH.CONFIRMATION_LINK_SENT'));
+      this.message.success('IDEA.AUTH.CONFIRMATION_LINK_SENT');
       this.goToAuth();
     })
     .catch(() => {
       this.loading.hide();
       this.errorMsg = this.t.instant('IDEA.AUTH.IS_THE_EMAIL_CORRECT');
-      this.message.error(this.t.instant('IDEA.AUTH.SENDING_FAILED'));
+      this.message.error('IDEA.AUTH.SENDING_FAILED');
     });
   }
 

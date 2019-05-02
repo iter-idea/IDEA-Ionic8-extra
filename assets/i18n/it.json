@@ -71,8 +71,110 @@
       "PRIVACY_POLICY_HINT": "Leggi la nostra Politica sulla Privacy",
       "PRIVACY_POLICY_URL": "https://www.iubenda.com/privacy-policy/81892968"
     },
+    "CALENDAR": {
+      "RESET": "Reset",
+      "MONTH": "Mese",
+      "YEAR": "Anno",
+      "MONDAY_SHORT": "Lun",
+      "TUESDAY_SHORT": "Mar",
+      "WEDNESDAY_SHORT": "Mer",
+      "THURSDAY_SHORT": "Gio",
+      "FRIDAY_SHORT": "Ven",
+      "SATURDAY_SHORT": "Sab",
+      "SUNDAY_SHORT": "Dom",
+      "SET_DATE": "Scegli una data",
+      "SET_TIME": "Scegli un orario"
+    },
+    "SELECT": {
+      "CLOSE_WITHOUT_SELECTING": "Chiudi senza selezionare nulla",
+      "SEARCH": "Ricerca",
+      "CLEAR_SELECTION": "Svuota selezione",
+      "NO_ELEMENTS_FOUND": "Nessun elemento trovato",
+      "SELECT_": "Seleziona {{suggestion}}"
+    },
+    "CHECKER": {
+      "DONE": "Fatto",
+      "ALL": "Tutti",
+      "NONE": "Nessuno",
+      "NUM_ELEMENTS_SELECTED": "{{num}} elementi selezionati",
+      "NO_ELEMENTS_FOUND": "Nessun elemento trovato",
+      "SEARCH": "Ricerca",
+      "CLOSE_WITHOUT_SELECTING": "Chiudi senza selezionare nulla",
+      "DESELECT_ALL": "Deseleziona tutto",
+      "SELECT_ALL": "Seleziona tutto",
+      "CONFIRM_SELECTION": "Conferma la tua selezione"
+    },
     "LOADING": {
       "PLEASE_WAIT": "Attendere prego..."
+    },
+    "LANGUAGE_PICKER": {
+      "APP_WILL_RESTART": "L'app verrà riavviata"
+    },
+    "SIGNATURE": {
+      "SIGNATURE": "Firma",
+      "SIGNATORY": "Firmatario",
+      "NAME_AND_SURNAME": "Nome e cognome",
+      "SIGNATURE_EXPLANATION": "Disegna la firma qui sotto",
+      "VERIFY_SIGNATORY_AND_SIGNATURE": "Verifica firmatario e firma",
+      "CANCEL": "Annulla",
+      "SAVE_SIGNATURE": "Salva la firma",
+      "CLEAR_SIGNATURE": "Resetta la firma"
+    },
+    "CUSTOM_FIELDS": {
+      "FIELDS_TYPES": {
+        "STRING": "Testuale",
+        "NUMBER": "Numero",
+        "BOOLEAN": "Si / No",
+        "TEXT": "Note",
+        "ENUM": "Scelta"
+      },
+      "OBLIGATORY": "Obbligatorio",
+      "CHOICES": "Scelte possibili",
+      "DEFAULT": "Valore predefinito",
+      "NEW_FIELD": "Nuovo campo",
+      "CHOOSE_A_KEY": "Scegli un nome per il campo",
+      "DUPLICATED_KEY": "Esiste già un campo con quel nome",
+      "MANAGE_FIELD": "Gestisci campo",
+      "NAME": "Nome",
+      "TYPE": "Tipo",
+      "DESCRIPTION": "Descrizione",
+      "OPTIONAL": "Opzionale",
+      "ENUM": "Scelte (inserisci i valori separandoli con virgole)",
+      "MIN": "Minimo",
+      "MAX": "Massimo",
+      "FIELD_DELETION_ALERT": "Il campo verrà rimosso irrimediabilmente",
+      "REMOVE_FIELD": "Rimuovi il campo",
+      "CLOSE_WITHOUT_SAVING": "Chiudi senza salvare",
+      "UPDATE_FIELD": "Aggiorna il campo",
+      "SAVE": "Salva"
+    },
+    "OFFLINE": {
+      "YOU_ARE_OFFLINE": "Sei offline",
+      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Le funzionalità sono ridotte",
+      "OFFLINE_MANAGER": "Offline manager",
+      "LAST_SYNC": "Ultima sincronizzazione",
+      "LOADING": "Caricamento...",
+      "SYNC_NOW": "Sincronizza ora",
+      "ERROR_DURING_LAST_SYNC": "Si è verificato un errore durante l'ultima sincronizzazione; per favore riprova.",
+      "UPLOAD": "Upload",
+      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Le azioni create offline devono essere caricate online",
+      "DOWNLOAD": "Download",
+      "DOWNLOAD_RESOURCES_EXPLANATION": "Lista delle risorse disponibili quando offline",
+      "NOW": "Adesso",
+      "SYNC_IN_PROGRESSS": "Sincronizzazione in corso",
+      "NUM_ELEMENTS_TO_SYNC": "Numero elementi da sincronizzare",
+      "REQUEST_FAILED": "Richiesta fallita; riprova o cancella la richiesta",
+      "NO_ELEMENTS_TO_UPLOAD": "Nessun elemento da caricare",
+      "DELETION_IS_IRREVERSIBLE": "La cancellazione è irreversibile"
+    },
+    "LIST": {
+      "LIST": "Lista",
+      "ELEMENT": "Elemento",
+      "NEW_ELEMENT": "Nuovo elemento",
+      "NO_ELEMENTS_IN_LIST": "Nessun elemento nella lista",
+      "DELETE_ELEMENT": "Elimina elemento",
+      "SAVE_AND_CLOSE": "Salva e chiudi",
+      "CANCEL_AND_CLOSE": "Annulla cambiamenti e chiudi"
     }
   }
 }

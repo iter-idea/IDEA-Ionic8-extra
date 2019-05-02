@@ -1,41 +1,52 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class IDEAMessageService {
-  constructor(private toastCtrl: ToastController) {}
+  constructor(
+    protected toastCtrl: ToastController,
+    protected t: TranslateService
+  ) {}
 
   /**
    * Show a generic message toast.
    * @param message message to show
    * @param color Ionic colors defined in the theme
    */
-  public show(message: string, color?: string) {
+  private show(message: string, color: string, dontTranslate: boolean) {
     this.toastCtrl.create({
-      message: message, duration: 3000, position: 'bottom', color: color,
-      showCloseButton: true, closeButtonText: 'X'
+      message: dontTranslate ? message : this.t.instant(message),
+      duration: 3000, position: 'bottom', color: color, showCloseButton: true, closeButtonText: 'X'
     })
     .then(toast => toast.present());
+  }
+  /**
+   * Show an info message toast.
+   * @param message message to show
+   */
+  public info(message: string, dontTranslate?: boolean) {
+    this.show(message, 'dark', dontTranslate);
   }
   /**
    * Show a success message toast.
    * @param message message to show
    */
-  public success(message: string) {
-    this.show(message, 'success');
+  public success(message: string, dontTranslate?: boolean) {
+    this.show(message, 'success', dontTranslate);
   }
   /**
    * Show an error message toast.
    * @param message message to show
    */
-  public error(message: string) {
-    this.show(message, 'danger');
+  public error(message: string, dontTranslate?: boolean) {
+    this.show(message, 'danger', dontTranslate);
   }
   /**
    * Show an warning message toast.
    * @param message message to show
    */
-  public warning(message: string) {
-    this.show(message, 'warning');
+  public warning(message: string, dontTranslate?: boolean) {
+    this.show(message, 'warning', dontTranslate);
   }
 }

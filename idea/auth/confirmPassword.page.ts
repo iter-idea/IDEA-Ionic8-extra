@@ -38,13 +38,13 @@ export class IDEAConfirmPasswordPage {
     this.auth.confirmPassword(this.email, this.code, this.newPassword)
     .then(() => {
       this.loading.hide();
-      this.message.success(this.t.instant('IDEA.AUTH.PASSWORD_CHANGED'));
+      this.message.success('IDEA.AUTH.PASSWORD_CHANGED');
       this.goToAuth();
     })
     .catch(() => {
       this.loading.hide();
       this.errorMsg = this.t.instant('IDEA.AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 });
-      this.message.error(this.t.instant('IDEA.AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 }));
+      this.message.error(this.errorMsg, true);
     });
   }
 

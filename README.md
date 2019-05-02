@@ -7,6 +7,9 @@ IDEA's extra components and services built on Ionic (4+).
 ## Includes
 
 - Auth flow (sign in, sign up, etc.) through Cognito
+- Select
+- Checker
+- Custom fields
 - Tin can service
 - External browser service
 - AWSAPI service

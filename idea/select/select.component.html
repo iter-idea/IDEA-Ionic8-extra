@@ -1,0 +1,43 @@
+<ion-item
+  class="selectItem"
+  [title]="placeholder || description"
+  (click)="fetchDataAndOpenModal()"
+>
+  <ion-icon
+    slot="start"
+    *ngIf="icon"
+    [name]="icon"
+  ></ion-icon>
+  <ion-label
+    position="stacked"
+    *ngIf="!icon && label"
+    [class.selectable]="!disabled"
+  >
+    {{ label }}
+    <ion-text
+      class="obligatory"
+      *ngIf="obligatory && !disabled"
+    >
+      *
+    </ion-text>
+  </ion-label>
+  <ion-label
+    class="description"
+    [class.selectable]="!disabled"
+  >
+    <ion-text
+      class="placeholder"
+      *ngIf="!description && !disabled"
+    >
+      {{ placeholder }}
+    </ion-text>
+    {{ description }}
+  </ion-label>
+  <ion-icon
+    slot="end"
+    name="md-arrow-dropdown"
+    class="selectIcon"
+    *ngIf="!disabled"
+    [class.selectable]="!disabled"
+  ></ion-icon>
+</ion-item>

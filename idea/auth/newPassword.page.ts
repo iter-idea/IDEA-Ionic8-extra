@@ -45,7 +45,7 @@ export class IDEANewPasswordPage {
     .catch(() => {
       this.loading.hide();
       this.errorMsg = this.t.instant('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
-      this.message.error(this.t.instant('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 }));
+      this.message.error(this.errorMsg, true);
     });
   }
 

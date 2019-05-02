@@ -1,0 +1,18 @@
+<ion-item
+  class="checkerItem"
+  [title]="placeholder || null"
+  (click)="fetchDataAndOpenModal()"
+>
+  <ion-label
+    class="description"
+    [class.selectable]="!disabled"
+  >
+    {{ getPreview() }}
+  </ion-label>
+  <ion-icon
+    slot="end"
+    name="md-arrow-dropdown"
+    class="selectIcon selectable"
+    *ngIf="!disabled"
+  ></ion-icon>
+</ion-item>
