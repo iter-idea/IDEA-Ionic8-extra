@@ -30,6 +30,10 @@ export class IDEACustomFieldsComponent {
    */
   @Input() protected disabled: boolean;
   /**
+   * Lines preferences for the item.
+   */
+  @Input() protected lines: string;
+  /**
    * If true, the reorder possibility won't be available.
    */
   @Input() protected withoutReorder: boolean;

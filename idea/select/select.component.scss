@@ -8,7 +8,7 @@
     color: var(--ion-color-medium);
   }
   .selectIcon {
-    margin: 20px 5px 0 0;
+    margin: 10px 5px 0 0;
     font-size: 1.2rem;
     color: var(--ion-color-medium);
   }
@@ -19,4 +19,9 @@
 }
 .selectable {
   cursor: pointer
+}
+ion-text.obligatoryDot::after {
+  content: '*';
+  font-size: 1.1em;
+  color: var(--ion-color-danger);
 }

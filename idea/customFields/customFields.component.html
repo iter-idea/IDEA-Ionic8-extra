@@ -6,6 +6,7 @@
     class="customField"
     *ngFor="let f of fieldsLegend"
     [attr.tappable]="disabled ? null : true"
+    [lines]="lines || 'full'"
     (click)="disabled ? null : select.emit(fields[f])"
   >
     <ion-reorder

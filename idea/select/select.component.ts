@@ -54,6 +54,7 @@ export class IDEASelectComponent {
   @Input() protected noElementsFoundText: string;
   @Input() protected disabled: boolean;
   @Input() protected obligatory: boolean;
+  @Input() protected lines: string;
   @Input() protected allowUnlistedValues: boolean;
   @Input() protected sortData: boolean;
   @Input() protected clearValueAfterSelection: boolean;

@@ -1,5 +1,6 @@
 <ion-item
   class="selectItem"
+  [lines]="lines || 'full'"
   [title]="placeholder || description"
   (click)="fetchDataAndOpenModal()"
 >
@@ -15,11 +16,9 @@
   >
     {{ label }}
     <ion-text
-      class="obligatory"
+      class="obligatoryDot"
       *ngIf="obligatory && !disabled"
-    >
-      *
-    </ion-text>
+    ></ion-text>
   </ion-label>
   <ion-label
     class="description"
