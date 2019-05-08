@@ -1,0 +1,13 @@
+h1 {
+  margin: 10px;
+}
+.headerLabel {
+  font-size: 0.7em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+ion-footer {
+  ion-toolbar {
+    --min-height: 40px;
+  }
+}

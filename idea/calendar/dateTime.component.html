@@ -1,8 +1,8 @@
 <ion-item
-  class="selectItem"
+  class="dateTimeItem"
   [lines]="lines || 'full'"
-  [title]="placeholder || description"
-  (click)="disabled ? doSelectWhenDisabled() : fetchDataAndOpenModal()"
+  [title]="placeholder || label"
+  (click)="openCalendarPicker()"
 >
   <ion-icon
     slot="start"
@@ -12,7 +12,7 @@
   <ion-label
     position="stacked"
     *ngIf="!icon && label"
-    [class.selectable]="!disabled || tappableWhenDisabled"
+    [class.selectable]="!disabled"
   >
     {{ label }}
     <ion-text
@@ -21,16 +21,17 @@
     ></ion-text>
   </ion-label>
   <ion-label
-    class="description"
-    [class.selectable]="!disabled || tappableWhenDisabled"
+    class="value"
+    [class.selectable]="!disabled"
   >
     <ion-text
       class="placeholder"
-      *ngIf="!description && !disabled"
+      *ngIf="!getValue() && !disabled"
+      [class.selectable]="!disabled"
     >
       {{ placeholder }}
     </ion-text>
-    {{ description }}
+    {{ getValue() }}&nbsp;
   </ion-label>
   <ion-icon
     slot="end"

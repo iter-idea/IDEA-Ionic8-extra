@@ -73,15 +73,9 @@
     },
     "CALENDAR": {
       "RESET": "Reset",
+      "CLOSE_WITHOUT_SAVING": "Chiudi senza salvare",
       "MONTH": "Mese",
       "YEAR": "Anno",
-      "MONDAY_SHORT": "Lun",
-      "TUESDAY_SHORT": "Mar",
-      "WEDNESDAY_SHORT": "Mer",
-      "THURSDAY_SHORT": "Gio",
-      "FRIDAY_SHORT": "Ven",
-      "SATURDAY_SHORT": "Sab",
-      "SUNDAY_SHORT": "Dom",
       "SET_DATE": "Scegli una data",
       "SET_TIME": "Scegli un orario"
     },

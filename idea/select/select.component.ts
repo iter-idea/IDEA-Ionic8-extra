@@ -28,7 +28,7 @@ import { IDEASuggestionsComponent, Suggestion } from './suggestions.component';
 @Component({
   selector: 'idea-select',
   templateUrl: 'select.component.html',
-  styleUrls: ['select.component.scss'],
+  styleUrls: ['select.component.scss']
 })
 export class IDEASelectComponent {
   /**
@@ -53,6 +53,7 @@ export class IDEASelectComponent {
   @Input() protected searchPlaceholder: string;
   @Input() protected noElementsFoundText: string;
   @Input() protected disabled: boolean;
+  @Input() protected tappableWhenDisabled: boolean;
   @Input() protected obligatory: boolean;
   @Input() protected lines: string;
   @Input() protected allowUnlistedValues: boolean;
@@ -61,6 +62,7 @@ export class IDEASelectComponent {
   @Input() protected hideIdFromUI: boolean;
   @Input() protected hideClearButton: boolean;
   @Output() protected select = new EventEmitter<Suggestion>();
+  @Output() protected selectWhenDisabled = new EventEmitter<void>();
 
   constructor(protected modalCtrl: ModalController) {
     this.data = new Array<Suggestion>();
@@ -117,5 +119,12 @@ export class IDEASelectComponent {
       });
       modal.present();
     });
+  }
+
+  /**
+   * Emit the selection while the component is in viewMode.
+   */
+  protected doSelectWhenDisabled() {
+    if (this.disabled) this.selectWhenDisabled.emit();
   }
 }

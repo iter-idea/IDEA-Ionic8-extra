@@ -73,15 +73,9 @@
     },
     "CALENDAR": {
       "RESET": "Reset",
+      "CLOSE_WITHOUT_SAVING": "Close without saving",
       "MONTH": "Month",
       "YEAR": "Year",
-      "MONDAY_SHORT": "Mon",
-      "TUESDAY_SHORT": "Tue",
-      "WEDNESDAY_SHORT": "Wed",
-      "THURSDAY_SHORT": "Thu",
-      "FRIDAY_SHORT": "Fri",
-      "SATURDAY_SHORT": "Sat",
-      "SUNDAY_SHORT": "Sun",
       "SET_DATE": "Set a date",
       "SET_TIME": "Set a time"
     },
