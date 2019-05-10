@@ -98,11 +98,18 @@
       "SELECT_ALL": "Select all",
       "CONFIRM_SELECTION": "Confirm your selection"
     },
+    "MDE": {
+      "TITLE": "Markdown editor",
+      "VARIABLES": "Variables",
+      "CLOSE_WITHOUT_SAVING": "Close without saving",
+      "SAVE_AND_CLOSE": "Save and close"
+    },
     "LOADING": {
       "PLEASE_WAIT": "Please wait..."
     },
     "LANGUAGE_PICKER": {
-      "APP_WILL_RESTART": "The app will restart"
+      "APP_WILL_RESTART": "The app will restart",
+      "CHANGE_LANGUAGE": "Change the displayed language"
     },
     "SIGNATURE": {
       "SIGNATURE": "Signature",
@@ -141,25 +148,6 @@
       "CLOSE_WITHOUT_SAVING": "Close without saving",
       "UPDATE_FIELD": "Update the field",
       "SAVE": "Save"
-    },
-    "OFFLINE": {
-      "YOU_ARE_OFFLINE": "You are offline",
-      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Features are reduced",
-      "OFFLINE_MANAGER": "Offline manager",
-      "LAST_SYNC": "Last sync",
-      "LOADING": "Loading...",
-      "SYNC_NOW": "Sync now",
-      "ERROR_DURING_LAST_SYNC": "There was an error during the last synchronization; please try again.",
-      "UPLOAD": "Upload",
-      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "The actions created offline must be uploaded online",
-      "DOWNLOAD": "Download",
-      "DOWNLOAD_RESOURCES_EXPLANATION": "List of the resources available when offline",
-      "NOW": "Now",
-      "SYNC_IN_PROGRESSS": "Synchronization in progress",
-      "NUM_ELEMENTS_TO_SYNC": "Number of element to sync",
-      "REQUEST_FAILED": "Request failed; try again or delete it",
-      "NO_ELEMENTS_TO_UPLOAD": "No elements to upload",
-      "DELETION_IS_IRREVERSIBLE": "The deletion is irreversible"
     },
     "LIST": {
       "LIST": "List",

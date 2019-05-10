@@ -11,12 +11,17 @@ IDEA's extra components and services built on Ionic (4+).
 - Checker
 - Calendar & DateTime picker
 - Custom fields
+- Language picker
+- List
+- Markdown Editor (MDE)
+- Signature
 - Tin can service
 - External browser service
 - AWSAPI service
 - Loading service
 - Message service
 - Error reporting service
+- Zebra Reader service (barcode)
 
 ## Requirements
 

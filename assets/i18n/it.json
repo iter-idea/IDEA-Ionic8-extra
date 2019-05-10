@@ -98,11 +98,18 @@
       "SELECT_ALL": "Seleziona tutto",
       "CONFIRM_SELECTION": "Conferma la tua selezione"
     },
+    "MDE": {
+      "TITLE": "Editor Markdown",
+      "VARIABLES": "Variabili",
+      "CLOSE_WITHOUT_SAVING": "Chiudi senza salvare",
+      "SAVE_AND_CLOSE": "Salva e chiudi"
+    },
     "LOADING": {
       "PLEASE_WAIT": "Attendere prego..."
     },
     "LANGUAGE_PICKER": {
-      "APP_WILL_RESTART": "L'app verrà riavviata"
+      "APP_WILL_RESTART": "L'app verrà riavviata",
+      "CHANGE_LANGUAGE": "Cambia il linguaggio visualizzato"
     },
     "SIGNATURE": {
       "SIGNATURE": "Firma",
@@ -141,25 +148,6 @@
       "CLOSE_WITHOUT_SAVING": "Chiudi senza salvare",
       "UPDATE_FIELD": "Aggiorna il campo",
       "SAVE": "Salva"
-    },
-    "OFFLINE": {
-      "YOU_ARE_OFFLINE": "Sei offline",
-      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Le funzionalità sono ridotte",
-      "OFFLINE_MANAGER": "Offline manager",
-      "LAST_SYNC": "Ultima sincronizzazione",
-      "LOADING": "Caricamento...",
-      "SYNC_NOW": "Sincronizza ora",
-      "ERROR_DURING_LAST_SYNC": "Si è verificato un errore durante l'ultima sincronizzazione; per favore riprova.",
-      "UPLOAD": "Upload",
-      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Le azioni create offline devono essere caricate online",
-      "DOWNLOAD": "Download",
-      "DOWNLOAD_RESOURCES_EXPLANATION": "Lista delle risorse disponibili quando offline",
-      "NOW": "Adesso",
-      "SYNC_IN_PROGRESSS": "Sincronizzazione in corso",
-      "NUM_ELEMENTS_TO_SYNC": "Numero elementi da sincronizzare",
-      "REQUEST_FAILED": "Richiesta fallita; riprova o cancella la richiesta",
-      "NO_ELEMENTS_TO_UPLOAD": "Nessun elemento da caricare",
-      "DELETION_IS_IRREVERSIBLE": "La cancellazione è irreversibile"
     },
     "LIST": {
       "LIST": "Lista",
