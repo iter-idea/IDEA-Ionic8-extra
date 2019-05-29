@@ -46,8 +46,7 @@ export class IDEAAWSAPIService {
       if (!headers.get('Authorization') && this.tc.get('AWSAPIAuthToken'))
         headers = headers.append('Authorization', this.tc.get('AWSAPIAuthToken'));
       // execute the request
-      let req;
-      let searchParams = new HttpParams();
+      let req: any;
       switch (method) {
         case 'HEAD': req = this.http.head(url, { headers: headers }); break;
         case 'POST': req = this.http.post(url, opt.body, { headers: headers }); break;
@@ -56,9 +55,9 @@ export class IDEAAWSAPIService {
         case 'DELETE': req = this.http.delete(url, { headers: headers }); break;
         default: /* GET */ {
           // prepare the query params; note: HttpParams is immutable!
-          if (opt.params)
-            for (const prop in opt.params)
-              searchParams = searchParams.set(prop, opt.params[prop]);
+          let searchParams = new HttpParams();
+          if (opt.params && opt.params instanceof HttpParams) searchParams = opt.params;
+          else if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
           req = this.http.get(url, { headers: headers, params: searchParams });
         }
       }
