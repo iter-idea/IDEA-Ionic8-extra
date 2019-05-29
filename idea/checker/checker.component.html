@@ -1,5 +1,6 @@
 <ion-item
   class="checkerItem"
+  [lines]="lines || 'full'"
   [title]="placeholder || null"
   (click)="fetchDataAndOpenModal()"
 >

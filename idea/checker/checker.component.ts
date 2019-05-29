@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -49,6 +49,18 @@ export class IDEACheckerComponent {
    */
   @Input() protected noneEqualsAll: boolean;
   /**
+   * If no element is selected, set this custom text.
+   */
+  @Input() protected noneText: string;
+  /**
+   * If all the elements are selected, set this custom text.
+   */
+  @Input() protected allText: string;
+  /**
+   * Lines preferences for the item.
+   */
+  @Input() protected lines: string;
+  /**
    * If true, the component is disabled.
    */
   @Input() protected disabled: boolean;
@@ -60,6 +72,10 @@ export class IDEACheckerComponent {
    * How many elements to show in the preview before to generalize on the number.
    */
   @Input() protected numMaxElementsInPreview: number;
+  /**
+   * On change event.
+   */
+  @Output() protected change = new EventEmitter<void>();
 
   constructor(
     protected modalCtrl: ModalController,
@@ -102,7 +118,10 @@ export class IDEACheckerComponent {
         noElementsFoundText: this.noElementsFoundText
       }
     })
-    .then(modal => modal.present());
+    .then(modal => {
+      modal.onDidDismiss().then(res => res && res.data ? this.change.emit() : null);
+      modal.present();
+    });
   }
 
   /**
@@ -112,10 +131,10 @@ export class IDEACheckerComponent {
     if (!this.data || !this.data.length) return null;
     if (this.noPreviewText) return this.noPreviewText;
     if (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll))
-      return this.t.instant('IDEA.CHECKER.ALL');
+      return this.allText || this.t.instant('IDEA.CHECKER.ALL');
     else {
       const checked = this.data.filter(x => x.checked);
-      if (checked.length === 0) return this.t.instant('IDEA.CHECKER.NONE');
+      if (checked.length === 0) return this.noneText || this.t.instant('IDEA.CHECKER.NONE');
       if (checked.length <= this.numMaxElementsInPreview)
         return this.data
           .filter(x => x.checked)
