@@ -2,141 +2,143 @@
   <form
     class="flexBox"
   >
-    <ion-card
-      class="authCard"
-    >
-      <ion-img
-        [title]="t.instant('IDEA.AUTH.SERVICE_LOGO')"
-        [src]="'assets/icons/icon-auth.png'"
-      ></ion-img>
-      <ion-card-header>
-        <ion-card-title
-          color="primary"
-          *ngIf="title"
-        >
-          {{ title }}
-        </ion-card-title>
-        <ion-card-subtitle
-          *ngIf="t.instant('TAGLINE')"
-        >
-          {{ 'IDEA.TAGLINE' | translate }}
-        </ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p
-          class="errorBox"
-          *ngIf="errorMsg"
-        >
-          <b>
-            {{ 'IDEA.AUTH.ERROR' | translate }}.
-          </b>
-          {{ errorMsg }}
-        </p>
-        <ion-item>
-          <ion-label
-            position="inline"
-          >
-            <ion-icon
-              name="contact"
-              color="primary"
-            >
-            </ion-icon>
-          </ion-label>
-          <ion-input
-            type="email"
-            inputmode="email"
-            pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
-            spellcheck="false"
-            autocorrect="off"
-            autocapitalize="off"
-            autocomplete="username"
-            [placeholder]="t.instant('IDEA.AUTH.EMAIL')"
-            [title]="t.instant('IDEA.AUTH.EMAIL_HINT')"
-            [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="email"
-            (keyup.enter)="login()"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label
-            position="inline"
-          >
-            <ion-icon
-              name="key"
-              color="primary"
-            ></ion-icon>
-          </ion-label>
-          <ion-input
-            type="password"
-            pattern=".{8,}"
-            spellcheck="false"
-            autocorrect="off"
-            autocapitalize="off"
-            autocomplete="current-password"
-            [placeholder]="t.instant('IDEA.AUTH.PASSWORD')"
-            [title]="t.instant('IDEA.AUTH.PASSWORD_HINT')"
-            [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="password"
-            (keyup.enter)="login()"
-          ></ion-input>
-        </ion-item>
-        <ion-row
-          class="privacyPolicyAcceptanceRow"
-          *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
-        >
-          <ion-col>
-            <ion-checkbox
-              size="small"
-              [ngModelOptions]="{standalone: true}"
-              [(ngModel)]="privacyPolicyCheck"
-            ></ion-checkbox>
-            {{ 'IDEA.AUTH.PRIVACY_POLICY_CHECK_LOGIN' | translate }}
-            <a
-              ion-text
-              color="primary"
-              target="_blank"
-              [title]="t.instant('IDEA.AUTH.PRIVACY_POLICY_HINT')"
-              [href]="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
-            >
-              {{ 'IDEA.AUTH.PRIVACY_POLICY' | translate }}
-            </a>
-          </ion-col>
-        </ion-row>
-        <ion-button
-          expand="block"
-          [disabled]="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL') && !privacyPolicyCheck"
-          [title]="t.instant('IDEA.AUTH.SIGN_IN_HINT')"
-          (click)="login()"
-        >
-          {{ 'IDEA.AUTH.SIGN_IN' | translate }}
-        </ion-button>
-        <ion-button
-          fill="outline"
-          expand="block"
-          *ngIf="registrationPossible"
-          [title]="t.instant('IDEA.AUTH.CREATE_AN_ACCOUNT_HINT')"
-          (click)="goToRegistration()"
-        >
-          {{ 'IDEA.AUTH.CREATE_AN_ACCOUNT' | translate }}
-        </ion-button>
-        <ion-button
-          fill="clear"
-          expand="block"
-          class="smallCaseButton"
-          [title]="t.instant('IDEA.AUTH.I_FORGOT_MY_PASSWORD_HINT')"
-          (click)="goToForgotPassword()"
-        >
-          {{ 'IDEA.AUTH.I_FORGOT_MY_PASSWORD' | translate }}
-        </ion-button>
+    <div>
+      <ion-card
+        class="authCard"
+      >
         <ion-img
-          tappable
-          class="ideaLogo"
-          *ngIf="website"
-          [src]="'./assets/icons/idea.png'"
-          [title]="t.instant('IDEA.AUTH.IDEA_TAGLINE')"
-          (click)="extBrowser.openLink(website);"
+          [title]="t.instant('IDEA.AUTH.SERVICE_LOGO')"
+          [src]="'assets/icons/icon-auth.png'"
         ></ion-img>
-      </ion-card-content>
-    </ion-card>
+        <ion-card-header>
+          <ion-card-title
+            color="primary"
+            *ngIf="title"
+          >
+            {{ title }}
+          </ion-card-title>
+          <ion-card-subtitle
+            *ngIf="t.instant('TAGLINE')"
+          >
+            {{ 'IDEA.TAGLINE' | translate }}
+          </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p
+            class="errorBox"
+            *ngIf="errorMsg"
+          >
+            <b>
+              {{ 'IDEA.AUTH.ERROR' | translate }}.
+            </b>
+            {{ errorMsg }}
+          </p>
+          <ion-item>
+            <ion-label
+              position="inline"
+            >
+              <ion-icon
+                name="contact"
+                color="primary"
+              >
+              </ion-icon>
+            </ion-label>
+            <ion-input
+              type="email"
+              inputmode="email"
+              pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
+              spellcheck="false"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="username"
+              [placeholder]="t.instant('IDEA.AUTH.EMAIL')"
+              [title]="t.instant('IDEA.AUTH.EMAIL_HINT')"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="email"
+              (keyup.enter)="login()"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label
+              position="inline"
+            >
+              <ion-icon
+                name="key"
+                color="primary"
+              ></ion-icon>
+            </ion-label>
+            <ion-input
+              type="password"
+              pattern=".{8,}"
+              spellcheck="false"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="current-password"
+              [placeholder]="t.instant('IDEA.AUTH.PASSWORD')"
+              [title]="t.instant('IDEA.AUTH.PASSWORD_HINT')"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="password"
+              (keyup.enter)="login()"
+            ></ion-input>
+          </ion-item>
+          <ion-row
+            class="privacyPolicyAcceptanceRow"
+            *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
+          >
+            <ion-col>
+              <ion-checkbox
+                size="small"
+                [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="privacyPolicyCheck"
+              ></ion-checkbox>
+              {{ 'IDEA.AUTH.PRIVACY_POLICY_CHECK_LOGIN' | translate }}
+              <a
+                ion-text
+                color="primary"
+                target="_blank"
+                [title]="t.instant('IDEA.AUTH.PRIVACY_POLICY_HINT')"
+                [href]="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
+              >
+                {{ 'IDEA.AUTH.PRIVACY_POLICY' | translate }}
+              </a>
+            </ion-col>
+          </ion-row>
+          <ion-button
+            expand="block"
+            [disabled]="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL') && !privacyPolicyCheck"
+            [title]="t.instant('IDEA.AUTH.SIGN_IN_HINT')"
+            (click)="login()"
+          >
+            {{ 'IDEA.AUTH.SIGN_IN' | translate }}
+          </ion-button>
+          <ion-button
+            fill="outline"
+            expand="block"
+            *ngIf="registrationPossible"
+            [title]="t.instant('IDEA.AUTH.CREATE_AN_ACCOUNT_HINT')"
+            (click)="goToRegistration()"
+          >
+            {{ 'IDEA.AUTH.CREATE_AN_ACCOUNT' | translate }}
+          </ion-button>
+          <ion-button
+            fill="clear"
+            expand="block"
+            class="smallCaseButton"
+            [title]="t.instant('IDEA.AUTH.I_FORGOT_MY_PASSWORD_HINT')"
+            (click)="goToForgotPassword()"
+          >
+            {{ 'IDEA.AUTH.I_FORGOT_MY_PASSWORD' | translate }}
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+      <ion-img
+        tappable
+        class="ideaLogo"
+        *ngIf="website"
+        [src]="'./assets/icons/idea.png'"
+        [title]="t.instant('IDEA.AUTH.IDEA_TAGLINE')"
+        (click)="extBrowser.openLink(website);"
+      ></ion-img>
+    </div>
   </form>
 </ion-content>
