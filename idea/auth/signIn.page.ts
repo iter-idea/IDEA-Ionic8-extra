@@ -82,6 +82,6 @@ export class IDEASignInPage {
   protected goToRegistration(): void {
     this.tc.set('email', this.email);
     this.tc.set('password', this.password);
-    this.navCtrl.navigateForward(['auth/sign-up']);
+    this.navCtrl.navigateForward(['auth', 'sign-up']);
   }
 }
