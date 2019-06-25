@@ -6,6 +6,12 @@ h1 {
   font-weight: bold;
   text-transform: uppercase;
 }
+ion-col, ion-button {
+  font-size: 1em;
+}
+ion-button {
+  margin: 3px 0;
+}
 ion-footer {
   ion-toolbar {
     --min-height: 40px;

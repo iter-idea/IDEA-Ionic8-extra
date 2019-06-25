@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import Moment = require('moment');
+import Moment = require('moment-timezone');
 
 import { IDEACalendarComponent } from './calendar.component';
 import { OverlayEventDetail } from '@ionic/core';

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import Moment = require('moment');
+import Moment = require('moment-timezone');
 
 @Component({
   selector: 'idea-calendar',
@@ -34,6 +34,8 @@ export class IDEACalendarComponent {
     this.today = Moment();
     this.refDate = this.inputDate ? Moment(this.inputDate) : Moment(this.today);
     this.selectedDate = Moment(this.refDate);
+    this.hour = 0;
+    this.minute = 0;
     if (this.timePicker) {
       this.hour = this.selectedDate.hour();
       // round the minutes a multiple of 5
@@ -121,7 +123,6 @@ export class IDEACalendarComponent {
     buttons.push({ text: this.t.instant('COMMON.SELECT'), handler: (m: string) => {
       this.refDate.month(parseInt(m, 10) - 1);
       this.buildCalendarGrid(this.refDate);
-      // this.refDate = new Date(this.refDate);  // to fire the "onChange" event
     }});
     this.alertCtrl.create({ header: this.t.instant('IDEA.CALENDAR.MONTH'), buttons: buttons, inputs: inputs })
     .then(alert => alert.present());
@@ -138,14 +139,14 @@ export class IDEACalendarComponent {
    * Set the new hour.
    */
   protected selectHour(hour: string) {
-    this.hour = parseInt(hour, 10);
+    this.hour = Number(hour);
     this.selectedDate.hour(this.hour);
   }
   /**
    * Set the new minute.
    */
   protected selectMinute(minute: string) {
-    this.minute = parseInt(minute, 10);
+    this.minute = Number(minute);
     this.selectedDate.minute(this.minute);
   }
 
