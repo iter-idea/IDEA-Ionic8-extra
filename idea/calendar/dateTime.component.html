@@ -31,7 +31,7 @@
     >
       {{ placeholder }}
     </ion-text>
-    {{ getValue() }}&nbsp;
+    {{ getValue() }}
   </ion-label>
   <ion-icon
     slot="end"
@@ -39,5 +39,6 @@
     class="selectIcon"
     *ngIf="!disabled"
     [class.selectable]="!disabled"
+    [class.withLabel]="label"
   ></ion-icon>
 </ion-item>

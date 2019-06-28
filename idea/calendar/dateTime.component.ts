@@ -56,6 +56,6 @@ export class IDEADateTimeComponent {
    * Calculate the value to show.
    */
   protected getValue(): string {
-    return !this.date ? '' : Moment(this.date).format('ddd D MMMM YYYY'.concat(this.timePicker ? ', H:mm' : null));
+    return !this.date ? '' : Moment(this.date).format('ddd D MMMM YYYY'.concat(this.timePicker ? ', H:mm' : ''));
   }
 }
