@@ -9,15 +9,6 @@
       slot="end"
     >
       <ion-button
-        [title]="t.instant('IDEA.CUSTOM_FIELDS.REMOVE_FIELD')"
-        (click)="delete()"
-      >
-        <ion-icon
-          slot="icon-only"
-          name="trash"
-        ></ion-icon>
-      </ion-button>
-      <ion-button
         [title]="t.instant('IDEA.CUSTOM_FIELDS.CLOSE_WITHOUT_SAVING')"
         (click)="close()"
       >
@@ -32,9 +23,26 @@
 <ion-content>
   <ion-list
     padding
-    class="fieldAttributesList"
   >
+    <ion-row
+      justify-content-center align-items-end
+      class="languageSelector"
+      *ngIf="defaultLanguage && availableLanguages.length > 1"
+    >
+      <ion-col
+        text-center tappable
+        size="1"
+        *ngFor="let l of availableLanguages"
+        [class.current]="l === currentLanguage"
+        (click)="currentLanguage = l"
+      >
+        <img
+          [src]="'assets/flags/'+l+'.png'"
+        >
+      </ion-col>
+    </ion-row>
     <ion-item
+      lines="inset"
       [class.fieldHasError]="hasFieldAnError('name')"
     >
       <ion-label
@@ -44,10 +52,12 @@
       </ion-label>
       <ion-input
         type="text"
-        [(ngModel)]="theField.name"
+        [value]="getFieldName()"
+        (ionChange)="setFieldName($event.detail.value)"
       ></ion-input>
     </ion-item>
     <ion-item
+      lines="inset"
       [class.fieldHasError]="hasFieldAnError('description')"
     >
       <ion-label
@@ -58,10 +68,12 @@
       </ion-label>
       <ion-input
         type="text"
-        [(ngModel)]="theField.description"
+        [value]="getFieldDescription()"
+        (ionChange)="setFieldDescription($event.detail.value)"
       ></ion-input>
     </ion-item>
     <ion-item
+      lines="inset"
       [class.fieldHasError]="hasFieldAnError('type')"
     >
       <ion-label
@@ -81,6 +93,7 @@
       </ion-select>
     </ion-item>
     <ion-item
+      lines="inset"
       *ngIf="theField.type == 'ENUM'"
       [class.fieldHasError]="hasFieldAnError('enum')"
     >
@@ -95,6 +108,7 @@
       ></ion-input>
     </ion-item>
     <ion-item
+      lines="inset"
       *ngIf="theField.type !== 'BOOLEAN'"
       [class.fieldHasError]="hasFieldAnError('default')"
     >
@@ -110,6 +124,7 @@
       ></ion-input>
     </ion-item>
     <ion-item
+      lines="inset"
       [class.fieldHasError]="hasFieldAnError('min')"
       *ngIf="theField.type == 'NUMBER'"
     >
@@ -125,6 +140,7 @@
       ></ion-input>
     </ion-item>
     <ion-item
+      lines="inset"
       [class.fieldHasError]="hasFieldAnError('max')"
       *ngIf="theField.type == 'NUMBER'"
     >
@@ -140,6 +156,7 @@
       ></ion-input>
     </ion-item>
     <ion-item
+      lines="inset"
       *ngIf="theField.type !== 'BOOLEAN'"
       [class.fieldHasError]="hasFieldAnError('obligatory')"
     >
@@ -163,8 +180,6 @@
         </ion-select-option>
       </ion-select>
     </ion-item>
-  </ion-list>
-  <ion-grid>
     <ion-row>
       <ion-col
         text-right padding
@@ -181,5 +196,5 @@
         </ion-button>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-list>
 </ion-content>

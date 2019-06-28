@@ -1,13 +1,15 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-
-import { CustomField } from '../../../../../api/_models/customField.model';
+import IdeaX = require('idea-toolbox');
 
 @Component({
   selector: 'idea-custom-fields',
   templateUrl: 'customFields.component.html',
   styleUrls: ['customFields.component.scss'],
 })
+/**
+ * Note: if the defaultLanguage is used, then the fields are managed with transalations.
+ */
 export class IDEACustomFieldsComponent {
   /**
    * Ordered list of the fields (names) to expect.
@@ -42,13 +44,25 @@ export class IDEACustomFieldsComponent {
    */
   @Input() protected showRemoveBtn: boolean;
   /**
+   * Default (fallback) language for Label fields.
+   */
+  @Input() protected defaultLanguage: string;
+  /**
+   * Current language to display for Label fields.
+   */
+  @Input() protected currentLanguage: string;
+  /**
+   * Available languages for Label fields.
+   */
+  @Input() protected availableLanguages: Array<string>;
+  /**
    * Emit selection of a custom field.
    */
-  @Output() protected select = new EventEmitter<CustomField>();
+  @Output() protected select = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
   /**
    * Emit removal of a custom field.
    */
-  @Output() protected remove = new EventEmitter<CustomField>();
+  @Output() protected remove = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
 
   constructor(protected t: TranslateService) {
     this.disabled = false;        // needed
@@ -62,5 +76,20 @@ export class IDEACustomFieldsComponent {
     this.fieldsLegend.splice(ev.detail.to, 0, this.fieldsLegend.splice(ev.detail.from, 1)[0]);
     // Once the data structure has been updated to reflect the reorder change, the complete() method must be called.
     ev.detail.complete();
+  }
+
+  /**
+   * Return the name of the field; if the field support translations, the function manages them.
+   */
+  protected getFieldName(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
+    if (this.defaultLanguage) return field.name[this.currentLanguage] || field.name[this.defaultLanguage];
+    else return String(field.name);
+  }
+  /**
+   * Return the description of the field; if the field support translations, the function manages them.
+   */
+  protected getFieldDescription(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
+    if (this.defaultLanguage) return field.description[this.currentLanguage] || field.description[this.defaultLanguage];
+    else return String(field.description);
   }
 }

@@ -1,15 +1,16 @@
-.fieldAttributesList {
-  ion-list-header {
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.85em;
-    color: var(--ion-color-primary);
+.languageSelector {
+  ion-col {
+    padding: 0;
+    border-bottom: 2px solid transparent;
   }
-  .fieldHasError {
-    border-bottom: 2px solid var(--ion-color-danger-shade) !important;
-    .item-inner .label {
-      color: var(--ion-color-danger-shade);
-      font-weight: 500;
+  .current {
+    border-bottom-color: var(--ion-color-light);
+    img {
+      max-width: 25px;
     }
+  }
+  img {
+    max-width: 22px;
+    border-radius: 10px;
   }
 }
