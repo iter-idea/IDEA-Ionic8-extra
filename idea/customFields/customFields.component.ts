@@ -83,13 +83,13 @@ export class IDEACustomFieldsComponent {
    */
   protected getFieldName(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
     if (this.defaultLanguage) return field.name[this.currentLanguage] || field.name[this.defaultLanguage];
-    else return String(field.name);
+    else return String(field.name || '');
   }
   /**
    * Return the description of the field; if the field support translations, the function manages them.
    */
   protected getFieldDescription(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
     if (this.defaultLanguage) return field.description[this.currentLanguage] || field.description[this.defaultLanguage];
-    else return String(field.description);
+    else return String(field.description || '');
   }
 }

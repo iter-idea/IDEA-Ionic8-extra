@@ -78,7 +78,7 @@ export class IDEACustomFieldManagerComponent {
   protected getFieldName(): string {
     if (this.defaultLanguage)
       return this.theField.name[this.currentLanguage] || this.theField.name[this.defaultLanguage];
-    else return String(this.theField.name);
+    else return String(this.theField.name || '');
   }
   /**
    * Return the description of the field; if the field support translations, the function manages them.
@@ -86,7 +86,7 @@ export class IDEACustomFieldManagerComponent {
   protected getFieldDescription(): string {
     if (this.defaultLanguage)
       return this.theField.description[this.currentLanguage] || this.theField.description[this.defaultLanguage];
-    else return String(this.theField.description);
+    else return String(this.theField.description || '');
   }
 
   /**
