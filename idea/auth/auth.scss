@@ -34,6 +34,9 @@
       text-align: left;
       border-left: 2px solid var(--ion-color-danger);
     }
+    ion-item {
+      --border-color: var(--ion-color-light);
+    }
     ion-icon {
       padding-top: 4px;
       padding-right: 5px;
@@ -55,6 +58,10 @@
       letter-spacing: normal;
       font-size: 1em;
     }
+  }
+  @media only screen and (max-width: 500px) {
+    background-color: transparent;
+    border: none;
   }
 }
 .ideaLogo {
