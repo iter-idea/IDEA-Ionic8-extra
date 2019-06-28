@@ -15,37 +15,37 @@ export class IDEACustomFieldManagerComponent {
   /**
    * The CustomField to manage (the component will work on a copy and return the updated object).
    */
-  @Input() protected field: IdeaX.CustomField | IdeaX.CustomFieldT;
+  @Input() public field: IdeaX.CustomField | IdeaX.CustomFieldT;
   /**
    * Default (fallback) language for Label fields.
    */
-  @Input() protected defaultLanguage: string;
+  @Input() public defaultLanguage: string;
   /**
    * Current language to display for Label fields.
    */
-  @Input() protected currentLanguage: string;
+  @Input() public currentLanguage: string;
   /**
    * Available languages for Label fields.
    */
-  @Input() protected availableLanguages: Array<string>;
+  @Input() public availableLanguages: Array<string>;
 
   /**
    * The working copy of the field; if returned, it means that the original field has been modified.
    */
-  protected theField: IdeaX.CustomField | IdeaX.CustomFieldT;
+  public theField: IdeaX.CustomField | IdeaX.CustomFieldT;
 
-  protected errors: Array<string>;
-  protected FIELD_TYPES: Array<string> = Object.keys(IdeaX.CustomFieldTypes);
-  protected enumAsString: string;
+  public errors: Array<string>;
+  public FIELD_TYPES: Array<string> = Object.keys(IdeaX.CustomFieldTypes);
+  public enumAsString: string;
 
   constructor(
-    protected modalCtrl: ModalController,
-    protected alertCtrl: AlertController,
-    protected t: TranslateService
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
+    public t: TranslateService
   ) {
     this.errors = Array<string>();
   }
-  protected ngOnInit() {
+  public ngOnInit() {
     if (this.defaultLanguage) {
       this.theField = new IdeaX.CustomFieldT(this.availableLanguages);
       this.theField.load(this.field, this.availableLanguages);
@@ -60,14 +60,14 @@ export class IDEACustomFieldManagerComponent {
   /**
    * Set the nam of the field; if the field support translations, the function manages them.
    */
-  protected setFieldName(name: string) {
+  public setFieldName(name: string) {
     if (this.defaultLanguage) this.theField.name[this.currentLanguage] = name;
     else this.theField.name = name;
   }
   /**
    * Set the description of the field; if the field support translations, the function manages them.
    */
-  protected setFieldDescription(description: string) {
+  public setFieldDescription(description: string) {
     if (this.defaultLanguage) this.theField.description[this.currentLanguage] = description;
     else this.theField.description = description;
   }
@@ -75,7 +75,7 @@ export class IDEACustomFieldManagerComponent {
   /**
    * Return the name of the field; if the field support translations, the function manages them.
    */
-  protected getFieldName(): string {
+  public getFieldName(): string {
     if (this.defaultLanguage)
       return this.theField.name[this.currentLanguage] || this.theField.name[this.defaultLanguage];
     else return String(this.theField.name || '');
@@ -83,7 +83,7 @@ export class IDEACustomFieldManagerComponent {
   /**
    * Return the description of the field; if the field support translations, the function manages them.
    */
-  protected getFieldDescription(): string {
+  public getFieldDescription(): string {
     if (this.defaultLanguage)
       return this.theField.description[this.currentLanguage] || this.theField.description[this.defaultLanguage];
     else return String(this.theField.description || '');
@@ -92,14 +92,14 @@ export class IDEACustomFieldManagerComponent {
   /**
    * Set the support array to display errors in the UI.
    */
-  protected hasFieldAnError(field: string): boolean {
+  public hasFieldAnError(field: string): boolean {
     return this.errors.some(e => e === field);
   }
 
   /**
    * Return the modified field and close.
    */
-  protected save() {
+  public save() {
     // convert and clean the string enum (reset the enum if the type isn't correct)
     if (this.theField.type === IdeaX.CustomFieldTypes.ENUM) {
       this.theField.enum = Array.from(new Set(this.enumAsString.split(',').map(x => x.trim()).filter(x => x)));
@@ -126,7 +126,7 @@ export class IDEACustomFieldManagerComponent {
   /**
    * Close the modal, optionally returning the updated field.
    */
-  protected close(updatedField?: IdeaX.CustomField | IdeaX.CustomFieldT) {
+  public close(updatedField?: IdeaX.CustomField | IdeaX.CustomFieldT) {
     this.modalCtrl.dismiss(updatedField);
   }
 }

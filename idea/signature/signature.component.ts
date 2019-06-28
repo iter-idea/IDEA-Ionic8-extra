@@ -11,23 +11,23 @@ import { IDEAMessageService } from '../message.service';
   styleUrls: ['signature.component.scss']
 })
 export class IDEASignatureComponent {
-  protected signature: Signature;
-  protected canvas: HTMLCanvasElement;
-  protected pad: SignaturePad;
+  public signature: Signature;
+  public canvas: HTMLCanvasElement;
+  public pad: SignaturePad;
 
-  protected signatoryError: boolean;
-  protected signatureError: boolean;
+  public signatoryError: boolean;
+  public signatureError: boolean;
 
   constructor(
-    protected modalCrl: ModalController,
-    protected message: IDEAMessageService,
-    protected t: TranslateService
+    public modalCrl: ModalController,
+    public message: IDEAMessageService,
+    public t: TranslateService
   ) {
     this.signature = { signatory: null, pngURL: null, jpegURL: null };
     this.canvas = null;
     this.pad = null;
   }
-  protected ionViewDidEnter() {
+  public ionViewDidEnter() {
     this.canvas = <HTMLCanvasElement> document.getElementById('signatureCanvas');
     this.pad = new SignaturePad(this.canvas);
     this.resizeCanvas();
@@ -36,14 +36,14 @@ export class IDEASignatureComponent {
   /**
    * Clear the canvas.
    */
-  protected clear() {
+  public clear() {
     this.pad.clear();
   }
 
   /**
    * Check Close the window and return the signature (text + different formats).
    */
-  protected save() {
+  public save() {
     this.signatoryError = Boolean(!this.signature.signatory);
     this.signatureError = this.pad.isEmpty();
     if (this.signatoryError || this.signatureError)
@@ -56,14 +56,14 @@ export class IDEASignatureComponent {
   /**
    * Close without saving.
    */
-  protected close() {
+  public close() {
     this.modalCrl.dismiss();
   }
 
   /**
    * Handling high DPI screens.
    */
-  protected resizeCanvas() {
+  public resizeCanvas() {
     const ratio =  Math.max(window.devicePixelRatio || 1, 1);
     this.canvas.width = this.canvas.offsetWidth * ratio;
     this.canvas.height = this.canvas.offsetHeight * ratio;

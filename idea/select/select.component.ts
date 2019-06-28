@@ -35,91 +35,91 @@ export class IDEASelectComponent {
    * The description to show in the field.
    * Set the property so it detects changes.
    */
-  private _description: string;
+  protected _description: string;
   get description(): string { return this._description; }
   @Input() set description(description: string) { this._description = description; }
 
   /**
    * The suggestions to show.
    */
-  @Input() protected data: Array<Suggestion>;
+  @Input() public data: Array<Suggestion>;
   /**
    *  Alternative to the case above; function that returns a Promise<Array<Suggestion>>.
    */
-  @Input() protected dataProvider: any;
+  @Input() public dataProvider: any;
   /**
    * The label for the field.
    */
-  @Input() protected label: string;
+  @Input() public label: string;
   /**
    * The icon (alternative to the label) for the field.
    */
-  @Input() protected icon: string;
+  @Input() public icon: string;
   /**
    * A placeholder for the field.
    */
-  @Input() protected placeholder: string;
+  @Input() public placeholder: string;
   /**
    * A placeholder for the searchbar.
    */
-  @Input() protected searchPlaceholder: string;
+  @Input() public searchPlaceholder: string;
   /**
    * Text to show when there isn't a result.
    */
-  @Input() protected noElementsFoundText: string;
+  @Input() public noElementsFoundText: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() protected disabled: boolean;
+  @Input() public disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.
    */
-  @Input() protected tappableWhenDisabled: boolean;
+  @Input() public tappableWhenDisabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() protected obligatory: boolean;
+  @Input() public obligatory: boolean;
   /**
    * Lines preferences for the item.
    */
-  @Input() protected lines: string;
+  @Input() public lines: string;
   /**
    * If true, allows to select a new custom value (outside the suggestions).
    */
-  @Input() protected allowUnlistedValues: boolean;
+  @Input() public allowUnlistedValues: boolean;
   /**
    * If true, sort the suggestions alphabetically.
    */
-  @Input() protected sortData: boolean;
+  @Input() public sortData: boolean;
   /**
    * If true, clear the value of the field after a selection.
    */
-  @Input() protected clearValueAfterSelection: boolean;
+  @Input() public clearValueAfterSelection: boolean;
   /**
    * If true, doesn't show the id in the UI.
    */
-  @Input() protected hideIdFromUI: boolean;
+  @Input() public hideIdFromUI: boolean;
   /**
    * If true, doesn't show the clear button in the header.
    */
-  @Input() protected hideClearButton: boolean;
+  @Input() public hideClearButton: boolean;
   /**
    * On select event.
    */
-  @Output() protected select = new EventEmitter<Suggestion>();
+  @Output() public select = new EventEmitter<Suggestion>();
   /**
    * On select (with the field disabled) event.
    */
-  @Output() protected selectWhenDisabled = new EventEmitter<void>();
+  @Output() public selectWhenDisabled = new EventEmitter<void>();
 
-  constructor(protected modalCtrl: ModalController) {
+  constructor(public modalCtrl: ModalController) {
     this.data = new Array<Suggestion>();
   }
 
   /**
    * Fetch the promised data from a function and set it before to open the suggestions.
    */
-  protected fetchDataAndOpenModal() {
+  public fetchDataAndOpenModal() {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
       this.dataProvider()
@@ -133,13 +133,13 @@ export class IDEASelectComponent {
   /**
    * Automatically convers data into Suggestions (from plain strings, numbers, etc.).
    */
-  private convertDataInSuggestions() {
+  protected convertDataInSuggestions() {
     this.data = this.data.map((x: any) => x.value ? x : new Suggestion(x));
   }
   /**
    * Open the suggestions modal and later fetch the selection (plain value).
    */
-  private openSuggestions() {
+  protected openSuggestions() {
     if (this.disabled) return;
     // convert optional plain values in Suggestions
     this.convertDataInSuggestions();
@@ -172,7 +172,7 @@ export class IDEASelectComponent {
   /**
    * Emit the selection while the component is in viewMode.
    */
-  protected doSelectWhenDisabled() {
+  public doSelectWhenDisabled() {
     if (this.disabled) this.selectWhenDisabled.emit();
   }
 }

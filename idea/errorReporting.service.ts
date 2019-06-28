@@ -8,7 +8,7 @@ declare const IDEA_ERROR_REPORTING_API_URL: string;
 
 @Injectable()
 export class IDEAErrorReportingService {
-  constructor(protected http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   public sendReport(error: Error, forceSend?: boolean): Promise<any> {
     return new Promise((resolve) => {

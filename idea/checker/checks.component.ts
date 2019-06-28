@@ -8,45 +8,45 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['checks.component.scss'],
 })
 export class IDEAChecksComponent {
-  @ViewChild (IonSearchbar) protected searchbar: IonSearchbar;
+  @ViewChild (IonSearchbar) public searchbar: IonSearchbar;
   /**
    * It should be read only until the component closure.
    */
-  @Input() protected data: Array<Check>;
+  @Input() public data: Array<Check>;
   /**
    * A copy of data, to use until the changes are confirmed.
    */
-  @Input() protected workingData: Array<Check>;
+  @Input() public workingData: Array<Check>;
   /**
    * If true, sort alphabetically the data.
    */
-  @Input() protected sortData: boolean;
+  @Input() public sortData: boolean;
   /**
    * A placeholder for the searchbar.
    */
-  @Input() protected placeholder: string;
+  @Input() public placeholder: string;
   /**
    * The text to show in case no element is found after a search.
    */
-  @Input() protected noElementsFoundText: string;
+  @Input() public noElementsFoundText: string;
 
   // SUPPORT
-  protected filteredChecks: Array<Check>;
-  protected N_PER_PAGE = 30;
-  protected page: number;
+  public filteredChecks: Array<Check>;
+  public N_PER_PAGE = 30;
+  public page: number;
 
   constructor(
-    protected modalCtrl: ModalController,
-    protected navParams: NavParams,
-    protected t: TranslateService
+    public modalCtrl: ModalController,
+    public navParams: NavParams,
+    public t: TranslateService
   ) {}
-  protected ngOnInit() {
+  public ngOnInit() {
     this.workingData = JSON.parse(JSON.stringify(this.data || new Array<Check>()));
     this.filteredChecks = new Array<Check>();
     if (this.sortData) this.workingData = this.workingData.sort((a, b) => a.name.localeCompare(b.name));
     this.filterChecks();
   }
-  protected ionViewDidEnter() {
+  public ionViewDidEnter() {
     // set the focus / open the keyboard when entering the component
     setTimeout(() => this.searchbar.setFocus(), 100);
   }
@@ -54,7 +54,7 @@ export class IDEAChecksComponent {
   /**
    * Get checks suggestions while typing into the input.
    */
-  protected filterChecks(ev?: any) {
+  public filterChecks(ev?: any) {
     // acquire and clean the search term
     let searchTerm = ev && ev.target ? (ev.target.value || '') : '';
     if (!searchTerm.trim().length) searchTerm = '';
@@ -68,20 +68,20 @@ export class IDEAChecksComponent {
   /**
    * Check/unckeck all the elements.
    */
-  protected checkAll(check: boolean) {
+  public checkAll(check: boolean) {
     this.filteredChecks.forEach(x => x.checked = check);
   }
 
   /**
    * Close without confirming the changes.
    */
-  protected cancel() {
+  public cancel() {
     this.modalCtrl.dismiss(false);
   }
   /**
    * Close applying the changes to the original data structure.
    */
-  protected confirm() {
+  public confirm() {
     this.workingData.forEach(x => this.data.find(y => x.value === y.value).checked = x.checked);
     this.modalCtrl.dismiss(true);
   }

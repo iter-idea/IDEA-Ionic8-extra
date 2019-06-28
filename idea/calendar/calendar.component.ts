@@ -9,27 +9,27 @@ import Moment = require('moment-timezone');
   styleUrls: ['calendar.component.scss']
 })
 export class IDEACalendarComponent {
-  @Input() protected inputDate: Date;
-  @Input() protected timePicker: boolean;
-  @Input() protected title: string;
+  @Input() public inputDate: Date;
+  @Input() public timePicker: boolean;
+  @Input() public title: string;
 
   // support
-  protected refDate: Moment.Moment;
-  protected selectedDate: Moment.Moment;
-  protected today: Moment.Moment;
-  protected calendarGrid: Array<Array<Moment.Moment>>;
-  protected hour: number;
-  protected minute: number;
-  protected hours: Array<string>;
-  protected minutes: Array<string>;
-  protected weekDays: Array<string>;
+  public refDate: Moment.Moment;
+  public selectedDate: Moment.Moment;
+  public today: Moment.Moment;
+  public calendarGrid: Array<Array<Moment.Moment>>;
+  public hour: number;
+  public minute: number;
+  public hours: Array<string>;
+  public minutes: Array<string>;
+  public weekDays: Array<string>;
 
   constructor(
-    protected modal: ModalController,
-    protected alertCtrl: AlertController,
-    protected t: TranslateService
+    public modal: ModalController,
+    public alertCtrl: AlertController,
+    public t: TranslateService
   ) {}
-  protected ngOnInit() {
+  public ngOnInit() {
     Moment.locale(this.t.currentLang);
     this.today = Moment();
     this.refDate = this.inputDate ? Moment(this.inputDate) : Moment(this.today);
@@ -52,7 +52,7 @@ export class IDEACalendarComponent {
    * Build the calendar grid based on the month of the *refDate*.
    * 6 rows and 7 columns (the days, from Monday to Sunday).
    */
-  protected buildCalendarGrid(refDate: Moment.Moment) {
+  public buildCalendarGrid(refDate: Moment.Moment) {
     // find the first day in the month: the important data here is the day of the week
     const firstDateOfMonth = Moment([refDate.year(), refDate.month(), 1]);
     // the following flag is used to divide the logic so I can fill the calendar
@@ -82,7 +82,7 @@ export class IDEACalendarComponent {
   /**
    * +- num years to the current one.
    */
-  protected addYears(offset: number) {
+  public addYears(offset: number) {
     this.refDate.add(offset, 'y');
     this.buildCalendarGrid(this.refDate);
     // this.refDate = new Date(this.refDate);  // to fire the "onChange" event
@@ -100,7 +100,7 @@ export class IDEACalendarComponent {
   /**
    * +- num months to the current one.
    */
-  protected addMonths(offset: number) {
+  public addMonths(offset: number) {
     this.refDate.add(offset, 'M');
     this.buildCalendarGrid(this.refDate);
     // this.refDate = new Date(this.refDate); // to fire the "onChange" event
@@ -131,21 +131,21 @@ export class IDEACalendarComponent {
   /**
    * Set the new date.
    */
-  protected selectDate(date: Moment.Moment) {
+  public selectDate(date: Moment.Moment) {
     this.selectedDate = Moment([date.year(), date.month(), date.date(), this.hour, this.minute]);
   }
 
   /**
    * Set the new hour.
    */
-  protected selectHour(hour: string) {
+  public selectHour(hour: string) {
     this.hour = Number(hour);
     this.selectedDate.hour(this.hour);
   }
   /**
    * Set the new minute.
    */
-  protected selectMinute(minute: string) {
+  public selectMinute(minute: string) {
     this.minute = Number(minute);
     this.selectedDate.minute(this.minute);
   }
@@ -153,20 +153,20 @@ export class IDEACalendarComponent {
   /**
    * Return true if the hour in the UI is the selected one.
    */
-  protected isSameHour(hour: string): boolean {
+  public isSameHour(hour: string): boolean {
     return this.selectedDate.hour() === parseInt(hour, 10);
   }
   /**
    * Return true if the minute in the UI is the selected one.
    */
-  protected isSameMinute(minute: string): boolean {
+  public isSameMinute(minute: string): boolean {
     return this.selectedDate.minute() === parseInt(minute, 10);
   }
 
   /**
    * Confirm and close.
    */
-  protected save(reset?: boolean) {
+  public save(reset?: boolean) {
     this.modal.dismiss(reset ? '' : this.selectedDate);
   }
 }

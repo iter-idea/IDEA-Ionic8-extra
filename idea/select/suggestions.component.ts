@@ -11,40 +11,40 @@ export class IDEASuggestionsComponent {
   /**
    * The suggestions to show.
    */
-  @Input() protected data: Array<Suggestion>;
+  @Input() public data: Array<Suggestion>;
   /**
    * If true, sort the suggestions alphabetically.
    */
-  @Input() protected sortData: boolean;
+  @Input() public sortData: boolean;
   /**
    * A placeholder for the searchbar.
    */
-  @Input() protected searchPlaceholder: string;
+  @Input() public searchPlaceholder: string;
   /**
    * Text to show when there isn't a result.
    */
-  @Input() protected noElementsFoundText: string;
+  @Input() public noElementsFoundText: string;
   /**
    * If true, allows to select a new custom value (outside the suggestions).
    */
-  @Input() protected allowUnlistedValues: boolean;
+  @Input() public allowUnlistedValues: boolean;
   /**
    * If true, doesn't show the id in the UI.
    */
-  @Input() protected hideIdFromUI: boolean;
+  @Input() public hideIdFromUI: boolean;
   /**
    * If true, doesn't show the clear button in the header.
    */
-  @Input() protected hideClearButton: boolean;
+  @Input() public hideClearButton: boolean;
 
-  protected suggestions: Array<Suggestion>;
-  @ViewChild(IonSearchbar) protected searchbar: IonSearchbar;
+  public suggestions: Array<Suggestion>;
+  @ViewChild(IonSearchbar) public searchbar: IonSearchbar;
 
   constructor(
-    protected modalCtrl: ModalController,
-    protected t: TranslateService
+    public modalCtrl: ModalController,
+    public t: TranslateService
   ) {}
-  protected ngOnInit() {
+  public ngOnInit() {
     this.data = this.data || new Array<Suggestion>();
     this.suggestions = new Array<any>();
     // sort the data, if requested
@@ -54,7 +54,7 @@ export class IDEASuggestionsComponent {
     // show the suggestions based on the data
     this.getSuggestions();
   }
-  protected ionViewDidEnter() {
+  public ionViewDidEnter() {
     // focus on the searchbar
     this.searchbar.setFocus();
   }
@@ -62,7 +62,7 @@ export class IDEASuggestionsComponent {
   /**
    * Get suggestions while typing into the input.
    */
-  protected getSuggestions(ev?: any) {
+  public getSuggestions(ev?: any) {
     // acquire and clean the searchTerm
     let searchTerm = ev && ev.target ? (ev.target.value || '') : '';
     if (searchTerm.trim() === '') searchTerm = '';
@@ -77,7 +77,7 @@ export class IDEASuggestionsComponent {
    *    - selection === null -> clear
    *    - otherwise, a suggestion was selected
    */
-  protected select(selection?: Suggestion) {
+  public select(selection?: Suggestion) {
     this.modalCtrl.dismiss(selection);
   }
 
@@ -85,7 +85,7 @@ export class IDEASuggestionsComponent {
    * Manage the component with the keyboard.
    */
   @HostListener('window:keydown', ['$event'])
-  protected navigateComponent(event: KeyboardEvent) {
+  public navigateComponent(event: KeyboardEvent) {
     // identify the suggestions list
     let suggestionsList: any;
     if (document.getElementsByClassName('suggestionsList').length)

@@ -8,15 +8,15 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['list.component.scss']
 })
 export class IDEAListComponent {
-  @Input() protected list: Array<string | number>;
-  @Input() protected title: string;
+  @Input() public list: Array<string | number>;
+  @Input() public title: string;
 
   constructor(
-    protected modalCtrl: ModalController,
-    protected alertCtrl: AlertController,
-    protected t: TranslateService,
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
+    public t: TranslateService,
   ) {}
-  protected ngOnInit() {
+  public ngOnInit() {
     // use a copy of the array, to confirm it only when saving
     this.list = Array.from(this.list || new Array<string>());
   }
@@ -24,7 +24,7 @@ export class IDEAListComponent {
   /**
    * Add a new element to the list.
    */
-  protected addElement() {
+  public addElement() {
     this.alertCtrl.create({
       header: this.t.instant('IDEA.LIST.NEW_ELEMENT'),
       inputs: [ { name: 'element', placeholder: this.t.instant('IDEA.LIST.ELEMENT') } ],
@@ -49,14 +49,14 @@ export class IDEAListComponent {
   /**
    * Remove the selected element from the list.
    */
-  protected removeElement(element: any) {
+  public removeElement(element: any) {
     this.list.splice(this.list.indexOf(element), 1);
   }
 
   /**
    * Close and save or simply dismiss.
    */
-  protected close(save?: boolean) {
+  public close(save?: boolean) {
     this.modalCtrl.dismiss(save ? this.list : null);
   }
 }

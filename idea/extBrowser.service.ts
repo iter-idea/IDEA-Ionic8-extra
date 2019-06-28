@@ -3,7 +3,7 @@ import { DomSanitizer, SafeUrl, SafeResourceUrl } from '@angular/platform-browse
 
 @Injectable()
 export class IDEAExtBrowserService {
-  constructor(protected sanitizer: DomSanitizer) {}
+  constructor(public sanitizer: DomSanitizer) {}
 
   /**
    * Open a link in a safe way so that also in iOS standalone it will work.

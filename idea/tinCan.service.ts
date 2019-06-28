@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class IDEATinCan {
-  private data: any;
+  protected data: any;
 
   constructor() {
     this.clear();

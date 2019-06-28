@@ -12,20 +12,20 @@ import { IDEALoadingService } from '../loading.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAForgotPasswordPage {
-  protected email: string;
+  public email: string;
 
   constructor(
-    protected navCtrl: NavController,
-    protected message: IDEAMessageService,
-    protected loading: IDEALoadingService,
-    protected auth: IDEAAuthService,
-    protected t: TranslateService
+    public navCtrl: NavController,
+    public message: IDEAMessageService,
+    public loading: IDEALoadingService,
+    public auth: IDEAAuthService,
+    public t: TranslateService
   ) {}
 
   /**
    * "I forgot my password" procedure.
    */
-  protected forgotPassword() {
+  public forgotPassword() {
     this.loading.show();
     this.auth.forgotPassword(this.email)
     .then(() => {
@@ -42,13 +42,13 @@ export class IDEAForgotPasswordPage {
   /**
    * Go to the confirm password page.
    */
-  protected goToConfirmPassword() {
+  public goToConfirmPassword() {
     this.navCtrl.navigateForward(['auth/confirm-password'], { queryParams: { email: this.email || null } });
   }
   /**
    * Go to auth page.
    */
-  protected goToAuth() {
+  public goToAuth() {
     this.navCtrl.navigateBack(['auth']);
   }
 }

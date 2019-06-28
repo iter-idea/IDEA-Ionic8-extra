@@ -26,45 +26,45 @@ export class IDEACustomFieldsComponent {
    *    fields.favColor: CustomField;
    *    ...
    */
-  @Input() protected fields: any;
+  @Input() public fields: any;
   /**
    * If true, the customFieldManager won't open when the field is clicked.
    */
-  @Input() protected disabled: boolean;
+  @Input() public disabled: boolean;
   /**
    * Lines preferences for the item.
    */
-  @Input() protected lines: string;
+  @Input() public lines: string;
   /**
    * If true, the reorder possibility won't be available.
    */
-  @Input() protected withoutReorder: boolean;
+  @Input() public withoutReorder: boolean;
   /**
    * Whether to show the button to remove a field or not.
    */
-  @Input() protected showRemoveBtn: boolean;
+  @Input() public showRemoveBtn: boolean;
   /**
    * Default (fallback) language for Label fields.
    */
-  @Input() protected defaultLanguage: string;
+  @Input() public defaultLanguage: string;
   /**
    * Current language to display for Label fields.
    */
-  @Input() protected currentLanguage: string;
+  @Input() public currentLanguage: string;
   /**
    * Available languages for Label fields.
    */
-  @Input() protected availableLanguages: Array<string>;
+  @Input() public availableLanguages: Array<string>;
   /**
    * Emit selection of a custom field.
    */
-  @Output() protected select = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
+  @Output() public select = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
   /**
    * Emit removal of a custom field.
    */
-  @Output() protected remove = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
+  @Output() public remove = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
 
-  constructor(protected t: TranslateService) {
+  constructor(public t: TranslateService) {
     this.disabled = false;        // needed
     this.withoutReorder = false;  //
   }
@@ -72,7 +72,7 @@ export class IDEACustomFieldsComponent {
   /**
    * Reorder the fields legend.
    */
-  protected reorderFieldsLegend(ev: any) {
+  public reorderFieldsLegend(ev: any) {
     this.fieldsLegend.splice(ev.detail.to, 0, this.fieldsLegend.splice(ev.detail.from, 1)[0]);
     // Once the data structure has been updated to reflect the reorder change, the complete() method must be called.
     ev.detail.complete();
@@ -81,14 +81,14 @@ export class IDEACustomFieldsComponent {
   /**
    * Return the name of the field; if the field support translations, the function manages them.
    */
-  protected getFieldName(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
+  public getFieldName(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
     if (this.defaultLanguage) return field.name[this.currentLanguage] || field.name[this.defaultLanguage];
     else return String(field.name || '');
   }
   /**
    * Return the description of the field; if the field support translations, the function manages them.
    */
-  protected getFieldDescription(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
+  public getFieldDescription(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
     if (this.defaultLanguage) return field.description[this.currentLanguage] || field.description[this.defaultLanguage];
     else return String(field.description || '');
   }

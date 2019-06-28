@@ -26,19 +26,19 @@ export class IDEAAuthService {
   /**
    * Prepare the necessary structure to get authorized in Cognito.
    */
-  private prepareAuthDetails(username: string, pwd: string): Cognito.AuthenticationDetails {
+  protected prepareAuthDetails(username: string, pwd: string): Cognito.AuthenticationDetails {
     return new Cognito.AuthenticationDetails({ Username: username, Password: pwd });
   }
   /**
    * Prepare the necessary structure to identify a Cognito user.
    */
-  private prepareCognitoUser(username: string): Cognito.CognitoUser {
+  protected prepareCognitoUser(username: string): Cognito.CognitoUser {
     return new Cognito.CognitoUser({ Username: username, Pool: this.userPool });
   }
   /**
    * Prepare a user attribute (they are all strings) in Cognito's format.
    */
-  private prepareUserAttribute(name: string, value: string): Cognito.CognitoUserAttribute {
+  protected prepareUserAttribute(name: string, value: string): Cognito.CognitoUserAttribute {
     return new Cognito.CognitoUserAttribute({ Name: name, Value: value });
   }
 

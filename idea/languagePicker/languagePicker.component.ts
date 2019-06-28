@@ -13,14 +13,14 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['languagePicker.component.scss']
 })
 export class IDEALanguagePickerComponent {
-  protected languages: Array<string>;
+  public languages: Array<string>;
 
   constructor(
-    protected t: TranslateService,
-    protected storage: Storage,
-    protected alertCtrl: AlertController
+    public t: TranslateService,
+    public storage: Storage,
+    public alertCtrl: AlertController
   ) {}
-  protected ngOnInit() {
+  public ngOnInit() {
     this.languages = this.t.getLangs();
   }
 

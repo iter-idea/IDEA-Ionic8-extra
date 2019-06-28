@@ -23,11 +23,11 @@ export const API_URL = `https://${IDEA_API_ID}.execute-api.${IDEA_API_REGION}.am
 @Injectable()
 export class IDEAAWSAPIService {
   constructor(
-    protected http: HttpClient,
-    protected tc: IDEATinCan,
-    protected storage: Storage,
-    protected events: Events,
-    protected errorReporting: IDEAErrorReportingService
+    public http: HttpClient,
+    public tc: IDEATinCan,
+    public storage: Storage,
+    public events: Events,
+    public errorReporting: IDEAErrorReportingService
   ) {}
 
   /**

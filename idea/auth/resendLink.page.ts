@@ -12,22 +12,22 @@ import { IDEALoadingService } from '../loading.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAResendLinkPage {
-  protected email: string;
-  protected password: string;
-  protected errorMsg: string;
+  public email: string;
+  public password: string;
+  public errorMsg: string;
 
   constructor(
-    protected navCtrl: NavController,
-    protected message: IDEAMessageService,
-    protected loading: IDEALoadingService,
-    protected auth: IDEAAuthService,
-    protected t: TranslateService
+    public navCtrl: NavController,
+    public message: IDEAMessageService,
+    public loading: IDEALoadingService,
+    public auth: IDEAAuthService,
+    public t: TranslateService
   ) {}
 
   /**
    * Resend the link to confirm the email address.
    */
-  protected resendConfirmationLink() {
+  public resendConfirmationLink() {
     this.errorMsg = null;
     if (!this.email) {
       this.errorMsg = this.t.instant('IDEA.AUTH.EMAIL_OBLIGATORY');
@@ -51,7 +51,7 @@ export class IDEAResendLinkPage {
   /**
    * Go to auth page.
    */
-  protected goToAuth() {
+  public goToAuth() {
     this.navCtrl.navigateBack(['auth']);
   }
 }

@@ -18,19 +18,19 @@ declare const IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
 })
 export class IDEASignUpPage {
   // working attributes
-  protected email: string;
-  protected password: string;
-  protected privacyPolicyCheck: boolean;
-  protected errorMsg: string;
+  public email: string;
+  public password: string;
+  public privacyPolicyCheck: boolean;
+  public errorMsg: string;
 
   constructor(
-    protected navCtrl: NavController,
-    protected tc: IDEATinCan,
-    protected message: IDEAMessageService,
-    protected loading: IDEALoadingService,
-    protected extBrowser: IDEAExtBrowserService,
-    protected auth: IDEAAuthService,
-    protected t: TranslateService
+    public navCtrl: NavController,
+    public tc: IDEATinCan,
+    public message: IDEAMessageService,
+    public loading: IDEALoadingService,
+    public extBrowser: IDEAExtBrowserService,
+    public auth: IDEAAuthService,
+    public t: TranslateService
   ) {
     if (IDEA_AUTH_REGISTRATION_POSSIBLE === false) {
       this.goToAuth();
@@ -44,7 +44,7 @@ export class IDEASignUpPage {
   /**
    * Register the new user in cognito (note DynamoDB still need to be managed).
    */
-  protected register(): void {
+  public register(): void {
     this.errorMsg = null;
     // check the fields
     if (!this.email) this.errorMsg = this.t.instant('IDEA.AUTH.EMAIL_OBLIGATORY');
@@ -74,13 +74,13 @@ export class IDEASignUpPage {
   /**
    * Go to the resend link page.
    */
-  protected goToResendLink(): void {
+  public goToResendLink(): void {
     this.navCtrl.navigateForward(['auth/resend-link']);
   }
   /**
    * Go to auth page.
    */
-  protected goToAuth(): void {
+  public goToAuth(): void {
     this.navCtrl.navigateBack(['auth']);
   }
 }

@@ -5,8 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable()
 export class IDEAMessageService {
   constructor(
-    protected toastCtrl: ToastController,
-    protected t: TranslateService
+    public toastCtrl: ToastController,
+    public t: TranslateService
   ) {}
 
   /**
@@ -14,7 +14,7 @@ export class IDEAMessageService {
    * @param message message to show
    * @param color Ionic colors defined in the theme
    */
-  private show(message: string, color: string, dontTranslate: boolean) {
+  protected show(message: string, color: string, dontTranslate: boolean) {
     this.toastCtrl.create({
       message: dontTranslate ? message : this.t.instant(message),
       duration: 3000, position: 'bottom', color: color, showCloseButton: true, closeButtonText: 'X'

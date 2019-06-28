@@ -16,7 +16,7 @@ export class IDEAZebraReaderService {
    */
   protected intent: any;
 
-  constructor(protected events: Events, protected platform: Platform) {
+  constructor(public events: Events, public platform: Platform) {
     this.platform.ready()
     .then(() => {
       // load the intent manager
@@ -69,7 +69,7 @@ export class IDEAZebraReaderService {
    * This functionality requires DW6.3+ as that is the version where the
    * `com.symbol.datawedge.api.ACTION` was introduced.
    */
-  private sendCommandToDevice(name: string, value: string) {
+  protected sendCommandToDevice(name: string, value: string) {
     if (!this.intent) return;
     this.intent.sendBroadcast({
       action: 'com.symbol.datawedge.api.ACTION',

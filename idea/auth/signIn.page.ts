@@ -20,24 +20,24 @@ declare const IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
 })
 export class IDEASignInPage {
   // vars from configuration
-  protected title: string;
-  protected registrationPossible: boolean;
-  protected website: string;
+  public title: string;
+  public registrationPossible: boolean;
+  public website: string;
 
   // working attributes
-  protected email: string;
-  protected password: string;
-  protected privacyPolicyCheck: boolean;
-  protected errorMsg: string;
+  public email: string;
+  public password: string;
+  public privacyPolicyCheck: boolean;
+  public errorMsg: string;
 
   constructor(
-    protected navCtrl: NavController,
-    protected tc: IDEATinCan,
-    protected message: IDEAMessageService,
-    protected loading: IDEALoadingService,
-    protected extBrowser: IDEAExtBrowserService,
-    protected auth: IDEAAuthService,
-    protected t: TranslateService
+    public navCtrl: NavController,
+    public tc: IDEATinCan,
+    public message: IDEAMessageService,
+    public loading: IDEALoadingService,
+    public extBrowser: IDEAExtBrowserService,
+    public auth: IDEAAuthService,
+    public t: TranslateService
   ) {
     this.title = IDEA_APP_TITLE;
     this.registrationPossible = IDEA_AUTH_REGISTRATION_POSSIBLE;
@@ -48,7 +48,7 @@ export class IDEASignInPage {
   /**
    * Sign-in with the auth details provided.
    */
-  protected login(): void {
+  public login(): void {
     if (!this.privacyPolicyCheck) return;
     this.errorMsg = null;
     this.loading.show();
@@ -73,13 +73,13 @@ export class IDEASignInPage {
   /**
    * Go to the forgot password page.
    */
-  protected goToForgotPassword(): void {
+  public goToForgotPassword(): void {
     this.navCtrl.navigateForward(['auth/forgot-password']);
   }
   /**
    * Go to registration page.
    */
-  protected goToRegistration(): void {
+  public goToRegistration(): void {
     this.tc.set('email', this.email);
     this.tc.set('password', this.password);
     this.navCtrl.navigateForward(['auth', 'sign-up']);

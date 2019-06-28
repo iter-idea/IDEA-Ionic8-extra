@@ -18,74 +18,74 @@ export class IDEAMDEComponent {
   /**
    * Id to identify this specific Markdown Editor (default: 'mde').
    */
-  @Input() protected id: string;
+  @Input() public id: string;
   /**
    * The title of the modal.
    */
-  @Input() protected title: string;
+  @Input() public title: string;
   /**
    * The header text content.
    */
-  @Input() protected header: string;
+  @Input() public header: string;
   /**
    * The sub-header description.
    */
-  @Input() protected description: string;
+  @Input() public description: string;
   /**
    * A series of text variables to substitute with values.
    */
-  @Input() protected variables: Array<string>;
+  @Input() public variables: Array<string>;
   /**
    * If set to true, autofocuses the editor. Defaults to false.
    */
-  @Input() protected autofocus: boolean;
+  @Input() public autofocus: boolean;
   /**
    * An array of icon names to hide from the toolbar.
    * Can be used to hide specific icons shown by default without completely customizing the toolbar.
    */
-  @Input() protected hideIcons: Array<string>;
+  @Input() public hideIcons: Array<string>;
   /**
    * If set, will customize the initial value of the editor.
    */
-  @Input() protected initialValue: string;
+  @Input() public initialValue: string;
   /**
    * Custom placeholder that should be displayed.
    */
-  @Input() protected placeholder: string;
+  @Input() public placeholder: string;
   /**
    * An array of icon names to show in the toolbar.
    * Can be used to show specific icons hidden by default without completely customizing the toolbar.
    */
-  @Input() protected showIcons: Array<string>;
+  @Input() public showIcons: Array<string>;
   /**
    * If set to false, disable the spell checker. Defaults to true.
    */
-  @Input() protected spellChecker: boolean;
+  @Input() public spellChecker: boolean;
   /**
    * If set to false, hide the status bar. Defaults to the array of built-in status bar items.
    * Optionally, you can set an array of status bar items to include, and in what order.
    * You can even define your own custom status bar items.
    */
-  @Input() protected status: Array<string> | boolean;
+  @Input() public status: Array<string> | boolean;
   /**
    * If set to false, disable toolbar button tips. Defaults to true.
    */
-  @Input() protected toolbarTips: boolean;
+  @Input() public toolbarTips: boolean;
 
-  protected mde: any;
+  public mde: any;
 
   constructor(
-    protected modalCtrl: ModalController,
-    protected API: IDEAAWSAPIService,
-    protected t: TranslateService
+    public modalCtrl: ModalController,
+    public API: IDEAAWSAPIService,
+    public t: TranslateService
   ) {
     this.mde = null;
   }
-  protected ngOnInit() {
+  public ngOnInit() {
     this.id = this.id || 'mde';
     this.variables = this.variables || new Array<string>();
   }
-  protected ionViewDidEnter() {
+  public ionViewDidEnter() {
     this.mde = new SimpleMDE({
       autofocus: this.autofocus, element: document.getElementById(this.id), hideIcons: this.hideIcons,
       initialValue: this.initialValue, placeholder: this.placeholder, showIcons: this.showIcons,
@@ -96,13 +96,13 @@ export class IDEAMDEComponent {
   /**
    * Close without saving.
    */
-  protected close() {
+  public close() {
     this.modalCtrl.dismiss();
   }
   /**
    * Save and close.
    */
-  protected confirm() {
+  public confirm() {
     this.modalCtrl.dismiss(this.mde.value());
   }
 }

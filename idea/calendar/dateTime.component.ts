@@ -12,28 +12,28 @@ import { OverlayEventDetail } from '@ionic/core';
   styleUrls: ['dateTime.component.scss']
 })
 export class IDEADateTimeComponent {
-  @Input() protected date: Date;
-  @Input() protected timePicker: boolean;
-  @Input() protected label: string;
-  @Input() protected icon: string;
-  @Input() protected lines: string;
-  @Input() protected placeholder: string;
-  @Input() protected disabled: boolean;
-  @Input() protected obligatory: boolean;
-  @Output() protected select = new EventEmitter<number>();
+  @Input() public date: Date;
+  @Input() public timePicker: boolean;
+  @Input() public label: string;
+  @Input() public icon: string;
+  @Input() public lines: string;
+  @Input() public placeholder: string;
+  @Input() public disabled: boolean;
+  @Input() public obligatory: boolean;
+  @Output() public select = new EventEmitter<number>();
 
   constructor(
-    protected modalCtrl: ModalController,
-    protected t: TranslateService
+    public modalCtrl: ModalController,
+    public t: TranslateService
   ) {}
-  protected ngOnInit() {
+  public ngOnInit() {
     Moment.locale(this.t.currentLang);
   }
 
   /**
    * Open the calendar picker to select a date.
    */
-  protected openCalendarPicker() {
+  public openCalendarPicker() {
     if (this.disabled) return;
     this.modalCtrl.create({
       component: IDEACalendarComponent,
@@ -55,7 +55,7 @@ export class IDEADateTimeComponent {
   /**
    * Calculate the value to show.
    */
-  protected getValue(): string {
+  public getValue(): string {
     return !this.date ? '' : Moment(this.date).format('ddd D MMMM YYYY'.concat(this.timePicker ? ', H:mm' : ''));
   }
 }

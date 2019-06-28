@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class IDEALoadingService {
   protected loadingElement: HTMLIonLoadingElement;
 
-  constructor(protected loadingCtrl: LoadingController, protected t: TranslateService) {}
+  constructor(public loadingCtrl: LoadingController, public t: TranslateService) {}
 
   /**
    * Show a loading animation.

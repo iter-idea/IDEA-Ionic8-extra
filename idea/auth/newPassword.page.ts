@@ -13,18 +13,18 @@ import { IDEATinCan } from '../tinCan.service';
   styleUrls: ['auth.scss'],
 })
 export class IDEANewPasswordPage {
-  protected email: string;
-  protected password: string;
-  protected newPassword: string;
-  protected errorMsg: string;
+  public email: string;
+  public password: string;
+  public newPassword: string;
+  public errorMsg: string;
 
   constructor(
-    protected navCtrl: NavController,
-    protected tc: IDEATinCan,
-    protected message: IDEAMessageService,
-    protected loading: IDEALoadingService,
-    protected auth: IDEAAuthService,
-    protected t: TranslateService
+    public navCtrl: NavController,
+    public tc: IDEATinCan,
+    public message: IDEAMessageService,
+    public loading: IDEALoadingService,
+    public auth: IDEAAuthService,
+    public t: TranslateService
   ) {
     this.email = this.tc.get('email', true);
     this.password = this.tc.get('password', true);
@@ -34,7 +34,7 @@ export class IDEANewPasswordPage {
   /**
    * Confirm a new password (auth flow that follows a registration or a password reset).
    */
-  protected confirmNewPassword() {
+  public confirmNewPassword() {
     this.errorMsg = null;
     this.loading.show();
     this.auth.confirmNewPassword(this.email, this.password, this.newPassword)
@@ -52,7 +52,7 @@ export class IDEANewPasswordPage {
   /**
    * Go to auth page.
    */
-  protected goToAuth() {
+  public goToAuth() {
     this.navCtrl.navigateBack(['auth']);
   }
 }

@@ -30,75 +30,75 @@ export class IDEACheckerComponent {
   /**
    * The checks to show.
    */
-  @Input() protected data: Array<Check>;
+  @Input() public data: Array<Check>;
   /**
    *  Alternative to the case above; function that returns a Promise<Array<Check>>.
    */
-  @Input() protected dataProvider: any;
+  @Input() public dataProvider: any;
   /**
    * The label for the field.
    */
-  @Input() protected label: string;
+  @Input() public label: string;
   /**
    * The icon (alternative to the label) for the field.
    */
-  @Input() protected icon: string;
+  @Input() public icon: string;
   /**
    * A placeholder for the searchbar.
    */
-  @Input() protected placeholder: string;
+  @Input() public placeholder: string;
   /**
    * If true, show the string instead of the preview text.
    */
-  @Input() protected noPreviewText: string;
+  @Input() public noPreviewText: string;
   /**
    * The text to show in case no element is found after a search.
    */
-  @Input() protected noElementsFoundText: string;
+  @Input() public noElementsFoundText: string;
   /**
    * If true, no elements selected equals all the elements selected.
    */
-  @Input() protected noneEqualsAll: boolean;
+  @Input() public noneEqualsAll: boolean;
   /**
    * If no element is selected, set this custom text.
    */
-  @Input() protected noneText: string;
+  @Input() public noneText: string;
   /**
    * If all the elements are selected, set this custom text.
    */
-  @Input() protected allText: string;
+  @Input() public allText: string;
   /**
    * Lines preferences for the item.
    */
-  @Input() protected lines: string;
+  @Input() public lines: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() protected disabled: boolean;
+  @Input() public disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.
    */
-  @Input() protected tappableWhenDisabled: boolean;
+  @Input() public tappableWhenDisabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() protected obligatory: boolean;
+  @Input() public obligatory: boolean;
   /**
    * If true, sort alphabetically the data.
    */
-  @Input() protected sortData: boolean;
+  @Input() public sortData: boolean;
   /**
    * How many elements to show in the preview before to generalize on the number.
    */
-  @Input() protected numMaxElementsInPreview: number;
+  @Input() public numMaxElementsInPreview: number;
   /**
    * On change event.
    */
-  @Output() protected change = new EventEmitter<void>();
+  @Output() public change = new EventEmitter<void>();
 
   constructor(
-    protected modalCtrl: ModalController,
-    protected t: TranslateService
+    public modalCtrl: ModalController,
+    public t: TranslateService
   ) {
     this.data = new Array<Check>();
     this.placeholder = null;
@@ -113,7 +113,7 @@ export class IDEACheckerComponent {
   /**
    * Fetch the promised data from a function and set it before to open the checks.
    */
-  protected fetchDataAndOpenModal() {
+  public fetchDataAndOpenModal() {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
       this.dataProvider()
@@ -127,7 +127,7 @@ export class IDEACheckerComponent {
   /**
    * Open the checks modal and later fetch the selection (plain value).
    */
-  private openChecker() {
+  protected openChecker() {
     if (this.disabled) return;
     // open the modal to let the user to check the desired items
     this.modalCtrl.create({
@@ -146,7 +146,7 @@ export class IDEACheckerComponent {
   /**
    * Calculate the preview
    */
-  protected getPreview(): string {
+  public getPreview(): string {
     if (!this.data || !this.data.length) return null;
     if (this.noPreviewText) return this.noPreviewText;
     if (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll))

@@ -13,18 +13,18 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['auth.scss']
 })
 export class IDEAConfirmPasswordPage {
-  protected email: string;
-  protected code: string;
-  protected newPassword: string;
-  protected errorMsg: string;
+  public email: string;
+  public code: string;
+  public newPassword: string;
+  public errorMsg: string;
 
   constructor(
-    protected navCtrl: NavController,
-    protected route: ActivatedRoute,
-    protected message: IDEAMessageService,
-    protected loading: IDEALoadingService,
-    protected auth: IDEAAuthService,
-    protected t: TranslateService
+    public navCtrl: NavController,
+    public route: ActivatedRoute,
+    public message: IDEAMessageService,
+    public loading: IDEALoadingService,
+    public auth: IDEAAuthService,
+    public t: TranslateService
   ) {
     this.email = this.route.snapshot.queryParamMap.get('email') || null;
   }
@@ -32,7 +32,7 @@ export class IDEAConfirmPasswordPage {
   /**
    * Confirm new password.
    */
-  protected confirmPassword() {
+  public confirmPassword() {
     this.errorMsg = null;
     this.loading.show();
     this.auth.confirmPassword(this.email, this.code, this.newPassword)
@@ -51,13 +51,13 @@ export class IDEAConfirmPasswordPage {
   /**
    * Go to forgot password page.
    */
-  protected goToForgotPassword() {
+  public goToForgotPassword() {
     this.navCtrl.navigateBack(['auth/forgot-password']);
   }
   /**
    * Go to auth page.
    */
-  protected goToAuth() {
+  public goToAuth() {
     this.navCtrl.navigateBack(['auth']);
   }
 }
