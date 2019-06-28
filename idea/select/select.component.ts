@@ -47,21 +47,69 @@ export class IDEASelectComponent {
    *  Alternative to the case above; function that returns a Promise<Array<Suggestion>>.
    */
   @Input() protected dataProvider: any;
+  /**
+   * The label for the field.
+   */
   @Input() protected label: string;
+  /**
+   * The icon (alternative to the label) for the field.
+   */
   @Input() protected icon: string;
+  /**
+   * A placeholder for the field.
+   */
   @Input() protected placeholder: string;
+  /**
+   * A placeholder for the searchbar.
+   */
   @Input() protected searchPlaceholder: string;
+  /**
+   * Text to show when there isn't a result.
+   */
   @Input() protected noElementsFoundText: string;
+  /**
+   * If true, the component is disabled.
+   */
   @Input() protected disabled: boolean;
+  /**
+   * If true, the field has a tappable effect when disabled.
+   */
   @Input() protected tappableWhenDisabled: boolean;
+  /**
+   * If true, the obligatory dot is shown.
+   */
   @Input() protected obligatory: boolean;
+  /**
+   * Lines preferences for the item.
+   */
   @Input() protected lines: string;
+  /**
+   * If true, allows to select a new custom value (outside the suggestions).
+   */
   @Input() protected allowUnlistedValues: boolean;
+  /**
+   * If true, sort the suggestions alphabetically.
+   */
   @Input() protected sortData: boolean;
+  /**
+   * If true, clear the value of the field after a selection.
+   */
   @Input() protected clearValueAfterSelection: boolean;
+  /**
+   * If true, doesn't show the id in the UI.
+   */
   @Input() protected hideIdFromUI: boolean;
+  /**
+   * If true, doesn't show the clear button in the header.
+   */
   @Input() protected hideClearButton: boolean;
+  /**
+   * On select event.
+   */
   @Output() protected select = new EventEmitter<Suggestion>();
+  /**
+   * On select (with the field disabled) event.
+   */
   @Output() protected selectWhenDisabled = new EventEmitter<void>();
 
   constructor(protected modalCtrl: ModalController) {

@@ -4,16 +4,34 @@
   [title]="placeholder || null"
   (click)="fetchDataAndOpenModal()"
 >
+  <ion-icon
+    slot="start"
+    *ngIf="icon"
+    [name]="icon"
+  ></ion-icon>
+  <ion-label
+    position="stacked"
+    *ngIf="!icon && label"
+    [class.selectable]="!disabled || tappableWhenDisabled"
+  >
+    {{ label }}
+    <ion-text
+      class="obligatoryDot"
+      *ngIf="obligatory && !disabled"
+    ></ion-text>
+  </ion-label>
   <ion-label
     class="description"
-    [class.selectable]="!disabled"
+    [class.selectable]="!disabled || tappableWhenDisabled"
   >
     {{ getPreview() }}
   </ion-label>
   <ion-icon
     slot="end"
     name="md-arrow-dropdown"
-    class="selectIcon selectable"
+    class="selectIcon"
     *ngIf="!disabled"
+    [class.selectable]="!disabled"
+    [class.withLabel]="label"
   ></ion-icon>
 </ion-item>

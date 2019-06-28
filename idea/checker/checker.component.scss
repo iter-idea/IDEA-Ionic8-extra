@@ -1,13 +1,22 @@
 .checkerItem {
   .description {
-    min-height: 18px;
-    padding: 4px 0;
+    min-height: 20px;
+    width: 100%;
   }
   .selectIcon {
-    margin: 10px 5px 0 0;
-    font-size: 1rem;
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--ion-color-medium);
+  }
+  .selectIcon.withLabel {
+    padding-top: 25px;
   }
 }
 .selectable {
   cursor: pointer
+}
+ion-text.obligatoryDot::after {
+  content: '*';
+  font-size: 1.1em;
+  color: var(--ion-color-danger);
 }

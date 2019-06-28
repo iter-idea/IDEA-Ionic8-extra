@@ -27,11 +27,22 @@ import { IDEAChecksComponent } from './checks.component';
   styleUrls: ['checker.component.scss'],
 })
 export class IDEACheckerComponent {
+  /**
+   * The checks to show.
+   */
   @Input() protected data: Array<Check>;
   /**
-   *  Function that returns a Promise<Array<IDEACheck>>.
+   *  Alternative to the case above; function that returns a Promise<Array<Check>>.
    */
   @Input() protected dataProvider: any;
+  /**
+   * The label for the field.
+   */
+  @Input() protected label: string;
+  /**
+   * The icon (alternative to the label) for the field.
+   */
+  @Input() protected icon: string;
   /**
    * A placeholder for the searchbar.
    */
@@ -64,6 +75,14 @@ export class IDEACheckerComponent {
    * If true, the component is disabled.
    */
   @Input() protected disabled: boolean;
+  /**
+   * If true, the field has a tappable effect when disabled.
+   */
+  @Input() protected tappableWhenDisabled: boolean;
+  /**
+   * If true, the obligatory dot is shown.
+   */
+  @Input() protected obligatory: boolean;
   /**
    * If true, sort alphabetically the data.
    */

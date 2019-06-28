@@ -7,9 +7,12 @@
     color: var(--ion-color-medium);
   }
   .selectIcon {
-    margin: 10px 5px 0 0;
+    margin: 0;
     font-size: 1.2rem;
     color: var(--ion-color-medium);
+  }
+  .selectIcon.withLabel {
+    padding-top: 25px;
   }
 }
 .selectable {

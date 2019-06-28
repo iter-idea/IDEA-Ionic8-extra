@@ -8,12 +8,33 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['suggestions.component.scss'],
 })
 export class IDEASuggestionsComponent {
+  /**
+   * The suggestions to show.
+   */
   @Input() protected data: Array<Suggestion>;
+  /**
+   * If true, sort the suggestions alphabetically.
+   */
   @Input() protected sortData: boolean;
+  /**
+   * A placeholder for the searchbar.
+   */
   @Input() protected searchPlaceholder: string;
+  /**
+   * Text to show when there isn't a result.
+   */
   @Input() protected noElementsFoundText: string;
+  /**
+   * If true, allows to select a new custom value (outside the suggestions).
+   */
   @Input() protected allowUnlistedValues: boolean;
+  /**
+   * If true, doesn't show the id in the UI.
+   */
   @Input() protected hideIdFromUI: boolean;
+  /**
+   * If true, doesn't show the clear button in the header.
+   */
   @Input() protected hideClearButton: boolean;
 
   protected suggestions: Array<Suggestion>;
