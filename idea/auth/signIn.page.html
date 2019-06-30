@@ -114,8 +114,9 @@
             {{ 'IDEA.AUTH.SIGN_IN' | translate }}
           </ion-button>
           <ion-button
-            fill="outline"
+            fill="clear"
             expand="block"
+            class="smallCaseButton"
             *ngIf="registrationPossible"
             [title]="t.instant('IDEA.AUTH.CREATE_AN_ACCOUNT_HINT')"
             (click)="goToRegistration()"
