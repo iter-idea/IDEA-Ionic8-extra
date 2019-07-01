@@ -1,6 +1,8 @@
 const IDEA_APP_TITLE = 'App name';
 const IDEA_APP_URL = null;
 
+const IDEA_PROJECT = 'project-code';
+
 const IDEA_API_ID = '123';
 const IDEA_API_REGION = 'eu-west-2';
 const IDEA_API_VERSION = 'dev';
