@@ -14,7 +14,7 @@ export class IDEAErrorReportingService {
   public sendReport(error: Error, forceSend?: boolean): Promise<any> {
     return new Promise((resolve) => {
       if (!this.shouldSend() && !forceSend) return resolve();
-      const report = new IdeaX.IDEAErrorReport();
+      const report = new IdeaX.ErrorReport();
       report.load({ project: IDEA_PROJECT, error: error, client: this.getClientInfo() });
       this.http.post(IDEA_ERROR_REPORTING_API_URL, report)
       .toPromise()
@@ -27,8 +27,8 @@ export class IDEAErrorReportingService {
     return IDEA_API_VERSION && IDEA_API_VERSION === 'prod';
   }
 
-  public getClientInfo(): IdeaX.IDEAClientInfo {
-    return new IdeaX.IDEAClientInfo({
+  public getClientInfo(): IdeaX.ClientInfo {
+    return new IdeaX.ClientInfo({
       timestamp: new Date(),
       timezone: (new Date()).getTimezoneOffset() / 60,
       pageOn: window.location.pathname,
