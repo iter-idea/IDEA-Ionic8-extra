@@ -20,7 +20,7 @@ export class IDEASignUpPage {
   // working attributes
   public email: string;
   public password: string;
-  public privacyPolicyCheck: boolean;
+  public agreementsCheck: boolean;
   public errorMsg: string;
 
   constructor(
@@ -38,7 +38,12 @@ export class IDEASignUpPage {
     }
     this.email = this.tc.get('email', true);
     this.password = this.tc.get('password', true);
-    this.privacyPolicyCheck = false;
+    this.agreementsCheck = false;
+  }
+  public ngOnInit() {
+    // if there isn't any agreement to agree to, set the check true
+    this.agreementsCheck = this.t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') ||
+      this.t.instant('IDEA.AUTH.PRIVACY_POLICY_URL') ? this.agreementsCheck : true;
   }
 
   /**

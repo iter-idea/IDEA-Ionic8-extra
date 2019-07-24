@@ -65,11 +65,14 @@
       "YOU_NEED_TO_CHOOSE_A_NEW_PASSWORD": "Scegli una password per il tuo account",
       "CONFIRM_NEW_PASSWORD": "Conferma la nuova password",
       "CONFIRM_NEW_PASSWORD_HINT": "Conferma la nuova password e continua",
-      "PRIVACY_POLICY_CHECK_REGISTRATION": "Registrandomi, accetto la seguente",
-      "PRIVACY_POLICY_CHECK_LOGIN": "Accedendo, accetto la seguente",
+      "AGREEMENTS_CHECK_REGISTRATION": "Registrandomi, accetto",
+      "AGREEMENTS_CHECK_LOGIN": "Accedendo, accetto",
       "PRIVACY_POLICY": "Politica sulla Privacy",
       "PRIVACY_POLICY_HINT": "Leggi la nostra Politica sulla Privacy",
-      "PRIVACY_POLICY_URL": "https://www.iubenda.com/privacy-policy/81892968"
+      "PRIVACY_POLICY_URL": "https://www.iubenda.com/privacy-policy/81892968",
+      "TERMS_AND_CONDITIONS": "Termini e Condizioni",
+      "TERMS_AND_CONDITIONS_HINT": "Leggi il nostro documento di Termini e Condizioni",
+      "TERMS_AND_CONDITIONS_URL": ""
     },
     "CALENDAR": {
       "RESET": "Reset",

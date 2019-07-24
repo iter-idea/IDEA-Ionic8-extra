@@ -27,7 +27,7 @@ export class IDEASignInPage {
   // working attributes
   public email: string;
   public password: string;
-  public privacyPolicyCheck: boolean;
+  public agreementsCheck: boolean;
   public errorMsg: string;
 
   constructor(
@@ -42,14 +42,14 @@ export class IDEASignInPage {
     this.title = IDEA_APP_TITLE;
     this.registrationPossible = IDEA_AUTH_REGISTRATION_POSSIBLE;
     this.website = IDEA_AUTH_WEBSITE;
-    this.privacyPolicyCheck = true;
+    this.agreementsCheck = true;
   }
 
   /**
    * Sign-in with the auth details provided.
    */
   public login(): void {
-    if (!this.privacyPolicyCheck) return;
+    if (!this.agreementsCheck) return;
     this.errorMsg = null;
     this.loading.show();
     this.auth.login(this.email, this.password)

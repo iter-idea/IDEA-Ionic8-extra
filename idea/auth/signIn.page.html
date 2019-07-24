@@ -84,20 +84,37 @@
             ></ion-input>
           </ion-item>
           <ion-row
-            class="privacyPolicyAcceptanceRow"
-            *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
+            class="agreementsAcceptanceRow"
+            *ngIf="!registrationPossible &&
+              (t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') || t.instant('IDEA.AUTH.PRIVACY_POLICY_URL'))"
           >
             <ion-col>
               <ion-checkbox
                 size="small"
                 [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="privacyPolicyCheck"
+                [(ngModel)]="agreementsCheck"
               ></ion-checkbox>
-              {{ 'IDEA.AUTH.PRIVACY_POLICY_CHECK_LOGIN' | translate }}
+              {{ 'IDEA.AUTH.AGREEMENTS_CHECK_LOGIN' | translate }}:
               <a
                 ion-text
                 color="primary"
                 target="_blank"
+                *ngIf="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+                [title]="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_HINT')"
+                [href]="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+              >
+                {{ 'IDEA.AUTH.TERMS_AND_CONDITIONS' | translate }}
+              </a>
+              <ion-text
+                *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL') && t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+              >
+                &
+              </ion-text>
+              <a
+                ion-text
+                color="primary"
+                target="_blank"
+                *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
                 [title]="t.instant('IDEA.AUTH.PRIVACY_POLICY_HINT')"
                 [href]="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
               >
@@ -107,7 +124,7 @@
           </ion-row>
           <ion-button
             expand="block"
-            [disabled]="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL') && !privacyPolicyCheck"
+            [disabled]="!agreementsCheck"
             [title]="t.instant('IDEA.AUTH.SIGN_IN_HINT')"
             (click)="login()"
           >
