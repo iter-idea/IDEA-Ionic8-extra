@@ -16,7 +16,7 @@ declare const IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
 @Component({
   selector: 'idea-sign-in',
   templateUrl: 'signIn.page.html',
-  styleUrls: ['auth.scss'],
+  styleUrls: ['auth.scss']
 })
 export class IDEASignInPage {
   // vars from configuration
@@ -52,22 +52,22 @@ export class IDEASignInPage {
     if (!this.agreementsCheck) return;
     this.errorMsg = null;
     this.loading.show();
-    this.auth.login(this.email, this.password)
-    .then(needNewPassword => {
-      if (needNewPassword) {
+    this.auth
+      .login(this.email, this.password)
+      .then(needNewPassword => {
+        if (needNewPassword) {
+          this.loading.hide();
+          this.tc.set('email', this.email);
+          this.tc.set('password', this.password);
+          this.navCtrl.navigateForward(['auth/new-password']);
+        } else window.location.assign(''); // hard reload
+      })
+      .catch(err => {
         this.loading.hide();
-        this.tc.set('email', this.email);
-        this.tc.set('password', this.password);
-        this.navCtrl.navigateForward(['auth/new-password']);
-      } else
-        window.location.assign(''); // hard reload
-    })
-    .catch(err => {
-      this.loading.hide();
-      if (err.name === 'UserNotConfirmedException')
-        this.errorMsg = this.t.instant('IDEA.AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
-      this.message.error('IDEA.AUTH.AUTHENTICATION_FAILED');
-    });
+        if (err.name === 'UserNotConfirmedException')
+          this.errorMsg = this.t.instant('IDEA.AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
+        this.message.error('IDEA.AUTH.AUTHENTICATION_FAILED');
+      });
   }
 
   /**

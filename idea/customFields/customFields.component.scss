@@ -3,7 +3,8 @@
     font-size: 0.75em;
     font-style: italic;
   }
-  ion-badge[slot=end], ion-button[slot=end] {
+  ion-badge[slot='end'],
+  ion-button[slot='end'] {
     margin-left: 10px;
   }
 }

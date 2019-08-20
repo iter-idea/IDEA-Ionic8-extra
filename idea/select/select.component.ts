@@ -36,8 +36,12 @@ export class IDEASelectComponent {
    * Set the property so it detects changes.
    */
   protected _description: string;
-  get description(): string { return this._description; }
-  @Input() set description(description: string) { this._description = description; }
+  get description(): string {
+    return this._description;
+  }
+  @Input() set description(description: string) {
+    this._description = description;
+  }
 
   /**
    * The suggestions to show.
@@ -123,18 +127,18 @@ export class IDEASelectComponent {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
       this.dataProvider()
-      .then((data: Array<Suggestion>) => {
-        this.data = data;
-        this.openSuggestions();
-      })
-      .catch(() => {}); // data will be empty
+        .then((data: Array<Suggestion>) => {
+          this.data = data;
+          this.openSuggestions();
+        })
+        .catch(() => {}); // data will be empty
     } else this.openSuggestions();
   }
   /**
    * Automatically convers data into Suggestions (from plain strings, numbers, etc.).
    */
   protected convertDataInSuggestions() {
-    this.data = this.data.map((x: any) => x.value ? x : new Suggestion(x));
+    this.data = this.data.map((x: any) => (x.value ? x : new Suggestion(x)));
   }
   /**
    * Open the suggestions modal and later fetch the selection (plain value).
@@ -144,29 +148,33 @@ export class IDEASelectComponent {
     // convert optional plain values in Suggestions
     this.convertDataInSuggestions();
     // open the modal to let the user pick a suggestion
-    this.modalCtrl.create({
-      component: IDEASuggestionsComponent,
-      componentProps: {
-        data: this.data, sortData: this.sortData, searchPlaceholder: this.searchPlaceholder,
-        noElementsFoundText: this.noElementsFoundText, allowUnlistedValues: this.allowUnlistedValues,
-        clearValueAfterSelection: this.clearValueAfterSelection, hideIdFromUI: this.hideIdFromUI,
-        hideClearButton: this.hideClearButton
-      }
-    })
-    .then(modal => {
-      modal.onDidDismiss()
-      .then((selection: any) => {
-        // manage a cancel option (modal dismission or cancel button)
-        if (selection.data === undefined || selection.data === null) return;
-        // manage a reset ('') or a selection
-        this.select.emit(selection.data.value ? selection.data : new Suggestion());
-        // render the suggestion selected
-        if (this.clearValueAfterSelection) this.description = '';
-        else if (selection.data.value) this.description = selection.data.value;
-        else this.description = selection.data.value;
+    this.modalCtrl
+      .create({
+        component: IDEASuggestionsComponent,
+        componentProps: {
+          data: this.data,
+          sortData: this.sortData,
+          searchPlaceholder: this.searchPlaceholder,
+          noElementsFoundText: this.noElementsFoundText,
+          allowUnlistedValues: this.allowUnlistedValues,
+          clearValueAfterSelection: this.clearValueAfterSelection,
+          hideIdFromUI: this.hideIdFromUI,
+          hideClearButton: this.hideClearButton
+        }
+      })
+      .then(modal => {
+        modal.onDidDismiss().then((selection: any) => {
+          // manage a cancel option (modal dismission or cancel button)
+          if (selection.data === undefined || selection.data === null) return;
+          // manage a reset ('') or a selection
+          this.select.emit(selection.data.value ? selection.data : new Suggestion());
+          // render the suggestion selected
+          if (this.clearValueAfterSelection) this.description = '';
+          else if (selection.data.value) this.description = selection.data.value;
+          else this.description = selection.data.value;
+        });
+        modal.present();
       });
-      modal.present();
-    });
   }
 
   /**

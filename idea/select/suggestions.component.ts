@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'idea-suggestions',
   templateUrl: 'suggestions.component.html',
-  styleUrls: ['suggestions.component.scss'],
+  styleUrls: ['suggestions.component.scss']
 })
 export class IDEASuggestionsComponent {
   /**
@@ -40,17 +40,15 @@ export class IDEASuggestionsComponent {
   public suggestions: Array<Suggestion>;
   @ViewChild(IonSearchbar) public searchbar: IonSearchbar;
 
-  constructor(
-    public modalCtrl: ModalController,
-    public t: TranslateService
-  ) {}
+  constructor(public modalCtrl: ModalController, public t: TranslateService) {}
   public ngOnInit() {
     this.data = this.data || new Array<Suggestion>();
     this.suggestions = new Array<any>();
     // sort the data, if requested
     if (this.sortData)
       this.data = this.data.sort((a, b) =>
-        a.name && b.name ? a.name.localeCompare(b.name) : a.value.localeCompare(b.value));
+        a.name && b.name ? a.name.localeCompare(b.name) : a.value.localeCompare(b.value)
+      );
     // show the suggestions based on the data
     this.getSuggestions();
   }
@@ -64,11 +62,16 @@ export class IDEASuggestionsComponent {
    */
   public getSuggestions(ev?: any) {
     // acquire and clean the searchTerm
-    let searchTerm = ev && ev.target ? (ev.target.value || '') : '';
+    let searchTerm = ev && ev.target ? ev.target.value || '' : '';
     if (searchTerm.trim() === '') searchTerm = '';
     // load the suggestions
-    this.suggestions = this.data
-      .filter((x: Suggestion) => x.value.concat(x.name || '').toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0);
+    this.suggestions = this.data.filter(
+      (x: Suggestion) =>
+        x.value
+          .concat(x.name || '')
+          .toLowerCase()
+          .indexOf(searchTerm.toLowerCase()) >= 0
+    );
   }
 
   /**
@@ -96,19 +99,21 @@ export class IDEASuggestionsComponent {
         event.preventDefault();
         // quick confirm of the selection, based on what is on in the component
         if (suggestionsList && suggestionsList.getElementsByClassName('selected').length) {
-          if (
-            suggestionsList
-            .getElementsByClassName('selected')[0]
-            .getElementsByClassName('key').length
-          )
-            this.select(this.data.find(x => x.value ===
-              suggestionsList
-              .getElementsByClassName('selected')[0]
-              .getElementsByClassName('key')[0].innerHTML.trim()
-            ));                                                               // selected || loose value
-        } else if (this.suggestions.length === 0) this.select();                // cancel
-        else this.select(this.suggestions[0]);                                // first element
-      break;
+          if (suggestionsList.getElementsByClassName('selected')[0].getElementsByClassName('key').length)
+            this.select(
+              this.data.find(
+                x =>
+                  x.value ===
+                  suggestionsList
+                    .getElementsByClassName('selected')[0]
+                    .getElementsByClassName('key')[0]
+                    .innerHTML.trim()
+              )
+            ); // selected || loose value
+        } else if (this.suggestions.length === 0) this.select();
+        // cancel
+        else this.select(this.suggestions[0]); // first element
+        break;
       case 'ArrowUp':
       case 'ArrowDown':
         if (!suggestionsList) return;
@@ -130,7 +135,7 @@ export class IDEASuggestionsComponent {
         }
         // execute the selection
         if (selected) selected.classList.add('selected');
-      break;
+        break;
     }
   }
 }

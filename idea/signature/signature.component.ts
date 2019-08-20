@@ -18,17 +18,13 @@ export class IDEASignatureComponent {
   public signatoryError: boolean;
   public signatureError: boolean;
 
-  constructor(
-    public modalCrl: ModalController,
-    public message: IDEAMessageService,
-    public t: TranslateService
-  ) {
+  constructor(public modalCrl: ModalController, public message: IDEAMessageService, public t: TranslateService) {
     this.signature = { signatory: null, pngURL: null, jpegURL: null };
     this.canvas = null;
     this.pad = null;
   }
   public ionViewDidEnter() {
-    this.canvas = <HTMLCanvasElement> document.getElementById('signatureCanvas');
+    this.canvas = <HTMLCanvasElement>document.getElementById('signatureCanvas');
     this.pad = new SignaturePad(this.canvas);
     this.resizeCanvas();
   }
@@ -64,7 +60,7 @@ export class IDEASignatureComponent {
    * Handling high DPI screens.
    */
   public resizeCanvas() {
-    const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
     this.canvas.width = this.canvas.offsetWidth * ratio;
     this.canvas.height = this.canvas.offsetHeight * ratio;
     this.canvas.getContext('2d').scale(ratio, ratio);

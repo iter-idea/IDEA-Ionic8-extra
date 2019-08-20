@@ -74,11 +74,7 @@ export class IDEAMDEComponent {
 
   public mde: any;
 
-  constructor(
-    public modalCtrl: ModalController,
-    public API: IDEAAWSAPIService,
-    public t: TranslateService
-  ) {
+  constructor(public modalCtrl: ModalController, public API: IDEAAWSAPIService, public t: TranslateService) {
     this.mde = null;
   }
   public ngOnInit() {
@@ -87,9 +83,15 @@ export class IDEAMDEComponent {
   }
   public ionViewDidEnter() {
     this.mde = new SimpleMDE({
-      autofocus: this.autofocus, element: document.getElementById(this.id), hideIcons: this.hideIcons,
-      initialValue: this.initialValue, placeholder: this.placeholder, showIcons: this.showIcons,
-      spellChecker: this.spellChecker, status: this.status, toolbarTips: this.toolbarTips
+      autofocus: this.autofocus,
+      element: document.getElementById(this.id),
+      hideIcons: this.hideIcons,
+      initialValue: this.initialValue,
+      placeholder: this.placeholder,
+      showIcons: this.showIcons,
+      spellChecker: this.spellChecker,
+      status: this.status,
+      toolbarTips: this.toolbarTips
     });
   }
 

@@ -1,76 +1,34 @@
-<ion-header
-  no-border
->
-  <ion-toolbar
-    class="ideaToolbar"
-  >
+<ion-header no-border>
+  <ion-toolbar class="ideaToolbar">
     <ion-title>
       {{ title }}
     </ion-title>
-    <ion-buttons
-      slot="end"
-    >
-      <ion-button
-        [title]="t.instant('IDEA.CALENDAR.RESET')"
-        (click)="save(true)"
-      >
-        <ion-icon
-          slot="icon-only"
-          name="undo"
-        ></ion-icon>
+    <ion-buttons slot="end">
+      <ion-button [title]="t.instant('IDEA.CALENDAR.RESET')" (click)="save(true)">
+        <ion-icon slot="icon-only" name="undo"></ion-icon>
       </ion-button>
-      <ion-button
-        [title]="t.instant('IDEA.CALENDAR.CLOSE_WITHOUT_SAVING')"
-        (click)="save()"
-      >
-        <ion-icon
-          slot="icon-only"
-          name="close"
-        ></ion-icon>
+      <ion-button [title]="t.instant('IDEA.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="save()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid
-    fixed no-padding
-  >
+  <ion-grid fixed no-padding>
     <ion-row>
-      <h1
-        class="headerLabel"
-      >
+      <h1 class="headerLabel">
         {{ 'IDEA.CALENDAR.SET_DATE' | translate }}
       </h1>
     </ion-row>
-    <ion-row
-      style="margin-bottom: 8px"
-    >
-      <ion-col
-        text-center no-padding
-        [size]="5"
-      >
-        <ion-row
-          align-items-center justify-content-center
-        >
-          <ion-col
-            text-right no-padding
-            [size]="3"
-          >
-            <ion-button
-              fill="clear"
-              color="dark"
-              (click)="addYears(-1)"
-            >
-              <ion-icon
-                slot="icon-only"
-                name="ios-arrow-back"
-              ></ion-icon>
+    <ion-row style="margin-bottom: 8px">
+      <ion-col text-center no-padding [size]="5">
+        <ion-row align-items-center justify-content-center>
+          <ion-col text-right no-padding [size]="3">
+            <ion-button fill="clear" color="dark" (click)="addYears(-1)">
+              <ion-icon slot="icon-only" name="ios-arrow-back"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col
-            text-center no-padding tappable
-            [size]="6"
-          >
+          <ion-col text-center no-padding tappable [size]="6">
             <ion-input
               type="text"
               [placeholder]="t.instant('IDEA.CALENDAR.YEAR')"
@@ -80,126 +38,70 @@
             >
             </ion-input>
           </ion-col>
-          <ion-col
-            text-left no-padding
-            [size]="3"
-          >
-            <ion-button
-              fill="clear"
-              color="dark"
-              (click)="addYears(+1)"
-            >
-              <ion-icon
-                slot="icon-only"
-                name="ios-arrow-forward"
-              ></ion-icon>
+          <ion-col text-left no-padding [size]="3">
+            <ion-button fill="clear" color="dark" (click)="addYears(+1)">
+              <ion-icon slot="icon-only" name="ios-arrow-forward"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
       </ion-col>
-      <ion-col
-        text-center no-padding
-        [size]="7"
-      >
-        <ion-row
-          align-items-center
-        >
-          <ion-col
-            text-right no-padding
-            [size]="3"
-          >
-            <ion-button
-              fill="clear"
-              color="dark"
-              (click)="addMonths(-1)"
-            >
-              <ion-icon
-                slot="icon-only"
-                name="ios-arrow-back"
-              ></ion-icon>
+      <ion-col text-center no-padding [size]="7">
+        <ion-row align-items-center>
+          <ion-col text-right no-padding [size]="3">
+            <ion-button fill="clear" color="dark" (click)="addMonths(-1)">
+              <ion-icon slot="icon-only" name="ios-arrow-back"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col
-            text-center no-padding tappable
-            [size]="6"
-            (click)="showMonths()"
-          >
+          <ion-col text-center no-padding tappable [size]="6" (click)="showMonths()">
             {{ refDate.format('MMMM') }}
           </ion-col>
-          <ion-col
-            text-left no-padding
-            [size]="3"
-          >
-            <ion-button
-              fill="clear"
-              color="dark"
-              (click)="addMonths(+1)"
-            >
-              <ion-icon
-                slot="icon-only"
-                name="ios-arrow-forward"
-              ></ion-icon>
+          <ion-col text-left no-padding [size]="3">
+            <ion-button fill="clear" color="dark" (click)="addMonths(+1)">
+              <ion-icon slot="icon-only" name="ios-arrow-forward"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
       </ion-col>
     </ion-row>
-    <ion-row
-      style="margin-bottom: 8px"
-      class="headerLabel"
-    >
-      <ion-col
-        text-center no-padding
-        *ngFor="let ddd of weekDays"
-      >
+    <ion-row style="margin-bottom: 8px" class="headerLabel">
+      <ion-col text-center no-padding *ngFor="let ddd of weekDays">
         {{ ddd }}
       </ion-col>
     </ion-row>
-    <ion-row
-      align-items-center
-      *ngFor="let row of calendarGrid; let i = index"
-    >
-      <ion-col
-        text-center no-padding
-        *ngFor="let col of row; let j = index"
-      >
+    <ion-row align-items-center *ngFor="let row of calendarGrid; let i = index">
+      <ion-col text-center no-padding *ngFor="let col of row; let j = index">
         <ion-button
           size="small"
           shape="round"
-          [color]="calendarGrid[i][j].isSame(today, 'd') || calendarGrid[i][j].isSame(selectedDate, 'd') ? 'primary' :
-            refDate.isSame(calendarGrid[i][j], 'month') ? 'dark' : 'medium'"
-          [fill]="selectedDate.isSame(calendarGrid[i][j], 'd') ? 'solid' :
-            calendarGrid[i][j].isSame(today, 'd') ? 'outline' : 'clear'"
+          [color]="
+            calendarGrid[i][j].isSame(today, 'd') || calendarGrid[i][j].isSame(selectedDate, 'd')
+              ? 'primary'
+              : refDate.isSame(calendarGrid[i][j], 'month')
+              ? 'dark'
+              : 'medium'
+          "
+          [fill]="
+            selectedDate.isSame(calendarGrid[i][j], 'd')
+              ? 'solid'
+              : calendarGrid[i][j].isSame(today, 'd')
+              ? 'outline'
+              : 'clear'
+          "
           (click)="selectDate(calendarGrid[i][j])"
         >
-          {{ calendarGrid[i][j] | date:'d' }}
+          {{ calendarGrid[i][j] | date: 'd' }}
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row
-      *ngIf="timePicker"
-    >
-      <h1
-        class="headerLabel"
-        *ngIf="timePicker"
-      >
+    <ion-row *ngIf="timePicker">
+      <h1 class="headerLabel" *ngIf="timePicker">
         {{ 'IDEA.CALENDAR.SET_TIME' | translate }}
       </h1>
     </ion-row>
-    <ion-row
-      align-items-center
-      *ngIf="timePicker"
-    >
-      <ion-col
-        no-padding
-        [size]="7"
-      >
+    <ion-row align-items-center *ngIf="timePicker">
+      <ion-col no-padding [size]="7">
         <ion-row>
-          <ion-col
-            text-center no-padding
-            [size]="2"
-            *ngFor="let hour of hours"
-          >
+          <ion-col text-center no-padding [size]="2" *ngFor="let hour of hours">
             <ion-button
               size="small"
               shape="round"
@@ -212,22 +114,12 @@
           </ion-col>
         </ion-row>
       </ion-col>
-      <ion-col
-        text-center no-padding
-        [size]="1"
-      >
+      <ion-col text-center no-padding [size]="1">
         :
       </ion-col>
-      <ion-col
-        no-padding
-        [size]="4"
-      >
+      <ion-col no-padding [size]="4">
         <ion-row>
-          <ion-col
-            text-center no-padding
-            [size]="4"
-            *ngFor="let minute of minutes"
-          >
+          <ion-col text-center no-padding [size]="4" *ngFor="let minute of minutes">
             <ion-button
               size="small"
               shape="round"
@@ -244,17 +136,9 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-toolbar
-    tappable
-    class="ideaToolbar"
-    (click)="save()"
-  >
-    <ion-title
-      text-center
-    >
-      <ion-icon
-        name="checkmark"
-      ></ion-icon>
+  <ion-toolbar tappable class="ideaToolbar" (click)="save()">
+    <ion-title text-center>
+      <ion-icon name="checkmark"></ion-icon>
     </ion-title>
   </ion-toolbar>
 </ion-footer>

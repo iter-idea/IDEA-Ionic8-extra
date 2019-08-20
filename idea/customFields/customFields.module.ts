@@ -8,22 +8,9 @@ import { IDEACustomFieldsComponent } from './customFields.component';
 import { IDEACustomFieldManagerComponent } from './customFieldManager.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild()
-  ],
-  entryComponents: [
-    IDEACustomFieldsComponent,
-    IDEACustomFieldManagerComponent
-  ],
-  exports: [
-    IDEACustomFieldsComponent,
-    IDEACustomFieldManagerComponent
-  ],
-  declarations: [
-    IDEACustomFieldsComponent, IDEACustomFieldManagerComponent
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
+  entryComponents: [IDEACustomFieldsComponent, IDEACustomFieldManagerComponent],
+  exports: [IDEACustomFieldsComponent, IDEACustomFieldManagerComponent],
+  declarations: [IDEACustomFieldsComponent, IDEACustomFieldManagerComponent]
 })
 export class IDEACustomFieldsModule {}

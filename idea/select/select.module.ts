@@ -9,25 +9,9 @@ import { IDEASuggestionsComponent } from './suggestions.component';
 import { IDEABoldPrefix } from './boldPrefix.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild()
-  ],
-  declarations: [
-    IDEASelectComponent,
-    IDEASuggestionsComponent,
-    IDEABoldPrefix
-  ],
-  entryComponents: [
-    IDEASelectComponent,
-    IDEASuggestionsComponent
-  ],
-  exports: [
-    IDEASelectComponent,
-    IDEASuggestionsComponent,
-    IDEABoldPrefix
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
+  declarations: [IDEASelectComponent, IDEASuggestionsComponent, IDEABoldPrefix],
+  entryComponents: [IDEASelectComponent, IDEASuggestionsComponent],
+  exports: [IDEASelectComponent, IDEASuggestionsComponent, IDEABoldPrefix]
 })
 export class IDEASelectModule {}

@@ -1,5 +1,5 @@
 export * from './auth/auth.module';
-  export * from './auth/auth.service';
+export * from './auth/auth.service';
 export * from './calendar/calendar.module';
 export * from './checker/checker.module';
 export * from './customFields/customFields.module';

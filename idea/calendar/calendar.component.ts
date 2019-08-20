@@ -24,11 +24,7 @@ export class IDEACalendarComponent {
   public minutes: Array<string>;
   public weekDays: Array<string>;
 
-  constructor(
-    public modal: ModalController,
-    public alertCtrl: AlertController,
-    public t: TranslateService
-  ) {}
+  constructor(public modal: ModalController, public alertCtrl: AlertController, public t: TranslateService) {}
   public ngOnInit() {
     Moment.locale(this.t.currentLang);
     this.today = Moment();
@@ -43,8 +39,8 @@ export class IDEACalendarComponent {
       this.selectedDate.minute(this.minute);
     }
     this.buildCalendarGrid(this.refDate);
-    this.hours = Array.from(Array(24).keys()).map(i => ('0'.concat(i.toString())).slice(-2));
-    this.minutes = Array.from(Array(12).keys()).map(i => ('0'.concat((i * 5).toString())).slice(-2));
+    this.hours = Array.from(Array(24).keys()).map(i => '0'.concat(i.toString()).slice(-2));
+    this.minutes = Array.from(Array(12).keys()).map(i => '0'.concat((i * 5).toString()).slice(-2));
     this.weekDays = Moment.weekdaysShort(true);
   }
 
@@ -65,7 +61,8 @@ export class IDEACalendarComponent {
       this.calendarGrid[i] = new Array<Moment.Moment>();
       for (let j = 0; j < 7; j++) {
         if (haventFoundFirstDay) {
-          if (firstDateOfMonth.weekday() === j) { // note: considers Sunday
+          if (firstDateOfMonth.weekday() === j) {
+            // note: considers Sunday
             haventFoundFirstDay = false;
             this.calendarGrid[i][j] = Moment(firstDateOfMonth);
             // now the I've found the first date of the month I can fill the calendar
@@ -114,18 +111,24 @@ export class IDEACalendarComponent {
     const month = Moment([1970, 0, 1]);
     for (let i = 1; i <= 12; i++) {
       inputs.push({
-        type: 'radio', label: month.format('MMMM'), value: i.toString(),
-        checked: (i === this.refDate.month() + 1)
+        type: 'radio',
+        label: month.format('MMMM'),
+        value: i.toString(),
+        checked: i === this.refDate.month() + 1
       });
       month.month(month.month() + 1);
     }
     buttons.push({ text: this.t.instant('COMMON.CANCEL'), role: 'cancel' });
-    buttons.push({ text: this.t.instant('COMMON.SELECT'), handler: (m: string) => {
-      this.refDate.month(parseInt(m, 10) - 1);
-      this.buildCalendarGrid(this.refDate);
-    }});
-    this.alertCtrl.create({ header: this.t.instant('IDEA.CALENDAR.MONTH'), buttons: buttons, inputs: inputs })
-    .then(alert => alert.present());
+    buttons.push({
+      text: this.t.instant('COMMON.SELECT'),
+      handler: (m: string) => {
+        this.refDate.month(parseInt(m, 10) - 1);
+        this.buildCalendarGrid(this.refDate);
+      }
+    });
+    this.alertCtrl
+      .create({ header: this.t.instant('IDEA.CALENDAR.MONTH'), buttons: buttons, inputs: inputs })
+      .then(alert => alert.present());
   }
 
   /**

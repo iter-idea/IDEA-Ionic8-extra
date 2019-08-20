@@ -4,10 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class IDEAMessageService {
-  constructor(
-    public toastCtrl: ToastController,
-    public t: TranslateService
-  ) {}
+  constructor(public toastCtrl: ToastController, public t: TranslateService) {}
 
   /**
    * Show a generic message toast.
@@ -15,11 +12,16 @@ export class IDEAMessageService {
    * @param color Ionic colors defined in the theme
    */
   protected show(message: string, color: string, dontTranslate: boolean) {
-    this.toastCtrl.create({
-      message: dontTranslate ? message : this.t.instant(message),
-      duration: 3000, position: 'bottom', color: color, showCloseButton: true, closeButtonText: 'X'
-    })
-    .then(toast => toast.present());
+    this.toastCtrl
+      .create({
+        message: dontTranslate ? message : this.t.instant(message),
+        duration: 3000,
+        position: 'bottom',
+        color: color,
+        showCloseButton: true,
+        closeButtonText: 'X'
+      })
+      .then(toast => toast.present());
   }
   /**
    * Show an info message toast.

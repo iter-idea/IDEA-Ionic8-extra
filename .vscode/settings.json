@@ -1,0 +1,37 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "editor.tabSize": 2,
+    "editor.rulers": [120],
+    "editor.wordWrapColumn": 120,
+    "editor.wordWrap": "bounded",
+    "files.eol": "\n",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/*.map": true,
+        "node_modules": true,
+        "npm-debug.log": true,
+        "api/**/*.js": true,
+        "api/node_modules": true,
+        "models/**/*.js": true,
+        "client/node_modules": true,
+        "client/npm-debug.log": true,
+        "client/www": true,
+        "client/platforms": true,
+        "client/plugins": true,
+        "client/.sourcemaps": true,
+        "client/src/components/_models": true,
+        "www": true,
+        ".vs": true,
+        "**/.gradle": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "git.confirmSync": false,
+    "editor.renderIndentGuides": true,
+    "editor.renderLineHighlight": "all",
+    "workbench.iconTheme": "vs-seti",
+    "window.zoomLevel": 0,
+    "extensions.ignoreRecommendations": false
+  }

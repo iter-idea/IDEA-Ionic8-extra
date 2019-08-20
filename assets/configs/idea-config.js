@@ -14,4 +14,4 @@ const IDEA_AUTH_REGISTRATION_POSSIBLE = false;
 const IDEA_AUTH_WEBSITE = 'https://iter-idea.com';
 
 const IDEA_API_URL = 'https://9ssilq3yzh.execute-api.eu-west-2.amazonaws.com/prod';
-const IDEA_ERROR_REPORTING_API_URL = IDEA_API_URL+'/errorReporting';
+const IDEA_ERROR_REPORTING_API_URL = IDEA_API_URL + '/errorReporting';

@@ -10,7 +10,7 @@ import { IDEATinCan } from '../tinCan.service';
 @Component({
   selector: 'idea-new-password',
   templateUrl: 'newPassword.page.html',
-  styleUrls: ['auth.scss'],
+  styleUrls: ['auth.scss']
 })
 export class IDEANewPasswordPage {
   public email: string;
@@ -37,16 +37,17 @@ export class IDEANewPasswordPage {
   public confirmNewPassword() {
     this.errorMsg = null;
     this.loading.show();
-    this.auth.confirmNewPassword(this.email, this.password, this.newPassword)
-    .then(() => {
-      // we are logged in
-      window.location.assign('');
-    })
-    .catch(() => {
-      this.loading.hide();
-      this.errorMsg = this.t.instant('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
-      this.message.error(this.errorMsg, true);
-    });
+    this.auth
+      .confirmNewPassword(this.email, this.password, this.newPassword)
+      .then(() => {
+        // we are logged in
+        window.location.assign('');
+      })
+      .catch(() => {
+        this.loading.hide();
+        this.errorMsg = this.t.instant('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
+        this.message.error(this.errorMsg, true);
+      });
   }
 
   /**

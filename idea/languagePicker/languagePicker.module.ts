@@ -7,20 +7,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IDEALanguagePickerComponent } from './languagePicker.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild()
-  ],
-  declarations: [
-    IDEALanguagePickerComponent
-  ],
-  entryComponents: [
-    IDEALanguagePickerComponent
-  ],
-  exports: [
-    IDEALanguagePickerComponent
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
+  declarations: [IDEALanguagePickerComponent],
+  entryComponents: [IDEALanguagePickerComponent],
+  exports: [IDEALanguagePickerComponent]
 })
 export class IDEALanguagePickerModule {}

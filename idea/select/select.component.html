@@ -4,30 +4,13 @@
   [title]="placeholder || description"
   (click)="disabled ? doSelectWhenDisabled() : fetchDataAndOpenModal()"
 >
-  <ion-icon
-    slot="start"
-    *ngIf="icon"
-    [name]="icon"
-  ></ion-icon>
-  <ion-label
-    position="stacked"
-    *ngIf="!icon && label"
-    [class.selectable]="!disabled || tappableWhenDisabled"
-  >
+  <ion-icon slot="start" *ngIf="icon" [name]="icon"></ion-icon>
+  <ion-label position="stacked" *ngIf="!icon && label" [class.selectable]="!disabled || tappableWhenDisabled">
     {{ label }}
-    <ion-text
-      class="obligatoryDot"
-      *ngIf="obligatory && !disabled"
-    ></ion-text>
+    <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
   </ion-label>
-  <ion-label
-    class="description"
-    [class.selectable]="!disabled || tappableWhenDisabled"
-  >
-    <ion-text
-      class="placeholder"
-      *ngIf="!description && !disabled"
-    >
+  <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled">
+    <ion-text class="placeholder" *ngIf="!description && !disabled">
       {{ placeholder }}
     </ion-text>
     {{ description }}

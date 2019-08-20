@@ -1,69 +1,32 @@
-<ion-header
-  no-border
->
-  <ion-toolbar
-    class="ideaToolbar"
-  >
-    <ion-buttons
-      slot="start"
-    >
-      <ion-button
-        [title]="t.instant('IDEA.MDE.CLOSE_WITHOUT_SAVING')"
-        (click)="close()"
-      >
-        <ion-icon
-          name="close"
-          slot="icon-only"
-        ></ion-icon>
+<ion-header no-border>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t.instant('IDEA.MDE.CLOSE_WITHOUT_SAVING')" (click)="close()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>
       {{ title || ('IDEA.MDE.TITLE' | translate) }}
     </ion-title>
-    <ion-buttons
-      slot="end"
-    >
-      <ion-button
-        [title]="t.instant('IDEA.MDE.SAVE_AND_CLOSE')"
-        (click)="confirm()"
-      >
-        <ion-icon
-          name="checkmark"
-          slot="icon-only"
-        ></ion-icon>
+    <ion-buttons slot="end">
+      <ion-button [title]="t.instant('IDEA.MDE.SAVE_AND_CLOSE')" (click)="confirm()">
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content
-  padding
->
-  <h2
-    class="header"
-    *ngIf="header"
-  >
+<ion-content padding>
+  <h2 class="header" *ngIf="header">
     {{ header }}
   </h2>
-  <p
-    class="description"
-    *ngIf="description"
-  >
+  <p class="description" *ngIf="description">
     {{ description }}
   </p>
-  <p
-    class="variables"
-    *ngIf="variables?.length"
-  >
-    <b>
-      {{ 'IDEA.MDE.VARIABLES' | translate }}:
-    </b>
-    <ion-text
-      *ngFor="let v of variables"
-    >
+  <p class="variables" *ngIf="variables?.length">
+    <b> {{ 'IDEA.MDE.VARIABLES' | translate }}: </b>
+    <ion-text *ngFor="let v of variables">
       {{ v.concat(' ') }}
     </ion-text>
   </p>
-  <textarea
-    [id]="id"
-  ></textarea>
+  <textarea [id]="id"></textarea>
 </ion-content>

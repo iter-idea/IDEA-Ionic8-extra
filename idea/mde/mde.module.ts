@@ -7,20 +7,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IDEAMDEComponent } from './mde.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild()
-  ],
-  declarations: [
-    IDEAMDEComponent
-  ],
-  entryComponents: [
-    IDEAMDEComponent
-  ],
-  exports: [
-    IDEAMDEComponent
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
+  declarations: [IDEAMDEComponent],
+  entryComponents: [IDEAMDEComponent],
+  exports: [IDEAMDEComponent]
 })
 export class IDEAMDEModule {}

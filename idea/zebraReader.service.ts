@@ -17,31 +17,31 @@ export class IDEAZebraReaderService {
   protected intent: any;
 
   constructor(public events: Events, public platform: Platform) {
-    this.platform.ready()
-    .then(() => {
+    this.platform.ready().then(() => {
       // load the intent manager
       this.intent = (<any>window).plugins ? (<any>window).plugins.intentShim : null;
       if (!this.intent) return;
       // set up a broadcast receiver to listen for incoming scans
-      this.intent.registerBroadcastReceiver({
-        filterActions: [
-          // response from scan (needs to match value in output plugin)
-          'com.zebra.iteridea.ACTION',
-          // response from DataWedge service (as defined by API)
-          'com.symbol.datawedge.api.RESULT_ACTION'
-        ],
-        filterCategories: [
-          'android.intent.category.DEFAULT'
-        ]
-      }, (intent: any) => {
-        // extract the reading from the info returned by the device
-        const ret = <ScanData> {
-          data: intent.extras['com.symbol.datawedge.data_string'],
-          type: intent.extras['com.symbol.datawedge.label_type'],
-          timestamp: new Date().toLocaleTimeString()
-        };
-        this.events.publish('zebra:scan', ret);
-      });
+      this.intent.registerBroadcastReceiver(
+        {
+          filterActions: [
+            // response from scan (needs to match value in output plugin)
+            'com.zebra.iteridea.ACTION',
+            // response from DataWedge service (as defined by API)
+            'com.symbol.datawedge.api.RESULT_ACTION'
+          ],
+          filterCategories: ['android.intent.category.DEFAULT']
+        },
+        (intent: any) => {
+          // extract the reading from the info returned by the device
+          const ret = <ScanData>{
+            data: intent.extras['com.symbol.datawedge.data_string'],
+            type: intent.extras['com.symbol.datawedge.label_type'],
+            timestamp: new Date().toLocaleTimeString()
+          };
+          this.events.publish('zebra:scan', ret);
+        }
+      );
     });
   }
 
@@ -71,12 +71,14 @@ export class IDEAZebraReaderService {
    */
   protected sendCommandToDevice(name: string, value: string) {
     if (!this.intent) return;
-    this.intent.sendBroadcast({
-      action: 'com.symbol.datawedge.api.ACTION',
-      extras: { [name]: value, 'SEND_RESULT': true }
-    },
+    this.intent.sendBroadcast(
+      {
+        action: 'com.symbol.datawedge.api.ACTION',
+        extras: { [name]: value, SEND_RESULT: true }
+      },
       // success and failure in sending the intent, not of DW to process the intent
-      () => {}, () => {}
+      () => {},
+      () => {}
     );
   }
 }

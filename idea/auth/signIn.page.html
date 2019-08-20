@@ -1,47 +1,24 @@
 <ion-content>
-  <form
-    class="flexBox"
-  >
+  <form class="flexBox">
     <div>
-      <ion-card
-        class="authCard"
-      >
-        <ion-img
-          [title]="t.instant('IDEA.AUTH.SERVICE_LOGO')"
-          [src]="'assets/icons/icon-auth.png'"
-        ></ion-img>
+      <ion-card class="authCard">
+        <ion-img [title]="t.instant('IDEA.AUTH.SERVICE_LOGO')" [src]="'assets/icons/icon-auth.png'"></ion-img>
         <ion-card-header>
-          <ion-card-title
-            color="primary"
-            *ngIf="title"
-          >
+          <ion-card-title color="primary" *ngIf="title">
             {{ title }}
           </ion-card-title>
-          <ion-card-subtitle
-            *ngIf="t.instant('TAGLINE')"
-          >
+          <ion-card-subtitle *ngIf="t.instant('TAGLINE')">
             {{ 'IDEA.TAGLINE' | translate }}
           </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-          <p
-            class="errorBox"
-            *ngIf="errorMsg"
-          >
-            <b>
-              {{ 'IDEA.AUTH.ERROR' | translate }}.
-            </b>
+          <p class="errorBox" *ngIf="errorMsg">
+            <b> {{ 'IDEA.AUTH.ERROR' | translate }}. </b>
             {{ errorMsg }}
           </p>
           <ion-item>
-            <ion-label
-              position="inline"
-            >
-              <ion-icon
-                name="contact"
-                color="primary"
-              >
-              </ion-icon>
+            <ion-label position="inline">
+              <ion-icon name="contact" color="primary"> </ion-icon>
             </ion-label>
             <ion-input
               type="email"
@@ -53,19 +30,14 @@
               autocomplete="email"
               [placeholder]="t.instant('IDEA.AUTH.EMAIL')"
               [title]="t.instant('IDEA.AUTH.EMAIL_HINT')"
-              [ngModelOptions]="{standalone: true}"
+              [ngModelOptions]="{ standalone: true }"
               [(ngModel)]="email"
               (keyup.enter)="login()"
             ></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label
-              position="inline"
-            >
-              <ion-icon
-                name="key"
-                color="primary"
-              ></ion-icon>
+            <ion-label position="inline">
+              <ion-icon name="key" color="primary"></ion-icon>
             </ion-label>
             <ion-input
               id="current-password"
@@ -78,20 +50,22 @@
               [clearOnEdit]="false"
               [placeholder]="t.instant('IDEA.AUTH.PASSWORD')"
               [title]="t.instant('IDEA.AUTH.PASSWORD_HINT')"
-              [ngModelOptions]="{standalone: true}"
+              [ngModelOptions]="{ standalone: true }"
               [(ngModel)]="password"
               (keyup.enter)="login()"
             ></ion-input>
           </ion-item>
           <ion-row
             class="agreementsAcceptanceRow"
-            *ngIf="!registrationPossible &&
-              (t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') || t.instant('IDEA.AUTH.PRIVACY_POLICY_URL'))"
+            *ngIf="
+              !registrationPossible &&
+              (t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') || t.instant('IDEA.AUTH.PRIVACY_POLICY_URL'))
+            "
           >
             <ion-col>
               <ion-checkbox
                 size="small"
-                [ngModelOptions]="{standalone: true}"
+                [ngModelOptions]="{ standalone: true }"
                 [(ngModel)]="agreementsCheck"
               ></ion-checkbox>
               {{ 'IDEA.AUTH.AGREEMENTS_CHECK_LOGIN' | translate }}:
@@ -157,7 +131,7 @@
         *ngIf="website"
         [src]="'./assets/icons/idea.png'"
         [title]="t.instant('IDEA.AUTH.IDEA_TAGLINE')"
-        (click)="extBrowser.openLink(website);"
+        (click)="extBrowser.openLink(website)"
       ></ion-img>
     </div>
   </form>

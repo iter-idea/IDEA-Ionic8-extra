@@ -22,10 +22,7 @@ export class IDEADateTimeComponent {
   @Input() public obligatory: boolean;
   @Output() public select = new EventEmitter<number>();
 
-  constructor(
-    public modalCtrl: ModalController,
-    public t: TranslateService
-  ) {}
+  constructor(public modalCtrl: ModalController, public t: TranslateService) {}
   public ngOnInit() {
     Moment.locale(this.t.currentLang);
   }
@@ -35,21 +32,21 @@ export class IDEADateTimeComponent {
    */
   public openCalendarPicker() {
     if (this.disabled) return;
-    this.modalCtrl.create({
-      component: IDEACalendarComponent,
-      componentProps: { inputDate: this.date, title: this.label, timePicker: this.timePicker }
-    })
-    .then(modal => {
-      modal.onDidDismiss()
-      .then((selection: OverlayEventDetail) => {
-        const date = selection.data;
-        if (date !== undefined && date !== null) {
-          if (date === '') this.select.emit(null);
-          else this.select.emit(date.valueOf());
-        }
+    this.modalCtrl
+      .create({
+        component: IDEACalendarComponent,
+        componentProps: { inputDate: this.date, title: this.label, timePicker: this.timePicker }
+      })
+      .then(modal => {
+        modal.onDidDismiss().then((selection: OverlayEventDetail) => {
+          const date = selection.data;
+          if (date !== undefined && date !== null) {
+            if (date === '') this.select.emit(null);
+            else this.select.emit(date.valueOf());
+          }
+        });
+        modal.present();
       });
-      modal.present();
-    });
   }
 
   /**

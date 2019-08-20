@@ -7,20 +7,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IDEASignatureComponent } from './signature.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild()
-  ],
-  declarations: [
-    IDEASignatureComponent
-  ],
-  entryComponents: [
-    IDEASignatureComponent
-  ],
-  exports: [
-    IDEASignatureComponent
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
+  declarations: [IDEASignatureComponent],
+  entryComponents: [IDEASignatureComponent],
+  exports: [IDEASignatureComponent]
 })
 export class IDEASignatureModule {}

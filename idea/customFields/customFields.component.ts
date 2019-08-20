@@ -5,7 +5,7 @@ import IdeaX = require('idea-toolbox');
 @Component({
   selector: 'idea-custom-fields',
   templateUrl: 'customFields.component.html',
-  styleUrls: ['customFields.component.scss'],
+  styleUrls: ['customFields.component.scss']
 })
 /**
  * Note: if the defaultLanguage is used, then the fields are managed with transalations.
@@ -65,8 +65,8 @@ export class IDEACustomFieldsComponent {
   @Output() public remove = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
 
   constructor(public t: TranslateService) {
-    this.disabled = false;        // needed
-    this.withoutReorder = false;  //
+    this.disabled = false; // needed
+    this.withoutReorder = false; //
   }
 
   /**

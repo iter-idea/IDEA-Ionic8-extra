@@ -5,10 +5,10 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'idea-checks',
   templateUrl: 'checks.component.html',
-  styleUrls: ['checks.component.scss'],
+  styleUrls: ['checks.component.scss']
 })
 export class IDEAChecksComponent {
-  @ViewChild (IonSearchbar) public searchbar: IonSearchbar;
+  @ViewChild(IonSearchbar) public searchbar: IonSearchbar;
   /**
    * It should be read only until the component closure.
    */
@@ -35,11 +35,7 @@ export class IDEAChecksComponent {
   public N_PER_PAGE = 30;
   public page: number;
 
-  constructor(
-    public modalCtrl: ModalController,
-    public navParams: NavParams,
-    public t: TranslateService
-  ) {}
+  constructor(public modalCtrl: ModalController, public navParams: NavParams, public t: TranslateService) {}
   public ngOnInit() {
     this.workingData = JSON.parse(JSON.stringify(this.data || new Array<Check>()));
     this.filteredChecks = new Array<Check>();
@@ -56,20 +52,20 @@ export class IDEAChecksComponent {
    */
   public filterChecks(ev?: any) {
     // acquire and clean the search term
-    let searchTerm = ev && ev.target ? (ev.target.value || '') : '';
+    let searchTerm = ev && ev.target ? ev.target.value || '' : '';
     if (!searchTerm.trim().length) searchTerm = '';
     searchTerm = searchTerm.toLowerCase();
     // filter the elements based on the search
     this.filteredChecks = this.workingData
       .filter(x => !x.hidden)
-      .filter((x) => `${x.name} ${x.value}`.toLowerCase().indexOf(searchTerm) >= 0);
+      .filter(x => `${x.name} ${x.value}`.toLowerCase().indexOf(searchTerm) >= 0);
   }
 
   /**
    * Check/unckeck all the elements.
    */
   public checkAll(check: boolean) {
-    this.filteredChecks.forEach(x => x.checked = check);
+    this.filteredChecks.forEach(x => (x.checked = check));
   }
 
   /**
@@ -82,7 +78,7 @@ export class IDEAChecksComponent {
    * Close applying the changes to the original data structure.
    */
   public confirm() {
-    this.workingData.forEach(x => this.data.find(y => x.value === y.value).checked = x.checked);
+    this.workingData.forEach(x => (this.data.find(y => x.value === y.value).checked = x.checked));
     this.modalCtrl.dismiss(true);
   }
 }
@@ -106,7 +102,7 @@ export class Check {
   public hidden: boolean;
 
   constructor(x?: any) {
-    x = x || <Check> {};
+    x = x || <Check>{};
     if (typeof x !== 'object') {
       this.value = x;
       this.name = String(x);

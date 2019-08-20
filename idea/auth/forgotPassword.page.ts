@@ -27,16 +27,17 @@ export class IDEAForgotPasswordPage {
    */
   public forgotPassword() {
     this.loading.show();
-    this.auth.forgotPassword(this.email)
-    .then(() => {
-      this.loading.hide();
-      this.message.success('IDEA.AUTH.PASSWORD_RESET_CODE_SENT');
-      this.goToConfirmPassword();
-    })
-    .catch(() => {
-      this.loading.hide();
-      this.message.error('IDEA.AUTH.USER_NOT_FOUND');
-    });
+    this.auth
+      .forgotPassword(this.email)
+      .then(() => {
+        this.loading.hide();
+        this.message.success('IDEA.AUTH.PASSWORD_RESET_CODE_SENT');
+        this.goToConfirmPassword();
+      })
+      .catch(() => {
+        this.loading.hide();
+        this.message.error('IDEA.AUTH.USER_NOT_FOUND');
+      });
   }
 
   /**

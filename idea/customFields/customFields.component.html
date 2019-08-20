@@ -1,7 +1,4 @@
-<ion-reorder-group
-  [disabled]="disabled || withoutReorder"
-  (ionItemReorder)="reorderFieldsLegend($event)"
->
+<ion-reorder-group [disabled]="disabled || withoutReorder" (ionItemReorder)="reorderFieldsLegend($event)">
   <ion-item
     class="customField"
     *ngFor="let f of fieldsLegend"
@@ -9,40 +6,25 @@
     [lines]="lines || 'full'"
     (click)="disabled ? null : select.emit(fields[f])"
   >
-    <ion-reorder
-      slot="start"
-      *ngIf="!disabled && !withoutReorder"
-    ></ion-reorder>
-    <ion-label
-      class="fieldMain"
-    >
+    <ion-reorder slot="start" *ngIf="!disabled && !withoutReorder"></ion-reorder>
+    <ion-label class="fieldMain">
       <b>
         {{ getFieldName(fields[f]) }}
       </b>
       <p>
         {{ getFieldDescription(fields[f]) }}
       </p>
-      <p
-        class="fieldOptions"
-      >
-        <ion-text
-          *ngIf="fields[f].enum?.length"
-        >
+      <p class="fieldOptions">
+        <ion-text *ngIf="fields[f].enum?.length">
           {{ 'IDEA.CUSTOM_FIELDS.CHOICES' | translate }}: {{ fields[f].enum.join(', ') }}
         </ion-text>
-        <ion-text
-          *ngIf="fields[f].min !== null && fields[f].min !== undefined"
-        >
+        <ion-text *ngIf="fields[f].min !== null && fields[f].min !== undefined">
           {{ 'IDEA.CUSTOM_FIELDS.MIN' | translate }}: {{ fields[f].min }}
         </ion-text>
-        <ion-text
-          *ngIf="fields[f].max !== null && fields[f].max !== undefined"
-        >
+        <ion-text *ngIf="fields[f].max !== null && fields[f].max !== undefined">
           {{ 'IDEA.CUSTOM_FIELDS.MAX' | translate }}: {{ fields[f].max }}
         </ion-text>
-        <ion-text
-          *ngIf="fields[f].default"
-        >
+        <ion-text *ngIf="fields[f].default">
           {{ 'IDEA.CUSTOM_FIELDS.DEFAULT' | translate }}: {{ fields[f].default }}
         </ion-text>
       </p>
@@ -55,11 +37,8 @@
     >
       *
     </ion-badge>
-    <ion-badge
-      slot="end"
-      color="primary"
-    >
-      {{ 'IDEA.CUSTOM_FIELDS.FIELDS_TYPES.'+fields[f].type | translate }}
+    <ion-badge slot="end" color="primary">
+      {{ 'IDEA.CUSTOM_FIELDS.FIELDS_TYPES.' + fields[f].type | translate }}
     </ion-badge>
     <ion-button
       slot="end"
@@ -68,10 +47,7 @@
       *ngIf="showRemoveBtn"
       (click)="disabled ? null : remove.emit(fields[f])"
     >
-      <ion-icon
-        name="trash"
-        slot="icon-only"
-      ></ion-icon>
+      <ion-icon name="trash" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-item>
 </ion-reorder-group>

@@ -11,11 +11,7 @@ export class IDEAListComponent {
   @Input() public list: Array<string | number>;
   @Input() public title: string;
 
-  constructor(
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-    public t: TranslateService,
-  ) {}
+  constructor(public modalCtrl: ModalController, public alertCtrl: AlertController, public t: TranslateService) {}
   public ngOnInit() {
     // use a copy of the array, to confirm it only when saving
     this.list = Array.from(this.list || new Array<string>());
@@ -25,26 +21,30 @@ export class IDEAListComponent {
    * Add a new element to the list.
    */
   public addElement() {
-    this.alertCtrl.create({
-      header: this.t.instant('IDEA.LIST.NEW_ELEMENT'),
-      inputs: [ { name: 'element', placeholder: this.t.instant('IDEA.LIST.ELEMENT') } ],
-      buttons: [
-        { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
-        { text: this.t.instant('COMMON.SAVE'),
-          handler: data => {
-            if (data.element && data.element.trim()) {
-              this.list.push(data.element);
-              this.list = this.list.sort();
+    this.alertCtrl
+      .create({
+        header: this.t.instant('IDEA.LIST.NEW_ELEMENT'),
+        inputs: [{ name: 'element', placeholder: this.t.instant('IDEA.LIST.ELEMENT') }],
+        buttons: [
+          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          {
+            text: this.t.instant('COMMON.SAVE'),
+            handler: data => {
+              if (data.element && data.element.trim()) {
+                this.list.push(data.element);
+                this.list = this.list.sort();
+              }
             }
           }
-        }
-      ]
-    })
-    .then(alert => alert.present().then(() => {
-      const firstInput: any = document.querySelector('ion-alert input');
-      firstInput.focus();
-      return;
-    }));
+        ]
+      })
+      .then(alert =>
+        alert.present().then(() => {
+          const firstInput: any = document.querySelector('ion-alert input');
+          firstInput.focus();
+          return;
+        })
+      );
   }
   /**
    * Remove the selected element from the list.

@@ -35,17 +35,18 @@ export class IDEAResendLinkPage {
       return;
     }
     this.loading.show();
-    this.auth.resendConfirmationCode(this.email)
-    .then(() => {
-      this.loading.hide();
-      this.message.success('IDEA.AUTH.CONFIRMATION_LINK_SENT');
-      this.goToAuth();
-    })
-    .catch(() => {
-      this.loading.hide();
-      this.errorMsg = this.t.instant('IDEA.AUTH.IS_THE_EMAIL_CORRECT');
-      this.message.error('IDEA.AUTH.SENDING_FAILED');
-    });
+    this.auth
+      .resendConfirmationCode(this.email)
+      .then(() => {
+        this.loading.hide();
+        this.message.success('IDEA.AUTH.CONFIRMATION_LINK_SENT');
+        this.goToAuth();
+      })
+      .catch(() => {
+        this.loading.hide();
+        this.errorMsg = this.t.instant('IDEA.AUTH.IS_THE_EMAIL_CORRECT');
+        this.message.error('IDEA.AUTH.SENDING_FAILED');
+      });
   }
 
   /**

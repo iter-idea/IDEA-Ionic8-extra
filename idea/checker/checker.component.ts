@@ -24,7 +24,7 @@ import { IDEAChecksComponent } from './checks.component';
 @Component({
   selector: 'idea-checker',
   templateUrl: 'checker.component.html',
-  styleUrls: ['checker.component.scss'],
+  styleUrls: ['checker.component.scss']
 })
 export class IDEACheckerComponent {
   /**
@@ -96,10 +96,7 @@ export class IDEACheckerComponent {
    */
   @Output() public change = new EventEmitter<void>();
 
-  constructor(
-    public modalCtrl: ModalController,
-    public t: TranslateService
-  ) {
+  constructor(public modalCtrl: ModalController, public t: TranslateService) {
     this.data = new Array<Check>();
     this.placeholder = null;
     this.noElementsFoundText = null;
@@ -117,11 +114,11 @@ export class IDEACheckerComponent {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
       this.dataProvider()
-      .then((data: Array<Check>) => {
-        this.data = data;
-        this.openChecker();
-      })
-      .catch(() => {}); // data will be empty
+        .then((data: Array<Check>) => {
+          this.data = data;
+          this.openChecker();
+        })
+        .catch(() => {}); // data will be empty
     } else this.openChecker();
   }
   /**
@@ -130,17 +127,20 @@ export class IDEACheckerComponent {
   protected openChecker() {
     if (this.disabled) return;
     // open the modal to let the user to check the desired items
-    this.modalCtrl.create({
-      component: IDEAChecksComponent,
-      componentProps: {
-        data: this.data, sortData: this.sortData, placeholder: this.placeholder,
-        noElementsFoundText: this.noElementsFoundText
-      }
-    })
-    .then(modal => {
-      modal.onDidDismiss().then(res => res && res.data ? this.change.emit() : null);
-      modal.present();
-    });
+    this.modalCtrl
+      .create({
+        component: IDEAChecksComponent,
+        componentProps: {
+          data: this.data,
+          sortData: this.sortData,
+          placeholder: this.placeholder,
+          noElementsFoundText: this.noElementsFoundText
+        }
+      })
+      .then(modal => {
+        modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
+        modal.present();
+      });
   }
 
   /**
@@ -184,7 +184,7 @@ export class Check {
   public hidden: boolean;
 
   constructor(x?: any) {
-    x = x || <Check> {};
+    x = x || <Check>{};
     if (typeof x !== 'object') {
       this.value = x;
       this.name = String(x);

@@ -8,23 +8,9 @@ import { IDEACheckerComponent } from './checker.component';
 import { IDEAChecksComponent } from './checks.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild()
-  ],
-  declarations: [
-    IDEACheckerComponent,
-    IDEAChecksComponent
-  ],
-  entryComponents: [
-    IDEACheckerComponent,
-    IDEAChecksComponent
-  ],
-  exports: [
-    IDEACheckerComponent,
-    IDEAChecksComponent
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
+  declarations: [IDEACheckerComponent, IDEAChecksComponent],
+  entryComponents: [IDEACheckerComponent, IDEAChecksComponent],
+  exports: [IDEACheckerComponent, IDEAChecksComponent]
 })
 export class IDEACheckerModule {}

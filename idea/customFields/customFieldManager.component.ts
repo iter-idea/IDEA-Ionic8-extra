@@ -6,7 +6,7 @@ import IdeaX = require('idea-toolbox');
 @Component({
   selector: 'idea-custom-field-manager',
   templateUrl: 'customFieldManager.component.html',
-  styleUrls: ['customFieldManager.component.scss'],
+  styleUrls: ['customFieldManager.component.scss']
 })
 /**
  * Note: if the defaultLanguage is used, then the field is managed with transalations.
@@ -38,11 +38,7 @@ export class IDEACustomFieldManagerComponent {
   public FIELD_TYPES: Array<string> = Object.keys(IdeaX.CustomFieldTypes);
   public enumAsString: string;
 
-  constructor(
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-    public t: TranslateService
-  ) {
+  constructor(public modalCtrl: ModalController, public alertCtrl: AlertController, public t: TranslateService) {
     this.errors = Array<string>();
   }
   public ngOnInit() {
@@ -102,7 +98,14 @@ export class IDEACustomFieldManagerComponent {
   public save() {
     // convert and clean the string enum (reset the enum if the type isn't correct)
     if (this.theField.type === IdeaX.CustomFieldTypes.ENUM) {
-      this.theField.enum = Array.from(new Set(this.enumAsString.split(',').map(x => x.trim()).filter(x => x)));
+      this.theField.enum = Array.from(
+        new Set(
+          this.enumAsString
+            .split(',')
+            .map(x => x.trim())
+            .filter(x => x)
+        )
+      );
       if (!this.theField.enum.length) this.field.enum = null;
     } else this.theField.enum = null;
     // reset obligatory if field is boolean
@@ -116,8 +119,10 @@ export class IDEACustomFieldManagerComponent {
       this.theField.max = null;
     }
     // checkings
-    this.errors = this.theField instanceof IdeaX.CustomFieldT ?
-      this.theField.validate(this.defaultLanguage) : this.theField.validate();
+    this.errors =
+      this.theField instanceof IdeaX.CustomFieldT
+        ? this.theField.validate(this.defaultLanguage)
+        : this.theField.validate();
     if (this.errors.length) return;
     // return the cleaned field
     this.close(this.theField);

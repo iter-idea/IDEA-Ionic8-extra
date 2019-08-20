@@ -12,14 +12,15 @@ export class IDEAErrorReportingService {
   constructor(public http: HttpClient) {}
 
   public sendReport(error: Error, forceSend?: boolean): Promise<any> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (!this.shouldSend() && !forceSend) return resolve();
       const report = new IdeaX.ErrorReport();
       report.load({ project: IDEA_PROJECT, error: error, client: this.getClientInfo() });
-      this.http.post(IDEA_ERROR_REPORTING_API_URL, report)
-      .toPromise()
-      .catch(() => {})
-      .finally(() => resolve()); // note: never throw an error when reporting an error
+      this.http
+        .post(IDEA_ERROR_REPORTING_API_URL, report)
+        .toPromise()
+        .catch(() => {})
+        .finally(() => resolve()); // note: never throw an error when reporting an error
     });
   }
 
@@ -30,7 +31,7 @@ export class IDEAErrorReportingService {
   public getClientInfo(): IdeaX.ClientInfo {
     return new IdeaX.ClientInfo({
       timestamp: new Date(),
-      timezone: (new Date()).getTimezoneOffset() / 60,
+      timezone: new Date().getTimezoneOffset() / 60,
       pageOn: window.location.pathname,
       referrer: document.referrer,
       browserName: navigator.appName,
@@ -39,7 +40,7 @@ export class IDEAErrorReportingService {
       browserUserAgent: navigator.userAgent,
       browserLanguage: navigator.language,
       browserOnline: navigator.onLine,
-      browserPlatform:  navigator.platform,
+      browserPlatform: navigator.platform,
       screenWidth: screen.width,
       screenHeight: screen.height,
       screenColorDepth: screen.colorDepth,

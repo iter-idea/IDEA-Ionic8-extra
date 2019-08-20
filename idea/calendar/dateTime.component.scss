@@ -16,7 +16,7 @@
   }
 }
 .selectable {
-  cursor: pointer
+  cursor: pointer;
 }
 ion-text.obligatoryDot::after {
   content: '*';

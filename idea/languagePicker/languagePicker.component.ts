@@ -15,26 +15,24 @@ import { TranslateService } from '@ngx-translate/core';
 export class IDEALanguagePickerComponent {
   public languages: Array<string>;
 
-  constructor(
-    public t: TranslateService,
-    public storage: Storage,
-    public alertCtrl: AlertController
-  ) {}
+  constructor(public t: TranslateService, public storage: Storage, public alertCtrl: AlertController) {}
   public ngOnInit() {
     this.languages = this.t.getLangs();
   }
 
   public changeLanguage(lang: string, fab: IonFab) {
-    this.alertCtrl.create({
-      header: this.t.instant('IDEA.LANGUAGE_PICKER.APP_WILL_RESTART'),
-      buttons: [
-        { text: this.t.instant('COMMON.CANCEL'), role: 'cancel', handler: () => fab.close() },
-        { text: this.t.instant('COMMON.CONFIRM'),
-          // needed cause sometimes the language isn't update in the interface (random)
-          handler: () => this.storage.set('language', lang).then(() => window.location.assign(''))
-        }
-      ]
-    })
-    .then(alert => alert.present());
+    this.alertCtrl
+      .create({
+        header: this.t.instant('IDEA.LANGUAGE_PICKER.APP_WILL_RESTART'),
+        buttons: [
+          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel', handler: () => fab.close() },
+          {
+            text: this.t.instant('COMMON.CONFIRM'),
+            // needed cause sometimes the language isn't update in the interface (random)
+            handler: () => this.storage.set('language', lang).then(() => window.location.assign(''))
+          }
+        ]
+      })
+      .then(alert => alert.present());
   }
 }

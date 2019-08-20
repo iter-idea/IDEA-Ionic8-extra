@@ -48,8 +48,7 @@ export class IDEAAuthService {
   public login(username: string, password: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       // get a cognito user and try to authenticate
-      this.prepareCognitoUser(username)
-      .authenticateUser(this.prepareAuthDetails(username, password), {
+      this.prepareCognitoUser(username).authenticateUser(this.prepareAuthDetails(username, password), {
         onSuccess: () => resolve(false),
         onFailure: (err: Error) => reject(err),
         newPasswordRequired: () => resolve(true)
@@ -59,9 +58,7 @@ export class IDEAAuthService {
   /**
    * Complete a complete new password flow in the authentication.
    */
-  public confirmNewPassword(
-    username: string, tempPassword: string, newPassword: string
-  ): Promise<void> {
+  public confirmNewPassword(username: string, tempPassword: string, newPassword: string): Promise<void> {
     return new Promise((resolve, reject) => {
       // login with the old password
       const user = this.prepareCognitoUser(username);
@@ -70,20 +67,21 @@ export class IDEAAuthService {
         onFailure: (err: Error) => reject(err),
         newPasswordRequired: () =>
           // complete the new password challenge
-          user
-          .completeNewPasswordChallenge(newPassword, {}, {
-            onSuccess: () => resolve(),
-            onFailure: (err: Error) => reject(err)
-          })
+          user.completeNewPasswordChallenge(
+            newPassword,
+            {},
+            {
+              onSuccess: () => resolve(),
+              onFailure: (err: Error) => reject(err)
+            }
+          )
       });
     });
   }
   /**
    * Register a new user a set its default attributes.
    */
-  public register(
-    username: string, password: string, attributes?: any
-  ): Promise<Cognito.CognitoUser> {
+  public register(username: string, password: string, attributes?: any): Promise<Cognito.CognitoUser> {
     attributes = attributes || {};
     return new Promise((resolve, reject) => {
       // add attributes like the email address and the fullname
@@ -98,9 +96,8 @@ export class IDEAAuthService {
         attrs.push(this.prepareUserAttribute('email', username));
       }
       // register the new user to the pool
-      this.userPool
-      .signUp(username, password, attrs, null,
-        (err: Error, res: Cognito.ISignUpResult) => err ? reject(err) : resolve(res.user)
+      this.userPool.signUp(username, password, attrs, null, (err: Error, res: Cognito.ISignUpResult) =>
+        err ? reject(err) : resolve(res.user)
       );
     });
   }
@@ -109,8 +106,9 @@ export class IDEAAuthService {
    */
   public confirmRegistration(username: string, code: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.prepareCognitoUser(username)
-      .confirmRegistration(code, true, (err: Error) => err ? reject(err) : resolve());
+      this.prepareCognitoUser(username).confirmRegistration(code, true, (err: Error) =>
+        err ? reject(err) : resolve()
+      );
     });
   }
   /**
@@ -118,8 +116,7 @@ export class IDEAAuthService {
    */
   public resendConfirmationCode(username: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.prepareCognitoUser(username)
-      .resendConfirmationCode((err: Error) => err ? reject(err) : resolve());
+      this.prepareCognitoUser(username).resendConfirmationCode((err: Error) => (err ? reject(err) : resolve()));
     });
   }
   /**
@@ -127,21 +124,20 @@ export class IDEAAuthService {
    */
   public logout(dontReload?: boolean): void {
     this.isAuthenticated(false)
-    .then(() => {
-      this.userPool.getCurrentUser().signOut();
-      if (!dontReload) {
-        window.location.assign('');
-      }
-    })
-    .catch(() => window.location.assign(''));
+      .then(() => {
+        this.userPool.getCurrentUser().signOut();
+        if (!dontReload) {
+          window.location.assign('');
+        }
+      })
+      .catch(() => window.location.assign(''));
   }
   /**
    * Send a password reset request.
    */
   public forgotPassword(username: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.prepareCognitoUser(username)
-      .forgotPassword({
+      this.prepareCognitoUser(username).forgotPassword({
         onSuccess: () => resolve(),
         onFailure: (err: Error) => reject(err)
       });
@@ -151,10 +147,9 @@ export class IDEAAuthService {
    * Confirm a new password after a password reset request.
    */
   public confirmPassword(username: string, code: string, newPwd: string): Promise<any> {
-     return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       // get the user and confirm a new password
-      this.prepareCognitoUser(username)
-      .confirmPassword(code, newPwd, {
+      this.prepareCognitoUser(username).confirmPassword(code, newPwd, {
         onSuccess: () => resolve(),
         onFailure: (err: Error) => reject(err)
       });
@@ -165,18 +160,15 @@ export class IDEAAuthService {
    * @param offlineAllowed if set and if offline, skip authentication and retrieve data locally
    * @param getFreshIdTokenOnExp cb function to execute when the idToken is refreshed
    */
-  public isAuthenticated(
-    offlineAllowed: boolean, getFreshIdTokenOnExp?: (freshIdToken: string) => void
-  ): Promise<any> {
+  public isAuthenticated(offlineAllowed: boolean, getFreshIdTokenOnExp?: (freshIdToken: string) => void): Promise<any> {
     return new Promise((resolve, reject) => {
       if (offlineAllowed && !navigator.onLine) {
-        this.storage.get('AuthUserDetails')
-        .then(userDetails => resolve({ idToken: null, userDetails: userDetails }));
+        this.storage.get('AuthUserDetails').then(userDetails => resolve({ idToken: null, userDetails: userDetails }));
         // re-execute the method when back online, so that you can retrieve a token to make requests
         window.addEventListener('online', () =>
           this.isAuthenticated(true, getFreshIdTokenOnExp)
-          // set the new token as if it was refreshed
-          .then(result => getFreshIdTokenOnExp(result.idToken))
+            // set the new token as if it was refreshed
+            .then(result => getFreshIdTokenOnExp(result.idToken))
         );
       } else {
         const user = this.userPool.getCurrentUser();
@@ -194,12 +186,12 @@ export class IDEAAuthService {
             }
             // remap user attributes
             const userDetails: any = [];
-            attributes.forEach((a: Cognito.CognitoUserAttribute) =>
-              userDetails[a.getName()] = a.getValue());
+            attributes.forEach((a: Cognito.CognitoUserAttribute) => (userDetails[a.getName()] = a.getValue()));
             // set a timer to manage the autorefresh of the idToken (through the refreshToken)
-            setTimeout(() => this.refreshSession(
-              user, session.getRefreshToken().getToken(), getFreshIdTokenOnExp
-            ), 15 * 60 * 1000); // every 15 minutes
+            setTimeout(
+              () => this.refreshSession(user, session.getRefreshToken().getToken(), getFreshIdTokenOnExp),
+              15 * 60 * 1000
+            ); // every 15 minutes
             // if offlineAllowed, save data locally, to use it next time we'll be offline
             if (offlineAllowed) {
               this.storage.set('AuthUserDetails', userDetails); // async
@@ -214,23 +206,26 @@ export class IDEAAuthService {
   /**
    * Helper to refresh the session every N minutes.
    */
-  protected refreshSession(user: Cognito.CognitoUser, refreshToken: string,
+  protected refreshSession(
+    user: Cognito.CognitoUser,
+    refreshToken: string,
     callback: (freshIdToken: string) => void
   ): void {
-    user.refreshSession(new Cognito.CognitoRefreshToken({ RefreshToken: refreshToken }),
-    (err: Error, session: Cognito.CognitoUserSession) => {
-      if (err) {
-        // try again in 1 minute
-        setTimeout(() => this.refreshSession(user, refreshToken, callback), 1 * 60 * 1000);
-      } else {
-        // every 15 minutes
-        setTimeout(() => this.refreshSession(user, session.getRefreshToken().getToken(), callback),
-          15 * 60 * 1000);
-        if (callback) {
-          callback(session.getIdToken().getJwtToken());
+    user.refreshSession(
+      new Cognito.CognitoRefreshToken({ RefreshToken: refreshToken }),
+      (err: Error, session: Cognito.CognitoUserSession) => {
+        if (err) {
+          // try again in 1 minute
+          setTimeout(() => this.refreshSession(user, refreshToken, callback), 1 * 60 * 1000);
+        } else {
+          // every 15 minutes
+          setTimeout(() => this.refreshSession(user, session.getRefreshToken().getToken(), callback), 15 * 60 * 1000);
+          if (callback) {
+            callback(session.getIdToken().getJwtToken());
+          }
         }
       }
-    });
+    );
   }
   /**
    * Update the currently logged in user's attributes.
@@ -253,10 +248,9 @@ export class IDEAAuthService {
         if (err) {
           reject(err);
         } else {
-          user.updateAttributes(attrs, (e: Error) => e ? reject(e) : resolve());
+          user.updateAttributes(attrs, (e: Error) => (e ? reject(e) : resolve()));
         }
       });
     });
   }
 }
-

@@ -35,17 +35,18 @@ export class IDEAConfirmPasswordPage {
   public confirmPassword() {
     this.errorMsg = null;
     this.loading.show();
-    this.auth.confirmPassword(this.email, this.code, this.newPassword)
-    .then(() => {
-      this.loading.hide();
-      this.message.success('IDEA.AUTH.PASSWORD_CHANGED');
-      this.goToAuth();
-    })
-    .catch(() => {
-      this.loading.hide();
-      this.errorMsg = this.t.instant('IDEA.AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 });
-      this.message.error(this.errorMsg, true);
-    });
+    this.auth
+      .confirmPassword(this.email, this.code, this.newPassword)
+      .then(() => {
+        this.loading.hide();
+        this.message.success('IDEA.AUTH.PASSWORD_CHANGED');
+        this.goToAuth();
+      })
+      .catch(() => {
+        this.loading.hide();
+        this.errorMsg = this.t.instant('IDEA.AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 });
+        this.message.error(this.errorMsg, true);
+      });
   }
 
   /**

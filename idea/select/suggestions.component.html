@@ -1,20 +1,8 @@
-<ion-header
-  no-border
->
-  <ion-toolbar
-    class="ideaToolbar"
-  >
-    <ion-buttons
-      slot="start"
-    >
-      <ion-button
-        [title]="t.instant('IDEA.SELECT.CLOSE_WITHOUT_SELECTING')"
-        (click)="select()"
-      >
-        <ion-icon
-          slot="icon-only"
-          name="ios-arrow-down"
-        ></ion-icon>
+<ion-header no-border>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t.instant('IDEA.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
+        <ion-icon slot="icon-only" name="ios-arrow-down"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-searchbar
@@ -22,30 +10,16 @@
       [debounce]="100"
       (ionInput)="getSuggestions($event)"
     ></ion-searchbar>
-    <ion-buttons
-      slot="end"
-      *ngIf="!hideClearButton"
-    >
-      <ion-button
-        [title]="t.instant('IDEA.SELECT.CLEAR_SELECTION')"
-        (click)="select({ value: '' })"
-      >
-        <ion-icon
-          slot="icon-only"
-          name="backspace"
-        ></ion-icon>
+    <ion-buttons slot="end" *ngIf="!hideClearButton">
+      <ion-button [title]="t.instant('IDEA.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
+        <ion-icon slot="icon-only" name="backspace"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list
-    class="suggestionsList"
-  >
-    <ion-item
-      lines="none"
-      *ngIf="!suggestions.length && !(allowUnlistedValues && searchbar.value)"
-    >
+  <ion-list class="suggestionsList">
+    <ion-item lines="none" *ngIf="!suggestions.length && !(allowUnlistedValues && searchbar.value)">
       <ion-label>
         <i>
           {{ noElementsFoundText || ('IDEA.SELECT.NO_ELEMENTS_FOUND' | translate) }}
@@ -56,13 +30,11 @@
       tappable
       class="suggestion"
       *ngIf="allowUnlistedValues && searchbar.value"
-      [title]="t.instant('IDEA.SELECT.SELECT_', {suggestion: searchbar.value})"
+      [title]="t.instant('IDEA.SELECT.SELECT_', { suggestion: searchbar.value })"
       (click)="select({ value: searchbar.value })"
     >
       <!-- the "key" class is used for keyboard controls -->
-      <i
-        class="key"
-      >
+      <i class="key">
         {{ searchbar.value }}
       </i>
     </ion-item>
@@ -70,28 +42,17 @@
       tappable
       class="suggestion"
       *ngFor="let suggestion of suggestions"
-      [title]="t.instant('IDEA.SELECT.SELECT_', {suggestion: suggestion.name || suggestion.value})"
+      [title]="t.instant('IDEA.SELECT.SELECT_', { suggestion: suggestion.name || suggestion.value })"
       (click)="select(suggestion)"
     >
       <ion-label>
         <!-- the "key" div is used for keyboard controls -->
-        <div
-          class="key"
-          style="display: none;"
-        >
+        <div class="key" style="display: none;">
           {{ suggestion.value }}
         </div>
-        <ion-text
-          [innerHTML]='(suggestion.name || suggestion.value) | boldprefix:searchbar.value'
-        ></ion-text>
-        <ion-text
-          color="medium"
-        >
-          <p
-            *ngIf="suggestion.name && !hideIdFromUI"
-            [innerHTML]='suggestion.value | boldprefix:searchbar.value'
-          >
-          </p>
+        <ion-text [innerHTML]="suggestion.name || suggestion.value | boldprefix: searchbar.value"></ion-text>
+        <ion-text color="medium">
+          <p *ngIf="suggestion.name && !hideIdFromUI" [innerHTML]="suggestion.value | boldprefix: searchbar.value"></p>
         </ion-text>
       </ion-label>
     </ion-item>

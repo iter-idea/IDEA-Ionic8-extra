@@ -14,7 +14,7 @@ declare const IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
 @Component({
   selector: 'idea-sign-up',
   templateUrl: 'signUp.page.html',
-  styleUrls: ['auth.scss'],
+  styleUrls: ['auth.scss']
 })
 export class IDEASignUpPage {
   // working attributes
@@ -42,8 +42,10 @@ export class IDEASignUpPage {
   }
   public ngOnInit() {
     // if there isn't any agreement to agree to, set the check true
-    this.agreementsCheck = this.t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') ||
-      this.t.instant('IDEA.AUTH.PRIVACY_POLICY_URL') ? this.agreementsCheck : true;
+    this.agreementsCheck =
+      this.t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') || this.t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')
+        ? this.agreementsCheck
+        : true;
   }
 
   /**
@@ -62,18 +64,19 @@ export class IDEASignUpPage {
     }
     // start the registration
     this.loading.show();
-    this.auth.register(this.email, this.password)
-    .then(() => {
-      this.loading.hide();
-      this.message.success('IDEA.AUTH.REGISTRATION_COMPLETED');
-      this.goToAuth();
-    })
-    .catch(err => {
-      this.loading.hide();
-      // show the unexpected error on screen (english)
-      this.errorMsg = err.message;
-      this.message.error('IDEA.AUTH.REGISTRATION_FAILED');
-    });
+    this.auth
+      .register(this.email, this.password)
+      .then(() => {
+        this.loading.hide();
+        this.message.success('IDEA.AUTH.REGISTRATION_COMPLETED');
+        this.goToAuth();
+      })
+      .catch(err => {
+        this.loading.hide();
+        // show the unexpected error on screen (english)
+        this.errorMsg = err.message;
+        this.message.error('IDEA.AUTH.REGISTRATION_FAILED');
+      });
   }
 
   /**

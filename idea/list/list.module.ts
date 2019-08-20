@@ -7,20 +7,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IDEAListComponent } from './list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild()
-  ],
-  declarations: [
-    IDEAListComponent
-  ],
-  entryComponents: [
-    IDEAListComponent
-  ],
-  exports: [
-    IDEAListComponent
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
+  declarations: [IDEAListComponent],
+  entryComponents: [IDEAListComponent],
+  exports: [IDEAListComponent]
 })
 export class IDEAListModule {}
