@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Events } from '@ionic/angular';
 
 import { IDEAErrorReportingService } from './errorReporting.service';
-import { IDEATinCan } from './tinCan.service';
+import { IDEATinCanService } from './tinCan.service';
 
 // from idea-config.js
 declare const IDEA_API_ID: string;
@@ -18,13 +18,13 @@ export const API_URL = `https://${IDEA_API_ID}.execute-api.${IDEA_API_REGION}.am
  *
  * Includes a rundimental cache on GET requests, until Android doesn't support SWs on local files.
  *
- * Note: requires an `AWSAPIAuthToken` variable to be set by IDEATinCan service.
+ * Note: requires an `AWSAPIAuthToken` variable to be set by IDEATinCanService service.
  */
 @Injectable()
 export class IDEAAWSAPIService {
   constructor(
     public http: HttpClient,
-    public tc: IDEATinCan,
+    public tc: IDEATinCanService,
     public storage: Storage,
     public events: Events,
     public errorReporting: IDEAErrorReportingService

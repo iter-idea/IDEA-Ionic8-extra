@@ -6,7 +6,7 @@ import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
-import { IDEATinCan } from '../tinCan.service';
+import { IDEATinCanService } from '../tinCan.service';
 
 // from idea-config.js
 declare const IDEA_APP_TITLE: string;
@@ -32,7 +32,7 @@ export class IDEASignInPage {
 
   constructor(
     public navCtrl: NavController,
-    public tc: IDEATinCan,
+    public tc: IDEATinCanService,
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public extBrowser: IDEAExtBrowserService,

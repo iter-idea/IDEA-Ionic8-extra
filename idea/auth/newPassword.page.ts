@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
-import { IDEATinCan } from '../tinCan.service';
+import { IDEATinCanService } from '../tinCan.service';
 
 @Component({
   selector: 'idea-new-password',
@@ -20,7 +20,7 @@ export class IDEANewPasswordPage {
 
   constructor(
     public navCtrl: NavController,
-    public tc: IDEATinCan,
+    public tc: IDEATinCanService,
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public auth: IDEAAuthService,

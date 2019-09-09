@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class IDEATinCan {
+export class IDEATinCanService {
   protected data: any;
 
   constructor() {

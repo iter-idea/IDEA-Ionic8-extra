@@ -10,6 +10,7 @@ export * from './select/select.module';
 export * from './signature/signature.module';
 
 export * from './AWSAPI.service';
+export * from './cachedResources.service';
 export * from './errorReporting.service';
 export * from './extBrowser.service';
 export * from './loading.service';
