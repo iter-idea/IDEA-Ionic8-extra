@@ -14,21 +14,21 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid fixed no-padding>
+  <ion-grid fixed class="ion-no-padding">
     <ion-row>
       <h1 class="headerLabel">
         {{ 'IDEA.CALENDAR.SET_DATE' | translate }}
       </h1>
     </ion-row>
     <ion-row style="margin-bottom: 8px">
-      <ion-col text-center no-padding [size]="5">
-        <ion-row align-items-center justify-content-center>
-          <ion-col text-right no-padding [size]="3">
+      <ion-col class="ion-text-center ion-no-padding" [size]="5">
+        <ion-row class="ion-align-items-center ion-justify-content-center">
+          <ion-col class="ion-text-right ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addYears(-1)">
               <ion-icon slot="icon-only" name="ios-arrow-back"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col text-center no-padding tappable [size]="6">
+          <ion-col class="ion-text-center ion-no-padding" tappable [size]="6">
             <ion-input
               type="text"
               [placeholder]="t.instant('IDEA.CALENDAR.YEAR')"
@@ -38,24 +38,24 @@
             >
             </ion-input>
           </ion-col>
-          <ion-col text-left no-padding [size]="3">
+          <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addYears(+1)">
               <ion-icon slot="icon-only" name="ios-arrow-forward"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
       </ion-col>
-      <ion-col text-center no-padding [size]="7">
-        <ion-row align-items-center>
-          <ion-col text-right no-padding [size]="3">
+      <ion-col class="ion-text-center ion-no-padding" [size]="7">
+        <ion-row class="ion-align-items-center">
+          <ion-col class="ion-text-right ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(-1)">
               <ion-icon slot="icon-only" name="ios-arrow-back"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col text-center no-padding tappable [size]="6" (click)="showMonths()">
+          <ion-col class="ion-text-center ion-no-padding" tappable [size]="6" (click)="showMonths()">
             {{ refDate.format('MMMM') }}
           </ion-col>
-          <ion-col text-left no-padding [size]="3">
+          <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(+1)">
               <ion-icon slot="icon-only" name="ios-arrow-forward"></ion-icon>
             </ion-button>
@@ -64,12 +64,12 @@
       </ion-col>
     </ion-row>
     <ion-row style="margin-bottom: 8px" class="headerLabel">
-      <ion-col text-center no-padding *ngFor="let ddd of weekDays">
+      <ion-col class="ion-text-center ion-no-padding" *ngFor="let ddd of weekDays">
         {{ ddd }}
       </ion-col>
     </ion-row>
-    <ion-row align-items-center *ngFor="let row of calendarGrid; let i = index">
-      <ion-col text-center no-padding *ngFor="let col of row; let j = index">
+    <ion-row class="ion-align-items-center" *ngFor="let row of calendarGrid; let i = index">
+      <ion-col class="ion-text-center ion-no-padding" *ngFor="let col of row; let j = index">
         <ion-button
           size="small"
           shape="round"
@@ -98,10 +98,10 @@
         {{ 'IDEA.CALENDAR.SET_TIME' | translate }}
       </h1>
     </ion-row>
-    <ion-row align-items-center *ngIf="timePicker">
-      <ion-col no-padding [size]="7">
+    <ion-row class="ion-align-items-center" *ngIf="timePicker">
+      <ion-col class="ion-no-padding" [size]="7">
         <ion-row>
-          <ion-col text-center no-padding [size]="2" *ngFor="let hour of hours">
+          <ion-col class="ion-text-center ion-no-padding" [size]="2" *ngFor="let hour of hours">
             <ion-button
               size="small"
               shape="round"
@@ -114,12 +114,12 @@
           </ion-col>
         </ion-row>
       </ion-col>
-      <ion-col text-center no-padding [size]="1">
+      <ion-col class="ion-text-center ion-no-padding" [size]="1">
         :
       </ion-col>
-      <ion-col no-padding [size]="4">
+      <ion-col class="ion-no-padding" [size]="4">
         <ion-row>
-          <ion-col text-center no-padding [size]="4" *ngFor="let minute of minutes">
+          <ion-col class="ion-text-center ion-no-padding" [size]="4" *ngFor="let minute of minutes">
             <ion-button
               size="small"
               shape="round"
@@ -137,7 +137,7 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar tappable class="ideaToolbar" (click)="save()">
-    <ion-title text-center>
+    <ion-title class="ion-text-center">
       <ion-icon name="checkmark"></ion-icon>
     </ion-title>
   </ion-toolbar>

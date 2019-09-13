@@ -11,17 +11,15 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list padding>
+  <ion-list class="ion-padding">
     <ion-row
-      justify-content-center
-      align-items-end
-      class="languageSelector"
+      class="languageSelector ion-justify-content-center ion-align-items-end"
       *ngIf="defaultLanguage && availableLanguages.length > 1"
     >
       <ion-col
-        text-center
         tappable
         size="1"
+        class="ion-text-center"
         *ngFor="let l of availableLanguages"
         [class.current]="l === currentLanguage"
         (click)="currentLanguage = l"
@@ -97,7 +95,7 @@
       </ion-select>
     </ion-item>
     <ion-row>
-      <ion-col text-right padding>
+      <ion-col class="ion-text-right ion-padding">
         <ion-button [title]="t.instant('IDEA.CUSTOM_FIELDS.UPDATE_FIELD')" (click)="save()">
           {{ 'IDEA.CUSTOM_FIELDS.SAVE' | translate }}
           <ion-icon slot="end" name="checkmark"></ion-icon>

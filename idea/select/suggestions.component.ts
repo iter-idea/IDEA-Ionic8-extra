@@ -38,7 +38,7 @@ export class IDEASuggestionsComponent {
   @Input() public hideClearButton: boolean;
 
   public suggestions: Array<Suggestion>;
-  @ViewChild(IonSearchbar) public searchbar: IonSearchbar;
+  @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
 
   constructor(public modalCtrl: ModalController, public t: TranslateService) {}
   public ngOnInit() {

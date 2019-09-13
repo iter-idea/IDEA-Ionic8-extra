@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['checks.component.scss']
 })
 export class IDEAChecksComponent {
-  @ViewChild(IonSearchbar) public searchbar: IonSearchbar;
+  @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
   /**
    * It should be read only until the component closure.
    */
