@@ -15,6 +15,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - List
 - Markdown Editor (MDE)
 - Signature
+- Downloader
 - Tin can service
 - External browser service
 - AWSAPI service
