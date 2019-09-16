@@ -4,7 +4,7 @@ import { IDEAExtBrowserService } from '../extBrowser.service';
 
 /**
  * === How to use this component ===
- *   1. Place `<idea-download-button [download]="download"></idea-download-button>`
+ *   1. Place `<idea-downloader [download]="download"></idea-downloader>`
  *    in the bottom of a page or component template, outside the `ion-content tag`.
  *   2. Create a new attribute in the component `public download: IDEADownloaderURL;`.
  *   3. Each time we want to download a file, istantiate the attribute `this.download = new IDEADownloaderURL(url)`.
