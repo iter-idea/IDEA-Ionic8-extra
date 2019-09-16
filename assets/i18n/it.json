@@ -160,6 +160,9 @@
       "DELETE_ELEMENT": "Elimina elemento",
       "SAVE_AND_CLOSE": "Salva e chiudi",
       "CANCEL_AND_CLOSE": "Annulla cambiamenti e chiudi"
+    },
+    "DOWNLOAD": {
+      "TAP_TO_DOWNLOAD": "Tocca per scaricare il file"
     }
   }
 }

@@ -160,6 +160,9 @@
       "DELETE_ELEMENT": "Delete element",
       "SAVE_AND_CLOSE": "Save and close",
       "CANCEL_AND_CLOSE": "Cancel and close"
+    },
+    "DOWNLOAD": {
+      "TAP_TO_DOWNLOAD": "Tap to download the file"
     }
   }
 }
