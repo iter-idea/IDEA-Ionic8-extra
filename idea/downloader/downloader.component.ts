@@ -6,14 +6,14 @@ import { IDEAExtBrowserService } from '../extBrowser.service';
  * === How to use this component ===
  *   1. Place `<idea-download-button [download]="download"></idea-download-button>`
  *    in the bottom of a page or component template, outside the `ion-content tag`.
- *   2. Create a new attribute in the component `public download: IDEADownloadURL;`.
- *   3. Each time we want to download a file, istantiate the attribute `this.download = new IDEADownloadURL(url)`.
+ *   2. Create a new attribute in the component `public download: IDEADownloaderURL;`.
+ *   3. Each time we want to download a file, istantiate the attribute `this.download = new IDEADownloaderURL(url)`.
  */
 
 /**
  * Helper class to trigger a download.
  */
-export class IDEADownloadURL {
+export class IDEADownloaderURL {
   public url: string;
   public target: string;
 
@@ -24,7 +24,7 @@ export class IDEADownloadURL {
 }
 
 @Component({
-  selector: 'idea-download-button',
+  selector: 'idea-downloader',
   templateUrl: 'downloader.component.html',
   styleUrls: ['downloader.component.scss']
 })
@@ -40,7 +40,7 @@ export class IDEADownloaderComponent {
   /**
    * The deteail to the file to download. When the URL it's set, the download button appear.
    */
-  @Input() public download: IDEADownloadURL;
+  @Input() public download: IDEADownloaderURL;
   /**
    * The number of seconds after which the button should disappear. 0 = don't hide.
    */
@@ -82,7 +82,7 @@ export class IDEADownloaderComponent {
   }
 
   public ngOnChanges(changes: SimpleChanges) {
-    // when a new link is passed to the component (`download = new IDEADownloadURL(url)`), set the behaviour
+    // when a new link is passed to the component, set the behaviour
     if (changes['download'].currentValue) {
       // auto-hide the button after the number of seconds specified
       if (this.hideAfterSeconds) setTimeout(() => (this.download.url = null), this.hideAfterSeconds * 1000);

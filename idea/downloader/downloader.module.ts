@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IDEADownloaderComponent, IDEADownloadURL } from './downloader.component';
+import { IDEADownloaderComponent } from './downloader.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
   declarations: [IDEADownloaderComponent],
   entryComponents: [IDEADownloaderComponent],
-  exports: [IDEADownloaderComponent, IDEADownloadURL]
+  exports: [IDEADownloaderComponent]
 })
 export class IDEADownloaderModule {}
