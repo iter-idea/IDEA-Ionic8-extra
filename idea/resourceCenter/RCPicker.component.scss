@@ -1,0 +1,18 @@
+.resources {
+  ion-button[slot='start'],
+  ion-icon[slot='start'] {
+    margin-right: 10px;
+  }
+  .oldVersionAlert {
+    font-size: 0.8em;
+    line-height: 1em;
+    font-style: italic;
+    ion-text {
+      color: var(--ion-color-primary);
+      font-weight: 500;
+    }
+  }
+}
+.noResources {
+  font-style: italic;
+}

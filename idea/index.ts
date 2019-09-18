@@ -7,6 +7,7 @@ export * from './downloader/downloader.module';
 export * from './languagePicker/languagePicker.module';
 export * from './list/list.module';
 export * from './mde/mde.module';
+export * from './resourceCenter/RC.module';
 export * from './select/select.module';
 export * from './signature/signature.module';
 

@@ -1,0 +1,49 @@
+<ion-item class="resources" [lines]="lines" *ngFor="let r of attachedResources">
+  <ion-button fill="clear" size="small" slot="start" (click)="openResource(r, true)">
+    <ion-icon name="open" slot="icon-only" size="small"></ion-icon>
+  </ion-button>
+  <ion-icon slot="start" *ngIf="!editMode" [name]="getFormatIcon(r.format)" [title]="r.format"></ion-icon>
+  <ion-input
+    *ngIf="editMode"
+    [(ngModel)]="r.name"
+    [placeholder]="r.originalName"
+    (ionBlur)="$event.target.value = $event.target.value || t.instant('IDEA.RESOURCE_CENTER.NO_NAME')"
+  ></ion-input>
+  <ion-label *ngIf="!editMode">
+    {{ r.name }}
+    <p>{{ r.originalName }}.{{ r.format }}</p>
+    <p class="ion-text-wrap oldVersionAlert" *ngIf="isResourceNewerVersionAvailable(r)">
+      {{ 'IDEA.RESOURCE_CENTER.VERSION_ATTACHED_IS_OLDER' | translate }}.
+      <ion-text tappable (click)="openResource(r)">{{ 'IDEA.RESOURCE_CENTER.OPEN_OLD_VERSION' | translate }}</ion-text>
+    </p>
+  </ion-label>
+  <ion-button
+    *ngIf="editMode"
+    slot="end"
+    color="danger"
+    fill="clear"
+    [title]="t.instant('IDEA.RESOURCE_CENTER.REMOVE_RESOURCE')"
+    (click)="removeResource(r)"
+  >
+    <ion-icon name="remove" slot="icon-only"></ion-icon>
+  </ion-button>
+</ion-item>
+<!----->
+<idea-downloader [download]="download" [horizontal]="'end'" [size]="'small'"></idea-downloader>
+<!----->
+<ion-item lines="none" class="noResources" *ngIf="!editMode && !attachedResources?.length">
+  <ion-label>
+    {{ 'IDEA.RESOURCE_CENTER.NO_RESOURCES' | translate }}
+  </ion-label>
+</ion-item>
+<!----->
+<idea-select
+  *ngIf="editMode && resourcesSuggestions"
+  [data]="resourcesSuggestions"
+  [placeholder]="t.instant('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
+  [searchPlaceholder]="t.instant('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
+  [lines]="'none'"
+  [clearValueAfterSelection]="true"
+  [hideIdFromUI]="true"
+  (select)="$event ? addResource($event.value) : null"
+></idea-select>

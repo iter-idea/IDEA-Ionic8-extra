@@ -163,6 +163,17 @@
     },
     "DOWNLOAD": {
       "TAP_TO_DOWNLOAD": "Tap to download the file"
+    },
+    "RESOURCE_CENTER": {
+      "NO_RESOURCES": "No resources",
+      "ADD_A_RESOURCE": "Add a resource",
+      "REMOVE_RESOURCE": "Remove the resource",
+      "ERROR_OPENING_RESOURCE": "Error while opening the resource",
+      "NO_NAME": "No name",
+      "VERSION_ATTACHED_IS_OLDER": "The resourse has been updated since it was attached",
+      "OPEN_OLD_VERSION": "Open old version",
+      "NO_FOLDER_SELECTED": "No folder selected",
+      "SELECT_FOLDER": "Select a folder"
     }
   }
 }

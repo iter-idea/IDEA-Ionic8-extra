@@ -1,0 +1,10 @@
+<idea-select
+  [data]="foldersSuggestions"
+  [description]="folder?.name || t.instant('IDEA.RESOURCE_CENTER.NO_FOLDER_SELECTED')"
+  [placeholder]="t.instant('IDEA.RESOURCE_CENTER.SELECT_FOLDER')"
+  [searchPlaceholder]="t.instant('IDEA.RESOURCE_CENTER.SELECT_FOLDER')"
+  [lines]="lines"
+  [hideIdFromUI]="true"
+  [disabled]="!editMode"
+  (select)="$event ? setFolder($event?.value) : null"
+></idea-select>
