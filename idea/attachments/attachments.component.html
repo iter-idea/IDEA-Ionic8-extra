@@ -1,4 +1,9 @@
-<ion-item class="attachments" [lines]="lines" *ngFor="let att of attachments">
+<ion-item
+  class="attachments"
+  [class.fieldHasError]="hasFieldAnError('attachments[' + index + '].attachmentId')"
+  [lines]="lines"
+  *ngFor="let att of attachments; let index = index"
+>
   <ion-button fill="clear" size="small" slot="start" *ngIf="att.attachmentId" (click)="openAttachment(att)">
     <ion-icon name="open" slot="icon-only" size="small"></ion-icon>
   </ion-button>
@@ -17,8 +22,9 @@
     {{ 'IDEA.ATTACHMENTS.UPLOADING_ATTACHMENT_WARNING' | translate }}
   </ion-label>
   <ion-label *ngIf="!editMode"> {{ att.name }}.{{ att.format }} </ion-label>
+  <ion-spinner slot="end" *ngIf="!att.attachmentId" [title]="t.instant('IDEA.ATTACHMENTS.UPLOADING')"></ion-spinner>
   <ion-button
-    *ngIf="editMode && att.attachmentId"
+    *ngIf="editMode"
     slot="end"
     color="danger"
     fill="clear"
@@ -27,7 +33,6 @@
   >
     <ion-icon name="remove" slot="icon-only"></ion-icon>
   </ion-button>
-  <ion-spinner *ngIf="!att.attachmentId" [title]="t.instant('IDEA.ATTACHMENTS.UPLOADING')"></ion-spinner>
 </ion-item>
 <!----->
 <idea-downloader [download]="download" [horizontal]="'end'" [size]="'small'"></idea-downloader>

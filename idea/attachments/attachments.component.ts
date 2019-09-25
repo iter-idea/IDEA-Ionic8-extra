@@ -31,6 +31,10 @@ export class IDEAttachmentsComponent {
    */
   @Input() public editMode: boolean;
   /**
+   * Show errors as reported from the parent component.
+   */
+  @Input() public errors: Set<string>;
+  /**
    * The lines attribute of the item.
    */
   @Input() public lines: string;
@@ -60,6 +64,7 @@ export class IDEAttachmentsComponent {
     this.attachments = null;
     this.editMode = false;
     this.lines = 'none';
+    this.errors = new Set<string>();
     this.download = null;
     this.uploadErrors = new Array<string>();
   }
@@ -77,6 +82,13 @@ export class IDEAttachmentsComponent {
    */
   public browseFiles() {
     document.getElementById('attachmentPicker').click();
+  }
+
+  /**
+   * Set the support array to display errors in the UI.
+   */
+  public hasFieldAnError(field: string): boolean {
+    return this.errors.has(field);
   }
 
   /**
