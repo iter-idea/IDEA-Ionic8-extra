@@ -16,6 +16,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Markdown Editor (MDE)
 - Signature
 - Downloader
+- Duration
 - Resource Center
 - Tin can service
 - External browser service

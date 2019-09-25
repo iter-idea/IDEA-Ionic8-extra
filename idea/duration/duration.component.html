@@ -1,0 +1,42 @@
+<ion-item class="durationItem" [lines]="lines || 'full'" [title]="title || label || value">
+  <ion-icon slot="start" *ngIf="icon" [name]="icon"></ion-icon>
+  <ion-label position="stacked" *ngIf="!icon && label">
+    {{ label }}
+    <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
+  </ion-label>
+  <ion-label class="value">
+    <ion-input
+      type="number"
+      min="0"
+      max="23"
+      inputmode="numeric"
+      [disabled]="disabled"
+      [(ngModel)]="hours"
+      (ionChange)="setDuration('hours')"
+    ></ion-input>
+    <ion-text>{{ ((shortLabels ? 'IDEA.DURATION.HH' : 'IDEA.DURATION.HOURS') | translate).toLowerCase() }}</ion-text>
+    <ion-input
+      type="number"
+      min="0"
+      max="59"
+      inputmode="numeric"
+      [disabled]="disabled"
+      [(ngModel)]="minutes"
+      (ionChange)="setDuration('minutes')"
+    ></ion-input>
+    <ion-text>{{ ((shortLabels ? 'IDEA.DURATION.MM' : 'IDEA.DURATION.MINUTES') | translate).toLowerCase() }}</ion-text>
+    <ion-input
+      type="number"
+      min="0"
+      max="59"
+      inputmode="numeric"
+      *ngIf="!hideSeconds"
+      [disabled]="disabled"
+      [(ngModel)]="seconds"
+      (ionChange)="setDuration('seconds')"
+    ></ion-input>
+    <ion-text *ngIf="!hideSeconds">
+      {{ ((shortLabels ? 'IDEA.DURATION.SS' : 'IDEA.DURATION.SECONDS') | translate).toLowerCase() }}
+    </ion-text>
+  </ion-label>
+</ion-item>
