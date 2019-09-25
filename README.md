@@ -6,6 +6,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 
 ## Includes
 
+- Attachments
 - Auth flow (sign in, sign up, etc.) through Cognito
 - Select
 - Checker

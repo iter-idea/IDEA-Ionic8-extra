@@ -182,6 +182,17 @@
       "MM": "mm",
       "SECONDS": "Seconds",
       "SS": "ss"
+    },
+    "ATTACHMENTS": {
+      "ERROR_OPENING_ATTACHMENT": "Error while opening the attachment",
+      "NO_NAME": "No name",
+      "REMOVE_ATTACHMENT": "Remove the attachment",
+      "NO_ATTACHMENT": "No attachment",
+      "ADD_ATTACHMENT": "Add an attachment",
+      "ERROR_UPLOADING_ATTACHMENT": "Error while uploading the attachment",
+      "HIDE_ERROR": "Hide the error",
+      "UPLOADING": "Uploading...",
+      "UPLOADING_ATTACHMENT_WARNING": "Loading the attachment, don't change page"
     }
   }
 }

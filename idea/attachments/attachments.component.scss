@@ -1,0 +1,21 @@
+.attachments {
+  ion-button[slot='start'],
+  ion-icon[slot='start'] {
+    margin-right: 10px;
+  }
+  .loadingWarning {
+    font-style: italic;
+    color: var(--ion-color-medium);
+  }
+}
+.noAttachments {
+  font-style: italic;
+}
+.selectIcon {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--ion-color-medium);
+}
+.selectable {
+  cursor: pointer;
+}

@@ -1,5 +1,5 @@
+export * from './attachments/attachments.module';
 export * from './auth/auth.module';
-export * from './auth/auth.service';
 export * from './calendar/calendar.module';
 export * from './checker/checker.module';
 export * from './customFields/customFields.module';
@@ -12,6 +12,7 @@ export * from './resourceCenter/RC.module';
 export * from './select/select.module';
 export * from './signature/signature.module';
 
+export * from './auth/auth.service';
 export * from './AWSAPI.service';
 export * from './cachedResources.service';
 export * from './errorReporting.service';

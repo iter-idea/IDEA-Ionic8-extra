@@ -182,6 +182,17 @@
       "MM": "min",
       "SECONDS": "Secondi",
       "SS": "sec"
+    },
+    "ATTACHMENTS": {
+      "ERROR_OPENING_ATTACHMENT": "Errore nell'apertura dell'allegato",
+      "NO_NAME": "Senza nome",
+      "REMOVE_ATTACHMENT": "Rimuovi l'allegato",
+      "NO_ATTACHMENT": "Nessun allegato",
+      "ADD_ATTACHMENT": "Aggiungi un allegato",
+      "ERROR_UPLOADING_ATTACHMENT": "Errore nel caricamento dell'allegato",
+      "HIDE_ERROR": "Nascondi l'errore",
+      "UPLOADING": "Caricamento...",
+      "UPLOADING_ATTACHMENT_WARNING": "Caricando l'allegato, non cambiare pagina"
     }
   }
 }

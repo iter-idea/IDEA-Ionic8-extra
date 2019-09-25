@@ -1,0 +1,70 @@
+<ion-item class="attachments" [lines]="lines" *ngFor="let att of attachments">
+  <ion-button fill="clear" size="small" slot="start" *ngIf="att.attachmentId" (click)="openAttachment(att)">
+    <ion-icon name="open" slot="icon-only" size="small"></ion-icon>
+  </ion-button>
+  <ion-icon
+    slot="start"
+    *ngIf="!editMode && att.attachmentId"
+    [name]="getFormatIcon(att.format)"
+    [title]="att.format"
+  ></ion-icon>
+  <ion-input
+    *ngIf="editMode && att.attachmentId"
+    [(ngModel)]="att.name"
+    (ionBlur)="$event.target.value = $event.target.value || t.instant('IDEA.ATTACHMENTS.NO_NAME')"
+  ></ion-input>
+  <ion-label class="loadingWarning" *ngIf="editMode && !att.attachmentId">
+    {{ 'IDEA.ATTACHMENTS.UPLOADING_ATTACHMENT_WARNING' | translate }}
+  </ion-label>
+  <ion-label *ngIf="!editMode"> {{ att.name }}.{{ att.format }} </ion-label>
+  <ion-button
+    *ngIf="editMode && att.attachmentId"
+    slot="end"
+    color="danger"
+    fill="clear"
+    [title]="t.instant('IDEA.ATTACHMENTS.REMOVE_ATTACHMENT')"
+    (click)="removeAttachment(att)"
+  >
+    <ion-icon name="remove" slot="icon-only"></ion-icon>
+  </ion-button>
+  <ion-spinner *ngIf="!att.attachmentId" [title]="t.instant('IDEA.ATTACHMENTS.UPLOADING')"></ion-spinner>
+</ion-item>
+<!----->
+<idea-downloader [download]="download" [horizontal]="'end'" [size]="'small'"></idea-downloader>
+<!----->
+<ion-item lines="none" class="noAttachments" *ngIf="!editMode && !attachments?.length">
+  <ion-label>
+    {{ 'IDEA.ATTACHMENTS.NO_ATTACHMENT' | translate }}
+  </ion-label>
+</ion-item>
+<!----->
+<div *ngIf="editMode">
+  <ion-item class="attachments" [lines]="lines" *ngFor="let err of uploadErrors">
+    <ion-icon name="alert" slot="start" color="danger"></ion-icon>
+    <ion-label color="danger">
+      {{ err }}
+      <p>{{ 'IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT' | translate }}</p>
+    </ion-label>
+    <ion-button
+      slot="end"
+      color="danger"
+      fill="clear"
+      [title]="t.instant('IDEA.ATTACHMENTS.HIDE_ERROR')"
+      (click)="uploadErrors.splice(uploadErrors.indexOf(err), 1)"
+    >
+      <ion-icon name="close" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-item>
+</div>
+<!----->
+<ion-item lines="none" class="selectable" *ngIf="editMode" (click)="browseFiles()">
+  <ion-label color="medium">{{ 'IDEA.ATTACHMENTS.ADD_ATTACHMENT' | translate }}</ion-label>
+  <input id="attachmentPicker" type="file" multiple style="display: none" (change)="addAttachment($event)" />
+  <ion-icon
+    slot="end"
+    name="md-arrow-dropdown"
+    class="selectIcon"
+    *ngIf="editMode"
+    [class.selectable]="editMode"
+  ></ion-icon>
+</ion-item>

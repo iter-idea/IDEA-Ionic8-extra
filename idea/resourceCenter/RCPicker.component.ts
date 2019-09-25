@@ -113,8 +113,8 @@ export class IDEARCPickerComponent {
       resourceId: resource.resourceId,
       params
     })
-      .then((res: any) => (this.download = new IDEADownloaderURL(res.url)))
-      .catch(() => this.message.error(this.t.instant(`IDEA.RESOURCE_CENTER.ERROR_OPENING_RESOURCE`)))
+      .then((res: IdeaX.SignedURL) => (this.download = new IDEADownloaderURL(res.url)))
+      .catch(() => this.message.error('IDEA.RESOURCE_CENTER.ERROR_OPENING_RESOURCE'))
       .finally(() => this.loading.hide());
   }
 
