@@ -12,7 +12,7 @@
   <ion-label *ngIf="!editMode">
     {{ r.name }}
     <p>{{ r.originalName }}.{{ r.format }}</p>
-    <p class="ion-text-wrap oldVersionAlert" *ngIf="isResourceNewerVersionAvailable(r)">
+    <p class="ion-text-wrap oldVersionAlert" *ngIf="resources && isResourceNewerVersionAvailable(r)">
       {{ 'IDEA.RESOURCE_CENTER.VERSION_ATTACHED_IS_OLDER' | translate }}.
       <ion-text tappable (click)="openResource(r)">{{ 'IDEA.RESOURCE_CENTER.OPEN_OLD_VERSION' | translate }}</ion-text>
     </p>
