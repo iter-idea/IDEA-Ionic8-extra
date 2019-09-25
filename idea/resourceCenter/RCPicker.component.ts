@@ -104,7 +104,7 @@ export class IDEARCPickerComponent {
   /**
    * Request the attached resource and open it.
    */
-  public openResource(resource: IdeaX.RCAttachedResource, latestVersion: boolean) {
+  public openResource(resource: IdeaX.RCAttachedResource, latestVersion?: boolean) {
     if (!resource) return;
     const params: any = {};
     if (!latestVersion) params.version = resource.version;

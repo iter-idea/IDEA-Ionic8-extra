@@ -80,7 +80,7 @@ export class IDEASuggestionsComponent {
    *    - selection === null -> clear
    *    - otherwise, a suggestion was selected
    */
-  public select(selection?: Suggestion) {
+  public select(selection?: Suggestion | any) {
     this.modalCtrl.dismiss(selection);
   }
 

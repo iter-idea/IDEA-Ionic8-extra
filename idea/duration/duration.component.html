@@ -1,4 +1,4 @@
-<ion-item class="durationItem" [lines]="lines || 'full'" [title]="title || label || value">
+<ion-item class="durationItem" [lines]="lines || 'full'" [title]="title || label">
   <ion-icon slot="start" *ngIf="icon" [name]="icon"></ion-icon>
   <ion-label position="stacked" *ngIf="!icon && label">
     {{ label }}
