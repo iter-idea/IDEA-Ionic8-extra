@@ -46,7 +46,7 @@ export class IDEADurationComponent {
   /**
    * On change event. It emits a number of seconds representing the duration.
    */
-  @Output() public change = new EventEmitter<number>();
+  @Output() public set = new EventEmitter<number>();
 
   /**
    * The hour part of the duration.
@@ -71,7 +71,7 @@ export class IDEADurationComponent {
       const val = Moment.duration(this.default, 'seconds');
       this.hours = val.hours();
       this.minutes = val.minutes();
-      this.seconds = val.seconds();
+      this.seconds = this.hideSeconds ? 0 : val.seconds();
     }
   }
 
@@ -90,9 +90,10 @@ export class IDEADurationComponent {
         break;
       case 'seconds':
         const ss = Number(this.seconds) || 0;
-        this.seconds = ss > 59 ? 59 : ss < 0 ? 0 : ss;
+        if (this.hideSeconds) this.seconds = 0;
+        else this.seconds = ss > 59 ? 59 : ss < 0 ? 0 : ss;
         break;
     }
-    this.change.emit(this.hours * 3600 + this.minutes * 60 + this.seconds);
+    this.set.emit(this.hours * 3600 + this.minutes * 60 + this.seconds);
   }
 }
