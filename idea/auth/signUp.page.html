@@ -54,7 +54,7 @@
         </ion-item>
         <ion-row
           class="agreementsAcceptanceRow"
-          *ngIf="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') || t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
+          *ngIf="t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
         >
           <ion-col>
             <ion-checkbox
@@ -67,14 +67,16 @@
               ion-text
               color="primary"
               target="_blank"
-              *ngIf="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+              *ngIf="t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
               [title]="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_HINT')"
-              [href]="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+              [href]="t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
             >
               {{ 'IDEA.AUTH.TERMS_AND_CONDITIONS' | translate }}
             </a>
             <ion-text
-              *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL') && t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+              *ngIf="
+                t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL') && t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
+              "
             >
               &
             </ion-text>
@@ -82,9 +84,9 @@
               ion-text
               color="primary"
               target="_blank"
-              *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
+              *ngIf="t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
               [title]="t.instant('IDEA.AUTH.PRIVACY_POLICY_HINT')"
-              [href]="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
+              [href]="t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
             >
               {{ 'IDEA.AUTH.PRIVACY_POLICY' | translate }}
             </a>

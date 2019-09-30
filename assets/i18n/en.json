@@ -1,13 +1,12 @@
 {
   "IDEA": {
-    "TAGLINE": null,
     "UPDATE": {
       "UPDATE_AVAILABLE": "An update is available",
       "CLOSE_THE_APP_TO_UPDATE": "Close completely the app or the browser to install the update",
       "GOT_IT": "Got it"
     },
     "AUTH": {
-      "SERVICE_LOGO": "The service logo",
+      "SERVICE_LOGO": "The service's logo",
       "EMAIL": "Email",
       "EMAIL_HINT": "The email address you used to register",
       "REGISTRATION_EMAIL_HINT": "Choose an email address to use",
@@ -69,10 +68,8 @@
       "AGREEMENTS_CHECK_LOGIN": "By logging in, I accept",
       "PRIVACY_POLICY": "Privacy Policy",
       "PRIVACY_POLICY_HINT": "Read our Privacy Policy",
-      "PRIVACY_POLICY_URL": "https://www.iubenda.com/privacy-policy/21156025",
       "TERMS_AND_CONDITIONS": "Terms and Conditions",
-      "TERMS_AND_CONDITIONS_HINT": "Read our Terms and Conditions",
-      "TERMS_AND_CONDITIONS_URL": ""
+      "TERMS_AND_CONDITIONS_HINT": "Read our Terms and Conditions"
     },
     "CALENDAR": {
       "RESET": "Reset",
@@ -206,5 +203,10 @@
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copy and paste the following token in the previous page to complete the configuration: {{token}}",
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Error during the integration of Trello; try again."
     }
+  },
+  "IDEA_VARIABLES": {
+    "TAGLINE": null,
+    "PRIVACY_POLICY_URL": "",
+    "TERMS_AND_CONDITIONS_URL": ""
   }
 }

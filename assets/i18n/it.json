@@ -1,6 +1,5 @@
 {
   "IDEA": {
-    "TAGLINE": null,
     "UPDATE": {
       "UPDATE_AVAILABLE": "Un aggiornamento è disponibile",
       "CLOSE_THE_APP_TO_UPDATE": "Chiudi completamente l'app o il browser per installare l'aggiornamento",
@@ -69,10 +68,8 @@
       "AGREEMENTS_CHECK_LOGIN": "Accedendo, accetto",
       "PRIVACY_POLICY": "Politica sulla Privacy",
       "PRIVACY_POLICY_HINT": "Leggi la nostra Politica sulla Privacy",
-      "PRIVACY_POLICY_URL": "https://www.iubenda.com/privacy-policy/81892968",
       "TERMS_AND_CONDITIONS": "Termini e Condizioni",
-      "TERMS_AND_CONDITIONS_HINT": "Leggi il nostro documento di Termini e Condizioni",
-      "TERMS_AND_CONDITIONS_URL": ""
+      "TERMS_AND_CONDITIONS_HINT": "Leggi il nostro documento di Termini e Condizioni"
     },
     "CALENDAR": {
       "RESET": "Reset",
@@ -206,5 +203,10 @@
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copia e incolla il seguente token nella schermata precedente per completare la configurazione: {{token}}",
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di Trello; riprovare."
     }
+  },
+  "IDEA_VARIABLES": {
+    "TAGLINE": null,
+    "PRIVACY_POLICY_URL": "",
+    "TERMS_AND_CONDITIONS_URL": ""
   }
 }

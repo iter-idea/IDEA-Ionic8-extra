@@ -43,7 +43,7 @@ export class IDEASignUpPage {
   public ngOnInit() {
     // if there isn't any agreement to agree to, set the check true
     this.agreementsCheck =
-      this.t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') || this.t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')
+      this.t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || this.t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')
         ? this.agreementsCheck
         : true;
   }

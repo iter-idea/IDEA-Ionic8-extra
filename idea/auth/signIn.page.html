@@ -7,8 +7,8 @@
           <ion-card-title color="primary" *ngIf="title">
             {{ title }}
           </ion-card-title>
-          <ion-card-subtitle *ngIf="t.instant('TAGLINE')">
-            {{ 'IDEA.TAGLINE' | translate }}
+          <ion-card-subtitle *ngIf="t.instant('IDEA_VARIABLES.TAGLINE')">
+            {{ 'IDEA_VARIABLES.TAGLINE' | translate }}
           </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
@@ -59,7 +59,7 @@
             class="agreementsAcceptanceRow"
             *ngIf="
               !registrationPossible &&
-              (t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL') || t.instant('IDEA.AUTH.PRIVACY_POLICY_URL'))
+              (t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL'))
             "
           >
             <ion-col>
@@ -73,14 +73,16 @@
                 ion-text
                 color="primary"
                 target="_blank"
-                *ngIf="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+                *ngIf="t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
                 [title]="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_HINT')"
-                [href]="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+                [href]="t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
               >
                 {{ 'IDEA.AUTH.TERMS_AND_CONDITIONS' | translate }}
               </a>
               <ion-text
-                *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL') && t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_URL')"
+                *ngIf="
+                  t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL') && t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
+                "
               >
                 &
               </ion-text>
@@ -88,9 +90,9 @@
                 ion-text
                 color="primary"
                 target="_blank"
-                *ngIf="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
+                *ngIf="t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
                 [title]="t.instant('IDEA.AUTH.PRIVACY_POLICY_HINT')"
-                [href]="t.instant('IDEA.AUTH.PRIVACY_POLICY_URL')"
+                [href]="t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
               >
                 {{ 'IDEA.AUTH.PRIVACY_POLICY' | translate }}
               </a>
