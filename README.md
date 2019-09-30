@@ -12,6 +12,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Checker
 - Calendar & DateTime picker
 - Custom fields
+- Echo
 - Language picker
 - List
 - Markdown Editor (MDE)
@@ -34,7 +35,7 @@ Every component requires the `ngx-translate` module and the `i18n` translation f
 the `en.json` translation; a sample of the latter is stored in the `assets/i18n` folder.
 
 Each component may **require** one or more folders of the `assets` directory,
-including `icons`, `libs` and `configs`; see more in a random recent IDEA's project.
+including `icons`, `libs` and `configs`; see more in any recent IDEA's project.
 
 ## How to use
 

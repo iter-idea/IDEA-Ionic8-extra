@@ -27,6 +27,8 @@ export class IDEAConfirmPasswordPage {
     public t: TranslateService
   ) {
     this.email = this.route.snapshot.queryParamMap.get('email') || null;
+    if (!this.email) this.email = decodeURIComponent(this.route.snapshot.queryParams.user);
+    this.code = this.route.snapshot.queryParams.code;
   }
 
   /**

@@ -1,0 +1,19 @@
+<ion-content>
+  <div class="flexBox">
+    <ion-card class="echoCard maxWidthContainer">
+      <ion-img [src]="'assets/icons/icon-auth.png'"></ion-img>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon color="success" name="checkmark" *ngIf="success === true"> </ion-icon>
+          <ion-icon color="danger" name="close" *ngIf="success === false"> </ion-icon>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="selectable">
+        {{ content }}
+      </ion-card-content>
+      <ion-button [routerLink]="''" [routerDirection]="'root'" [title]="t.instant('IDEA.ECHO.GO_TO_HOME_HINT')">
+        {{ 'IDEA.ECHO.HOMEPAGE' | translate }}
+      </ion-button>
+    </ion-card>
+  </div>
+</ion-content>
