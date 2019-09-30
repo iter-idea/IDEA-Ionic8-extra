@@ -40,8 +40,14 @@ export class IDEAEchoPage {
       case EchoRequests.EMAIL_CHANGE:
         this.followEmailChangeConfirmationLink(code);
         break;
+      case EchoRequests.GITHUB_INTEGRATION:
+        this.endGitHubIntegrationFlow(code === 'done');
+        break;
+      case EchoRequests.TRELLO_INTEGRATION:
+        this.endTrelloIntegrationFlow(code);
+        break;
       default:
-        this.navCtrl.navigateRoot(['/']);
+        this.goHome();
         break;
     }
   }
@@ -102,10 +108,37 @@ export class IDEAEchoPage {
       })
       .finally(() => this.loading.hide());
   }
+  /**
+   * Show the results of the integration of GitHub as a source.
+   */
+  public endGitHubIntegrationFlow(success: boolean) {
+    this.success = success;
+    this.content = success
+      ? this.t.instant('IDEA.ECHO.GITHUB_SOURCE_INTEGRATION_SUCCESS')
+      : this.t.instant('IDEA.ECHO.GITHUB_SOURCE_INTEGRATION_ERROR');
+  }
+  /**
+   * Show the token to use for the integration of Trello as a source.
+   */
+  public endTrelloIntegrationFlow(token: string) {
+    this.success = Boolean(token);
+    this.content = token
+      ? this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_SUCCESS', { token: token })
+      : this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_ERROR');
+  }
+
+  /**
+   * Return to the homepage.
+   */
+  public goHome() {
+    this.navCtrl.navigateRoot(['/']);
+  }
 }
 
 export enum EchoRequests {
   REGISTRATION = 'registration',
   INVITATION = 'invitation',
-  EMAIL_CHANGE = 'email-change'
+  EMAIL_CHANGE = 'email-change',
+  GITHUB_INTEGRATION = 'github-integration',
+  TRELLO_INTEGRATION = 'trello-integration'
 }

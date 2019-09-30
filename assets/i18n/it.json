@@ -200,7 +200,11 @@
       "REQUEST_FAILED": "La richiesta specificata è fallita; riprovare.",
       "EMAIL_CHANGED": "Indirizzo email cambiato con successo. Dovrai ora autenticarti nuovamente.",
       "TEAM_JOINED": "Ti sei unito al team con successo.",
-      "ACCOUNT_CONFIRMED": "Account confermato: puoi procedere con il login."
+      "ACCOUNT_CONFIRMED": "Account confermato: puoi procedere con il login.",
+      "GITHUB_SOURCE_INTEGRATION_SUCCESS": "GitHub è stato collegato. Puoi ora terminare la configurazione.",
+      "GITHUB_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di GitHub; riprovare.",
+      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copia e incolla il seguente token nella schermata precedente per completare la configurazione: {{token}}",
+      "TRELLO_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di Trello; riprovare."
     }
   }
 }

@@ -200,7 +200,11 @@
       "REQUEST_FAILED": "The request failed; try again.",
       "EMAIL_CHANGED": "Email address successfully updated. You now have to sign-in again.",
       "TEAM_JOINED": "You successfully joined the team.",
-      "ACCOUNT_CONFIRMED": "Account confirmed: you can now sign-in."
+      "ACCOUNT_CONFIRMED": "Account confirmed: you can now sign-in.",
+      "GITHUB_SOURCE_INTEGRATION_SUCCESS": "GitHub has been connected. You can now complete the configuration.",
+      "GITHUB_SOURCE_INTEGRATION_ERROR": "Error during the integration of GitHub; try again.",
+      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copy and paste the following token in the previous page to complete the configuration: {{token}}",
+      "TRELLO_SOURCE_INTEGRATION_ERROR": "Error during the integration of Trello; try again."
     }
   }
 }

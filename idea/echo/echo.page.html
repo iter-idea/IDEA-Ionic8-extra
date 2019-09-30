@@ -11,7 +11,11 @@
       <ion-card-content class="selectable">
         {{ content }}
       </ion-card-content>
-      <ion-button [routerLink]="''" [routerDirection]="'root'" [title]="t.instant('IDEA.ECHO.GO_TO_HOME_HINT')">
+      <ion-button
+        *ngIf="success === false || success === true"
+        [title]="t.instant('IDEA.ECHO.GO_TO_HOME_HINT')"
+        (click)="goHome()"
+      >
         {{ 'IDEA.ECHO.HOMEPAGE' | translate }}
       </ion-button>
     </ion-card>
