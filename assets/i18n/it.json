@@ -193,6 +193,14 @@
       "HIDE_ERROR": "Nascondi l'errore",
       "UPLOADING": "Caricamento...",
       "UPLOADING_ATTACHMENT_WARNING": "Caricando l'allegato, non cambiare pagina"
+    },
+    "ECHO": {
+      "HOMEPAGE": "Torna alla pagina iniziale",
+      "GO_TO_HOME_HINT": "Clicca per andare alla pagina iniziale del servizio",
+      "REQUEST_FAILED": "La richiesta specificata è fallita; riprovare.",
+      "EMAIL_CHANGED": "Indirizzo email cambiato con successo. Dovrai ora autenticarti nuovamente.",
+      "TEAM_JOINED": "Ti sei unito al team con successo.",
+      "ACCOUNT_CONFIRMED": "Account confermato: puoi procedere con il login."
     }
   }
 }
