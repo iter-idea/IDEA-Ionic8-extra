@@ -14,13 +14,13 @@
   <ion-list class="ion-padding">
     <ion-row
       class="languageSelector ion-justify-content-center ion-align-items-end"
-      *ngIf="defaultLanguage && availableLanguages.length > 1"
+      *ngIf="languages.default && languages.available.length > 1"
     >
       <ion-col
         tappable
         size="1"
         class="ion-text-center"
-        *ngFor="let l of availableLanguages"
+        *ngFor="let l of languages.available"
         [class.current]="l === currentLanguage"
         (click)="currentLanguage = l"
       >
@@ -31,7 +31,11 @@
       <ion-label position="stacked">
         {{ 'IDEA.CUSTOM_FIELDS.NAME' | translate }}
       </ion-label>
-      <ion-input type="text" [value]="getFieldName()" (ionChange)="setFieldName($event.detail.value)"></ion-input>
+      <ion-input
+        type="text"
+        [value]="theField.name.translate(currentLanguage)"
+        (ionChange)="theField.name[currentLanguage] = $event.detail.value"
+      ></ion-input>
     </ion-item>
     <ion-item lines="inset" [class.fieldHasError]="hasFieldAnError('description')">
       <ion-label position="stacked">
@@ -40,8 +44,8 @@
       </ion-label>
       <ion-input
         type="text"
-        [value]="getFieldDescription()"
-        (ionChange)="setFieldDescription($event.detail.value)"
+        [value]="theField.description.translate(currentLanguage)"
+        (ionChange)="theField.description[currentLanguage] = $event.detail.value"
       ></ion-input>
     </ion-item>
     <ion-item lines="inset" [class.fieldHasError]="hasFieldAnError('type')">

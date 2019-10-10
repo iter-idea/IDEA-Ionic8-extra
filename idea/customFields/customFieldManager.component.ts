@@ -8,31 +8,24 @@ import IdeaX = require('idea-toolbox');
   templateUrl: 'customFieldManager.component.html',
   styleUrls: ['customFieldManager.component.scss']
 })
-/**
- * Note: if the defaultLanguage is used, then the field is managed with transalations.
- */
 export class IDEACustomFieldManagerComponent {
   /**
    * The CustomField to manage (the component will work on a copy and return the updated object).
    */
-  @Input() public field: IdeaX.CustomField | IdeaX.CustomFieldT;
+  @Input() public field: IdeaX.CustomFieldMeta;
   /**
-   * Default (fallback) language for Label fields.
+   * Languages preferences (default, available) for the context.
    */
-  @Input() public defaultLanguage: string;
+  @Input() public languages: IdeaX.Languages;
   /**
    * Current language to display for Label fields.
    */
   @Input() public currentLanguage: string;
-  /**
-   * Available languages for Label fields.
-   */
-  @Input() public availableLanguages: Array<string>;
 
   /**
    * The working copy of the field; if returned, it means that the original field has been modified.
    */
-  public theField: IdeaX.CustomField | IdeaX.CustomFieldT;
+  public theField: IdeaX.CustomFieldMeta;
 
   public errors: Array<string>;
   public FIELD_TYPES: Array<string> = Object.keys(IdeaX.CustomFieldTypes);
@@ -42,47 +35,9 @@ export class IDEACustomFieldManagerComponent {
     this.errors = Array<string>();
   }
   public ngOnInit() {
-    if (this.defaultLanguage) {
-      this.theField = new IdeaX.CustomFieldT(this.availableLanguages);
-      this.theField.load(this.field, this.availableLanguages);
-    } else {
-      this.theField = new IdeaX.CustomField();
-      this.theField.load(this.field);
-    }
     if (!this.theField) this.close();
+    this.theField = new IdeaX.CustomFieldMeta(this.field, this.languages);
     this.enumAsString = (this.theField.enum || []).join(', ');
-  }
-
-  /**
-   * Set the nam of the field; if the field support translations, the function manages them.
-   */
-  public setFieldName(name: string) {
-    if (this.defaultLanguage) this.theField.name[this.currentLanguage] = name;
-    else this.theField.name = name;
-  }
-  /**
-   * Set the description of the field; if the field support translations, the function manages them.
-   */
-  public setFieldDescription(description: string) {
-    if (this.defaultLanguage) this.theField.description[this.currentLanguage] = description;
-    else this.theField.description = description;
-  }
-
-  /**
-   * Return the name of the field; if the field support translations, the function manages them.
-   */
-  public getFieldName(): string {
-    if (this.defaultLanguage)
-      return this.theField.name[this.currentLanguage] || this.theField.name[this.defaultLanguage];
-    else return String(this.theField.name || '');
-  }
-  /**
-   * Return the description of the field; if the field support translations, the function manages them.
-   */
-  public getFieldDescription(): string {
-    if (this.defaultLanguage)
-      return this.theField.description[this.currentLanguage] || this.theField.description[this.defaultLanguage];
-    else return String(this.theField.description || '');
   }
 
   /**
@@ -119,10 +74,7 @@ export class IDEACustomFieldManagerComponent {
       this.theField.max = null;
     }
     // checkings
-    this.errors =
-      this.theField instanceof IdeaX.CustomFieldT
-        ? this.theField.validate(this.defaultLanguage)
-        : this.theField.validate();
+    this.errors = this.theField.validate(this.languages);
     if (this.errors.length) return;
     // return the cleaned field
     this.close(this.theField);
@@ -131,7 +83,7 @@ export class IDEACustomFieldManagerComponent {
   /**
    * Close the modal, optionally returning the updated field.
    */
-  public close(updatedField?: IdeaX.CustomField | IdeaX.CustomFieldT) {
+  public close(updatedField?: IdeaX.CustomFieldMeta) {
     this.modalCtrl.dismiss(updatedField);
   }
 }

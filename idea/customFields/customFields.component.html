@@ -9,10 +9,10 @@
     <ion-reorder slot="start" *ngIf="!disabled && !withoutReorder"></ion-reorder>
     <ion-label class="fieldMain">
       <b>
-        {{ getFieldName(fields[f]) }}
+        {{ fields[f].name.translate(currentLanguage) }}
       </b>
       <p>
-        {{ getFieldDescription(fields[f]) }}
+        {{ fields[f].description.translate(currentLanguage) }}
       </p>
       <p class="fieldOptions">
         <ion-text *ngIf="fields[f].enum?.length">

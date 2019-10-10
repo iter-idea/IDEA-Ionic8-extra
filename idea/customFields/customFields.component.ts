@@ -44,25 +44,21 @@ export class IDEACustomFieldsComponent {
    */
   @Input() public showRemoveBtn: boolean;
   /**
-   * Default (fallback) language for Label fields.
+   * Languages preferences (default, available) for the context.
    */
-  @Input() public defaultLanguage: string;
+  @Input() public languages: IdeaX.Languages;
   /**
    * Current language to display for Label fields.
    */
   @Input() public currentLanguage: string;
   /**
-   * Available languages for Label fields.
-   */
-  @Input() public availableLanguages: Array<string>;
-  /**
    * Emit selection of a custom field.
    */
-  @Output() public select = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
+  @Output() public select = new EventEmitter<IdeaX.CustomFieldMeta>();
   /**
    * Emit removal of a custom field.
    */
-  @Output() public remove = new EventEmitter<IdeaX.CustomField | IdeaX.CustomFieldT>();
+  @Output() public remove = new EventEmitter<IdeaX.CustomFieldMeta>();
 
   constructor(public t: TranslateService) {
     this.disabled = false; // needed
@@ -76,20 +72,5 @@ export class IDEACustomFieldsComponent {
     this.fieldsLegend.splice(ev.detail.to, 0, this.fieldsLegend.splice(ev.detail.from, 1)[0]);
     // Once the data structure has been updated to reflect the reorder change, the complete() method must be called.
     ev.detail.complete();
-  }
-
-  /**
-   * Return the name of the field; if the field support translations, the function manages them.
-   */
-  public getFieldName(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
-    if (this.defaultLanguage) return field.name[this.currentLanguage] || field.name[this.defaultLanguage];
-    else return String(field.name || '');
-  }
-  /**
-   * Return the description of the field; if the field support translations, the function manages them.
-   */
-  public getFieldDescription(field: IdeaX.CustomField | IdeaX.CustomFieldT): string {
-    if (this.defaultLanguage) return field.description[this.currentLanguage] || field.description[this.defaultLanguage];
-    else return String(field.description || '');
   }
 }
