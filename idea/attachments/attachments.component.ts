@@ -74,7 +74,7 @@ export class IDEAttachmentsComponent {
     // Build the URL target of the requests
     this.requestURL = `teams/${this.team}/`;
     if (this.pathResource && this.pathResource.length)
-      this.requestURL = this.requestURL.concat(this.pathResource.join('/'));
+      this.requestURL = this.requestURL.concat(this.pathResource.filter(x => x).join('/'));
   }
 
   /**
