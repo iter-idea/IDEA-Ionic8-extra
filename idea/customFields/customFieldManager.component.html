@@ -33,7 +33,7 @@
       </ion-label>
       <ion-input
         type="text"
-        [value]="theField.name.translate(currentLanguage)"
+        [value]="theField.name.translate(currentLanguage, languages)"
         (ionChange)="theField.name[currentLanguage] = $event.detail.value"
       ></ion-input>
     </ion-item>
@@ -44,7 +44,7 @@
       </ion-label>
       <ion-input
         type="text"
-        [value]="theField.description.translate(currentLanguage)"
+        [value]="theField.description.translate(currentLanguage, languages)"
         (ionChange)="theField.description[currentLanguage] = $event.detail.value"
       ></ion-input>
     </ion-item>
