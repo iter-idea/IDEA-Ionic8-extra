@@ -18,12 +18,12 @@ export class IDEACustomFieldsComponent {
    */
   @Input() public fieldsLegend: Array<string>;
   /**
-   * Object containing attributes of type CustomField.
+   * Object containing attributes of type CustomFieldMeta.
    *
    * e.g.
    *
-   *    fields.tShirtSize: CustomField;
-   *    fields.favColor: CustomField;
+   *    fields.tShirtSize: CustomFieldMeta;
+   *    fields.favColor: CustomFieldMeta;
    *    ...
    */
   @Input() public fields: any;
