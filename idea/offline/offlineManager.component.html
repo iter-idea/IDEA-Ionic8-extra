@@ -88,7 +88,13 @@
       >
         !
       </ion-badge>
-      <ion-icon slot="end" size="small" name="checkmark" color="success" *ngIf="!r.synchronizing && !error"></ion-icon>
+      <ion-icon
+        slot="end"
+        size="small"
+        name="checkmark"
+        color="success"
+        *ngIf="!r.synchronizing && !r.error"
+      ></ion-icon>
       <ion-spinner slot="end" name="dots" *ngIf="r.synchronizing"></ion-spinner>
     </ion-item>
   </ion-list>

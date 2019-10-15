@@ -240,7 +240,7 @@ export class IDEAOfflineService {
   /**
    * General synchronization of the whole set of resources (upload+download).
    */
-  protected synchronize() {
+  public synchronize() {
     if (this.synchronizing) return;
     this.synchronizing = true;
     this.errorInLastSync = false;
