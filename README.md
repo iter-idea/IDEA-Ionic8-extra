@@ -4,28 +4,32 @@ IDEA's extra components and services built on Ionic (4+).
 
 _The old version, compatible with Ionic 3, [is available here](https://github.com/uatisdeproblem/IDEA-Ionic3-extra)_.
 
-## Includes
+## Components
 
 - Attachments
 - Auth flow (sign in, sign up, etc.) through Cognito
-- Select
-- Checker
 - Calendar & DateTime picker
+- Checker
 - Custom fields
+- Downloader
+- Duration
 - Echo
 - Language picker
 - List
 - Markdown Editor (MDE)
-- Signature
-- Downloader
-- Duration
+- Offline
 - Resource Center
-- Tin can service
-- External browser service
+- Select
+- Signature
+
+## Services
+
 - AWSAPI service
+- Error reporting service
+- External browser service
 - Loading service
 - Message service
-- Error reporting service
+- Tin can service
 - Zebra Reader service (barcode)
 - (browser's) Cached resources service
 
