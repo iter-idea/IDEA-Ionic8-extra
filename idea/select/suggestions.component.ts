@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, ViewChild, SimpleChanges } from '@angular/core';
 import { ModalController, IonSearchbar } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -36,8 +36,19 @@ export class IDEASuggestionsComponent {
    * If true, doesn't show the clear button in the header.
    */
   @Input() public hideClearButton: boolean;
+  /**
+   * A pre-filter for the category1.
+   */
+  @Input() public category1: string;
+  /**
+   * A pre-filter for the category2.
+   */
+  @Input() public category2: string;
 
   public suggestions: Array<Suggestion>;
+  public activeCategories1: Set<string>;
+  public activeCategories2: Set<string>;
+
   @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
 
   constructor(public modalCtrl: ModalController, public t: TranslateService) {}
@@ -49,6 +60,8 @@ export class IDEASuggestionsComponent {
       this.data = this.data.sort((a, b) =>
         a.name && b.name ? a.name.localeCompare(b.name) : a.value.localeCompare(b.value)
       );
+    // define categories based on the data
+    this.loadActiveCategories();
     // show the suggestions based on the data
     this.getSuggestions();
   }
@@ -56,7 +69,25 @@ export class IDEASuggestionsComponent {
     // focus on the searchbar
     this.searchbar.setFocus();
   }
-
+  /**
+   * Load the active categories (i.e. the ones that are at least in one activity).
+   */
+  public loadActiveCategories() {
+    this.activeCategories1 = new Set<string>();
+    this.activeCategories2 = new Set<string>();
+    this.data.forEach(a => {
+      if (a.category1) this.activeCategories1.add(a.category1);
+      if (a.category2) this.activeCategories2.add(a.category2);
+    });
+  }
+  /**
+   * Helper to get in the template a sorted array of suggestions out of a set
+   */
+  public mapIntoSuggestions(set: Set<string>): Array<Suggestion> {
+    return Array.from(set)
+      .sort()
+      .map(x => new Suggestion(x));
+  }
   /**
    * Get suggestions while typing into the input.
    */
@@ -65,13 +96,31 @@ export class IDEASuggestionsComponent {
     let searchTerm = ev && ev.target ? ev.target.value || '' : '';
     if (searchTerm.trim() === '') searchTerm = '';
     // load the suggestions
-    this.suggestions = this.data.filter(
-      (x: Suggestion) =>
-        x.value
-          .concat(x.name || '')
-          .toLowerCase()
-          .indexOf(searchTerm.toLowerCase()) >= 0
-    );
+    this.suggestions = (this.data || [])
+      .filter(x => !this.category1 || x.category1 === this.category1)
+      .filter(x => !this.category2 || x.category2 === this.category2)
+      .filter(
+        (x: Suggestion) =>
+          x.value
+            .concat(x.name || '')
+            .concat(x.category1 || '')
+            .concat(x.category2 || '')
+            .toLowerCase()
+            .indexOf(searchTerm.toLowerCase()) >= 0
+      );
+  }
+  /**
+   * Set a filter for the categoryN acquiring the autoComplete suggestion selected.
+   * Note: setting a filter with the same value will reset it (toggle function).
+   */
+  public setFilterCategoryN(whichCategory: number, value: string, event?: any) {
+    // stop the event propagation, to avoid the "click" on the main item
+    if (event) event.stopPropagation();
+    // set the right category
+    if (whichCategory === 2) this.category2 = value === this.category2 ? null : value;
+    else this.category1 = value === this.category1 ? null : value;
+    // get the suggestions
+    this.getSuggestions();
   }
 
   /**
@@ -146,25 +195,33 @@ export class IDEASuggestionsComponent {
 export class Suggestion {
   public value: any;
   public name: any;
+  public category1: any;
+  public category2: any;
 
-  constructor(value?: any, name?: any) {
+  constructor(value?: any, name?: any, category1?: any, category2?: any) {
     this.value = value || null;
     this.name = name || null;
+    this.category1 = category1 || null;
+    this.category2 = category2 || null;
   }
 
   /**
    * Clear the suggestion.
    */
-  public clear(): void {
+  public clear() {
     this.value = null;
     this.name = null;
+    this.category1 = null;
+    this.category2 = null;
   }
   /**
    * Set the suggestion with new values.
    */
-  public set(value: any, name?: any) {
+  public set(value: any, name?: any, category1?: any, category2?: any) {
     this.value = value;
     this.name = name || null;
+    this.category1 = category1 || null;
+    this.category2 = category2 || null;
   }
   /**
    * Copy the attributes from another suggestion.
@@ -172,5 +229,7 @@ export class Suggestion {
   public copy(suggestion: Suggestion) {
     this.value = suggestion.value;
     this.name = suggestion.name;
+    this.category1 = suggestion.category1;
+    this.category2 = suggestion.category2;
   }
 }

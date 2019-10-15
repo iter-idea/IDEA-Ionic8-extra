@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar color="quiteDark">
+    <ion-title>
+      {{ 'IDEA.OFFLINE.OFFLINE_MANAGER' | translate }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button slot="icon-only" color="light" (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="offlineList">
+    <ion-list-header *ngIf="!offline.synchronizing">
+      <ion-label>
+        {{ 'IDEA.OFFLINE.LAST_SYNC' | translate }}:
+        <ion-text class="lastSyncAt">
+          {{ getLastSyncLabel() || ('IDEA.OFFLINE.LOADING' | translate) }}
+        </ion-text>
+      </ion-label>
+      <ion-button
+        size="small"
+        [color]="offline.errorInLastSync ? 'danger' : 'primary'"
+        [disabled]="offline.isOffline"
+        (click)="offline.synchronize()"
+      >
+        <ion-icon slot="start" name="sync"></ion-icon>
+        {{ 'IDEA.OFFLINE.SYNC_NOW' | translate }}
+      </ion-button>
+      <p ion-text color="danger" *ngIf="offline.errorInLastSync">
+        {{ 'IDEA.OFFLINE.ERROR_DURING_LAST_SYNC' | translate }}
+      </p>
+    </ion-list-header>
+  </ion-list>
+  <ion-item class="offlineList" *ngIf="offline.synchronizing">
+    <ion-label>
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </ion-label>
+  </ion-item>
+  <ion-list class="offlineList" *ngIf="offline.useQueueAPIRequests">
+    <ion-list-header>
+      <ion-label>
+        {{ 'IDEA.OFFLINE.UPLOAD' | translate }}
+        <p>
+          {{ 'IDEA.OFFLINE.UPLOAD_QUEUE_REQUESTS_EXPLANATION' | translate }}
+        </p>
+      </ion-label>
+    </ion-list-header>
+    <ion-item *ngIf="!offline.queueAPIRequests.length">
+      <i>
+        {{ 'IDEA.OFFLINE.NO_ELEMENTS_TO_UPLOAD' | translate }}
+      </i>
+      <ion-icon slot="end" size="small" name="checkmark" color="success"></ion-icon>
+    </ion-item>
+    <ion-item *ngFor="let r of offline.queueAPIRequests">
+      <ion-label>
+        {{ r.description }}
+        <p ion-text color="danger" *ngIf="r.error">
+          {{ r.error }}
+        </p>
+      </ion-label>
+      <ion-badge slot="end" color="danger" *ngIf="r.error" [title]="t.instant('IDEA.OFFLINE.REQUEST_FAILED')">
+        !
+      </ion-badge>
+      <ion-button fill="clear" slot="end" color="danger" *ngIf="r.error" (click)="deleteRequest(r)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+      <ion-spinner slot="end" name="dots" *ngIf="offline.synchronizing"></ion-spinner>
+    </ion-item>
+  </ion-list>
+  <ion-list class="offlineList" *ngIf="offline.resourcesToCache.length">
+    <ion-list-header>
+      <ion-label>
+        {{ 'IDEA.OFFLINE.DOWNLOAD' | translate }}
+        <p>
+          {{ 'IDEA.OFFLINE.DOWNLOAD_RESOURCES_EXPLANATION' | translate }}
+        </p>
+      </ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let r of offline.resourcesToCache">
+      {{ r.description }}
+      <ion-badge
+        slot="end"
+        color="danger"
+        *ngIf="!r.synchronizing && r.error"
+        [title]="t.instant('IDEA.OFFLINE.ONE_OF_THE_UPLOADS_FAILED')"
+      >
+        !
+      </ion-badge>
+      <ion-icon slot="end" size="small" name="checkmark" color="success" *ngIf="!r.synchronizing && !error"></ion-icon>
+      <ion-spinner slot="end" name="dots" *ngIf="r.synchronizing"></ion-spinner>
+    </ion-item>
+  </ion-list>
+</ion-content>

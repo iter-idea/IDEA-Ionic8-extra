@@ -18,6 +18,32 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-row *ngIf="activeCategories1?.size || activeCategories2?.size">
+    <ion-col [size]="12" [sizeLg]="6">
+      <idea-select
+        *ngIf="activeCategories1?.size"
+        [data]="mapIntoSuggestions(activeCategories1)"
+        [icon]="'funnel'"
+        [lines]="'none'"
+        [description]="category1"
+        [noElementsFoundText]="t.instant('COMMON.NO_ELEMENT_FOUND')"
+        [hideIdFromUI]="true"
+        (select)="setFilterCategoryN(1, $event.value)"
+      ></idea-select>
+    </ion-col>
+    <ion-col [size]="12" [sizeLg]="6">
+      <idea-select
+        *ngIf="activeCategories2?.size"
+        [data]="mapIntoSuggestions(activeCategories2)"
+        [icon]="'funnel'"
+        [lines]="'none'"
+        [description]="category2"
+        [noElementsFoundText]="t.instant('COMMON.NO_ELEMENT_FOUND')"
+        [hideIdFromUI]="true"
+        (select)="setFilterCategoryN(2, $event.value)"
+      ></idea-select>
+    </ion-col>
+  </ion-row>
   <ion-list class="suggestionsList">
     <ion-item lines="none" *ngIf="!suggestions.length && !(allowUnlistedValues && searchbar.value)">
       <ion-label>
@@ -46,6 +72,17 @@
       (click)="select(suggestion)"
     >
       <ion-label>
+        <p class="categories" *ngIf="suggestion.category1 || suggestion.category2">
+          <ion-text *ngIf="suggestion.category1">
+            {{ suggestion.category1 }}
+          </ion-text>
+          <ion-text *ngIf="suggestion.category1 && suggestion.category2" class="categoriesDivider">
+            |
+          </ion-text>
+          <ion-text *ngIf="suggestion.category2">
+            {{ suggestion.category2 }}
+          </ion-text>
+        </p>
         <!-- the "key" div is used for keyboard controls -->
         <div class="key" style="display: none;">
           {{ suggestion.value }}

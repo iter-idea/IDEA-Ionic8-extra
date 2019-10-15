@@ -1,0 +1,23 @@
+.offlineBar {
+  ion-toolbar {
+    height: 25px !important;
+    --min-height: auto !important;
+    --background: var(--ion-color-quiteDark);
+    ion-text {
+      font-size: 0.8rem !important;
+      color: white;
+      padding-left: 10px;
+    }
+    b {
+      padding-right: 5px;
+    }
+    ion-spinner {
+      margin-right: 5px;
+      width: 9px;
+      height: 9px;
+    }
+  }
+  .toolbar-ios ion-title {
+    padding: 0 20px;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 import { IDEASuggestionsComponent, Suggestion } from './suggestions.component';
@@ -14,15 +14,15 @@ import { IDEASuggestionsComponent, Suggestion } from './suggestions.component';
  * Suggestions fetched from somewhere.
  * Tip: to execute from another context, pass to the `idea-select` an helper function like the following:
  * ```
-    runInContext(methodName: string): any {
-      return () => (<any>this)[methodName]();
-    }
-   ```
+ *  runInContext(methodName: string): any {
+ *     return () => (<any>this)[methodName]();
+ *   }
+ *  ```
  * using it then:
  * ```
-    <idea-select
-      [dataProvider]="runInContext('method')"
-    ></idea-select>
+ *   <idea-select
+ *     [dataProvider]="runInContext('method')"
+ *   ></idea-select>
  * ```
  */
 @Component({
@@ -108,6 +108,18 @@ export class IDEASelectComponent {
    */
   @Input() public hideClearButton: boolean;
   /**
+   * A pre-filter for the category1.
+   */
+  @Input() public category1: string;
+  /**
+   * A pre-filter for the category2.
+   */
+  @Input() public category2: string;
+  /**
+   * If true, doesn't let the auto-selection in case there's only one element as possible selection.
+   */
+  @Input() public avoidAutoSelection: boolean;
+  /**
    * On select event.
    */
   @Output() public select = new EventEmitter<Suggestion>();
@@ -118,6 +130,26 @@ export class IDEASelectComponent {
 
   constructor(public modalCtrl: ModalController) {
     this.data = new Array<Suggestion>();
+    this.category1 = null;
+    this.category2 = null;
+    this.avoidAutoSelection = false;
+  }
+
+  /**
+   * Check changes and apply auto-selection if available.
+   */
+  public ngOnChanges(changes: SimpleChanges) {
+    // load the resources and prepare the suggestions
+    if (!this.avoidAutoSelection && (changes['data'] || changes['category1'] || changes['category2'])) {
+      const filteredData = (this.data || [])
+        .filter(x => !this.category1 || x.category1 === this.category1)
+        .filter(x => !this.category2 || x.category2 === this.category2);
+      if (filteredData.length === 1) {
+        setTimeout(() => {
+          this.select.emit(filteredData[0].value ? filteredData[0] : new Suggestion());
+        }, 500);
+      }
+    }
   }
 
   /**
@@ -159,7 +191,9 @@ export class IDEASelectComponent {
           allowUnlistedValues: this.allowUnlistedValues,
           clearValueAfterSelection: this.clearValueAfterSelection,
           hideIdFromUI: this.hideIdFromUI,
-          hideClearButton: this.hideClearButton
+          hideClearButton: this.hideClearButton,
+          category1: this.category1,
+          category2: this.category2
         }
       })
       .then(modal => {
@@ -170,8 +204,8 @@ export class IDEASelectComponent {
           this.select.emit(selection.data.value ? selection.data : new Suggestion());
           // render the suggestion selected
           if (this.clearValueAfterSelection) this.description = '';
-          else if (selection.data.value) this.description = selection.data.value;
-          else this.description = selection.data.value;
+          else if (selection.data.name) this.description = selection.data.name;
+          else this.description = selection.data.name;
         });
         modal.present();
       });

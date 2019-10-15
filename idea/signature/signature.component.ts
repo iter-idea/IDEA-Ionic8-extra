@@ -24,7 +24,7 @@ export class IDEASignatureComponent {
     this.pad = null;
   }
   public ionViewDidEnter() {
-    this.canvas = <HTMLCanvasElement>document.getElementById('signatureCanvas');
+    this.canvas = document.getElementById('signatureCanvas') as HTMLCanvasElement;
     this.pad = new SignaturePad(this.canvas);
     this.resizeCanvas();
   }

@@ -5,4 +5,17 @@
   .suggestion.selected {
     --background: #eee;
   }
+  .categories {
+    padding-bottom: 4px;
+    .category {
+      font-size: 0.7em;
+      font-weight: 700;
+    }
+    .categoriesDivider {
+      display: inline-block;
+      padding: 0 2px;
+      font-size: 0.7em;
+      vertical-align: text-bottom;
+    }
+  }
 }
