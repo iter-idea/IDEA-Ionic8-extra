@@ -1,5 +1,5 @@
-import { Component, HostListener, Input, ViewChild, SimpleChanges } from '@angular/core';
-import { ModalController, IonSearchbar } from '@ionic/angular';
+import { Component, HostListener, Input, ViewChild } from '@angular/core';
+import { ModalController, IonSearchbar, IonInfiniteScroll } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -44,17 +44,37 @@ export class IDEASuggestionsComponent {
    * A pre-filter for the category2.
    */
   @Input() public category2: string;
+  /**
+   * An arbitrary number of elements to show in each page; suggested: a multiple of 2, 3 and 4 (good for any UI size).
+   */
+  @Input() public numPerPage: number;
 
+  /**
+   * Paginated suggestions (from the data).
+   */
   public suggestions: Array<Suggestion>;
+  /**
+   * The current page for the paginated suggestions.
+   */
+  public page: number;
+  /**
+   * The category1 extracted from the suggestions.
+   */
   public activeCategories1: Set<string>;
+  /**
+   * The category2 extracted from the suggestions.
+   */
   public activeCategories2: Set<string>;
 
   @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
 
-  constructor(public modalCtrl: ModalController, public t: TranslateService) {}
-  public ngOnInit() {
+  constructor(public modalCtrl: ModalController, public t: TranslateService) {
     this.data = this.data || new Array<Suggestion>();
-    this.suggestions = new Array<any>();
+    this.suggestions = new Array<Suggestion>();
+    this.page = 1;
+    this.numPerPage = 48;
+  }
+  public ngOnInit() {
     // sort the data, if requested
     if (this.sortData)
       this.data = this.data.sort((a, b) =>
@@ -93,21 +113,30 @@ export class IDEASuggestionsComponent {
    */
   public getSuggestions(ev?: any) {
     // acquire and clean the searchTerm
-    let searchTerm = ev && ev.target ? ev.target.value || '' : '';
-    if (searchTerm.trim() === '') searchTerm = '';
+    let toSearch = ev && ev.target ? ev.target.value.toLowerCase() || '' : '';
+    if (toSearch.trim() === '') toSearch = '';
     // load the suggestions
-    this.suggestions = (this.data || [])
+    const list = (this.data || [])
       .filter(x => !this.category1 || x.category1 === this.category1)
       .filter(x => !this.category2 || x.category2 === this.category2)
-      .filter(
-        (x: Suggestion) =>
-          x.value
-            .concat(x.name || '')
-            .concat(x.category1 || '')
-            .concat(x.category2 || '')
-            .toLowerCase()
-            .indexOf(searchTerm.toLowerCase()) >= 0
+      .filter(x =>
+        toSearch
+          .split(' ')
+          .every(searchTerm =>
+            [x.value, x.name, x.category1, x.category2].filter(f => f).some(f => f.toLowerCase().includes(searchTerm))
+          )
       );
+    this.suggestions = list.slice(0, this.page * this.numPerPage);
+  }
+  /**
+   * Load more elements of the pagination.
+   */
+  public doInfinite(infiniteScroll: IonInfiniteScroll) {
+    setTimeout(() => {
+      this.page += 1;
+      this.getSuggestions(this.searchbar ? this.searchbar.value.toString() : '');
+      infiniteScroll.complete();
+    }, 300); // the timeout is needed
   }
   /**
    * Set a filter for the categoryN acquiring the autoComplete suggestion selected.
