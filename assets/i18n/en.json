@@ -202,6 +202,34 @@
       "GITHUB_SOURCE_INTEGRATION_ERROR": "Error during the integration of GitHub; try again.",
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copy and paste the following token in the previous page to complete the configuration: {{token}}",
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Error during the integration of Trello; try again."
+    },
+    "ADDRESS": {
+      "ADDRESS": "Address",
+      "ADDRESS_HINT": "Street address, P.O. box, company name, c/o",
+      "ADDRESS2": "Supplementary address info",
+      "ADDRESS2_HINT": "Apartment, suite, unt, building, floor, etc.",
+      "CITY": "City",
+      "CITY_HINT": "City",
+      "POSTCODE": "Postal code",
+      "POSTCODE_HINT": "Postal code / ZIP code",
+      "COUNTRY": "Country",
+      "COUNTRY_HINT": "Country",
+      "CONTACT": "Fullname",
+      "CONTACT_HINT": "Contact/receiver's fullname",
+      "EMAIL": "Email",
+      "EMAIL_HINT": "Contact email address",
+      "PHONE": "Phone",
+      "PHONE_HINT": "Contact phone/cellphone number",
+      "COMPLETE_ADDRESS": "Address",
+      "COMPLETE_ADDRESS_HINT": "Complete address; tap for details"
+    },
+    "CONTACTS": {
+      "NAME": "Name",
+      "NAME_HINT": "Full name of the contact",
+      "PHONE": "Phone",
+      "PHONE_HINT": "Phone/cellphone number",
+      "EMAIL": "Email",
+      "EMAIL_HINT": "Email address"
     }
   },
   "IDEA_VARIABLES": {

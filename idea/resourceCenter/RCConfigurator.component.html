@@ -6,5 +6,6 @@
   [lines]="lines"
   [hideIdFromUI]="true"
   [disabled]="!editMode"
+  [avoidAutoSelection]="true"
   (select)="$event ? setFolder($event?.value) : null"
 ></idea-select>

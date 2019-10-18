@@ -6,10 +6,12 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 
 ## Components
 
+- Address
 - Attachments
 - Auth flow (sign in, sign up, etc.) through Cognito
 - Calendar & DateTime picker
 - Checker
+- Contacts
 - Custom fields
 - Downloader
 - Duration

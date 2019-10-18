@@ -44,6 +44,7 @@
   [searchPlaceholder]="t.instant('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
   [lines]="'none'"
   [clearValueAfterSelection]="true"
+  [avoidAutoSelection]="true"
   [hideIdFromUI]="true"
   (select)="$event ? addResource($event.value) : null"
 ></idea-select>

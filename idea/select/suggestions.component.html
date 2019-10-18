@@ -28,6 +28,7 @@
         [description]="category1"
         [noElementsFoundText]="t.instant('COMMON.NO_ELEMENT_FOUND')"
         [hideIdFromUI]="true"
+        [avoidAutoSelection]="true"
         (select)="setFilterCategoryN(1, $event.value)"
       ></idea-select>
     </ion-col>
@@ -40,6 +41,7 @@
         [description]="category2"
         [noElementsFoundText]="t.instant('COMMON.NO_ELEMENT_FOUND')"
         [hideIdFromUI]="true"
+        [avoidAutoSelection]="true"
         (select)="setFilterCategoryN(2, $event.value)"
       ></idea-select>
     </ion-col>
