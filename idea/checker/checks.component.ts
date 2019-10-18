@@ -29,6 +29,14 @@ export class IDEAChecksComponent {
    * The text to show in case no element is found after a search.
    */
   @Input() public noElementsFoundText: string;
+  /**
+   * Whether to show an avatar aside each element.
+   */
+  @Input() public showAvatars: boolean;
+  /**
+   * URL to the fallback avatar to show in case the element's avatar isn't found.
+   */
+  @Input() public fallbackAvatar: string;
 
   // SUPPORT
   public filteredChecks: Array<Check>;
@@ -102,7 +110,7 @@ export class Check {
   public hidden: boolean;
 
   constructor(x?: any) {
-    x = x || <Check>{};
+    x = (x || {}) as Check;
     if (typeof x !== 'object') {
       this.value = x;
       this.name = String(x);

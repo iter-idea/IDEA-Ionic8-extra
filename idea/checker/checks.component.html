@@ -34,6 +34,13 @@
     </ion-item>
     <ion-item tappable class="check" *ngFor="let check of filteredChecks">
       <ion-checkbox slot="start" [(ngModel)]="check.checked"></ion-checkbox>
+      <ion-avatar slot="start" *ngIf="showAvatars">
+        <img
+          [src]="check.avatar"
+          alt="{{ fallbackAvatar }}"
+          onerror="this.src === this.alt ? '' : this.src=this.alt;"
+        />
+      </ion-avatar>
       <ion-label>
         {{ check.name }}
       </ion-label>

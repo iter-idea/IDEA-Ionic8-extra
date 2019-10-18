@@ -10,15 +10,15 @@ import { IDEAChecksComponent } from './checks.component';
  * Checks fetched from somewhere.
  * Tip: to execute from another context, pass to the `idea-checker` an helper function like the following:
  * ```
-    runInContext(methodName: string): any {
-      return () => (<any>this)[methodName]();
-    }
-   ```
+ *   runInContext(methodName: string): any {
+ *     return () => (<any>this)[methodName]();
+ *   }
+ * ```
  * using it then:
  * ```
-    <idea-checker
-      [dataProvider]="runInContext('method')"
-    ></idea-checker>
+ *   <idea-checker
+ *     [dataProvider]="runInContext('method')"
+ *   ></idea-checker>
  * ```
  */
 @Component({
@@ -92,6 +92,14 @@ export class IDEACheckerComponent {
    */
   @Input() public numMaxElementsInPreview: number;
   /**
+   * Whether to show an avatar aside each element.
+   */
+  @Input() public showAvatars: boolean;
+  /**
+   * URL to the fallback avatar to show in case the element's avatar isn't found.
+   */
+  @Input() public fallbackAvatar: string;
+  /**
    * On change event.
    */
   @Output() public change = new EventEmitter<void>();
@@ -134,7 +142,9 @@ export class IDEACheckerComponent {
           data: this.data,
           sortData: this.sortData,
           placeholder: this.placeholder,
-          noElementsFoundText: this.noElementsFoundText
+          noElementsFoundText: this.noElementsFoundText,
+          showAvatars: this.showAvatars,
+          fallbackAvatar: this.fallbackAvatar
         }
       })
       .then(modal => {
@@ -182,19 +192,25 @@ export class Check {
    * Elements not included in the current search because of other filters.
    */
   public hidden: boolean;
+  /**
+   * URL to an avatar to display for the element.
+   */
+  public avatar: string;
 
   constructor(x?: any) {
-    x = x || <Check>{};
+    x = x || ({} as Check);
     if (typeof x !== 'object') {
       this.value = x;
       this.name = String(x);
       this.checked = false;
       this.hidden = false;
+      this.avatar = null;
     } else {
       this.value = x.value;
       this.name = x.name ? String(x.name) : String(this.value);
       this.checked = Boolean(x.checked);
       this.hidden = Boolean(x.hidden);
+      this.avatar = String(x.avatar);
     }
   }
 }
