@@ -205,7 +205,7 @@ export class IDEASelectComponent {
           // render the suggestion selected
           if (this.clearValueAfterSelection) this.description = '';
           else if (selection.data.name) this.description = selection.data.name;
-          else this.description = selection.data.name;
+          else this.description = selection.data.value;
         });
         modal.present();
       });
