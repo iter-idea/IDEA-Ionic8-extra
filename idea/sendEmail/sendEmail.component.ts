@@ -43,8 +43,8 @@ export class IDEASendEmailComponent {
    * Confirm the email sending.
    */
   public send() {
-    this.email.to = this.to.split(',');
-    this.email.cc = this.cc.split(',');
+    this.email.to = (this.to || '').split(',');
+    this.email.cc = (this.cc || '').split(',');
     this.modalCtrl.dismiss(this.email);
   }
 
