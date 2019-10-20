@@ -14,6 +14,7 @@ export * from './offline/offlineManager.module';
 export * from './mde/mde.module';
 export * from './resourceCenter/RC.module';
 export * from './select/select.module';
+export * from './sendEmail/sendEmail.module';
 export * from './signature/signature.module';
 
 export * from './auth/auth.service';
