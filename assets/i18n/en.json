@@ -241,6 +241,25 @@
       "ATTACHMENTS": "Attachments",
       "SUCCESSFULLY_SENT": "Successfully sent",
       "SENDING_FAILED": "Error while sending the email"
+    },
+    "OFFLINE": {
+      "YOU_ARE_OFFLINE": "You are offline",
+      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Functionality is reduced",
+      "OFFLINE_MANAGER": "Offline manager",
+      "LAST_SYNC": "Last synchronisation",
+      "LOADING": "Loading...",
+      "SYNC_NOW": "Synchronize now",
+      "ERROR_DURING_LAST_SYNC": "There was an error during last synchronisation; please try again.",
+      "UPLOAD": "Upload",
+      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Resources created offline must be uploaded online",
+      "DOWNLOAD": "Download",
+      "DOWNLOAD_RESOURCES_EXPLANATION": "List of the resources available offline",
+      "NOW": "Now",
+      "SYNC_IN_PROGRESSS": "Synchornisation in progress",
+      "NUM_ELEMENTS_TO_SYNC": "Number of elements to synchronise",
+      "REQUEST_FAILED": "Request failed; try again or cancel the request",
+      "NO_ELEMENTS_TO_UPLOAD": "No elements to upload",
+      "DELETION_IS_IRREVERSIBLE": "The deletion is irreversible"
     }
   },
   "IDEA_VARIABLES": {
