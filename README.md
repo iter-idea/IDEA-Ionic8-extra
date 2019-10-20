@@ -22,6 +22,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Offline
 - Resource Center
 - Select
+- Send email
 - Signature
 
 ## Services

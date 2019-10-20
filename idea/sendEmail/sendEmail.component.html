@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button color="light" [title]="t.instant('COMMON.CANCEL')" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'IDEA.SEND_EMAIL.SEND_EMAIL' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="sendEmail">
+    <ion-item lines="inset">
+      <ion-label position="stacked">
+        {{ 'IDEA.SEND_EMAIL.TO' | translate }}
+      </ion-label>
+      <ion-input type="email" [(ngModel)]="to"></ion-input>
+    </ion-item>
+    <ion-item lines="inset">
+      <ion-label position="stacked">
+        {{ 'IDEA.SEND_EMAIL.CC' | translate }}
+      </ion-label>
+      <ion-input type="email" [(ngModel)]="cc"></ion-input>
+    </ion-item>
+    <ion-item lines="inset">
+      <ion-label position="stacked">
+        {{ 'IDEA.SEND_EMAIL.SUBJECT' | translate }}
+      </ion-label>
+      <ion-input type="text" [(ngModel)]="email.subject"></ion-input>
+    </ion-item>
+    <ion-item lines="inset">
+      <ion-textarea rows="13" [(ngModel)]="email.content"></ion-textarea>
+    </ion-item>
+    <ion-row *ngIf="attachments?.length">
+      <ion-col>
+        <ion-badge *ngFor="let a of attachments"> <ion-icon name="attachment"></ion-icon>{{ a }}</ion-badge>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab-button color="primary" [disabled]="!canSend()" (click)="send()">
+      <ion-icon name="send"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

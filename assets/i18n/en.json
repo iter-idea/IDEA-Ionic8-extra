@@ -230,6 +230,17 @@
       "PHONE_HINT": "Phone/cellphone number",
       "EMAIL": "Email",
       "EMAIL_HINT": "Email address"
+    },
+    "SEND_EMAIL": {
+      "SEND_EMAIL": "Send email",
+      "FROM": "From",
+      "TO": "To",
+      "CC": "CC",
+      "SUBJECT": "Subject",
+      "CONTENT": "Content",
+      "ATTACHMENTS": "Attachments",
+      "SUCCESSFULLY_SENT": "Successfully sent",
+      "SENDING_FAILED": "Error while sending the email"
     }
   },
   "IDEA_VARIABLES": {
