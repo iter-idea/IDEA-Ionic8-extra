@@ -26,15 +26,15 @@
     }
   }
   ion-list-header:first-of-type {
-    height: 50px; // to avoid resizing based on the content
+    height: 48px; // to avoid resizing based on the content
   }
   ion-item {
     --ion-background-color: white;
     --inner-border-width: 0;
-    height: 50px; // to avoid resizing based on the content
+    --border-width: 0;
+    height: 48x; // to avoid resizing based on the content
   }
-  ion-item:last-child {
-    border-bottom: 1px solid #fafafa !important;
-    --inner-border-width: 0;
+  ion-item.oddItem {
+    --ion-background-color: #fafafa;
   }
 }

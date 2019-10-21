@@ -7,12 +7,21 @@
     </ion-text>
   </ion-toolbar>
 </ion-footer>
-<!-- SYNCHRONIZING -->
+<!-- SYNCHRONISING -->
 <ion-footer tappable class="offlineBar" *ngIf="offline.synchronizing" (click)="openOfflineManager()">
   <ion-toolbar>
     <ion-text>
       <ion-spinner name="crescent" color="light"></ion-spinner>
       {{ 'IDEA.OFFLINE.SYNC_IN_PROGRESS' | translate }}...
+    </ion-text>
+  </ion-toolbar>
+</ion-footer>
+<!-- NEED MANAL SYNCHRONISATION -->
+<ion-footer tappable class="offlineBar" *ngIf="offline.requiresManualConfirmation" (click)="openOfflineManager()">
+  <ion-toolbar>
+    <ion-text>
+      <ion-icon name="pause"></ion-icon>
+      {{ 'IDEA.OFFLINE.HUGE_SYNC_NEED_MANUAL_CONFIRMATION' | translate }}
     </ion-text>
   </ion-toolbar>
 </ion-footer>

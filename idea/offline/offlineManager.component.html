@@ -11,7 +11,12 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list class="offlineList">
+  <ion-list class="offlineList" lines="none">
+    <ion-list-header *ngIf="offline.requiresManualConfirmation">
+      <ion-label>
+        {{ 'IDEA.OFFLINE.HUGE_SYNC_NEED_MANUAL_CONFIRMATION' | translate }}
+      </ion-label>
+    </ion-list-header>
     <ion-list-header *ngIf="!offline.synchronizing">
       <ion-label>
         {{ 'IDEA.OFFLINE.LAST_SYNC' | translate }}:
@@ -23,7 +28,7 @@
         size="small"
         [color]="offline.errorInLastSync ? 'danger' : 'primary'"
         [disabled]="offline.isOffline"
-        (click)="offline.synchronize()"
+        (click)="offline.synchronize(true)"
       >
         <ion-icon slot="start" name="sync"></ion-icon>
         {{ 'IDEA.OFFLINE.SYNC_NOW' | translate }}
@@ -33,12 +38,14 @@
       </p>
     </ion-list-header>
   </ion-list>
-  <ion-item class="offlineList" *ngIf="offline.synchronizing">
-    <ion-label>
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
-    </ion-label>
-  </ion-item>
-  <ion-list class="offlineList" *ngIf="offline.useQueueAPIRequests">
+  <ion-list class="offlineList" lines="none" *ngIf="offline.synchronizing">
+    <ion-item>
+      <ion-label class="ion-text-center">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list class="offlineList" lines="none" *ngIf="offline.useQueueAPIRequests">
     <ion-list-header>
       <ion-label>
         {{ 'IDEA.OFFLINE.UPLOAD' | translate }}
@@ -53,7 +60,7 @@
       </i>
       <ion-icon slot="end" size="small" name="checkmark" color="success"></ion-icon>
     </ion-item>
-    <ion-item *ngFor="let r of offline.queueAPIRequests">
+    <ion-item *ngFor="let r of offline.queueAPIRequests; let odd = odd" [class.oddItem]="odd">
       <ion-label>
         {{ r.description }}
         <p ion-text color="danger" *ngIf="r.error">
@@ -69,7 +76,7 @@
       <ion-spinner slot="end" name="dots" *ngIf="offline.synchronizing"></ion-spinner>
     </ion-item>
   </ion-list>
-  <ion-list class="offlineList" *ngIf="offline.resourcesToCache.length">
+  <ion-list class="offlineList" lines="none" *ngIf="offline.resourcesToCache.length">
     <ion-list-header>
       <ion-label>
         {{ 'IDEA.OFFLINE.DOWNLOAD' | translate }}
@@ -78,8 +85,13 @@
         </p>
       </ion-label>
     </ion-list-header>
-    <ion-item *ngFor="let r of offline.resourcesToCache">
-      {{ r.description }}
+    <ion-item *ngFor="let r of offline.resourcesToCache; let odd = odd" [class.oddItem]="odd">
+      <ion-label>
+        {{ r.description }}
+        <p *ngIf="(offline.synchronizing || offline.requiresManualConfirmation) && r.getNumElementsToCache()">
+          {{ 'IDEA.OFFLINE.NUM_ELEMENTS_TO_CACHE' | translate: { num: r.getNumElementsToCache() } }}
+        </p>
+      </ion-label>
       <ion-badge
         slot="end"
         color="danger"
@@ -95,7 +107,14 @@
         color="success"
         *ngIf="!r.synchronizing && !r.error"
       ></ion-icon>
-      <ion-spinner slot="end" name="dots" *ngIf="r.synchronizing"></ion-spinner>
+      <ion-spinner slot="end" name="dots" *ngIf="r.synchronizing && !offline.requiresManualConfirmation"></ion-spinner>
+      <ion-icon
+        slot="end"
+        size="small"
+        name="hand"
+        color="dark"
+        *ngIf="r.synchronizing && offline.requiresManualConfirmation"
+      ></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

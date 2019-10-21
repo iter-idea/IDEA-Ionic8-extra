@@ -6,15 +6,18 @@
     ion-text {
       font-size: 0.8rem !important;
       color: white;
+      display: block;
       padding-left: 10px;
+      padding-top: 4px;
     }
     b {
       padding-right: 5px;
     }
-    ion-spinner {
+    ion-spinner,
+    ion-icon {
       margin-right: 5px;
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
     }
   }
   .toolbar-ios ion-title {
