@@ -248,7 +248,7 @@
       "OFFLINE_MANAGER": "Offline manager",
       "LAST_SYNC": "Ultima sincronizzazione",
       "LOADING": "Caricamento...",
-      "SYNC_NOW": "Sincronizza ora",
+      "SYNC_NOW": "Sincronizza",
       "ERROR_DURING_LAST_SYNC": "Si è verificato un errore durante l'ultima sincronizzazione; per favore riprova.",
       "UPLOAD": "Upload",
       "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Le azioni create offline devono essere caricate online",

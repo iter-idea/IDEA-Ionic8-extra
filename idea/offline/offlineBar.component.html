@@ -1,5 +1,5 @@
 <!-- OFFLINE -->
-<ion-footer class="offlineBar" *ngIf="offline.isOffline" [style.bottom]="offsetBottom ? '42px' : null">
+<ion-footer class="offlineBar" *ngIf="offline.isOffline" [class.offsetBottom]="offsetBottom">
   <ion-toolbar>
     <ion-text>
       <b> {{ 'IDEA.OFFLINE.YOU_ARE_OFFLINE' | translate }}. </b>
@@ -8,7 +8,13 @@
   </ion-toolbar>
 </ion-footer>
 <!-- SYNCHRONISING -->
-<ion-footer tappable class="offlineBar" *ngIf="offline.synchronizing" (click)="openOfflineManager()">
+<ion-footer
+  tappable
+  class="offlineBar"
+  *ngIf="offline.synchronizing"
+  [class.offsetBottom]="offsetBottom"
+  (click)="openOfflineManager()"
+>
   <ion-toolbar>
     <ion-text>
       <ion-spinner name="crescent" color="light"></ion-spinner>
@@ -17,7 +23,13 @@
   </ion-toolbar>
 </ion-footer>
 <!-- NEED MANAL SYNCHRONISATION -->
-<ion-footer tappable class="offlineBar" *ngIf="offline.requiresManualConfirmation" (click)="openOfflineManager()">
+<ion-footer
+  tappable
+  class="offlineBar"
+  *ngIf="offline.requiresManualConfirmation"
+  [class.offsetBottom]="offsetBottom"
+  (click)="openOfflineManager()"
+>
   <ion-toolbar>
     <ion-text>
       <ion-icon name="pause"></ion-icon>

@@ -248,7 +248,7 @@
       "OFFLINE_MANAGER": "Offline manager",
       "LAST_SYNC": "Last synchronisation",
       "LOADING": "Loading...",
-      "SYNC_NOW": "Synchronize now",
+      "SYNC_NOW": "Synchronize",
       "ERROR_DURING_LAST_SYNC": "There was an error during last synchronisation; please try again.",
       "UPLOAD": "Upload",
       "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Resources created offline must be uploaded online",
