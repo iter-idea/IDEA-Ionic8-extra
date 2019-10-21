@@ -23,12 +23,9 @@ export class IDEASendEmailComponent {
   public cc: string;
 
   constructor(public modalCtrl: ModalController, public t: TranslateService) {}
-
-  public ngOnChanges(changes: SimpleChanges) {
-    if (changes['email'].currentValue) {
-      this.to = this.email.to.join(',');
-      this.cc = this.email.cc.join(',');
-    }
+  public ngOnInit() {
+    this.to = this.email.to.join(',');
+    this.cc = this.email.cc.join(',');
   }
 
   /**
