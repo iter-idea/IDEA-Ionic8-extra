@@ -255,11 +255,14 @@
       "DOWNLOAD": "Download",
       "DOWNLOAD_RESOURCES_EXPLANATION": "Lista delle risorse disponibili quando offline",
       "NOW": "Adesso",
-      "SYNC_IN_PROGRESSS": "Sincronizzazione in corso",
+      "SYNC_IN_PROGRESS": "Sincronizzazione in corso",
       "NUM_ELEMENTS_TO_SYNC": "Numero elementi da sincronizzare",
       "REQUEST_FAILED": "Richiesta fallita; riprova o cancella la richiesta",
       "NO_ELEMENTS_TO_UPLOAD": "Nessun elemento da caricare",
-      "DELETION_IS_IRREVERSIBLE": "La cancellazione è irreversibile"
+      "DELETION_IS_IRREVERSIBLE": "La cancellazione è irreversibile",
+      "HUGE_SYNC_NEED_MANUAL_CONFIRMATION": "Sono presenti molti dati da sincronizzare. Conferma se vuoi continuare.",
+      "NUM_ELEMENTS_TO_CACHE": "{{num}} elementi da aggiornare",
+      "FORCE_FULL_SYNC": "Forza sincronizzazione completa"
     }
   },
   "IDEA_VARIABLES": {
