@@ -47,6 +47,17 @@
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
+      {{ 'IDEA.ADDRESS.POSTCODE' | translate }}
+    </ion-label>
+    <ion-input
+      [disabled]="!editMode"
+      [placeholder]="t.instant('IDEA.ADDRESS.POSTCODE_HINT')"
+      [title]="t.instant('IDEA.ADDRESS.POSTCODE_HINT')"
+      [(ngModel)]="address.postcode"
+    ></ion-input>
+  </ion-item>
+  <ion-item [lines]="lines">
+    <ion-label position="stacked">
       {{ 'IDEA.ADDRESS.CITY' | translate }}
       <ion-text class="obligatoryDot" *ngIf="editMode && obligatory"></ion-text>
     </ion-label>
@@ -59,14 +70,13 @@
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.POSTCODE' | translate }}
-      <ion-text class="obligatoryDot" *ngIf="editMode && obligatory"></ion-text>
+      {{ 'IDEA.ADDRESS.PROVINCE' | translate }}
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.POSTCODE_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.POSTCODE_HINT')"
-      [(ngModel)]="address.postcode"
+      [placeholder]="t.instant('IDEA.ADDRESS.PROVINCE_HINT')"
+      [title]="t.instant('IDEA.ADDRESS.PROVINCE_HINT')"
+      [(ngModel)]="address.province"
     ></ion-input>
   </ion-item>
   <idea-select
