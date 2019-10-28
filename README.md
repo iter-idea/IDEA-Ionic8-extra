@@ -24,6 +24,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Select
 - Send email
 - Signature
+- Team & memberships management (IDEA's pool)
 
 ## Services
 

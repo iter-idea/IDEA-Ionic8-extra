@@ -10,8 +10,14 @@ import { IDEATinCanService } from './tinCan.service';
 declare const IDEA_API_ID: string;
 declare const IDEA_API_REGION: string;
 declare const IDEA_API_VERSION: string;
+declare const IDEA_API_IDEA_ID: string;
+declare const IDEA_API_IDEA_REGION: string;
+declare const IDEA_API_IDEA_VERSION: string;
 
-export const API_URL = `https://${IDEA_API_ID}.execute-api.${IDEA_API_REGION}.amazonaws.com/${IDEA_API_VERSION}`;
+export const API_URL_PROJECT =
+  `https://${IDEA_API_ID}.execute-api.${IDEA_API_REGION}.amazonaws.com/` + `${IDEA_API_VERSION}`;
+export const API_URL_IDEA =
+  `https://${IDEA_API_IDEA_ID}.execute-api.${IDEA_API_IDEA_REGION}.amazonaws.com/` + `${IDEA_API_IDEA_VERSION}`;
 
 /**
  * To communicate with an AWS's API Gateway istance.
@@ -38,9 +44,11 @@ export class IDEAAWSAPIService {
    */
   protected request(resource: string, method: string, options?: APIRequestOption): Promise<any> {
     return new Promise((resolve, reject) => {
-      const opt = options || <APIRequestOption>{};
+      const opt = (options || {}) as APIRequestOption;
+      // decide if to use IDEA's API or project's API
+      let url = options.idea ? API_URL_IDEA : API_URL_PROJECT;
       // prepare a single resource request (by id) or a normal one
-      const url = API_URL.concat(`/${resource}/`).concat(opt.resourceId || '');
+      url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
       // preare the headers and set the Authorization; note: HttpHeaders is immutable!
       let headers = new HttpHeaders(opt.headers || null);
       if (!headers.get('Authorization') && this.tc.get('AWSAPIAuthToken'))
@@ -49,26 +57,26 @@ export class IDEAAWSAPIService {
       let req: any;
       switch (method) {
         case 'HEAD':
-          req = this.http.head(url, { headers: headers });
+          req = this.http.head(url, { headers });
           break;
         case 'POST':
-          req = this.http.post(url, opt.body, { headers: headers });
+          req = this.http.post(url, opt.body, { headers });
           break;
         case 'PUT':
-          req = this.http.put(url, opt.body, { headers: headers });
+          req = this.http.put(url, opt.body, { headers });
           break;
         case 'PATCH':
-          req = this.http.patch(url, opt.body, { headers: headers });
+          req = this.http.patch(url, opt.body, { headers });
           break;
         case 'DELETE':
-          req = this.http.delete(url, { headers: headers });
+          req = this.http.delete(url, { headers });
           break;
         default: /* GET */ {
           // prepare the query params; note: HttpParams is immutable!
           let searchParams = new HttpParams();
           if (opt.params && opt.params instanceof HttpParams) searchParams = opt.params;
           else if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
-          req = this.http.get(url, { headers: headers, params: searchParams });
+          req = this.http.get(url, { headers, params: searchParams });
         }
       }
       // handle the request response
@@ -123,7 +131,7 @@ export class IDEAAWSAPIService {
    */
   public getResource(resource: string, options?: APIRequestOption): Promise<any> {
     return new Promise((resolve, reject) => {
-      const opt = options || <APIRequestOption>{};
+      const opt = (options || {}) as APIRequestOption;
       // if offline and with a cache mode set, force the request to the cache
       if (!navigator.onLine && options.useCache) opt.useCache = CacheModes.CACHE_ONLY;
       // execute the GET request online or through the cache, depending on the chosen mode
@@ -221,9 +229,11 @@ export class IDEAAWSAPIService {
    */
   public getFromCache(resource: string, options?: APIRequestOption): Promise<any> {
     return new Promise(resolve => {
-      const opt = options || <APIRequestOption>{};
+      const opt = (options || {}) as APIRequestOption;
+      // decide if to use IDEA's API or project's API
+      let url = options.idea ? API_URL_IDEA : API_URL_PROJECT;
       // prepare a single resource request (by id) or a normal one
-      const url = API_URL.concat(`/${resource}/`).concat(opt.resourceId || '');
+      url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
       // prepare the query params; note: HttpParams is immutable!
       let searchParams = new HttpParams();
       if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
@@ -240,9 +250,11 @@ export class IDEAAWSAPIService {
    */
   public putInCache(resource: string, data: any, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
-      const opt = options || <APIRequestOption>{};
+      const opt = (options || {}) as APIRequestOption;
+      // decide if to use IDEA's API or project's API
+      let url = options.idea ? API_URL_IDEA : API_URL_PROJECT;
       // prepare a single resource request (by id) or a normal one
-      const url = API_URL.concat(`/${resource}/`).concat(opt.resourceId || '');
+      url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
       // prepare the query params; note: HttpParams is immutable!
       let searchParams = new HttpParams();
       if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
@@ -316,6 +328,10 @@ export class APIRequestOption {
    * If true, report the errors that occurs during the request.
    */
   public reportError?: boolean;
+  /**
+   * If true, use IDEA's API instead of the project's API).
+   */
+  public idea?: boolean;
 }
 
 /**

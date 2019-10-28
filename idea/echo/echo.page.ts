@@ -5,10 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
+import { IDEATinCanService } from '../tinCan.service';
 
 // from idea-config.js
 declare const IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
-declare const IDEA_API_URL: string;
+declare const IDEA_PROJECT: string;
 
 @Component({
   selector: 'idea-echo',
@@ -20,6 +21,7 @@ export class IDEAEchoPage {
   public success: boolean;
 
   constructor(
+    public tc: IDEATinCanService,
     public navCtrl: NavController,
     public activatedRoute: ActivatedRoute,
     public loading: IDEALoadingService,
@@ -58,14 +60,15 @@ export class IDEAEchoPage {
    */
   public followRegistrationLink(code: string, user: string) {
     this.loading.show();
-    this.API.http
-      .post(`${IDEA_API_URL}/cognito2`, {
+    this.API.postResource('cognito2', {
+      idea: true,
+      body: {
         action: 'CONFIRM_SIGN_UP',
         username: user,
         confirmationCode: code,
         cognitoUserPoolClientId: IDEA_AWS_COGNITO_WEB_CLIENT_ID
-      })
-      .toPromise()
+      }
+    })
       .then(() => {
         this.success = true;
         this.content = this.t.instant('IDEA.ECHO.ACCOUNT_CONFIRMED');
@@ -81,7 +84,7 @@ export class IDEAEchoPage {
    */
   public followInvitationLink(code: string) {
     this.loading.show();
-    this.API.getResource('invitations', { resourceId: code })
+    this.API.getResource('invitations', { idea: true, resourceId: code })
       .then(() => {
         this.success = true;
         this.content = this.t.instant('IDEA.ECHO.TEAM_JOINED');
@@ -97,7 +100,7 @@ export class IDEAEchoPage {
    */
   public followEmailChangeConfirmationLink(code: string) {
     this.loading.show();
-    this.API.getResource('emailChangeRequests', { resourceId: code })
+    this.API.getResource('emailChangeRequests', { idea: true, resourceId: code, params: { project: IDEA_PROJECT } })
       .then(() => {
         this.success = true;
         this.content = this.t.instant('IDEA.ECHO.EMAIL_CHANGED');
@@ -123,7 +126,7 @@ export class IDEAEchoPage {
   public endTrelloIntegrationFlow(token: string) {
     this.success = Boolean(token);
     this.content = token
-      ? this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_SUCCESS', { token: token })
+      ? this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_SUCCESS', { token })
       : this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_ERROR');
   }
 
