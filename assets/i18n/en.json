@@ -281,6 +281,7 @@
       "TEAM_NOT_ACTIVATED_DISCLAIMER": "Team has not been activated yet; contact an administrator",
       "USERS": "Users",
       "INVITE": "Invite",
+      "CANCEL": "Cancel",
       "INVITE_USER_HINT": "Invite a member to the team",
       "ADMIN": "Admin",
       "OWNER": "Owner",

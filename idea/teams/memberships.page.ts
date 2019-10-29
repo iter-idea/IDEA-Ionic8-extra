@@ -64,7 +64,7 @@ export class IDEAMembershipsPage {
    * Whether the user is the owner of the team or not.
    */
   public isOwner(): boolean {
-    return this.team && this.memberships ? this.membership.userId === this.team.ownerId : false;
+    return this.team && this.membership ? this.membership.userId === this.team.ownerId : false;
   }
   /**
    * Invite a new member in the team.
@@ -75,9 +75,9 @@ export class IDEAMembershipsPage {
         header: this.t.instant('IDEA.TEAMS.INVITE_USER'),
         inputs: [{ name: 'email', type: 'email', placeholder: this.t.instant('IDEA.TEAMS.EMAIL_TO_INVITE') }],
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t.instant('IDEA.TEAMS.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.INVITE'),
+            text: this.t.instant('IDEA.TEAMS.INVITE'),
             handler: data => {
               if (!data.email) return;
               this.loading.show();
