@@ -28,5 +28,6 @@
       {{ v.concat(' ') }}
     </ion-text>
   </p>
-  <textarea [id]="id"></textarea>
+  <ion-textarea rows="12" [id]="id" [placeholder]="placeholder" [(ngModel)]="value"></ion-textarea>
+  <idea-mde-toolbar></idea-mde-toolbar>
 </ion-content>

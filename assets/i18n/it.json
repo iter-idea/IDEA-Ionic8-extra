@@ -102,7 +102,12 @@
       "TITLE": "Editor Markdown",
       "VARIABLES": "Variabili",
       "CLOSE_WITHOUT_SAVING": "Chiudi senza salvare",
-      "SAVE_AND_CLOSE": "Salva e chiudi"
+      "SAVE_AND_CLOSE": "Salva e chiudi",
+      "TOOLBAR": {
+        "BOLD": "Bold",
+        "ITALIC": "Italic",
+        "STRIKE": "Strike"
+      }
     },
     "LOADING": {
       "PLEASE_WAIT": "Attendere prego..."
