@@ -4,7 +4,7 @@
       <ion-back-button icon="close"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      {{ 'IDEA.TEAMS.USERS' | translate }}
+      {{ 'IDEA.TEAMS.TEAM_MEMBERS' | translate }}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="t.instant('IDEA.TEAMS.INVITE_USER_HINT')" (click)="addMember()">
@@ -14,18 +14,16 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list class="membershipsList">
+  <ion-list lines="full" class="membershipsList">
+    <ion-list-header>
+      <ion-label>{{ team?.name }}</ion-label>
+    </ion-list-header>
     <p>{{ 'IDEA.TEAMS.MAIN_EXPLANATION' | translate }}.</p>
-    <ion-item *ngFor="let m of memberships">
+    <ion-item button="true" *ngFor="let m of memberships">
       <ion-label>
         {{ m.name }}
       </ion-label>
-      <ion-badge
-        slot="end"
-        color="danger"
-        *ngIf="m.userId === team?.ownerId"
-        [title]="t.instant('IDEA.TEAMS.IS_OWNER')"
-      >
+      <ion-badge slot="end" color="dark" *ngIf="m.userId === team?.ownerId" [title]="t.instant('IDEA.TEAMS.IS_OWNER')">
         {{ 'IDEA.TEAMS.OWNER' | translate }}
       </ion-badge>
       <ion-badge
@@ -47,7 +45,8 @@
       <ion-button
         slot="end"
         fill="clear"
-        *ngIf="m.userId !== team?.ownerId"
+        color="dark"
+        [disabled]="m.userId === team?.ownerId"
         [title]="t.instant('IDEA.TEAMS.ACTIONS_ON_USER_', { user: m.name })"
         (click)="manageMembership(m)"
       >

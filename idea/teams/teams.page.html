@@ -7,17 +7,17 @@
       {{ 'IDEA.TEAMS.SELECT_A_TEAM' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('IDEA.TEAMS.CREATE_TEAM')" (click)="newTeam()">
-        <ion-icon name="add"></ion-icon>
+      <ion-button [title]="t.instant('IDEA.TEAMS.CREATE_TEAM_HINT')" (click)="newTeam()">
+        {{ 'IDEA.TEAMS.CREATE' | translate }}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list class="teamsList">
+  <ion-list lines="full" class="teamsList">
     <p *ngIf="!tc.get('membership')">{{ 'IDEA.TEAMS.YOU_NEED_A_TEAM_TO_CONTINUE' | translate }}.</p>
     <ion-item
-      tappable
+      button="true"
       *ngFor="let team of teams"
       [title]="t.instant('IDEA.TEAMS.SELECT_TEAM_', { team: team.name })"
       [disabled]="!(team.isActivatedOnProject || team.isRequestingUserAdmin)"
@@ -41,11 +41,12 @@
         slot="end"
         fill="clear"
         size="small"
+        color="dark"
         *ngIf="team.isRequestingUserAdmin"
-        [title]="t.instant('IDEA.TEAMS.TEAM_MEMBERS', { team: team.name })"
+        [title]="t.instant('IDEA.TEAMS.TEAM_MEMBERS_HINT', { team: team.name })"
         (click)="manageTeam(team.teamId, $event)"
       >
-        <ion-icon name="contacts" slot="icon-only"></ion-icon>
+        {{ 'IDEA.TEAMS.MEMBERS' | translate }}
       </ion-button>
     </ion-item>
   </ion-list>

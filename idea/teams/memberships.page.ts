@@ -183,7 +183,7 @@ export class IDEAMembershipsPage {
               })
                 .then(() => {
                   if (this.tc.get('userId') === membership.userId) return window.location.assign('');
-                  this.message.success('IDEA.TEAMS.USER_DELETED');
+                  this.message.success('IDEA.TEAMS.USER_REMOVED');
                   this.memberships.splice(this.memberships.indexOf(membership), 1);
                 })
                 .catch(() => this.message.error('IDEA.TEAMS.DELETION_OPERATION_FAILED'))

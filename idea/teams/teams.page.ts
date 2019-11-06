@@ -55,11 +55,7 @@ export class IDEATeamsPage {
     this.API.patchResource('users', {
       idea: true,
       resourceId: this.tc.get('userId'),
-      body: {
-        action: 'CHANGE_TEAM',
-        teamId,
-        project: IDEA_PROJECT
-      }
+      body: { action: 'CHANGE_TEAM', teamId, project: IDEA_PROJECT }
     })
       .then(() => window.location.assign('')) // reload the app so that it takes the new settings and permissions
       .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
