@@ -145,7 +145,7 @@
       "TYPE": "Type",
       "DESCRIPTION": "Description",
       "OPTIONAL": "Optional",
-      "ENUM": "Choices (separate the values with commas)",
+      "ENUM": "Choices",
       "MIN": "Minimum",
       "MAX": "Maximum",
       "FIELD_DELETION_ALERT": "The field will be irreversibly deleted",

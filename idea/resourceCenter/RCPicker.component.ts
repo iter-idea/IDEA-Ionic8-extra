@@ -4,7 +4,6 @@ import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
-import { Suggestion } from '../select/suggestions.component';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEADownloaderURL } from '../downloader/downloader.component';
 import { IDEAMessageService } from '../message.service';
@@ -43,7 +42,7 @@ export class IDEARCPickerComponent {
   /**
    * The resources mapped into suggestions.
    */
-  public resourcesSuggestions: Array<Suggestion>;
+  public resourcesSuggestions: Array<IdeaX.Suggestion>;
   /**
    * Support variable to trigger file downloads.
    */
@@ -78,7 +77,9 @@ export class IDEARCPickerComponent {
       this.API.getResource(`teams/${this.team}/folders/${this.folder.folderId}/resources`)
         .then((resources: Array<IdeaX.RCResource>) => {
           this.resources = resources;
-          this.resourcesSuggestions = resources.map(x => new Suggestion(x.resourceId, `${x.name}.${x.format}`));
+          this.resourcesSuggestions = resources.map(
+            x => new IdeaX.Suggestion({ valeu: x.resourceId, name: `${x.name}.${x.format}` })
+          );
         })
         .catch(() => {});
     }

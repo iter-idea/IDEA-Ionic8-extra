@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import IdeaX = require('idea-toolbox');
 
-import { IDEASuggestionsComponent, Suggestion } from './suggestions.component';
+import { IDEASuggestionsComponent } from './suggestions.component';
 
 /**
  * Useful configurations
@@ -10,7 +11,7 @@ import { IDEASuggestionsComponent, Suggestion } from './suggestions.component';
  *    3. Allow loose values: [data], (select), [description], [allowUnlistedValues]
  *
  * Data can either be populated directly from the namesake attribute, passing an array of values, or through the
- * _dataProvider_, which is a function that returns a Promise<Array<Suggestion>>, i.e. a promise with an array of
+ * _dataProvider_, which is a function that returns a Promise<Array<IdeaX.Suggestion>>, i.e. a promise with an array of
  * Suggestions fetched from somewhere.
  * Tip: to execute from another context, pass to the `idea-select` an helper function like the following:
  * ```
@@ -46,9 +47,9 @@ export class IDEASelectComponent {
   /**
    * The suggestions to show.
    */
-  @Input() public data: Array<Suggestion>;
+  @Input() public data: Array<IdeaX.Suggestion>;
   /**
-   *  Alternative to the case above; function that returns a Promise<Array<Suggestion>>.
+   *  Alternative to the case above; function that returns a Promise<Array<IdeaX.Suggestion>>.
    */
   @Input() public dataProvider: any;
   /**
@@ -122,14 +123,14 @@ export class IDEASelectComponent {
   /**
    * On select event.
    */
-  @Output() public select = new EventEmitter<Suggestion>();
+  @Output() public select = new EventEmitter<IdeaX.Suggestion>();
   /**
    * On select (with the field disabled) event.
    */
   @Output() public selectWhenDisabled = new EventEmitter<void>();
 
   constructor(public modalCtrl: ModalController) {
-    this.data = new Array<Suggestion>();
+    this.data = new Array<IdeaX.Suggestion>();
     this.category1 = null;
     this.category2 = null;
     this.avoidAutoSelection = false;
@@ -146,7 +147,7 @@ export class IDEASelectComponent {
         .filter(x => !this.category2 || x.category2 === this.category2);
       if (filteredData.length === 1) {
         setTimeout(() => {
-          this.select.emit(filteredData[0].value ? filteredData[0] : new Suggestion());
+          this.select.emit(filteredData[0].value ? filteredData[0] : new IdeaX.Suggestion());
         }, 500);
       }
     }
@@ -159,7 +160,7 @@ export class IDEASelectComponent {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
       this.dataProvider()
-        .then((data: Array<Suggestion>) => {
+        .then((data: Array<IdeaX.Suggestion>) => {
           this.data = data;
           this.openSuggestions();
         })
@@ -170,7 +171,7 @@ export class IDEASelectComponent {
    * Automatically convers data into Suggestions (from plain strings, numbers, etc.).
    */
   protected convertDataInSuggestions() {
-    this.data = this.data.map((x: any) => (x.value ? x : new Suggestion(x)));
+    this.data = this.data.map((x: any) => (x.value ? x : new IdeaX.Suggestion({ value: x })));
   }
   /**
    * Open the suggestions modal and later fetch the selection (plain value).
@@ -201,7 +202,7 @@ export class IDEASelectComponent {
           // manage a cancel option (modal dismission or cancel button)
           if (selection.data === undefined || selection.data === null) return;
           // manage a reset ('') or a selection
-          this.select.emit(selection.data.value ? selection.data : new Suggestion());
+          this.select.emit(selection.data.value ? selection.data : new IdeaX.Suggestion());
           // render the suggestion selected
           if (this.clearValueAfterSelection) this.description = '';
           else if (selection.data.name) this.description = selection.data.name;

@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { OverlayEventDetail } from '@ionic/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
+import { IDEAListComponent } from '../list/list.component';
 
 @Component({
   selector: 'idea-custom-field-manager',
@@ -29,7 +31,6 @@ export class IDEACustomFieldManagerComponent {
 
   public errors: Array<string>;
   public FIELD_TYPES: Array<string> = Object.keys(IdeaX.CustomFieldTypes);
-  public enumAsString: string;
 
   constructor(public modalCtrl: ModalController, public alertCtrl: AlertController, public t: TranslateService) {
     this.errors = Array<string>();
@@ -37,7 +38,6 @@ export class IDEACustomFieldManagerComponent {
   public ngOnInit() {
     if (!this.theField) this.close();
     this.theField = new IdeaX.CustomFieldMeta(this.field, this.languages);
-    this.enumAsString = (this.theField.enum || []).join(', ');
   }
 
   /**
@@ -51,18 +51,8 @@ export class IDEACustomFieldManagerComponent {
    * Return the modified field and close.
    */
   public save() {
-    // convert and clean the string enum (reset the enum if the type isn't correct)
-    if (this.theField.type === IdeaX.CustomFieldTypes.ENUM) {
-      this.theField.enum = Array.from(
-        new Set(
-          this.enumAsString
-            .split(',')
-            .map(x => x.trim())
-            .filter(x => x)
-        )
-      );
-      if (!this.theField.enum.length) this.field.enum = null;
-    } else this.theField.enum = null;
+    // clean the enum (reset the enum if the type isn't correct)
+    if (this.theField.type !== IdeaX.CustomFieldTypes.ENUM || !this.theField.enum.length) this.theField.enum = null;
     // reset obligatory if field is boolean
     if (this.theField.type === IdeaX.CustomFieldTypes.BOOLEAN) {
       this.theField.obligatory = false;
@@ -78,6 +68,29 @@ export class IDEACustomFieldManagerComponent {
     if (this.errors.length) return;
     // return the cleaned field
     this.close(this.theField);
+  }
+
+  /**
+   * Open a modal to manage the enum as a list.
+   */
+  public openEnumList() {
+    this.modalCtrl
+      .create({
+        component: IDEAListComponent,
+        componentProps: { list: this.theField.enum, title: this.t.instant('IDEA.CUSTOM_FIELDS.ENUM') }
+      })
+      .then(modal => {
+        modal.onDidDismiss().then((res: OverlayEventDetail) => {
+          if (res.data) this.theField.enum = res.data;
+        });
+        modal.present();
+      });
+  }
+  /**
+   * Show the enum as a string;
+   */
+  public getEnumAsString(): string {
+    return (this.theField.enum || []).join(', ');
   }
 
   /**

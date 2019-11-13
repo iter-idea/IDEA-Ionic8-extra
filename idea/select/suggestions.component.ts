@@ -2,6 +2,8 @@ import { Component, HostListener, Input, ViewChild } from '@angular/core';
 import { ModalController, IonSearchbar, IonInfiniteScroll } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
+import IdeaX = require('idea-toolbox');
+
 @Component({
   selector: 'idea-suggestions',
   templateUrl: 'suggestions.component.html',
@@ -11,7 +13,7 @@ export class IDEASuggestionsComponent {
   /**
    * The suggestions to show.
    */
-  @Input() public data: Array<Suggestion>;
+  @Input() public data: Array<IdeaX.Suggestion>;
   /**
    * If true, sort the suggestions alphabetically.
    */
@@ -52,7 +54,7 @@ export class IDEASuggestionsComponent {
   /**
    * Paginated suggestions (from the data).
    */
-  public suggestions: Array<Suggestion>;
+  public suggestions: Array<IdeaX.Suggestion>;
   /**
    * The current page for the paginated suggestions.
    */
@@ -69,8 +71,8 @@ export class IDEASuggestionsComponent {
   @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
 
   constructor(public modalCtrl: ModalController, public t: TranslateService) {
-    this.data = this.data || new Array<Suggestion>();
-    this.suggestions = new Array<Suggestion>();
+    this.data = this.data || new Array<IdeaX.Suggestion>();
+    this.suggestions = new Array<IdeaX.Suggestion>();
     this.page = 1;
     this.numPerPage = 48;
   }
@@ -103,10 +105,10 @@ export class IDEASuggestionsComponent {
   /**
    * Helper to get in the template a sorted array of suggestions out of a set
    */
-  public mapIntoSuggestions(set: Set<string>): Array<Suggestion> {
+  public mapIntoSuggestions(set: Set<string>): Array<IdeaX.Suggestion> {
     return Array.from(set)
       .sort()
-      .map(x => new Suggestion(x));
+      .map(x => new IdeaX.Suggestion({ value: x }));
   }
   /**
    * Get suggestions while typing into the input.
@@ -158,7 +160,7 @@ export class IDEASuggestionsComponent {
    *    - selection === null -> clear
    *    - otherwise, a suggestion was selected
    */
-  public select(selection?: Suggestion | any) {
+  public select(selection?: IdeaX.Suggestion | any) {
     this.modalCtrl.dismiss(selection);
   }
 
@@ -215,50 +217,5 @@ export class IDEASuggestionsComponent {
         if (selected) selected.classList.add('selected');
         break;
     }
-  }
-}
-
-/**
- * A suggestion made to appear as value to select.
- */
-export class Suggestion {
-  public value: any;
-  public name: any;
-  public category1: any;
-  public category2: any;
-
-  constructor(value?: any, name?: any, category1?: any, category2?: any) {
-    this.value = value || null;
-    this.name = name || null;
-    this.category1 = category1 || null;
-    this.category2 = category2 || null;
-  }
-
-  /**
-   * Clear the suggestion.
-   */
-  public clear() {
-    this.value = null;
-    this.name = null;
-    this.category1 = null;
-    this.category2 = null;
-  }
-  /**
-   * Set the suggestion with new values.
-   */
-  public set(value: any, name?: any, category1?: any, category2?: any) {
-    this.value = value;
-    this.name = name || null;
-    this.category1 = category1 || null;
-    this.category2 = category2 || null;
-  }
-  /**
-   * Copy the attributes from another suggestion.
-   */
-  public copy(suggestion: Suggestion) {
-    this.value = suggestion.value;
-    this.name = suggestion.name;
-    this.category1 = suggestion.category1;
-    this.category2 = suggestion.category2;
   }
 }

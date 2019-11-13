@@ -64,7 +64,10 @@
       <ion-label position="stacked">
         {{ 'IDEA.CUSTOM_FIELDS.ENUM' | translate }}
       </ion-label>
-      <ion-input type="text" [(ngModel)]="enumAsString"></ion-input>
+      <ion-input type="text" readonly="true" [value]="getEnumAsString()"></ion-input>
+      <ion-button slot="end" fill="clear" (click)="openEnumList()">
+        {{ 'COMMON.EDIT' | translate }}
+      </ion-button>
     </ion-item>
     <ion-item lines="inset" *ngIf="theField.type !== 'BOOLEAN'" [class.fieldHasError]="hasFieldAnError('default')">
       <ion-label position="stacked">

@@ -145,7 +145,7 @@
       "TYPE": "Tipo",
       "DESCRIPTION": "Descrizione",
       "OPTIONAL": "Opzionale",
-      "ENUM": "Scelte (inserisci i valori separandoli con virgole)",
+      "ENUM": "Scelte",
       "MIN": "Minimo",
       "MAX": "Massimo",
       "FIELD_DELETION_ALERT": "Il campo verrà rimosso irrimediabilmente",

@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-
-import { Address, Countries } from 'idea-toolbox';
-import { Suggestion } from '../select/suggestions.component';
+import IdeaX = require('idea-toolbox');
 
 @Component({
   selector: 'idea-address',
@@ -13,7 +11,7 @@ export class IDEAAddressComponent {
   /**
    * The address to manage.
    */
-  @Input() public address: Address;
+  @Input() public address: IdeaX.Address;
   /**
    * If true, show the field `contact`.
    */
@@ -46,25 +44,27 @@ export class IDEAAddressComponent {
   /**
    * The suggestions for the Countries picker.
    */
-  public countriesSuggestions: Array<Suggestion>;
+  public countriesSuggestions: Array<IdeaX.Suggestion>;
   /**
    * Shortcut to Countries enum.
    */
-  public Countries = Countries;
+  public Countries = IdeaX.Countries;
   /**
    * To toggle the detailed view.
    */
   public addressCollapsed: boolean;
 
   constructor(public t: TranslateService) {
-    this.address = new Address();
+    this.address = new IdeaX.Address();
     this.showContact = false;
     this.showAddress2 = false;
     this.showPhone = false;
     this.showEmail = false;
     this.editMode = true;
     this.lines = 'inset';
-    this.countriesSuggestions = Object.keys(Countries).map(k => new Suggestion(Countries[k], k));
+    this.countriesSuggestions = Object.keys(IdeaX.Countries).map(
+      k => new IdeaX.Suggestion({ value: IdeaX.Countries[k], name: k })
+    );
     this.addressCollapsed = true;
   }
 

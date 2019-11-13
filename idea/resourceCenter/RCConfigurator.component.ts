@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
-import { Suggestion } from '../select/suggestions.component';
 import { IDEATinCanService } from '../tinCan.service';
 
 @Component({
@@ -36,7 +35,7 @@ export class IDEARCConfiguratorComponent {
   /**
    * The folders mapped into suggestions.
    */
-  public foldersSuggestions: Array<Suggestion>;
+  public foldersSuggestions: Array<IdeaX.Suggestion>;
 
   constructor(public t: TranslateService, public tc: IDEATinCanService, public API: IDEAAWSAPIService) {
     this.team = null;
@@ -57,7 +56,7 @@ export class IDEARCConfiguratorComponent {
     this.API.getResource(`teams/${this.team}/folders`)
       .then((folders: Array<IdeaX.RCFolder>) => {
         this.folders = folders;
-        this.foldersSuggestions = folders.map(x => new Suggestion(x.folderId, x.name));
+        this.foldersSuggestions = folders.map(x => new IdeaX.Suggestion({ value: x.folderId, name: x.name }));
       })
       .catch(() => {});
   }
