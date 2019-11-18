@@ -48,7 +48,8 @@ export class IDEAAWSAPIService {
       // decide if to use IDEA's API or project's API
       let url = options.idea ? API_URL_IDEA : API_URL_PROJECT;
       // prepare a single resource request (by id) or a normal one
-      url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
+      url = url.concat(`/${resource}/`);
+      if (opt.resourceId) url = url.concat(encodeURIComponent(opt.resourceId));
       // preare the headers and set the Authorization; note: HttpHeaders is immutable!
       let headers = new HttpHeaders(opt.headers || null);
       if (!headers.get('Authorization') && this.tc.get('AWSAPIAuthToken'))
@@ -75,7 +76,8 @@ export class IDEAAWSAPIService {
           // prepare the query params; note: HttpParams is immutable!
           let searchParams = new HttpParams();
           if (opt.params && opt.params instanceof HttpParams) searchParams = opt.params;
-          else if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
+          else if (opt.params)
+            for (const prop in opt.params) searchParams = searchParams.set(prop, encodeURIComponent(opt.params[prop]));
           req = this.http.get(url, { headers, params: searchParams });
         }
       }
