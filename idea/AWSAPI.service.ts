@@ -76,8 +76,7 @@ export class IDEAAWSAPIService {
           // prepare the query params; note: HttpParams is immutable!
           let searchParams = new HttpParams();
           if (opt.params && opt.params instanceof HttpParams) searchParams = opt.params;
-          else if (opt.params)
-            for (const prop in opt.params) searchParams = searchParams.set(prop, encodeURIComponent(opt.params[prop]));
+          else if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
           req = this.http.get(url, { headers, params: searchParams });
         }
       }
