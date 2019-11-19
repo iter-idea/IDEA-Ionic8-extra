@@ -1,3 +1,4 @@
+export * from './account/account.module';
 export * from './address/address.module';
 export * from './attachments/attachments.module';
 export * from './auth/auth.module';

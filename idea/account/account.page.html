@@ -1,0 +1,62 @@
+<ion-header no-border>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-back-button icon="close"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'IDEA.ACCOUNT.ACCOUNT' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list lines="full" class="account">
+    <ion-item>
+      <ion-label position="stacked">
+        {{ 'IDEA.ACCOUNT.EMAIL' | translate }}
+      </ion-label>
+      <ion-input type="text" readonly="true" [(ngModel)]="newEmail"> </ion-input>
+      <ion-button slot="end" fill="clear" [title]="t.instant('IDEA.ACCOUNT.SET_A_NEW_EMAIL')" (click)="updateEmail()">
+        <ion-icon name="create" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">
+        {{ 'IDEA.ACCOUNT.PASSWORD' | translate }}
+      </ion-label>
+      <ion-input type="text" readonly="true" value="********"> </ion-input>
+      <ion-button
+        slot="end"
+        fill="clear"
+        [title]="t.instant('IDEA.ACCOUNT.SET_A_NEW_PASSWORD')"
+        (click)="updatePassword()"
+      >
+        <ion-icon name="create" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-list-header class="disruptive">
+      <ion-badge color="danger">
+        <ion-icon name="nuclear"></ion-icon> {{ 'IDEA.ACCOUNT.DISRUPTIVE_ACTIONS' | translate }}
+      </ion-badge>
+    </ion-list-header>
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        {{ 'IDEA.ACCOUNT.USER_DELETION' | translate }}
+        <p>
+          {{ 'IDEA.ACCOUNT.IRREVERSIBLE_OPERATION' | translate }}
+          <br />
+          <i>
+            {{ 'IDEA.ACCOUNT.YOU_MUST_LEAVE_ALL_TEAMS_FIRST' | translate }}
+          </i>
+        </p>
+      </ion-label>
+      <ion-button
+        slot="end"
+        color="danger"
+        [title]="t.instant('IDEA.ACCOUNT.DELETE_PERMANENTLY_USER')"
+        (click)="deleteUser()"
+      >
+        {{ 'IDEA.ACCOUNT.DELETE' | translate }}
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
