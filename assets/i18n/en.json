@@ -337,6 +337,17 @@
       "DELETE_PERMANENTLY_USER": "Permanently delete the account",
       "MANAGE_YOUR_ACCOUNT": "Manage your account",
       "MANAGE_YOUR_ACCOUNT_HINT": "Manage your IDEA account"
+    },
+    "AGENDA": {
+      "AGENDA": "Agenda",
+      "CALENDARS": "Calendars",
+      "ALL_CALENDARS": "All calendars",
+      "NO_CALENDARS": "No calendars",
+      "MONTH": "Month",
+      "WEEK": "Week",
+      "DAY": "Day",
+      "ALL_DAY": "All day",
+      "NO_EVENTS": "No events"
     }
   },
   "IDEA_VARIABLES": {

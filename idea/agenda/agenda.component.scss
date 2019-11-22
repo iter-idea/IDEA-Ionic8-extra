@@ -1,0 +1,60 @@
+.appointment {
+  --min-height: 70px;
+  --ion-background-color: white !important;
+  --border-color: #eee;
+  font-size: 1em;
+  ion-avatar {
+    --border-radius: 0;
+    margin: 0 !important;
+    min-height: 50px;
+    min-width: 50px;
+    padding: 0 16px 0 0 !important;
+  }
+  .time {
+    border-right: 3px solid;
+    p {
+      width: 45px;
+      height: 45px;
+      margin-top: 10px;
+      font-size: 0.7em;
+      padding-right: 10px;
+      span {
+        text-align: right;
+        display: block;
+      }
+      .start {
+        color: var(--ion-color-dark-shade);
+        padding-bottom: 4px;
+      }
+      .end {
+        color: var(--ion-color-dark-tint);
+      }
+      .allDay {
+        color: var(--ion-color-dark-shade);
+        padding-top: 8px;
+      }
+    }
+  }
+  .noTime {
+    border-right: 3px solid;
+    span {
+      display: block;
+      padding-top: 12px;
+      text-align: center;
+      color: var(--ion-color-medium-tint);
+    }
+  }
+  .mainDescription {
+    font-size: 0.9em;
+    color: var(--ion-color-dark-shade);
+    padding-left: 12px;
+    margin-top: 2px;
+    margin-bottom: 0;
+  }
+}
+ion-spinner {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  padding-right: 10px;
+}

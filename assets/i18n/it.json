@@ -337,6 +337,17 @@
       "DELETE_PERMANENTLY_USER": "Eliminazione irreversibile dell'account",
       "MANAGE_YOUR_ACCOUNT": "Gestione account",
       "MANAGE_YOUR_ACCOUNT_HINT": "Gestisci il tuo account IDEA"
+    },
+    "AGENDA": {
+      "AGENDA": "Agenda",
+      "CALENDARS": "Calendari",
+      "ALL_CALENDARS": "Tutti i calendari",
+      "NO_CALENDARS": "Nessun calendario",
+      "MONTH": "Mese",
+      "WEEK": "Settimana",
+      "DAY": "Giorno",
+      "ALL_DAY": "Giorno",
+      "NO_EVENTS": "Nessun evento"
     }
   },
   "IDEA_VARIABLES": {
