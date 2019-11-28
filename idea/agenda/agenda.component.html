@@ -1,7 +1,7 @@
 <ion-grid class="agenda" fixed>
   <ion-row class="ion-align-items-center titleRow">
     <ion-col class="ion-text-right ion-align-self-center" [size]="12" [sizeSm]="3" [sizeLg]="3">
-      <ion-button (click)="goToToday()">
+      <ion-button (click)="addAppointment()">
         {{ 'COMMON.ADD' | translate }}
       </ion-button>
     </ion-col>
@@ -23,7 +23,7 @@
         interface="popover"
         class="calendarModeSelect"
         [value]="viewMode"
-        (ionChange)="$event?.detail ? (viewMode = $event.detail.value) : null"
+        (ionChange)="$event?.detail ? changeViewMode($event.detail.value) : null"
       >
         <ion-select-option value="month">{{ 'IDEA.AGENDA.MONTH' | translate }}</ion-select-option>
         <ion-select-option value="week">{{ 'IDEA.AGENDA.WEEK' | translate }}</ion-select-option>
@@ -53,10 +53,11 @@
   <ion-row>
     <ion-col>
       <ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate">
-        <ion-list lines="full" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+        <ion-list lines="full" has-bouncing="false" overflow-scroll="false" *ngIf="showEventDetail">
           <ion-item
             class="appointment"
             *ngFor="let event of selectedDate?.events"
+            [button]="true"
             (click)="onAppointmentSelected(event)"
           >
             <ion-avatar slot="start" class="time" [style.border-right-color]="event.color">
@@ -74,6 +75,7 @@
             </ion-avatar>
             <ion-label class="mainDescription">
               {{ event.title }}
+              <p>{{ event.location }}</p>
             </ion-label>
           </ion-item>
           <ion-item *ngIf="selectedDate?.events.length == 0">
@@ -82,8 +84,14 @@
         </ion-list>
       </ng-template>
       <ng-template #eventTemplate let-displayEvent="displayEvent">
-        <div class="calendar-event-inner" [style.background-color]="displayEvent.event.color">
+        <div
+          tappable
+          class="calendar-event-inner"
+          [style.background-color]="displayEvent.event.color"
+          [style.color]="getConstrastTextColor(displayEvent.event.color)"
+        >
           {{ displayEvent.event.title }}
+          <p>{{ displayEvent.event.location }}</p>
         </div>
       </ng-template>
       <calendar
@@ -104,12 +112,13 @@
         [dayviewNormalEventTemplate]="eventTemplate"
         [dayviewAllDayEventTemplate]="eventTemplate"
         [queryMode]="'remote'"
+        [lockSwipes]="!platform.is('mobile')"
+        [step]="30"
         (onCurrentDateChanged)="onCurrentDateChanged($event)"
         (onRangeChanged)="onRangeChanged($event)"
         (onEventSelected)="onAppointmentSelected($event)"
         (onTitleChanged)="viewTitle = $event"
         (onTimeSelected)="onTimeSelected($event)"
-        step="30"
       >
       </calendar>
     </ion-col>

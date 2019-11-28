@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Platform, ModalController } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core';
 import { TranslateService } from '@ngx-translate/core';
 import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
@@ -6,7 +8,7 @@ import IdeaX = require('idea-toolbox');
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
-import { Check } from '../checker/checks.component';
+import { IDEAAppointmentComponent } from './appointment.component';
 
 @Component({
   selector: 'idea-agenda',
@@ -31,9 +33,17 @@ export class IDEAAgendaComponent {
    */
   public MONTHS_RANGE_FOR_TRIGGERING_REQUEST = 3;
   /**
+   * Default duration for a new appointment (ms). @todo team settings
+   */
+  public DEFAULT_APPOINTMENT_DURATION = 3600000;
+  /**
    * The appointments gathered for the current range, grouped by calendar.
    */
-  public appointmentsByCalendar: { [key: string]: Array<AgendaAppointment> };
+  public appointmentsByCalendar: { [key: string]: Array<IdeaX.Appointment> };
+  /**
+   * The appointments (agenda format) gathered for the current range, grouped by calendar.
+   */
+  public agendaAppointmentsByCalendar: { [key: string]: Array<AgendaAppointment> };
   /**
    * The reference date to gather data. note: it's different from `currentDate` since this changes only when
    * we exit from the `MONTHS_RANGE_FOR_TRIGGERING_REQUEST`.
@@ -46,7 +56,7 @@ export class IDEAAgendaComponent {
   /**
    * Helper to identify the calendars currently selected.
    */
-  public calendarsChecks: Array<Check>;
+  public calendarsChecks: Array<IdeaX.Check>;
   /**
    * The title of the view: it gives a time context to the agenda.
    */
@@ -88,6 +98,8 @@ export class IDEAAgendaComponent {
   }
 
   constructor(
+    public platform: Platform,
+    public modalCtrl: ModalController,
     public tc: IDEATinCanService,
     public loading: IDEALoadingService,
     public t: TranslateService,
@@ -102,9 +114,10 @@ export class IDEAAgendaComponent {
     this.goToToday();
     this.referenceDate = Moment();
     this.calendars = new Array<IdeaX.Calendar>();
-    this.calendarsChecks = new Array<Check>();
+    this.calendarsChecks = new Array<IdeaX.Check>();
     this.appointments = new Array<AgendaAppointment>();
     this.appointmentsByCalendar = {};
+    this.agendaAppointmentsByCalendar = {};
     // acquire all the calendars available to the user and gather their appointments (if the calendar is selected)
     this.loading.show();
     Promise.all([
@@ -118,7 +131,7 @@ export class IDEAAgendaComponent {
         this.calendars = this.flattenArray(res).sort((a, b) => a.name.localeCompare(b.name));
         // prepare the helper to allow the display of specific calendars (and so their appointments)
         this.calendarsChecks = this.calendars.map(
-          c => new Check({ value: c.calendarId, name: c.name, checked: true, color: c.color })
+          c => new IdeaX.Check({ value: c.calendarId, name: c.name, checked: true, color: c.color })
         );
         // load the appointments from each selected calendar
         this.loadAppointmentsBasedOnVisibileCalendars().then(() => this.loading.hide());
@@ -130,16 +143,14 @@ export class IDEAAgendaComponent {
    */
   public loadAppointmentsBasedOnVisibileCalendars(force?: boolean) {
     return new Promise(resolve => {
-      this.loadingAppointments = true;
       // prepare the requests to gather the appointments from each checked calendars
       const requests = this.calendars
         .filter(cal => this.calendarsChecks.find(x => x.value === cal.calendarId).checked)
         .map(cal => this.getCalendarAppointments(cal, force));
       // execute the requests and concat the results in an array of appointments
-      Promise.all(requests).then((res: Array<Array<AgendaAppointment>>) => {
-        this.loadingAppointments = false;
-        resolve((this.appointments = this.flattenArray(res)));
-      });
+      Promise.all(requests).then((res: Array<Array<AgendaAppointment>>) =>
+        resolve((this.appointments = this.flattenArray(res)))
+      );
     });
   }
   /**
@@ -148,8 +159,8 @@ export class IDEAAgendaComponent {
   public getCalendarAppointments(calendar: IdeaX.Calendar, forceRefresh?: boolean): Promise<Array<AgendaAppointment>> {
     return new Promise(resolve => {
       // if not forced and the data is available, return it
-      if (!forceRefresh && this.appointmentsByCalendar[calendar.calendarId])
-        return resolve(this.appointmentsByCalendar[calendar.calendarId]);
+      if (!forceRefresh && this.agendaAppointmentsByCalendar[calendar.calendarId])
+        return resolve(this.agendaAppointmentsByCalendar[calendar.calendarId]);
       // request appointments remotely, from a shared or a local calendar, based on the interval around the ref. date
       const baseURL = calendar.teamId ? `teams/${this.tc.get('membership').teamId}/` : '';
       this.API.getResource(baseURL.concat(`calendars/${calendar.calendarId}/appointments`), {
@@ -165,8 +176,11 @@ export class IDEAAgendaComponent {
       })
         .then((app: Array<IdeaX.Appointment>) => {
           // save the data for the next request and return it
-          this.appointmentsByCalendar[calendar.calendarId] = app.map(a => new AgendaAppointment(a, calendar.color));
-          resolve(this.appointmentsByCalendar[calendar.calendarId]);
+          this.appointmentsByCalendar[calendar.calendarId] = app.map(a => new IdeaX.Appointment(a));
+          this.agendaAppointmentsByCalendar[calendar.calendarId] = app.map(
+            a => new AgendaAppointment(a, calendar.color)
+          );
+          resolve(this.agendaAppointmentsByCalendar[calendar.calendarId]);
         })
         .catch(() => {});
     });
@@ -226,10 +240,23 @@ export class IDEAAgendaComponent {
     this.currentDate = calculateCalendarDate;
   }
   /**
+   * Wether the two dates are in the same view (based on the viewMode).
+   */
+  public areDatesInSameView(d1: Date, d2: Date): boolean {
+    return Moment(d1).isSame(d2, this.viewMode);
+  }
+  /**
    * Humanize the unixDate time.
    */
   public humanizeDateTime(unixDate: IdeaX.epochDateTime, format: string): string {
     return Moment.unix(unixDate / 1000).format(format);
+  }
+  /**
+   * Change the view mode and update the appointments in the view.
+   */
+  public changeViewMode(mode: AgendaViewModes) {
+    this.viewMode = mode;
+    this.loadAppointmentsBasedOnVisibileCalendars();
   }
   /**
    * Move the currentDate to today.
@@ -245,6 +272,20 @@ export class IDEAAgendaComponent {
     current.setHours(0, 0, 0);
     return date < current;
   };
+  /**
+   * Calculate the contrast color of the given one, to highlight the text over the background.
+   */
+  public getConstrastTextColor(hex: string): string {
+    if (hex.indexOf('#') === 0) hex = hex.slice(1);
+    // convert 3-digit hex to 6-digits
+    if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    // fallback for not hex colors
+    if (hex.length !== 6) '000000';
+    const r = parseInt(hex.slice(0, 2), 16),
+      g = parseInt(hex.slice(2, 4), 16),
+      b = parseInt(hex.slice(4, 6), 16);
+    return r * 0.299 + g * 0.587 + b * 0.114 > 186 ? '#000000' : '#FFFFFF';
+  }
 
   /**
    * Change the date selected in the agenda.
@@ -262,10 +303,10 @@ export class IDEAAgendaComponent {
     const start = Moment(ev.startTime);
     // if the new reference date is outside the triggering range, download new data to foreseen the user's actions
     if (Math.abs(this.referenceDate.diff(start, 'months')) > this.MONTHS_RANGE_FOR_TRIGGERING_REQUEST) {
-      console.log('Downloading new data, ref:', this.referenceDate);
       this.referenceDate = Moment(start);
-      this.loadAppointmentsBasedOnVisibileCalendars(true);
-    }
+      this.loadingAppointments = true;
+      this.loadAppointmentsBasedOnVisibileCalendars(true).then(() => (this.loadingAppointments = false));
+    } else this.loadAppointmentsBasedOnVisibileCalendars();
   }
 
   /**
@@ -273,6 +314,9 @@ export class IDEAAgendaComponent {
    * @todo
    */
   public onTimeSelected(ev) {
+    // if the calendar swiper isn't active, fix the transition to another view, if needed
+    if (!this.areDatesInSameView(this.currentDate, ev.selectedTime)) this.currentDate = ev.selectedTime;
+    //
     console.log(
       'Selected time: ' +
         ev.selectedTime +
@@ -283,11 +327,73 @@ export class IDEAAgendaComponent {
     );
   }
   /**
-   *
-   * @todo
+   * Open the details of the appointment.
+   * @todo project-specific popup
    */
-  public onAppointmentSelected(event) {
-    console.log('Appointment selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
+  public onAppointmentSelected(event: any) {
+    this.editAppointment(event);
+  }
+  /**
+   * Open the UI for adding a new appointment.
+   */
+  public addAppointment(startTime?: IdeaX.epochDateTime, endTime?: IdeaX.epochDateTime) {
+    // if a starting time wasn't specified, start in the current date at 9 AM
+    if (!startTime) {
+      const startDate = new Date(this.currentDate);
+      startDate.setHours(9);
+      startDate.getTime();
+    }
+    // set the ending time
+    const duration = endTime && endTime > startTime ? endTime - startTime : this.DEFAULT_APPOINTMENT_DURATION;
+    // open the modal
+    this.modalCtrl
+      .create({
+        component: IDEAAppointmentComponent,
+        componentProps: {
+          startTime: startTime,
+          defaultDuration: duration,
+          calendars: this.calendars,
+          defaultCalendarId: this.getDefaultCalendar().calendarId
+        }
+      })
+      .then(modal => {
+        modal.onDidDismiss().then((res: OverlayEventDetail) => {
+          if (res.data) {
+            // update the view if an appointment was added
+            this.loadingAppointments = true;
+            this.loadAppointmentsBasedOnVisibileCalendars(true).then(() => (this.loadingAppointments = false));
+          }
+        });
+        modal.present();
+      });
+  }
+  /**
+   * Open the UI for editing an appointment.
+   */
+  public editAppointment(app: AgendaAppointment) {
+    // find the appointment to edit
+    const appointment = this.appointmentsByCalendar[app.calendarId].find(a => a.appointmentId === app.id);
+    // open the modal
+    this.modalCtrl
+      .create({ component: IDEAAppointmentComponent, componentProps: { appointment, calendars: this.calendars } })
+      .then(modal => {
+        modal.onDidDismiss().then((res: OverlayEventDetail) => {
+          // update the view if the appointment was deleted
+          if (res.data === -1) {
+            this.loadingAppointments = true;
+            this.loadAppointmentsBasedOnVisibileCalendars(true).then(() => (this.loadingAppointments = false));
+          }
+        });
+        modal.present();
+      });
+  }
+  /**
+   * Return the default calendar for a new appointment or an empty one.
+   */
+  public getDefaultCalendar(): IdeaX.Calendar {
+    const checked = this.calendarsChecks.find(x => x.checked);
+    const calendar = checked ? this.calendars.find(x => x.calendarId === checked.value) : null;
+    return calendar || new IdeaX.Calendar();
   }
 }
 
@@ -296,9 +402,21 @@ export class IDEAAgendaComponent {
  */
 export class AgendaAppointment {
   /**
+   * The id of the appointment.
+   */
+  public id: string;
+  /**
+   * The id of the calendar.
+   */
+  public calendarId: string;
+  /**
    * The title to show for the appointment.
    */
   public title: string;
+  /**
+   * The location to show for the appointment.
+   */
+  public location: string;
   /**
    * The startTime (date) for the appointment.
    */
@@ -317,7 +435,10 @@ export class AgendaAppointment {
   public color: string;
 
   constructor(a: IdeaX.Appointment, color: string) {
+    this.id = a.appointmentId;
+    this.calendarId = a.calendarId;
     this.title = a.title;
+    this.location = a.location;
     this.startTime = new Date(a.startTime);
     this.endTime = new Date(a.endTime);
     this.allDay = a.allDay;

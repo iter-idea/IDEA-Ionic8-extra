@@ -1,0 +1,96 @@
+<ion-header no-border>
+  <ion-toolbar class="ideaToolbar">
+    <ion-title>
+      {{
+        (appointment.appointmentId
+          ? 'IDEA.AGENDA.APPOINTMENT.EDIT_APPOINTMENT'
+          : 'IDEA.AGENDA.APPOINTMENT.NEW_APPOINTMENT'
+        ) | translate
+      }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="appointment.appointmentId" [title]="t.instant('COMMON.DELETE')" (click)="delete()">
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button [title]="t.instant('COMMON.CLOSE')" (click)="close()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-list lines="insert" class="appointment">
+    <ion-item [class.fieldHasError]="hasFieldAnError('title')">
+      <ion-label position="stacked">
+        {{ 'IDEA.AGENDA.APPOINTMENT.TITLE' | translate }}
+      </ion-label>
+      <ion-input
+        type="text"
+        [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.TITLE_HINT')"
+        [(ngModel)]="appointment.title"
+      ></ion-input>
+    </ion-item>
+    <ion-item [class.fieldHasError]="hasFieldAnError('location')">
+      <ion-label position="stacked">
+        {{ 'IDEA.AGENDA.APPOINTMENT.LOCATION' | translate }}
+      </ion-label>
+      <ion-input
+        type="text"
+        [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.LOCATION_HINT')"
+        [(ngModel)]="appointment.location"
+      ></ion-input>
+    </ion-item>
+    <ion-item [class.fieldHasError]="hasFieldAnError('allDay')">
+      <ion-label>
+        {{ 'IDEA.AGENDA.APPOINTMENT.ALL_DAY' | translate }}
+      </ion-label>
+      <ion-checkbox
+        [title]="t.instant('IDEA.AGENDA.APPOINTMENT.ALL_DAY_HINT')"
+        [(ngModel)]="appointment.allDay"
+      ></ion-checkbox>
+    </ion-item>
+    <idea-date-time
+      [label]="t.instant('IDEA.AGENDA.APPOINTMENT.START_TIME')"
+      [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.START_TIME_HINT')"
+      [date]="appointment.startTime"
+      [timePicker]="!appointment.allDay"
+      [class.fieldHasError]="hasFieldAnError('startTime')"
+      (select)="appointment.startTime = $event"
+    ></idea-date-time>
+    <idea-date-time
+      [label]="t.instant('IDEA.AGENDA.APPOINTMENT.END_TIME')"
+      [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.END_TIME_HINT')"
+      [date]="appointment.endTime"
+      [timePicker]="!appointment.allDay"
+      [class.fieldHasError]="hasFieldAnError('endTime')"
+      (select)="appointment.endTime = $event"
+    ></idea-date-time>
+    <idea-select
+      [data]="calendarsSuggestions"
+      [label]="t.instant('IDEA.AGENDA.APPOINTMENT.CALENDAR')"
+      [description]="getCalendarNameById(appointment.calendarId)"
+      [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.CALENDAR_HINT')"
+      [searchPlaceholder]="t.instant('IDEA.AGENDA.APPOINTMENT.CALENDAR_HINT')"
+      [hideIdFromUI]="true"
+      [class.fieldHasError]="hasFieldAnError('calendarId')"
+      (select)="$event ? (appointment.calendarId = $event.value) : null"
+    ></idea-select>
+    <ion-item [class.fieldHasError]="hasFieldAnError('description')">
+      <ion-label position="stacked">
+        {{ 'IDEA.AGENDA.APPOINTMENT.DESCRIPTION' | translate }}
+      </ion-label>
+      <ion-textarea
+        [rows]="3"
+        [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.DESCRIPTION_HINT')"
+        [(ngModel)]="appointment.description"
+      ></ion-textarea>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar tappable class="ideaToolbar" [title]="t.instant('COMMON.SAVE')" (click)="save()">
+    <ion-title class="ion-text-center">
+      <ion-icon name="checkmark"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>

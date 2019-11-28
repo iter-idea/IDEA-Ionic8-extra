@@ -11,11 +11,23 @@ registerLocaleData(localeIt, 'it');
 
 import { IDEAAgendaComponent } from './agenda.component';
 import { IDEACheckerModule } from '../checker/checker.module';
+import { IDEAAppointmentComponent } from './appointment.component';
+import { IDEACalendarModule } from '../calendar/calendar.module';
+import { IDEASelectModule } from '../select/select.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild(), IDEACheckerModule, NgCalendarModule],
-  declarations: [IDEAAgendaComponent],
-  entryComponents: [IDEAAgendaComponent],
-  exports: [IDEAAgendaComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    TranslateModule.forChild(),
+    IDEACheckerModule,
+    NgCalendarModule,
+    IDEACalendarModule,
+    IDEASelectModule
+  ],
+  declarations: [IDEAAgendaComponent, IDEAAppointmentComponent],
+  entryComponents: [IDEAAgendaComponent, IDEAAppointmentComponent],
+  exports: [IDEAAgendaComponent, IDEAAppointmentComponent]
 })
 export class IDEAAgendaModule {}

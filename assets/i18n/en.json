@@ -347,7 +347,28 @@
       "WEEK": "Week",
       "DAY": "Day",
       "ALL_DAY": "All day",
-      "NO_EVENTS": "No events"
+      "NO_EVENTS": "No events",
+      "APPOINTMENT": {
+        "NEW_APPOINTMENT": "New appointment",
+        "EDIT_APPOINTMENT": "Edit appointment",
+        "TITLE": "Title",
+        "TITLE_HINT": "Brief description of the appointment",
+        "LOCATION": "Location",
+        "LOCATION_HINT": "Add a location for the appointment",
+        "ALL_DAY": "All day",
+        "ALL_DAY_HINT": "If set, the appointment won't have a specified time in the day",
+        "START_TIME": "Start of the appointment",
+        "START_TIME_HINT": "Appointment start date and time",
+        "END_TIME": "End of the appointment",
+        "END_TIME_HINT": "Appointment end date and time",
+        "DESCRIPTION": "Description",
+        "DESCRIPTION_HINT": "Notes on the appointment",
+        "CALENDAR": "Calendar",
+        "CALENDAR_HINT": "Choose the calendar in which to insert the appointment",
+        "FORM_HAS_ERROR_TO_CHECK": "One or more configurations have values which are not allowed; check and try again",
+        "SAVED": "Appointment saved",
+        "DELETED": "Appointment deleted"
+      }
     }
   },
   "IDEA_VARIABLES": {

@@ -1,12 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import IdeaX = require('idea-toolbox');
 
 import { IDEAChecksComponent } from './checks.component';
 
 /**
  * Data can either be populated directly from the namesake attribute, passing an array of values, or through the
- * _dataProvider_, which is a function that returns a Promise<Array<Check>>, i.e. a promise with an array of
+ * _dataProvider_, which is a function that returns a Promise<Array<IdeaX.Check>>, i.e. a promise with an array of
  * Checks fetched from somewhere.
  * Tip: to execute from another context, pass to the `idea-checker` an helper function like the following:
  * ```
@@ -30,9 +31,9 @@ export class IDEACheckerComponent {
   /**
    * The checks to show.
    */
-  @Input() public data: Array<Check>;
+  @Input() public data: Array<IdeaX.Check>;
   /**
-   *  Alternative to the case above; function that returns a Promise<Array<Check>>.
+   *  Alternative to the case above; function that returns a Promise<Array<IdeaX.Check>>.
    */
   @Input() public dataProvider: any;
   /**
@@ -105,7 +106,7 @@ export class IDEACheckerComponent {
   @Output() public change = new EventEmitter<void>();
 
   constructor(public modalCtrl: ModalController, public t: TranslateService) {
-    this.data = new Array<Check>();
+    this.data = new Array<IdeaX.Check>();
     this.placeholder = null;
     this.noElementsFoundText = null;
     this.noPreviewText = null;
@@ -122,7 +123,7 @@ export class IDEACheckerComponent {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
       this.dataProvider()
-        .then((data: Array<Check>) => {
+        .then((data: Array<IdeaX.Check>) => {
           this.data = data;
           this.openChecker();
         })
@@ -154,7 +155,7 @@ export class IDEACheckerComponent {
   }
 
   /**
-   * Calculate the preview
+   * Calculate the preview.
    */
   public getPreview(): string {
     if (!this.data || !this.data.length) return null;
@@ -171,46 +172,6 @@ export class IDEACheckerComponent {
           .map(x => x.name)
           .join(', ');
       else return this.t.instant('IDEA.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
-    }
-  }
-}
-
-export class Check {
-  /**
-   * The unique identifier for the check element.
-   */
-  public value: string | number;
-  /**
-   * Displayed name (description) of the check element.
-   */
-  public name: string;
-  /**
-   * Whether the check is true or false.
-   */
-  public checked: boolean;
-  /**
-   * Elements not included in the current search because of other filters.
-   */
-  public hidden: boolean;
-  /**
-   * URL to an avatar to display for the element.
-   */
-  public avatar: string;
-
-  constructor(x?: any) {
-    x = x || ({} as Check);
-    if (typeof x !== 'object') {
-      this.value = x;
-      this.name = String(x);
-      this.checked = false;
-      this.hidden = false;
-      this.avatar = null;
-    } else {
-      this.value = x.value;
-      this.name = x.name ? String(x.name) : String(this.value);
-      this.checked = Boolean(x.checked);
-      this.hidden = Boolean(x.hidden);
-      this.avatar = String(x.avatar);
     }
   }
 }

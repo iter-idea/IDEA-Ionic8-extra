@@ -347,7 +347,28 @@
       "WEEK": "Settimana",
       "DAY": "Giorno",
       "ALL_DAY": "Giorno",
-      "NO_EVENTS": "Nessun evento"
+      "NO_EVENTS": "Nessun evento",
+      "APPOINTMENT": {
+        "NEW_APPOINTMENT": "Nuovo appuntamento",
+        "EDIT_APPOINTMENT": "Modifica appuntamento",
+        "TITLE": "Titolo",
+        "TITLE_HINT": "Breve descrizione dell'oggetto dell'appuntamento",
+        "LOCATION": "Luogo",
+        "LOCATION_HINT": "Luogo dell'appuntamento",
+        "ALL_DAY": "Tutto il giorno",
+        "ALL_DAY_HINT": "Se selezionato, l'appuntamento non avrà orari specifici",
+        "START_TIME": "Inizio appuntamento",
+        "START_TIME_HINT": "Data e ora di inizio appunamento",
+        "END_TIME": "Fine appuntamento",
+        "END_TIME_HINT": "Data e ora di fine appunamento",
+        "DESCRIPTION": "Descrizione",
+        "DESCRIPTION_HINT": "Note dell'appuntamento",
+        "CALENDAR": "Calendario",
+        "CALENDAR_HINT": "Scegli calendario in cui inserire l'appuntamento",
+        "FORM_HAS_ERROR_TO_CHECK": "Una o più campi hanno valori non consentiti; verifica e riprova",
+        "SAVED": "Appuntamento salvato",
+        "DELETED": "Appuntamento eliminato"
+      }
     }
   },
   "IDEA_VARIABLES": {

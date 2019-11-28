@@ -1,6 +1,7 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { NavParams, IonSearchbar, ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import IdeaX = require('idea-toolbox');
 
 @Component({
   selector: 'idea-checks',
@@ -12,11 +13,11 @@ export class IDEAChecksComponent {
   /**
    * It should be read only until the component closure.
    */
-  @Input() public data: Array<Check>;
+  @Input() public data: Array<IdeaX.Check>;
   /**
    * A copy of data, to use until the changes are confirmed.
    */
-  @Input() public workingData: Array<Check>;
+  @Input() public workingData: Array<IdeaX.Check>;
   /**
    * If true, sort alphabetically the data.
    */
@@ -39,14 +40,14 @@ export class IDEAChecksComponent {
   @Input() public fallbackAvatar: string;
 
   // SUPPORT
-  public filteredChecks: Array<Check>;
+  public filteredChecks: Array<IdeaX.Check>;
   public N_PER_PAGE = 30;
   public page: number;
 
   constructor(public modalCtrl: ModalController, public navParams: NavParams, public t: TranslateService) {}
   public ngOnInit() {
-    this.workingData = JSON.parse(JSON.stringify(this.data || new Array<Check>()));
-    this.filteredChecks = new Array<Check>();
+    this.workingData = JSON.parse(JSON.stringify(this.data || new Array<IdeaX.Check>()));
+    this.filteredChecks = new Array<IdeaX.Check>();
     if (this.sortData) this.workingData = this.workingData.sort((a, b) => a.name.localeCompare(b.name));
     this.filterChecks();
   }
@@ -88,39 +89,5 @@ export class IDEAChecksComponent {
   public confirm() {
     this.workingData.forEach(x => (this.data.find(y => x.value === y.value).checked = x.checked));
     this.modalCtrl.dismiss(true);
-  }
-}
-
-export class Check {
-  /**
-   * The unique identifier for the check element.
-   */
-  public value: string | number;
-  /**
-   * Displayed name (description) of the check element.
-   */
-  public name: string;
-  /**
-   * Whether the check is true or false.
-   */
-  public checked: boolean;
-  /**
-   * Elements not included in the current search because of other filters.
-   */
-  public hidden: boolean;
-
-  constructor(x?: any) {
-    x = (x || {}) as Check;
-    if (typeof x !== 'object') {
-      this.value = x;
-      this.name = String(x);
-      this.checked = false;
-      this.hidden = false;
-    } else {
-      this.value = x.value;
-      this.name = x.name ? String(x.name) : String(this.value);
-      this.checked = Boolean(x.checked);
-      this.hidden = Boolean(x.hidden);
-    }
   }
 }
