@@ -158,7 +158,11 @@ export class IDEAAccountPage {
             handler: data => {
               // DELETE the user
               this.loading.show();
-              this.API.deleteResource('users', { resourceId: this.user.userId, headers: { password: data.pwd } })
+              this.API.deleteResource('users', {
+                idea: true,
+                resourceId: this.user.userId,
+                headers: { password: data.pwd }
+              })
                 .then(() => window.location.assign(''))
                 .catch(() => this.message.error('IDEA.ACCOUNT.OPERATION_FAILED_PASSWORD'))
                 .finally(() => this.loading.hide());
