@@ -369,6 +369,45 @@
         "SAVED": "Appointment saved",
         "DELETED": "Appointment deleted"
       }
+    },
+    "SUBSCRIPTION": {
+      "MANAGE_SUBSCRIPTION": "Manage subscription",
+      "FREE": "Free",
+      "NEXT_BILLING_DATE": "Next billing date",
+      "OPTIONS": "Options",
+      "MAIN_EXPLANATION_TEAMS": "With our free plan you have access to all the features of Horace and you can create as many teams as you like; however, to invite more than two users to your teams, you have to choose one of the following plans.",
+      "MAIN_EXPLANATION_USERS": "With our free plan you can collect data from one source and use one custom field for your tracks;  to connect up to three sources, take advantages of three custom fields and customize your reports, subscribe to our Gold plan.",
+      "CALCULATION_METHOD": "The number of users is calculated by counting all the distinct users across all the teams you created.",
+      "NOTE_WELL": "Note well",
+      "COULDNT_LOAD_PLANS": "Couldn't load the plans.",
+      "RESTORE_PURCHASES": "Restore purchases",
+      "HOW_IT_WORKS_APPLE": "Payment will be charged to your Apple ID account at the confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase.",
+      "CANCEL_SUBSCRIPTION": "Cancel subscription",
+      "SUBSCRIPTION_CHANGE": "Subscription change",
+      "NEW_SUBSCRIPTION": "New subscription",
+      "DO_YOU_CONFIRM_THE_SUBSCRIPTION_": "Do you confirm you want to subscribe to: {{plan}}?",
+      "EXPIRED": "Expired",
+      "ERROR_CONTACTING_STORE": "Error contacting the store",
+      "BACK_TO_FREE_PLAN": "Switch back to free plan",
+      "STOP_SUBSCRIPTION": "Cancel subscription",
+      "SUBSCRIPTION_WONT_RENEW_ANYMORE": "The subscription won't be renew after its due. Do you confirm?",
+      "WONT_RENEW": "Won't renew",
+      "WONT_RENEW_AFTER": "Won't renew after"
+    },
+    "STRIPE": {
+      "SECURELY_SUBSCRIBE_THROUGH": "Securely subscribe through",
+      "NO_CREDIT_CARD_INFO_STORED_IN_OUR_SERVERS": "Note: no Credit/Debit Card information will be stored in our servers",
+      "YOU_ARE_SUBSCRIBING_TO_RECURRING_PLAN": "You are subscribing to the following recurring plan",
+      "CREDIT_DEBIT_CARD": "Credit or debit card",
+      "CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT": "Confirm authorization for recurring payment",
+      "I_AUTHORIZE": "I authorise",
+      "AUTHORIZATION_CHECK_TEXT": "to send instructions to the financial institution that issued my card to take payments from my card account in accordance with the terms of the service.",
+      "SUBSCRIBE": "Subscribe",
+      "SUBSCRIBE_HINT": "Subscribe to the selected plan with the credit/debit card information specified",
+      "INVALID_CREDIT_CARD": "The card you inserted seems to be invalid",
+      "ERROR_DURING_PAYMENT_CHECK_CARD": "The payment was refused: check the information provided",
+      "SUCCESSFULLY_SUBSCRIBED": "You subscribed to the plan chosen",
+      "YOUR_CURRENT_PLAN": "Your current plan"
     }
   },
   "IDEA_VARIABLES": {
