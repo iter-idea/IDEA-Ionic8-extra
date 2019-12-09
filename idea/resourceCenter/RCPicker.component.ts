@@ -78,7 +78,7 @@ export class IDEARCPickerComponent {
         .then((resources: Array<IdeaX.RCResource>) => {
           this.resources = resources;
           this.resourcesSuggestions = resources.map(
-            x => new IdeaX.Suggestion({ valeu: x.resourceId, name: `${x.name}.${x.format}` })
+            x => new IdeaX.Suggestion({ value: x.resourceId, name: `${x.name}.${x.format}` })
           );
         })
         .catch(() => {});
