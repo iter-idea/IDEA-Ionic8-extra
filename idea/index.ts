@@ -18,6 +18,8 @@ export * from './resourceCenter/RC.module';
 export * from './select/select.module';
 export * from './sendEmail/sendEmail.module';
 export * from './signature/signature.module';
+export * from './subscription/stripeSubscription.module';
+export * from './subscription/subscription.module';
 export * from './teams/teams.module';
 export * from './teams/memberships.module';
 

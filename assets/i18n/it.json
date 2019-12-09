@@ -369,6 +369,45 @@
         "SAVED": "Appuntamento salvato",
         "DELETED": "Appuntamento eliminato"
       }
+    },
+    "SUBSCRIPTION": {
+      "MANAGE_SUBSCRIPTION": "Gestisci abbonamento",
+      "FREE": "Gratuito",
+      "NEXT_BILLING_DATE": "Prossima fatturazione",
+      "OPTIONS": "Opzioni",
+      "MAIN_EXPLANATION_TEAMS": "Con il piano gratuito hai accesso a tutte le funzionalità del servizio e puoi creare un numero illimitato di team; per poter invitare più di due utenti ai tuoi team, dovrai sottoscrivere uno dei piani sottostanti.",
+      "MAIN_EXPLANATION_USERS": "Con il piano gratuito puoi collegare una sola sorgente dati e usufruire di un solo campo personalizzato per le tue tracce; per poter collegare fino a 3 sorgenti, sbloccare fino a 3 campi personalizzati e personalizzare i tuoi report, sottoscrivi il piano Gold.",
+      "CALCULATION_METHOD": "Il numero di utenti è calcolato contando tutti gli utenti distinti su tutti i team da te creati.",
+      "NOTE_WELL": "Nota bene",
+      "COULDNT_LOAD_PLANS": "Errore nel caricamento dei piani",
+      "RESTORE_PURCHASES": "Ripristina acquisti",
+      "HOW_IT_WORKS_APPLE": "Il pagamento sarà addebitato sul tuo account ID Apple alla conferma dell'acquisto. L'abbonamento si rinnova automaticamente a meno che non venga annullato almeno 24 ore prima della fine del periodo corrente. Il tuo account verrà addebitato per il rinnovo entro 24 ore prima della fine del periodo corrente. Puoi gestire e cancellare i tuoi abbonamenti andando nelle impostazioni del tuo account su App Store dopo l'acquisto.",
+      "CANCEL_SUBSCRIPTION": "Annulla abbonamento",
+      "SUBSCRIPTION_CHANGE": "Cambio abbonamento",
+      "NEW_SUBSCRIPTION": "Nuovo abbonamento",
+      "DO_YOU_CONFIRM_THE_SUBSCRIPTION_": "Confermi di volerti abbonare a : {{plan}}?",
+      "EXPIRED": "Scaduto",
+      "ERROR_CONTACTING_STORE": "Errore durante il collegamento con lo store",
+      "BACK_TO_FREE_PLAN": "Torna al piano gratuito",
+      "STOP_SUBSCRIPTION": "Annulla abbonamento",
+      "SUBSCRIPTION_WONT_RENEW_ANYMORE": "L'abbonamento non verrà rinnovato alla sua scadenza. Confermi?",
+      "WONT_RENEW": "Non si rinnoverà",
+      "WONT_RENEW_AFTER": "Non si rinnoverà dopo il"
+    },
+    "STRIPE": {
+      "SECURELY_SUBSCRIBE_THROUGH": "Abbonati in maniera sicura con",
+      "NO_CREDIT_CARD_INFO_STORED_IN_OUR_SERVERS": "Nota: nessuna informazione sulla Carta di Credito/Debito verrà salvata sui nostri server",
+      "YOU_ARE_SUBSCRIBING_TO_RECURRING_PLAN": "Ti stai abbonando al seguente piano ricorrente",
+      "CREDIT_DEBIT_CARD": "Carta di Credito o Debito",
+      "CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT": "Conferma autorizzazione per pagamento ricorrente",
+      "I_AUTHORIZE": "Autorizzo",
+      "AUTHORIZATION_CHECK_TEXT": "ad inviare istruzioni all'istituto finanziario che ha rilasciato la mia carta per prelevare pagamenti dal mio account, in accordo con i termini del del servizio.",
+      "SUBSCRIBE": "Abbonati",
+      "SUBSCRIBE_HINT": "Abbonati al piano selezionato tramite la carta di credito/debito specificata",
+      "INVALID_CREDIT_CARD": "La carta inserita non sembra essere valida",
+      "ERROR_DURING_PAYMENT_CHECK_CARD": "Il pagamento è stato rifiutato: controlla i dati inseriti",
+      "SUCCESSFULLY_SUBSCRIBED": "Sei stato abbonato al piano scelto",
+      "YOUR_CURRENT_PLAN": "Il tuo attuale piano"
     }
   },
   "IDEA_VARIABLES": {
