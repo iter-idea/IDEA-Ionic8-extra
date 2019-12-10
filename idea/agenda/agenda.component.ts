@@ -96,6 +96,10 @@ export class IDEAAgendaComponent {
     // to overcome changesDetector in showing the spinner while loading the appointments.
     setTimeout(() => (this._loadingAppointments = loading), loading ? 100 : 300);
   }
+  /**
+   * Helper to see if a time (cell) was selected twice in a row.
+   */
+  public lastTimeSelected: Date;
 
   constructor(
     public platform: Platform,
@@ -243,7 +247,14 @@ export class IDEAAgendaComponent {
    * Wether the two dates are in the same view (based on the viewMode).
    */
   public areDatesInSameView(d1: Date, d2: Date): boolean {
-    return Moment(d1).isSame(d2, this.viewMode);
+    return Moment(d1).isSame(Moment(d2), this.viewMode);
+  }
+  /**
+   * Wether the two dates can be considered "the same" (based on the viewMode).
+   */
+  public areDatesTheSameBasedOnView(d1: Date, d2: Date): boolean {
+    const granularity = this.viewMode === AgendaViewModes.MONTH ? 'day' : 'hour';
+    return Moment(d1).isSame(Moment(d2), granularity);
   }
   /**
    * Humanize the unixDate time.
@@ -291,9 +302,12 @@ export class IDEAAgendaComponent {
    * Change the date selected in the agenda.
    */
   public onCurrentDateChanged(event: Date) {
+    event.setHours(12, 0, 0, 0);
+    // fix a bug when the calendar swiper isn't active: properly set the current date
+    if (!this.areDatesTheSameBasedOnView(this.currentDate, event)) this.currentDate = event;
+    // set isToday helper
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    event.setHours(0, 0, 0, 0);
+    today.setHours(12, 0, 0, 0);
     this.isToday = today.getTime() === event.getTime();
   }
   /**
@@ -310,21 +324,17 @@ export class IDEAAgendaComponent {
   }
 
   /**
-   *
-   * @todo
+   * When clicking twice on the same cell, insert a new appointment with that starting time.
    */
   public onTimeSelected(ev) {
-    // if the calendar swiper isn't active, fix the transition to another view, if needed
-    if (!this.areDatesInSameView(this.currentDate, ev.selectedTime)) this.currentDate = ev.selectedTime;
-    //
-    console.log(
-      'Selected time: ' +
-        ev.selectedTime +
-        ', hasEvents: ' +
-        (ev.events !== undefined && ev.events.length !== 0) +
-        ', disabled: ' +
-        ev.disabled
-    );
+    if (this.viewMode === AgendaViewModes.MONTH) return; // ignore
+    // if the same time was selected, check if to prompt the insertion of a new appointent
+    if (this.lastTimeSelected === ev.selectedTime) {
+      this.lastTimeSelected = null;
+      // if the cell hasn't appointments already and it isn't disabled, prompt for a new one
+      if (!(ev.events && ev.events.length) && !ev.disabled)
+        this.addAppointment(ev.selectedTime.getTime(), ev.selectedTime.getTime() + this.DEFAULT_APPOINTMENT_DURATION);
+    } else this.lastTimeSelected = ev.selectedTime;
   }
   /**
    * Open the details of the appointment.
@@ -341,7 +351,7 @@ export class IDEAAgendaComponent {
     if (!startTime) {
       const startDate = new Date(this.currentDate);
       startDate.setHours(9);
-      startDate.getTime();
+      startTime = startDate.getTime();
     }
     // set the ending time
     const duration = endTime && endTime > startTime ? endTime - startTime : this.DEFAULT_APPOINTMENT_DURATION;
