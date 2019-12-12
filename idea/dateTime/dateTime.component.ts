@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import Moment = require('moment-timezone');
 
-import { IDEACalendarComponent } from './calendar.component';
+import { IDEACalendarPickerComponent } from './calendarPicker.component';
 import { OverlayEventDetail } from '@ionic/core';
 
 @Component({
@@ -34,7 +34,7 @@ export class IDEADateTimeComponent {
     if (this.disabled) return;
     this.modalCtrl
       .create({
-        component: IDEACalendarComponent,
+        component: IDEACalendarPickerComponent,
         componentProps: { inputDate: this.date, title: this.label, timePicker: this.timePicker }
       })
       .then(modal => {

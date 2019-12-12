@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgCalendarModule } from 'ionic2-calendar';
-// prepare the available langages for the agenda (calendar); english is included by default
+// prepare the available langages for the agenda; english is included by default
 import { registerLocaleData } from '@angular/common';
 import localeIt from '@angular/common/locales/it';
 registerLocaleData(localeIt, 'it');
@@ -12,7 +12,7 @@ registerLocaleData(localeIt, 'it');
 import { IDEAAgendaComponent } from './agenda.component';
 import { IDEACheckerModule } from '../checker/checker.module';
 import { IDEAAppointmentComponent } from './appointment.component';
-import { IDEACalendarModule } from '../calendar/calendar.module';
+import { IDEADateTimeModule } from '../dateTime/dateTime.module';
 import { IDEASelectModule } from '../select/select.module';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { IDEASelectModule } from '../select/select.module';
     TranslateModule.forChild(),
     IDEACheckerModule,
     NgCalendarModule,
-    IDEACalendarModule,
+    IDEADateTimeModule,
     IDEASelectModule
   ],
   declarations: [IDEAAgendaComponent, IDEAAppointmentComponent],

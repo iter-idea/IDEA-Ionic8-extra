@@ -1,0 +1,109 @@
+<ion-header no-border>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button color="light" [title]="t.instant('COMMON.CLOSE')" (click)="close()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'IDEA.AGENDA.CALENDARS.EDIT_CALENDAR' | translate }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" [title]="t.instant('COMMON.SAVE')" (click)="save()">
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-list class="attributesList">
+    <ion-item
+      lines="inset"
+      [class.fieldHasError]="hasFieldAnError('name')"
+      [title]="t.instant('IDEA.AGENDA.CALENDARS.NAME_HINT')"
+    >
+      <ion-label position="stacked">
+        {{ 'IDEA.AGENDA.CALENDARS.NAME' | translate }}
+      </ion-label>
+      <ion-input [placeholder]="t.instant('IDEA.AGENDA.CALENDARS.NAME_HINT')" [(ngModel)]="calendar.name"></ion-input>
+    </ion-item>
+    <ion-item
+      lines="inset"
+      [class.fieldHasError]="hasFieldAnError('description')"
+      [title]="t.instant('IDEA.AGENDA.CALENDARS.DESCRIPTION_HINT')"
+    >
+      <ion-label position="stacked">
+        {{ 'IDEA.AGENDA.CALENDARS.DESCRIPTION' | translate }}
+      </ion-label>
+      <ion-input
+        [placeholder]="t.instant('IDEA.AGENDA.CALENDARS.DESCRIPTION_HINT')"
+        [(ngModel)]="calendar.description"
+      ></ion-input>
+    </ion-item>
+    <ion-item
+      lines="inset"
+      [class.fieldHasError]="hasFieldAnError('color')"
+      [title]="t.instant('IDEA.AGENDA.CALENDARS.COLOR_HINT')"
+    >
+      <ion-label position="stacked">
+        {{ 'IDEA.AGENDA.CALENDARS.COLOR' | translate }}
+      </ion-label>
+      <ion-input [placeholder]="t.instant('IDEA.AGENDA.CALENDARS.COLOR_HINT')" [(ngModel)]="calendar.color"></ion-input>
+      <ion-avatar slot="end">
+        <div class="circle" [style.background-color]="calendar.color"></div>
+      </ion-avatar>
+    </ion-item>
+  </ion-list>
+  <ion-list class="attributesList">
+    <ion-list-header>
+      <ion-label>
+        {{ 'IDEA.AGENDA.CALENDARS.INFO_ON_CALENDAR' | translate }}
+      </ion-label>
+    </ion-list-header>
+    <ion-item lines="inset" *ngIf="calendar.userId">
+      <ion-label>
+        {{ 'IDEA.AGENDA.CALENDARS.PRIVATE_CALENDAR' | translate }}
+        <p>
+          {{ 'IDEA.AGENDA.CALENDARS.PRIVATE_CALENDAR_HINT' | translate }}
+        </p>
+      </ion-label>
+      <ion-icon slot="end" name="person"></ion-icon>
+    </ion-item>
+    <ion-item lines="inset" *ngIf="calendar.teamId">
+      <ion-label>
+        {{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR' | translate: { team: tc.get('team').name } }}
+        <p>
+          {{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR_HINT' | translate }}
+        </p>
+      </ion-label>
+      <ion-icon slot="end" name="people"></ion-icon>
+    </ion-item>
+    <ion-item lines="inset" *ngIf="calendar.external?.service">
+      <ion-label>
+        {{ 'IDEA.AGENDA.CALENDARS.LINKED_TO' | translate }}
+        {{ 'IDEA.AGENDA.CALENDARS.SERVICES.' + calendar.external.service | translate }}
+      </ion-label>
+      <ion-icon slot="end" [name]="getServiceIcon(calendar.external.service)"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <ion-list class="attributesList">
+    <ion-list-header>
+      <ion-label color="danger">
+        <ion-icon name="warning"></ion-icon>
+        {{ 'IDEA.AGENDA.CALENDARS.DANGEROUS_ZONE' | translate }}
+        <ion-icon name="warning"></ion-icon>
+      </ion-label>
+    </ion-list-header>
+    <ion-item lines="inset">
+      <ion-label class="ion-text-wrap">
+        {{ 'IDEA.AGENDA.CALENDARS.DELETE_CALENDAR' | translate }}
+        <p>
+          {{ 'IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT' | translate }}
+        </p>
+      </ion-label>
+      <ion-button color="danger" [title]="t.instant('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT')" (click)="delete()">
+        {{ 'COMMON.DELETE' | translate }}
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

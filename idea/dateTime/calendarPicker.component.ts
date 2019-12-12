@@ -4,11 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import Moment = require('moment-timezone');
 
 @Component({
-  selector: 'idea-calendar',
-  templateUrl: 'calendar.component.html',
-  styleUrls: ['calendar.component.scss']
+  selector: 'idea-calendar-picker',
+  templateUrl: 'calendarPicker.component.html',
+  styleUrls: ['calendarPicker.component.scss']
 })
-export class IDEACalendarComponent {
+export class IDEACalendarPickerComponent {
   @Input() public inputDate: Date;
   @Input() public timePicker: boolean;
   @Input() public title: string;

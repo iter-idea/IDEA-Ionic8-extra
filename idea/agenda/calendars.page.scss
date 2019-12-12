@@ -1,0 +1,19 @@
+.calendarsList {
+  max-width: 500px;
+  margin: 0 auto;
+  ion-list-header {
+    padding-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    ion-label {
+      font-weight: 500;
+      font-size: 1.2em;
+      > ion-icon {
+        padding-left: 5px;
+      }
+      > p {
+        font-weight: normal;
+      }
+    }
+  }
+}

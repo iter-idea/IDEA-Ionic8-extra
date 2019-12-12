@@ -1,0 +1,53 @@
+ion-content {
+  --ion-background-color: #f4f4f4;
+}
+.choiceGrid {
+  ion-row {
+    ion-col {
+      > h1 {
+        margin: 10px 0 0 0;
+        font-size: 1.1em;
+        font-weight: 300;
+      }
+      > p {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 0.9em;
+        font-weight: 300;
+      }
+    }
+  }
+  ion-row:first-child ion-col {
+    padding-bottom: 25px;
+  }
+  ion-card {
+    --background: white;
+    --color: var(--ion-color-dark-tint);
+    height: 240px;
+    margin: 0 auto;
+    text-align: center;
+    ion-card-header {
+      padding-bottom: 10px;
+      ion-card-title {
+        font-size: 2.5em;
+      }
+    }
+    ion-card-content {
+      h1 {
+        font-size: 1.4em;
+        font-weight: 300;
+        height: 60px;
+      }
+    }
+  }
+  ion-card.step2 {
+    height: 120px;
+    ion-card-header {
+      padding-top: 10px;
+      padding-bottom: 0;
+    }
+    ion-card-content h1 {
+      height: auto;
+    }
+  }
+}

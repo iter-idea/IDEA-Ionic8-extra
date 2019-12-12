@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IDEACalendarComponent } from './calendar.component';
 import { IDEADateTimeComponent } from './dateTime.component';
+import { IDEACalendarPickerComponent } from './calendarPicker.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, TranslateModule.forChild()],
-  declarations: [IDEACalendarComponent, IDEADateTimeComponent],
-  entryComponents: [IDEACalendarComponent, IDEADateTimeComponent],
-  exports: [IDEACalendarComponent, IDEADateTimeComponent]
+  declarations: [IDEADateTimeComponent, IDEACalendarPickerComponent],
+  entryComponents: [IDEADateTimeComponent, IDEACalendarPickerComponent],
+  exports: [IDEADateTimeComponent, IDEACalendarPickerComponent]
 })
-export class IDEACalendarModule {}
+export class IDEADateTimeModule {}

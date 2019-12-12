@@ -16,3 +16,6 @@ window.IDEA_API_IDEA_VERSION = 'prod';
 
 window.IDEA_AUTH_REGISTRATION_POSSIBLE = false;
 window.IDEA_AUTH_WEBSITE = 'https://iter-idea.com';
+
+window.IDEA_MICROSOFT_API_CLIENT_ID = '1dcb2e26-b402-4085-a25a-61054687b0e4';
+window.IDEA_MICROSOFT_API_SCOPE = 'offline_access user.read Calendars.ReadWrite.Shared';

@@ -1,0 +1,19 @@
+.attributesList {
+  max-width: 500px;
+  margin: 0 auto;
+  ion-list-header {
+    padding-left: 10px;
+    ion-label {
+      font-weight: 500;
+      font-size: 1.1em;
+    }
+  }
+  ion-avatar {
+    .circle {
+      height: 100%;
+      width: 100%;
+      background-color: #555;
+      border-radius: 50%;
+    }
+  }
+}

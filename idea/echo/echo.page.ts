@@ -29,7 +29,8 @@ export class IDEAEchoPage {
     public t: TranslateService
   ) {}
   public ngOnInit() {
-    const request: EchoRequests = this.activatedRoute.snapshot.queryParams.request;
+    const request: EchoRequests =
+      this.activatedRoute.snapshot.paramMap.get('request') || this.activatedRoute.snapshot.queryParams.request;
     const code: string = this.activatedRoute.snapshot.queryParams.code;
     const user: string = decodeURIComponent(this.activatedRoute.snapshot.queryParams.user);
     switch (request) {
@@ -47,6 +48,9 @@ export class IDEAEchoPage {
         break;
       case EchoRequests.TRELLO_INTEGRATION:
         this.endTrelloIntegrationFlow(code);
+        break;
+      case EchoRequests.MICROSOFT_CALENDARS_INTEGRATION:
+        alert('@todo');
         break;
       default:
         this.goHome();
@@ -143,5 +147,7 @@ export enum EchoRequests {
   INVITATION = 'invitation',
   EMAIL_CHANGE = 'email-change',
   GITHUB_INTEGRATION = 'github-integration',
-  TRELLO_INTEGRATION = 'trello-integration'
+  TRELLO_INTEGRATION = 'trello-integration',
+  MICROSOFT_CALENDARS_INTEGRATION = 'microsoft-calendars-integration',
+  GOOGLE_CALENDARS_INTEGRATION = 'google-calendars-integration'
 }
