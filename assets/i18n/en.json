@@ -206,7 +206,9 @@
       "GITHUB_SOURCE_INTEGRATION_SUCCESS": "GitHub has been connected. You can now complete the configuration.",
       "GITHUB_SOURCE_INTEGRATION_ERROR": "Error during the integration of GitHub; try again.",
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copy and paste the following token in the previous page to complete the configuration: {{token}}",
-      "TRELLO_SOURCE_INTEGRATION_ERROR": "Error during the integration of Trello; try again."
+      "TRELLO_SOURCE_INTEGRATION_ERROR": "Error during the integration of Trello; try again.",
+      "MICROSOFT_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "The Microsoft account is now linked. Go back to the calendars page to complete the configuration",
+      "MICROSOFT_CALENDARS_SOURCE_INTEGRATION_ERROR": "Error while linking the Microsoft account; try again"
     },
     "ADDRESS": {
       "ADDRESS": "Address",
@@ -412,7 +414,11 @@
         "CALENDAR_DELETED": "Calendar deleted",
         "CALENDAR_NOT_YET_LINKED": "Calendar not linked yet",
         "CALENDAR_NOT_YET_LINKED_HINT": "The calendar isn't linked to the external service yet: select the calendar and proceed with the operation",
-        "DO_YOU_WANT_PROCEED_LINKING_OR_DELETE": "Do you want to try again to link the calendar or you wish to delete it?"
+        "DO_YOU_WANT_PROCEED_LINKING_OR_DELETE": "Do you want to try again to link the calendar or you wish to delete it?",
+        "LINKING_CALENDAR": "Linking calendar",
+        "LINKING_CALENDAR_CONFIRM_ONCE_DONE": "Follow the procedure of the external service and confirm here once done",
+        "CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK": "Choose an external calendar to link",
+        "CALENDAR_LINKED": "Calendar linked"
       }
     },
     "SUBSCRIPTION": {

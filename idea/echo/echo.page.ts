@@ -33,6 +33,7 @@ export class IDEAEchoPage {
       this.activatedRoute.snapshot.paramMap.get('request') || this.activatedRoute.snapshot.queryParams.request;
     const code: string = this.activatedRoute.snapshot.queryParams.code;
     const user: string = decodeURIComponent(this.activatedRoute.snapshot.queryParams.user);
+    const state: string = this.activatedRoute.snapshot.queryParams.state;
     switch (request) {
       case EchoRequests.REGISTRATION:
         this.followRegistrationLink(code, user);
@@ -50,7 +51,7 @@ export class IDEAEchoPage {
         this.endTrelloIntegrationFlow(code);
         break;
       case EchoRequests.MICROSOFT_CALENDARS_INTEGRATION:
-        alert('@todo');
+        this.endMicrosoftCalendarsIntegrationFlow(code, state);
         break;
       default:
         this.goHome();
@@ -132,6 +133,25 @@ export class IDEAEchoPage {
     this.content = token
       ? this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_SUCCESS', { token })
       : this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_ERROR');
+  }
+  /**
+   * Complete the integration with Microsoft calendars.
+   */
+  public endMicrosoftCalendarsIntegrationFlow(code: string, calendarId: string) {
+    this.loading.show();
+    this.API.patchResource('calendars', {
+      idea: true,
+      body: { action: 'SET_EXTERNAL_INTEGRATION', service: 'MICROSOFT', code, calendarId }
+    })
+      .then(() => {
+        this.success = true;
+        this.content = this.t.instant('IDEA.ECHO.MICROSOFT_CALENDARS_SOURCE_INTEGRATION_SUCCESS');
+      })
+      .catch(() => {
+        this.success = false;
+        this.content = this.t.instant('IDEA.ECHO.MICROSOFT_CALENDARS_SOURCE_INTEGRATION_ERROR');
+      })
+      .finally(() => this.loading.hide());
   }
 
   /**

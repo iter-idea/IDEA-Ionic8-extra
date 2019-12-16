@@ -82,6 +82,7 @@
       <ion-label>
         {{ 'IDEA.AGENDA.CALENDARS.LINKED_TO' | translate }}
         {{ 'IDEA.AGENDA.CALENDARS.SERVICES.' + calendar.external.service | translate }}
+        <p>{{ calendar.external.name }}</p>
       </ion-label>
       <ion-icon slot="end" [name]="getServiceIcon(calendar.external.service)"></ion-icon>
     </ion-item>

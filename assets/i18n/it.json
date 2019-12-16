@@ -206,7 +206,9 @@
       "GITHUB_SOURCE_INTEGRATION_SUCCESS": "GitHub è stato collegato. Puoi ora terminare la configurazione.",
       "GITHUB_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di GitHub; riprovare.",
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copia e incolla il seguente token nella schermata precedente per completare la configurazione: {{token}}",
-      "TRELLO_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di Trello; riprovare."
+      "TRELLO_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di Trello; riprovare.",
+      "MICROSOFT_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "L'account Microsoft è stato collegato. Torna alla pagina dei calendari per completare la configurazione",
+      "MICROSOFT_CALENDARS_SOURCE_INTEGRATION_ERROR": "Errore nel collegamento all'account di Microsoft; riprovare"
     },
     "ADDRESS": {
       "ADDRESS": "Indirizzo",
@@ -412,7 +414,11 @@
         "CALENDAR_DELETED": "Calendario eliminato",
         "CALENDAR_NOT_YET_LINKED": "Calendario non ancora collegato",
         "CALENDAR_NOT_YET_LINKED_HINT": "Il calendario non è ancora collegato con il servizio esterno: seleziona il calendario e procedi con l'operazione",
-        "DO_YOU_WANT_PROCEED_LINKING_OR_DELETE": "Vuoi provare ancora a collegarlo o preferisci eliminarlo?"
+        "DO_YOU_WANT_PROCEED_LINKING_OR_DELETE": "Vuoi provare ancora a collegarlo o preferisci eliminarlo?",
+        "LINKING_CALENDAR": "Collegamento calendario",
+        "LINKING_CALENDAR_CONFIRM_ONCE_DONE": "Segui la procedura del servizio esterno e conferma qui una volta fatto",
+        "CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK": "Scegli un calendario esterno da configurare",
+        "CALENDAR_LINKED": "Calendario collegato"
       }
     },
     "SUBSCRIPTION": {
