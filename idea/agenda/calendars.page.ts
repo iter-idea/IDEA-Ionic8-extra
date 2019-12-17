@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { OverlayEventDetail } from '@ionic/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
@@ -11,10 +11,13 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
+import { IDEASuggestionsComponent } from '../select/suggestions.component';
 
 // from idea-config.js
 declare const IDEA_MICROSOFT_API_CLIENT_ID: string;
 declare const IDEA_MICROSOFT_API_SCOPE: string;
+declare const IDEA_GOOGLE_API_CLIENT_ID: string;
+declare const IDEA_GOOGLE_API_SCOPE: string;
 declare const IDEA_APP_URL: string;
 
 @Component({
@@ -37,6 +40,7 @@ export class IDEACalendarsPage {
   protected ideaMembership: IdeaX.Membership;
 
   constructor(
+    public navCtrl: NavController,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public tc: IDEATinCanService,
@@ -47,6 +51,8 @@ export class IDEACalendarsPage {
     public API: IDEAAWSAPIService
   ) {}
   public ngOnInit() {
+    // check whether the module is active
+    if (!this.tc.get('team').hasModule('agenda')) return this.navCtrl.navigateRoot(['']);
     this.loadCalendars();
   }
   public loadCalendars() {
@@ -113,39 +119,40 @@ export class IDEACalendarsPage {
     this.getExternalCalendars(calendar)
       .then((extCals: Array<ExternalCalendar>) => {
         // let the user to choose the external calendar to associate
-        this.alertCtrl
+        this.modalCtrl
           .create({
-            header: this.t.instant('IDEA.AGENDA.CALENDARS.CALENDARS'),
-            subHeader: this.t.instant('IDEA.AGENDA.CALENDARS.SERVICES.'.concat(calendar.external.service)),
-            message: this.t.instant('IDEA.AGENDA.CALENDARS.CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK'),
-            inputs: extCals.map(c => ({ type: 'radio', label: c.name, value: c.id })),
-            buttons: [
-              { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
-              {
-                text: this.t.instant('COMMON.CONFIRM'),
-                handler: (id: string) => {
-                  // find the chosen calendar
-                  const cal = extCals.find(c => c.id === id);
-                  // prepare a request for a private or team calendar
-                  const baseURL = calendar.teamId ? `teams/${calendar.teamId}/` : '';
-                  // set the external calendar link
-                  this.loading.show();
-                  this.API.patchResource(baseURL.concat('calendars'), {
-                    idea: true,
-                    resourceId: calendar.calendarId,
-                    body: { action: 'SET_EXTERNAL_CALENDAR', externalId: cal.id, name: cal.name }
-                  })
-                    .then(() => {
-                      this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_LINKED');
-                      this.loadCalendars();
-                    })
-                    .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-                    .finally(() => this.loading.hide());
-                }
-              }
-            ]
+            component: IDEASuggestionsComponent,
+            componentProps: {
+              data: extCals.map(c => new IdeaX.Suggestion({ value: c.id, name: c.name })),
+              searchPlaceholder: this.t.instant('IDEA.AGENDA.CALENDARS.CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK'),
+              sortData: true,
+              hideIdFromUI: true
+            }
           })
-          .then(alert => alert.present());
+          .then(modal => {
+            modal.onDidDismiss().then((res: OverlayEventDetail) => {
+              if (res.data && res.data.value) {
+                // find the chosen calendar
+                const cal = extCals.find(c => c.id === res.data.value);
+                // prepare a request for a private or team calendar
+                const baseURL = calendar.teamId ? `teams/${calendar.teamId}/` : '';
+                // set the external calendar link
+                this.loading.show();
+                this.API.patchResource(baseURL.concat('calendars'), {
+                  idea: true,
+                  resourceId: calendar.calendarId,
+                  body: { action: 'SET_EXTERNAL_CALENDAR', externalId: cal.id, name: cal.name }
+                })
+                  .then(() => {
+                    this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_LINKED');
+                    this.loadCalendars();
+                  })
+                  .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
+                  .finally(() => this.loading.hide());
+              }
+            });
+            modal.present();
+          });
       })
       .catch(() => {
         // the calendar isn't linked yet (we don't have a token): link or delete
@@ -182,7 +189,14 @@ export class IDEACalendarsPage {
           // acquire the calendars to choose one
           switch (calendar.external.service) {
             case IdeaX.ExternalCalendarSources.GOOGLE:
-              console.log('Not supported yet');
+              this.API.rawRequest()
+                .get('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
+                  headers: { Authorization: 'Bearer '.concat(res.token) }
+                })
+                .toPromise()
+                .then((res: any) => resolve(res.items.map(c => ({ name: c.summary, id: c.id } as ExternalCalendar))))
+                .catch(() => reject())
+                .finally(() => this.loading.hide());
               break;
             case IdeaX.ExternalCalendarSources.MICROSOFT:
               this.API.rawRequest()
@@ -207,7 +221,16 @@ export class IDEACalendarsPage {
     if (!calendar.external) return;
     switch (calendar.external.service) {
       case IdeaX.ExternalCalendarSources.GOOGLE:
-        console.log('Not supported yet');
+        this.extBrowser.openLink(
+          `https://accounts.google.com/o/oauth2/v2/auth?` +
+            `client_id=${IDEA_GOOGLE_API_CLIENT_ID}` +
+            `&response_type=code` +
+            `&redirect_uri=${IDEA_APP_URL.concat('/echo/google-calendars-integration')}` +
+            `&include_granted_scopes=true&` +
+            `&access_type=offline&prompt=consent` +
+            `&scope=${IDEA_GOOGLE_API_SCOPE}` +
+            `&state=${calendar.calendarId}`
+        );
         break;
       case IdeaX.ExternalCalendarSources.MICROSOFT:
         this.extBrowser.openLink(
@@ -219,17 +242,17 @@ export class IDEACalendarsPage {
             `&scope=${IDEA_MICROSOFT_API_SCOPE}` +
             `&state=${calendar.calendarId}`
         );
-        // since we don't know when/if the auth flow will finish, we wait
-        this.alertCtrl
-          .create({
-            header: this.t.instant('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR'),
-            message: this.t.instant('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR_CONFIRM_ONCE_DONE'),
-            backdropDismiss: false,
-            buttons: [{ text: this.t.instant('COMMON.DONE'), handler: () => this.linkExtCalendarOrDelete(calendar) }]
-          })
-          .then(alert => alert.present());
         break;
     }
+    // since we don't know when/if the auth flow will finish, we wait
+    this.alertCtrl
+      .create({
+        header: this.t.instant('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR'),
+        message: this.t.instant('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR_CONFIRM_ONCE_DONE'),
+        backdropDismiss: false,
+        buttons: [{ text: this.t.instant('COMMON.DONE'), handler: () => this.linkExtCalendarOrDelete(calendar) }]
+      })
+      .then(alert => alert.present());
   }
   /**
    * Delete the calendar (without asking, since it has been done in other methods).

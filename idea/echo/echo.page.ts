@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
+import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
@@ -51,7 +52,10 @@ export class IDEAEchoPage {
         this.endTrelloIntegrationFlow(code);
         break;
       case EchoRequests.MICROSOFT_CALENDARS_INTEGRATION:
-        this.endMicrosoftCalendarsIntegrationFlow(code, state);
+        this.endExternalCalendarsIntegrationFlow(IdeaX.ExternalCalendarSources.MICROSOFT, code, state);
+        break;
+      case EchoRequests.GOOGLE_CALENDARS_INTEGRATION:
+        this.endExternalCalendarsIntegrationFlow(IdeaX.ExternalCalendarSources.GOOGLE, code, state);
         break;
       default:
         this.goHome();
@@ -135,21 +139,21 @@ export class IDEAEchoPage {
       : this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_ERROR');
   }
   /**
-   * Complete the integration with Microsoft calendars.
+   * Complete the integration with external calendars (Google, Microsoft, ecc.).
    */
-  public endMicrosoftCalendarsIntegrationFlow(code: string, calendarId: string) {
+  public endExternalCalendarsIntegrationFlow(service: IdeaX.ExternalCalendarSources, code: string, calendarId: string) {
     this.loading.show();
     this.API.patchResource('calendars', {
       idea: true,
-      body: { action: 'SET_EXTERNAL_INTEGRATION', service: 'MICROSOFT', code, calendarId }
+      body: { action: 'SET_EXTERNAL_INTEGRATION', service: service, code, calendarId }
     })
       .then(() => {
         this.success = true;
-        this.content = this.t.instant('IDEA.ECHO.MICROSOFT_CALENDARS_SOURCE_INTEGRATION_SUCCESS');
+        this.content = this.t.instant(`IDEA.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS`);
       })
       .catch(() => {
         this.success = false;
-        this.content = this.t.instant('IDEA.ECHO.MICROSOFT_CALENDARS_SOURCE_INTEGRATION_ERROR');
+        this.content = this.t.instant(`IDEA.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR`);
       })
       .finally(() => this.loading.hide());
   }

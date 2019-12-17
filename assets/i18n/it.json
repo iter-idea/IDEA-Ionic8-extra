@@ -207,8 +207,8 @@
       "GITHUB_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di GitHub; riprovare.",
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copia e incolla il seguente token nella schermata precedente per completare la configurazione: {{token}}",
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di Trello; riprovare.",
-      "MICROSOFT_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "L'account Microsoft è stato collegato. Torna alla pagina dei calendari per completare la configurazione",
-      "MICROSOFT_CALENDARS_SOURCE_INTEGRATION_ERROR": "Errore nel collegamento all'account di Microsoft; riprovare"
+      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "L'account esterno è stato collegato. Torna alla pagina dei calendari per completare la configurazione",
+      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR": "Errore nel collegamento all'account esterno; riprovare"
     },
     "ADDRESS": {
       "ADDRESS": "Indirizzo",

@@ -19,3 +19,7 @@ window.IDEA_AUTH_WEBSITE = 'https://iter-idea.com';
 
 window.IDEA_MICROSOFT_API_CLIENT_ID = '1dcb2e26-b402-4085-a25a-61054687b0e4';
 window.IDEA_MICROSOFT_API_SCOPE = 'offline_access user.read Calendars.ReadWrite.Shared';
+
+window.IDEA_GOOGLE_API_CLIENT_ID = '121599012131-b7hndachsohn5u3j2apjnoqne3uglv8e.apps.googleusercontent.com';
+window.IDEA_GOOGLE_API_SCOPE =
+  'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar';
