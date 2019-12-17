@@ -13,11 +13,11 @@ export class IDEACalendarItemComponent {
   /**
    * The calendar to show.
    */
-  @Input() protected calendar: IdeaX.Calendar;
+  @Input() public calendar: IdeaX.Calendar;
   /**
    * Whether the component is disabled.
    */
-  @Input() protected disabled: boolean;
+  @Input() public disabled: boolean;
   /**
    * Emit selection of a calendar.
    */

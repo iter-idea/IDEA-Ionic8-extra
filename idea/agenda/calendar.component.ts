@@ -17,7 +17,7 @@ export class IDEACalendarComponent {
   /**
    * The calendar to show.
    */
-  @Input() protected calendar: IdeaX.Calendar;
+  @Input() public calendar: IdeaX.Calendar;
 
   /**
    * Errors while validating the entity.

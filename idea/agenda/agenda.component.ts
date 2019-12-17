@@ -192,7 +192,7 @@ export class IDEAAgendaComponent {
   /**
    * Helper to set the formats of the agenda's labels based on the language.
    */
-  protected setFormatsBasedOnLang(lang: string) {
+  public setFormatsBasedOnLang(lang: string) {
     switch (lang) {
       case 'it':
         this.formatWeekTitle = `MMMM yyyy, 'settimana' w`;
@@ -208,7 +208,7 @@ export class IDEAAgendaComponent {
   /**
    * Helper to flatten an array.
    */
-  protected flattenArray(arr: Array<any>) {
+  public flattenArray(arr: Array<any>) {
     return arr.reduce((a, v) => a.concat(v), []);
   }
 

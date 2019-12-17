@@ -29,15 +29,15 @@ export class IDEACalendarsPage {
   /**
    * The calendars of the user.
    */
-  protected privateCals: Array<IdeaX.Calendar>;
+  public privateCals: Array<IdeaX.Calendar>;
   /**
    * The calendars of the team.
    */
-  protected teamCals: Array<IdeaX.Calendar>;
+  public teamCals: Array<IdeaX.Calendar>;
   /**
    * The IDEA membership, to check for permissions.
    */
-  protected ideaMembership: IdeaX.Membership;
+  public ideaMembership: IdeaX.Membership;
 
   constructor(
     public navCtrl: NavController,
@@ -174,7 +174,7 @@ export class IDEACalendarsPage {
   /**
    * Get the calendars list of the external service, to link with the selected calendar.
    */
-  protected getExternalCalendars(calendar: IdeaX.Calendar): Promise<Array<ExternalCalendar>> {
+  public getExternalCalendars(calendar: IdeaX.Calendar): Promise<Array<ExternalCalendar>> {
     return new Promise((resolve, reject) => {
       // prepare a request for a private or team calendar
       const baseURL = calendar.teamId ? `teams/${calendar.teamId}/` : '';
@@ -217,7 +217,7 @@ export class IDEACalendarsPage {
   /**
    * Proceed to link the calendar with the chosen external service.
    */
-  protected linkExtCalendar(calendar: IdeaX.Calendar) {
+  public linkExtCalendar(calendar: IdeaX.Calendar) {
     if (!calendar.external) return;
     switch (calendar.external.service) {
       case IdeaX.ExternalCalendarSources.GOOGLE:
