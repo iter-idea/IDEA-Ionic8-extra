@@ -443,7 +443,8 @@
       "STOP_SUBSCRIPTION": "Cancel subscription",
       "SUBSCRIPTION_WONT_RENEW_ANYMORE": "The subscription won't be renew after its due. Do you confirm?",
       "WONT_RENEW": "Won't renew",
-      "WONT_RENEW_AFTER": "Won't renew after"
+      "WONT_RENEW_AFTER": "Won't renew after",
+      "PLAN_NOT_FOUND": "Plan not found"
     },
     "STRIPE": {
       "SECURELY_SUBSCRIBE_THROUGH": "Securely subscribe through",

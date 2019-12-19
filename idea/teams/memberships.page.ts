@@ -178,8 +178,7 @@ export class IDEAMembershipsPage {
               this.loading.show();
               this.API.deleteResource(`teams/${this.team.teamId}/memberships`, {
                 idea: true,
-                resourceId: membership.userId,
-                params: { project: IDEA_PROJECT }
+                resourceId: membership.userId
               })
                 .then(() => {
                   if (this.tc.get('userId') === membership.userId) return window.location.assign('');

@@ -84,43 +84,51 @@ export class IDEAStripeSubscriptionComponent {
       if (resT.error) return this.message.error('IDEA.STRIPE.INVALID_CREDIT_CARD');
       // send the token to the back-end and request the subscription (transparent upgrade/downgrade)
       this.loading.show();
-      // the request may relate to a team or to an user subscription
-      const url =
-        this.target === IdeaX.ProjectPlanTargets.TEAMS
-          ? `teams/${this.tc.get('team').teamId}/stripeSubscriptions`
-          : `stripeSubscriptions`;
-      this.API.postResource(url, {
+      // get the detailed information about the plan: storePlanId is needed
+      this.API.getResource(`projects/${IDEA_PROJECT}/plans`, {
         idea: true,
-        resourceId: this.plan.planId,
-        body: { source: resT.token.id, project: IDEA_PROJECT }
+        resourceId: this.plan.planId
       })
-        .then((res: any) => {
-          const latestInvoice = res.latest_invoice;
-          // distinguish downgrade/upgrade scenario from new subscriptions
-          if (!latestInvoice.payment_intent) this.validateSubscription();
-          else
-            switch (latestInvoice.payment_intent.status) {
-              // handle the result based on the returned status of the last payment
-              case 'succeeded':
-                this.validateSubscription();
-                break;
-              case 'requires_payment_method':
-                this.message.error('IDEA.STRIPE.ERROR_DURING_PAYMENT_CHECK_CARD');
-                break;
-              case 'requires_action':
-                this.stripe
-                  .handleCardPayment(res.latest_invoice.payment_intent.client_secret)
-                  .then((challengeRes: any) => {
-                    if (challengeRes.error) return this.message.error('COMMON.OPERATION_FAILED');
-                    else this.validateSubscription();
-                  });
-                break;
-              default:
-                this.message.error('COMMON.OPERATION_FAILED');
+        .then((plan: IdeaX.ProjectPlan) => {
+          this.API.postResource('stripeSubscriptions', {
+            idea: true,
+            resourceId: plan.storePlanId,
+            body: {
+              subscriberId: IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').teamId : this.tc.get('user').userId,
+              name: IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').name : this.tc.get('user').email,
+              email: this.tc.get('user').email,
+              source: resT.token.id
             }
+          })
+            .then((res: any) => {
+              const latestInvoice = res.latest_invoice;
+              // distinguish downgrade/upgrade scenario from new subscriptions
+              if (!latestInvoice.payment_intent) this.validateSubscription();
+              else
+                switch (latestInvoice.payment_intent.status) {
+                  // handle the result based on the returned status of the last payment
+                  case 'succeeded':
+                    this.validateSubscription();
+                    break;
+                  case 'requires_payment_method':
+                    this.message.error('IDEA.STRIPE.ERROR_DURING_PAYMENT_CHECK_CARD');
+                    break;
+                  case 'requires_action':
+                    this.stripe
+                      .handleCardPayment(res.latest_invoice.payment_intent.client_secret)
+                      .then((challengeRes: any) => {
+                        if (challengeRes.error) return this.message.error('COMMON.OPERATION_FAILED');
+                        else this.validateSubscription();
+                      });
+                    break;
+                  default:
+                    this.message.error('COMMON.OPERATION_FAILED');
+                }
+            })
+            .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
+            .finally(() => this.loading.hide());
         })
-        .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-        .finally(() => this.loading.hide());
+        .catch(() => this.message.error('IDEA.SUBSCRIPTION.PLAN_NOT_FOUND'));
     });
   }
   /**
@@ -132,10 +140,10 @@ export class IDEAStripeSubscriptionComponent {
     const params: any = {
       resourceId:
         this.target === IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').teamId : this.tc.get('user').userId,
-      body: { action: 'VERIFY_STORE_SUBSCRIPTION', transaction: { type: 'stripe' } }
+      body: { action: 'VERIFY_STORE_SUBSCRIPTION', project: IDEA_PROJECT, transaction: { type: 'stripe' } }
     };
     if (this.target !== IdeaX.ProjectPlanTargets.TEAMS) params['idea'] = true;
-    const url = this.target === IdeaX.ProjectPlanTargets.TEAMS ? 'teams' : 'user';
+    const url = this.target === IdeaX.ProjectPlanTargets.TEAMS ? 'teams' : 'users';
     this.API.patchResource(url, params)
       .then((subscription: IdeaX.ProjectSubscription) => {
         this.message.success('IDEA.STRIPE.SUCCESSFULLY_SUBSCRIBED');
