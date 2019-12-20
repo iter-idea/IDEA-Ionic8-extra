@@ -443,7 +443,8 @@
       "STOP_SUBSCRIPTION": "Annulla abbonamento",
       "SUBSCRIPTION_WONT_RENEW_ANYMORE": "L'abbonamento non verrà rinnovato alla sua scadenza. Confermi?",
       "WONT_RENEW": "Non si rinnoverà",
-      "WONT_RENEW_AFTER": "Non si rinnoverà dopo il"
+      "WONT_RENEW_AFTER": "Non si rinnoverà dopo il",
+      "PLAN_NOT_FOUND": "Piano non trovato"
     },
     "STRIPE": {
       "SECURELY_SUBSCRIBE_THROUGH": "Abbonati in maniera sicura con",

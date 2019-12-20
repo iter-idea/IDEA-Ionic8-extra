@@ -21,7 +21,7 @@ export class IDEAErrorReportingService {
       const report = new IdeaX.ErrorReport();
       report.load({ project: IDEA_PROJECT, error, client: this.getClientInfo() });
       this.http
-        .post(API_URL.concat('/errorReporting'), report)
+        .post(API_URL.concat(`/projects/${IDEA_PROJECT}/errorReporting`), report)
         .toPromise()
         .catch(() => {})
         .finally(() => resolve()); // note: never throw an error when reporting an error
