@@ -55,15 +55,15 @@ export class IDEACalendarsPage {
     if (!this.tc.get('team').hasModule('agenda')) return this.navCtrl.navigateRoot(['']);
     this.loadCalendars();
   }
-  public loadCalendars() {
+  public loadCalendars(skipLoading?: boolean) {
     // get the IDEA membership
-    this.loading.show();
+    if (!skipLoading) this.loading.show();
     this.API.getResource(`teams/${this.tc.get('membership').teamId}/memberships/${this.tc.get('membership').userId}`, {
       idea: true
     })
       .then((membership: IdeaX.Membership) => (this.ideaMembership = new IdeaX.Membership(membership)))
       .catch(() => this.message.error('COMMON.NO_ELEMENT_FOUND'))
-      .finally(() => this.loading.hide());
+      .finally(() => (skipLoading ? null : this.loading.hide()));
     // (async) get shared calendars
     this.API.getResource(`teams/${this.tc.get('membership').teamId}/calendars`, { idea: true })
       .then((teamCals: Array<IdeaX.Calendar>) => (this.teamCals = teamCals.map(c => new IdeaX.Calendar(c))))
@@ -145,7 +145,8 @@ export class IDEACalendarsPage {
                 })
                   .then(() => {
                     this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_LINKED');
-                    this.loadCalendars();
+                    this.loadCalendars(true);
+                    this.calendarFirstSync(calendar);
                   })
                   .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
                   .finally(() => this.loading.hide());
@@ -254,6 +255,30 @@ export class IDEACalendarsPage {
       })
       .then(alert => alert.present());
   }
+  /**
+   * First sync of the extenal calendar.
+   */
+  protected calendarFirstSync(calendar: IdeaX.Calendar, continuing?: boolean) {
+    // prepare a request for a private or team calendar
+    const baseURL = calendar.teamId ? `teams/${calendar.teamId}/` : '';
+    // this is a recursive operation: the API returns if the sync has to continue or it finished
+    if (!continuing) this.loading.show(this.t.instant('IDEA.AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
+    // request a first synchronisation (it will take a while);
+    this.API.patchResource(baseURL.concat('calendars'), {
+      idea: true,
+      resourceId: calendar.calendarId,
+      body: { action: 'SYNC_EXTERNAL_CALENDAR' }
+    })
+      .then((res: any) => {
+        if (res.moreData) this.calendarFirstSync(calendar, true);
+        else {
+          this.loading.hide();
+          this.message.success('IDEA.AGENDA.CALENDARS.FIRST_SYNC_COMPLETED');
+        }
+      })
+      .catch(() => this.message.error('COMMON.OPERATION_FAILED'));
+  }
+
   /**
    * Delete the calendar (without asking, since it has been done in other methods).
    */

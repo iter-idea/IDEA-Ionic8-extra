@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import { TranslateService } from '@ngx-translate/core';
+import Async = require('async');
 import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
 
@@ -9,6 +10,7 @@ import { IDEATinCanService } from '../tinCan.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAAppointmentComponent } from './appointment.component';
+import { IDEAMessageService } from '../message.service';
 
 @Component({
   selector: 'idea-agenda',
@@ -105,6 +107,7 @@ export class IDEAAgendaComponent {
     public platform: Platform,
     public modalCtrl: ModalController,
     public tc: IDEATinCanService,
+    public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public t: TranslateService,
     public API: IDEAAWSAPIService
@@ -139,6 +142,8 @@ export class IDEAAgendaComponent {
         );
         // load the appointments from each selected calendar
         this.loadAppointmentsBasedOnVisibileCalendars().then(() => this.loading.hide());
+        // (async) synchronise the external calendars
+        this.syncExternalCalendars();
       })
       .catch(() => this.loading.hide());
   }
@@ -404,6 +409,40 @@ export class IDEAAgendaComponent {
     const checked = this.calendarsChecks.find(x => x.checked);
     const calendar = checked ? this.calendars.find(x => x.calendarId === checked.value) : null;
     return calendar || new IdeaX.Calendar();
+  }
+
+  /**
+   * Synchronise all the external calendars until they are up to date.
+   */
+  protected syncExternalCalendars() {
+    this.loadingAppointments = true;
+    // execute a parallel request to update all the external calendars
+    Async.each(
+      this.calendars.filter(c => c.external && c.external.calendarId),
+      (cal, done) => this.syncExternalCalendar(cal, done),
+      () => {
+        this.loadingAppointments = false;
+        this.loadAppointmentsBasedOnVisibileCalendars(true);
+      }
+    );
+  }
+  /**
+   * Synchronise an external calendar until it's up to date.
+   */
+  protected syncExternalCalendar(calendar: IdeaX.Calendar, done: any) {
+    // prepare a request for a private or team calendar
+    const baseURL = calendar.teamId ? `teams/${calendar.teamId}/` : '';
+    // this is a recursive operation: the API returns if the sync has to continue or it finished
+    this.API.patchResource(baseURL.concat('calendars'), {
+      idea: true,
+      resourceId: calendar.calendarId,
+      body: { action: 'SYNC_EXTERNAL_CALENDAR' }
+    })
+      .then((res: any) => {
+        if (res.moreData) this.syncExternalCalendar(calendar, done);
+        else done();
+      })
+      .catch(() => done());
   }
 }
 

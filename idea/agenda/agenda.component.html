@@ -1,11 +1,11 @@
 <ion-grid class="agenda" fixed>
   <ion-row class="ion-align-items-center titleRow">
-    <ion-col class="ion-text-right ion-align-self-center" [size]="12" [sizeSm]="3" [sizeLg]="3">
+    <ion-col class="ion-text-right ion-align-self-center" [size]="12" [sizeSm]="2" [sizeLg]="3">
       <ion-button (click)="addAppointment()">
         {{ 'COMMON.ADD' | translate }}
       </ion-button>
     </ion-col>
-    <ion-col class="ion-text-right ion-align-self-center" [size]="12" [sizeSm]="6" [sizeLg]="6">
+    <ion-col class="ion-text-right ion-align-self-center" [size]="12" [sizeSm]="5" [sizeLg]="5">
       <idea-checker
         class="calendarsChecks"
         [data]="calendarsChecks"
@@ -18,7 +18,7 @@
         (change)="loadAppointmentsBasedOnVisibileCalendars()"
       ></idea-checker>
     </ion-col>
-    <ion-col class="ion-text-right ion-align-self-center" [size]="12" [sizeSm]="3" [sizeLg]="3">
+    <ion-col class="ion-text-right ion-align-self-center" [size]="6" [sizeSm]="3" [sizeLg]="3">
       <ion-select
         interface="popover"
         class="calendarModeSelect"
@@ -29,6 +29,11 @@
         <ion-select-option value="week">{{ 'IDEA.AGENDA.WEEK' | translate }}</ion-select-option>
         <ion-select-option value="day">{{ 'IDEA.AGENDA.DAY' | translate }}</ion-select-option>
       </ion-select>
+    </ion-col>
+    <ion-col class="ion-text-right ion-align-self-center" [size]="6" [sizeSm]="2" [sizeLg]="1">
+      <ion-button fill="clear" color="dark" [disabled]="loadingAppointments" (click)="syncExternalCalendars()"
+        ><ion-icon name="refresh"></ion-icon
+      ></ion-button>
     </ion-col>
   </ion-row>
   <ion-row class="ion-align-items-center subTitleRow">

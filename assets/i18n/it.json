@@ -418,7 +418,9 @@
         "LINKING_CALENDAR": "Collegamento calendario",
         "LINKING_CALENDAR_CONFIRM_ONCE_DONE": "Segui la procedura del servizio esterno e conferma qui una volta fatto",
         "CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK": "Scegli un calendario esterno da configurare",
-        "CALENDAR_LINKED": "Calendario collegato"
+        "CALENDAR_LINKED": "Calendario collegato",
+        "FIRST_SYNC_MAY_TAKE_A_WHILE": "La prima sincronizzazione è in corso (potrebbe volerci un po')...",
+        "FIRST_SYNC_COMPLETED": "Il calendario è stato sincronizzato"
       }
     },
     "SUBSCRIPTION": {
