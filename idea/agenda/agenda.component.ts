@@ -414,7 +414,7 @@ export class IDEAAgendaComponent {
   /**
    * Synchronise all the external calendars until they are up to date.
    */
-  protected syncExternalCalendars() {
+  public syncExternalCalendars() {
     this.loadingAppointments = true;
     // execute a parallel request to update all the external calendars
     Async.each(
