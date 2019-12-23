@@ -30,7 +30,7 @@ export class IDEACalendarPickerComponent {
     this.today = Moment();
     this.refDate = this.inputDate ? Moment(this.inputDate) : Moment(this.today);
     this.selectedDate = Moment(this.refDate);
-    this.hour = 0;
+    this.hour = 12; // to endure timezones
     this.minute = 0;
     if (this.timePicker) {
       this.hour = this.selectedDate.hour();
