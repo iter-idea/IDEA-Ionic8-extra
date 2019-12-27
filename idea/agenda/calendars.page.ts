@@ -141,7 +141,7 @@ export class IDEACalendarsPage {
                 this.API.patchResource(baseURL.concat('calendars'), {
                   idea: true,
                   resourceId: calendar.calendarId,
-                  body: { action: 'SET_EXTERNAL_CALENDAR', externalId: cal.id, name: cal.name }
+                  body: { action: 'SET_EXTERNAL_CALENDAR', externalId: cal.id, name: cal.name, timezone: cal.timezone }
                 })
                   .then(() => {
                     this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_LINKED');
@@ -195,7 +195,9 @@ export class IDEACalendarsPage {
                   headers: { Authorization: 'Bearer '.concat(res.token) }
                 })
                 .toPromise()
-                .then((res: any) => resolve(res.items.map(c => ({ name: c.summary, id: c.id } as ExternalCalendar))))
+                .then((res: any) =>
+                  resolve(res.items.map(c => ({ name: c.summary, id: c.id, timezone: c.timeZone } as ExternalCalendar)))
+                )
                 .catch(() => reject())
                 .finally(() => this.loading.hide());
               break;
@@ -203,7 +205,9 @@ export class IDEACalendarsPage {
               this.API.rawRequest()
                 .get('https://graph.microsoft.com/v1.0/me/calendars', { headers: { Authorization: res.token } })
                 .toPromise()
-                .then((res: any) => resolve(res.value.map(c => ({ name: c.name, id: c.id } as ExternalCalendar))))
+                .then((res: any) =>
+                  resolve(res.value.map(c => ({ name: c.name, id: c.id, timezone: null } as ExternalCalendar)))
+                )
                 .catch(() => reject())
                 .finally(() => this.loading.hide());
               break;
@@ -304,4 +308,5 @@ export class IDEACalendarsPage {
 interface ExternalCalendar {
   id: string;
   name: string;
+  timezone: string;
 }
