@@ -172,4 +172,11 @@ export class IDEAAccountPage {
       })
       .then(alert => alert.present());
   }
+
+  /**
+   * Go back in the navigation.
+   */
+  public close() {
+    this.navCtrl.back();
+  }
 }
