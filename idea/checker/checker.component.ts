@@ -114,6 +114,8 @@ export class IDEACheckerComponent {
     this.disabled = false;
     this.sortData = false;
     this.numMaxElementsInPreview = 4;
+    this.allText = this.t.instant('IDEA.CHECKER.ALL');
+    this.noneText = this.t.instant('IDEA.CHECKER.NONE');
   }
 
   /**
@@ -161,10 +163,10 @@ export class IDEACheckerComponent {
     if (!this.data || !this.data.length) return null;
     if (this.noPreviewText) return this.noPreviewText;
     if (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll))
-      return this.allText || this.t.instant('IDEA.CHECKER.ALL');
+      return this.allText;
     else {
       const checked = this.data.filter(x => x.checked);
-      if (checked.length === 0) return this.noneText || this.t.instant('IDEA.CHECKER.NONE');
+      if (checked.length === 0) return this.noneText;
       if (checked.length <= this.numMaxElementsInPreview)
         return this.data
           .filter(x => x.checked)

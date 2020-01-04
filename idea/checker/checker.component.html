@@ -4,7 +4,11 @@
     {{ label }}
     <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
   </ion-label>
-  <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled">
+  <ion-label
+    class="description"
+    [class.selectable]="!disabled || tappableWhenDisabled"
+    [class.noneOrAll]="getPreview() === allText || getPreview() === noneText"
+  >
     {{ getPreview() }}
   </ion-label>
   <ion-icon

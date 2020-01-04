@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AlertController, IonFab } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,9 +14,14 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class IDEALanguagePickerComponent {
   public languages: Array<string>;
+  /**
+   * The side where the fab list will open. Default: bottom.
+   */
+  @Input() public side: string;
 
   constructor(public t: TranslateService, public storage: Storage, public alertCtrl: AlertController) {}
   public ngOnInit() {
+    this.side = 'bottom';
     this.languages = this.t.getLangs();
   }
 

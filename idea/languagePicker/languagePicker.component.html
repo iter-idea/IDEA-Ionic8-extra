@@ -2,7 +2,7 @@
   <ion-fab-button size="small" color="light" [title]="t.instant('IDEA.LANGUAGE_PICKER.CHANGE_LANGUAGE')">
     <img [src]="'assets/flags/' + t.currentLang + '.png'" />
   </ion-fab-button>
-  <ion-fab-list>
+  <ion-fab-list [side]="side">
     <ion-fab-button
       size="small"
       color="light"
