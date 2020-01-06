@@ -19,9 +19,10 @@ export class IDEALanguagePickerComponent {
    */
   @Input() public side: string;
 
-  constructor(public t: TranslateService, public storage: Storage, public alertCtrl: AlertController) {}
-  public ngOnInit() {
+  constructor(public t: TranslateService, public storage: Storage, public alertCtrl: AlertController) {
     this.side = 'bottom';
+  }
+  public ngOnInit() {
     this.languages = this.t.getLangs();
   }
 
