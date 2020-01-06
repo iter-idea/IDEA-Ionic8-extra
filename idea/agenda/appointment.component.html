@@ -72,6 +72,7 @@
       [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.CALENDAR_HINT')"
       [searchPlaceholder]="t.instant('IDEA.AGENDA.APPOINTMENT.CALENDAR_HINT')"
       [hideIdFromUI]="true"
+      [disabled]="appointment.appointmentId"
       [class.fieldHasError]="hasFieldAnError('calendarId')"
       (select)="$event ? (appointment.calendarId = $event.value) : null"
     ></idea-select>

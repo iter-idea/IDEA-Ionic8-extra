@@ -58,13 +58,14 @@ export class IDEAAppointmentComponent {
     this.errors = new Set<string>();
   }
   public ngOnInit() {
+    // load the calendars
+    this.calendarsSuggestions = this.calendars.map(
+      c => new IdeaX.Suggestion({ value: c.calendarId, name: c.name, color: c.color })
+    );
     if (!this.appointment || !this.appointment.appointmentId) {
       // set default values for a new appointment
       this.appointment.startTime = this.startTime || Date.now();
       this.appointment.endTime = new Date(this.appointment.startTime + (this.defaultDuration || 0)).getTime();
-      this.calendarsSuggestions = this.calendars.map(
-        c => new IdeaX.Suggestion({ value: c.calendarId, name: c.name, color: c.color })
-      );
       this.appointment.calendarId = this.defaultCalendarId || null;
       this.appointment.timezone = Moment.tz.guess(); // @todo let the user to change it
     }

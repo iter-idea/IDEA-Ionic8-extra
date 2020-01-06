@@ -309,7 +309,10 @@ export class IDEAAgendaComponent {
   public onCurrentDateChanged(event: Date) {
     event.setHours(12, 0, 0, 0);
     // fix a bug when the calendar swiper isn't active: properly set the current date
-    if (!this.areDatesTheSameBasedOnView(this.currentDate, event)) this.currentDate = event;
+    if (!this.areDatesTheSameBasedOnView(this.currentDate, event)) {
+      this.lastTimeSelected = null;
+      this.currentDate = event;
+    }
     // set isToday helper
     const today = new Date();
     today.setHours(12, 0, 0, 0);
