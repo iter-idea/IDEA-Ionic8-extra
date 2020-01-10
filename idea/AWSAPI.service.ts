@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { Events } from '@ionic/angular';
 
 import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEATinCanService } from './tinCan.service';
@@ -32,7 +31,6 @@ export class IDEAAWSAPIService {
     public http: HttpClient,
     public tc: IDEATinCanService,
     public storage: Storage,
-    public events: Events,
     public errorReporting: IDEAErrorReportingService
   ) {}
 
@@ -154,8 +152,6 @@ export class IDEAAWSAPIService {
                 .then((cloudRes: any) => {
                   // update cache if backend version is more recent (or in absence of mAt mechanism)
                   if (!cloudRes.mAt || cloudRes.mAt > localRes.mAt) {
-                    // send an event to let everyone know that the cache was updated in the bg
-                    this.events.publish(`AWSAPI:${resource}`, cloudRes);
                     // update the cache (if it fails, it's ok)
                     this.putInCache(resource, cloudRes, opt)
                       .then(() => {})
