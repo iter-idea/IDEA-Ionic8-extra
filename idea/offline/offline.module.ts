@@ -12,4 +12,4 @@ import { IDEAOfflineBarComponent } from './offlineBar.component';
   entryComponents: [IDEAOfflineManagerComponent, IDEAOfflineBarComponent],
   exports: [IDEAOfflineManagerComponent, IDEAOfflineBarComponent]
 })
-export class IDEAOfflineManagerModule {}
+export class IDEAOfflineModule {}

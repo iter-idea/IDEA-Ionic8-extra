@@ -13,7 +13,7 @@ export * from './duration/duration.module';
 export * from './echo/echo.module';
 export * from './languagePicker/languagePicker.module';
 export * from './list/list.module';
-export * from './offline/offlineManager.module';
+export * from './offline/offline.module';
 export * from './mde/mde.module';
 export * from './resourceCenter/RC.module';
 export * from './select/select.module';
