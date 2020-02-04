@@ -31,12 +31,12 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 ## Services
 
 - AWSAPI service
+- DataWedge-compatible devices' reader service (barcode)
 - Error reporting service
 - External browser service
 - Loading service
 - Message service
 - Tin can service
-- Zebra Reader service (barcode)
 - (browser's) Cached resources service
 
 ## Requirements
