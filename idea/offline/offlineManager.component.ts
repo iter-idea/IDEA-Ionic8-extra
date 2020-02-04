@@ -6,7 +6,7 @@ import { IDEAOfflineService, APIRequest } from './offline.service';
 import Moment = require('moment-timezone');
 
 @Component({
-  selector: 'IDEAOfflineManagerComponent',
+  selector: 'idea-offline-manager',
   templateUrl: 'offlineManager.component.html',
   styleUrls: ['offlineManager.component.scss']
 })
