@@ -85,19 +85,18 @@ export class IDEAOfflineService {
   public resourcesToCache: Array<CacheableResource>;
 
   constructor(protected storage: Storage, protected t: TranslateService, protected API: IDEAAWSAPIService) {
-    this.isOffline = !navigator.onLine;
-    this.isOnline = navigator.onLine;
+    this.setOnline(navigator.onLine);
     window.addEventListener('online', () => {
-      this.isOffline = false;
-      this.isOnline = true;
-      // once back online, try a synchronization if needed or if the last one failed
-      if (this.errorInLastSync) this.synchronize();
-      else this.synchronizeIfNeeded();
+      // don't trust the browser: check with a fake request
+      this.check().then(isOnline => {
+        if (isOnline) {
+          // once back online, try a synchronization if needed or if the last one failed
+          if (this.errorInLastSync) this.synchronize();
+          else this.synchronizeIfNeeded();
+        }
+      });
     });
-    window.addEventListener('offline', () => {
-      this.isOffline = true;
-      this.isOnline = false;
-    });
+    window.addEventListener('offline', () => this.setOnline(false));
     this.synchronizing = false;
     this.errorInLastSync = false;
     this.requiresManualConfirmation = false;
@@ -105,6 +104,43 @@ export class IDEAOfflineService {
     this.queueAPIRequests = new Array<APIRequest>();
     this.resourcesToCache = new Array<CacheableResource>();
     this.storage.get(LAST_SYNC_KEY).then((lastSyncAt: number) => (this.lastSyncAt = lastSyncAt || 0));
+    // run a connection test every once in a while
+    this.runContinousCheck();
+  }
+
+  //
+  // ONLINE CHECK
+  //
+
+  /**
+   * Quickly set both the helpers that determs the connection status.
+   */
+  public setOnline(isOnline: boolean) {
+    this.isOnline = isOnline;
+    this.isOffline = !isOnline;
+  }
+  /**
+   * Quickly check for online connection.
+   */
+  public check(): Promise<boolean> {
+    return new Promise(resolve =>
+      this.API.getResource('online', { idea: true })
+        .then(() => {
+          this.setOnline(true);
+          resolve(true);
+        })
+        .catch(() => {
+          this.setOnline(false);
+          resolve(false);
+        })
+    );
+  }
+  /**
+   * Run a connection test every once in a while.
+   */
+  public runContinousCheck() {
+    this.check();
+    setTimeout(() => this.runContinousCheck(), 30 * 1000);
   }
 
   //
