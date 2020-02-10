@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
 import Async = require('async');
 
 import { IDEAAWSAPIService, CacheModes, APIRequestOption } from '../AWSAPI.service';
@@ -83,20 +84,33 @@ export class IDEAOfflineService {
    * The array of resources to cache offline from the back-end.
    */
   public resourcesToCache: Array<CacheableResource>;
+  /**
+   * The observable for subscribing to online/offline status changes.
+   */
+  protected observable: Observable<boolean>;
 
   constructor(protected storage: Storage, protected t: TranslateService, protected API: IDEAAWSAPIService) {
     this.setOnline(navigator.onLine);
-    window.addEventListener('online', () => {
-      // don't trust the browser: check with a fake request
-      this.check().then(isOnline => {
-        if (isOnline) {
-          // once back online, try a synchronization if needed or if the last one failed
-          if (this.errorInLastSync) this.synchronize();
-          else this.synchronizeIfNeeded();
-        }
+    // create the observable to subscribe to the readings
+    this.observable = new Observable(observer => {
+      window.addEventListener('online', () => {
+        // don't trust the browser: check with a fake request
+        this.check().then(isOnline => {
+          if (isOnline) {
+            // once back online, try a synchronization if needed or if the last one failed
+            if (this.errorInLastSync) this.synchronize();
+            else this.synchronizeIfNeeded();
+          }
+          // notifiy the subscribers of the connection status change
+          observer.next(isOnline);
+        });
+      });
+      window.addEventListener('offline', () => {
+        this.setOnline(false);
+        // notifiy the subscribers of the connection status change
+        observer.next(false);
       });
     });
-    window.addEventListener('offline', () => this.setOnline(false));
     this.synchronizing = false;
     this.errorInLastSync = false;
     this.requiresManualConfirmation = false;
@@ -106,6 +120,12 @@ export class IDEAOfflineService {
     this.storage.get(LAST_SYNC_KEY).then((lastSyncAt: number) => (this.lastSyncAt = lastSyncAt || 0));
     // run a connection test every once in a while
     this.runContinousCheck();
+  }
+  /**
+   * Subscribe to the service to be notified when the connection status changes.
+   */
+  public subscribe(callback: (isOnline: boolean) => void): Subscription {
+    return this.observable.subscribe(callback);
   }
 
   //
