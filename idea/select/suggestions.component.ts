@@ -47,6 +47,10 @@ export class IDEASuggestionsComponent {
    */
   @Input() public category2: string;
   /**
+   * Whether to show the categories or not.
+   */
+  @Input() public showCategories: boolean;
+  /**
    * An arbitrary number of elements to show in each page; suggested: a multiple of 2, 3 and 4 (good for any UI size).
    */
   @Input() public numPerPage: number;

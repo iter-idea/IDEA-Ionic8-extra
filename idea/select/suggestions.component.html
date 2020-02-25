@@ -18,7 +18,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-row *ngIf="activeCategories1?.size || activeCategories2?.size">
+  <ion-row *ngIf="showCategories">
     <ion-col [size]="12" [sizeLg]="6">
       <idea-select
         *ngIf="activeCategories1?.size"
@@ -74,7 +74,7 @@
       (click)="select(suggestion)"
     >
       <ion-label>
-        <p class="categories" *ngIf="suggestion.category1 || suggestion.category2">
+        <p class="categories" *ngIf="showCategories && (suggestion.category1 || suggestion.category2)">
           <ion-text *ngIf="suggestion.category1">
             {{ suggestion.category1 }}
           </ion-text>
