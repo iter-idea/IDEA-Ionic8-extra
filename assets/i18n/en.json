@@ -253,7 +253,7 @@
     },
     "OFFLINE": {
       "YOU_ARE_OFFLINE": "You are offline",
-      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Functionality is reduced",
+      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Functionality is reduced and contents may be not up to date",
       "OFFLINE_MANAGER": "Offline manager",
       "LAST_SYNC": "Last synchronisation",
       "LOADING": "Loading...",
