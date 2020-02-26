@@ -4,12 +4,12 @@ import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IDEAOfflineManagerComponent } from './offlineManager.component';
-import { IDEAOfflineBarComponent } from './offlineBar.component';
+import { IDEAOfflineIndicatorComponent } from './offlineIndicator.component';
 
 @NgModule({
   imports: [CommonModule, IonicModule, TranslateModule.forChild()],
-  declarations: [IDEAOfflineManagerComponent, IDEAOfflineBarComponent],
-  entryComponents: [IDEAOfflineManagerComponent, IDEAOfflineBarComponent],
-  exports: [IDEAOfflineManagerComponent, IDEAOfflineBarComponent]
+  declarations: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent],
+  entryComponents: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent],
+  exports: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent]
 })
 export class IDEAOfflineModule {}

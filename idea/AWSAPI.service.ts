@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 
 import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEATinCanService } from './tinCan.service';
+import { IDEAOfflineService } from './offline/offline.service';
 
 // from idea-config.js
 declare const IDEA_API_ID: string;
@@ -31,7 +32,8 @@ export class IDEAAWSAPIService {
     public http: HttpClient,
     public tc: IDEATinCanService,
     public storage: Storage,
-    public errorReporting: IDEAErrorReportingService
+    public errorReporting: IDEAErrorReportingService,
+    public offline: IDEAOfflineService
   ) {}
 
   /**
@@ -82,7 +84,11 @@ export class IDEAAWSAPIService {
       req.subscribe(
         (res: any) => resolve(res),
         (err: HttpErrorResponse) => {
+          // check if the request failed for network reasons (to trigger offline mode if needed)
+          this.offline.check();
+          // send a report, if wanted
           if (opt.reportError) this.errorReporting.sendReport(err);
+          // fix and return the error
           this.fixErrMessageBeforeReject(err, reject);
         }
       );

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-
-import { IDEAOfflineService, APIRequest } from './offline.service';
 import Moment = require('moment-timezone');
+
+import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
 
 @Component({
   selector: 'idea-offline-manager',
@@ -14,7 +14,7 @@ export class IDEAOfflineManagerComponent {
   constructor(
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public offline: IDEAOfflineService,
+    public offline: IDEAOfflineDataService,
     public t: TranslateService
   ) {}
   public ngOnInit() {

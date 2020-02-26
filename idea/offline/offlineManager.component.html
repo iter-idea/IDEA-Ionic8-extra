@@ -27,7 +27,7 @@
       <ion-button
         size="small"
         [color]="offline.errorInLastSync ? 'danger' : 'primary'"
-        [disabled]="offline.isOffline"
+        [disabled]="offline.isOffline()"
         (click)="offline.synchronize(true)"
       >
         <ion-icon slot="start" name="sync"></ion-icon>
