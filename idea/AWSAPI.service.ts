@@ -249,6 +249,7 @@ export class IDEAAWSAPIService {
   /**
    * Execute a PUT request in the local storage.
    * @param resource resource name (e.g. `users`)
+   * @param data resource data
    * @param options the request options
    */
   public putInCache(resource: string, data: any, options?: APIRequestOption): Promise<void> {
@@ -264,6 +265,28 @@ export class IDEAAWSAPIService {
       // put in the storage
       this.storage
         .set(url.concat(searchParams.toString()), data)
+        .then(() => resolve())
+        .catch((err: Error) => reject(err));
+    });
+  }
+  /**
+   * Execute a DELETE request in the local storage.
+   * @param resource resource name (e.g. `users`)
+   * @param options the request options
+   */
+  public deleteFromCache(resource: string, options?: APIRequestOption): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const opt = (options || {}) as APIRequestOption;
+      // decide if to use IDEA's API or project's API
+      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT;
+      // prepare a single resource request (by id) or a normal one
+      url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
+      // prepare the query params; note: HttpParams is immutable!
+      let searchParams = new HttpParams();
+      if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
+      // delete from the storage
+      this.storage
+        .remove(url.concat(searchParams.toString()))
         .then(() => resolve())
         .catch((err: Error) => reject(err));
     });
