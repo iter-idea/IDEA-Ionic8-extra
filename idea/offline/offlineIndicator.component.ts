@@ -51,6 +51,7 @@ export class IDEAOfflineIndicatorComponent {
             })
             .then(alert => alert.present());
       });
-    } else this.modalCtrl.create({ component: IDEAOfflineManagerComponent }).then(modal => modal.present());
+    } else if (this.offline.resourcesToCache.length || this.offline.useQueueAPIRequests)
+      this.modalCtrl.create({ component: IDEAOfflineManagerComponent }).then(modal => modal.present());
   }
 }
