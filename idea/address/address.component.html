@@ -8,7 +8,7 @@
     [placeholder]="t.instant('IDEA.ADDRESS.COMPLETE_ADDRESS_HINT')"
     [value]="address.getFullAddress()"
   ></ion-input>
-  <ion-icon slot="end" [name]="addressCollapsed ? 'ios-arrow-back' : 'ios-arrow-down'"></ion-icon>
+  <ion-icon slot="end" [name]="addressCollapsed ? 'chevron-back' : 'chevron-down'"></ion-icon>
 </ion-item>
 <div class="addressDetails" *ngIf="!addressCollapsed">
   <ion-item [lines]="lines" *ngIf="showContact">

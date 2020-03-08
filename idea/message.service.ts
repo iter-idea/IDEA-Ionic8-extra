@@ -18,8 +18,7 @@ export class IDEAMessageService {
         duration: 3000,
         position: 'bottom',
         color: color,
-        showCloseButton: true,
-        closeButtonText: 'X'
+        buttons: [{ text: 'X', role: 'cancel' }]
       })
       .then(toast => toast.present());
   }

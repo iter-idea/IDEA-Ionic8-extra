@@ -1,4 +1,4 @@
-<ion-header no-border>
+<ion-header class="ion-no-border">
   <ion-toolbar class="ideaToolbar">
     <ion-title>
       {{ 'IDEA.STRIPE.SUBSCRIBE' | translate }}
@@ -55,13 +55,17 @@
       </ion-label>
     </ion-item>
     <ion-list-header>
-      {{ 'IDEA.STRIPE.CREDIT_DEBIT_CARD' | translate }}
+      <ion-label>
+        {{ 'IDEA.STRIPE.CREDIT_DEBIT_CARD' | translate }}
+      </ion-label>
     </ion-list-header>
     <div id="cardElement">
       <!-- A Stripe Element will be inserted here. -->
     </div>
     <ion-list-header>
-      {{ 'IDEA.STRIPE.CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT' | translate }}
+      <ion-label>
+        {{ 'IDEA.STRIPE.CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT' | translate }}
+      </ion-label>
     </ion-list-header>
     <ion-item lines="none">
       <ion-checkbox slot="start" [(ngModel)]="authorizationCheck"></ion-checkbox>

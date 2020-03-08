@@ -1,11 +1,11 @@
-<ion-header no-border>
+<ion-header class="ion-no-border">
   <ion-toolbar class="ideaToolbar">
     <ion-title>
       {{ title }}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="t.instant('IDEA.CALENDAR.RESET')" (click)="save(true)">
-        <ion-icon slot="icon-only" name="undo"></ion-icon>
+        <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
       </ion-button>
       <ion-button [title]="t.instant('IDEA.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="save()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
@@ -25,7 +25,7 @@
         <ion-row class="ion-align-items-center ion-justify-content-center">
           <ion-col class="ion-text-right ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addYears(-1)">
-              <ion-icon slot="icon-only" name="ios-arrow-back"></ion-icon>
+              <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center ion-no-padding" tappable [size]="6">
@@ -40,7 +40,7 @@
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addYears(+1)">
-              <ion-icon slot="icon-only" name="ios-arrow-forward"></ion-icon>
+              <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
@@ -49,7 +49,7 @@
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-right ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(-1)">
-              <ion-icon slot="icon-only" name="ios-arrow-back"></ion-icon>
+              <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center ion-no-padding" tappable [size]="6" (click)="showMonths()">
@@ -57,7 +57,7 @@
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(+1)">
-              <ion-icon slot="icon-only" name="ios-arrow-forward"></ion-icon>
+              <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>

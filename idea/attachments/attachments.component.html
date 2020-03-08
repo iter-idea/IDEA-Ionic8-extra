@@ -45,7 +45,7 @@
 <!----->
 <div *ngIf="editMode">
   <ion-item class="attachments" [lines]="lines" *ngFor="let err of uploadErrors">
-    <ion-icon name="alert" slot="start" color="danger"></ion-icon>
+    <ion-icon name="alert-circle" slot="start" color="danger"></ion-icon>
     <ion-label color="danger">
       {{ err }}
       <p>{{ 'IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT' | translate }}</p>
@@ -65,11 +65,5 @@
 <ion-item lines="none" class="selectable" *ngIf="editMode" (click)="browseFiles()">
   <ion-label color="medium">{{ 'IDEA.ATTACHMENTS.ADD_ATTACHMENT' | translate }}</ion-label>
   <input id="attachmentPicker" type="file" multiple style="display: none" (change)="addAttachment($event)" />
-  <ion-icon
-    slot="end"
-    name="md-arrow-dropdown"
-    class="selectIcon"
-    *ngIf="editMode"
-    [class.selectable]="editMode"
-  ></ion-icon>
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="editMode" [class.selectable]="editMode"></ion-icon>
 </ion-item>
