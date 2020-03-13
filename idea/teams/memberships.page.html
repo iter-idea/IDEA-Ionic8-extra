@@ -19,7 +19,7 @@
       <ion-label>{{ team?.name }}</ion-label>
     </ion-list-header>
     <p>{{ 'IDEA.TEAMS.MAIN_EXPLANATION' | translate }}.</p>
-    <ion-item button="true" *ngFor="let m of memberships">
+    <ion-item *ngFor="let m of memberships" [button]="true">
       <ion-label>
         {{ m.name }}
       </ion-label>

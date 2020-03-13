@@ -2,7 +2,7 @@
   <ion-item
     class="customField"
     *ngFor="let f of fieldsLegend"
-    [attr.tappable]="disabled ? null : true"
+    [class.tappable]="!disabled"
     [lines]="lines || 'full'"
     (click)="disabled ? null : select.emit(fields[f])"
   >

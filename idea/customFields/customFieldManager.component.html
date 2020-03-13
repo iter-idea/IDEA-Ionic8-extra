@@ -17,9 +17,8 @@
       *ngIf="languages.default && languages.available.length > 1"
     >
       <ion-col
-        tappable
         size="1"
-        class="ion-text-center"
+        class="ion-text-center tappable"
         *ngFor="let l of languages.available"
         [class.current]="l === currentLanguage"
         (click)="currentLanguage = l"

@@ -14,13 +14,13 @@
   <ion-list>
     <ion-row>
       <ion-col class="ion-text-center">
-        <img tappable src="assets/imgs/stripe.png" (click)="openStripeInfo()" />
+        <img src="assets/imgs/stripe.png" class="tappable" (click)="openStripeInfo()" />
       </ion-col>
     </ion-row>
     <ion-list-header class="stripeHint">
       <ion-label class="ion-text-center">
         {{ 'IDEA.STRIPE.SECURELY_SUBSCRIBE_THROUGH' | translate }}
-        <ion-text tappable class="anchor" (click)="openStripeInfo()">
+        <ion-text class="anchor" (click)="openStripeInfo()">
           Stripe
         </ion-text>
         <p>
@@ -71,7 +71,7 @@
       <ion-checkbox slot="start" [(ngModel)]="authorizationCheck"></ion-checkbox>
       <ion-label class="ion-text-wrap" style="z-index: 3;">
         {{ 'IDEA.STRIPE.I_AUTHORIZE' | translate }}
-        <ion-text tappable class="anchor" (click)="openWebsite($event)">
+        <ion-text class="anchor" (click)="openWebsite($event)">
           ITER IDEA
         </ion-text>
         {{ 'IDEA.STRIPE.AUTHORIZATION_CHECK_TEXT' | translate }}

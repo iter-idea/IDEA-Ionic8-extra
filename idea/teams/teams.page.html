@@ -17,9 +17,9 @@
   <ion-list lines="full" class="teamsList">
     <p *ngIf="!tc.get('membership')">{{ 'IDEA.TEAMS.YOU_NEED_A_TEAM_TO_CONTINUE' | translate }}.</p>
     <ion-item
-      button="true"
       *ngFor="let team of teams"
       [title]="t.instant('IDEA.TEAMS.SELECT_TEAM_', { team: team.name })"
+      [button]="true"
       [disabled]="!(team.isActivatedOnProject || team.isRequestingUserAdmin)"
       (click)="selectTeam(team.teamId)"
     >

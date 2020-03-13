@@ -26,7 +26,7 @@
   <ion-list class="aList maxWidthContainer">
     <ion-item
       *ngFor="let plan of plans"
-      [attr.tappable]="plan.planId !== subscription.planId"
+      [class.tappable]="plan.planId !== subscription.planId"
       (click)="subscribe(plan)"
     >
       <ion-label>

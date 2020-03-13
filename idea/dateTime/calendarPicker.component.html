@@ -28,7 +28,7 @@
               <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col class="ion-text-center ion-no-padding" tappable [size]="6">
+          <ion-col class="ion-text-center ion-no-padding tappable" [size]="6">
             <ion-input
               type="text"
               [placeholder]="t.instant('IDEA.CALENDAR.YEAR')"
@@ -52,7 +52,7 @@
               <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col class="ion-text-center ion-no-padding" tappable [size]="6" (click)="showMonths()">
+          <ion-col class="ion-text-center ion-no-padding tappable" [size]="6" (click)="showMonths()">
             {{ refDate.format('MMMM') }}
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
@@ -136,7 +136,7 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-toolbar tappable class="ideaToolbar" (click)="save()">
+  <ion-toolbar class="ideaToolbar tappable" (click)="save()">
     <ion-title class="ion-text-center">
       <ion-icon name="checkmark"></ion-icon>
     </ion-title>

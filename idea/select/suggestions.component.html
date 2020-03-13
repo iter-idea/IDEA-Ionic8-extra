@@ -55,9 +55,9 @@
       </ion-label>
     </ion-item>
     <ion-item
-      tappable
       class="suggestion"
       *ngIf="allowUnlistedValues && searchbar.value"
+      [button]="true"
       [title]="t.instant('IDEA.SELECT.SELECT_', { suggestion: searchbar.value })"
       (click)="select({ value: searchbar.value })"
     >
@@ -67,9 +67,9 @@
       </i>
     </ion-item>
     <ion-item
-      tappable
       class="suggestion"
       *ngFor="let suggestion of suggestions"
+      [button]="true"
       [title]="t.instant('IDEA.SELECT.SELECT_', { suggestion: suggestion.name || suggestion.value })"
       (click)="select(suggestion)"
     >

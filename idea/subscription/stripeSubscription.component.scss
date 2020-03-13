@@ -24,5 +24,9 @@ ion-list {
     color: var(--ion-color-primary);
     font-weight: bold;
     text-decoration: underline;
+    cursor: pointer;
   }
+}
+.tappable {
+  cursor: pointer;
 }
