@@ -72,9 +72,9 @@ export class IDEADownloaderComponent {
     this.download = null;
     this.hideAfterSeconds = 10;
     this.autoOpenLink = true;
-    this.icon = 'download';
+    this.icon = 'download-outline';
     this.color = 'primary';
-    this.size = 'default';
+    this.size = undefined;
     this.t
       .get('IDEA.DOWNLOAD.TAP_TO_DOWNLOAD')
       .toPromise()
