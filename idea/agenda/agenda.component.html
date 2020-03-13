@@ -1,7 +1,7 @@
 <ion-grid class="agenda" fixed>
   <ion-row class="ion-align-items-center titleRow">
     <ion-col class="ion-text-right ion-align-self-center" [size]="10" [sizeSm]="2" [sizeLg]="3">
-      <ion-button (click)="addAppointment()">
+      <ion-button *ngIf="userCanInsert" (click)="addAppointment()">
         {{ 'COMMON.ADD' | translate }}
       </ion-button>
     </ion-col>

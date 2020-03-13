@@ -9,6 +9,7 @@ import { IDEACalendarsPage } from './calendars.page';
 import { IDEACalendarItemComponent } from './calendarItem.component';
 import { IDEACalendarCreationComponent } from './calendarCreation.component';
 import { IDEACalendarComponent } from './calendar.component';
+import { IDEACheckerModule } from '../checker/checker.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { IDEACalendarComponent } from './calendar.component';
     FormsModule,
     IonicModule,
     RouterModule.forChild([{ path: '', component: IDEACalendarsPage }]),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    IDEACheckerModule
   ],
   declarations: [IDEACalendarsPage, IDEACalendarItemComponent, IDEACalendarCreationComponent, IDEACalendarComponent],
   entryComponents: [IDEACalendarsPage, IDEACalendarItemComponent, IDEACalendarCreationComponent, IDEACalendarComponent],

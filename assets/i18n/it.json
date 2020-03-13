@@ -350,6 +350,7 @@
       "ALL_DAY": "Giorno",
       "NO_EVENTS": "Nessun evento",
       "APPOINTMENT": {
+        "APPOINTMENT": "Appuntamento",
         "NEW_APPOINTMENT": "Nuovo appuntamento",
         "EDIT_APPOINTMENT": "Modifica appuntamento",
         "TITLE": "Titolo",
@@ -368,7 +369,9 @@
         "CALENDAR_HINT": "Scegli calendario in cui inserire l'appuntamento",
         "FORM_HAS_ERROR_TO_CHECK": "Una o più campi hanno valori non consentiti; verifica e riprova",
         "SAVED": "Appuntamento salvato",
-        "DELETED": "Appuntamento eliminato"
+        "DELETED": "Appuntamento eliminato",
+        "OPEN_IN": "Apri in",
+        "READ_ONLY": "Sola lettura"
       },
       "CALENDARS": {
         "CALENDARS": "Calendari",
@@ -420,7 +423,19 @@
         "CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK": "Scegli un calendario esterno da configurare",
         "CALENDAR_LINKED": "Calendario collegato",
         "FIRST_SYNC_MAY_TAKE_A_WHILE": "La prima sincronizzazione è in corso (potrebbe volerci un po')...",
-        "FIRST_SYNC_COMPLETED": "Il calendario è stato sincronizzato"
+        "FIRST_SYNC_COMPLETED": "Il calendario è stato sincronizzato",
+        "TAP_TO_CONFIGURE": "Tocca per configurare",
+        "BASED_ON_EXTERNAL_SERVICE_SHARING_PERMISSION": "Da permessi di condivisione del servizio esterno",
+        "ACCESS_LEVELS": {
+          "0": "Vedi solo stato libero/occupato",
+          "1": "Vedi dettagli (sola lettura)",
+          "2": "Inserimento e modifica appuntamenti",
+          "3": "Permessi completi"
+        },
+        "EVERYONE": "Tutti",
+        "NOBODY": "Nessuno",
+        "USERS_ALLOWED_TO_MANAGE_APPOINTMENTS": "Utenti che possono gestire gli appuntamenti",
+        "WHO_CAN_MANAGE_APPOINTMENTS": "Chi può gestire gli appuntamenti"
       }
     },
     "SUBSCRIPTION": {

@@ -4,7 +4,12 @@
   </ion-avatar>
   <ion-label>
     {{ calendar.name }}
-    <p>{{ calendar.description }}</p>
+    <p>
+      <ion-text color="danger" *ngIf="calendar.external && !calendar.external.calendarId">
+        {{ 'IDEA.AGENDA.CALENDARS.TAP_TO_CONFIGURE' | translate }}
+      </ion-text>
+      {{ calendar.description }}
+    </p>
   </ion-label>
   <ion-icon
     slot="end"

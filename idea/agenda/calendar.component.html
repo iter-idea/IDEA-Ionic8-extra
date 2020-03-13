@@ -53,6 +53,15 @@
         <div class="circle" [style.background-color]="calendar.color"></div>
       </ion-avatar>
     </ion-item>
+    <idea-checker
+      *ngIf="membershipsChecks && calendar.isShared()"
+      [data]="membershipsChecks"
+      [label]="t.instant('IDEA.AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS')"
+      [placeholder]="t.instant('IDEA.AGENDA.CALENDARS.WHO_CAN_MANAGE_APPOINTMENTS')"
+      [noneText]="t.instant('IDEA.AGENDA.CALENDARS.NOBODY')"
+      [allText]="t.instant('IDEA.AGENDA.CALENDARS.EVERYONE')"
+      [lines]="'inset'"
+    ></idea-checker>
   </ion-list>
   <ion-list class="attributesList">
     <ion-list-header>
@@ -85,6 +94,15 @@
         <p>{{ calendar.external.name }}</p>
       </ion-label>
       <ion-icon slot="end" [name]="getServiceIcon(calendar.external.service)"></ion-icon>
+    </ion-item>
+    <ion-item lines="inset" *ngIf="calendar.external?.service">
+      <ion-label>
+        {{ 'IDEA.AGENDA.CALENDARS.ACCESS_LEVELS.' + calendar.external.userAccess | translate }}
+        <p>
+          {{ 'IDEA.AGENDA.CALENDARS.BASED_ON_EXTERNAL_SERVICE_SHARING_PERMISSION' | translate }}
+        </p>
+      </ion-label>
+      <ion-icon slot="end" name="shield"></ion-icon>
     </ion-item>
   </ion-list>
   <ion-list class="attributesList">

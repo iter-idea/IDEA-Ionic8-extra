@@ -102,6 +102,10 @@ export class IDEAAgendaComponent {
    * Helper to see if a time (cell) was selected twice in a row.
    */
   public lastTimeSelected: Date;
+  /**
+   * Helper to know whether the user have writing permissions on at least one calendar.
+   */
+  public userCanInsert: boolean;
 
   constructor(
     public platform: Platform,
@@ -135,7 +139,11 @@ export class IDEAAgendaComponent {
     ])
       .then((res: Array<Array<IdeaX.Calendar>>) => {
         // flatten the results in a single array of calendars and order them by name
-        this.calendars = this.flattenArray(res).sort((a, b) => a.name.localeCompare(b.name));
+        this.calendars = this.flattenArray(res)
+          .map((c: IdeaX.Calendar) => new IdeaX.Calendar(c))
+          .sort((a: IdeaX.Calendar, b: IdeaX.Calendar) => a.name.localeCompare(b.name));
+        // check whether the user have writing permissions on at least one calendar
+        this.userCanInsert = this.calendars.some(x => x.canUserManageAppointments(this.tc.get('membership').userId));
         // prepare the helper to allow the display of specific calendars (and so their appointments)
         this.calendarsChecks = this.calendars.map(
           c => new IdeaX.Check({ value: c.calendarId, name: c.name, checked: true, color: c.color })

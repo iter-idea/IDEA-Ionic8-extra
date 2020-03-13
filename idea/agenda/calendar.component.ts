@@ -8,6 +8,8 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
+import { Membership } from '../../../../../api/_models/membership.model';
+
 @Component({
   selector: 'idea-calendar',
   templateUrl: 'calendar.component.html',
@@ -18,7 +20,10 @@ export class IDEACalendarComponent {
    * The calendar to show.
    */
   @Input() public calendar: IdeaX.Calendar;
-
+  /**
+   * Helper to allow selecting memberships.
+   */
+  public membershipsChecks: Array<IdeaX.Check>;
   /**
    * Errors while validating the entity.
    */
@@ -38,6 +43,20 @@ export class IDEACalendarComponent {
   public ngOnInit() {
     // work on a copy
     this.calendar = new IdeaX.Calendar(this.calendar);
+    // load the teammates
+    this.API.getResource(`teams/${this.tc.get('membership').teamId}/memberships`)
+      .then(
+        (memberships: Array<Membership>) =>
+          (this.membershipsChecks = memberships.map(
+            m =>
+              new IdeaX.Check({
+                value: m.userId,
+                name: m.name,
+                checked: (this.calendar.usersCanManageAppointments || []).some(x => x === m.userId)
+              })
+          ))
+      )
+      .catch(() => {});
   }
 
   /**
@@ -65,6 +84,12 @@ export class IDEACalendarComponent {
    * Save a calendar with the new info.
    */
   public save() {
+    // map the memberships able to manage appointments
+    if (this.calendar.isShared())
+      this.calendar.usersCanManageAppointments = this.membershipsChecks
+        .filter(x => x.checked)
+        .map(x => String(x.value));
+    else delete this.calendar.usersCanManageAppointments;
     // checkings
     this.errors = new Set(this.calendar.validate());
     if (this.errors.size) {

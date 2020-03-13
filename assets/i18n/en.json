@@ -350,6 +350,7 @@
       "ALL_DAY": "All day",
       "NO_EVENTS": "No events",
       "APPOINTMENT": {
+        "APPOINTMENT": "Appointment",
         "NEW_APPOINTMENT": "New appointment",
         "EDIT_APPOINTMENT": "Edit appointment",
         "TITLE": "Title",
@@ -368,7 +369,9 @@
         "CALENDAR_HINT": "Choose the calendar in which to insert the appointment",
         "FORM_HAS_ERROR_TO_CHECK": "One or more configurations have values which are not allowed; check and try again",
         "SAVED": "Appointment saved",
-        "DELETED": "Appointment deleted"
+        "DELETED": "Appointment deleted",
+        "OPEN_IN": "Open in",
+        "READ_ONLY": "Read-only"
       },
       "CALENDARS": {
         "CALENDARS": "Calendars",
@@ -420,7 +423,19 @@
         "CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK": "Choose an external calendar to link",
         "CALENDAR_LINKED": "Calendar linked",
         "FIRST_SYNC_MAY_TAKE_A_WHILE": "First sync in progress (it may take a while)...",
-        "FIRST_SYNC_COMPLETED": "The calendar has been synchronised"
+        "FIRST_SYNC_COMPLETED": "The calendar has been synchronised",
+        "TAP_TO_CONFIGURE": "Tap here to configure",
+        "BASED_ON_EXTERNAL_SERVICE_SHARING_PERMISSION": "From sharing permissions of the external service",
+        "ACCESS_LEVELS": {
+          "0": "See only free/busy occupation",
+          "1": "See details (ready-only)",
+          "2": "Can insert and edit appointments",
+          "3": "Full permissions"
+        },
+        "EVERYONE": "Everyone",
+        "NOBODY": "Nobody",
+        "USERS_ALLOWED_TO_MANAGE_APPOINTMENTS": "Users who can manage appointments",
+        "WHO_CAN_MANAGE_APPOINTMENTS": "Who can manage appointments"
       }
     },
     "SUBSCRIPTION": {
