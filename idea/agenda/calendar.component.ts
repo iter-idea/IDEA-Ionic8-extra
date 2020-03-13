@@ -28,6 +28,10 @@ export class IDEACalendarComponent {
    * Errors while validating the entity.
    */
   public errors: Set<string>;
+  /**
+   * The default color for a calendar.
+   */
+  public DEFAULT_COLOR = '#555';
 
   constructor(
     public modalCtrl: ModalController,
@@ -41,22 +45,34 @@ export class IDEACalendarComponent {
     this.errors = new Set<string>();
   }
   public ngOnInit() {
-    // work on a copy
-    this.calendar = new IdeaX.Calendar(this.calendar);
-    // load the teammates
-    this.API.getResource(`teams/${this.tc.get('membership').teamId}/memberships`)
-      .then(
-        (memberships: Array<Membership>) =>
-          (this.membershipsChecks = memberships.map(
-            m =>
-              new IdeaX.Check({
-                value: m.userId,
-                name: m.name,
-                checked: (this.calendar.usersCanManageAppointments || []).some(x => x === m.userId)
-              })
-          ))
-      )
-      .catch(() => {});
+    // prepare a request for a private or team calendar
+    const baseURL = this.calendar.teamId ? `teams/${this.calendar.teamId}/` : '';
+    // get the calendar (in case of external calendar, update the external info)
+    this.loading.show();
+    this.API.getResource(baseURL.concat('calendars'), { idea: true, resourceId: this.calendar.calendarId })
+      .then((cal: IdeaX.Calendar) => {
+        // work on a copy
+        this.calendar = new IdeaX.Calendar(cal);
+        // load the teammates
+        this.API.getResource(`teams/${this.tc.get('membership').teamId}/memberships`)
+          .then(
+            (memberships: Array<Membership>) =>
+              (this.membershipsChecks = memberships.map(
+                m =>
+                  new IdeaX.Check({
+                    value: m.userId,
+                    name: m.name,
+                    checked: (this.calendar.usersCanManageAppointments || []).some(x => x === m.userId)
+                  })
+              ))
+          )
+          .catch(() => {});
+      })
+      .catch(() => {
+        this.message.error('COMMON.OPERATION_FAILED');
+        this.close();
+      })
+      .finally(() => this.loading.hide());
   }
 
   /**
@@ -84,6 +100,8 @@ export class IDEACalendarComponent {
    * Save a calendar with the new info.
    */
   public save() {
+    // set the default color, in case none was selected
+    if (!this.calendar.color) this.calendar.color = this.DEFAULT_COLOR;
     // map the memberships able to manage appointments
     if (this.calendar.isShared())
       this.calendar.usersCanManageAppointments = this.membershipsChecks

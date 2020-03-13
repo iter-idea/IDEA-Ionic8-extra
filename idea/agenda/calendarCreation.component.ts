@@ -70,13 +70,17 @@ export class IDEACalendarCreationComponent {
   public addCalendar(service?: IdeaX.ExternalCalendarSources) {
     // be sure the scope of the calendar was chosen
     if (!(this.calendar.userId || this.calendar.teamId)) return;
-    // set the last obligatory fields
-    this.calendar.name = this.calendar.userId
-      ? this.t.instant('IDEA.AGENDA.CALENDARS.DEFAULT_PRIVATE_CALENDAR_NAME')
-      : this.t.instant('IDEA.AGENDA.CALENDARS.DEFAULT_TEAM_CALENDAR_NAME');
-    this.calendar.color = this.DEFAULT_COLOR;
     // flag the calendar so it has to be linked to an externals service (the procedure follows the creation)
-    if (service) this.calendar.external = new IdeaX.ExternalCalendarInfo({ service });
+    if (service) {
+      this.calendar.external = new IdeaX.ExternalCalendarInfo({ service });
+      this.calendar.name = '-'; // it will be substituted with the external name
+    } else {
+      // default values for local calendars
+      this.calendar.name = this.calendar.userId
+        ? this.t.instant('IDEA.AGENDA.CALENDARS.DEFAULT_PRIVATE_CALENDAR_NAME')
+        : this.t.instant('IDEA.AGENDA.CALENDARS.DEFAULT_TEAM_CALENDAR_NAME');
+      this.calendar.color = this.DEFAULT_COLOR;
+    }
     // prepare a request for a private or team calendar
     const baseURL = this.calendar.teamId ? `teams/${this.calendar.teamId}/` : '';
     // send a post request
