@@ -1,3 +1,3 @@
-IDEA Ionic Extra v5.0.5
+IDEA Ionic Extra v5.0.6
 
 _Note:_ This **folder** is supposed to be **read-only**; all the changes should be performed over the repo **[IDEA Ionic extra](https://github.com/uatisdeproblem/IDEA-Ionic4-extra)**.

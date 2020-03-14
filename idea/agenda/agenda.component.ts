@@ -117,7 +117,7 @@ export class IDEAAgendaComponent {
     public API: IDEAAWSAPIService
   ) {}
   public ngOnInit() {
-    this.viewMode = AgendaViewModes.MONTH;
+    this.viewMode = AgendaViewModes.WEEK;
     // set the formats based on the current language
     Moment.locale(this.t.currentLang);
     this.setFormatsBasedOnLang(this.t.currentLang);
@@ -209,11 +209,12 @@ export class IDEAAgendaComponent {
     switch (lang) {
       case 'it':
         this.formatWeekTitle = `MMMM yyyy, 'settimana' w`;
-        this.formatDayTitle = 'dd MMMM yyyy';
+        this.formatDayTitle = 'EEE dd MMMM yyyy';
         this.formatHourColumn = 'HH';
         break;
       default:
-        this.formatWeekTitle = 'MMMM yyyy (w)';
+        this.formatWeekTitle = `MMMM yyyy, 'week' w`;
+        this.formatDayTitle = 'EEE, MMM dd, yyyy';
         this.formatHourColumn = 'ha';
         break;
     }

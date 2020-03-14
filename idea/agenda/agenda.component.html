@@ -1,4 +1,4 @@
-<ion-grid class="agenda" fixed>
+<ion-grid class="agenda">
   <ion-row class="ion-align-items-center titleRow">
     <ion-col class="ion-text-right ion-align-self-center" [size]="10" [sizeSm]="2" [sizeLg]="3">
       <ion-button *ngIf="userCanInsert" (click)="addAppointment()">
@@ -48,6 +48,7 @@
       <ion-select
         interface="popover"
         class="calendarModeSelect"
+        style="text-align: left;"
         [value]="viewMode"
         (ionChange)="$event?.detail ? changeViewMode($event.detail.value) : null"
       >
@@ -110,13 +111,35 @@
         </ion-list>
       </ng-template>
       <ng-template #eventTemplate let-displayEvent="displayEvent">
-        <div
-          class="calendar-event-inner"
-          [style.background-color]="displayEvent.event.color"
-          [style.color]="getConstrastTextColor(displayEvent.event.color)"
-        >
+        <div class="calendar-event-inner" [style.border-left-color]="displayEvent.event.color">
           {{ displayEvent.event.title }}
           <p>{{ displayEvent.event.location }}</p>
+        </div>
+      </ng-template>
+      <!-- a .calendar-hour-column CSS class must exist in global.scss and contain `line-height: 35px !important;`
+        to work with 52 as top/height value -->
+      <ng-template #template let-tm="tm" let-hourParts="hourParts" let-eventTemplate="eventTemplate">
+        <div [ngClass]="{ 'calendar-event-wrap': tm.events }" *ngIf="tm.events">
+          <div
+            *ngFor="let displayEvent of tm.events"
+            class="calendar-event"
+            tappable
+            (click)="onAppointmentSelected(displayEvent.event)"
+            [ngStyle]="{
+              top: (52 * displayEvent.startOffset) / hourParts + 'px',
+              left: (100 / displayEvent.overlapNumber) * displayEvent.position + '%',
+              width: 100 / displayEvent.overlapNumber + '%',
+              height:
+                52 *
+                  (displayEvent.endIndex -
+                    displayEvent.startIndex -
+                    (displayEvent.endOffset + displayEvent.startOffset) / hourParts) +
+                'px'
+            }"
+          >
+            <ng-template [ngTemplateOutlet]="eventTemplate" [ngTemplateOutletContext]="{ displayEvent: displayEvent }">
+            </ng-template>
+          </div>
         </div>
       </ng-template>
       <calendar
@@ -136,6 +159,10 @@
         [weekviewAllDayEventTemplate]="eventTemplate"
         [dayviewNormalEventTemplate]="eventTemplate"
         [dayviewAllDayEventTemplate]="eventTemplate"
+        [weekviewNormalEventSectionTemplate]="template"
+        [weekviewInactiveNormalEventSectionTemplate]="template"
+        [dayviewNormalEventSectionTemplate]="template"
+        [dayviewInactiveNormalEventSectionTemplate]="template"
         [queryMode]="'remote'"
         [lockSwipes]="true"
         [step]="30"

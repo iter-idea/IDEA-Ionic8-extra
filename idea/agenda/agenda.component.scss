@@ -60,4 +60,23 @@ ion-spinner {
 }
 .calendar-event-inner {
   cursor: pointer;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 12px;
+  padding: 5px 6px;
+  font-weight: 500;
+  border-left: 4px solid transparent;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  overflow: hidden;
+  overflow: -webkit-paged-y;
+  height: 100%;
+  width: 100%;
+  text-align: initial;
+  p {
+    margin: 0;
+    opacity: 0.8;
+    padding-top: 1px;
+    font-size: 0.8em;
+    line-height: 0.9em;
+  }
 }
