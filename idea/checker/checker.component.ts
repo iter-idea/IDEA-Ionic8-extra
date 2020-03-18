@@ -65,7 +65,11 @@ export class IDEACheckerComponent {
    */
   @Input() public noneText: string;
   /**
-   * If all the elements are selected, set this custom text.
+   * If true, even if all the elements are selected the preview is diplayed in place of the `allText`.
+   */
+  @Input() public allNotEqualsAll: boolean;
+  /**
+   * If all the elements are selected, set this custom text. `allNotEqualsAll` needs to be set accordingly.
    */
   @Input() public allText: string;
   /**
@@ -111,6 +115,7 @@ export class IDEACheckerComponent {
     this.noElementsFoundText = null;
     this.noPreviewText = null;
     this.noneEqualsAll = false;
+    this.allNotEqualsAll = false;
     this.disabled = false;
     this.sortData = false;
     this.numMaxElementsInPreview = 4;
@@ -162,7 +167,10 @@ export class IDEACheckerComponent {
   public getPreview(): string {
     if (!this.data || !this.data.length) return null;
     if (this.noPreviewText) return this.noPreviewText;
-    if (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll))
+    if (
+      (this.data.every(x => x.checked) && !this.allNotEqualsAll) ||
+      (this.data.every(x => !x.checked) && this.noneEqualsAll)
+    )
       return this.allText;
     else {
       const checked = this.data.filter(x => x.checked);
