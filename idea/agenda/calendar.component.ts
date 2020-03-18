@@ -8,8 +8,6 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
-import { Membership } from '../../../../../api/_models/membership.model';
-
 @Component({
   selector: 'idea-calendar',
   templateUrl: 'calendar.component.html',
@@ -56,7 +54,7 @@ export class IDEACalendarComponent {
         // load the teammates
         this.API.getResource(`teams/${this.tc.get('membership').teamId}/memberships`)
           .then(
-            (memberships: Array<Membership>) =>
+            (memberships: Array<IdeaX.Membership>) =>
               (this.membershipsChecks = memberships.map(
                 m =>
                   new IdeaX.Check({
