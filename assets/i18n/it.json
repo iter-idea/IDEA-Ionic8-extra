@@ -309,7 +309,8 @@
       "USER_REMOVED": "Utente rimosso",
       "COULDNT_LOAD_LIST": "Errore nel caricare la lista",
       "MAIN_EXPLANATION": "Gli utenti del tuo team. Puoi gestire i loro permessi o aggiungere nuovi utenti",
-      "DELETION_OPERATION_FAILED": "Operazione fallita; verifica che l'utente non sia registrato in altri servizi"
+      "DELETION_OPERATION_FAILED": "Operazione fallita; verifica che l'utente non sia registrato in altri servizi",
+      "NO_TEAMS_AVAILABLE": "Nessun team è al momento disponibile"
     },
     "ACCOUNT": {
       "ACCOUNT": "Account",
@@ -338,7 +339,8 @@
       "YOU_MUST_LEAVE_ALL_TEAMS_FIRST": "Prima di procedere, devi lasciare tutti i tuoi team",
       "DELETE_PERMANENTLY_USER": "Eliminazione irreversibile dell'account",
       "MANAGE_YOUR_ACCOUNT": "Gestione account",
-      "MANAGE_YOUR_ACCOUNT_HINT": "Gestisci il tuo account IDEA"
+      "MANAGE_YOUR_ACCOUNT_HINT": "Gestisci il tuo account IDEA",
+      "DELETION_OPERATION_FAILED": "Operazione fallita; verifica di aver inserito la password corretta e di non essere parte di alcun team registrato in questo o in altri servizi"
     },
     "AGENDA": {
       "AGENDA": "Agenda",
