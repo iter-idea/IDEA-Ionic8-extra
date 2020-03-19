@@ -301,7 +301,7 @@
       "ACTIONS_ON_USER_": "Actions on {{user}}",
       "INVITE_USER": "Invite a user",
       "EMAIL_TO_INVITE": "Email address of the user",
-      "USER_NOT_FOUND_OR_ALREADY_JOINED": "The user is already part of the team",
+      "USER_NOT_FOUND_OR_ALREADY_JOINED": "Invitation failed; make sure the user isn't part of the team yet",
       "INVITE_SENT": "Invite sent",
       "MANAGE_PERMISSIONS": "Manage the permissions",
       "UNJOIN": "Leave the team",

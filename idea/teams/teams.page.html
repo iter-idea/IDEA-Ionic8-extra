@@ -49,5 +49,16 @@
         {{ 'IDEA.TEAMS.MEMBERS' | translate }}
       </ion-button>
     </ion-item>
+    <ion-item lines="none" class="noElements" *ngIf="teams && !teams.length">
+      <ion-label>
+        {{ 'IDEA.TEAMS.NO_TEAMS_AVAILABLE' | translate }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list class="teamsList">
+    <ion-button [title]="t.instant('IDEA.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
+      {{ 'IDEA.ACCOUNT.MANAGE_YOUR_ACCOUNT' | translate }}
+      <ion-icon name="bulb" slot="end"></ion-icon>
+    </ion-button>
   </ion-list>
 </ion-content>
