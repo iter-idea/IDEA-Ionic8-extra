@@ -105,4 +105,10 @@ export class IDEATeamsPage {
     if (event) event.stopPropagation();
     this.navCtrl.navigateForward(['teams', teamId, 'users']);
   }
+  /**
+   * Open IDEA account page.
+   */
+  public openAccount() {
+    this.navCtrl.navigateForward(['account']);
+  }
 }

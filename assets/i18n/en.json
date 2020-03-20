@@ -301,7 +301,7 @@
       "ACTIONS_ON_USER_": "Actions on {{user}}",
       "INVITE_USER": "Invite a user",
       "EMAIL_TO_INVITE": "Email address of the user",
-      "USER_NOT_FOUND_OR_ALREADY_JOINED": "The user is already part of the team",
+      "USER_NOT_FOUND_OR_ALREADY_JOINED": "Invitation failed; make sure the user isn't part of the team yet",
       "INVITE_SENT": "Invite sent",
       "MANAGE_PERMISSIONS": "Manage the permissions",
       "UNJOIN": "Leave the team",
@@ -309,7 +309,8 @@
       "USER_REMOVED": "User removed",
       "COULDNT_LOAD_LIST": "Couldn't load the list",
       "MAIN_EXPLANATION": "The users in your team. You can manage their permissions and add new users",
-      "DELETION_OPERATION_FAILED": "Operation failed; make sure the user doesn't have active memberships in other services"
+      "DELETION_OPERATION_FAILED": "Operation failed; make sure the user doesn't have active memberships in other services",
+      "NO_TEAMS_AVAILABLE": "No team is currently available"
     },
     "ACCOUNT": {
       "ACCOUNT": "Account",
@@ -338,7 +339,8 @@
       "YOU_MUST_LEAVE_ALL_TEAMS_FIRST": "Before to proceed, you have to leave all the teams you joined",
       "DELETE_PERMANENTLY_USER": "Permanently delete the account",
       "MANAGE_YOUR_ACCOUNT": "Manage your account",
-      "MANAGE_YOUR_ACCOUNT_HINT": "Manage your IDEA account"
+      "MANAGE_YOUR_ACCOUNT_HINT": "Manage your IDEA account",
+      "DELETION_OPERATION_FAILED": "Operation failed; make sure you typed the correct password and you don't have active memberships in any service"
     },
     "AGENDA": {
       "AGENDA": "Agenda",
