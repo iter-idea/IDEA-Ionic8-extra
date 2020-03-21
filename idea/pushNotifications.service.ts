@@ -27,41 +27,40 @@ export class IDEAPushNotificationsService {
   public errors: Observable<Error>;
 
   constructor(public platform: Platform, public errorReporting: IDEAErrorReportingService) {
-    this.platform.ready().then(() => {
-      // monitor registrations
-      this.registrations = new Observable(observer => {
-        Plugins.PushNotifications.addListener('registration', (token: PushNotificationToken) => {
-          observer.next(
-            new IdeaX.PushNotificationsDevice({
-              token: token.value,
-              platform: this.platform.is('ios')
-                ? IDEA_API_VERSION === 'dev'
-                  ? IdeaX.PushNotificationsPlatforms.APNS_SANDBOX
-                  : IdeaX.PushNotificationsPlatforms.APNS
-                : IdeaX.PushNotificationsPlatforms.FCM
-            })
-          );
-        });
+    if (!this.isAvailable()) return;
+    // monitor registrations
+    this.registrations = new Observable(observer => {
+      Plugins.PushNotifications.addListener('registration', (token: PushNotificationToken) => {
+        observer.next(
+          new IdeaX.PushNotificationsDevice({
+            token: token.value,
+            platform: this.platform.is('ios')
+              ? IDEA_API_VERSION === 'dev'
+                ? IdeaX.PushNotificationsPlatforms.APNS_SANDBOX
+                : IdeaX.PushNotificationsPlatforms.APNS
+              : IdeaX.PushNotificationsPlatforms.FCM
+          })
+        );
       });
-      // monitor registration errors
-      this.errors = new Observable(observer => {
-        Plugins.PushNotifications.addListener('registrationError', (err: Error) => {
-          this.errorReporting.sendReport(err);
-          observer.next(err);
-        });
+    });
+    // monitor registration errors
+    this.errors = new Observable(observer => {
+      Plugins.PushNotifications.addListener('registrationError', (err: Error) => {
+        this.errorReporting.sendReport(err);
+        observer.next(err);
       });
-      // monitor new notifications
-      this.notifications = new Observable(observer => {
-        Plugins.PushNotifications.addListener('pushNotificationReceived', (n: PushNotification) => observer.next(n));
-      });
+    });
+    // monitor new notifications
+    this.notifications = new Observable(observer => {
+      Plugins.PushNotifications.addListener('pushNotificationReceived', (n: PushNotification) => observer.next(n));
     });
   }
 
   /**
-   * Return true if the DataWedge-compatible device can be used.
+   * Return true if the device is supported.
    */
   public isAvailable(): boolean {
-    return Boolean(this.platform.is('capacitor'));
+    return Boolean(this.platform.is('mobile'));
   }
 
   /**
