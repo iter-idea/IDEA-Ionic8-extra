@@ -36,6 +36,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - External browser service
 - Loading service
 - Message service
+- Push notifications service
 - Tin can service
 - (browser's) Cached resources service
 

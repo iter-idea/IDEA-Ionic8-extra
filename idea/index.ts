@@ -34,4 +34,5 @@ export * from './loading.service';
 export * from './message.service';
 export * from './offline/offline.service';
 export * from './offline/offlineData.service';
+export * from './pushNotifications.service';
 export * from './tinCan.service';
