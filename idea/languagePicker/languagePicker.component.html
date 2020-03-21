@@ -1,16 +1,3 @@
-<ion-fab #languagePicker id="IDEALanguagePicker" edge="true" vertical="top" horizontal="end">
-  <ion-fab-button size="small" color="light" [title]="t.instant('IDEA.LANGUAGE_PICKER.CHANGE_LANGUAGE')">
-    <img [src]="'assets/flags/' + t.currentLang + '.png'" />
-  </ion-fab-button>
-  <ion-fab-list [side]="side">
-    <ion-fab-button
-      size="small"
-      color="light"
-      *ngFor="let l of languages"
-      [title]="t.instant('IDEA.LANGUAGE_PICKER.CHANGE_LANGUAGE')"
-      (click)="changeLanguage(l, languagePicker)"
-    >
-      <img [src]="'assets/flags/' + l + '.png'" />
-    </ion-fab-button>
-  </ion-fab-list>
-</ion-fab>
+<ion-button class="languagePicker" [title]="t.instant('IDEA.LANGUAGE_PICKER.CHANGE_LANGUAGE')" (click)="pickLanguage()">
+  <img [src]="'assets/flags/' + t.currentLang + '.png'" />
+</ion-button>
