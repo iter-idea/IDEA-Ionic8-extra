@@ -7,7 +7,7 @@
     *ngIf="editMode"
     [(ngModel)]="r.name"
     [placeholder]="r.originalName"
-    (ionBlur)="$event.target.value = $event.target.value || t.instant('IDEA.RESOURCE_CENTER.NO_NAME')"
+    (ionBlur)="$event.target.value = $event.target.value || t._('IDEA.RESOURCE_CENTER.NO_NAME')"
   ></ion-input>
   <ion-label *ngIf="!editMode">
     {{ r.name }}
@@ -24,7 +24,7 @@
     slot="end"
     color="danger"
     fill="clear"
-    [title]="t.instant('IDEA.RESOURCE_CENTER.REMOVE_RESOURCE')"
+    [title]="t._('IDEA.RESOURCE_CENTER.REMOVE_RESOURCE')"
     (click)="removeResource(r)"
   >
     <ion-icon name="remove" slot="icon-only"></ion-icon>
@@ -42,8 +42,8 @@
 <idea-select
   *ngIf="editMode && resourcesSuggestions"
   [data]="resourcesSuggestions"
-  [placeholder]="t.instant('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
-  [searchPlaceholder]="t.instant('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
+  [placeholder]="t._('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
+  [searchPlaceholder]="t._('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
   [lines]="'none'"
   [clearValueAfterSelection]="true"
   [avoidAutoSelection]="true"

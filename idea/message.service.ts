@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+
+import { IDEATranslationsService } from './translations/translations.service';
 
 @Injectable()
 export class IDEAMessageService {
-  constructor(public toastCtrl: ToastController, public t: TranslateService) {}
+  constructor(public toastCtrl: ToastController, public t: IDEATranslationsService) {}
 
   /**
    * Show a generic message toast.
@@ -14,7 +15,7 @@ export class IDEAMessageService {
   protected show(message: string, color: string, dontTranslate: boolean) {
     this.toastCtrl
       .create({
-        message: dontTranslate ? message : this.t.instant(message),
+        message: dontTranslate ? message : this.t._(message),
         duration: 3000,
         position: 'bottom',
         color: color,

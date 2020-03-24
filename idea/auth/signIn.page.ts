@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 
 import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
 import { IDEATinCanService } from '../tinCan.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 // from idea-config.js
 declare const IDEA_APP_TITLE: string;
@@ -37,7 +37,7 @@ export class IDEASignInPage {
     public loading: IDEALoadingService,
     public extBrowser: IDEAExtBrowserService,
     public auth: IDEAAuthService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {
     this.title = IDEA_APP_TITLE;
     this.registrationPossible = IDEA_AUTH_REGISTRATION_POSSIBLE;
@@ -64,8 +64,7 @@ export class IDEASignInPage {
       })
       .catch(err => {
         this.loading.hide();
-        if (err.name === 'UserNotConfirmedException')
-          this.errorMsg = this.t.instant('IDEA.AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
+        if (err.name === 'UserNotConfirmedException') this.errorMsg = this.t._('IDEA.AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
         this.message.error('IDEA.AUTH.AUTHENTICATION_FAILED');
       });
   }

@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-rc-configurator',
@@ -37,7 +37,7 @@ export class IDEARCConfiguratorComponent {
    */
   public foldersSuggestions: Array<IdeaX.Suggestion>;
 
-  constructor(public t: TranslateService, public tc: IDEATinCanService, public API: IDEAAWSAPIService) {
+  constructor(public t: IDEATranslationsService, public tc: IDEATinCanService, public API: IDEAAWSAPIService) {
     this.team = null;
     this.folder = null;
     this.editMode = false;

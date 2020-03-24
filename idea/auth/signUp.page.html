@@ -26,8 +26,8 @@
             autocorrect="off"
             autocapitalize="off"
             autocomplete="off"
-            [placeholder]="t.instant('IDEA.AUTH.EMAIL')"
-            [title]="t.instant('IDEA.AUTH.REGISTRATION_EMAIL_HINT')"
+            [placeholder]="t._('IDEA.AUTH.EMAIL')"
+            [title]="t._('IDEA.AUTH.REGISTRATION_EMAIL_HINT')"
             [ngModelOptions]="{ standalone: true }"
             [(ngModel)]="email"
             (keyup.enter)="register()"
@@ -45,8 +45,8 @@
             autocapitalize="off"
             autocomplete="off"
             [clearOnEdit]="false"
-            [placeholder]="t.instant('IDEA.AUTH.PASSWORD')"
-            [title]="t.instant('IDEA.AUTH.CHOOSE_A_PASSWORD')"
+            [placeholder]="t._('IDEA.AUTH.PASSWORD')"
+            [title]="t._('IDEA.AUTH.CHOOSE_A_PASSWORD')"
             [ngModelOptions]="{ standalone: true }"
             [(ngModel)]="password"
             (keyup.enter)="register()"
@@ -54,7 +54,7 @@
         </ion-item>
         <ion-row
           class="agreementsAcceptanceRow"
-          *ngIf="t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
+          *ngIf="t._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || t._('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
         >
           <ion-col>
             <ion-checkbox
@@ -67,15 +67,15 @@
               ion-text
               color="primary"
               target="_blank"
-              *ngIf="t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
-              [title]="t.instant('IDEA.AUTH.TERMS_AND_CONDITIONS_HINT')"
-              [href]="t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
+              *ngIf="t._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
+              [title]="t._('IDEA.AUTH.TERMS_AND_CONDITIONS_HINT')"
+              [href]="t._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
             >
               {{ 'IDEA.AUTH.TERMS_AND_CONDITIONS' | translate }}
             </a>
             <ion-text
               *ngIf="
-                t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL') && t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
+                t._('IDEA_VARIABLES.PRIVACY_POLICY_URL') && t._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
               "
             >
               &
@@ -84,9 +84,9 @@
               ion-text
               color="primary"
               target="_blank"
-              *ngIf="t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
-              [title]="t.instant('IDEA.AUTH.PRIVACY_POLICY_HINT')"
-              [href]="t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
+              *ngIf="t._('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
+              [title]="t._('IDEA.AUTH.PRIVACY_POLICY_HINT')"
+              [href]="t._('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
             >
               {{ 'IDEA.AUTH.PRIVACY_POLICY' | translate }}
             </a>
@@ -95,7 +95,7 @@
         <ion-button
           expand="block"
           [disabled]="!agreementsCheck"
-          [title]="t.instant('IDEA.AUTH.CREATE_AN_ACCOUNT_HINT')"
+          [title]="t._('IDEA.AUTH.CREATE_AN_ACCOUNT_HINT')"
           (click)="register()"
         >
           {{ 'IDEA.AUTH.CREATE_AN_ACCOUNT' | translate }}
@@ -104,7 +104,7 @@
           fill="clear"
           expand="block"
           class="smallCaseButton"
-          [title]="t.instant('IDEA.AUTH.HAVEN_T_RECEIVED_CONFIRMATION_LINK_HINT')"
+          [title]="t._('IDEA.AUTH.HAVEN_T_RECEIVED_CONFIRMATION_LINK_HINT')"
           (click)="goToResendLink()"
         >
           {{ 'IDEA.AUTH.HAVEN_T_RECEIVED_CONFIRMATION_LINK' | translate }}
@@ -113,7 +113,7 @@
           fill="clear"
           expand="block"
           class="smallCaseButton"
-          [title]="t.instant('IDEA.AUTH.BACK_TO_SIGN_IN_HINT')"
+          [title]="t._('IDEA.AUTH.BACK_TO_SIGN_IN_HINT')"
           (click)="goToAuth()"
         >
           {{ 'IDEA.AUTH.BACK_TO_SIGN_IN' | translate }}

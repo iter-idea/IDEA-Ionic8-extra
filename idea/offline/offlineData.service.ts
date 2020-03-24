@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import Async = require('async');
 
 import { epochDateTime } from 'idea-toolbox';
 import { IDEAAWSAPIService, APIRequestOption, CacheModes } from '../AWSAPI.service';
 import { IDEAOfflineService } from './offline.service';
-import { Subscription } from 'rxjs';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 /**
  * After how much time we need to request a synchronisation to keep the contents up-to-date.
@@ -41,8 +41,8 @@ export const MAX_NUM_ELEMENTS_FOR_QUICK_SYNC = 50;
  * ```
  * // set the resources we want to download from the back-end
  * this.offline.resourcesToCache = [
- *   new CacheableResource([`teams/${team.teamId}/models`], 'modelId', this.t.instant('MENU.MODELS')),
- *   new CacheableResource([`teams/${team.teamId}/activities`], 'activityId', this.t.instant('MENU.ACTIVITIES'))
+ *   new CacheableResource([`teams/${team.teamId}/models`], 'modelId', this.t._('MENU.MODELS')),
+ *   new CacheableResource([`teams/${team.teamId}/activities`], 'activityId', this.t._('MENU.ACTIVITIES'))
  * ];
  * this.offline.synchronizeIfNeeded();
  * ```
@@ -81,7 +81,7 @@ export class IDEAOfflineDataService {
 
   constructor(
     protected storage: Storage,
-    protected t: TranslateService,
+    protected t: IDEATranslationsService,
     protected offline: IDEAOfflineService,
     protected API: IDEAAWSAPIService
   ) {

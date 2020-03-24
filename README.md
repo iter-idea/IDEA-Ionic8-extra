@@ -18,7 +18,6 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Downloader
 - Duration
 - Echo
-- Language picker
 - List
 - Markdown Editor (MDE)
 - Offline
@@ -27,10 +26,12 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Send email
 - Signature
 - Team & memberships management (IDEA's pool)
+- Translations
 
 ## Services
 
 - AWSAPI service
+- (browser's) Cached resources service
 - DataWedge-compatible devices' reader service (barcode)
 - Error reporting service
 - External browser service
@@ -38,15 +39,15 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Message service
 - Push notifications service
 - Tin can service
-- (browser's) Cached resources service
+- Translation service
 
 ## Requirements
 
-Every component requires the `ngx-translate` module and the `i18n` translation folder, with at least
-the `en.json` translation; a sample of the latter is stored in the `assets/i18n` folder.
+Every component requires the `IDEATranslationsService` module and the `i18n` translations folder (with subfolders),
+with at least the `en.json` translation; a sample of the latter is stored in the `assets/i18n` folder.
 
 Each component may **require** one or more folders of the `assets` directory,
-including `icons`, `libs` and `configs`; see more in any recent IDEA's project.
+including `icons`, `images` and `configs`; see more in any recent IDEA's project.
 
 ## How to use
 

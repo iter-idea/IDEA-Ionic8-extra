@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
-import { TranslateService } from '@ngx-translate/core';
 import Async = require('async');
 import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
@@ -11,6 +10,7 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAAppointmentComponent } from './appointment.component';
 import { IDEAMessageService } from '../message.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-agenda',
@@ -113,14 +113,14 @@ export class IDEAAgendaComponent {
     public tc: IDEATinCanService,
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
-    public t: TranslateService,
+    public t: IDEATranslationsService,
     public API: IDEAAWSAPIService
   ) {}
   public ngOnInit() {
     this.viewMode = AgendaViewModes.WEEK;
     // set the formats based on the current language
-    Moment.locale(this.t.currentLang);
-    this.setFormatsBasedOnLang(this.t.currentLang);
+    Moment.locale(this.t.getCurrentLang());
+    this.setFormatsBasedOnLang(this.t.getCurrentLang());
     // init the main working attributes
     this.goToToday();
     this.referenceDate = Moment();

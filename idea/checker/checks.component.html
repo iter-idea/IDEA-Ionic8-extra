@@ -1,23 +1,23 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t.instant('IDEA.CHECKER.CLOSE_WITHOUT_SELECTING')" (click)="cancel()">
+      <ion-button [title]="t._('IDEA.CHECKER.CLOSE_WITHOUT_SELECTING')" (click)="cancel()">
         <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-searchbar
       [debounce]="100"
-      [placeholder]="placeholder || t.instant('IDEA.CHECKER.SEARCH')"
+      [placeholder]="placeholder || t._('IDEA.CHECKER.SEARCH')"
       (ionInput)="filterChecks($event)"
     ></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('IDEA.CHECKER.DESELECT_ALL')" (click)="checkAll(false)">
+      <ion-button [title]="t._('IDEA.CHECKER.DESELECT_ALL')" (click)="checkAll(false)">
         <ion-icon slot="icon-only" name="square-outline"></ion-icon>
       </ion-button>
-      <ion-button [title]="t.instant('IDEA.CHECKER.SELECT_ALL')" (click)="checkAll(true)">
+      <ion-button [title]="t._('IDEA.CHECKER.SELECT_ALL')" (click)="checkAll(true)">
         <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
       </ion-button>
-      <ion-button [title]="t.instant('IDEA.CHECKER.CONFIRM_SELECTION')" (click)="confirm()">
+      <ion-button [title]="t._('IDEA.CHECKER.CONFIRM_SELECTION')" (click)="confirm()">
         {{ 'IDEA.CHECKER.DONE' | translate }}
       </ion-button>
     </ion-buttons>

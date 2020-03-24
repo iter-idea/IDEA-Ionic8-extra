@@ -1,8 +1,8 @@
 import { Component, HostListener, Input, ViewChild } from '@angular/core';
 import { ModalController, IonSearchbar, IonInfiniteScroll } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-
 import IdeaX = require('idea-toolbox');
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-suggestions',
@@ -69,7 +69,7 @@ export class IDEASuggestionsComponent {
 
   @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
 
-  constructor(public modalCtrl: ModalController, public t: TranslateService) {
+  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {
     this.data = this.data || new Array<IdeaX.Suggestion>();
     this.suggestions = new Array<IdeaX.Suggestion>();
     this.page = 1;

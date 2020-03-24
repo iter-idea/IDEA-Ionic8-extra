@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 
+import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAEchoPage } from './echo.page';
 
 @NgModule({
@@ -12,8 +12,8 @@ import { IDEAEchoPage } from './echo.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: IDEAEchoPage }]),
-    TranslateModule.forChild()
+    IDEATranslationsModule,
+    RouterModule.forChild([{ path: '', component: IDEAEchoPage }])
   ],
   declarations: [IDEAEchoPage]
 })

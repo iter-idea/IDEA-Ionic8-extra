@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-address',
@@ -54,7 +55,7 @@ export class IDEAAddressComponent {
    */
   public addressCollapsed: boolean;
 
-  constructor(public t: TranslateService) {
+  constructor(public t: IDEATranslationsService) {
     this.address = new IdeaX.Address();
     this.showContact = false;
     this.showAddress2 = false;

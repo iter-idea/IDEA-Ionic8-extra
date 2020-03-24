@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import Moment = require('moment-timezone');
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-calendar-picker',
@@ -24,9 +25,9 @@ export class IDEACalendarPickerComponent {
   public minutes: Array<string>;
   public weekDays: Array<string>;
 
-  constructor(public modal: ModalController, public alertCtrl: AlertController, public t: TranslateService) {}
+  constructor(public modal: ModalController, public alertCtrl: AlertController, public t: IDEATranslationsService) {}
   public ngOnInit() {
-    Moment.locale(this.t.currentLang);
+    Moment.locale(this.t.getCurrentLang());
     this.today = Moment();
     this.refDate = this.inputDate ? Moment(this.inputDate) : Moment(this.today);
     this.selectedDate = Moment(this.refDate);
@@ -118,16 +119,16 @@ export class IDEACalendarPickerComponent {
       });
       month.month(month.month() + 1);
     }
-    buttons.push({ text: this.t.instant('COMMON.CANCEL'), role: 'cancel' });
+    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel' });
     buttons.push({
-      text: this.t.instant('COMMON.SELECT'),
+      text: this.t._('COMMON.SELECT'),
       handler: (m: string) => {
         this.refDate.month(parseInt(m, 10) - 1);
         this.buildCalendarGrid(this.refDate);
       }
     });
     this.alertCtrl
-      .create({ header: this.t.instant('IDEA.CALENDAR.MONTH'), buttons: buttons, inputs: inputs })
+      .create({ header: this.t._('IDEA.CALENDAR.MONTH'), buttons: buttons, inputs: inputs })
       .then(alert => alert.present());
   }
 

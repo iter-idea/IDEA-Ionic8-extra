@@ -1,7 +1,6 @@
 import { Component, ChangeDetectorRef, Input } from '@angular/core';
 import { ModalController, Platform, AlertController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
-import { TranslateService } from '@ngx-translate/core';
 import { InAppPurchase2, IAPProduct } from '@ionic-native/in-app-purchase-2/ngx';
 import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
@@ -13,6 +12,7 @@ import { IDEAMessageService } from '../message.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
 
 import { IDEAStripeSubscriptionComponent } from './stripeSubscription.component';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 // from idea-config.js
 declare const IDEA_PROJECT: string;
@@ -51,10 +51,10 @@ export class IDEASubscriptionComponent {
     public extBrowser: IDEAExtBrowserService,
     public store: InAppPurchase2,
     public API: IDEAAWSAPIService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {}
   public ngOnInit() {
-    Moment.locale(this.t.currentLang);
+    Moment.locale(this.t.getCurrentLang());
     // load the plans only if we are on the same platform from which we subscribed first
     this.platformStore = this.platform.is('ios') ? 'ios' : this.platform.is('android') ? 'android' : 'web';
     // identify the current subscription according to the target: TEAMS or USERS
@@ -158,8 +158,8 @@ export class IDEASubscriptionComponent {
         const product = this.store.get(plan.storePlanId);
         if (product.valid) {
           plan.priceStr = product.price;
-          plan.title[this.t.currentLang] = product.title;
-          plan.description[this.t.currentLang] = product.description;
+          plan.title[this.t.getCurrentLang()] = product.title;
+          plan.description[this.t.getCurrentLang()] = product.description;
         }
       });
       // update the complete info to use it in the app
@@ -187,15 +187,15 @@ export class IDEASubscriptionComponent {
     this.alertCtrl
       .create({
         header: this.subscription.planId
-          ? this.t.instant('IDEA.SUBSCRIPTION.SUBSCRIPTION_CHANGE')
-          : this.t.instant('IDEA.SUBSCRIPTION.NEW_SUBSCRIPTION'),
-        message: this.t.instant('IDEA.SUBSCRIPTION.DO_YOU_CONFIRM_THE_SUBSCRIPTION_', {
-          plan: plan.title[this.t.currentLang]
+          ? this.t._('IDEA.SUBSCRIPTION.SUBSCRIPTION_CHANGE')
+          : this.t._('IDEA.SUBSCRIPTION.NEW_SUBSCRIPTION'),
+        message: this.t._('IDEA.SUBSCRIPTION.DO_YOU_CONFIRM_THE_SUBSCRIPTION_', {
+          plan: plan.title[this.t.getCurrentLang()]
         }),
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.CONFIRM'),
+            text: this.t._('COMMON.CONFIRM'),
             handler: () =>
               ['android', 'ios'].some(x => x === this.platformStore)
                 ? this.subscribeStores(plan)
@@ -285,12 +285,12 @@ export class IDEASubscriptionComponent {
   protected cancelStripeSubscriptionAtTheEndOfPeriod(planId: string) {
     this.alertCtrl
       .create({
-        header: this.t.instant('IDEA.SUBSCRIPTION.STOP_SUBSCRIPTION'),
-        message: this.t.instant('IDEA.SUBSCRIPTION.SUBSCRIPTION_WONT_RENEW_ANYMORE'),
+        header: this.t._('IDEA.SUBSCRIPTION.STOP_SUBSCRIPTION'),
+        message: this.t._('IDEA.SUBSCRIPTION.SUBSCRIPTION_WONT_RENEW_ANYMORE'),
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.CONFIRM'),
+            text: this.t._('COMMON.CONFIRM'),
             handler: () => {
               // get the detailed information about the plan: storePlanId is needed
               this.API.getResource(`projects/${IDEA_PROJECT}/plans`, {
@@ -320,11 +320,11 @@ export class IDEASubscriptionComponent {
     if (!this.isSubscriptionExpired(this.subscription)) return;
     this.alertCtrl
       .create({
-        header: this.t.instant('COMMON.ARE_YOU_SURE'),
+        header: this.t._('COMMON.ARE_YOU_SURE'),
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.CONFIRM'),
+            text: this.t._('COMMON.CONFIRM'),
             handler: () => {
               // request the removal
               this.loading.show();

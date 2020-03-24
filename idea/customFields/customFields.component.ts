@@ -1,6 +1,7 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-custom-fields',
@@ -60,7 +61,7 @@ export class IDEACustomFieldsComponent {
    */
   @Output() public remove = new EventEmitter<IdeaX.CustomFieldMeta>();
 
-  constructor(public t: TranslateService) {
+  constructor(public t: IDEATranslationsService) {
     this.disabled = false; // needed
     this.withoutReorder = false; //
   }

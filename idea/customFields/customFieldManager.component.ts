@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { OverlayEventDetail } from '@ionic/core';
 import { ModalController, AlertController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
+
 import { IDEAListComponent } from '../list/list.component';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-custom-field-manager',
@@ -32,7 +33,7 @@ export class IDEACustomFieldManagerComponent {
   public errors: Array<string>;
   public FIELD_TYPES: Array<string> = Object.keys(IdeaX.CustomFieldTypes);
 
-  constructor(public modalCtrl: ModalController, public alertCtrl: AlertController, public t: TranslateService) {
+  constructor(public modalCtrl: ModalController, public alertCtrl: AlertController, public t: IDEATranslationsService) {
     this.errors = Array<string>();
   }
   public ngOnInit() {
@@ -77,7 +78,7 @@ export class IDEACustomFieldManagerComponent {
     this.modalCtrl
       .create({
         component: IDEAListComponent,
-        componentProps: { list: this.theField.enum, title: this.t.instant('IDEA.CUSTOM_FIELDS.ENUM') }
+        componentProps: { list: this.theField.enum, title: this.t._('IDEA.CUSTOM_FIELDS.ENUM') }
       })
       .then(modal => {
         modal.onDidDismiss().then((res: OverlayEventDetail) => {

@@ -7,7 +7,7 @@
       {{ 'IDEA.TEAMS.SELECT_A_TEAM' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('IDEA.TEAMS.CREATE_TEAM_HINT')" (click)="newTeam()">
+      <ion-button [title]="t._('IDEA.TEAMS.CREATE_TEAM_HINT')" (click)="newTeam()">
         {{ 'IDEA.TEAMS.CREATE' | translate }}
       </ion-button>
     </ion-buttons>
@@ -18,7 +18,7 @@
     <p *ngIf="!tc.get('membership')">{{ 'IDEA.TEAMS.YOU_NEED_A_TEAM_TO_CONTINUE' | translate }}.</p>
     <ion-item
       *ngFor="let team of teams"
-      [title]="t.instant('IDEA.TEAMS.SELECT_TEAM_', { team: team.name })"
+      [title]="t._('IDEA.TEAMS.SELECT_TEAM_', { team: team.name })"
       [button]="true"
       [disabled]="!(team.isActivatedOnProject || team.isRequestingUserAdmin)"
       (click)="selectTeam(team.teamId)"
@@ -33,7 +33,7 @@
         slot="end"
         color="primary"
         *ngIf="isCurrentTeam(team.teamId)"
-        [title]="t.instant('IDEA.TEAMS.CURRENT_TEAM_EXPLANATION')"
+        [title]="t._('IDEA.TEAMS.CURRENT_TEAM_EXPLANATION')"
       >
         {{ 'IDEA.TEAMS.CURRENT' | translate }}
       </ion-badge>
@@ -43,7 +43,7 @@
         size="small"
         color="dark"
         *ngIf="team.isRequestingUserAdmin"
-        [title]="t.instant('IDEA.TEAMS.TEAM_MEMBERS_HINT', { team: team.name })"
+        [title]="t._('IDEA.TEAMS.TEAM_MEMBERS_HINT', { team: team.name })"
         (click)="manageTeam(team.teamId, $event)"
       >
         {{ 'IDEA.TEAMS.MEMBERS' | translate }}
@@ -56,7 +56,7 @@
     </ion-item>
   </ion-list>
   <ion-list class="teamsList">
-    <ion-button [title]="t.instant('IDEA.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
+    <ion-button [title]="t._('IDEA.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
       {{ 'IDEA.ACCOUNT.MANAGE_YOUR_ACCOUNT' | translate }}
       <ion-icon name="bulb" slot="end"></ion-icon>
     </ion-button>

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 
+import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAAccountPage } from './account.page';
 
 @NgModule({
@@ -12,8 +12,8 @@ import { IDEAAccountPage } from './account.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: IDEAAccountPage }]),
-    TranslateModule.forChild()
+    IDEATranslationsModule,
+    RouterModule.forChild([{ path: '', component: IDEAAccountPage }])
   ],
   declarations: [IDEAAccountPage]
 })

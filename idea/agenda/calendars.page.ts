@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
 import { OverlayEventDetail } from '@ionic/core';
 import { ModalController, AlertController, NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
-import { IDEACalendarComponent } from './calendar.component';
-import { IDEACalendarCreationComponent } from './calendarCreation.component';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
+import { IDEATranslationsService } from '../translations/translations.service';
+
+import { IDEACalendarComponent } from './calendar.component';
+import { IDEACalendarCreationComponent } from './calendarCreation.component';
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
 
 // from idea-config.js
@@ -47,7 +48,7 @@ export class IDEACalendarsPage {
     public loading: IDEALoadingService,
     public extBrowser: IDEAExtBrowserService,
     public message: IDEAMessageService,
-    public t: TranslateService,
+    public t: IDEATranslationsService,
     public API: IDEAAWSAPIService
   ) {}
   public ngOnInit() {
@@ -124,7 +125,7 @@ export class IDEACalendarsPage {
             component: IDEASuggestionsComponent,
             componentProps: {
               data: extCals.map(c => new IdeaX.Suggestion({ value: c.id, name: c.name })),
-              searchPlaceholder: this.t.instant('IDEA.AGENDA.CALENDARS.CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK'),
+              searchPlaceholder: this.t._('IDEA.AGENDA.CALENDARS.CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK'),
               sortData: true,
               hideIdFromUI: true
             }
@@ -159,12 +160,12 @@ export class IDEACalendarsPage {
         // the calendar isn't linked yet (we don't have a token): link or delete
         this.alertCtrl
           .create({
-            header: this.t.instant('IDEA.AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED'),
-            message: this.t.instant('IDEA.AGENDA.CALENDARS.DO_YOU_WANT_PROCEED_LINKING_OR_DELETE'),
+            header: this.t._('IDEA.AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED'),
+            message: this.t._('IDEA.AGENDA.CALENDARS.DO_YOU_WANT_PROCEED_LINKING_OR_DELETE'),
             buttons: [
-              { text: this.t.instant('COMMON.DELETE'), handler: () => this.delete(calendar) },
+              { text: this.t._('COMMON.DELETE'), handler: () => this.delete(calendar) },
               {
-                text: this.t.instant('IDEA.AGENDA.CALENDARS.LINK'),
+                text: this.t._('IDEA.AGENDA.CALENDARS.LINK'),
                 handler: () => this.linkExtCalendar(calendar)
               }
             ]
@@ -248,10 +249,10 @@ export class IDEACalendarsPage {
     // since we don't know when/if the auth flow will finish, we wait
     this.alertCtrl
       .create({
-        header: this.t.instant('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR'),
-        message: this.t.instant('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR_CONFIRM_ONCE_DONE'),
+        header: this.t._('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR'),
+        message: this.t._('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR_CONFIRM_ONCE_DONE'),
         backdropDismiss: false,
-        buttons: [{ text: this.t.instant('COMMON.DONE'), handler: () => this.linkExtCalendarOrDelete(calendar) }]
+        buttons: [{ text: this.t._('COMMON.DONE'), handler: () => this.linkExtCalendarOrDelete(calendar) }]
       })
       .then(alert => alert.present());
   }
@@ -262,7 +263,7 @@ export class IDEACalendarsPage {
     // prepare a request for a private or team calendar
     const baseURL = calendar.teamId ? `teams/${calendar.teamId}/` : '';
     // this is a recursive operation: the API returns if the sync has to continue or it finished
-    if (!continuing) this.loading.show(this.t.instant('IDEA.AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
+    if (!continuing) this.loading.show(this.t._('IDEA.AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
     // request a first synchronisation (it will take a while);
     this.API.patchResource(baseURL.concat('calendars'), {
       idea: true,

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-mde-toolbar',
@@ -7,5 +8,5 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['mdeToolbar.component.scss']
 })
 export class IDEAMDEToolbarComponent {
-  constructor(public t: TranslateService) {}
+  constructor(public t: IDEATranslationsService) {}
 }

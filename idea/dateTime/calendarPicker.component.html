@@ -4,10 +4,10 @@
       {{ title }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('IDEA.CALENDAR.RESET')" (click)="save(true)">
+      <ion-button [title]="t._('IDEA.CALENDAR.RESET')" (click)="save(true)">
         <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
       </ion-button>
-      <ion-button [title]="t.instant('IDEA.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="save()">
+      <ion-button [title]="t._('IDEA.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="save()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -31,7 +31,7 @@
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6">
             <ion-input
               type="text"
-              [placeholder]="t.instant('IDEA.CALENDAR.YEAR')"
+              [placeholder]="t._('IDEA.CALENDAR.YEAR')"
               [value]="refDate.year()"
               (ionFocus)="$event.target.value = ''"
               (ionChange)="setYear($event)"

@@ -16,16 +16,14 @@
     color="danger"
     name="flash-off"
     *ngIf="calendar.external && !calendar.external.calendarId"
-    [title]="t.instant('IDEA.AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED_HINT')"
+    [title]="t._('IDEA.AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED_HINT')"
   ></ion-icon>
   <ion-icon
     slot="end"
     *ngIf="calendar.external?.service"
     [name]="getServiceIcon(calendar.external.service)"
     [title]="
-      t.instant('IDEA.AGENDA.CALENDARS.LINKED_TO') +
-      ' ' +
-      t.instant('IDEA.AGENDA.CALENDARS.SERVICES.' + calendar.external.service)
+      t._('IDEA.AGENDA.CALENDARS.LINKED_TO') + ' ' + t._('IDEA.AGENDA.CALENDARS.SERVICES.' + calendar.external.service)
     "
   ></ion-icon>
 </ion-item>

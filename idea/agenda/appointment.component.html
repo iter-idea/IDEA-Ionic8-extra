@@ -8,14 +8,10 @@
       <ion-text *ngIf="!userCanEdit">({{ ('IDEA.AGENDA.APPOINTMENT.READ_ONLY' | translate).toLowerCase() }})</ion-text>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button
-        *ngIf="appointment.appointmentId && userCanEdit"
-        [title]="t.instant('COMMON.DELETE')"
-        (click)="delete()"
-      >
+      <ion-button *ngIf="appointment.appointmentId && userCanEdit" [title]="t._('COMMON.DELETE')" (click)="delete()">
         <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button [title]="t.instant('COMMON.CLOSE')" (click)="close()">
+      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -40,7 +36,7 @@
       </ion-label>
       <ion-input
         type="text"
-        [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.TITLE_HINT')"
+        [placeholder]="t._('IDEA.AGENDA.APPOINTMENT.TITLE_HINT')"
         [disabled]="!userCanEdit"
         [(ngModel)]="appointment.title"
       ></ion-input>
@@ -55,7 +51,7 @@
       </ion-label>
       <ion-input
         type="text"
-        [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.LOCATION_HINT')"
+        [placeholder]="t._('IDEA.AGENDA.APPOINTMENT.LOCATION_HINT')"
         [disabled]="!userCanEdit"
         [(ngModel)]="appointment.location"
       ></ion-input>
@@ -65,14 +61,14 @@
         {{ 'IDEA.AGENDA.APPOINTMENT.ALL_DAY' | translate }}
       </ion-label>
       <ion-checkbox
-        [title]="t.instant('IDEA.AGENDA.APPOINTMENT.ALL_DAY_HINT')"
+        [title]="t._('IDEA.AGENDA.APPOINTMENT.ALL_DAY_HINT')"
         [disabled]="!userCanEdit"
         [(ngModel)]="appointment.allDay"
       ></ion-checkbox>
     </ion-item>
     <idea-date-time
-      [label]="t.instant('IDEA.AGENDA.APPOINTMENT.START_TIME')"
-      [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.START_TIME_HINT')"
+      [label]="t._('IDEA.AGENDA.APPOINTMENT.START_TIME')"
+      [placeholder]="t._('IDEA.AGENDA.APPOINTMENT.START_TIME_HINT')"
       [date]="appointment.startTime"
       [timePicker]="!appointment.allDay"
       [disabled]="!userCanEdit"
@@ -81,8 +77,8 @@
       (select)="appointment.startTime = $event"
     ></idea-date-time>
     <idea-date-time
-      [label]="t.instant('IDEA.AGENDA.APPOINTMENT.END_TIME')"
-      [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.END_TIME_HINT')"
+      [label]="t._('IDEA.AGENDA.APPOINTMENT.END_TIME')"
+      [placeholder]="t._('IDEA.AGENDA.APPOINTMENT.END_TIME_HINT')"
       [date]="appointment.endTime"
       [timePicker]="!appointment.allDay"
       [disabled]="!userCanEdit"
@@ -92,10 +88,10 @@
     ></idea-date-time>
     <idea-select
       [data]="calendarsSuggestions"
-      [label]="t.instant('IDEA.AGENDA.APPOINTMENT.CALENDAR')"
+      [label]="t._('IDEA.AGENDA.APPOINTMENT.CALENDAR')"
       [description]="calendar.name"
-      [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.CALENDAR_HINT')"
-      [searchPlaceholder]="t.instant('IDEA.AGENDA.APPOINTMENT.CALENDAR_HINT')"
+      [placeholder]="t._('IDEA.AGENDA.APPOINTMENT.CALENDAR_HINT')"
+      [searchPlaceholder]="t._('IDEA.AGENDA.APPOINTMENT.CALENDAR_HINT')"
       [hideIdFromUI]="true"
       [avoidAutoSelection]="true"
       [disabled]="appointment.appointmentId && !userCanEdit"
@@ -113,7 +109,7 @@
       </ion-label>
       <ion-textarea
         [rows]="3"
-        [placeholder]="t.instant('IDEA.AGENDA.APPOINTMENT.DESCRIPTION_HINT')"
+        [placeholder]="t._('IDEA.AGENDA.APPOINTMENT.DESCRIPTION_HINT')"
         [disabled]="!userCanEdit"
         [(ngModel)]="appointment.description"
       ></ion-textarea>
@@ -121,7 +117,7 @@
   </ion-list>
 </ion-content>
 <ion-footer *ngIf="userCanEdit">
-  <ion-toolbar class="ideaToolbar tappable" [title]="t.instant('COMMON.SAVE')" (click)="save()">
+  <ion-toolbar class="ideaToolbar tappable" [title]="t._('COMMON.SAVE')" (click)="save()">
     <ion-title class="ion-text-center">
       <ion-icon name="checkmark"></ion-icon>
     </ion-title>

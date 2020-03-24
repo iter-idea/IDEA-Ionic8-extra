@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-list',
@@ -11,7 +12,11 @@ export class IDEAListComponent {
   @Input() public list: Array<string | number>;
   @Input() public title: string;
 
-  constructor(public modalCtrl: ModalController, public alertCtrl: AlertController, public t: TranslateService) {}
+  constructor(
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
+    public t: IDEATranslationsService
+  ) {}
   public ngOnInit() {
     // use a copy of the array, to confirm it only when saving
     this.list = Array.from(this.list || new Array<string>());
@@ -23,12 +28,12 @@ export class IDEAListComponent {
   public addElement() {
     this.alertCtrl
       .create({
-        header: this.t.instant('IDEA.LIST.NEW_ELEMENT'),
-        inputs: [{ name: 'element', placeholder: this.t.instant('IDEA.LIST.ELEMENT') }],
+        header: this.t._('IDEA.LIST.NEW_ELEMENT'),
+        inputs: [{ name: 'element', placeholder: this.t._('IDEA.LIST.ELEMENT') }],
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.SAVE'),
+            text: this.t._('COMMON.SAVE'),
             handler: data => {
               if (data.element && data.element.trim()) {
                 this.list.push(data.element);

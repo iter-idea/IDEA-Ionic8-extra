@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-mde',
@@ -42,7 +43,7 @@ export class IDEAMDEComponent {
    */
   public value: string;
 
-  constructor(public modalCtrl: ModalController, public t: TranslateService) {}
+  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
 
   public ngOnInit() {
     this.id = this.id || 'mde';

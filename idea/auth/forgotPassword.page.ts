@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-
 import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-forgot-password',
@@ -19,7 +18,7 @@ export class IDEAForgotPasswordPage {
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public auth: IDEAAuthService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {}
 
   /**

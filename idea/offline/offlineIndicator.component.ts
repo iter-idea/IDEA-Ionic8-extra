@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ModalController, AlertController, Platform } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 
 import { IDEAOfflineManagerComponent } from './offlineManager.component';
 import { IDEAOfflineDataService } from './offlineData.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-offline-indicator',
@@ -29,7 +29,7 @@ export class IDEAOfflineIndicatorComponent {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public offline: IDEAOfflineDataService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {
     this.vertical = 'bottom';
     this.horizontal = 'start';
@@ -45,9 +45,9 @@ export class IDEAOfflineIndicatorComponent {
         if (!isOnline)
           this.alertCtrl
             .create({
-              header: this.t.instant('IDEA.OFFLINE.YOU_ARE_OFFLINE'),
-              message: this.t.instant('IDEA.OFFLINE.FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE'),
-              buttons: [this.t.instant('COMMON.GOT_IT')]
+              header: this.t._('IDEA.OFFLINE.YOU_ARE_OFFLINE'),
+              message: this.t._('IDEA.OFFLINE.FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE'),
+              buttons: [this.t._('COMMON.GOT_IT')]
             })
             .then(alert => alert.present());
       });

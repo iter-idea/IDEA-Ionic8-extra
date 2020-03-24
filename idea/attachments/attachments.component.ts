@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
@@ -7,6 +6,7 @@ import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEADownloaderURL } from '../downloader/downloader.component';
 import { IDEAMessageService } from '../message.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-attachments',
@@ -53,7 +53,7 @@ export class IDEAttachmentsComponent {
   public uploadErrors: Array<string>;
 
   constructor(
-    public t: TranslateService,
+    public t: IDEATranslationsService,
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
     public tc: IDEATinCanService,

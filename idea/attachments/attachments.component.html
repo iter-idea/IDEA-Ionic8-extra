@@ -16,19 +16,19 @@
   <ion-input
     *ngIf="editMode && att.attachmentId"
     [(ngModel)]="att.name"
-    (ionBlur)="$event.target.value = $event.target.value || t.instant('IDEA.ATTACHMENTS.NO_NAME')"
+    (ionBlur)="$event.target.value = $event.target.value || t._('IDEA.ATTACHMENTS.NO_NAME')"
   ></ion-input>
   <ion-label class="loadingWarning" *ngIf="editMode && !att.attachmentId">
     {{ 'IDEA.ATTACHMENTS.UPLOADING_ATTACHMENT_WARNING' | translate }}
   </ion-label>
   <ion-label *ngIf="!editMode"> {{ att.name }}.{{ att.format }} </ion-label>
-  <ion-spinner slot="end" *ngIf="!att.attachmentId" [title]="t.instant('IDEA.ATTACHMENTS.UPLOADING')"></ion-spinner>
+  <ion-spinner slot="end" *ngIf="!att.attachmentId" [title]="t._('IDEA.ATTACHMENTS.UPLOADING')"></ion-spinner>
   <ion-button
     *ngIf="editMode"
     slot="end"
     color="danger"
     fill="clear"
-    [title]="t.instant('IDEA.ATTACHMENTS.REMOVE_ATTACHMENT')"
+    [title]="t._('IDEA.ATTACHMENTS.REMOVE_ATTACHMENT')"
     (click)="removeAttachment(att)"
   >
     <ion-icon name="remove" slot="icon-only"></ion-icon>
@@ -54,7 +54,7 @@
       slot="end"
       color="danger"
       fill="clear"
-      [title]="t.instant('IDEA.ATTACHMENTS.HIDE_ERROR')"
+      [title]="t._('IDEA.ATTACHMENTS.HIDE_ERROR')"
       (click)="uploadErrors.splice(uploadErrors.indexOf(err), 1)"
     >
       <ion-icon name="close" slot="icon-only"></ion-icon>

@@ -19,7 +19,7 @@
         slot="end"
         fill="clear"
         class="marginTop"
-        [title]="t.instant('IDEA.ACCOUNT.SET_A_NEW_EMAIL')"
+        [title]="t._('IDEA.ACCOUNT.SET_A_NEW_EMAIL')"
         (click)="updateEmail()"
       >
         <ion-icon name="brush" slot="icon-only"></ion-icon>
@@ -34,7 +34,7 @@
         slot="end"
         fill="clear"
         class="marginTop"
-        [title]="t.instant('IDEA.ACCOUNT.SET_A_NEW_PASSWORD')"
+        [title]="t._('IDEA.ACCOUNT.SET_A_NEW_PASSWORD')"
         (click)="updatePassword()"
       >
         <ion-icon name="brush" slot="icon-only"></ion-icon>
@@ -59,7 +59,7 @@
       <ion-button
         slot="end"
         color="danger"
-        [title]="t.instant('IDEA.ACCOUNT.DELETE_PERMANENTLY_USER')"
+        [title]="t._('IDEA.ACCOUNT.DELETE_PERMANENTLY_USER')"
         (click)="deleteUser()"
       >
         {{ 'IDEA.ACCOUNT.DELETE' | translate }}

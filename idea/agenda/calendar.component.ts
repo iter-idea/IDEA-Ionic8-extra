@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-calendar',
@@ -38,7 +38,7 @@ export class IDEACalendarComponent {
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
     public API: IDEAAWSAPIService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {
     this.errors = new Set<string>();
   }
@@ -136,13 +136,13 @@ export class IDEACalendarComponent {
   public delete() {
     this.alertCtrl
       .create({
-        header: this.t.instant('COMMON.ARE_YOU_SURE'),
-        subHeader: this.t.instant('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR'),
-        message: this.t.instant('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT'),
+        header: this.t._('COMMON.ARE_YOU_SURE'),
+        subHeader: this.t._('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR'),
+        message: this.t._('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT'),
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.DELETE'),
+            text: this.t._('COMMON.DELETE'),
             handler: () => {
               // prepare a request for a private or team calendar
               const baseURL = this.calendar.teamId ? `teams/${this.calendar.teamId}/` : '';

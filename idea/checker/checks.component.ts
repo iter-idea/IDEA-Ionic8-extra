@@ -1,7 +1,8 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { NavParams, IonSearchbar, ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import { IonSearchbar, ModalController } from '@ionic/angular';
 import IdeaX = require('idea-toolbox');
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-checks',
@@ -44,7 +45,7 @@ export class IDEAChecksComponent {
   public N_PER_PAGE = 30;
   public page: number;
 
-  constructor(public modalCtrl: ModalController, public navParams: NavParams, public t: TranslateService) {}
+  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {
     this.workingData = JSON.parse(JSON.stringify(this.data || new Array<IdeaX.Check>()));
     this.filteredChecks = new Array<IdeaX.Check>();

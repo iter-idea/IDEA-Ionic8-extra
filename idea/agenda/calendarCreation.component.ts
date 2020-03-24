@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-calendar-creation',
@@ -38,7 +38,7 @@ export class IDEACalendarCreationComponent {
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
     public API: IDEAAWSAPIService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {
     this.calendar = new IdeaX.Calendar();
   }
@@ -77,8 +77,8 @@ export class IDEACalendarCreationComponent {
     } else {
       // default values for local calendars
       this.calendar.name = this.calendar.userId
-        ? this.t.instant('IDEA.AGENDA.CALENDARS.DEFAULT_PRIVATE_CALENDAR_NAME')
-        : this.t.instant('IDEA.AGENDA.CALENDARS.DEFAULT_TEAM_CALENDAR_NAME');
+        ? this.t._('IDEA.AGENDA.CALENDARS.DEFAULT_PRIVATE_CALENDAR_NAME')
+        : this.t._('IDEA.AGENDA.CALENDARS.DEFAULT_TEAM_CALENDAR_NAME');
       this.calendar.color = this.DEFAULT_COLOR;
     }
     // prepare a request for a private or team calendar

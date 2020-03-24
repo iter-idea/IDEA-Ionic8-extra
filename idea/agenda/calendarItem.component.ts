@@ -1,8 +1,8 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEATinCanService } from '../tinCan.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-calendar-item',
@@ -23,7 +23,7 @@ export class IDEACalendarItemComponent {
    */
   @Output() public select = new EventEmitter<void>();
 
-  constructor(public tc: IDEATinCanService, public t: TranslateService) {}
+  constructor(public tc: IDEATinCanService, public t: IDEATranslationsService) {}
 
   /**
    * Get the ionicon of a service from its name.

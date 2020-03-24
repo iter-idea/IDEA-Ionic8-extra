@@ -67,7 +67,7 @@
           {{ r.error }}
         </p>
       </ion-label>
-      <ion-badge slot="end" color="danger" *ngIf="r.error" [title]="t.instant('IDEA.OFFLINE.REQUEST_FAILED')">
+      <ion-badge slot="end" color="danger" *ngIf="r.error" [title]="t._('IDEA.OFFLINE.REQUEST_FAILED')">
         !
       </ion-badge>
       <ion-button fill="clear" slot="end" color="danger" *ngIf="r.error" (click)="deleteRequest(r)">
@@ -96,7 +96,7 @@
         slot="end"
         color="danger"
         *ngIf="!r.synchronizing && r.error"
-        [title]="t.instant('IDEA.OFFLINE.ONE_OF_THE_UPLOADS_FAILED')"
+        [title]="t._('IDEA.OFFLINE.ONE_OF_THE_UPLOADS_FAILED')"
       >
         !
       </ion-badge>

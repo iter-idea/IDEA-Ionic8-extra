@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 
 import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEATinCanService } from '../tinCan.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-new-password',
@@ -24,7 +24,7 @@ export class IDEANewPasswordPage {
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public auth: IDEAAuthService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {
     this.email = this.tc.get('email', true);
     this.password = this.tc.get('password', true);
@@ -45,7 +45,7 @@ export class IDEANewPasswordPage {
       })
       .catch(() => {
         this.loading.hide();
-        this.errorMsg = this.t.instant('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
+        this.errorMsg = this.t._('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
         this.message.error(this.errorMsg, true);
       });
   }

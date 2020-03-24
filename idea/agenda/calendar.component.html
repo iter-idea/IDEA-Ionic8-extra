@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button color="light" [title]="t.instant('COMMON.CLOSE')" (click)="close()">
+      <ion-button color="light" [title]="t._('COMMON.CLOSE')" (click)="close()">
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -9,7 +9,7 @@
       {{ 'IDEA.AGENDA.CALENDARS.EDIT_CALENDAR' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button color="light" [title]="t.instant('COMMON.SAVE')" (click)="save()">
+      <ion-button color="light" [title]="t._('COMMON.SAVE')" (click)="save()">
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -20,35 +20,35 @@
     <ion-item
       lines="inset"
       [class.fieldHasError]="hasFieldAnError('name')"
-      [title]="t.instant('IDEA.AGENDA.CALENDARS.NAME_HINT')"
+      [title]="t._('IDEA.AGENDA.CALENDARS.NAME_HINT')"
     >
       <ion-label position="stacked">
         {{ 'IDEA.AGENDA.CALENDARS.NAME' | translate }}
       </ion-label>
-      <ion-input [placeholder]="t.instant('IDEA.AGENDA.CALENDARS.NAME_HINT')" [(ngModel)]="calendar.name"></ion-input>
+      <ion-input [placeholder]="t._('IDEA.AGENDA.CALENDARS.NAME_HINT')" [(ngModel)]="calendar.name"></ion-input>
     </ion-item>
     <ion-item
       lines="inset"
       [class.fieldHasError]="hasFieldAnError('description')"
-      [title]="t.instant('IDEA.AGENDA.CALENDARS.DESCRIPTION_HINT')"
+      [title]="t._('IDEA.AGENDA.CALENDARS.DESCRIPTION_HINT')"
     >
       <ion-label position="stacked">
         {{ 'IDEA.AGENDA.CALENDARS.DESCRIPTION' | translate }}
       </ion-label>
       <ion-input
-        [placeholder]="t.instant('IDEA.AGENDA.CALENDARS.DESCRIPTION_HINT')"
+        [placeholder]="t._('IDEA.AGENDA.CALENDARS.DESCRIPTION_HINT')"
         [(ngModel)]="calendar.description"
       ></ion-input>
     </ion-item>
     <ion-item
       lines="inset"
       [class.fieldHasError]="hasFieldAnError('color')"
-      [title]="t.instant('IDEA.AGENDA.CALENDARS.COLOR_HINT')"
+      [title]="t._('IDEA.AGENDA.CALENDARS.COLOR_HINT')"
     >
       <ion-label position="stacked">
         {{ 'IDEA.AGENDA.CALENDARS.COLOR' | translate }}
       </ion-label>
-      <ion-input [placeholder]="t.instant('IDEA.AGENDA.CALENDARS.COLOR_HINT')" [(ngModel)]="calendar.color"></ion-input>
+      <ion-input [placeholder]="t._('IDEA.AGENDA.CALENDARS.COLOR_HINT')" [(ngModel)]="calendar.color"></ion-input>
       <ion-avatar slot="end">
         <div class="circle" [style.background-color]="calendar.color"></div>
       </ion-avatar>
@@ -56,10 +56,10 @@
     <idea-checker
       *ngIf="membershipsChecks && calendar.isShared()"
       [data]="membershipsChecks"
-      [label]="t.instant('IDEA.AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS')"
-      [placeholder]="t.instant('IDEA.AGENDA.CALENDARS.WHO_CAN_MANAGE_APPOINTMENTS')"
-      [noneText]="t.instant('IDEA.AGENDA.CALENDARS.NOBODY')"
-      [allText]="t.instant('IDEA.AGENDA.CALENDARS.EVERYONE')"
+      [label]="t._('IDEA.AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS')"
+      [placeholder]="t._('IDEA.AGENDA.CALENDARS.WHO_CAN_MANAGE_APPOINTMENTS')"
+      [noneText]="t._('IDEA.AGENDA.CALENDARS.NOBODY')"
+      [allText]="t._('IDEA.AGENDA.CALENDARS.EVERYONE')"
       [lines]="'inset'"
     ></idea-checker>
   </ion-list>
@@ -120,7 +120,7 @@
           {{ 'IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT' | translate }}
         </p>
       </ion-label>
-      <ion-button color="danger" [title]="t.instant('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT')" (click)="delete()">
+      <ion-button color="danger" [title]="t._('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT')" (click)="delete()">
         {{ 'COMMON.DELETE' | translate }}
       </ion-button>
     </ion-item>

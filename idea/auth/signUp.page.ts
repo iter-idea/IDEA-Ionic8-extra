@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 
 import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
 import { IDEATinCanService } from '../tinCan.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 // from idea-config.js
 declare const IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
@@ -30,7 +30,7 @@ export class IDEASignUpPage {
     public loading: IDEALoadingService,
     public extBrowser: IDEAExtBrowserService,
     public auth: IDEAAuthService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {
     if (IDEA_AUTH_REGISTRATION_POSSIBLE === false) {
       this.goToAuth();
@@ -43,7 +43,7 @@ export class IDEASignUpPage {
   public ngOnInit() {
     // if there isn't any agreement to agree to, set the check true
     this.agreementsCheck =
-      this.t.instant('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || this.t.instant('IDEA_VARIABLES.PRIVACY_POLICY_URL')
+      this.t._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || this.t._('IDEA_VARIABLES.PRIVACY_POLICY_URL')
         ? this.agreementsCheck
         : true;
   }
@@ -54,9 +54,9 @@ export class IDEASignUpPage {
   public register(): void {
     this.errorMsg = null;
     // check the fields
-    if (!this.email) this.errorMsg = this.t.instant('IDEA.AUTH.EMAIL_OBLIGATORY');
+    if (!this.email) this.errorMsg = this.t._('IDEA.AUTH.EMAIL_OBLIGATORY');
     else if (!this.password || this.password.length < 8)
-      this.errorMsg = this.t.instant('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
+      this.errorMsg = this.t._('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
     // output the error, if there was one
     if (this.errorMsg) {
       this.message.error('IDEA.AUTH.REGISTRATION_FAILED');

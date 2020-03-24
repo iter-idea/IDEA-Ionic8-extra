@@ -1,6 +1,7 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+
 import { IDEAExtBrowserService } from '../extBrowser.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 /**
  * === How to use this component ===
@@ -61,12 +62,8 @@ export class IDEADownloaderComponent {
    * The size of the download button.
    */
   @Input() public size: string;
-  /**
-   * The title of the download button.
-   */
-  @Input() public title: string;
 
-  constructor(public t: TranslateService, public extBrowser: IDEAExtBrowserService) {
+  constructor(public t: IDEATranslationsService, public extBrowser: IDEAExtBrowserService) {
     this.vertical = 'bottom';
     this.horizontal = 'start';
     this.download = null;
@@ -75,10 +72,6 @@ export class IDEADownloaderComponent {
     this.icon = 'download-outline';
     this.color = 'primary';
     this.size = undefined;
-    this.t
-      .get('IDEA.DOWNLOAD.TAP_TO_DOWNLOAD')
-      .toPromise()
-      .then(x => (this.title = x));
   }
 
   public ngOnChanges(changes: SimpleChanges) {

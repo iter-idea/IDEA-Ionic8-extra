@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import { OverlayEventDetail } from '@ionic/core';
 import Moment = require('moment-timezone');
 
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
-import { OverlayEventDetail } from '@ionic/core';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-date-time',
@@ -22,9 +22,9 @@ export class IDEADateTimeComponent {
   @Input() public obligatory: boolean;
   @Output() public select = new EventEmitter<number>();
 
-  constructor(public modalCtrl: ModalController, public t: TranslateService) {}
+  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {
-    Moment.locale(this.t.currentLang);
+    Moment.locale(this.t.getCurrentLang());
   }
 
   /**

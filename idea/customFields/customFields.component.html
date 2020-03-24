@@ -29,12 +29,7 @@
         </ion-text>
       </p>
     </ion-label>
-    <ion-badge
-      slot="end"
-      color="danger"
-      *ngIf="fields[f].obligatory"
-      [title]="t.instant('IDEA.CUSTOM_FIELDS.OBLIGATORY')"
-    >
+    <ion-badge slot="end" color="danger" *ngIf="fields[f].obligatory" [title]="t._('IDEA.CUSTOM_FIELDS.OBLIGATORY')">
       *
     </ion-badge>
     <ion-badge slot="end" color="primary">

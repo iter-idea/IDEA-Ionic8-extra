@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
-import { ActivatedRoute } from '@angular/router';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-confirm-password',
@@ -24,7 +24,7 @@ export class IDEAConfirmPasswordPage {
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public auth: IDEAAuthService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {
     this.email = this.route.snapshot.queryParamMap.get('email') || null;
     if (!this.email && this.route.snapshot.queryParams.user)
@@ -47,7 +47,7 @@ export class IDEAConfirmPasswordPage {
       })
       .catch(() => {
         this.loading.hide();
-        this.errorMsg = this.t.instant('IDEA.AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 });
+        this.errorMsg = this.t._('IDEA.AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 });
         this.message.error(this.errorMsg, true);
       });
   }

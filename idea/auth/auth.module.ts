@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+
+import { IDEATranslationsModule } from '../translations/translations.module';
 
 import { IDEASignInPage } from './signIn.page';
 import { IDEASignUpPage } from './signUp.page';
@@ -17,7 +18,7 @@ import { IDEAConfirmPasswordPage } from './confirmPassword.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    TranslateModule.forChild(),
+    IDEATranslationsModule,
     RouterModule.forChild([
       { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
       { path: 'sign-in', component: IDEASignInPage },
@@ -29,8 +30,12 @@ import { IDEAConfirmPasswordPage } from './confirmPassword.page';
     ])
   ],
   declarations: [
-    IDEASignInPage, IDEASignUpPage, IDEANewPasswordPage, IDEAResendLinkPage,
-    IDEAForgotPasswordPage, IDEAConfirmPasswordPage
-  ],
+    IDEASignInPage,
+    IDEASignUpPage,
+    IDEANewPasswordPage,
+    IDEAResendLinkPage,
+    IDEAForgotPasswordPage,
+    IDEAConfirmPasswordPage
+  ]
 })
 export class IDEAAuthModule {}

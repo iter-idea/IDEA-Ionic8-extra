@@ -1,13 +1,13 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-back-button icon="close" [title]="t.instant('COMMON.CLOSE')"></ion-back-button>
+      <ion-back-button icon="close" [title]="t._('COMMON.CLOSE')"></ion-back-button>
     </ion-buttons>
     <ion-title>
       {{ 'IDEA.AGENDA.CALENDARS.CALENDARS' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('IDEA.AGENDA.CALENDARS.ADD_CALENDAR_HINT')" (click)="addCalendar()">
+      <ion-button [title]="t._('IDEA.AGENDA.CALENDARS.ADD_CALENDAR_HINT')" (click)="addCalendar()">
         {{ 'COMMON.ADD' | translate }}
       </ion-button>
     </ion-buttons>
@@ -30,7 +30,7 @@
           <idea-calendar-item
             *ngFor="let cal of privateCals"
             [calendar]="cal"
-            [title]="t.instant('IDEA.AGENDA.CALENDARS.EDIT_CALENDAR')"
+            [title]="t._('IDEA.AGENDA.CALENDARS.EDIT_CALENDAR')"
             (select)="cal.external && !cal.external.calendarId ? linkExtCalendarOrDelete(cal) : editCalendar(cal)"
           ></idea-calendar-item>
           <ion-item *ngIf="privateCals && !privateCals.length"
@@ -52,7 +52,7 @@
           <idea-calendar-item
             *ngFor="let cal of teamCals"
             [calendar]="cal"
-            [title]="t.instant('IDEA.AGENDA.CALENDARS.EDIT_CALENDAR')"
+            [title]="t._('IDEA.AGENDA.CALENDARS.EDIT_CALENDAR')"
             [disabled]="!ideaMembership.permissions.admin"
             (select)="cal.external && !cal.external.calendarId ? linkExtCalendarOrDelete(cal) : editCalendar(cal)"
           ></idea-calendar-item>

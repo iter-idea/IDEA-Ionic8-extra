@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { IDEACalendarsPage } from './calendars.page';
 import { IDEACalendarItemComponent } from './calendarItem.component';
 import { IDEACalendarCreationComponent } from './calendarCreation.component';
 import { IDEACalendarComponent } from './calendar.component';
 import { IDEACheckerModule } from '../checker/checker.module';
+import { IDEATranslationsModule } from '../translations/translations.module';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import { IDEACheckerModule } from '../checker/checker.module';
     FormsModule,
     IonicModule,
     RouterModule.forChild([{ path: '', component: IDEACalendarsPage }]),
-    TranslateModule.forChild(),
+    IDEATranslationsModule,
     IDEACheckerModule
   ],
   declarations: [IDEACalendarsPage, IDEACalendarItemComponent, IDEACalendarCreationComponent, IDEACalendarComponent],

@@ -1,7 +1,8 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-send-email',
@@ -22,7 +23,7 @@ export class IDEASendEmailComponent {
   public to: string;
   public cc: string;
 
-  constructor(public modalCtrl: ModalController, public t: TranslateService) {}
+  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {
     this.to = this.email.to.join(',');
     this.cc = this.email.cc.join(',');

@@ -4,7 +4,7 @@
       {{ 'IDEA.CUSTOM_FIELDS.MANAGE_FIELD' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('IDEA.CUSTOM_FIELDS.CLOSE_WITHOUT_SAVING')" (click)="close()">
+      <ion-button [title]="t._('IDEA.CUSTOM_FIELDS.CLOSE_WITHOUT_SAVING')" (click)="close()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -104,7 +104,7 @@
     </ion-item>
     <ion-row>
       <ion-col class="ion-text-right ion-padding">
-        <ion-button [title]="t.instant('IDEA.CUSTOM_FIELDS.UPDATE_FIELD')" (click)="save()">
+        <ion-button [title]="t._('IDEA.CUSTOM_FIELDS.UPDATE_FIELD')" (click)="save()">
           {{ 'IDEA.CUSTOM_FIELDS.SAVE' | translate }}
           <ion-icon slot="end" name="checkmark"></ion-icon>
         </ion-button>

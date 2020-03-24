@@ -1,17 +1,17 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t.instant('IDEA.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
+      <ion-button [title]="t._('IDEA.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
         <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-searchbar
-      [placeholder]="searchPlaceholder || t.instant('IDEA.SELECT.SEARCH')"
+      [placeholder]="searchPlaceholder || t._('IDEA.SELECT.SEARCH')"
       [debounce]="100"
       (ionInput)="getSuggestions($event)"
     ></ion-searchbar>
     <ion-buttons slot="end" *ngIf="!hideClearButton">
-      <ion-button [title]="t.instant('IDEA.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
+      <ion-button [title]="t._('IDEA.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
         <ion-icon slot="icon-only" name="backspace"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -26,7 +26,7 @@
         [icon]="'funnel'"
         [lines]="'none'"
         [description]="category1"
-        [noElementsFoundText]="t.instant('COMMON.NO_ELEMENT_FOUND')"
+        [noElementsFoundText]="t._('COMMON.NO_ELEMENT_FOUND')"
         [hideIdFromUI]="true"
         [avoidAutoSelection]="true"
         (select)="setFilterCategoryN(1, $event.value)"
@@ -39,7 +39,7 @@
         [icon]="'funnel'"
         [lines]="'none'"
         [description]="category2"
-        [noElementsFoundText]="t.instant('COMMON.NO_ELEMENT_FOUND')"
+        [noElementsFoundText]="t._('COMMON.NO_ELEMENT_FOUND')"
         [hideIdFromUI]="true"
         [avoidAutoSelection]="true"
         (select)="setFilterCategoryN(2, $event.value)"
@@ -58,7 +58,7 @@
       class="suggestion"
       *ngIf="allowUnlistedValues && searchbar.value"
       [button]="true"
-      [title]="t.instant('IDEA.SELECT.SELECT_', { suggestion: searchbar.value })"
+      [title]="t._('IDEA.SELECT.SELECT_', { suggestion: searchbar.value })"
       (click)="select({ value: searchbar.value })"
     >
       <!-- the "key" class is used for keyboard controls -->
@@ -70,7 +70,7 @@
       class="suggestion"
       *ngFor="let suggestion of suggestions"
       [button]="true"
-      [title]="t.instant('IDEA.SELECT.SELECT_', { suggestion: suggestion.name || suggestion.value })"
+      [title]="t._('IDEA.SELECT.SELECT_', { suggestion: suggestion.name || suggestion.value })"
       (click)="select(suggestion)"
     >
       <ion-label>

@@ -4,7 +4,7 @@
       {{ 'IDEA.STRIPE.SUBSCRIBE' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('COMMON.CANCEL_AND_CLOSE')" (click)="close()">
+      <ion-button [title]="t._('COMMON.CANCEL_AND_CLOSE')" (click)="close()">
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -35,7 +35,7 @@
     </ion-list-header>
     <ion-item lines="none" *ngIf="oldPlan.planId">
       <ion-label>
-        {{ oldPlan.title[t.currentLang] }}
+        {{ oldPlan.title[t.getCurrentLang()] }}
         <p>
           {{ oldPlan.priceStr }}
         </p>
@@ -48,7 +48,7 @@
     </ion-list-header>
     <ion-item lines="none">
       <ion-label>
-        {{ plan.title[t.currentLang] }}
+        {{ plan.title[t.getCurrentLang()] }}
         <p>
           {{ plan.priceStr }}
         </p>
@@ -80,7 +80,7 @@
     <ion-row>
       <ion-col class="ion-text-right">
         <ion-button
-          [title]="t.instant('IDEA.STRIPE.SUBSCRIBE_HINT')"
+          [title]="t._('IDEA.STRIPE.SUBSCRIBE_HINT')"
           [disabled]="!authorizationCheck || creditCard._empty"
           (click)="subscribe()"
         >

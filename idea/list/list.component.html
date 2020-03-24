@@ -4,12 +4,12 @@
       {{ title || ('IDEA.LIST.LIST' | translate) }}
     </ion-title>
     <ion-buttons slot="start">
-      <ion-button [title]="t.instant('IDEA.LIST.CANCEL_AND_CLOSE')" (click)="close()">
+      <ion-button [title]="t._('IDEA.LIST.CANCEL_AND_CLOSE')" (click)="close()">
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('IDEA.LIST.NEW_ELEMENT')" (click)="addElement()">
+      <ion-button [title]="t._('IDEA.LIST.NEW_ELEMENT')" (click)="addElement()">
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -28,7 +28,7 @@
         slot="end"
         fill="clear"
         color="danger"
-        [title]="t.instant('IDEA.LIST.DELETE_ELEMENT')"
+        [title]="t._('IDEA.LIST.DELETE_ELEMENT')"
         (click)="removeElement(element)"
       >
         <ion-icon name="trash" slot="icon-only"></ion-icon>
@@ -37,7 +37,7 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-  <ion-toolbar class="ideaToolbar tappable" [title]="t.instant('IDEA.LIST.SAVE_AND_CLOSE')" (click)="close(true)">
+  <ion-toolbar class="ideaToolbar tappable" [title]="t._('IDEA.LIST.SAVE_AND_CLOSE')" (click)="close(true)">
     <ion-title class="ion-text-center">
       <ion-icon name="checkmark"></ion-icon>
     </ion-title>

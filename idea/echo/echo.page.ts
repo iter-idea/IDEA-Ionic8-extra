@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 // from idea-config.js
 declare const IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
@@ -27,7 +27,7 @@ export class IDEAEchoPage {
     public activatedRoute: ActivatedRoute,
     public loading: IDEALoadingService,
     public API: IDEAAWSAPIService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {}
   public ngOnInit() {
     const request: EchoRequests =
@@ -80,11 +80,11 @@ export class IDEAEchoPage {
     })
       .then(() => {
         this.success = true;
-        this.content = this.t.instant('IDEA.ECHO.ACCOUNT_CONFIRMED');
+        this.content = this.t._('IDEA.ECHO.ACCOUNT_CONFIRMED');
       })
       .catch(() => {
         this.success = false;
-        this.content = this.t.instant('IDEA.ECHO.REQUEST_FAILED');
+        this.content = this.t._('IDEA.ECHO.REQUEST_FAILED');
       })
       .finally(() => this.loading.hide());
   }
@@ -96,11 +96,11 @@ export class IDEAEchoPage {
     this.API.getResource('invitations', { idea: true, resourceId: code })
       .then(() => {
         this.success = true;
-        this.content = this.t.instant('IDEA.ECHO.TEAM_JOINED');
+        this.content = this.t._('IDEA.ECHO.TEAM_JOINED');
       })
       .catch(() => {
         this.success = false;
-        this.content = this.t.instant('IDEA.ECHO.REQUEST_FAILED');
+        this.content = this.t._('IDEA.ECHO.REQUEST_FAILED');
       })
       .finally(() => this.loading.hide());
   }
@@ -112,11 +112,11 @@ export class IDEAEchoPage {
     this.API.getResource('emailChangeRequests', { idea: true, resourceId: code, params: { project: IDEA_PROJECT } })
       .then(() => {
         this.success = true;
-        this.content = this.t.instant('IDEA.ECHO.EMAIL_CHANGED');
+        this.content = this.t._('IDEA.ECHO.EMAIL_CHANGED');
       })
       .catch(() => {
         this.success = false;
-        this.content = this.t.instant('IDEA.ECHO.REQUEST_FAILED');
+        this.content = this.t._('IDEA.ECHO.REQUEST_FAILED');
       })
       .finally(() => this.loading.hide());
   }
@@ -126,8 +126,8 @@ export class IDEAEchoPage {
   public endGitHubIntegrationFlow(success: boolean) {
     this.success = success;
     this.content = success
-      ? this.t.instant('IDEA.ECHO.GITHUB_SOURCE_INTEGRATION_SUCCESS')
-      : this.t.instant('IDEA.ECHO.GITHUB_SOURCE_INTEGRATION_ERROR');
+      ? this.t._('IDEA.ECHO.GITHUB_SOURCE_INTEGRATION_SUCCESS')
+      : this.t._('IDEA.ECHO.GITHUB_SOURCE_INTEGRATION_ERROR');
   }
   /**
    * Show the token to use for the integration of Trello as a source.
@@ -135,8 +135,8 @@ export class IDEAEchoPage {
   public endTrelloIntegrationFlow(token: string) {
     this.success = Boolean(token);
     this.content = token
-      ? this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_SUCCESS', { token })
-      : this.t.instant('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_ERROR');
+      ? this.t._('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_SUCCESS', { token })
+      : this.t._('IDEA.ECHO.TRELLO_SOURCE_INTEGRATION_ERROR');
   }
   /**
    * Complete the integration with external calendars (Google, Microsoft, ecc.).
@@ -149,11 +149,11 @@ export class IDEAEchoPage {
     })
       .then(() => {
         this.success = true;
-        this.content = this.t.instant(`IDEA.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS`);
+        this.content = this.t._(`IDEA.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS`);
       })
       .catch(() => {
         this.success = false;
-        this.content = this.t.instant(`IDEA.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR`);
+        this.content = this.t._(`IDEA.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR`);
       })
       .finally(() => this.loading.hide());
   }

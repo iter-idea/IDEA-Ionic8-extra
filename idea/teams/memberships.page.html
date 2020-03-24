@@ -7,7 +7,7 @@
       {{ 'IDEA.TEAMS.TEAM_MEMBERS' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t.instant('IDEA.TEAMS.INVITE_USER_HINT')" (click)="addMember()">
+      <ion-button [title]="t._('IDEA.TEAMS.INVITE_USER_HINT')" (click)="addMember()">
         {{ 'IDEA.TEAMS.INVITE' | translate }}
       </ion-button>
     </ion-buttons>
@@ -23,23 +23,18 @@
       <ion-label>
         {{ m.name }}
       </ion-label>
-      <ion-badge slot="end" color="dark" *ngIf="m.userId === team?.ownerId" [title]="t.instant('IDEA.TEAMS.IS_OWNER')">
+      <ion-badge slot="end" color="dark" *ngIf="m.userId === team?.ownerId" [title]="t._('IDEA.TEAMS.IS_OWNER')">
         {{ 'IDEA.TEAMS.OWNER' | translate }}
       </ion-badge>
       <ion-badge
         slot="end"
         color="primary"
         *ngIf="m.userId !== team?.ownerId && m.permissions.admin"
-        [title]="t.instant('IDEA.TEAMS.CAN_MANAGE_TEAM')"
+        [title]="t._('IDEA.TEAMS.CAN_MANAGE_TEAM')"
       >
         {{ 'IDEA.TEAMS.ADMIN' | translate }}
       </ion-badge>
-      <ion-badge
-        slot="end"
-        color="light"
-        *ngIf="m.pendingInvitation"
-        [title]="t.instant('IDEA.TEAMS.PENDING_INVITATION')"
-      >
+      <ion-badge slot="end" color="light" *ngIf="m.pendingInvitation" [title]="t._('IDEA.TEAMS.PENDING_INVITATION')">
         {{ 'IDEA.TEAMS.INVITED' | translate }}
       </ion-badge>
       <ion-button
@@ -47,7 +42,7 @@
         fill="clear"
         color="dark"
         [disabled]="m.userId === team?.ownerId"
-        [title]="t.instant('IDEA.TEAMS.ACTIONS_ON_USER_', { user: m.name })"
+        [title]="t._('IDEA.TEAMS.ACTIONS_ON_USER_', { user: m.name })"
         (click)="manageMembership(m)"
       >
         <ion-icon name="ellipsis-horizontal-outline" slot="icon-only"></ion-icon>

@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 
 import { Contacts } from 'idea-toolbox';
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-contacts',
@@ -26,7 +27,7 @@ export class IDEAContactsComponent {
    */
   @Input() public lines: string;
 
-  constructor(public t: TranslateService) {
+  constructor(public t: IDEATranslationsService) {
     this.contacts = new Contacts();
     this.showName = false;
     this.editMode = true;

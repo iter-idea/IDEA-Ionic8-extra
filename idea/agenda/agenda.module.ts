@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { TranslateModule } from '@ngx-translate/core';
 import { NgCalendarModule } from 'ionic2-calendar';
 // prepare the available langages for the agenda; english is included by default
 import { registerLocaleData } from '@angular/common';
@@ -14,13 +13,14 @@ import { IDEACheckerModule } from '../checker/checker.module';
 import { IDEAAppointmentComponent } from './appointment.component';
 import { IDEADateTimeModule } from '../dateTime/dateTime.module';
 import { IDEASelectModule } from '../select/select.module';
+import { IDEATranslationsModule } from '../translations/translations.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TranslateModule.forChild(),
+    IDEATranslationsModule,
     IDEACheckerModule,
     NgCalendarModule,
     IDEADateTimeModule,

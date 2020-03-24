@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AlertController, ActionSheetController, NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import IdeaX = require('idea-toolbox');
 
@@ -8,6 +7,7 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEAMessageService } from '../message.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 // from idea-config.js
 declare const IDEA_PROJECT: string;
@@ -31,7 +31,7 @@ export class IDEAMembershipsPage {
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public API: IDEAAWSAPIService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {}
   public ngOnInit() {
     // load the team
@@ -72,12 +72,12 @@ export class IDEAMembershipsPage {
   public addMember() {
     this.alertCtrl
       .create({
-        header: this.t.instant('IDEA.TEAMS.INVITE_USER'),
-        inputs: [{ name: 'email', type: 'email', placeholder: this.t.instant('IDEA.TEAMS.EMAIL_TO_INVITE') }],
+        header: this.t._('IDEA.TEAMS.INVITE_USER'),
+        inputs: [{ name: 'email', type: 'email', placeholder: this.t._('IDEA.TEAMS.EMAIL_TO_INVITE') }],
         buttons: [
-          { text: this.t.instant('IDEA.TEAMS.CANCEL'), role: 'cancel' },
+          { text: this.t._('IDEA.TEAMS.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('IDEA.TEAMS.INVITE'),
+            text: this.t._('IDEA.TEAMS.INVITE'),
             handler: data => {
               if (!data.email) return;
               this.loading.show();
@@ -105,19 +105,17 @@ export class IDEAMembershipsPage {
   public manageMembership(membership: IdeaX.Membership) {
     const buttons = [];
     buttons.push({
-      text: this.t.instant('IDEA.TEAMS.MANAGE_PERMISSIONS'),
+      text: this.t._('IDEA.TEAMS.MANAGE_PERMISSIONS'),
       handler: () => this.editPermissionsMembership(membership)
     });
     buttons.push({
       text:
-        membership.userId === this.tc.get('userId')
-          ? this.t.instant('IDEA.TEAMS.UNJOIN')
-          : this.t.instant('IDEA.TEAMS.KICK_OUT'),
+        membership.userId === this.tc.get('userId') ? this.t._('IDEA.TEAMS.UNJOIN') : this.t._('IDEA.TEAMS.KICK_OUT'),
       handler: () => this.deleteMembership(membership)
     });
-    buttons.push({ text: this.t.instant('COMMON.CANCEL'), role: 'cancel' });
+    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel' });
     this.actionSheetCtrl
-      .create({ header: this.t.instant('IDEA.TEAMS.ACTIONS_ON_USER_', { user: membership.name }), buttons })
+      .create({ header: this.t._('IDEA.TEAMS.ACTIONS_ON_USER_', { user: membership.name }), buttons })
       .then(actions => actions.present());
   }
   /**
@@ -126,19 +124,19 @@ export class IDEAMembershipsPage {
   private editPermissionsMembership(membership: IdeaX.Membership) {
     this.alertCtrl
       .create({
-        header: this.t.instant('IDEA.TEAMS.MANAGE_PERMISSIONS'),
+        header: this.t._('IDEA.TEAMS.MANAGE_PERMISSIONS'),
         inputs: [
           {
             type: 'checkbox',
-            label: this.t.instant('IDEA.TEAMS.CAN_MANAGE_TEAM'),
+            label: this.t._('IDEA.TEAMS.CAN_MANAGE_TEAM'),
             value: 'admin',
             checked: membership.permissions.admin
           }
         ],
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.CONFIRM'),
+            text: this.t._('COMMON.CONFIRM'),
             handler: (perm: Array<string>) => {
               const permissions: any = { admin: perm.some(p => p === 'admin') };
               this.loading.show();
@@ -169,11 +167,11 @@ export class IDEAMembershipsPage {
   private deleteMembership(membership: IdeaX.Membership) {
     this.alertCtrl
       .create({
-        header: this.t.instant('COMMON.ARE_YOU_SURE'),
+        header: this.t._('COMMON.ARE_YOU_SURE'),
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.CONFIRM'),
+            text: this.t._('COMMON.CONFIRM'),
             handler: () => {
               this.loading.show();
               this.API.deleteResource(`teams/${this.team.teamId}/memberships`, {

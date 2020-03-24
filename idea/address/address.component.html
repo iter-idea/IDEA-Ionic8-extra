@@ -4,8 +4,8 @@
   </ion-label>
   <ion-input
     [readonly]="true"
-    [title]="t.instant('IDEA.ADDRESS.COMPLETE_ADDRESS_HINT')"
-    [placeholder]="t.instant('IDEA.ADDRESS.COMPLETE_ADDRESS_HINT')"
+    [title]="t._('IDEA.ADDRESS.COMPLETE_ADDRESS_HINT')"
+    [placeholder]="t._('IDEA.ADDRESS.COMPLETE_ADDRESS_HINT')"
     [value]="address.getFullAddress()"
   ></ion-input>
   <ion-icon slot="end" [name]="addressCollapsed ? 'chevron-back' : 'chevron-down'"></ion-icon>
@@ -17,8 +17,8 @@
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.CONTACT_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.CONTACT_HINT')"
+      [placeholder]="t._('IDEA.ADDRESS.CONTACT_HINT')"
+      [title]="t._('IDEA.ADDRESS.CONTACT_HINT')"
       [(ngModel)]="address.contact"
     ></ion-input>
   </ion-item>
@@ -29,8 +29,8 @@
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.ADDRESS_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.ADDRESS_HINT')"
+      [placeholder]="t._('IDEA.ADDRESS.ADDRESS_HINT')"
+      [title]="t._('IDEA.ADDRESS.ADDRESS_HINT')"
       [(ngModel)]="address.address"
     ></ion-input>
   </ion-item>
@@ -40,8 +40,8 @@
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.ADDRESS2_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.ADDRESS2_HINT')"
+      [placeholder]="t._('IDEA.ADDRESS.ADDRESS2_HINT')"
+      [title]="t._('IDEA.ADDRESS.ADDRESS2_HINT')"
       [(ngModel)]="address.address2"
     ></ion-input>
   </ion-item>
@@ -51,8 +51,8 @@
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.POSTCODE_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.POSTCODE_HINT')"
+      [placeholder]="t._('IDEA.ADDRESS.POSTCODE_HINT')"
+      [title]="t._('IDEA.ADDRESS.POSTCODE_HINT')"
       [(ngModel)]="address.postcode"
     ></ion-input>
   </ion-item>
@@ -63,8 +63,8 @@
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.CITY_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.CITY_HINT')"
+      [placeholder]="t._('IDEA.ADDRESS.CITY_HINT')"
+      [title]="t._('IDEA.ADDRESS.CITY_HINT')"
       [(ngModel)]="address.city"
     ></ion-input>
   </ion-item>
@@ -74,18 +74,18 @@
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.PROVINCE_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.PROVINCE_HINT')"
+      [placeholder]="t._('IDEA.ADDRESS.PROVINCE_HINT')"
+      [title]="t._('IDEA.ADDRESS.PROVINCE_HINT')"
       [(ngModel)]="address.province"
     ></ion-input>
   </ion-item>
   <idea-select
     [data]="countriesSuggestions"
-    [label]="t.instant('IDEA.ADDRESS.COUNTRY')"
+    [label]="t._('IDEA.ADDRESS.COUNTRY')"
     [lines]="editMode ? 'inset' : 'none'"
     [description]="Countries[address.country]"
-    [placeholder]="t.instant('IDEA.ADDRESS.COUNTRY_HINT')"
-    [searchPlaceholder]="t.instant('IDEA.ADDRESS.COUNTRY_HINT')"
+    [placeholder]="t._('IDEA.ADDRESS.COUNTRY_HINT')"
+    [searchPlaceholder]="t._('IDEA.ADDRESS.COUNTRY_HINT')"
     [hideIdFromUI]="true"
     [avoidAutoSelection]="true"
     [disabled]="!editMode"
@@ -97,8 +97,8 @@
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.PHONE_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.PHONE_HINT')"
+      [placeholder]="t._('IDEA.ADDRESS.PHONE_HINT')"
+      [title]="t._('IDEA.ADDRESS.PHONE_HINT')"
       [(ngModel)]="address.phone"
     ></ion-input>
   </ion-item>
@@ -108,8 +108,8 @@
     </ion-label>
     <ion-input
       [disabled]="!editMode"
-      [placeholder]="t.instant('IDEA.ADDRESS.EMAIL_HINT')"
-      [title]="t.instant('IDEA.ADDRESS.EMAIL_HINT')"
+      [placeholder]="t._('IDEA.ADDRESS.EMAIL_HINT')"
+      [title]="t._('IDEA.ADDRESS.EMAIL_HINT')"
       [(ngModel)]="address.email"
     ></ion-input>
   </ion-item>

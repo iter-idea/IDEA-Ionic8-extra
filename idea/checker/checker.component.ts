@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEAChecksComponent } from './checks.component';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 /**
  * Data can either be populated directly from the namesake attribute, passing an array of values, or through the
@@ -105,7 +105,7 @@ export class IDEACheckerComponent {
    */
   @Output() public change = new EventEmitter<void>();
 
-  constructor(public modalCtrl: ModalController, public t: TranslateService) {
+  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {
     this.data = new Array<IdeaX.Check>();
     this.placeholder = null;
     this.noElementsFoundText = null;
@@ -114,8 +114,8 @@ export class IDEACheckerComponent {
     this.disabled = false;
     this.sortData = false;
     this.numMaxElementsInPreview = 4;
-    this.allText = this.t.instant('IDEA.CHECKER.ALL');
-    this.noneText = this.t.instant('IDEA.CHECKER.NONE');
+    this.allText = this.t._('IDEA.CHECKER.ALL');
+    this.noneText = this.t._('IDEA.CHECKER.NONE');
   }
 
   /**
@@ -173,7 +173,7 @@ export class IDEACheckerComponent {
           .slice(0, this.numMaxElementsInPreview)
           .map(x => x.name)
           .join(', ');
-      else return this.t.instant('IDEA.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
+      else return this.t._('IDEA.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
     }
   }
 }

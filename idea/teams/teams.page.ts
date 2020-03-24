@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEAMessageService } from '../message.service';
-
-import IdeaX = require('idea-toolbox');
+import { IDEATranslationsService } from '../translations/translations.service';
 
 // from idea-config.js
 declare const IDEA_PROJECT: string;
@@ -27,7 +26,7 @@ export class IDEATeamsPage {
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
     public API: IDEAAWSAPIService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {}
   public ngOnInit() {
     this.loadTeams();
@@ -76,13 +75,13 @@ export class IDEATeamsPage {
     // ask for the name of the new team
     this.alertCtrl
       .create({
-        header: this.t.instant('IDEA.TEAMS.NEW_TEAM'),
-        subHeader: this.t.instant('IDEA.TEAMS.SELECT_NAME_FOR_NEW_TEAM'),
-        inputs: [{ name: 'name', placeholder: this.t.instant('IDEA.TEAMS.TEAM_NAME') }],
+        header: this.t._('IDEA.TEAMS.NEW_TEAM'),
+        subHeader: this.t._('IDEA.TEAMS.SELECT_NAME_FOR_NEW_TEAM'),
+        inputs: [{ name: 'name', placeholder: this.t._('IDEA.TEAMS.TEAM_NAME') }],
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.CONFIRM'),
+            text: this.t._('COMMON.CONFIRM'),
             handler: data => {
               if (!data.name) return;
               // create a new team and add it to the teams list

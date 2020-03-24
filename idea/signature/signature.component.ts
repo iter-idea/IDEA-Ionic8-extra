@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import SignaturePad from 'signature_pad';
 
 import { Signature } from './signature.model';
 import { IDEAMessageService } from '../message.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-signature',
@@ -37,7 +37,11 @@ export class IDEASignatureComponent {
    */
   public signatureError: boolean;
 
-  constructor(public modalCtrl: ModalController, public message: IDEAMessageService, public t: TranslateService) {
+  constructor(
+    public modalCtrl: ModalController,
+    public message: IDEAMessageService,
+    public t: IDEATranslationsService
+  ) {
     this.signature = new Signature();
     this.canvas = null;
     this.pad = null;

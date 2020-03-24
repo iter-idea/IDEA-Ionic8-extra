@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
@@ -8,6 +7,7 @@ import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 // from index.html
 declare const Stripe: any;
@@ -38,7 +38,7 @@ export class IDEAStripeSubscriptionComponent {
     public extBrowser: IDEAExtBrowserService,
     public tc: IDEATinCanService,
     public API: IDEAAWSAPIService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {
     this.authorizationCheck = false;
   }

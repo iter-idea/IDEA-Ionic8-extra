@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Platform, ModalController, AlertController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
 
@@ -9,6 +8,7 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-appointment',
@@ -65,7 +65,7 @@ export class IDEAAppointmentComponent {
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public extBrowser: IDEAExtBrowserService,
-    public t: TranslateService,
+    public t: IDEATranslationsService,
     public API: IDEAAWSAPIService
   ) {
     this.appointment = new IdeaX.Appointment();
@@ -173,11 +173,11 @@ export class IDEAAppointmentComponent {
   public delete() {
     this.alertCtrl
       .create({
-        header: this.t.instant('COMMON.ARE_YOU_SURE'),
+        header: this.t._('COMMON.ARE_YOU_SURE'),
         buttons: [
-          { text: this.t.instant('COMMON.CANCEL'), role: 'cancel' },
+          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
-            text: this.t.instant('COMMON.CONFIRM'),
+            text: this.t._('COMMON.CONFIRM'),
             handler: () => {
               const baseURL = this.calendar.isShared() ? `teams/${this.tc.get('membership').teamId}/` : '';
               this.loading.show();

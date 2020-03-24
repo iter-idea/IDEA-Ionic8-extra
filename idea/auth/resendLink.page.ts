@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 
 import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-resend-link',
@@ -21,7 +21,7 @@ export class IDEAResendLinkPage {
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
     public auth: IDEAAuthService,
-    public t: TranslateService
+    public t: IDEATranslationsService
   ) {}
 
   /**
@@ -30,7 +30,7 @@ export class IDEAResendLinkPage {
   public resendConfirmationLink() {
     this.errorMsg = null;
     if (!this.email) {
-      this.errorMsg = this.t.instant('IDEA.AUTH.EMAIL_OBLIGATORY');
+      this.errorMsg = this.t._('IDEA.AUTH.EMAIL_OBLIGATORY');
       this.message.error('IDEA.AUTH.SENDING_FAILED');
       return;
     }
@@ -44,7 +44,7 @@ export class IDEAResendLinkPage {
       })
       .catch(() => {
         this.loading.hide();
-        this.errorMsg = this.t.instant('IDEA.AUTH.IS_THE_EMAIL_CORRECT');
+        this.errorMsg = this.t._('IDEA.AUTH.IS_THE_EMAIL_CORRECT');
         this.message.error('IDEA.AUTH.SENDING_FAILED');
       });
   }

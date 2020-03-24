@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+
+import { IDEATranslationsService } from './translations/translations.service';
 
 @Injectable()
 export class IDEALoadingService {
   protected loadingElement: HTMLIonLoadingElement;
 
-  constructor(public loadingCtrl: LoadingController, public t: TranslateService) {}
+  constructor(public loadingCtrl: LoadingController, public t: IDEATranslationsService) {}
 
   /**
    * Show a loading animation.
@@ -15,7 +16,7 @@ export class IDEALoadingService {
   public async show(content?: string): Promise<void> {
     await this.hide();
     this.loadingElement = await this.loadingCtrl.create({
-      message: content || this.t.instant('IDEA.LOADING.PLEASE_WAIT')
+      message: content || this.t._('IDEA.LOADING.PLEASE_WAIT')
     });
     return await this.loadingElement.present();
   }
