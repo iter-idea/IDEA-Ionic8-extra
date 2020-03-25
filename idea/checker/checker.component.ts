@@ -114,6 +114,8 @@ export class IDEACheckerComponent {
     this.disabled = false;
     this.sortData = false;
     this.numMaxElementsInPreview = 4;
+  }
+  public ngOnInit() {
     this.allText = this.t._('IDEA.CHECKER.ALL');
     this.noneText = this.t._('IDEA.CHECKER.NONE');
   }
