@@ -1,3 +1,8 @@
+ion-toolbar {
+  ion-row {
+    padding: 2px 2px 6px 2px !important;
+  }
+}
 .suggestionsList {
   .suggestion {
     --background: white;
@@ -13,7 +18,7 @@
     }
     .categoriesDivider {
       display: inline-block;
-      padding: 0 2px;
+      padding: 0 4px;
       font-size: 0.7em;
       vertical-align: text-bottom;
     }
