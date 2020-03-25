@@ -118,7 +118,7 @@ export class IDEATranslationsService {
 
   /**
    * Get a translated term by key, optionally interpolating variables (e.g. `{{user}}`).
-   * If the term doesn't exist in the current language, is searched in the default language.
+   * If the term doesn't exist in the current language, it is searched in the default language.
    */
   public instant(key: string, interpolateParams?: Object): string {
     if (!this.isDefined(key) || !key.length) return;
