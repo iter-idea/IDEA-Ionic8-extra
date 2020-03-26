@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import Moment = require('moment-timezone');
+import IdeaX = require('idea-toolbox');
 
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -12,7 +13,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['dateTime.component.scss']
 })
 export class IDEADateTimeComponent {
-  @Input() public date: Date;
+  @Input() public date: IdeaX.epochDateTime;
   @Input() public timePicker: boolean;
   @Input() public label: string;
   @Input() public icon: string;
@@ -21,10 +22,19 @@ export class IDEADateTimeComponent {
   @Input() public disabled: boolean;
   @Input() public obligatory: boolean;
   @Output() public select = new EventEmitter<number>();
+  public valueToDisplay: string;
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {
     Moment.locale(this.t.getCurrentLang());
+    // when the language changes, set the locale
+    this.t.onLangChange.subscribe(() => {
+      Moment.locale(this.t.getCurrentLang());
+      this.valueToDisplay = this.getValueToDisplay(this.date);
+    });
+  }
+  public ngOnChanges(changes: SimpleChanges) {
+    if (changes.date) this.valueToDisplay = this.getValueToDisplay(changes.date.currentValue);
   }
 
   /**
@@ -52,7 +62,7 @@ export class IDEADateTimeComponent {
   /**
    * Calculate the value to show.
    */
-  public getValue(): string {
-    return !this.date ? '' : Moment(this.date).format('ddd D MMMM YYYY'.concat(this.timePicker ? ', H:mm' : ''));
+  protected getValueToDisplay(date: IdeaX.epochDateTime): string {
+    return !date ? '' : Moment(date).format(this.timePicker ? 'LLL' : 'LL');
   }
 }

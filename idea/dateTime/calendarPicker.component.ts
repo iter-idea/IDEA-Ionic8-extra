@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import Moment = require('moment-timezone');
+import IdeaX = require('idea-toolbox');
 
 import { IDEATranslationsService } from '../translations/translations.service';
 
@@ -10,7 +11,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['calendarPicker.component.scss']
 })
 export class IDEACalendarPickerComponent {
-  @Input() public inputDate: Date;
+  @Input() public inputDate: IdeaX.epochDateTime;
   @Input() public timePicker: boolean;
   @Input() public title: string;
 

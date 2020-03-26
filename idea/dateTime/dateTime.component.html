@@ -5,10 +5,10 @@
     <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
   </ion-label>
   <ion-label class="value" [class.selectable]="!disabled">
-    <ion-text class="placeholder" *ngIf="!getValue() && !disabled" [class.selectable]="!disabled">
+    <ion-text class="placeholder" *ngIf="!valueToDisplay && !disabled" [class.selectable]="!disabled">
       {{ placeholder }}
     </ion-text>
-    {{ getValue() }}
+    {{ valueToDisplay }}
   </ion-label>
   <ion-icon
     slot="end"
