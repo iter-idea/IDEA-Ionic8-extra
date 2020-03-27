@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import IdeaX = require('idea-toolbox');
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
@@ -72,6 +73,13 @@ export class IDEATranslationsService {
    */
   public setDefaultLang(lang: string) {
     this.defaultLang = lang;
+  }
+
+  /**
+   * Get the languages in IdeaX format.
+   */
+  public languages(): IdeaX.Languages {
+    return new IdeaX.Languages({ available: this.getLangs(), default: this.getDefaultLang() });
   }
 
   /**
