@@ -7,7 +7,7 @@
   <ion-label
     class="description"
     [class.selectable]="!disabled || tappableWhenDisabled"
-    [class.noneOrAll]="getPreview() === allText || getPreview() === noneText"
+    [class.placeholder]="getPreview() === allText || getPreview() === noneText || noPreviewText"
   >
     {{ getPreview() }}
   </ion-label>

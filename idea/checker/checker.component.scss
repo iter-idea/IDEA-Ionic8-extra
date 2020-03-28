@@ -12,6 +12,9 @@
   .selectIcon.withLabel {
     padding-top: 25px;
   }
+  .placeholder {
+    color: var(--ion-color-medium);
+  }
 }
 .selectable {
   cursor: pointer;

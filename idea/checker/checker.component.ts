@@ -110,16 +110,13 @@ export class IDEACheckerComponent {
     this.placeholder = null;
     this.noElementsFoundText = null;
     this.noPreviewText = null;
+    this.allText = null;
+    this.noneText = null;
     this.noneEqualsAll = false;
     this.disabled = false;
     this.sortData = false;
     this.numMaxElementsInPreview = 4;
   }
-  public ngOnInit() {
-    this.allText = this.t._('IDEA.CHECKER.ALL');
-    this.noneText = this.t._('IDEA.CHECKER.NONE');
-  }
-
   /**
    * Fetch the promised data from a function and set it before to open the checks.
    */
@@ -164,11 +161,11 @@ export class IDEACheckerComponent {
   public getPreview(): string {
     if (!this.data || !this.data.length) return null;
     if (this.noPreviewText) return this.noPreviewText;
-    if (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll))
+    if (this.allText && (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll)))
       return this.allText;
     else {
       const checked = this.data.filter(x => x.checked);
-      if (checked.length === 0) return this.noneText;
+      if (this.noneText && checked.length === 0) return this.noneText;
       if (checked.length <= this.numMaxElementsInPreview)
         return this.data
           .filter(x => x.checked)
