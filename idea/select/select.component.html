@@ -1,11 +1,13 @@
 <ion-item
   class="selectItem"
   [lines]="lines || 'full'"
+  [button]="!disabled"
   [title]="placeholder || description"
+  [class.withLabel]="label"
   (click)="disabled ? doSelectWhenDisabled() : fetchDataAndOpenModal()"
 >
-  <ion-icon slot="start" *ngIf="icon" [name]="icon"></ion-icon>
-  <ion-label position="stacked" *ngIf="!icon && label" [class.selectable]="!disabled || tappableWhenDisabled">
+  <ion-icon slot="start" *ngIf="icon" [name]="icon" [color]="iconColor" (click)="doIconSelect($event)"></ion-icon>
+  <ion-label position="stacked" *ngIf="label" [class.selectable]="!disabled || tappableWhenDisabled">
     {{ label }}
     <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
   </ion-label>
@@ -15,12 +17,5 @@
     </ion-text>
     {{ description }}
   </ion-label>
-  <ion-icon
-    slot="end"
-    name="caret-down"
-    class="selectIcon"
-    *ngIf="!disabled"
-    [class.selectable]="!disabled"
-    [class.withLabel]="label"
-  ></ion-icon>
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
 </ion-item>

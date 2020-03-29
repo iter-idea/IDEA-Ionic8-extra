@@ -1,6 +1,13 @@
-<ion-item class="dateTimeItem" [lines]="lines || 'full'" [title]="placeholder || label" (click)="openCalendarPicker()">
-  <ion-icon slot="start" *ngIf="icon" [name]="icon"></ion-icon>
-  <ion-label position="stacked" *ngIf="!icon && label" [class.selectable]="!disabled">
+<ion-item
+  class="dateTimeItem"
+  [lines]="lines || 'full'"
+  [title]="placeholder || label"
+  [button]="!disabled"
+  [class.withLabel]="label"
+  (click)="openCalendarPicker()"
+>
+  <ion-icon slot="start" *ngIf="icon" [name]="icon" [color]="iconColor" (click)="doIconSelect($event)"></ion-icon>
+  <ion-label position="stacked" *ngIf="label" [class.selectable]="!disabled">
     {{ label }}
     <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
   </ion-label>
@@ -10,12 +17,5 @@
     </ion-text>
     {{ valueToDisplay }}
   </ion-label>
-  <ion-icon
-    slot="end"
-    name="caret-down"
-    class="selectIcon"
-    *ngIf="!disabled"
-    [class.selectable]="!disabled"
-    [class.withLabel]="label"
-  ></ion-icon>
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
 </ion-item>

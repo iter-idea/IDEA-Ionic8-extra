@@ -41,13 +41,17 @@ export class IDEACheckerComponent {
    */
   @Input() public label: string;
   /**
-   * The icon (alternative to the label) for the field.
+   * The icon for the field.
    */
   @Input() public icon: string;
   /**
+   * The color of the icon.
+   */
+  @Input() public iconColor: string;
+  /**
    * A placeholder for the searchbar.
    */
-  @Input() public placeholder: string;
+  @Input() public searchPlaceholder: string;
   /**
    * If true, show the string instead of the preview text.
    */
@@ -104,17 +108,13 @@ export class IDEACheckerComponent {
    * On change event.
    */
   @Output() public change = new EventEmitter<void>();
+  /**
+   * Icon select.
+   */
+  @Output() public iconSelect = new EventEmitter<void>();
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {
     this.data = new Array<IdeaX.Check>();
-    this.placeholder = null;
-    this.noElementsFoundText = null;
-    this.noPreviewText = null;
-    this.allText = null;
-    this.noneText = null;
-    this.noneEqualsAll = false;
-    this.disabled = false;
-    this.sortData = false;
     this.numMaxElementsInPreview = 4;
   }
   /**
@@ -143,7 +143,7 @@ export class IDEACheckerComponent {
         componentProps: {
           data: this.data,
           sortData: this.sortData,
-          placeholder: this.placeholder,
+          searchPlaceholder: this.searchPlaceholder,
           noElementsFoundText: this.noElementsFoundText,
           showAvatars: this.showAvatars,
           fallbackAvatar: this.fallbackAvatar
@@ -174,5 +174,13 @@ export class IDEACheckerComponent {
           .join(', ');
       else return this.t._('IDEA.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
     }
+  }
+
+  /**
+   * The icon was selected.
+   */
+  public doIconSelect(event: any) {
+    if (event) event.stopPropagation();
+    this.iconSelect.emit(event);
   }
 }

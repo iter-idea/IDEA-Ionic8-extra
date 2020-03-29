@@ -8,7 +8,7 @@
     <ion-searchbar
       [placeholder]="searchPlaceholder || t._('IDEA.SELECT.SEARCH')"
       [debounce]="100"
-      (ionInput)="getSuggestions($event)"
+      (ionInput)="search($event.target ? $event.target.value : '')"
     ></ion-searchbar>
     <ion-buttons slot="end" *ngIf="!hideClearButton">
       <ion-button [title]="t._('IDEA.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
@@ -66,39 +66,41 @@
         {{ searchbar.value }}
       </i>
     </ion-item>
-    <ion-item
-      class="suggestion"
-      *ngFor="let suggestion of suggestions"
-      [button]="true"
-      [title]="t._('IDEA.SELECT.SELECT_', { suggestion: suggestion.name || suggestion.value })"
-      (click)="select(suggestion)"
-    >
-      <ion-label>
-        <p class="categories" *ngIf="suggestion.category1 || suggestion.category2">
-          <ion-text
-            *ngIf="suggestion.category1"
-            [innerHTML]="suggestion.category1 | boldprefix: searchbar.value"
-          ></ion-text>
-          <ion-text *ngIf="suggestion.category1 && suggestion.category2" class="categoriesDivider">
-            |
+    <ion-virtual-scroll [items]="suggestions">
+      <ion-item
+        class="suggestion"
+        *virtualItem="let suggestion"
+        [button]="true"
+        [title]="t._('IDEA.SELECT.SELECT_', { suggestion: suggestion.name || suggestion.value })"
+        (click)="select(suggestion)"
+      >
+        <ion-label>
+          <p class="categories" *ngIf="suggestion.category1 || suggestion.category2">
+            <ion-text
+              *ngIf="suggestion.category1"
+              [innerHTML]="suggestion.category1 | boldprefix: searchbar.value"
+            ></ion-text>
+            <ion-text *ngIf="suggestion.category1 && suggestion.category2" class="categoriesDivider">
+              |
+            </ion-text>
+            <ion-text
+              *ngIf="suggestion.category2"
+              [innerHTML]="suggestion.category2 | boldprefix: searchbar.value"
+            ></ion-text>
+          </p>
+          <!-- the "key" div is used for keyboard controls -->
+          <div class="key" style="display: none;">
+            {{ suggestion.value }}
+          </div>
+          <ion-text [innerHTML]="suggestion.name || suggestion.value | boldprefix: searchbar.value"></ion-text>
+          <ion-text color="medium">
+            <p
+              *ngIf="suggestion.name && !hideIdFromUI"
+              [innerHTML]="suggestion.value | boldprefix: searchbar.value"
+            ></p>
           </ion-text>
-          <ion-text
-            *ngIf="suggestion.category2"
-            [innerHTML]="suggestion.category2 | boldprefix: searchbar.value"
-          ></ion-text>
-        </p>
-        <!-- the "key" div is used for keyboard controls -->
-        <div class="key" style="display: none;">
-          {{ suggestion.value }}
-        </div>
-        <ion-text [innerHTML]="suggestion.name || suggestion.value | boldprefix: searchbar.value"></ion-text>
-        <ion-text color="medium">
-          <p *ngIf="suggestion.name && !hideIdFromUI" [innerHTML]="suggestion.value | boldprefix: searchbar.value"></p>
-        </ion-text>
-      </ion-label>
-    </ion-item>
-    <ion-infinite-scroll (ionInfinite)="doInfinite($event.target)">
-      <ion-infinite-scroll-content> </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+        </ion-label>
+      </ion-item>
+    </ion-virtual-scroll>
   </ion-list>
 </ion-content>

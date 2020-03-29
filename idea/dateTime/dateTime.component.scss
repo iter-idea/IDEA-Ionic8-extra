@@ -1,6 +1,9 @@
 .dateTimeItem {
-  .value {
-    min-height: 20px;
+  height: 48px;
+  .description {
+    margin: 10px 0;
+    height: 20px;
+    line-height: 20px;
     width: 100%;
   }
   .placeholder {
@@ -12,8 +15,14 @@
     font-size: 0.8em;
     color: var(--ion-color-medium);
   }
-  .selectIcon.withLabel {
+}
+.dateTimeItem.withLabel {
+  height: 60px;
+  .selectIcon {
     padding-top: 25px;
+  }
+  ion-icon[slot='start'] {
+    margin-top: 16px;
   }
 }
 .selectable {

@@ -13,15 +13,53 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['dateTime.component.scss']
 })
 export class IDEADateTimeComponent {
+  /**
+   * The date to show.
+   */
   @Input() public date: IdeaX.epochDateTime;
+  /**
+   * Whether to show the time picker (datetime) or not (date).
+   */
   @Input() public timePicker: boolean;
+  /**
+   * The label for the field.
+   */
   @Input() public label: string;
+  /**
+   * The icon for the field.
+   */
   @Input() public icon: string;
+  /**
+   * The color of the icon.
+   */
+  @Input() public iconColor: string;
+  /**
+   * Lines preferences for the item.
+   */
   @Input() public lines: string;
+  /**
+   * A placeholder for the field.
+   */
   @Input() public placeholder: string;
+  /**
+   * If true, the component is disabled.
+   */
   @Input() public disabled: boolean;
+  /**
+   * If true, the obligatory dot is shown.
+   */
   @Input() public obligatory: boolean;
+  /**
+   * On select event.
+   */
   @Output() public select = new EventEmitter<number>();
+  /**
+   * Icon select.
+   */
+  @Output() public iconSelect = new EventEmitter<void>();
+  /**
+   * The value to display in the field preview.
+   */
   public valueToDisplay: string;
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
@@ -64,5 +102,13 @@ export class IDEADateTimeComponent {
    */
   protected getValueToDisplay(date: IdeaX.epochDateTime): string {
     return !date ? '' : Moment(date).format(this.timePicker ? 'LLL' : 'LL');
+  }
+
+  /**
+   * The icon was selected.
+   */
+  public doIconSelect(event: any) {
+    if (event) event.stopPropagation();
+    this.iconSelect.emit(event);
   }
 }

@@ -26,7 +26,7 @@ export class IDEAChecksComponent {
   /**
    * A placeholder for the searchbar.
    */
-  @Input() public placeholder: string;
+  @Input() public searchPlaceholder: string;
   /**
    * The text to show in case no element is found after a search.
    */
@@ -50,7 +50,7 @@ export class IDEAChecksComponent {
     this.workingData = JSON.parse(JSON.stringify(this.data || new Array<IdeaX.Check>()));
     this.filteredChecks = new Array<IdeaX.Check>();
     if (this.sortData) this.workingData = this.workingData.sort((a, b) => a.name.localeCompare(b.name));
-    this.filterChecks();
+    this.search();
   }
   public ionViewDidEnter() {
     // set the focus / open the keyboard when entering the component
@@ -60,15 +60,16 @@ export class IDEAChecksComponent {
   /**
    * Get checks suggestions while typing into the input.
    */
-  public filterChecks(ev?: any) {
-    // acquire and clean the search term
-    let searchTerm = ev && ev.target ? ev.target.value || '' : '';
-    if (!searchTerm.trim().length) searchTerm = '';
-    searchTerm = searchTerm.toLowerCase();
+  public search(toSearch?: string) {
+    toSearch = toSearch ? toSearch.toLowerCase() : '';
     // filter the elements based on the search
     this.filteredChecks = this.workingData
       .filter(x => !x.hidden)
-      .filter(x => `${x.name} ${x.value}`.toLowerCase().indexOf(searchTerm) >= 0);
+      .filter(x =>
+        toSearch
+          .split(' ')
+          .every(searchTerm => [x.name, String(x.value)].filter(f => f).some(f => f.toLowerCase().includes(searchTerm)))
+      );
   }
 
   /**

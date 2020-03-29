@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, ViewChild } from '@angular/core';
-import { ModalController, IonSearchbar, IonInfiniteScroll } from '@ionic/angular';
+import { ModalController, IonSearchbar, Platform } from '@ionic/angular';
 import IdeaX = require('idea-toolbox');
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -70,10 +70,12 @@ export class IDEASuggestionsComponent {
    * The category2 extracted from the suggestions.
    */
   public activeCategories2: Set<string>;
-
+  /**
+   * The searchbar to filter items.
+   */
   @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {
+  constructor(public platform: Platform, public modalCtrl: ModalController, public t: IDEATranslationsService) {
     this.data = this.data || new Array<IdeaX.Suggestion>();
     this.suggestions = new Array<IdeaX.Suggestion>();
     this.page = 1;
@@ -83,16 +85,16 @@ export class IDEASuggestionsComponent {
     // sort the data, if requested
     if (this.sortData)
       this.data = this.data.sort((a, b) =>
-        a.name && b.name ? a.name.localeCompare(b.name) : a.value.localeCompare(b.value)
+        a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
       );
     // define categories based on the data
     this.loadActiveCategories();
     // show the suggestions based on the data
-    this.getSuggestions();
+    this.search();
   }
   public ionViewDidEnter() {
-    // focus on the searchbar
-    this.searchbar.setFocus();
+    // focus on the searchbar (desktops); on mobile devices it moves the UI too much
+    if (this.platform.is('desktop')) this.searchbar.setFocus();
   }
   /**
    * Load the active categories (i.e. the ones that are at least in one activity).
@@ -116,33 +118,24 @@ export class IDEASuggestionsComponent {
   /**
    * Get suggestions while typing into the input.
    */
-  public getSuggestions(ev?: any) {
+  public search(toSearch?: string) {
     // acquire and clean the searchTerm
-    let toSearch = ev && ev.target ? ev.target.value.toLowerCase() || '' : '';
-    if (toSearch.trim() === '') toSearch = '';
+    toSearch = toSearch ? toSearch.toLowerCase() : '';
     // load the suggestions
-    const list = (this.data || [])
+    this.suggestions = (this.data || [])
       .filter(x => !this.category1 || x.category1 === this.category1)
       .filter(x => !this.category2 || x.category2 === this.category2)
       .filter(x =>
         toSearch
           .split(' ')
           .every(searchTerm =>
-            [x.value, x.name, x.category1, x.category2].filter(f => f).some(f => f.toLowerCase().includes(searchTerm))
+            [String(x.value), x.name, x.category1, x.category2]
+              .filter(f => f)
+              .some(f => f.toLowerCase().includes(searchTerm))
           )
       );
-    this.suggestions = list.slice(0, this.page * this.numPerPage);
   }
-  /**
-   * Load more elements of the pagination.
-   */
-  public doInfinite(infiniteScroll: IonInfiniteScroll) {
-    setTimeout(() => {
-      this.page += 1;
-      this.getSuggestions(this.searchbar ? this.searchbar.value.toString() : '');
-      infiniteScroll.complete();
-    }, 300); // the timeout is needed
-  }
+
   /**
    * Set a filter for the categoryN acquiring the autoComplete suggestion selected.
    * Note: setting a filter with the same value will reset it (toggle function).
@@ -154,7 +147,7 @@ export class IDEASuggestionsComponent {
     if (whichCategory === 2) this.category2 = value === this.category2 ? null : value;
     else this.category1 = value === this.category1 ? null : value;
     // get the suggestions
-    this.getSuggestions();
+    this.search(this.searchbar ? this.searchbar.value : null);
   }
 
   /**
@@ -163,7 +156,7 @@ export class IDEASuggestionsComponent {
    *    - selection === null -> clear
    *    - otherwise, a suggestion was selected
    */
-  public select(selection?: IdeaX.Suggestion | any) {
+  public select(selection?: IdeaX.Suggestion) {
     this.modalCtrl.dismiss(selection);
   }
 
@@ -186,7 +179,7 @@ export class IDEASuggestionsComponent {
             this.select(
               this.data.find(
                 x =>
-                  x.value ===
+                  String(x.value) ===
                   suggestionsList
                     .getElementsByClassName('selected')[0]
                     .getElementsByClassName('key')[0]

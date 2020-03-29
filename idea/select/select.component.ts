@@ -57,9 +57,13 @@ export class IDEASelectComponent {
    */
   @Input() public label: string;
   /**
-   * The icon (alternative to the label) for the field.
+   * The icon for the field.
    */
   @Input() public icon: string;
+  /**
+   * The color of the icon.
+   */
+  @Input() public iconColor: string;
   /**
    * A placeholder for the field.
    */
@@ -125,15 +129,16 @@ export class IDEASelectComponent {
    */
   @Output() public select = new EventEmitter<IdeaX.Suggestion>();
   /**
+   * Icon select.
+   */
+  @Output() public iconSelect = new EventEmitter<void>();
+  /**
    * On select (with the field disabled) event.
    */
   @Output() public selectWhenDisabled = new EventEmitter<void>();
 
   constructor(public modalCtrl: ModalController) {
     this.data = new Array<IdeaX.Suggestion>();
-    this.category1 = null;
-    this.category2 = null;
-    this.avoidAutoSelection = false;
   }
 
   /**
@@ -171,7 +176,9 @@ export class IDEASelectComponent {
    * Automatically convers data into Suggestions (from plain strings, numbers, etc.).
    */
   protected convertDataInSuggestions() {
-    this.data = this.data.map((x: any) => (x.value ? x : new IdeaX.Suggestion({ value: x })));
+    this.data = this.data.map((x: any) =>
+      x.value !== undefined && x.value !== null ? x : new IdeaX.Suggestion({ value: x })
+    );
   }
   /**
    * Open the suggestions modal and later fetch the selection (plain value).
@@ -202,7 +209,7 @@ export class IDEASelectComponent {
           // manage a cancel option (modal dismission or cancel button)
           if (selection.data === undefined || selection.data === null) return;
           // manage a reset ('') or a selection
-          this.select.emit(selection.data.value ? selection.data : new IdeaX.Suggestion());
+          this.select.emit(String(selection.data.value) ? selection.data : new IdeaX.Suggestion());
           // render the suggestion selected
           if (this.clearValueAfterSelection) this.description = '';
           else if (selection.data.name) this.description = selection.data.name;
@@ -217,5 +224,13 @@ export class IDEASelectComponent {
    */
   public doSelectWhenDisabled() {
     if (this.disabled) this.selectWhenDisabled.emit();
+  }
+
+  /**
+   * The icon was selected.
+   */
+  public doIconSelect(event: any) {
+    if (event) event.stopPropagation();
+    this.iconSelect.emit(event);
   }
 }

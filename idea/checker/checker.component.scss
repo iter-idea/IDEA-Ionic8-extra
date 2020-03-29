@@ -1,7 +1,13 @@
 .checkerItem {
+  height: 48px;
   .description {
-    min-height: 20px;
+    margin: 10px 0;
+    height: 20px;
+    line-height: 20px;
     width: 100%;
+  }
+  .placeholder {
+    color: var(--ion-color-medium);
   }
   .selectIcon {
     margin: 0;
@@ -9,11 +15,14 @@
     font-size: 0.8em;
     color: var(--ion-color-medium);
   }
-  .selectIcon.withLabel {
+}
+.checkerItem.withLabel {
+  height: 60px;
+  .selectIcon {
     padding-top: 25px;
   }
-  .placeholder {
-    color: var(--ion-color-medium);
+  ion-icon[slot='start'] {
+    margin-top: 16px;
   }
 }
 .selectable {
