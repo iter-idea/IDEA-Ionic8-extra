@@ -138,10 +138,7 @@ export class IDEAAppointmentComponent {
   public save() {
     // checkings
     this.errors = new Set(this.appointment.validate());
-    if (this.errors.size) {
-      this.message.warning('IDEA.AGENDA.APPOINTMENT.FORM_HAS_ERROR_TO_CHECK');
-      return;
-    }
+    if (this.errors.size) return this.message.error('IDEA.AGENDA.APPOINTMENT.FORM_HAS_ERROR_TO_CHECK');
     // post/put the appointment
     let request: any;
     const baseURL = this.calendar.isShared() ? `teams/${this.tc.get('membership').teamId}/` : '';

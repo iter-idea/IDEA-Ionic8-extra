@@ -108,10 +108,7 @@ export class IDEACalendarComponent {
     else delete this.calendar.usersCanManageAppointments;
     // checkings
     this.errors = new Set(this.calendar.validate());
-    if (this.errors.size) {
-      this.message.warning('COMMON.FORM_HAS_ERROR_TO_CHECK');
-      return;
-    }
+    if (this.errors.size) return this.message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
     // prepare a request for a private or team calendar
     const baseURL = this.calendar.teamId ? `teams/${this.calendar.teamId}/` : '';
     // send a put request
