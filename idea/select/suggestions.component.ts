@@ -156,7 +156,7 @@ export class IDEASuggestionsComponent {
    *    - selection === null -> clear
    *    - otherwise, a suggestion was selected
    */
-  public select(selection?: IdeaX.Suggestion) {
+  public select(selection?: IdeaX.Suggestion | any) {
     this.modalCtrl.dismiss(selection);
   }
 
