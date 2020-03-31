@@ -91,8 +91,8 @@ export class IDEATranslationsService {
     browserLang =
       browserLang ||
       window.navigator.language ||
-      (<any>window.navigator).browserLanguage ||
-      (<any>window.navigator).userLanguage;
+      (window.navigator as any).browserLanguage ||
+      (window.navigator as any).userLanguage;
     if (typeof browserLang === 'undefined') return undefined;
     if (browserLang.indexOf('-') !== -1) browserLang = browserLang.split('-')[0];
     if (browserLang.indexOf('_') !== -1) browserLang = browserLang.split('_')[0];
@@ -128,7 +128,7 @@ export class IDEATranslationsService {
    * Get a translated term by key, optionally interpolating variables (e.g. `{{user}}`).
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
-  public instant(key: string, interpolateParams?: Object): string {
+  public instant(key: string, interpolateParams?: object): string {
     if (!this.isDefined(key) || !key.length) return;
     let res = this.interpolate(this.getValue(this.translations[this.currentLang], key), interpolateParams);
     if (res === undefined && this.defaultLang !== null && this.defaultLang !== this.currentLang)
@@ -139,7 +139,7 @@ export class IDEATranslationsService {
   /**
    * Shortcut to instant.
    */
-  public _(key: string, interpolateParams?: Object): string {
+  public _(key: string, interpolateParams?: object): string {
     return this.instant(key, interpolateParams);
   }
 
@@ -175,7 +175,7 @@ export class IDEATranslationsService {
         .get(`${path}/${lang}.json`)
         .toPromise()
         .then((obj: object) => {
-          for (let key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
+          for (const key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
           resolve();
         });
     });
@@ -188,7 +188,7 @@ export class IDEATranslationsService {
   protected interpolate(expr: string, params?: any): string {
     if (!params || !expr) return expr;
     return expr.replace(this.templateMatcher, (substring: string, b: string) => {
-      let r = this.getValue(params, b);
+      const r = this.getValue(params, b);
       return this.isDefined(r) ? r : substring;
     });
   }
@@ -197,7 +197,7 @@ export class IDEATranslationsService {
    * getValue({ key1: { keyA: 'valueI' }}, 'key1.keyA') ==> 'valueI'
    */
   protected getValue(target: any, key: string): any {
-    let keys = typeof key === 'string' ? key.split('.') : [key];
+    const keys = typeof key === 'string' ? key.split('.') : [key];
     key = '';
     do {
       key += keys.shift();

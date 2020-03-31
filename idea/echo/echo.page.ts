@@ -145,7 +145,7 @@ export class IDEAEchoPage {
     this.loading.show();
     this.API.patchResource('calendars', {
       idea: true,
-      body: { action: 'SET_EXTERNAL_INTEGRATION', service: service, code, calendarId }
+      body: { action: 'SET_EXTERNAL_INTEGRATION', service, code, calendarId }
     })
       .then(() => {
         this.success = true;

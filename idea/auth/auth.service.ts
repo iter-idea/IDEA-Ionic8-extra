@@ -163,7 +163,7 @@ export class IDEAAuthService {
   public isAuthenticated(offlineAllowed: boolean, getFreshIdTokenOnExp?: (freshIdToken: string) => void): Promise<any> {
     return new Promise((resolve, reject) => {
       if (offlineAllowed && !navigator.onLine) {
-        this.storage.get('AuthUserDetails').then(userDetails => resolve({ idToken: null, userDetails: userDetails }));
+        this.storage.get('AuthUserDetails').then(userDetails => resolve({ idToken: null, userDetails }));
         // re-execute the method when back online, so that you can retrieve a token to make requests
         window.addEventListener('online', () =>
           this.isAuthenticated(true, getFreshIdTokenOnExp)
@@ -197,7 +197,7 @@ export class IDEAAuthService {
               this.storage.set('AuthUserDetails', userDetails); // async
             }
             // return the idToken (to use with API)
-            resolve({ idToken: session.getIdToken().getJwtToken(), userDetails: userDetails });
+            resolve({ idToken: session.getIdToken().getJwtToken(), userDetails });
           });
         });
       }

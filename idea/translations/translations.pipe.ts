@@ -12,7 +12,7 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
   /**
    * The value to display.
    */
-  private value: string = '';
+  private value = '';
   /**
    * The lst key requested.
    */
@@ -28,23 +28,23 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
 
   constructor(private translate: IDEATranslationsService, private _ref: ChangeDetectorRef) {}
 
-  updateValue(key: string, interpolateParams?: Object) {
+  public updateValue(key: string, interpolateParams?: object) {
     const res = this.translate.instant(key, interpolateParams);
     this.value = res !== undefined ? res : key;
     this.lastKey = key;
     this._ref.markForCheck();
   }
 
-  transform(query: string, ...args: any[]): any {
+  public transform(query: string, ...args: any[]): any {
     if (!query || !query.length) return query;
     // if we ask another time for the same key, return the last value
     if (equals(query, this.lastKey) && equals(args, this.lastParams)) return this.value;
-    let interpolateParams: Object;
+    let interpolateParams: object;
     if (args[0] !== undefined && args[0] !== null && args.length) {
       if (typeof args[0] === 'string' && args[0].length) {
         // we accept objects written in the template such as {n:1}, {'n':1}, {n:'v'}
         // which is why we might need to change it to real JSON objects such as {"n":1} or {"n":"v"}
-        let validArgs: string = args[0]
+        const validArgs: string = args[0]
           .replace(/(\')?([a-zA-Z0-9_]+)(\')?(\s)?:/g, '"$2":')
           .replace(/:(\s)?(\')(.*?)(\')/g, ':"$3"');
         try {
@@ -84,7 +84,7 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this._dispose();
   }
 }

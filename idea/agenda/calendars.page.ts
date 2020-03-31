@@ -79,7 +79,7 @@ export class IDEACalendarsPage {
    * Edit a calendar.
    */
   public editCalendar(calendar: IdeaX.Calendar) {
-    this.modalCtrl.create({ component: IDEACalendarComponent, componentProps: { calendar: calendar } }).then(modal => {
+    this.modalCtrl.create({ component: IDEACalendarComponent, componentProps: { calendar } }).then(modal => {
       modal.onDidDismiss().then((res: OverlayEventDetail) => {
         // the calendar was changed
         if (res.data) calendar.load(res.data);
@@ -187,13 +187,13 @@ export class IDEACalendarsPage {
         resourceId: calendar.calendarId,
         body: { action: 'GET_ACCESS_TOKEN' }
       })
-        .then((res: any) => {
+        .then((result: any) => {
           // acquire the calendars to choose one
           switch (calendar.external.service) {
             case IdeaX.ExternalCalendarSources.GOOGLE:
               this.API.rawRequest()
                 .get('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
-                  headers: { Authorization: 'Bearer '.concat(res.token) }
+                  headers: { Authorization: 'Bearer '.concat(result.token) }
                 })
                 .toPromise()
                 .then((res: any) => resolve(res.items.map(c => ({ name: c.summary, id: c.id } as ExternalCalendar))))
@@ -202,7 +202,7 @@ export class IDEACalendarsPage {
               break;
             case IdeaX.ExternalCalendarSources.MICROSOFT:
               this.API.rawRequest()
-                .get('https://graph.microsoft.com/v1.0/me/calendars', { headers: { Authorization: res.token } })
+                .get('https://graph.microsoft.com/v1.0/me/calendars', { headers: { Authorization: result.token } })
                 .toPromise()
                 .then((res: any) => resolve(res.value.map(c => ({ name: c.name, id: c.id } as ExternalCalendar))))
                 .catch(() => reject())

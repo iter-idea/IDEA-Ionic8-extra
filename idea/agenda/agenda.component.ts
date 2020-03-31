@@ -90,7 +90,7 @@ export class IDEAAgendaComponent {
   /**
    * Helper to show a spinner while loading the appointments.
    */
-  public _loadingAppointments: boolean = false;
+  public _loadingAppointments = false;
   get loadingAppointments(): boolean {
     return this._loadingAppointments;
   }
@@ -183,12 +183,8 @@ export class IDEAAgendaComponent {
       this.API.getResource(baseURL.concat(`calendars/${calendar.calendarId}/appointments`), {
         idea: true,
         params: {
-          from: Moment(this.referenceDate)
-            .subtract(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months')
-            .format('x'),
-          to: Moment(this.referenceDate)
-            .add(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months')
-            .format('x')
+          from: Moment(this.referenceDate).subtract(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months').format('x'),
+          to: Moment(this.referenceDate).add(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months').format('x')
         }
       })
         .then((app: Array<IdeaX.Appointment>) => {
@@ -305,7 +301,7 @@ export class IDEAAgendaComponent {
     // convert 3-digit hex to 6-digits
     if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
     // fallback for not hex colors
-    if (hex.length !== 6) '000000';
+    if (hex.length !== 6) return '000000';
     const r = parseInt(hex.slice(0, 2), 16),
       g = parseInt(hex.slice(2, 4), 16),
       b = parseInt(hex.slice(4, 6), 16);
@@ -377,7 +373,7 @@ export class IDEAAgendaComponent {
       .create({
         component: IDEAAppointmentComponent,
         componentProps: {
-          startTime: startTime,
+          startTime,
           defaultDuration: duration,
           calendars: this.calendars,
           defaultCalendarId: this.getDefaultCalendar().calendarId

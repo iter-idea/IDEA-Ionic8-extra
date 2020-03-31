@@ -64,6 +64,6 @@
 <!----->
 <ion-item lines="none" class="selectable" *ngIf="editMode" (click)="browseFiles()">
   <ion-label color="medium">{{ 'IDEA.ATTACHMENTS.ADD_ATTACHMENT' | translate }}</ion-label>
-  <input id="attachmentPicker" type="file" multiple style="display: none" (change)="addAttachment($event)" />
+  <input id="attachmentPicker" type="file" multiple style="display: none;" (change)="addAttachment($event)" />
   <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="editMode" [class.selectable]="editMode"></ion-icon>
 </ion-item>

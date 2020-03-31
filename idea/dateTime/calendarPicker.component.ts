@@ -128,9 +128,7 @@ export class IDEACalendarPickerComponent {
         this.buildCalendarGrid(this.refDate);
       }
     });
-    this.alertCtrl
-      .create({ header: this.t._('IDEA.CALENDAR.MONTH'), buttons: buttons, inputs: inputs })
-      .then(alert => alert.present());
+    this.alertCtrl.create({ header: this.t._('IDEA.CALENDAR.MONTH'), buttons, inputs }).then(alert => alert.present());
   }
 
   /**

@@ -24,7 +24,7 @@ export class IDEADataWedgeReaderService {
   constructor(public platform: Platform) {
     this.platform.ready().then(() => {
       // load the intent manager
-      this.intent = (<any>window).plugins ? (<any>window).plugins.intentShim : null;
+      this.intent = (window as any).plugins ? (window as any).plugins.intentShim : null;
       if (!this.intent) return;
       // create the observable to subscribe to the readings
       this.observable = new Observable(observer => {
@@ -41,11 +41,11 @@ export class IDEADataWedgeReaderService {
           },
           (intent: any) => {
             // extract the reading from the info returned by the device
-            const ret = <ScanData>{
+            const ret = {
               data: intent.extras['com.symbol.datawedge.data_string'],
               type: intent.extras['com.symbol.datawedge.label_type'],
               timestamp: new Date().toLocaleTimeString()
-            };
+            } as ScanData;
             // notify the subscribers that a reading happened
             observer.next(ret);
           }

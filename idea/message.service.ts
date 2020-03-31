@@ -18,7 +18,7 @@ export class IDEAMessageService {
         message: dontTranslate ? message : this.t._(message),
         duration: 3000,
         position: 'bottom',
-        color: color,
+        color,
         buttons: [{ text: 'X', role: 'cancel' }]
       })
       .then(toast => toast.present());

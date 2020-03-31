@@ -122,7 +122,7 @@ export class IDEAOfflineDataService {
   /**
    * Quickly check for online connection.
    */
-  public check(): Promise<Boolean> {
+  public check(): Promise<boolean> {
     return this.offline.check();
   }
 
