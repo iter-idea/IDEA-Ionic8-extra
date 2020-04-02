@@ -14,6 +14,7 @@ import { IDEAAppointmentComponent } from './appointment.component';
 import { IDEADateTimeModule } from '../dateTime/dateTime.module';
 import { IDEASelectModule } from '../select/select.module';
 import { IDEATranslationsModule } from '../translations/translations.module';
+import { IDEAAppointmentLinkedObjectComponent } from './appointmentLinkedObject.component';
 
 @NgModule({
   imports: [
@@ -26,8 +27,8 @@ import { IDEATranslationsModule } from '../translations/translations.module';
     IDEADateTimeModule,
     IDEASelectModule
   ],
-  declarations: [IDEAAgendaComponent, IDEAAppointmentComponent],
-  entryComponents: [IDEAAgendaComponent, IDEAAppointmentComponent],
-  exports: [IDEAAgendaComponent, IDEAAppointmentComponent]
+  declarations: [IDEAAgendaComponent, IDEAAppointmentComponent, IDEAAppointmentLinkedObjectComponent],
+  entryComponents: [IDEAAgendaComponent, IDEAAppointmentComponent, IDEAAppointmentLinkedObjectComponent],
+  exports: [IDEAAgendaComponent, IDEAAppointmentComponent, IDEAAppointmentLinkedObjectComponent]
 })
 export class IDEAAgendaModule {}

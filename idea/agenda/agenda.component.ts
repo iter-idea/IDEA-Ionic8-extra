@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import Async = require('async');
@@ -18,6 +18,10 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['agenda.component.scss']
 })
 export class IDEAAgendaComponent {
+  /**
+   * The supported linked object types for the appointments of this project.
+   */
+  @Input() public linkedObjectTypes: Array<IdeaX.AppointmentLinkedObjectTypes>;
   /**
    * The appointments to show in the calendar.
    */
@@ -132,6 +136,7 @@ export class IDEAAgendaComponent {
     this.appointments = new Array<AgendaAppointment>();
     this.appointmentsByCalendar = {};
     this.agendaAppointmentsByCalendar = {};
+    this.lastTimeSelected = null;
     // acquire all the calendars available to the user and gather their appointments (if the calendar is selected)
     this.loading.show();
     Promise.all([
@@ -168,9 +173,10 @@ export class IDEAAgendaComponent {
         .filter(cal => this.calendarsChecks.find(x => x.value === cal.calendarId).checked)
         .map(cal => this.getCalendarAppointments(cal, force));
       // execute the requests and concat the results in an array of appointments
-      Promise.all(requests).then((res: Array<Array<AgendaAppointment>>) =>
-        resolve((this.appointments = this.flattenArray(res)))
-      );
+      Promise.all(requests).then((res: Array<Array<AgendaAppointment>>) => {
+        this.lastTimeSelected = null;
+        resolve((this.appointments = this.flattenArray(res)));
+      });
     });
   }
   /**
@@ -186,8 +192,12 @@ export class IDEAAgendaComponent {
       this.API.getResource(baseURL.concat(`calendars/${calendar.calendarId}/appointments`), {
         idea: true,
         params: {
-          from: Moment(this.referenceDate).subtract(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months').format('x'),
-          to: Moment(this.referenceDate).add(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months').format('x')
+          from: Moment(this.referenceDate)
+            .subtract(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months')
+            .format('x'),
+          to: Moment(this.referenceDate)
+            .add(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months')
+            .format('x')
         }
       })
         .then((app: Array<IdeaX.Appointment>) => {
@@ -384,7 +394,8 @@ export class IDEAAgendaComponent {
           startTime,
           defaultDuration: duration,
           calendars: this.calendars,
-          defaultCalendarId: this.getDefaultCalendar().calendarId
+          defaultCalendarId: this.getDefaultCalendar().calendarId,
+          linkedObjectTypes: this.linkedObjectTypes
         }
       })
       .then(modal => {
@@ -406,7 +417,10 @@ export class IDEAAgendaComponent {
     const appointment = this.appointmentsByCalendar[app.calendarId].find(a => a.appointmentId === app.id);
     // open the modal
     this.modalCtrl
-      .create({ component: IDEAAppointmentComponent, componentProps: { appointment, calendars: this.calendars } })
+      .create({
+        component: IDEAAppointmentComponent,
+        componentProps: { appointment, calendars: this.calendars, linkedObjectTypes: this.linkedObjectTypes }
+      })
       .then(modal => {
         modal.onDidDismiss().then((res: OverlayEventDetail) => {
           // update the view if the appointment was deleted
@@ -460,6 +474,21 @@ export class IDEAAgendaComponent {
       })
       .catch(() => done());
   }
+
+  /**
+   * Get the path to the icon of the chosen linked object type.
+   */
+  public getLinkedObjectLogo(linkedObjType: IdeaX.AppointmentLinkedObjectTypes): string {
+    const path = 'assets/icons/minimal/';
+    switch (linkedObjType) {
+      case IdeaX.AppointmentLinkedObjectTypes.SCARLETT_ACTIVITY:
+        return path.concat('scarlett.svg');
+      case IdeaX.AppointmentLinkedObjectTypes.ARTHUR_ACTIVITY:
+        return path.concat('arthur.svg');
+      default:
+        return;
+    }
+  }
 }
 
 /**
@@ -498,6 +527,10 @@ export class AgendaAppointment {
    * The color with which to show the appointment in the agenda.
    */
   public color: string;
+  /**
+   * A list of linked objects (types), to show the logos in the UI and alert the user of their presence.
+   */
+  public linkedTo: Array<IdeaX.AppointmentLinkedObjectTypes>;
 
   constructor(a: IdeaX.Appointment, color: string) {
     this.id = a.appointmentId;
@@ -508,6 +541,7 @@ export class AgendaAppointment {
     this.endTime = new Date(a.endTime);
     this.allDay = a.allDay;
     this.color = color;
+    this.linkedTo = (a.linkedTo || []).map((x: IdeaX.AppointmentLinkedObject) => x.type);
   }
 }
 

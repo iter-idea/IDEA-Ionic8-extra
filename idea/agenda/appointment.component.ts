@@ -37,6 +37,10 @@ export class IDEAAppointmentComponent {
    */
   @Input() public defaultCalendarId: string;
   /**
+   * The supported linked object types for the appointments of this project.
+   */
+  @Input() public linkedObjectTypes: Array<IdeaX.AppointmentLinkedObjectTypes>;
+  /**
    * Helper structure to let the user pick a calendar.
    */
   public calendarsSuggestions: Array<IdeaX.Suggestion>;
@@ -56,6 +60,14 @@ export class IDEAAppointmentComponent {
    * Helper to know whether the user can see the appointment's details, based on the calendar's permissions.
    */
   public userCanSeeDetails: boolean;
+  /**
+   * Helper to use the enum in the UI.
+   */
+  public LOTypes = IdeaX.AppointmentLinkedObjectTypes;
+  /**
+   * Enable/disable the mode in which you can remove linked objects.
+   */
+  public removeLinkedObjectMode: boolean;
 
   constructor(
     public platform: Platform,
@@ -193,5 +205,18 @@ export class IDEAAppointmentComponent {
         ]
       })
       .then(alert => alert.present());
+  }
+
+  /**
+   * Based on the types configured in this project, link an object to the appointment.
+   */
+  public linkObject() {
+    console.log('@todo');
+  }
+  /**
+   * Remove an object linked to the appointment.
+   */
+  public removeLinkedObject(obj: IdeaX.AppointmentLinkedObject) {
+    this.appointment.linkedTo.splice(this.appointment.linkedTo.indexOf(obj), 1);
   }
 }

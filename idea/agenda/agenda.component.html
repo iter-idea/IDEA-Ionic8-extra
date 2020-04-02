@@ -114,6 +114,13 @@
         <div class="calendar-event-inner" [style.border-left-color]="displayEvent.event.color">
           {{ displayEvent.event.title }}
           <p>{{ displayEvent.event.location }}</p>
+          <div
+            class="linkedObjectService"
+            *ngFor="let obj of displayEvent.event.linkedTo; let index = index"
+            [style.right]="3 + 15 * index + 'px'"
+          >
+            <img [src]="getLinkedObjectLogo(obj)" />
+          </div>
         </div>
       </ng-template>
       <!-- a .calendar-hour-column CSS class must exist in global.scss and contain `line-height: 35px !important;`

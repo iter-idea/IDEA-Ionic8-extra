@@ -1,0 +1,42 @@
+.appointmentLinkedObjectCard {
+  ion-card-content {
+    padding: 5px;
+    ion-item {
+      ion-label {
+        margin: 5px 0;
+        h3 {
+          margin: 0;
+          font-weight: 500;
+          color: var(--ion-color-dark);
+        }
+        p {
+          font-size: 0.8em;
+        }
+      }
+      .circle {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+      }
+      .avatars {
+        width: 20px;
+        border-radius: 10px;
+        margin: 5px 1px;
+      }
+      .avatars:last-of-type {
+        margin-right: 5px;
+      }
+      .circle,
+      ion-icon {
+        margin-left: 0px;
+        margin-right: 5px;
+      }
+    }
+  }
+}
+.appointmentLinkedObjectCard.error {
+  ion-skeleton-text {
+    --background: var(--ion-color-danger);
+  }
+}

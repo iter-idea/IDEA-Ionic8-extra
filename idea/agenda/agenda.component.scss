@@ -3,6 +3,7 @@
     max-width: 100%;
     width: 100%;
     padding-left: 0;
+    font-weight: 500;
   }
 }
 ion-spinner {
@@ -88,5 +89,13 @@ ion-spinner {
     padding-top: 1px;
     font-size: 0.8em;
     line-height: 0.9em;
+  }
+  .linkedObjectService {
+    position: absolute;
+    bottom: 3px;
+    opacity: 0.5;
+    img {
+      width: 15px;
+    }
   }
 }

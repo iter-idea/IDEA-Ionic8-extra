@@ -71,13 +71,15 @@
         "LOCATION": "Location",
         "LOCATION_HINT": "Add a location for the appointment",
         "NEW_APPOINTMENT": "New appointment",
-        "OPEN_IN": "Open in",
+        "OPEN_IN_EXTERNAL_SERVICE": "Open in external service",
         "READ_ONLY": "Read-only",
         "SAVED": "Appointment saved",
         "START_TIME": "Start of the appointment",
         "START_TIME_HINT": "Appointment start date and time",
         "TITLE": "Title",
-        "TITLE_HINT": "Brief description of the appointment"
+        "TITLE_HINT": "Brief description of the appointment",
+        "LINK_OBJECT": "Link an object",
+        "REMOVE_LINKED_OBJECT": "Remove linked object"
       },
       "CALENDARS": {
         "ACCESS_LEVELS": {
