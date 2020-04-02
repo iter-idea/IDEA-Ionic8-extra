@@ -23,3 +23,9 @@ window.IDEA_MICROSOFT_API_SCOPE = 'offline_access user.read Calendars.ReadWrite.
 window.IDEA_GOOGLE_API_CLIENT_ID = '121599012131-b7hndachsohn5u3j2apjnoqne3uglv8e.apps.googleusercontent.com';
 window.IDEA_GOOGLE_API_SCOPE =
   'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar';
+
+window.IDEA_SCARLETT_API_ID = '21phkjqfih';
+window.IDEA_SCARLETT_APP_URL = 'https://scarlett.iter-idea.com';
+
+window.IDEA_ARTHUR_API_ID = 'wjl4h3m529';
+window.IDEA_ARTHUR_APP_URL = 'https://arthur.team';
