@@ -45,17 +45,17 @@
       [pullLg]="1"
       [sizeLg]="3"
     >
-      <ion-select
-        interface="popover"
-        class="calendarModeSelect"
-        style="text-align: left;"
-        [value]="viewMode"
-        (ionChange)="$event?.detail ? changeViewMode($event.detail.value) : null"
-      >
-        <ion-select-option value="month">{{ 'IDEA.AGENDA.MONTH' | translate }}</ion-select-option>
-        <ion-select-option value="week">{{ 'IDEA.AGENDA.WEEK' | translate }}</ion-select-option>
-        <ion-select-option value="day">{{ 'IDEA.AGENDA.DAY' | translate }}</ion-select-option>
-      </ion-select>
+      <ion-item lines="none" class="calendarMode">
+        <ion-select
+          interface="popover"
+          [value]="viewMode"
+          (ionChange)="$event?.detail ? changeViewMode($event.detail.value) : null"
+        >
+          <ion-select-option value="month">{{ 'IDEA.AGENDA.MONTH' | translate }}</ion-select-option>
+          <ion-select-option value="week">{{ 'IDEA.AGENDA.WEEK' | translate }}</ion-select-option>
+          <ion-select-option value="day">{{ 'IDEA.AGENDA.DAY' | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
     </ion-col>
   </ion-row>
   <ion-row class="ion-align-items-center subTitleRow">
@@ -119,12 +119,16 @@
       <!-- a .calendar-hour-column CSS class must exist in global.scss and contain `line-height: 35px !important;`
         to work with 52 as top/height value -->
       <ng-template #template let-tm="tm" let-hourParts="hourParts" let-eventTemplate="eventTemplate">
-        <div [ngClass]="{ 'calendar-event-wrap': tm.events }" *ngIf="tm.events">
+        <div
+          [ngClass]="{ 'calendar-event-wrap': tm.events }"
+          [class.calendarCellSelected]="tm.time === lastTimeSelected"
+          *ngIf="tm.events"
+        >
           <div
             *ngFor="let displayEvent of tm.events"
             class="calendar-event"
             tappable
-            (click)="onAppointmentSelected(displayEvent.event)"
+            (click)="onAppointmentSelected(displayEvent.event, $event)"
             [ngStyle]="{
               top: (52 * displayEvent.startOffset) / hourParts + 'px',
               left: (100 / displayEvent.overlapNumber) * displayEvent.position + '%',

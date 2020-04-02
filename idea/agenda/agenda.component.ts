@@ -97,9 +97,12 @@ export class IDEAAgendaComponent {
   set loadingAppointments(loading: boolean) {
     // to overcome changesDetector in showing the spinner while loading the appointments.
     setTimeout(() => (this._loadingAppointments = loading), loading ? 100 : 300);
+    // blank the current selection among the calendars cells
+    this.lastTimeSelected = null;
   }
   /**
    * Helper to see if a time (cell) was selected twice in a row.
+   * The second time the cell is selected, this field is blanked.
    */
   public lastTimeSelected: Date;
   /**
@@ -337,9 +340,9 @@ export class IDEAAgendaComponent {
   }
 
   /**
-   * When clicking twice on the same cell, insert a new appointment with that starting time.
+   * When clicking twice on the same cell without an appointment in it, insert a new one with that starting time.
    */
-  public onTimeSelected(ev) {
+  public onTimeSelected(ev: any) {
     if (this.viewMode === AgendaViewModes.MONTH) return; // ignore
     // if the same time was selected, check if to prompt the insertion of a new appointent
     if (this.lastTimeSelected === ev.selectedTime) {
@@ -351,20 +354,25 @@ export class IDEAAgendaComponent {
   }
   /**
    * Open the details of the appointment.
-   * @todo project-specific popup
    */
-  public onAppointmentSelected(event: any) {
-    this.editAppointment(event);
+  public onAppointmentSelected(app: AgendaAppointment, ev: any) {
+    if (ev) ev.stopPropagation();
+    this.editAppointment(app);
   }
   /**
    * Open the UI for adding a new appointment.
    */
   public addAppointment(startTime?: IdeaX.epochDateTime, endTime?: IdeaX.epochDateTime) {
-    // if a starting time wasn't specified, start in the current date at 9 AM
+    // if a starting time wasn't specified, try to guess it
     if (!startTime) {
-      const startDate = new Date(this.currentDate);
-      startDate.setHours(9);
-      startTime = startDate.getTime();
+      // check if a date was selected in the calendar
+      if (this.lastTimeSelected) startTime = new Date(this.lastTimeSelected).getTime();
+      else {
+        // otherwise, start in the current date at 9 AM
+        const startDate = new Date(this.currentDate);
+        startDate.setHours(9);
+        startTime = startDate.getTime();
+      }
     }
     // set the ending time
     const duration = endTime && endTime > startTime ? endTime - startTime : this.DEFAULT_APPOINTMENT_DURATION;

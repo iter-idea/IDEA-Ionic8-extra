@@ -1,3 +1,16 @@
+.calendarMode {
+  ion-select {
+    max-width: 100%;
+    width: 100%;
+    padding-left: 0;
+  }
+}
+ion-spinner {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  padding-right: 10px;
+}
 .appointment {
   --min-height: 70px;
   --ion-background-color: white !important;
@@ -52,11 +65,8 @@
     margin-bottom: 0;
   }
 }
-ion-spinner {
-  width: 25px;
-  height: 25px;
-  vertical-align: middle;
-  padding-right: 10px;
+.calendarCellSelected {
+  background-color: var(--ion-color-primary);
 }
 .calendar-event-inner {
   cursor: pointer;
