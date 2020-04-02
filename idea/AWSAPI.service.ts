@@ -14,8 +14,7 @@ declare const IDEA_API_IDEA_ID: string;
 declare const IDEA_API_IDEA_REGION: string;
 declare const IDEA_API_IDEA_VERSION: string;
 
-export const API_URL_PROJECT =
-  `https://${IDEA_API_ID}.execute-api.${IDEA_API_REGION}.amazonaws.com/` + `${IDEA_API_VERSION}`;
+export const API_URL_PROJECT = `https://@API_URL.execute-api.${IDEA_API_REGION}.amazonaws.com/` + `${IDEA_API_VERSION}`;
 export const API_URL_IDEA =
   `https://${IDEA_API_IDEA_ID}.execute-api.${IDEA_API_IDEA_REGION}.amazonaws.com/` + `${IDEA_API_IDEA_VERSION}`;
 
@@ -46,7 +45,7 @@ export class IDEAAWSAPIService {
     return new Promise((resolve, reject) => {
       const opt = (options || {}) as APIRequestOption;
       // decide if to use IDEA's API or project's API
-      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT;
+      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
       url = url.concat(`/${resource}/`);
       if (opt.resourceId) url = url.concat(encodeURIComponent(opt.resourceId));
@@ -358,6 +357,10 @@ export class APIRequestOption {
    * If true, use IDEA's API instead of the project's API).
    */
   public idea?: boolean;
+  /**
+   * If `idea` is not set, set this to use an alternative API id for the request.
+   */
+  public alternativeAPI?: string;
 }
 
 /**
