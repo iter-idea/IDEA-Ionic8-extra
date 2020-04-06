@@ -29,7 +29,7 @@ import { IDEASuggestionsComponent } from './suggestions.component';
 @Component({
   selector: 'idea-select',
   templateUrl: 'select.component.html',
-  styleUrls: ['select.component.scss']
+  styleUrls: ['select.component.scss'],
 })
 export class IDEASelectComponent {
   /**
@@ -121,6 +121,10 @@ export class IDEASelectComponent {
    */
   @Input() public category2: string;
   /**
+   * Whether tho show the categories filters.
+   */
+  @Input() public showCategoriesFilters: boolean;
+  /**
    * If true, doesn't let the auto-selection in case there's only one element as possible selection.
    */
   @Input() public avoidAutoSelection: boolean;
@@ -148,8 +152,8 @@ export class IDEASelectComponent {
     // load the resources and prepare the suggestions
     if (!this.avoidAutoSelection && (changes['data'] || changes['category1'] || changes['category2'])) {
       const filteredData = (this.data || [])
-        .filter(x => !this.category1 || x.category1 === this.category1)
-        .filter(x => !this.category2 || x.category2 === this.category2);
+        .filter((x) => !this.category1 || x.category1 === this.category1)
+        .filter((x) => !this.category2 || x.category2 === this.category2);
       if (filteredData.length === 1) {
         setTimeout(() => {
           this.select.emit(filteredData[0].value ? filteredData[0] : new IdeaX.Suggestion());
@@ -201,10 +205,11 @@ export class IDEASelectComponent {
           hideIdFromUI: this.hideIdFromUI,
           hideClearButton: this.hideClearButton,
           category1: this.category1,
-          category2: this.category2
-        }
+          category2: this.category2,
+          showCategoriesFilters: this.showCategoriesFilters,
+        },
       })
-      .then(modal => {
+      .then((modal) => {
         modal.onDidDismiss().then((selection: any) => {
           // manage a cancel option (modal dismission or cancel button)
           if (selection.data === undefined || selection.data === null) return;
