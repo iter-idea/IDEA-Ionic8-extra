@@ -192,12 +192,8 @@ export class IDEAAgendaComponent {
       this.API.getResource(baseURL.concat(`calendars/${calendar.calendarId}/appointments`), {
         idea: true,
         params: {
-          from: Moment(this.referenceDate)
-            .subtract(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months')
-            .format('x'),
-          to: Moment(this.referenceDate)
-            .add(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months')
-            .format('x')
+          from: Moment(this.referenceDate).subtract(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months').format('x'),
+          to: Moment(this.referenceDate).add(this.MONTHS_RANGE_FOR_GATHERING_DATA, 'months').format('x')
         }
       })
         .then((app: Array<IdeaX.Appointment>) => {
@@ -365,7 +361,7 @@ export class IDEAAgendaComponent {
   /**
    * Open the details of the appointment.
    */
-  public onAppointmentSelected(app: AgendaAppointment, ev: any) {
+  public onAppointmentSelected(app: AgendaAppointment, ev?: any) {
     if (ev) ev.stopPropagation();
     this.editAppointment(app);
   }
