@@ -121,6 +121,10 @@ export class IDEASelectComponent {
    */
   @Input() public category2: string;
   /**
+   * Whether tho show the categories filters in the suggestions component.
+   */
+  @Input() public showCategoriesFilters: boolean;
+  /**
    * If true, doesn't let the auto-selection in case there's only one element as possible selection.
    */
   @Input() public avoidAutoSelection: boolean;
@@ -201,7 +205,8 @@ export class IDEASelectComponent {
           hideIdFromUI: this.hideIdFromUI,
           hideClearButton: this.hideClearButton,
           category1: this.category1,
-          category2: this.category2
+          category2: this.category2,
+          showCategoriesFilters: this.showCategoriesFilters
         }
       })
       .then(modal => {
