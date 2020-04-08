@@ -268,7 +268,7 @@ export class IDEACalendarsPage {
     this.API.patchResource(baseURL.concat('calendars'), {
       idea: true,
       resourceId: calendar.calendarId,
-      body: { action: 'SYNC_EXTERNAL_CALENDAR' }
+      body: { action: 'SYNC_EXTERNAL_CALENDAR', firstSync: true }
     })
       .then((res: any) => {
         if (res.moreData) this.calendarFirstSync(calendar, true);
