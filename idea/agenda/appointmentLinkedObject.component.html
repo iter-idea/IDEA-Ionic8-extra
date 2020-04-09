@@ -1,7 +1,7 @@
 <ion-card
   class="appointmentLinkedObjectCard"
   *ngIf="state === ObjectStates.ACTIVE"
-  [button]="true"
+  [button]="!removeMode"
   (click)="goToObject()"
 >
   <ion-card-content>
@@ -22,7 +22,7 @@
       />
       <span slot="end" class="circle" *ngIf="color" [style.background-color]="color"></span>
       <ion-icon slot="end" size="small" *ngFor="let i of icons" [name]="i"></ion-icon>
-      <ion-button fill="clear" slot="end" color="danger" *ngIf="removeMode" (click)="remove.emit()">
+      <ion-button fill="clear" slot="end" color="danger" *ngIf="removeMode" (click)="remove.emit($event)">
         <ion-icon name="archive" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-item>

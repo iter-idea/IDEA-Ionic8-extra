@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import Async = require('async');
@@ -22,6 +22,21 @@ export class IDEAAgendaComponent {
    * The supported linked object types for the appointments of this project.
    */
   @Input() public linkedObjectTypes: Array<IdeaX.AppointmentLinkedObjectTypes>;
+  /**
+   * Emitter to allow the selection of an object to link to an appointment.
+   */
+  @Output() public linkObjectToAppointment = new EventEmitter<IdeaX.Appointment>();
+  /**
+   * Emitter to allow the creation of a new object to link to an appointment.
+   */
+  @Output() public newObjectLinkedToAppointment = new EventEmitter<IdeaX.Appointment>();
+  /**
+   * Emitter to allow the unlinking of an object from an appointment.
+   */
+  @Output() public unlinkObjectFromAppointment = new EventEmitter<{
+    object: IdeaX.AppointmentLinkedObject;
+    appointment: IdeaX.Appointment;
+  }>();
   /**
    * The appointments to show in the calendar.
    */
@@ -390,14 +405,13 @@ export class IDEAAgendaComponent {
           startTime,
           defaultDuration: duration,
           calendars: this.calendars,
-          defaultCalendarId: this.getDefaultCalendar().calendarId,
-          linkedObjectTypes: this.linkedObjectTypes
+          defaultCalendarId: this.getDefaultCalendar().calendarId
         }
       })
       .then(modal => {
         modal.onDidDismiss().then((res: OverlayEventDetail) => {
+          // update the view if an appointment was added
           if (res.data) {
-            // update the view if an appointment was added
             this.loadingAppointments = true;
             this.loadAppointmentsBasedOnVisibileCalendars(true).then(() => (this.loadingAppointments = false));
           }
@@ -415,15 +429,20 @@ export class IDEAAgendaComponent {
     this.modalCtrl
       .create({
         component: IDEAAppointmentComponent,
-        componentProps: { appointment, calendars: this.calendars, linkedObjectTypes: this.linkedObjectTypes }
+        componentProps: {
+          appointment,
+          calendars: this.calendars,
+          linkedObjectTypes: this.linkedObjectTypes,
+          linkObjectToAppointment: this.linkObjectToAppointment,
+          newObjectLinkedToAppointment: this.newObjectLinkedToAppointment,
+          unlinkObjectFromAppointment: this.unlinkObjectFromAppointment
+        }
       })
       .then(modal => {
         modal.onDidDismiss().then((res: OverlayEventDetail) => {
-          // update the view if the appointment was deleted
-          if (res.data === -1) {
-            this.loadingAppointments = true;
-            this.loadAppointmentsBasedOnVisibileCalendars(true).then(() => (this.loadingAppointments = false));
-          }
+          // update the view if the appointment was deleted (we don't know if linked objects changed)
+          this.loadingAppointments = true;
+          this.loadAppointmentsBasedOnVisibileCalendars(true).then(() => (this.loadingAppointments = false));
         });
         modal.present();
       });

@@ -32,7 +32,7 @@ export class IDEAAppointmentLinkedObjectComponent {
   /**
    * Trigger for when an element is removed.
    */
-  @Output() public remove = new EventEmitter<void>();
+  @Output() public remove = new EventEmitter<Event>();
   /**
    * The logo to show at the beginning of the component.
    */
@@ -156,6 +156,7 @@ export class IDEAAppointmentLinkedObjectComponent {
    * Manage the internal or external navigation to the object.
    */
   public goToObject() {
+    if (this.removeMode) return;
     if (this.isThisService) this.navCtrl.navigateForward(this.route).then(() => this.modalCtrl.dismiss());
     else this.extBrowswer.openLink(this.href);
   }

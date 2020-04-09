@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter } from '@angular/core';
 import { Platform, ModalController, AlertController } from '@ionic/angular';
 import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
@@ -40,6 +40,21 @@ export class IDEAAppointmentComponent {
    * The supported linked object types for the appointments of this project.
    */
   @Input() public linkedObjectTypes: Array<IdeaX.AppointmentLinkedObjectTypes>;
+  /**
+   * Emitter to allow the selection of an object to link to the appointment (passed through the Agenda component).
+   */
+  @Input() public linkObjectToAppointment: EventEmitter<IdeaX.Appointment>;
+  /**
+   * Emitter to allow the creation of a new object to link to the appointment (passed through the Agenda component)
+   */
+  @Input() public newObjectLinkedToAppointment: EventEmitter<IdeaX.Appointment>;
+  /**
+   * Emitter to allow the unlinking of an object from the appointment (passed through the Agenda component).
+   */
+  @Input() public unlinkObjectFromAppointment: EventEmitter<{
+    object: IdeaX.AppointmentLinkedObject;
+    appointment: IdeaX.Appointment;
+  }>;
   /**
    * Helper structure to let the user pick a calendar.
    */
@@ -208,15 +223,23 @@ export class IDEAAppointmentComponent {
   }
 
   /**
-   * Based on the types configured in this project, link an object to the appointment.
+   * Trigger the action to link an object to the appointment.
    */
   public linkObject() {
-    console.log('@todo');
+    this.linkObjectToAppointment.emit(this.appointment);
+  }
+  /**
+   * Trigger the action to create a new object linked to the appointment.
+   */
+  public createLinkedObject() {
+    this.newObjectLinkedToAppointment.emit(this.appointment);
   }
   /**
    * Remove an object linked to the appointment.
    */
-  public removeLinkedObject(obj: IdeaX.AppointmentLinkedObject) {
-    this.appointment.linkedTo.splice(this.appointment.linkedTo.indexOf(obj), 1);
+  public removeLinkedObject(obj: IdeaX.AppointmentLinkedObject, ev?: Event) {
+    if (ev) ev.stopPropagation();
+    this.unlinkObjectFromAppointment.emit({ object: obj, appointment: this.appointment });
+    this.removeLinkedObjectMode = false;
   }
 }
