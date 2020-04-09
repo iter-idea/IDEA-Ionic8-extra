@@ -79,7 +79,8 @@
         "TITLE": "Titolo",
         "TITLE_HINT": "Breve descrizione dell'oggetto dell'appuntamento",
         "LINK_OBJECT": "Collega un oggetto",
-        "REMOVE_LINKED_OBJECT": "Rimuovi un oggetto collegato"
+        "REMOVE_LINKED_OBJECT": "Rimuovi un oggetto collegato",
+        "CREATE_LINKED_OBJECT": "Crea un oggetto collegato a questo appuntamento"
       },
       "CALENDARS": {
         "ACCESS_LEVELS": {

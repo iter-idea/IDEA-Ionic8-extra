@@ -79,7 +79,8 @@
         "TITLE": "Title",
         "TITLE_HINT": "Brief description of the appointment",
         "LINK_OBJECT": "Link an object",
-        "REMOVE_LINKED_OBJECT": "Remove linked object"
+        "REMOVE_LINKED_OBJECT": "Remove linked object",
+        "CREATE_LINKED_OBJECT": "Create object linked to this appointment"
       },
       "CALENDARS": {
         "ACCESS_LEVELS": {
