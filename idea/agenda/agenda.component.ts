@@ -25,17 +25,24 @@ export class IDEAAgendaComponent {
   /**
    * Emitter to allow the selection of an object to link to an appointment.
    */
-  @Output() public linkObjectToAppointment = new EventEmitter<IdeaX.Appointment>();
+  @Output() public linkObjectToAppointment = new EventEmitter<{
+    appointment: IdeaX.Appointment;
+    isSharedCalendar: boolean;
+  }>();
   /**
    * Emitter to allow the creation of a new object to link to an appointment.
    */
-  @Output() public newObjectLinkedToAppointment = new EventEmitter<IdeaX.Appointment>();
+  @Output() public newObjectLinkedToAppointment = new EventEmitter<{
+    appointment: IdeaX.Appointment;
+    isSharedCalendar: boolean;
+  }>();
   /**
    * Emitter to allow the unlinking of an object from an appointment.
    */
   @Output() public unlinkObjectFromAppointment = new EventEmitter<{
     object: IdeaX.AppointmentLinkedObject;
     appointment: IdeaX.Appointment;
+    isSharedCalendar: boolean;
   }>();
   /**
    * The appointments to show in the calendar.

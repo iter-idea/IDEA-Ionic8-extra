@@ -43,17 +43,24 @@ export class IDEAAppointmentComponent {
   /**
    * Emitter to allow the selection of an object to link to the appointment (passed through the Agenda component).
    */
-  @Input() public linkObjectToAppointment: EventEmitter<IdeaX.Appointment>;
+  @Input() public linkObjectToAppointment: EventEmitter<{
+    appointment: IdeaX.Appointment;
+    isSharedCalendar: boolean;
+  }>;
   /**
    * Emitter to allow the creation of a new object to link to the appointment (passed through the Agenda component)
    */
-  @Input() public newObjectLinkedToAppointment: EventEmitter<IdeaX.Appointment>;
+  @Input() public newObjectLinkedToAppointment: EventEmitter<{
+    appointment: IdeaX.Appointment;
+    isSharedCalendar: boolean;
+  }>;
   /**
    * Emitter to allow the unlinking of an object from the appointment (passed through the Agenda component).
    */
   @Input() public unlinkObjectFromAppointment: EventEmitter<{
     object: IdeaX.AppointmentLinkedObject;
     appointment: IdeaX.Appointment;
+    isSharedCalendar: boolean;
   }>;
   /**
    * Helper structure to let the user pick a calendar.
@@ -226,20 +233,28 @@ export class IDEAAppointmentComponent {
    * Trigger the action to link an object to the appointment.
    */
   public linkObject() {
-    this.linkObjectToAppointment.emit(this.appointment);
+    this.linkObjectToAppointment.emit({ appointment: this.appointment, isSharedCalendar: this.calendar.isShared() });
   }
   /**
    * Trigger the action to create a new object linked to the appointment.
    */
   public createLinkedObject() {
-    this.newObjectLinkedToAppointment.emit(this.appointment);
+    this.newObjectLinkedToAppointment.emit({
+      appointment: this.appointment,
+      isSharedCalendar: this.calendar.isShared()
+    });
+    this.close();
   }
   /**
    * Remove an object linked to the appointment.
    */
   public removeLinkedObject(obj: IdeaX.AppointmentLinkedObject, ev?: Event) {
     if (ev) ev.stopPropagation();
-    this.unlinkObjectFromAppointment.emit({ object: obj, appointment: this.appointment });
+    this.unlinkObjectFromAppointment.emit({
+      object: obj,
+      appointment: this.appointment,
+      isSharedCalendar: this.calendar.isShared()
+    });
     this.removeLinkedObjectMode = false;
   }
 }
