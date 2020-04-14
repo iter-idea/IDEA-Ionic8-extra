@@ -1,5 +1,6 @@
 import { Component, HostListener, Input, ViewChild } from '@angular/core';
 import { ModalController, IonSearchbar, Platform } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -137,17 +138,29 @@ export class IDEASuggestionsComponent {
   }
 
   /**
-   * Set a filter for the categoryN acquiring the autoComplete suggestion selected.
-   * Note: setting a filter with the same value will reset it (toggle function).
+   * Set a filter for the categoryN.
    */
-  public setFilterCategoryN(whichCategory: number, value: string, event?: any) {
-    // stop the event propagation, to avoid the "click" on the main item
-    if (event) event.stopPropagation();
-    // set the right category
-    if (whichCategory === 2) this.category2 = value === this.category2 ? null : value;
-    else this.category1 = value === this.category1 ? null : value;
-    // get the suggestions
-    this.search(this.searchbar ? this.searchbar.value : null);
+  public setFilterCategoryN(whichCategory: number) {
+    // identify the category to manage
+    const categories = whichCategory === 2 ? this.activeCategories2 : this.activeCategories1;
+    // open a modal to select the category with which to filter the suggestions
+    this.modalCtrl
+      .create({
+        component: IDEASuggestionsComponent,
+        componentProps: { data: this.mapIntoSuggestions(categories) }
+      })
+      .then(modal => {
+        modal.onDidDismiss().then((res: OverlayEventDetail) => {
+          if (res.data) {
+            // set the right category
+            if (whichCategory === 2) this.category2 = res.data.value;
+            else this.category1 = res.data.value;
+            // get the suggestions
+            this.search(this.searchbar ? this.searchbar.value : null);
+          }
+        });
+        modal.present();
+      });
   }
 
   /**

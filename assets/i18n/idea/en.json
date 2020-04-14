@@ -357,7 +357,8 @@
       "CLOSE_WITHOUT_SELECTING": "Close without selecting anything",
       "NO_ELEMENTS_FOUND": "No elements found",
       "SEARCH": "Search",
-      "SELECT_": "Select {{suggestion}}"
+      "SELECT_": "Select {{suggestion}}",
+      "TAP_TO_FILTER": "Tap to filter"
     },
     "SEND_EMAIL": {
       "ATTACHMENTS": "Attachments",

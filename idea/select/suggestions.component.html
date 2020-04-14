@@ -8,6 +8,7 @@
     <ion-searchbar
       [placeholder]="searchPlaceholder || t._('IDEA.SELECT.SEARCH')"
       [debounce]="100"
+      [class.withCategoriesFilters]="showCategoriesFilters"
       (ionInput)="search($event.target ? $event.target.value : '')"
     ></ion-searchbar>
     <ion-buttons slot="end" *ngIf="!hideClearButton">
@@ -15,34 +16,16 @@
         <ion-icon slot="icon-only" name="backspace"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-row *ngIf="showCategoriesFilters">
-      <ion-col [size]="6">
-        <idea-select
-          *ngIf="activeCategories1?.size"
-          [data]="mapIntoSuggestions(activeCategories1)"
-          [icon]="'funnel'"
-          [lines]="'none'"
-          [description]="category1"
-          [noElementsFoundText]="t._('COMMON.NO_ELEMENT_FOUND')"
-          [hideIdFromUI]="true"
-          [avoidAutoSelection]="true"
-          (select)="setFilterCategoryN(1, $event.value)"
-        ></idea-select>
-      </ion-col>
-      <ion-col [size]="6">
-        <idea-select
-          *ngIf="activeCategories2?.size"
-          [data]="mapIntoSuggestions(activeCategories2)"
-          [icon]="'funnel'"
-          [lines]="'none'"
-          [description]="category2"
-          [noElementsFoundText]="t._('COMMON.NO_ELEMENT_FOUND')"
-          [hideIdFromUI]="true"
-          [avoidAutoSelection]="true"
-          (select)="setFilterCategoryN(2, $event.value)"
-        ></idea-select>
-      </ion-col>
-    </ion-row>
+    <div class="categoriesFilters" *ngIf="showCategoriesFilters">
+      <ion-button *ngIf="activeCategories1?.size" [class.strong]="category1" (click)="setFilterCategoryN(1)">
+        <ion-icon [name]="category1 ? 'filter' : 'filter-outline'" slot="start"></ion-icon>
+        {{ category1 || ('IDEA.SELECT.TAP_TO_FILTER' | translate) }}
+      </ion-button>
+      <ion-button *ngIf="activeCategories2?.size" [class.strong]="category2" (click)="setFilterCategoryN(2)">
+        <ion-icon [name]="category2 ? 'filter' : 'filter-outline'" slot="start"></ion-icon>
+        {{ category2 || ('IDEA.SELECT.TAP_TO_FILTER' | translate) }}
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 <ion-content>

@@ -1,6 +1,17 @@
 ion-toolbar {
-  ion-row {
-    padding: 2px 2px 6px 2px !important;
+  .categoriesFilters {
+    padding: 0px 5px 5px 5px;
+    text-align: right;
+    ion-button {
+      text-transform: none;
+      font-weight: normal;
+    }
+    ion-button.strong {
+      font-weight: bold;
+    }
+  }
+  ion-searchbar.withCategoriesFilters {
+    padding-top: 8px;
   }
 }
 .suggestionsList {
