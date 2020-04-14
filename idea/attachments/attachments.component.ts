@@ -1,4 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { Plugins, CameraResultType, CameraPhoto, CameraSource } from '@capacitor/core';
+const { Camera } = Plugins;
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
@@ -53,6 +56,7 @@ export class IDEAttachmentsComponent {
   public uploadErrors: Array<string>;
 
   constructor(
+    public platform: Platform,
     public t: IDEATranslationsService,
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
@@ -92,10 +96,9 @@ export class IDEAttachmentsComponent {
   }
 
   /**
-   * Add an attachment to the array, request the signed URL and upload the file.
-   * Finally, set the attachment as complete (by assigning the id).
+   * Add an attachment from a file picked.
    */
-  public addAttachment(ev: any) {
+  public addAttachmentFromFile(ev: any) {
     this.uploadErrors = new Array<string>();
     const files: FileList = ev.target ? ev.target.files : {};
     for (let i = 0; i < files.length; i++) {
@@ -104,31 +107,68 @@ export class IDEAttachmentsComponent {
       const fullName = file.name.split('.');
       const format = fullName.pop();
       const name = fullName.join('.');
-      const attachment = new IdeaX.Attachment({ name, format });
-      // add the attachment to the list
-      this.attachments.push(attachment);
-      // request a URL to upload the file
-      this.API.patchResource(this.requestURL, {
-        body: { action: 'ATTACHMENTS_PUT', attachmentId: attachment.attachmentId }
-      })
-        .then((signedURL: IdeaX.SignedURL) => {
-          // upload the file
-          this.API.rawRequest()
-            .put(signedURL.url, file)
-            .toPromise()
-            .then(() => (attachment.attachmentId = signedURL.id))
-            .catch(() => {
-              this.uploadErrors.push(file.name);
-              this.removeAttachment(attachment);
-              this.message.error('IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
-            });
-        })
-        .catch(() => {
-          this.uploadErrors.push(file.name);
-          this.removeAttachment(attachment);
-          this.message.error(`IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT`);
-        });
+      // add the attachment
+      this.addAttachment(name, format, file);
     }
+  }
+  /**
+   * Open the camera and take a picture to then add it to the attachments.
+   */
+  public takePictureAndAttach(ev: Event) {
+    if (ev) ev.stopPropagation();
+    // go on only if the platform supports the camera
+    if (!this.platform.is('capacitor')) return;
+    // take a picture
+    Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      source: CameraSource.Camera,
+      resultType: CameraResultType.Base64
+    }).then((image: CameraPhoto) => {
+      const filename = new Date().toISOString();
+      const content = this.base64toBlob(image.base64String, 'image/jpeg');
+      this.addAttachment(filename, image.format, content);
+    });
+  }
+  /**
+   * Convert a base64 string to Blob.
+   */
+  protected base64toBlob(base64str: string, type: string): Blob {
+    const binary = atob(base64str);
+    const array = [];
+    for (let i = 0; i < binary.length; i++) array.push(binary.charCodeAt(i));
+    return new Blob([new Uint8Array(array)], { type });
+  }
+  /**
+   * Add an attachment to the array, request the signed URL and upload the file.
+   * Finally, set the attachment as complete (by assigning the id).
+   */
+  protected addAttachment(name: string, format: string, content: any) {
+    // prepare the attachment metadata
+    const attachment = new IdeaX.Attachment({ name, format });
+    // add the attachment to the list
+    this.attachments.push(attachment);
+    // request a URL to upload the file
+    this.API.patchResource(this.requestURL, {
+      body: { action: 'ATTACHMENTS_PUT', attachmentId: attachment.attachmentId }
+    })
+      .then((signedURL: IdeaX.SignedURL) => {
+        // upload the file
+        this.API.rawRequest()
+          .put(signedURL.url, content)
+          .toPromise()
+          .then(() => (attachment.attachmentId = signedURL.id))
+          .catch(() => {
+            this.uploadErrors.push(name);
+            this.removeAttachment(attachment);
+            this.message.error('IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+          });
+      })
+      .catch(() => {
+        this.uploadErrors.push(name);
+        this.removeAttachment(attachment);
+        this.message.error(`IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT`);
+      });
   }
 
   /**
