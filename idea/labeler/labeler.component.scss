@@ -1,0 +1,19 @@
+ion-list {
+  border-radius: 5px;
+  ion-item {
+    --border-color: var(--ion-color-light);
+    ion-thumbnail {
+      width: 20px;
+      height: 20px;
+      margin-top: 16px;
+      margin-right: 20px;
+      img {
+        border-radius: 8px;
+      }
+    }
+    ion-textarea {
+      --padding-top: 2px;
+      --padding-bottom: 16px;
+    }
+  }
+}

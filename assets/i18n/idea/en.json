@@ -463,6 +463,10 @@
       "CLOSE_THE_APP_TO_UPDATE": "Close completely the app or the browser to install the update",
       "GOT_IT": "Got it",
       "UPDATE_AVAILABLE": "An update is available"
+    },
+    "LABELER": {
+      "MANAGE_LABEL": "Manage label",
+      "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language"
     }
   }
 }

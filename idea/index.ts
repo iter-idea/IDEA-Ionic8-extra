@@ -11,6 +11,7 @@ export * from './dateTime/dateTime.module';
 export * from './downloader/downloader.module';
 export * from './duration/duration.module';
 export * from './echo/echo.module';
+export * from './labeler/labeler.module';
 export * from './list/list.module';
 export * from './offline/offline.module';
 export * from './mde/mde.module';

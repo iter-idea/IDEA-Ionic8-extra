@@ -463,6 +463,10 @@
       "CLOSE_THE_APP_TO_UPDATE": "Chiudi completamente l'app o il browser per installare l'aggiornamento",
       "GOT_IT": "Ho capito",
       "UPDATE_AVAILABLE": "Un aggiornamento è disponibile"
+    },
+    "LABELER": {
+      "MANAGE_LABEL": "Gestisci etichetta",
+      "FILL_IN_DEFAULT_LANGUAGE": "Devi compilare almeno nella lingua di default"
     }
   }
 }

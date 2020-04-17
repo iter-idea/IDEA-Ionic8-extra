@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('COMMON.CANCEL')" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [title]="t._('COMMON.SAVE')" (click)="save()">
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [class.ion-padding]="platform.width() > 500">
+  <idea-mde-toolbar *ngIf="markdown"></idea-mde-toolbar>
+  <ion-list *ngIf="_label">
+    <ion-item lines="inset" *ngFor="let l of t.getLangs()" [class.fieldHasError]="hasFieldAnError(l)">
+      <ion-thumbnail slot="start"><img [src]="getFlagURL(l)" /></ion-thumbnail>
+      <ion-label position="stacked">
+        {{ 'LANGUAGES.' + l.toUpperCase() | translate }}
+        <ion-text *ngIf="l === t.getDefaultLang()">- {{ 'COMMON.DEFAULT' | translate }}</ion-text>
+      </ion-label>
+      <ion-input type="text" *ngIf="!textarea" [(ngModel)]="_label[l]"></ion-input>
+      <ion-textarea *ngIf="textarea" [(ngModel)]="_label[l]" [rows]="3" [autoGrow]="true"></ion-textarea>
+    </ion-item>
+  </ion-list>
+</ion-content>
