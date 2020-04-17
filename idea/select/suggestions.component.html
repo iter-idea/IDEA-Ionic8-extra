@@ -76,7 +76,7 @@
             {{ suggestion.value }}
           </div>
           <ion-text [innerHTML]="suggestion.name || suggestion.value | boldprefix: searchbar.value"></ion-text>
-          <ion-text color="medium">
+          <ion-text color="medium" class="ion-text-wrap">
             <p
               *ngIf="suggestion.name && !hideIdFromUI"
               [innerHTML]="suggestion.value | boldprefix: searchbar.value"
