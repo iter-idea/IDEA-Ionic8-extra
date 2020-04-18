@@ -14,6 +14,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [class.ion-padding]="platform.width() > 500">
+  <p class="explanation">{{ 'IDEA.LABELER.EXPLANATION' | translate }}</p>
   <idea-mde-toolbar *ngIf="markdown"></idea-mde-toolbar>
   <ion-list *ngIf="_label">
     <ion-item lines="inset" *ngFor="let l of t.getLangs()" [class.fieldHasError]="hasFieldAnError(l)">

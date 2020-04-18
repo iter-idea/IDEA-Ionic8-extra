@@ -466,7 +466,8 @@
     },
     "LABELER": {
       "MANAGE_LABEL": "Manage label",
-      "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language"
+      "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language",
+      "EXPLANATION": "Only the translation in the default language is mandatory. If any translation is missing, the one in the default language is used instead."
     }
   }
 }
