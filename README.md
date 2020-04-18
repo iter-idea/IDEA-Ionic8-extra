@@ -18,6 +18,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Downloader
 - Duration
 - Echo
+- Icons (Ionicons)
 - Labeler
 - List
 - Markdown Editor (MDE)

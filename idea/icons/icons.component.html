@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar
+      [placeholder]="searchPlaceholder || t._('COMMON.SEARCH')"
+      [debounce]="100"
+      (ionInput)="search($event.target ? $event.target.value : '')"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="ion-text-center" *ngFor="let i of icons" [style.display]="shouldShowIcon[i] ? 'block' : 'none'">
+        <ion-button size="large" fill="clear" color="dark" (click)="select(i)">
+          <ion-icon [name]="i"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
