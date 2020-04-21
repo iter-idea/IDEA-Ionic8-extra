@@ -3,6 +3,8 @@ import IdeaX = require('idea-toolbox');
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
+import { ServiceLanguages } from '../../../../../api/_shared/serviceLanguages.enum';
+
 /**
  * Translations service.
  */
@@ -80,6 +82,13 @@ export class IDEATranslationsService {
    */
   public languages(): IdeaX.Languages {
     return new IdeaX.Languages({ available: this.getLangs(), default: this.getDefaultLang() });
+  }
+
+  /**
+   * Get the service language name by its key.
+   */
+  public getLangNameByKey(key: string): string {
+    return IdeaX.getStringEnumKeyByValue(ServiceLanguages, key);
   }
 
   /**

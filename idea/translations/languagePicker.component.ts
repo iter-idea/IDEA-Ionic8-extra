@@ -7,8 +7,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
 
-import { ServiceLanguages } from '../../../../../api/_shared/serviceLanguages.enum';
-
 // requires two assets folders:
 //   1. flags, containing the pngs of each country's flags
 //   2. i18n, containing the json of each country's translation
@@ -36,7 +34,7 @@ export class IDEALanguagePickerComponent {
       .create({
         component: IDEASuggestionsComponent,
         componentProps: {
-          data: this.t.getLangs().map(l => new IdeaX.Suggestion({ value: l, name: ServiceLanguages[l.toUpperCase()] })),
+          data: this.t.getLangs().map(l => new IdeaX.Suggestion({ value: l, name: this.t.getLangNameByKey(l) })),
           searchPlaceholder: this.t._('IDEA.LANGUAGE_PICKER.CHANGE_LANGUAGE'),
           sortData: true,
           hideIdFromUI: true,
