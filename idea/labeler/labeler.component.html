@@ -20,7 +20,7 @@
     <ion-item lines="inset" *ngFor="let l of t.getLangs()" [class.fieldHasError]="hasFieldAnError(l)">
       <ion-thumbnail slot="start"><img [src]="getFlagURL(l)" /></ion-thumbnail>
       <ion-label position="stacked">
-        {{ 'LANGUAGES.' + l.toUpperCase() | translate }}
+        {{ 'APP_LANGUAGES.' + l.toUpperCase() | translate }}
         <ion-text *ngIf="l === t.getDefaultLang()">- {{ 'COMMON.DEFAULT' | translate }}</ion-text>
       </ion-label>
       <ion-input type="text" *ngIf="!textarea" [(ngModel)]="_label[l]"></ion-input>

@@ -35,7 +35,7 @@ export class IDEALanguagePickerComponent {
         componentProps: {
           data: this.t
             .getLangs()
-            .map(l => new IdeaX.Suggestion({ value: l, name: this.t._('LANGUAGES.'.concat(l.toUpperCase())) })),
+            .map(l => new IdeaX.Suggestion({ value: l, name: this.t._('APP_LANGUAGES.'.concat(l.toUpperCase())) })),
           searchPlaceholder: this.t._('IDEA.LANGUAGE_PICKER.CHANGE_LANGUAGE'),
           sortData: true,
           hideIdFromUI: true,
