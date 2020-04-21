@@ -6,6 +6,7 @@ import IdeaX = require('idea-toolbox');
 
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'idea-date-time',
@@ -61,15 +62,22 @@ export class IDEADateTimeComponent {
    * The value to display in the field preview.
    */
   public valueToDisplay: string;
+  /**
+   * Language change subscription
+   */
+  protected langChangeSubscription: Subscription;
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {
     Moment.locale(this.t.getCurrentLang());
     // when the language changes, set the locale
-    this.t.onLangChange.subscribe(() => {
+    this.langChangeSubscription = this.t.onLangChange.subscribe(() => {
       Moment.locale(this.t.getCurrentLang());
       this.valueToDisplay = this.getValueToDisplay(this.date);
     });
+  }
+  public ngOnDestroy() {
+    if (this.langChangeSubscription) this.langChangeSubscription.unsubscribe();
   }
   public ngOnChanges(changes: SimpleChanges) {
     if (changes.date) this.valueToDisplay = this.getValueToDisplay(changes.date.currentValue);
