@@ -3,8 +3,11 @@ import { ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import IdeaX = require('idea-toolbox');
 
-import { IDEASuggestionsComponent } from '../select/suggestions.component';
 import { IDEATranslationsService } from '../translations/translations.service';
+
+import { IDEASuggestionsComponent } from '../select/suggestions.component';
+
+import { ServiceLanguages } from '../../../../../api/_shared/serviceLanguages.enum';
 
 // requires two assets folders:
 //   1. flags, containing the pngs of each country's flags
@@ -33,9 +36,7 @@ export class IDEALanguagePickerComponent {
       .create({
         component: IDEASuggestionsComponent,
         componentProps: {
-          data: this.t
-            .getLangs()
-            .map(l => new IdeaX.Suggestion({ value: l, name: this.t._('APP_LANGUAGES.'.concat(l.toUpperCase())) })),
+          data: this.t.getLangs().map(l => new IdeaX.Suggestion({ value: l, name: ServiceLanguages[l.toUpperCase()] })),
           searchPlaceholder: this.t._('IDEA.LANGUAGE_PICKER.CHANGE_LANGUAGE'),
           sortData: true,
           hideIdFromUI: true,

@@ -5,6 +5,8 @@ import IdeaX = require('idea-toolbox');
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
+import { ServiceLanguages } from '../../../../../api/_shared/serviceLanguages.enum';
+
 /**
  * A component for filling in an IdeaX.Label.
  */
@@ -38,6 +40,10 @@ export class IDEALabelerComponent {
    * The errors to show in the UI.
    */
   public errors: Set<string>;
+  /**
+   * Helper to use the enum in the UI.
+   */
+  public ServiceLanguages = ServiceLanguages;
 
   constructor(
     public platform: Platform,
