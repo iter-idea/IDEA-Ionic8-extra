@@ -105,6 +105,10 @@ export class IDEACheckerComponent {
    */
   @Input() public fallbackAvatar: string;
   /**
+   * Whether to show the select/deselect all buttons.
+   */
+  @Input() public hideSelectDeselectAll: boolean;
+  /**
    * On change event.
    */
   @Output() public change = new EventEmitter<void>();
@@ -146,7 +150,8 @@ export class IDEACheckerComponent {
           searchPlaceholder: this.searchPlaceholder,
           noElementsFoundText: this.noElementsFoundText,
           showAvatars: this.showAvatars,
-          fallbackAvatar: this.fallbackAvatar
+          fallbackAvatar: this.fallbackAvatar,
+          hideSelectDeselectAll: this.hideSelectDeselectAll
         }
       })
       .then(modal => {

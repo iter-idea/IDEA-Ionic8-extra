@@ -39,6 +39,10 @@ export class IDEAChecksComponent {
    * URL to the fallback avatar to show in case the element's avatar isn't found.
    */
   @Input() public fallbackAvatar: string;
+  /**
+   * Whether to show the select/deselect all buttons.
+   */
+  @Input() public hideSelectDeselectAll: boolean;
 
   // SUPPORT
   public filteredChecks: Array<IdeaX.Check>;

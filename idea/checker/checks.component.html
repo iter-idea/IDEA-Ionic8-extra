@@ -11,10 +11,10 @@
       (ionInput)="search($event.target ? $event.target.value : '')"
     ></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA.CHECKER.DESELECT_ALL')" (click)="checkAll(false)">
+      <ion-button *ngIf="!hideSelectDeselectAll" [title]="t._('IDEA.CHECKER.DESELECT_ALL')" (click)="checkAll(false)">
         <ion-icon slot="icon-only" name="square-outline"></ion-icon>
       </ion-button>
-      <ion-button [title]="t._('IDEA.CHECKER.SELECT_ALL')" (click)="checkAll(true)">
+      <ion-button *ngIf="!hideSelectDeselectAll" [title]="t._('IDEA.CHECKER.SELECT_ALL')" (click)="checkAll(true)">
         <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
       </ion-button>
       <ion-button [title]="t._('IDEA.CHECKER.CONFIRM_SELECTION')" (click)="confirm()">
