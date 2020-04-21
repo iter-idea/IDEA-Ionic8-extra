@@ -61,6 +61,7 @@
         "APPOINTMENT": "Appointment",
         "CALENDAR": "Calendar",
         "CALENDAR_HINT": "Choose the calendar in which to insert the appointment",
+        "CREATE_LINKED_OBJECT": "Create object linked to this appointment",
         "DELETED": "Appointment deleted",
         "DESCRIPTION": "Description",
         "DESCRIPTION_HINT": "Notes on the appointment",
@@ -68,19 +69,18 @@
         "END_TIME": "End of the appointment",
         "END_TIME_HINT": "Appointment end date and time",
         "FORM_HAS_ERROR_TO_CHECK": "One or more configurations have values which are not allowed; check and try again",
+        "LINK_OBJECT": "Link an object",
         "LOCATION": "Location",
         "LOCATION_HINT": "Add a location for the appointment",
         "NEW_APPOINTMENT": "New appointment",
         "OPEN_IN_EXTERNAL_SERVICE": "Open in external service",
         "READ_ONLY": "Read-only",
+        "REMOVE_LINKED_OBJECT": "Remove linked object",
         "SAVED": "Appointment saved",
         "START_TIME": "Start of the appointment",
         "START_TIME_HINT": "Appointment start date and time",
         "TITLE": "Title",
-        "TITLE_HINT": "Brief description of the appointment",
-        "LINK_OBJECT": "Link an object",
-        "REMOVE_LINKED_OBJECT": "Remove linked object",
-        "CREATE_LINKED_OBJECT": "Create object linked to this appointment"
+        "TITLE_HINT": "Brief description of the appointment"
       },
       "CALENDARS": {
         "ACCESS_LEVELS": {
@@ -298,6 +298,11 @@
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Error during the integration of Trello; try again.",
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copy and paste the following token in the previous page to complete the configuration: {{token}}"
     },
+    "LABELER": {
+      "EXPLANATION": "Only the translation in the default language is mandatory. If any translation is missing, the one in the default language is used instead.",
+      "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language",
+      "MANAGE_LABEL": "Manage label"
+    },
     "LANGUAGE_PICKER": {
       "APP_WILL_RESTART": "The app will restart",
       "CHANGE_LANGUAGE": "Change the displayed language"
@@ -463,11 +468,6 @@
       "CLOSE_THE_APP_TO_UPDATE": "Close completely the app or the browser to install the update",
       "GOT_IT": "Got it",
       "UPDATE_AVAILABLE": "An update is available"
-    },
-    "LABELER": {
-      "MANAGE_LABEL": "Manage label",
-      "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language",
-      "EXPLANATION": "Only the translation in the default language is mandatory. If any translation is missing, the one in the default language is used instead."
     }
   }
 }

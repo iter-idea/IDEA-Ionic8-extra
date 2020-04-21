@@ -61,6 +61,7 @@
         "APPOINTMENT": "Appuntamento",
         "CALENDAR": "Calendario",
         "CALENDAR_HINT": "Scegli calendario in cui inserire l'appuntamento",
+        "CREATE_LINKED_OBJECT": "Crea un oggetto collegato a questo appuntamento",
         "DELETED": "Appuntamento eliminato",
         "DESCRIPTION": "Descrizione",
         "DESCRIPTION_HINT": "Note dell'appuntamento",
@@ -68,19 +69,18 @@
         "END_TIME": "Fine appuntamento",
         "END_TIME_HINT": "Data e ora di fine appunamento",
         "FORM_HAS_ERROR_TO_CHECK": "Una o più campi hanno valori non consentiti; verifica e riprova",
+        "LINK_OBJECT": "Collega un oggetto",
         "LOCATION": "Luogo",
         "LOCATION_HINT": "Luogo dell'appuntamento",
         "NEW_APPOINTMENT": "Nuovo appuntamento",
         "OPEN_IN_EXTERNAL_SERVICE": "Apri in servizio esterno",
         "READ_ONLY": "Sola lettura",
+        "REMOVE_LINKED_OBJECT": "Rimuovi un oggetto collegato",
         "SAVED": "Appuntamento salvato",
         "START_TIME": "Inizio appuntamento",
         "START_TIME_HINT": "Data e ora di inizio appunamento",
         "TITLE": "Titolo",
-        "TITLE_HINT": "Breve descrizione dell'oggetto dell'appuntamento",
-        "LINK_OBJECT": "Collega un oggetto",
-        "REMOVE_LINKED_OBJECT": "Rimuovi un oggetto collegato",
-        "CREATE_LINKED_OBJECT": "Crea un oggetto collegato a questo appuntamento"
+        "TITLE_HINT": "Breve descrizione dell'oggetto dell'appuntamento"
       },
       "CALENDARS": {
         "ACCESS_LEVELS": {
@@ -298,6 +298,11 @@
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di Trello; riprovare.",
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copia e incolla il seguente token nella schermata precedente per completare la configurazione: {{token}}"
     },
+    "LABELER": {
+      "EXPLANATION": "Solo la traduzione nella lingua di default è obbligatoria. Se una qualsiasi traduzione è mancante, verrà usata quella nella lingua di default.",
+      "FILL_IN_DEFAULT_LANGUAGE": "Devi compilare almeno nella lingua di default",
+      "MANAGE_LABEL": "Gestisci etichetta"
+    },
     "LANGUAGE_PICKER": {
       "APP_WILL_RESTART": "L'app verrà  riavviata",
       "CHANGE_LANGUAGE": "Cambia il linguaggio visualizzato"
@@ -463,11 +468,6 @@
       "CLOSE_THE_APP_TO_UPDATE": "Chiudi completamente l'app o il browser per installare l'aggiornamento",
       "GOT_IT": "Ho capito",
       "UPDATE_AVAILABLE": "Un aggiornamento è disponibile"
-    },
-    "LABELER": {
-      "MANAGE_LABEL": "Gestisci etichetta",
-      "FILL_IN_DEFAULT_LANGUAGE": "Devi compilare almeno nella lingua di default",
-      "EXPLANATION": "Solo la traduzione nella lingua di default è obbligatoria. Se una qualsiasi traduzione è mancante, verrà usata quella nella lingua di default."
     }
   }
 }
