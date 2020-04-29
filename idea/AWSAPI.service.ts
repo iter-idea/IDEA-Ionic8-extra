@@ -233,7 +233,7 @@ export class IDEAAWSAPIService {
     return new Promise(resolve => {
       const opt = (options || {}) as APIRequestOption;
       // decide if to use IDEA's API or project's API
-      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT;
+      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
       url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
       // prepare the query params; note: HttpParams is immutable!
@@ -255,7 +255,7 @@ export class IDEAAWSAPIService {
     return new Promise((resolve, reject) => {
       const opt = (options || {}) as APIRequestOption;
       // decide if to use IDEA's API or project's API
-      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT;
+      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
       url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
       // prepare the query params; note: HttpParams is immutable!
@@ -277,7 +277,7 @@ export class IDEAAWSAPIService {
     return new Promise((resolve, reject) => {
       const opt = (options || {}) as APIRequestOption;
       // decide if to use IDEA's API or project's API
-      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT;
+      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
       url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
       // prepare the query params; note: HttpParams is immutable!
