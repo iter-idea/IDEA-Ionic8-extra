@@ -125,6 +125,12 @@ export class IDEAOfflineDataService {
   public check(): Promise<boolean> {
     return this.offline.check();
   }
+  /**
+   * Customizable function to decide whether the offline mode is allowed.
+   */
+  public isAllowed() {
+    return true;
+  }
 
   //
   // UPLOAD
