@@ -8,7 +8,7 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA.TEAMS.INVITE_USER_HINT')" (click)="addMember()">
-        {{ 'IDEA.TEAMS.INVITE' | translate }}
+        <ion-icon name="person-add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -19,7 +19,7 @@
       <ion-label>{{ team?.name }}</ion-label>
     </ion-list-header>
     <p>{{ 'IDEA.TEAMS.MAIN_EXPLANATION' | translate }}.</p>
-    <ion-item *ngFor="let m of memberships" [button]="true">
+    <ion-item *ngFor="let m of memberships">
       <ion-label>
         {{ m.name }}
       </ion-label>
@@ -45,7 +45,7 @@
         [title]="t._('IDEA.TEAMS.ACTIONS_ON_USER_', { user: m.name })"
         (click)="manageMembership(m)"
       >
-        <ion-icon name="ellipsis-horizontal-outline" slot="icon-only"></ion-icon>
+        <ion-icon name="ellipsis-horizontal" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>

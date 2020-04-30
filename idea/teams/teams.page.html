@@ -7,8 +7,11 @@
       {{ 'IDEA.TEAMS.SELECT_A_TEAM' | translate }}
     </ion-title>
     <ion-buttons slot="end">
+      <ion-button [title]="t._('IDEA.TEAMS.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
+        <ion-icon name="person" slot="icon-only"></ion-icon>
+      </ion-button>
       <ion-button [title]="t._('IDEA.TEAMS.CREATE_TEAM_HINT')" (click)="newTeam()">
-        {{ 'IDEA.TEAMS.CREATE' | translate }}
+        <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -46,7 +49,7 @@
         [title]="t._('IDEA.TEAMS.TEAM_MEMBERS_HINT', { team: team.name })"
         (click)="manageTeam(team.teamId, $event)"
       >
-        {{ 'IDEA.TEAMS.MEMBERS' | translate }}
+        <ion-icon name="people" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-item>
     <ion-item lines="none" class="noElements" *ngIf="teams && !teams.length">
@@ -54,11 +57,5 @@
         {{ 'IDEA.TEAMS.NO_TEAMS_AVAILABLE' | translate }}
       </ion-label>
     </ion-item>
-  </ion-list>
-  <ion-list class="teamsList">
-    <ion-button [title]="t._('IDEA.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
-      {{ 'IDEA.ACCOUNT.MANAGE_YOUR_ACCOUNT' | translate }}
-      <ion-icon name="bulb" slot="end"></ion-icon>
-    </ion-button>
   </ion-list>
 </ion-content>
