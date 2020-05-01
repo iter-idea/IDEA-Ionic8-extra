@@ -30,6 +30,5 @@
 }
 ion-text.obligatoryDot::after {
   content: '*';
-  font-size: 1.1em;
   color: var(--ion-color-danger);
 }
