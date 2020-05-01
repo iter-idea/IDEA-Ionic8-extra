@@ -138,8 +138,8 @@
         "TAP_TO_CONFIGURE": "Tocca per configurare",
         "TEAM_CALENDAR": "Calendario di {{team}}",
         "TEAM_CALENDARS": "Calendari di {{team}}",
-        "TWAM_CALENDARS_HINT": "Questi calendari e i loro appuntamenti sono visibili all'intero team",
-        "TWAM_CALENDAR_HINT": "Questi calendari e i loro appuntamenti sono visibili all'intero team",
+        "TEAM_CALENDARS_HINT": "Questi calendari e i loro appuntamenti sono visibili all'intero team",
+        "TEAM_CALENDAR_HINT": "Questi calendari e i loro appuntamenti sono visibili all'intero team",
         "USERS_ALLOWED_TO_MANAGE_APPOINTMENTS": "Utenti che possono gestire gli appuntamenti",
         "WHO_CAN_MANAGE_APPOINTMENTS": "Chi può gestire gli appuntamenti"
       },
