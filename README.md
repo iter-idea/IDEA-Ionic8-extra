@@ -14,7 +14,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Calendar & DateTime picker
 - Checker
 - Contacts
-- Custom fields
+- Custom fields (block, sections, fields)
 - Downloader
 - Duration
 - Echo

@@ -4,14 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
-import { IDEACustomFieldsComponent } from './customFields.component';
-import { IDEACustomFieldManagerComponent } from './customFieldManager.component';
-import { IDEAListModule } from '../list/list.module';
+import { IDEACustomBlockMetaComponent } from './customBlockMeta.component';
+import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
+import { IDEACustomFieldMetaComponent } from './customFieldMeta.component';
+import { IDEALabelerModule } from '../labeler/labeler.module';
+import { IDEAIconsModule } from '../icons/icons.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAListModule],
-  entryComponents: [IDEACustomFieldsComponent, IDEACustomFieldManagerComponent],
-  exports: [IDEACustomFieldsComponent, IDEACustomFieldManagerComponent],
-  declarations: [IDEACustomFieldsComponent, IDEACustomFieldManagerComponent]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEALabelerModule, IDEAIconsModule],
+  entryComponents: [IDEACustomBlockMetaComponent, IDEACustomSectionMetaComponent, IDEACustomFieldMetaComponent],
+  exports: [IDEACustomBlockMetaComponent, IDEACustomSectionMetaComponent, IDEACustomFieldMetaComponent],
+  declarations: [IDEACustomBlockMetaComponent, IDEACustomSectionMetaComponent, IDEACustomFieldMetaComponent]
 })
 export class IDEACustomFieldsModule {}

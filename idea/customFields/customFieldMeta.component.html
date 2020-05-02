@@ -1,0 +1,191 @@
+<ion-header>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('IDEA.CUSTOM_FIELDS.CLOSE_WITHOUT_SAVING')" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ 'IDEA.CUSTOM_FIELDS.MANAGE_FIELD' | translate }}</ion-title>
+    <ion-buttons slot="end" *ngIf="!disabled">
+      <ion-button [title]="t._('IDEA.CUSTOM_FIELDS.SAVE_CHANGES')" (click)="save()">
+        <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="aList ion-padding" [class.viewMode]="disabled" [class.editMode]="!disabled">
+    <ion-list-header *ngIf="disabled">
+      <ion-label>
+        <h2>{{ getLabelValue(_field.name) }} <ion-text class="obligatoryDot" *ngIf="_field.obligatory"></ion-text></h2>
+        <ion-badge color="dark">{{ 'IDEA.CUSTOM_FIELDS.FIELDS_TYPES.' + _field.type | translate }}</ion-badge>
+        <ion-badge
+          color="medium"
+          *ngIf="_field.default && (_field.type === CustomFieldTypes.STRING || _field.type === CustomFieldTypes.NUMBER)"
+        >
+          {{ 'IDEA.CUSTOM_FIELDS.DEFAULT' | translate }}: {{ _field.default }}
+        </ion-badge>
+        <ion-badge color="medium" *ngIf="_field.type === CustomFieldTypes.NUMBER">
+          {{ 'IDEA.CUSTOM_FIELDS.MIN' | translate }}: {{ _field.min }}
+        </ion-badge>
+        <ion-badge color="medium" *ngIf="_field.type === CustomFieldTypes.NUMBER">
+          {{ 'IDEA.CUSTOM_FIELDS.MAX' | translate }}: {{ _field.max }}
+        </ion-badge>
+        <p>{{ getLabelValue(_field.description) }}</p>
+      </ion-label>
+      <ion-icon *ngIf="_field.icon" [name]="_field.icon"></ion-icon>
+    </ion-list-header>
+    <div *ngIf="!disabled">
+      <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
+        <ion-label position="stacked">
+          {{ 'IDEA.CUSTOM_FIELDS.NAME' | translate }} <ion-text class="obligatoryDot"></ion-text>
+        </ion-label>
+        <ion-input
+          type="text"
+          readonly="true"
+          [value]="getLabelValue(_field.name)"
+          [placeholder]="t._('IDEA.CUSTOM_FIELDS.NAME_HINT')"
+        ></ion-input>
+        <ion-button
+          slot="end"
+          fill="clear"
+          class="marginTop"
+          [title]="t._('COMMON.EDIT')"
+          (click)="editLabel(t._('IDEA.CUSTOM_FIELDS.NAME'), _field.name)"
+        >
+          <ion-icon slot="icon-only" name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
+        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.DESCRIPTION' | translate }}</ion-label>
+        <ion-input
+          type="text"
+          readonly="true"
+          [value]="getLabelValue(_field.description)"
+          [placeholder]="t._('IDEA.CUSTOM_FIELDS.DESCRIPTION_HINT')"
+        ></ion-input>
+        <ion-button
+          slot="end"
+          fill="clear"
+          class="marginTop"
+          [title]="t._('COMMON.EDIT')"
+          (click)="editLabel(t._('IDEA.CUSTOM_FIELDS.DESCRIPTION'), _field.description)"
+        >
+          <ion-icon slot="icon-only" name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('icon')">
+        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.ICON' | translate }}</ion-label>
+        <ion-input
+          type="text"
+          readonly="true"
+          [value]="_field.icon"
+          [placeholder]="t._('IDEA.CUSTOM_FIELDS.ICON_HINT')"
+        ></ion-input>
+        <ion-badge slot="end" color="dark" class="marginTop" *ngIf="_field.icon">
+          <ion-icon [name]="_field.icon"></ion-icon>
+        </ion-badge>
+        <ion-button fill="clear" slot="end" class="marginTop" [title]="t._('COMMON.EDIT')" (click)="editIcon()">
+          <ion-icon name="pencil" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('type')">
+        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.TYPE' | translate }}</ion-label>
+        <ion-select [(ngModel)]="_field.type">
+          <ion-select-option *ngFor="let t of FIELD_TYPES" [value]="t">
+            {{ 'IDEA.CUSTOM_FIELDS.FIELDS_TYPES.' + t | translate }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item
+        *ngIf="_field.type === CustomFieldTypes.STRING || _field.type === CustomFieldTypes.NUMBER"
+        [lines]="lines"
+        [class.fieldHasError]="hasFieldAnError('default')"
+      >
+        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.DEFAULT' | translate }}</ion-label>
+        <ion-input
+          type="text"
+          [placeholder]="t._('IDEA.CUSTOM_FIELDS.DEFAULT_HINT')"
+          [(ngModel)]="_field.default"
+        ></ion-input>
+      </ion-item>
+      <ion-item
+        *ngIf="_field.type === CustomFieldTypes.NUMBER"
+        [lines]="lines"
+        [class.fieldHasError]="hasFieldAnError('min')"
+      >
+        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.MIN' | translate }}</ion-label>
+        <ion-input
+          type="number"
+          [placeholder]="t._('IDEA.CUSTOM_FIELDS.MIN_HINT')"
+          [(ngModel)]="_field.min"
+        ></ion-input>
+      </ion-item>
+      <ion-item
+        *ngIf="_field.type === CustomFieldTypes.NUMBER"
+        [lines]="lines"
+        [class.fieldHasError]="hasFieldAnError('max')"
+      >
+        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.MAX' | translate }} </ion-label>
+        <ion-input
+          type="number"
+          [placeholder]="t._('IDEA.CUSTOM_FIELDS.MAX_HINT')"
+          [(ngModel)]="_field.max"
+        ></ion-input>
+      </ion-item>
+    </div>
+  </ion-list>
+  <ion-list class="obligatoryToggleList" *ngIf="!disabled">
+    <ion-item lines="none" class="ion-text-right">
+      <ion-label>{{ 'IDEA.CUSTOM_FIELDS.OBLIGATORY' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="_field.obligatory"></ion-toggle>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aList" *ngIf="_field.type === CustomFieldTypes.ENUM">
+    <ion-list-header>
+      <ion-label>
+        <h3>{{ 'IDEA.CUSTOM_FIELDS.OPTIONS' | translate }}</h3>
+      </ion-label>
+    </ion-list-header>
+    <ion-item lines="none" *ngIf="!_field.enum?.length" [class.fieldHasError]="hasFieldAnError('enum')">
+      <ion-label>
+        <i>{{ 'IDEA.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
+      </ion-label>
+    </ion-item>
+    <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderOptions($event)">
+      <ion-item
+        *ngFor="let e of _field.enum; let index = index"
+        [lines]="lines"
+        [class.fieldHasError]="hasFieldAnError('enum.' + index)"
+      >
+        <ion-reorder slot="start" *ngIf="!disabled"></ion-reorder>
+        <ion-label>{{ _field.getEnumElement(e, t.getCurrentLang(), t.languages()) }}</ion-label>
+        <ion-button slot="end" fill="clear" *ngIf="!disabled" [title]="t._('COMMON.EDIT')" (click)="editEnumLabel(e)">
+          <ion-icon name="pencil" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button
+          slot="end"
+          fill="clear"
+          color="danger"
+          *ngIf="!disabled"
+          [title]="t._('IDEA.CUSTOM_FIELDS.REMOVE_OPTION')"
+          (click)="removeOptionByIndex(index)"
+        >
+          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-reorder-group>
+    <ion-row *ngIf="!disabled">
+      <ion-col class="ion-padding ion-text-center">
+        <ion-button
+          size="small"
+          color="medium"
+          [title]="t._('IDEA.CUSTOM_FIELDS.ADD_OPTION_HINT')"
+          (click)="addOption()"
+        >
+          {{ 'IDEA.CUSTOM_FIELDS.ADD_OPTION' | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+</ion-content>
