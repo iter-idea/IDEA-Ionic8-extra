@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('IDEA.LIST.CANCEL_AND_CLOSE')" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar
+      [placeholder]="searchPlaceholder || t._('COMMON.SEARCH')"
+      (ionInput)="search($event.target ? $event.target.value : '')"
+    ></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button [title]="t._('IDEA.LIST.NEW_ELEMENT')" (click)="addElement()">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button [title]="t._('IDEA.LIST.SAVE_AND_CLOSE')" (click)="close(true)">
+        <ion-icon name="checkmark-circle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="listElements">
+    <ion-item lines="none" *ngIf="!filteredList.length">
+      <ion-label>
+        <i>{{ noElementsFoundText || ('IDEA.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
+      </ion-label>
+    </ion-item>
+    <ion-virtual-scroll [items]="filteredList">
+      <ion-item class="listElement" *virtualItem="let element">
+        <ion-label>{{ getElementName(element) }}</ion-label>
+        <ion-button slot="end" fill="clear" *ngIf="labelElements" (click)="editElement(element)">
+          <ion-icon name="pencil-sharp" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button
+          slot="end"
+          fill="clear"
+          color="danger"
+          [title]="t._('IDEA.LIST.DELETE_ELEMENT')"
+          (click)="removeElement(element)"
+        >
+          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-virtual-scroll>
+  </ion-list>
+</ion-content>

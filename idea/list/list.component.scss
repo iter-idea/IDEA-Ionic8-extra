@@ -1,8 +1,34 @@
-ion-footer {
-  ion-toolbar {
-    --min-height: 40px;
+.listItem {
+  height: 48px;
+  .description {
+    margin: 10px 0;
+    height: 20px;
+    line-height: 20px;
+    width: 100%;
+  }
+  .placeholder {
+    color: var(--ion-color-medium);
+  }
+  .selectIcon {
+    margin: 0;
+    padding-left: 4px;
+    font-size: 0.8em;
+    color: var(--ion-color-medium);
   }
 }
-.tappable {
+.listItem.withLabel {
+  height: 58px;
+  .selectIcon {
+    padding-top: 25px;
+  }
+  ion-icon[slot='start'] {
+    margin-top: 16px;
+  }
+}
+.selectable {
   cursor: pointer;
+}
+ion-text.obligatoryDot::after {
+  content: '*';
+  color: var(--ion-color-danger);
 }

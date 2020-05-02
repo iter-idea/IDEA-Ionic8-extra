@@ -1,67 +1,132 @@
-import { Component, Input } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import IdeaX = require('idea-toolbox');
 
+import { IDEAListELementsComponent } from './listElements.component';
 import { IDEATranslationsService } from '../translations/translations.service';
 
+/**
+ * Show and manage a list of elements.
+ */
 @Component({
   selector: 'idea-list',
   templateUrl: 'list.component.html',
   styleUrls: ['list.component.scss']
 })
 export class IDEAListComponent {
-  @Input() public list: Array<string | number>;
-  @Input() public title: string;
+  /**
+   * The list to manage.
+   */
+  @Input() public data: Array<IdeaX.Label | string>;
+  /**
+   * Whether the elements are labels or simple strings.
+   */
+  @Input() public labelElements: boolean;
+  /**
+   * The label for the field.
+   */
+  @Input() public label: string;
+  /**
+   * The icon for the field.
+   */
+  @Input() public icon: string;
+  /**
+   * The color of the icon.
+   */
+  @Input() public iconColor: string;
+  /**
+   * A placeholder for the searchbar.
+   */
+  @Input() public searchPlaceholder: string;
+  /**
+   * Text to show when there isn't a result.
+   */
+  @Input() public noElementsFoundText: string;
+  /**
+   * If true, show the string instead of the preview text.
+   */
+  @Input() public noPreviewText: string;
+  /**
+   * A placeholder for the field.
+   */
+  @Input() public placeholder: string;
+  /**
+   * Lines preferences for the item.
+   */
+  @Input() public lines: string;
+  /**
+   * If true, the component is disabled.
+   */
+  @Input() public disabled: boolean;
+  /**
+   * If true, the obligatory dot is shown.
+   */
+  @Input() public obligatory: boolean;
+  /**
+   * How many elements to show in the preview before to generalize on the number.
+   */
+  @Input() public numMaxElementsInPreview: number;
+  /**
+   * On change event.
+   */
+  @Output() public change = new EventEmitter<void>();
+  /**
+   * Icon select.
+   */
+  @Output() public iconSelect = new EventEmitter<void>();
 
-  constructor(
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-    public t: IDEATranslationsService
-  ) {}
-  public ngOnInit() {
-    // use a copy of the array, to confirm it only when saving
-    this.list = Array.from(this.list || new Array<string>());
+  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {
+    this.data = new Array<IdeaX.Label | string>();
+    this.numMaxElementsInPreview = 4;
   }
 
   /**
-   * Add a new element to the list.
+   * Open the checks modal and later fetch the selection.
    */
-  public addElement() {
-    this.alertCtrl
+  protected openList() {
+    if (this.disabled) return;
+    // open the modal to let the user to manage the list
+    this.modalCtrl
       .create({
-        header: this.t._('IDEA.LIST.NEW_ELEMENT'),
-        inputs: [{ name: 'element', placeholder: this.t._('IDEA.LIST.ELEMENT') }],
-        buttons: [
-          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-          {
-            text: this.t._('COMMON.SAVE'),
-            handler: data => {
-              if (data.element && data.element.trim()) {
-                this.list.push(data.element);
-                this.list = this.list.sort();
-              }
-            }
-          }
-        ]
+        component: IDEAListELementsComponent,
+        componentProps: {
+          data: this.data,
+          labelElements: this.labelElements,
+          searchPlaceholder: this.searchPlaceholder,
+          noElementsFoundText: this.noElementsFoundText
+        }
       })
-      .then(alert =>
-        alert.present().then(() => {
-          const firstInput: any = document.querySelector('ion-alert input');
-          firstInput.focus();
-          return;
-        })
-      );
-  }
-  /**
-   * Remove the selected element from the list.
-   */
-  public removeElement(element: any) {
-    this.list.splice(this.list.indexOf(element), 1);
+      .then(modal => {
+        modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
+        modal.present();
+      });
   }
 
   /**
-   * Close and save or simply dismiss.
+   * Calculate the preview.
    */
-  public close(save?: boolean) {
-    this.modalCtrl.dismiss(save ? this.list : null);
+  public getPreview(): string {
+    if (!this.data || !this.data.length) return null;
+    if (this.noPreviewText) return this.noPreviewText;
+    if (this.data.length <= this.numMaxElementsInPreview)
+      return this.data
+        .slice(0, this.numMaxElementsInPreview)
+        .map(x => this.getElementName(x))
+        .join(', ');
+    else return this.t._('IDEA.LIST.NUM_ELEMENTS_', { num: this.data.length });
+  }
+  /**
+   * Get the value to show based on the type of the element.
+   */
+  public getElementName(x: IdeaX.Label | string) {
+    return this.labelElements ? (x as IdeaX.Label).translate(this.t.getCurrentLang(), this.t.languages()) : x;
+  }
+
+  /**
+   * The icon was selected.
+   */
+  public doIconSelect(event: any) {
+    if (event) event.stopPropagation();
+    this.iconSelect.emit(event);
   }
 }

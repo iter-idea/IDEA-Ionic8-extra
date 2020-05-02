@@ -311,10 +311,10 @@
       "CANCEL_AND_CLOSE": "Cancel and close",
       "DELETE_ELEMENT": "Delete element",
       "ELEMENT": "Element",
-      "LIST": "List",
       "NEW_ELEMENT": "New element",
-      "NO_ELEMENTS_IN_LIST": "No elements in the list",
-      "SAVE_AND_CLOSE": "Save and close"
+      "NO_ELEMENTS_FOUND": "No elements found",
+      "SAVE_AND_CLOSE": "Save and close",
+      "NUM_ELEMENTS_": "{{num}} elements in the list"
     },
     "LOADING": { "PLEASE_WAIT": "Please wait..." },
     "MDE": {

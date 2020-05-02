@@ -1,45 +1,18 @@
-<ion-header>
-  <ion-toolbar class="ideaToolbar">
-    <ion-title>
-      {{ title || ('IDEA.LIST.LIST' | translate) }}
-    </ion-title>
-    <ion-buttons slot="start">
-      <ion-button [title]="t._('IDEA.LIST.CANCEL_AND_CLOSE')" (click)="close()">
-        <ion-icon name="close" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA.LIST.NEW_ELEMENT')" (click)="addElement()">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <ion-list>
-    <ion-item lines="none" *ngIf="!list.length">
-      <i>
-        {{ 'IDEA.LIST.NO_ELEMENTS_IN_LIST' | translate }}
-      </i>
-    </ion-item>
-    <ion-item *ngFor="let element of list">
-      {{ element }}
-      <ion-button
-        slot="end"
-        fill="clear"
-        color="danger"
-        [title]="t._('IDEA.LIST.DELETE_ELEMENT')"
-        (click)="removeElement(element)"
-      >
-        <ion-icon name="trash" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
-</ion-content>
-<ion-footer>
-  <ion-toolbar class="ideaToolbar tappable" [title]="t._('IDEA.LIST.SAVE_AND_CLOSE')" (click)="close(true)">
-    <ion-title class="ion-text-center">
-      <ion-icon name="checkmark"></ion-icon>
-    </ion-title>
-  </ion-toolbar>
-</ion-footer>
+<ion-item
+  class="listItem"
+  [lines]="lines || 'full'"
+  [button]="!disabled"
+  [title]="placeholder"
+  [class.withLabel]="label"
+  (click)="openList()"
+>
+  <ion-icon slot="start" *ngIf="icon" [name]="icon" [color]="iconColor" (click)="doIconSelect($event)"></ion-icon>
+  <ion-label position="stacked" *ngIf="label" [class.selectable]="!disabled">
+    {{ label }}
+    <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
+  </ion-label>
+  <ion-label class="description" [class.selectable]="!disabled" [class.placeholder]="!getPreview() || noPreviewText">
+    {{ getPreview() }}
+  </ion-label>
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
+</ion-item>
