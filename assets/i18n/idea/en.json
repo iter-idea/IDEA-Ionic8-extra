@@ -319,6 +319,16 @@
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Error during the integration of Trello; try again.",
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copy and paste the following token in the previous page to complete the configuration: {{token}}"
     },
+    "EMAIL": {
+      "EMAIL_DATA": "Email data",
+      "TO": "To",
+      "CC": "Cc",
+      "BCC": "Bbc",
+      "SUBJECT": "Subject",
+      "CONTENT": "Content",
+      "VARIABLES_AVAILABLE": "Variables available",
+      "VARIABLES_AVAILABLE_I": "These are all the variables you can use in subject and content. When sending an email they will be substitute by their values."
+    },
     "LABELER": {
       "EXPLANATION": "Only the translation in the default language is mandatory. If any translation is missing, the one in the default language is used instead.",
       "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language",

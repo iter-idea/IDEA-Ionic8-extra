@@ -319,6 +319,16 @@
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di Trello; riprovare.",
       "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copia e incolla il seguente token nella schermata precedente per completare la configurazione: {{token}}"
     },
+    "EMAIL": {
+      "EMAIL_DATA": "Dati email",
+      "TO": "A",
+      "CC": "Cc",
+      "BCC": "Ccn",
+      "SUBJECT": "Oggetto",
+      "CONTENT": "Contenuto",
+      "VARIABLES_AVAILABLE": "Variabili disponibili",
+      "VARIABLES_AVAILABLE_I": "Queste sono le variabili che puoi usare in oggetto e contenuto dell'email. All'invio di un'email verranno sostituite dai loro valori."
+    },
     "LABELER": {
       "EXPLANATION": "Solo la traduzione nella lingua di default è obbligatoria. Se una qualsiasi traduzione è mancante, verrà usata quella nella lingua di default.",
       "FILL_IN_DEFAULT_LANGUAGE": "Devi compilare almeno nella lingua di default",

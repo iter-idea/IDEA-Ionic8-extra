@@ -1,0 +1,40 @@
+.emailDataItem {
+  min-height: 48px;
+  height: auto;
+  .description {
+    margin: 10px 0;
+    min-height: 20px;
+    height: auto;
+    line-height: 20px;
+    width: 100%;
+    p {
+      margin: 2px 10px;
+      font-size: 0.8em;
+      ion-text {
+        font-weight: bold;
+      }
+    }
+    p:first-of-type {
+      margin-top: 10px;
+    }
+  }
+  .placeholder {
+    color: var(--ion-color-medium);
+  }
+  .selectIcon {
+    margin: 0;
+    padding-left: 4px;
+    font-size: 0.8em;
+    color: var(--ion-color-medium);
+  }
+}
+.emailDataItem.withLabel {
+  min-height: 58px;
+  height: auto;
+  .selectIcon {
+    padding-top: 25px;
+  }
+  ion-icon[slot='start'] {
+    margin-top: 16px;
+  }
+}

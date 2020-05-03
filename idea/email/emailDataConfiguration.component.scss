@@ -1,0 +1,14 @@
+.content {
+  margin: 10px 0;
+  min-height: 20px;
+  height: auto;
+  line-height: 20px;
+  width: 100%;
+}
+.variablesList {
+  margin: 0;
+  li {
+    padding: 3px;
+    color: var(--ion-color-dark);
+  }
+}

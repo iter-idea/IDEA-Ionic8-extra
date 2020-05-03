@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ title || 'IDEA.EMAIL.EMAIL_DATA' | translate }}</ion-title>
+    <ion-buttons slot="end" *ngIf="!disabled">
+      <ion-button [title]="t._('COMMON.SAVE')" (click)="save()">
+        <ion-icon name="checkmark-circle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="aList ion-padding" [class.viewMode]="disabled" [class.editMode]="!disabled">
+    <idea-list [data]="_emailData.to" [label]="t._('IDEA.EMAIL.TO')" [lines]="lines" [disabled]="disabled"></idea-list>
+    <idea-list [data]="_emailData.cc" [label]="t._('IDEA.EMAIL.CC')" [lines]="lines" [disabled]="disabled"></idea-list>
+    <idea-list
+      [data]="_emailData.bcc"
+      [label]="t._('IDEA.EMAIL.BCC')"
+      [lines]="lines"
+      [disabled]="disabled"
+    ></idea-list>
+    <ion-item [lines]="lines">
+      <ion-label position="stacked">{{ 'IDEA.EMAIL.SUBJECT' | translate }}</ion-label>
+      <div
+        class="content"
+        *ngIf="disabled"
+        [innerHTML]="_emailData.subject || placeholder | highlight: _variables"
+      ></div>
+      <ion-input type="text" *ngIf="!disabled" [(ngModel)]="_emailData.subject"></ion-input>
+    </ion-item>
+    <ion-item [lines]="lines">
+      <ion-label position="stacked">{{ 'IDEA.EMAIL.CONTENT' | translate }}</ion-label>
+      <div
+        class="content md"
+        *ngIf="disabled"
+        [innerHTML]="mdToHtml(_emailData.content || placeholder) | highlight: _variables"
+      ></div>
+      <ion-textarea maxlength="1000" *ngIf="!disabled" [rows]="8" [(ngModel)]="_emailData.content"></ion-textarea>
+    </ion-item>
+    <idea-mde-toolbar *ngIf="!disabled"></idea-mde-toolbar>
+  </ion-list>
+  <ion-list class="aList ion-padding" *ngIf="!disabled">
+    <ion-list-header>
+      <ion-label>
+        <h2>{{ 'IDEA.EMAIL.VARIABLES_AVAILABLE' | translate }}</h2>
+        <p>{{ 'IDEA.EMAIL.VARIABLES_AVAILABLE_I' | translate }}</p>
+      </ion-label>
+    </ion-list-header>
+    <ul class="variablesList">
+      <li *ngFor="let v of variables">
+        <small>{{ v.code }}</small> {{ v.description }}
+      </li>
+    </ul>
+  </ion-list>
+</ion-content>

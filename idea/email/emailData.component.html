@@ -1,0 +1,25 @@
+<ion-item
+  class="emailDataItem"
+  [lines]="lines"
+  [button]="true"
+  [title]="placeholder"
+  [class.withLabel]="label"
+  (click)="openEmailDataConfiguration()"
+>
+  <ion-icon slot="start" *ngIf="icon" [name]="icon" [color]="iconColor" (click)="doIconSelect($event)"></ion-icon>
+  <ion-label position="stacked" *ngIf="label">{{ label }}</ion-label>
+  <div class="description">
+    <div class="placeholder" *ngIf="!emailData.subject">{{ placeholder }}</div>
+    <div *ngIf="emailData.subject" [innerHTML]="emailData.subject | highlight: _variables"></div>
+    <p *ngIf="emailData.to.length">
+      <ion-text>{{ 'IDEA.EMAIL.TO' | translate }}:</ion-text> {{ emailData.to.join(', ') }}
+    </p>
+    <p *ngIf="emailData.cc.length">
+      <ion-text>{{ 'IDEA.EMAIL.CC' | translate }}:</ion-text> {{ emailData.cc.join(', ') }}
+    </p>
+    <p *ngIf="emailData.bcc.length">
+      <ion-text>{{ 'IDEA.EMAIL.BCC' | translate }}:</ion-text> {{ emailData.bcc.join(', ') }}
+    </p>
+  </div>
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled"></ion-icon>
+</ion-item>
