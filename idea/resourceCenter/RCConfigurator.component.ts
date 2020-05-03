@@ -20,6 +20,10 @@ export class IDEARCConfiguratorComponent {
    */
   @Input() public folder: IdeaX.RCConfiguredFolder;
   /**
+   * The label for the field.
+   */
+  @Input() public label: string;
+  /**
    * Regulate the mode (view/edit).
    */
   @Input() public editMode: boolean;
@@ -27,7 +31,6 @@ export class IDEARCConfiguratorComponent {
    * The lines attribute of the item.
    */
   @Input() public lines: string;
-
   /**
    * The folders loaded from the resource center.
    */
@@ -37,14 +40,7 @@ export class IDEARCConfiguratorComponent {
    */
   public foldersSuggestions: Array<IdeaX.Suggestion>;
 
-  constructor(public t: IDEATranslationsService, public tc: IDEATinCanService, public API: IDEAAWSAPIService) {
-    this.team = null;
-    this.folder = null;
-    this.editMode = false;
-    this.lines = 'none';
-    this.folders = null;
-    this.foldersSuggestions = null;
-  }
+  constructor(public t: IDEATranslationsService, public tc: IDEATinCanService, public API: IDEAAWSAPIService) {}
 
   /**
    * Load the resources from the resource center.
