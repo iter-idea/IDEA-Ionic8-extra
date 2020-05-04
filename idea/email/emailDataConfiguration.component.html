@@ -25,20 +25,12 @@
     ></idea-list>
     <ion-item [lines]="lines">
       <ion-label position="stacked">{{ 'IDEA.EMAIL.SUBJECT' | translate }}</ion-label>
-      <div
-        class="content"
-        *ngIf="disabled"
-        [innerHTML]="_emailData.subject || placeholder | highlight: _variables"
-      ></div>
+      <div class="content" *ngIf="disabled" [innerHTML]="_emailData.subject | highlight: _variables"></div>
       <ion-input type="text" *ngIf="!disabled" [(ngModel)]="_emailData.subject"></ion-input>
     </ion-item>
     <ion-item [lines]="lines">
       <ion-label position="stacked">{{ 'IDEA.EMAIL.CONTENT' | translate }}</ion-label>
-      <div
-        class="content md"
-        *ngIf="disabled"
-        [innerHTML]="mdToHtml(_emailData.content || placeholder) | highlight: _variables"
-      ></div>
+      <div class="content md" *ngIf="disabled" [innerHTML]="mdToHtml(_emailData.content) | highlight: _variables"></div>
       <ion-textarea maxlength="1000" *ngIf="!disabled" [rows]="8" [(ngModel)]="_emailData.content"></ion-textarea>
     </ion-item>
     <idea-mde-toolbar *ngIf="!disabled"></idea-mde-toolbar>

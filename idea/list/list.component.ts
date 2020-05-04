@@ -83,7 +83,7 @@ export class IDEAListComponent {
   /**
    * Open the checks modal and later fetch the selection.
    */
-  protected openList() {
+  public openList() {
     if (this.disabled) return;
     // open the modal to let the user to manage the list
     this.modalCtrl

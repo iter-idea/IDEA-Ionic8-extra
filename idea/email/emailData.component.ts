@@ -68,7 +68,7 @@ export class IDEAEmailDataComponent {
   /**
    * Open the modal to configure the email data.
    */
-  protected openEmailDataConfiguration() {
+  public openEmailDataConfiguration() {
     this.modalCtrl
       .create({
         component: IDEAEmailDataConfigurationComponent,
