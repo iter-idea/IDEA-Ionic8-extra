@@ -274,22 +274,29 @@ export class IDEAOfflineDataService {
         (path, donePath) => {
           // cache the list: keep the most updated version (cloud/local) of each resource
           this.API.putInCache(path, resource.index[path]).then(() => {
-            // cache the elements identified
-            Async.eachSeries(
-              resource.elements[path],
-              (id: string, done: any) => {
-                // note: the NETWORK_FIRST request will cache the response
-                this.API.getResource(path, { resourceId: id, useCache: CacheModes.NETWORK_FIRST })
-                  .then(() => done())
-                  .catch((err: Error) => done(err));
-              },
-              (err: Error) => {
-                // in case of errors, we wouldn't know which element had failed: kill the entire process
-                resource.error = Boolean(err);
-                resource.synchronizing = false;
-                donePath(err);
-              }
-            );
+            // if configured, cache the elements identified
+            if (!resource.excludeDetails) {
+              Async.eachSeries(
+                resource.elements[path],
+                (id: string, done: any) => {
+                  // note: the NETWORK_FIRST request will cache the response
+                  this.API.getResource(path, { resourceId: id, useCache: CacheModes.NETWORK_FIRST })
+                    .then(() => done())
+                    .catch((err: Error) => done(err));
+                },
+                (err: Error) => {
+                  // in case of errors, we wouldn't know which element had failed: kill the entire process
+                  resource.error = Boolean(err);
+                  resource.synchronizing = false;
+                  donePath(err);
+                }
+              );
+            } else {
+              // we don't need / we are not allowed to access the details, so we're done
+              resource.error = false;
+              resource.synchronizing = false;
+              donePath();
+            }
           });
         },
         (err: Error) => (err ? reject(err) : resolve())
@@ -416,6 +423,10 @@ export class CacheableResource {
    */
   public description: string;
   /**
+   * Download only the list without accessing the details.
+   */
+  public excludeDetails: boolean;
+  /**
    * Runtime attribute to know if the resource is synchronizing.
    */
   public synchronizing: boolean;
@@ -436,10 +447,11 @@ export class CacheableResource {
     [key: string]: Array<string>;
   };
 
-  constructor(resourcePaths: Array<string>, idAttribute: string, description?: string) {
+  constructor(resourcePaths: Array<string>, idAttribute: string, description?: string, excludeDetails?: boolean) {
     this.resourcePaths = resourcePaths.map((x: string) => (x ? String(x) : null));
     this.idAttribute = idAttribute;
     this.description = description || name;
+    this.excludeDetails = excludeDetails || false;
     this.synchronizing = false;
     this.error = false;
     this.index = {};
