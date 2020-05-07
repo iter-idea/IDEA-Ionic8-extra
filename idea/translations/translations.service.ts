@@ -74,14 +74,16 @@ export class IDEATranslationsService {
    * Sets the default language to use as a fallback.
    */
   public setDefaultLang(lang: string) {
-    this.defaultLang = lang;
+    // check whether the language is among the ServiceLanguages; otherwise, fallback to the first available
+    if (this.langs.includes(lang)) this.defaultLang = lang;
+    else this.defaultLang = this.langs[0];
   }
 
   /**
    * Get the languages in IdeaX format.
    */
   public languages(): IdeaX.Languages {
-    return new IdeaX.Languages({ available: this.getLangs(), default: this.getDefaultLang() });
+    return new IdeaX.Languages({ available: this.langs, default: this.currentLang });
   }
 
   /**
@@ -121,6 +123,8 @@ export class IDEATranslationsService {
     return new Promise(resolve => {
       const changed = lang !== this.currentLang;
       if (!changed && !force) return;
+      // check whether the language is among the available ones; otherwise, fallback to default
+      if (!this.langs.includes(lang)) lang = this.defaultLang;
       // load translations
       this.loadTranlations(lang).then(() => {
         // set the lang
