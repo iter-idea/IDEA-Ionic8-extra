@@ -73,7 +73,7 @@
       <ion-spinner slot="end" name="dots" *ngIf="offline.synchronizing"></ion-spinner>
     </ion-item>
   </ion-list>
-  <ion-list class="aList" lines="none" *ngIf="offline.resources.length">
+  <ion-list class="aList" lines="none" *ngIf="offline.getResources().length">
     <ion-list-header>
       <ion-label>
         <h2>{{ 'IDEA.OFFLINE.DOWNLOAD' | translate }}</h2>
