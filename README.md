@@ -23,7 +23,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Labeler
 - List
 - Markdown Editor (MDE)
-- Offline
+- Offline (delta)
 - Resource Center
 - Select
 - Send email

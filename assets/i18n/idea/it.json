@@ -367,15 +367,16 @@
       "LOADING": "Caricamento...",
       "NOW": "Adesso",
       "NO_ELEMENTS_TO_UPLOAD": "Nessun elemento da caricare",
-      "NUM_ELEMENTS_TO_CACHE": "{{num}} elementi da aggiornare",
-      "NUM_ELEMENTS_TO_SYNC": "Numero elementi da sincronizzare",
       "OFFLINE_MANAGER": "Offline manager",
       "REQUEST_FAILED": "Richiesta fallita; riprova o cancella la richiesta",
       "SYNC_IN_PROGRESS": "Sincronizzazione in corso",
       "SYNC_NOW": "Sincronizza",
       "UPLOAD": "Upload",
       "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Le azioni create offline devono essere caricate online",
-      "YOU_ARE_OFFLINE": "Sei offline"
+      "YOU_ARE_OFFLINE": "Sei offline",
+      "NEVER": "Mai",
+      "ADVANCED_ACTIONS": "Azioni avanzate",
+      "FULL_SYNC_DISCLAIMER": "Tutti i dati offline verranno eliminati e l'operazione potrebbe richiedere diversi minuti"
     },
     "RESOURCE_CENTER": {
       "ADD_A_RESOURCE": "Aggiungi una risorsa",

@@ -5,11 +5,12 @@ import { IonicModule } from '@ionic/angular';
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAOfflineManagerComponent } from './offlineManager.component';
 import { IDEAOfflineIndicatorComponent } from './offlineIndicator.component';
+import { IDEACacheableResourceComponent } from './cacheableResource.component';
 
 @NgModule({
   imports: [CommonModule, IonicModule, IDEATranslationsModule],
-  declarations: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent],
-  entryComponents: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent],
-  exports: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent]
+  declarations: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent, IDEACacheableResourceComponent],
+  entryComponents: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent, IDEACacheableResourceComponent],
+  exports: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent, IDEACacheableResourceComponent]
 })
 export class IDEAOfflineModule {}

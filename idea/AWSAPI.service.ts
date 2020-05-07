@@ -47,8 +47,8 @@ export class IDEAAWSAPIService {
       // decide if to use IDEA's API or project's API
       let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
-      url = url.concat(`/${resource}/`);
-      if (opt.resourceId) url = url.concat(encodeURIComponent(opt.resourceId));
+      url = `${url}/${resource}`;
+      if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
       // preare the headers and set the Authorization; note: HttpHeaders is immutable!
       let headers = new HttpHeaders(opt.headers || null);
       if (!headers.get('Authorization') && this.tc.get('AWSAPIAuthToken'))
@@ -235,7 +235,8 @@ export class IDEAAWSAPIService {
       // decide if to use IDEA's API or project's API
       let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
-      url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
+      url = `${url}/${resource}`;
+      if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
       // prepare the query params; note: HttpParams is immutable!
       let searchParams = new HttpParams();
       if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
@@ -257,7 +258,8 @@ export class IDEAAWSAPIService {
       // decide if to use IDEA's API or project's API
       let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
-      url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
+      url = `${url}/${resource}`;
+      if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
       // prepare the query params; note: HttpParams is immutable!
       let searchParams = new HttpParams();
       if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
@@ -279,7 +281,8 @@ export class IDEAAWSAPIService {
       // decide if to use IDEA's API or project's API
       let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
-      url = url.concat(`/${resource}/`).concat(opt.resourceId || '');
+      url = `${url}/${resource}`;
+      if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
       // prepare the query params; note: HttpParams is immutable!
       let searchParams = new HttpParams();
       if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);

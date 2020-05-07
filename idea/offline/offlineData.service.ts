@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
+import IdeaX = require('idea-toolbox');
 import Async = require('async');
 
 import { epochDateTime } from 'idea-toolbox';
-import { IDEAAWSAPIService, APIRequestOption, CacheModes } from '../AWSAPI.service';
+import { IDEAAWSAPIService, APIRequestOption } from '../AWSAPI.service';
 import { IDEAOfflineService } from './offline.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
@@ -13,39 +14,54 @@ import { IDEATranslationsService } from '../translations/translations.service';
  */
 export const SYNC_EXPIRATION_INTERVAL = 1000 * 60 * 60 * 24; // a day
 /**
- * Prefix of an online resource name, for the local storage.
+ * Prefix for the key of the api request queueu info in the local storage.
  */
 export const QUEUE_API_REQUESTS_KEY = 'IDEAOfflineService.queueAPIrequests';
 /**
- * Id of the last sync time info in the local storage.
+ * Prefix for the key of the last sync time info in the local storage.
  */
 export const LAST_SYNC_KEY = 'IDEAOfflineService.lastSyncAt';
 /**
- * The max number of element to cache to automatically start the synchronisation.
- * After this number, a manual confirmation is requested, to save internet data and computational resources.
+ * The max number of elements per resource to synchronize during the first analysis of a synchronisation.
+ * If the number of elements exceeds, the operation will require a manual confirmation.
  */
-export const MAX_NUM_ELEMENTS_FOR_QUICK_SYNC = 50;
+export const NUM_ELEMENTS_WITHOUT_MANUAL_SYNC = 100;
 
 /**
  * Manage the offline functioning of the app's data (upload/download/synchronization).
  * Note: it includes all the methods of IDEAOfflineService.
  *
- * Download: it works through the `mAt` mechanism on back-end resources.
+ * Download: it works through the **delta** mechanism on back-end resources.
+ * Practically, the services prepare each possible API GET requests for each of the involved resources.
+ * In this way, if offline, the API service can hit an element in the cache (storage offline).
  *
- * **How to use it**. Configure the sync mechanism in the main app.component as it follows
- *    1. set the resources to cache offline.
- *    2. run a synchronization
- *    3. enable the offline manager (UI).
- *    4. add API requests to the queue when offline
- * e.g.
+ * **How to use it**. Configure the sync mechanism in the main app.component as it follows:
+ *
+ *    1. Implement a CacheableResource class for each DeltaResource you want to cache offline.
+ *    2. Set up the service.
+ *    3. Run a synchronization.
+ *    4. Enable the offline manager (UI).
+ *    5. Add API requests to the queue when offline.
+ *
+ * e.g. of CacheableResource classes:
  * ```
- * // set the resources we want to download from the back-end
- * this.offline.resourcesToCache = [
- *   new CacheableResource([`teams/${team.teamId}/models`], 'modelId', this.t._('MENU.MODELS')),
- *   new CacheableResource([`teams/${team.teamId}/activities`], 'activityId', this.t._('MENU.ACTIVITIES'))
- * ];
- * this.offline.synchronizeIfNeeded();
- * ```
+ * class CustomerCR extends CacheableResource {
+ *   constructor(description: string) {
+ *     super(DeltaResources.CUSTOMERS, description);
+ *   }
+ *   public listURL(element: any): string {
+ *     return `teams/${element.teamId}/customers`;
+ *   }
+ *   public elementURL(element: any): string {
+ *     return `teams/${element.teamId}/customers/${element.customerId}`;
+ *   }
+ *   public findIndexInList(list: Array<any>, element: any): number {
+ *     return list.findIndex(x => x.customerId === element.customerId);
+ *   }
+ *   public sort(a: any, b: any): number {
+ *     return a.name.localeCompare(b.name);
+ *   }
+ * }
  */
 @Injectable()
 export class IDEAOfflineDataService {
@@ -63,7 +79,6 @@ export class IDEAOfflineDataService {
   public errorInLastSync: boolean;
   /**
    * True if the synchronisation is too vast and so require a manual action of the user.
-   * Based on `MAX_NUM_ELEMENTS_FOR_QUICK_SYNC`.
    */
   public requiresManualConfirmation: boolean;
   /**
@@ -75,9 +90,25 @@ export class IDEAOfflineDataService {
    */
   public queueAPIRequests: Array<APIRequest>;
   /**
-   * The array of resources to cache offline from the back-end.
+   * The id of the team of which to manage data offline.
    */
-  public resourcesToCache: Array<CacheableResource>;
+  protected teamId: string;
+  /**
+   * The array of DeltaResources to cache offline.
+   */
+  protected resources: Array<IdeaX.DeltaResources | string>;
+  /**
+   * Helper structure to manage the CacheableResource for each DeltaResources.
+   */
+  protected cacheableResources: { [resource: string]: CacheableResource };
+  /**
+   * Key to acquire the lastSyncAt information of the team from the storage.
+   */
+  protected lastSyncKey: string;
+  /**
+   * Key to acquire the lastSyncAt information of the team from the storage.
+   */
+  protected queueAPIRequestKey: string;
 
   constructor(
     protected storage: Storage,
@@ -86,7 +117,8 @@ export class IDEAOfflineDataService {
     protected API: IDEAAWSAPIService
   ) {
     this.queueAPIRequests = new Array<APIRequest>();
-    this.resourcesToCache = new Array<CacheableResource>();
+    this.resources = new Array<string>();
+    this.cacheableResources = {};
     // subscribe to network changes
     this.offline.subscribe(isOnline => {
       if (isOnline) {
@@ -125,11 +157,53 @@ export class IDEAOfflineDataService {
   public check(): Promise<boolean> {
     return this.offline.check();
   }
+
+  //
+  // CONFIGURATION
+  //
+
   /**
-   * Customizable function to decide whether the offline mode is allowed.
+   * Set up the service to use and sync offline data.
+   */
+  public setUpOfflineData(teamId: string, useQueueAPIRequests: boolean, cacheableResources: Array<CacheableResource>) {
+    // set the team
+    this.teamId = teamId;
+    // decide if to allow certain API request while offline
+    this.useQueueAPIRequests = useQueueAPIRequests;
+    // load the API request pending queue, if any
+    this.queueAPIRequestKey = `${QUEUE_API_REQUESTS_KEY}_${this.teamId}`;
+    this.loadQueueAPIRequest();
+    // load the lastSyncAt information for the team
+    this.lastSyncKey = `${LAST_SYNC_KEY}_${this.teamId}`;
+    this.loadLastSyncAt();
+    // load the cacheable resources
+    this.resources = new Array<IdeaX.DeltaResources | string>();
+    this.cacheableResources = {};
+    cacheableResources.forEach(r => this.addCacheableResource(r));
+  }
+  /**
+   * Load from the local storage the last sync at information.
+   */
+  protected loadLastSyncAt(): Promise<number> {
+    return new Promise(resolve => {
+      this.storage.get(this.lastSyncKey).then((lastSyncAt: number) => {
+        this.lastSyncAt = lastSyncAt ? Number(lastSyncAt) : null;
+        resolve(this.lastSyncAt);
+      });
+    });
+  }
+  /**
+   * Update last sync at info in the local storage.
+   */
+  protected saveLastSyncAt(lastSyncAt: number): Promise<void> {
+    this.lastSyncAt = lastSyncAt;
+    return this.storage.set(this.lastSyncKey, lastSyncAt);
+  }
+  /**
+   * Whether the offline mode is allowed. You can customize this function, if needed.
    */
   public isAllowed() {
-    return true;
+    return this.teamId && this.resources.length;
   }
 
   //
@@ -142,6 +216,7 @@ export class IDEAOfflineDataService {
    */
   public runQueueAPIRequests(): Promise<void> {
     return new Promise((resolve, reject) => {
+      if (!this.isAllowed()) return reject();
       if (!this.useQueueAPIRequests || this.offline.isOffline() || !this.queueAPIRequests.length) return resolve();
       this.synchronizing = true;
       Async.eachSeries(
@@ -195,7 +270,7 @@ export class IDEAOfflineDataService {
   protected loadQueueAPIRequest(): Promise<Array<APIRequest>> {
     return new Promise(resolve => {
       if (!this.useQueueAPIRequests) return resolve([]);
-      this.storage.get(QUEUE_API_REQUESTS_KEY).then((queue: Array<APIRequest>) => {
+      this.storage.get(this.queueAPIRequestKey).then((queue: Array<APIRequest>) => {
         this.queueAPIRequests = queue || [];
         resolve(this.queueAPIRequests);
       });
@@ -206,7 +281,7 @@ export class IDEAOfflineDataService {
    */
   public saveQueueAPIRequest(queue?: Array<APIRequest>): Promise<void> {
     this.queueAPIRequests = queue || this.queueAPIRequests;
-    return this.storage.set(QUEUE_API_REQUESTS_KEY, this.queueAPIRequests);
+    return this.storage.set(this.queueAPIRequestKey, this.queueAPIRequests);
   }
   /**
    * Delete a request stuck in an error.
@@ -223,85 +298,102 @@ export class IDEAOfflineDataService {
   //
 
   /**
-   * Analize the resource by consulting its list as an index, and gather the elements to cache (new/changed),
-   * based on the `mAt` mechanism.
-   * @return the index and the elements to cache
+   * Add a CacheableResource.
    */
-  protected analyseResource(resource: CacheableResource): Promise<void> {
-    return new Promise(resolve => {
-      resource.synchronizing = true;
-      resource.error = false;
-      // get the resource elements ONLINE (list), for each resource path
-      Async.forEach(
-        resource.resourcePaths,
-        (path, donePath) => {
-          this.API.getResource(path, { useCache: CacheModes.NO_CACHE }).then((cloudElements: Array<any>) => {
-            // get the resource elements OFFLINE (list)
-            this.API.getResource(path, { useCache: CacheModes.CACHE_ONLY }).then((localElements: Array<any>) => {
-              console.log(resource, cloudElements, localElements);
-              // prepare the list, keeping the most updated elements between cloud and local version
-              resource.index[path] = cloudElements.map(cloudEl => {
-                const localEl = localElements.find(l => l[resource.idAttribute] === cloudEl[resource.idAttribute]);
-                if (resource.idAttribute === 'activityId') {
-                  console.log('#####', localEl, cloudEl);
-                }
-                if (!localEl) {
-                  // !localEl -> download cloudEl
-                  resource.elements[path].push(cloudEl[resource.idAttribute]);
-                  return cloudEl;
-                } else if (!localEl.mAt || !cloudEl.mAt || cloudEl.mAt > localEl.mAt) {
-                  // cloudEl more recent than localEl -> download cloudEl
-                  resource.elements[path].push(localEl[resource.idAttribute]);
-                  return cloudEl;
-                } else return localEl;
-              });
-              donePath();
-            });
-          });
-        },
-        () => resolve()
-      );
-    });
+  public addCacheableResource(cacheableResource: CacheableResource) {
+    this.cacheableResources[cacheableResource.resource] = cacheableResource;
+    this.resources.push(cacheableResource.resource);
   }
   /**
-   * Cache the analysed elements of a resource.
-   * @todo old elements in cache aren't deleted (they just disappear from the index).
+   * Get the the DeltaResourced configured.
    */
-  protected cacheResource(resource: CacheableResource): Promise<void> {
-    return new Promise((resolve, reject) => {
-      Async.forEach(
-        resource.resourcePaths,
-        (path, donePath) => {
-          // cache the list: keep the most updated version (cloud/local) of each resource
-          this.API.putInCache(path, resource.index[path]).then(() => {
-            // if configured, cache the elements identified
-            if (!resource.excludeDetails) {
-              Async.eachSeries(
-                resource.elements[path],
-                (id: string, done: any) => {
-                  // note: the NETWORK_FIRST request will cache the response
-                  this.API.getResource(path, { resourceId: id, useCache: CacheModes.NETWORK_FIRST })
-                    .then(() => done())
-                    .catch((err: Error) => done(err));
-                },
-                (err: Error) => {
-                  // in case of errors, we wouldn't know which element had failed: kill the entire process
-                  resource.error = Boolean(err);
-                  resource.synchronizing = false;
-                  donePath(err);
-                }
-              );
-            } else {
-              // we don't need / we are not allowed to access the details, so we're done
-              resource.error = false;
-              resource.synchronizing = false;
-              donePath();
-            }
-          });
-        },
-        (err: Error) => (err ? reject(err) : resolve())
-      );
+  public getResources(): Array<IdeaX.DeltaResources | string> {
+    return this.resources;
+  }
+  /**
+   * Get a CacheableResource by its DeltaResource.
+   */
+  public getCacheableResource(resource: IdeaX.DeltaResources | string): CacheableResource {
+    return this.cacheableResources[resource];
+  }
+  /**
+   * Remove a CacheableResource by its DeltaResource.
+   */
+  public removeCacheableResources(resource: IdeaX.DeltaResources | string) {
+    delete this.cacheableResources[resource];
+    this.resources.splice(this.resources.indexOf(resource), 1);
+  }
+
+  /**
+   * Save the records of a delta and, if the latter has new pages, go recursive.
+   */
+  protected async syncDeltaRecords(delta: IdeaX.Delta, cb?: any) {
+    // for each resource we reset the status; if a resource still need to be synchronized, it will be flagged below
+    this.resources.forEach(resource => {
+      this.cacheableResources[resource].error = false;
+      this.cacheableResources[resource].synchronizing = false;
     });
+    try {
+      // synchronze each of the resources included in the delta; this execution can go in parallel
+      await Promise.all(
+        delta.resources.map(async resource => {
+          const cr = this.cacheableResources[resource];
+          if (cr) {
+            cr.synchronizing = true;
+            // the executuion inside a resource must go in series
+            const success = await this.syncResourceDeltaRecords(resource, delta.records[resource]);
+            if (!success) this.errorInLastSync = true;
+          }
+        })
+      );
+      // if there were error of if there is nothing left to sync, we are done
+      if (this.errorInLastSync || !delta.next) return cb();
+      // get the next page of the delta and go recursive until we are done
+      const params: any = { next: delta.next };
+      if (this.lastSyncAt) params.since = this.lastSyncAt;
+      const newDelta = await this.API.getResource(`teams/${this.teamId}/delta`, { params });
+      this.syncDeltaRecords(newDelta, cb);
+    } catch (err) {
+      // if something went wrong, stops the operation, since we need to make sure the entire operation is consistent
+      this.errorInLastSync = true;
+      return cb();
+    }
+  }
+  /**
+   * Save offline a list of DeltaRecords for this resource, creating a map of all corresponding API GET requests.
+   * Disclaimer: not very efficient, but it ensures the lists aren't updated in conconcurrency.
+   */
+  public async syncResourceDeltaRecords(resource: string, records: Array<IdeaX.DeltaRecord>): Promise<boolean> {
+    const cr = this.cacheableResources[resource];
+    if (!cr) return Promise.resolve(false);
+    try {
+      for (const r of records) {
+        // calculate the URLs to access the API request key for this element and its list
+        const listURL = cr.listURL(r.element);
+        const elementURL = cr.elementURL(r.element);
+        // get the list of (old) elements from the local storage by the calculated URL
+        let list = await this.API.getFromCache(listURL);
+        // find the (old) element we want to manage
+        const index = cr.findIndexInList(list, r.element);
+        // delete the (old) element
+        if (index !== -1) list.splice(index, 1);
+        // if the element wasn't the deleted, insert the new version
+        if (!r.deleted) list.push(r.element);
+        // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
+        list = list.sort(cr.sort);
+        // save the updated list
+        await this.API.putInCache(listURL, list);
+        // if the element was deleted, delete its corresponding API GET request
+        if (r.deleted) await this.API.deleteFromCache(elementURL);
+        // otherwise, update it
+        else await this.API.putInCache(elementURL, r.element);
+      }
+    } catch (err) {
+      // if something went wrong, stops the operation, since we need to make sure the entire operation is consistent
+      cr.error = true;
+      return Promise.resolve(false);
+    }
+    return Promise.resolve(true);
   }
 
   //
@@ -312,66 +404,73 @@ export class IDEAOfflineDataService {
    * Run general synchronization, only if needed, i.e. the cached content expired or
    * we have pending API requests in the queue.
    */
-  public synchronizeIfNeeded() {
-    this.loadQueueAPIRequest().then(() => {
-      if (this.queueAPIRequests.length || Date.now() > this.lastSyncAt + SYNC_EXPIRATION_INTERVAL) this.synchronize();
+  public synchronizeIfNeeded(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.isAllowed()) return reject();
+      this.loadLastSyncAt().then(() =>
+        this.loadQueueAPIRequest()
+          .then(() => {
+            if (this.queueAPIRequests.length || Date.now() > this.lastSyncAt + SYNC_EXPIRATION_INTERVAL)
+              this.synchronize();
+            resolve();
+          })
+          .catch(err => reject(err))
+      );
     });
   }
   /**
    * General synchronization of the whole set of resources (upload+download).
    * @param manualConfirmation if true, the request comes directly from a user action (not automatic procedures).
    */
-  public synchronize(manualConfirmation?: boolean) {
-    if (this.synchronizing) return;
+  public async synchronize(manualConfirmation?: boolean) {
+    if (!this.isAllowed() || this.synchronizing) return;
     this.synchronizing = true;
     this.errorInLastSync = false;
     this.requiresManualConfirmation = false;
     // try to upload the elements of all the offline resources
-    this.runQueueAPIRequests()
-      .then(() => {
-        // analyse the resources to see if there are updated versions of the cached elements to download
-        Async.each(
-          this.resourcesToCache,
-          (res, done) => this.analyseResource(res).then(() => done()),
-          () => {
-            // count the total number of the elements to cache in between all the resources
-            let numElToCache = 0;
-            this.resourcesToCache.forEach(r => (numElToCache += r.getNumElementsToCache()));
-            // decide if to proceed with the syncronisation;
-            // in case of too many elements to update, requires a manual confirmation
-            if (numElToCache > MAX_NUM_ELEMENTS_FOR_QUICK_SYNC && !manualConfirmation) {
-              this.requiresManualConfirmation = true;
-              this.synchronizing = false;
-              return;
-            }
-            // download the elements of the analysed resources
-            Async.each(
-              this.resourcesToCache,
-              (resource, done) => {
-                this.cacheResource(resource)
-                  .then(() => done())
-                  .catch(() => {
-                    // show an error alert, but don't make the entire process to fail
-                    this.errorInLastSync = true;
-                    done();
-                  });
-              },
-              () => {
+    this.loadLastSyncAt().then(() =>
+      this.runQueueAPIRequests()
+        .then(() => {
+          // set this moment in time, so that if anything happened before the end of the sync, we don't lose fresh data
+          const now = Date.now();
+          // analyse the resources to see if there are updated versions of the cached elements to download
+          const params: any = { limit: NUM_ELEMENTS_WITHOUT_MANUAL_SYNC };
+          if (this.lastSyncAt) params.since = this.lastSyncAt;
+          this.API.getResource(`teams/${this.teamId}/delta`, { params })
+            .then((delta: IdeaX.Delta) => {
+              // decide if to proceed with the sync: in case there is another page, it requires a manual confirmation
+              if (delta.next && !manualConfirmation) {
+                this.requiresManualConfirmation = true;
+                this.synchronizing = false;
+                return;
+              }
+              // save the records in the delta (and request possible new pages)
+              this.syncDeltaRecords(delta, () => {
                 if (this.errorInLastSync) this.synchronizing = false;
                 else {
-                  // all the resources are succesfully in sync; update the timestamp of last sync
-                  this.lastSyncAt = Date.now();
-                  this.storage.set(LAST_SYNC_KEY, this.lastSyncAt).then(() => (this.synchronizing = false));
+                  // all the resources are succesfully in sync
+                  this.resources.forEach(resource => (this.cacheableResources[resource].synchronizing = false));
+                  // update the timestamp of last sync
+                  this.saveLastSyncAt(now).then(() => (this.synchronizing = false));
                 }
-              }
-            );
-          }
-        );
-      })
-      .catch(() => {
-        this.errorInLastSync = true;
-        this.synchronizing = false;
-      });
+              });
+            })
+            .catch(() => {
+              this.errorInLastSync = true;
+              this.synchronizing = false;
+            });
+        })
+        .catch(() => {
+          this.errorInLastSync = true;
+          this.synchronizing = false;
+        })
+    );
+  }
+  /**
+   * Force a full synchronisation
+   */
+  public forceFullSync() {
+    this.saveLastSyncAt(null).then(() => this.synchronize(true));
   }
 }
 
@@ -407,25 +506,17 @@ export interface APIRequest {
 }
 
 /**
- * A resource to cache offline from the back-end (DOWNLOAD).
+ * The abstract class to implement for each resource to cache offline from the back-end (DOWNLOAD).
  */
-export class CacheableResource {
+export abstract class CacheableResource {
   /**
-   * List of resource path (e.g. `users` or `teams/${teamId}/users`).
+   * The id of the resource.
    */
-  public resourcePaths: Array<string>;
+  public resource: IdeaX.DeltaResources | string;
   /**
-   * The name of the attribute that works as resourceId.
-   */
-  public idAttribute: string;
-  /**
-   * The resource description.
+   * The resource description (translated).
    */
   public description: string;
-  /**
-   * Download only the list without accessing the details.
-   */
-  public excludeDetails: boolean;
   /**
    * Runtime attribute to know if the resource is synchronizing.
    */
@@ -434,35 +525,32 @@ export class CacheableResource {
    * True if one of the elements failed to upload.
    */
   public error: boolean;
-  /**
-   * For each resourcePath, the index of the elements to cache for the path.
-   */
-  public index: {
-    [key: string]: Array<any>;
-  };
-  /**
-   * For each resourcePath, the elements to cache for the path.
-   */
-  public elements: {
-    [key: string]: Array<string>;
-  };
 
-  constructor(resourcePaths: Array<string>, idAttribute: string, description?: string, excludeDetails?: boolean) {
-    this.resourcePaths = resourcePaths.map((x: string) => (x ? String(x) : null));
-    this.idAttribute = idAttribute;
-    this.description = description || name;
-    this.excludeDetails = excludeDetails || false;
+  constructor(resource: string, description: string) {
+    this.resource = resource;
+    this.description = description;
     this.synchronizing = false;
     this.error = false;
-    this.index = {};
-    resourcePaths.forEach((x: string) => (this.index[x] = new Array<any>()));
-    this.elements = {};
-    resourcePaths.forEach((x: string) => (this.elements[x] = new Array<string>()));
   }
 
-  public getNumElementsToCache(): number {
-    let count = 0;
-    this.resourcePaths.forEach(p => (count += this.elements[p].length));
-    return count;
-  }
+  /**
+   * How to build the relative url to the resource (list).
+   * E.g. `teams/${element.teamId}/customers`
+   */
+  public abstract listURL(element: any): string;
+  /**
+   * How to build the relative url to the resource element (detail).
+   * E.g. `teams/${element.teamId}/customers/${element.customerId}`
+   */
+  public abstract elementURL(element: any): string;
+  /**
+   * How to uniquely identify an element in the list (by its ids).
+   * E.g. `return list.findIndex(x => x.customerId === element.customerId);`
+   */
+  public abstract findIndexInList(list: Array<any>, element: any): number;
+  /**
+   * How to keep the list sorted.
+   * E.g. `return a.name.localeCompare(b.name);`
+   */
+  public abstract sort(a: any, b: any): number;
 }

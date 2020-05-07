@@ -37,6 +37,7 @@ export * from './loading.service';
 export * from './message.service';
 export * from './offline/offline.service';
 export * from './offline/offlineData.service';
+export * from './offline/offlineDB.service';
 export * from './pushNotifications.service';
 export * from './tinCan.service';
 export * from './translations/translations.service';

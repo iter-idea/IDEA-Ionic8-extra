@@ -367,15 +367,16 @@
       "LOADING": "Loading...",
       "NOW": "Now",
       "NO_ELEMENTS_TO_UPLOAD": "No elements to upload",
-      "NUM_ELEMENTS_TO_CACHE": "{{num}} elements to cache",
-      "NUM_ELEMENTS_TO_SYNC": "Number of elements to synchronise",
       "OFFLINE_MANAGER": "Offline manager",
       "REQUEST_FAILED": "Request failed; try again or cancel the request",
       "SYNC_IN_PROGRESS": "Synchronisation in progress",
-      "SYNC_NOW": "Synchronize",
+      "SYNC_NOW": "Synchronise",
       "UPLOAD": "Upload",
       "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Resources created offline must be uploaded online",
-      "YOU_ARE_OFFLINE": "You are offline"
+      "YOU_ARE_OFFLINE": "You are offline",
+      "NEVER": "Never",
+      "ADVANCED_ACTIONS": "Advanced actions",
+      "FULL_SYNC_DISCLAIMER": "All the offline data will be removed and the operation could take several minutes"
     },
     "RESOURCE_CENTER": {
       "ADD_A_RESOURCE": "Add a resource",
