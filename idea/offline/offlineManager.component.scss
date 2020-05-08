@@ -1,8 +1,11 @@
 .aList {
   max-width: 500px;
   margin: 0 auto;
-  h3.lastSyncAt {
-    margin-top: 6px;
+  ion-list-header {
+    padding-right: 10px;
+    h3.lastSyncAt {
+      margin-top: 6px;
+    }
   }
   .error {
     color: var(--ion-color-danger);

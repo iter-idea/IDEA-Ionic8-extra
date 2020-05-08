@@ -16,7 +16,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list class="aList padding" lines="none">
+  <ion-list class="aList">
     <ion-list-header *ngIf="!offline.synchronizing && offline.requiresManualConfirmation">
       <ion-label>
         <h2>{{ 'IDEA.OFFLINE.HUGE_SYNC_NEED_MANUAL_CONFIRMATION' | translate }}</h2>
@@ -41,14 +41,14 @@
       </ion-button>
     </ion-list-header>
   </ion-list>
-  <ion-list class="aList" lines="none" *ngIf="offline.synchronizing">
+  <ion-list class="aList" *ngIf="offline.synchronizing">
     <ion-item>
       <ion-label class="ion-text-center">
         <ion-spinner name="crescent" color="primary"></ion-spinner>
       </ion-label>
     </ion-item>
   </ion-list>
-  <ion-list class="aList" lines="none" *ngIf="offline.useQueueAPIRequests">
+  <ion-list class="aList" *ngIf="offline.useQueueAPIRequests">
     <ion-list-header>
       <ion-label>
         <h2>{{ 'IDEA.OFFLINE.UPLOAD' | translate }}</h2>
@@ -73,7 +73,7 @@
       <ion-spinner slot="end" name="dots" *ngIf="offline.synchronizing"></ion-spinner>
     </ion-item>
   </ion-list>
-  <ion-list class="aList" lines="none" *ngIf="offline.getResources().length">
+  <ion-list class="aList" *ngIf="offline.getResources().length">
     <ion-list-header>
       <ion-label>
         <h2>{{ 'IDEA.OFFLINE.DOWNLOAD' | translate }}</h2>
