@@ -1,3 +1,6 @@
+Since it isn't used anywhere, we disabled it so that it won't require `capacitor-data-storage-sqlite`
+
+```
 import { Injectable } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import * as CDSSPlugin from 'capacitor-data-storage-sqlite';
@@ -199,3 +202,4 @@ export class IDEAOfflineDBService {
     });
   }
 }
+```

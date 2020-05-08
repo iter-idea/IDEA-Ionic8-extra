@@ -35,7 +35,7 @@
         fill="solid"
         [color]="offline.errorInLastSync ? 'danger' : 'dark'"
         [disabled]="offline.isOffline()"
-        (click)="offline.synchronize(true)"
+        (click)="sync()"
       >
         <ion-icon slot="start" name="sync"></ion-icon> {{ 'IDEA.OFFLINE.SYNC_NOW' | translate }}
       </ion-button>

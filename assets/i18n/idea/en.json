@@ -382,7 +382,8 @@
       "YOU_ARE_OFFLINE": "You are offline",
       "NEVER": "Never",
       "ADVANCED_ACTIONS": "Advanced actions",
-      "FULL_SYNC_DISCLAIMER": "All the offline data will be removed and the operation could take several minutes"
+      "FULL_SYNC_DISCLAIMER": "All the offline data will be removed and the operation could take several minutes",
+      "DONT_EXIT_APP_DISCLAIMER": "Please, don't exit the app while synchronising"
     },
     "RESOURCE_CENTER": {
       "ADD_A_RESOURCE": "Add a resource",

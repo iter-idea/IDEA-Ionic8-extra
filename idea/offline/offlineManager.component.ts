@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ModalController, AlertController, ActionSheetController } from '@ionic/angular';
 import Moment = require('moment-timezone');
+import { Plugins } from '@capacitor/core';
+const { CapacitorKeepScreenOn } = Plugins;
 
 import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -21,6 +23,33 @@ export class IDEAOfflineManagerComponent {
   public ngOnInit() {
     Moment.locale(this.t.getCurrentLang());
   }
+
+  /**
+   * Run a synchronization (with manual confirmation), to acquire what's changed since the last one.
+   */
+  public sync() {
+    this.alertCtrl
+      .create({
+        header: this.t._('IDEA.OFFLINE.SYNC_NOW'),
+        message: this.t._('IDEA.OFFLINE.DONT_EXIT_APP_DISCLAIMER'),
+        buttons: [
+          { text: this.t._('COMMON.CANCEL') },
+          {
+            text: this.t._('COMMON.GOT_IT'),
+            handler: () => {
+              // if the plugin is available, avoid the screen to turn off during the synchronisation
+              if (CapacitorKeepScreenOn) CapacitorKeepScreenOn.enable();
+              // run a manual synchronisation
+              this.offline.synchronize(true).finally(() => {
+                if (CapacitorKeepScreenOn) CapacitorKeepScreenOn.disable();
+              });
+            }
+          }
+        ]
+      })
+      .then(alert => alert.present());
+  }
+
   /**
    * Smarter labeling based on a recent syncronization.
    */

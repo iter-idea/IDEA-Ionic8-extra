@@ -25,6 +25,10 @@ export const LAST_SYNC_KEY = 'IDEAOfflineService.lastSyncAt';
  * If the number of elements exceeds (there is more data after the 1st page), the operation require manual confirmation.
  */
 export const NUM_ELEMENTS_WITHOUT_MANUAL_SYNC = 100;
+/**
+ * The max number of elements per resource to request at the same time during a normal synchronisation.
+ */
+export const NUM_ELEMENTS_WITH_MANUAL_SYNC = 300;
 
 /**
  * Manage the offline functioning of the app's data (upload/download/synchronization).
@@ -346,7 +350,7 @@ export class IDEAOfflineDataService {
       // if there were error of if there is nothing left to sync, we are done
       if (this.errorInLastSync || !delta.next) return done();
       // otherwise, get the next page of the delta and go recursive until we are done
-      const params: any = { next: delta.next };
+      const params: any = { next: delta.next, limit: NUM_ELEMENTS_WITH_MANUAL_SYNC };
       if (this.lastSyncAt) params.since = this.lastSyncAt;
       const newDelta = await this.API.getResource(`teams/${this.teamId}/delta`, { params });
       this.syncDeltaRecords(newDelta, done);
@@ -363,7 +367,7 @@ export class IDEAOfflineDataService {
   protected async syncResourceDeltaRecords(resource: string, records: Array<IdeaX.DeltaRecord>): Promise<boolean> {
     // acquire the info an a cacheable resource
     const cr = this.cacheableResources[resource];
-    if (!cr) return Promise.resolve(false);
+    if (!cr) return Promise.resolve(true);
     try {
       for (const r of records) {
         // calculate the URLs to access the API request key for this element and its list
@@ -375,7 +379,7 @@ export class IDEAOfflineDataService {
         const index = cr.findIndexInList(list, r.element);
         // delete the (old) element from the list
         if (index !== -1) list.splice(index, 1);
-        // if the element wasn't the deleted (following the delta record information), insert the new version
+        // if the element wasn't deleted (following the delta record information), insert the new version
         if (!r.deleted) list.push(r.element);
         // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
         list = list.sort(cr.sort);
@@ -386,12 +390,12 @@ export class IDEAOfflineDataService {
         // otherwise, update it
         else await this.API.putInCache(elementURL, r.element);
       }
+      return Promise.resolve(true);
     } catch (err) {
       // if something went wrong, stops the operation, since we need to make sure the entire flow is consistent
       cr.error = true;
       return Promise.resolve(false);
     }
-    return Promise.resolve(true);
   }
 
   //
@@ -417,61 +421,76 @@ export class IDEAOfflineDataService {
   }
   /**
    * Synchronization of the whole set of resources (upload+download).
-   * Note: it's an async execution, monitored by internal status attributes (`synchronizing`, `errorInLastSync`, etc.).
    * @param manualConfirmation if true, the request comes directly from a user action (not automatic procedures).
    */
-  public async synchronize(manualConfirmation?: boolean) {
-    if (!this.isAllowed() || this.synchronizing) return;
-    this.synchronizing = true;
-    this.errorInLastSync = false;
-    this.requiresManualConfirmation = false;
-    // load the lastSyncAt information
-    this.loadLastSyncAt().then(() =>
-      // try to run all the pending API requests in the queue, i.e. uploading the offline resources changed
-      this.runQueueAPIRequests()
-        .then(() => {
-          // set this moment in time, so that if anything happened before the end of the sync, we don't lose fresh data
-          const now = Date.now();
-          // prepare a first "short" Delta request, to see if there is a lot of data to process
-          const params: any = { limit: NUM_ELEMENTS_WITHOUT_MANUAL_SYNC };
-          if (this.lastSyncAt) params.since = this.lastSyncAt;
-          this.API.getResource(`teams/${this.teamId}/delta`, { params })
-            .then((delta: IdeaX.Delta) => {
-              // decide if to proceed with the sync: in case there is another page, it requires a manual confirmation
-              if (delta.next && !manualConfirmation) {
-                this.requiresManualConfirmation = true;
-                this.synchronizing = false;
-                return;
-              }
-              // save the records in the delta and request possible new pages
-              this.syncDeltaRecords(delta, () => {
-                if (this.errorInLastSync) this.synchronizing = false;
-                else {
-                  // all the resources are succesfully in sync
-                  this.resources.forEach(resource => (this.cacheableResources[resource].synchronizing = false));
-                  // update the timestamp of last sync
-                  this.saveLastSyncAt(now).then(() => (this.synchronizing = false));
+  public synchronize(manualConfirmation?: boolean): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.isAllowed() || this.synchronizing) return resolve();
+      this.synchronizing = true;
+      this.errorInLastSync = false;
+      this.requiresManualConfirmation = false;
+      // load the lastSyncAt information
+      this.loadLastSyncAt().then(() =>
+        // try to run all the pending API requests in the queue, i.e. uploading the offline resources changed
+        this.runQueueAPIRequests()
+          .then(() => {
+            // set this moment in time, so that if anything happened before the end of the sync, we don't lose fresh data
+            const now = Date.now();
+            // prepare a first "short" Delta request, to see if there is a lot of data to process
+            const params: any = { limit: NUM_ELEMENTS_WITHOUT_MANUAL_SYNC };
+            if (this.lastSyncAt) params.since = this.lastSyncAt;
+            this.API.getResource(`teams/${this.teamId}/delta`, { params })
+              .then((delta: IdeaX.Delta) => {
+                // decide if to proceed with the sync: in case there is another page, it requires a manual confirmation
+                if (delta.next && !manualConfirmation) {
+                  this.requiresManualConfirmation = true;
+                  this.synchronizing = false;
+                  return resolve();
                 }
+                // save the records in the delta and request possible new pages
+                this.syncDeltaRecords(delta, () => {
+                  if (this.errorInLastSync) {
+                    this.synchronizing = false;
+                    resolve();
+                  } else {
+                    // all the resources are succesfully in sync
+                    this.resources.forEach(resource => (this.cacheableResources[resource].synchronizing = false));
+                    // update the timestamp of last sync
+                    this.saveLastSyncAt(now)
+                      .then(() => {
+                        this.synchronizing = false;
+                        resolve();
+                      })
+                      .catch(() => {
+                        // we couldn't save the last sync info
+                        this.errorInLastSync = true;
+                        this.synchronizing = false;
+                        reject();
+                      });
+                  }
+                });
+              })
+              .catch(() => {
+                // we couldn't acquire new information (Delta)
+                this.errorInLastSync = true;
+                this.synchronizing = false;
+                reject();
               });
-            })
-            .catch(() => {
-              // we couldn't acquire new information (Delta)
-              this.errorInLastSync = true;
-              this.synchronizing = false;
-            });
-        })
-        .catch(() => {
-          // we stop, since we don't want backend data to override local info not yet uploaded
-          this.errorInLastSync = true;
-          this.synchronizing = false;
-        })
-    );
+          })
+          .catch(() => {
+            // we stop, since we don't want backend data to override local info not yet uploaded
+            this.errorInLastSync = true;
+            this.synchronizing = false;
+            reject();
+          })
+      );
+    });
   }
   /**
    * Force a full synchronisation.
    */
   public forceFullSync() {
-    this.saveLastSyncAt(null).then(() => this.synchronize(true));
+    this.storage.clear().then(() => this.synchronize(true));
   }
 }
 
