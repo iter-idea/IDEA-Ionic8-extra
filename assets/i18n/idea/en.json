@@ -370,7 +370,7 @@
       "OFFLINE_MANAGER": "Offline manager",
       "REQUEST_FAILED": "Request failed; try again or cancel the request",
       "SYNC_IN_PROGRESS": "Synchronisation in progress",
-      "SYNC_NOW": "Synchronise",
+      "SYNC_NOW": "Sync",
       "UPLOAD": "Upload",
       "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Resources created offline must be uploaded online",
       "YOU_ARE_OFFLINE": "You are offline",
