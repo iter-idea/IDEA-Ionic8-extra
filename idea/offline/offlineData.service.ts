@@ -363,33 +363,51 @@ export class IDEAOfflineDataService {
   }
   /**
    * Save offline a list of DeltaRecords for this resource, creating a map of all the corresponding API GET requests.
-   * Disclaimer: not very efficient, but it ensures the same lists aren't updated in conconcurrency.
    */
   protected async syncResourceDeltaRecords(resource: string, records: Array<IdeaX.DeltaRecord>): Promise<boolean> {
     // acquire the info an a cacheable resource
     const cr = this.cacheableResources[resource];
     if (!cr) return Promise.resolve(true);
     try {
+      // prepare helpers to group executions of elements of the same list
+      let list: Array<any> = null,
+        oldListURL: string = null;
       for (const r of records) {
-        // calculate the URLs to access the API request key for this element and its list
-        const listURL = cr.listURL(r.element);
+        // calculate the URL to access the API request key for this element
         const elementURL = cr.elementURL(r.element);
-        // get the list of (old) elements from the local storage by the calculated URL
-        let list = await this.API.getFromCache(listURL);
-        // find in the list the (old) element we want to manage
-        const index = cr.findIndexInList(list, r.element);
-        // delete the (old) element from the list
-        if (index !== -1) list.splice(index, 1);
-        // if the element wasn't deleted (following the delta record information), insert the new version
-        if (!r.deleted) list.push(r.element);
-        // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
-        list = list.sort(cr.sort);
-        // save the updated list
-        await this.API.putInCache(listURL, list);
-        // if the element was deleted, delete its corresponding API GET request
+        // if the element was deleted (based on delta), delete its corresponding API GET request
         if (r.deleted) await this.API.deleteFromCache(elementURL);
         // otherwise, update it
         else await this.API.putInCache(elementURL, r.element);
+        // calculate the URLs to access the API request key for this element's list
+        const listURL = cr.listURL(r.element);
+        // to improve the performance, get/sort/save the list only when it changes from the previous element's one.
+        if (listURL !== oldListURL) {
+          // skip first cycle (oldListURL === null)
+          if (oldListURL) {
+            // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
+            list = list.sort(cr.sort);
+            // save the updated list
+            await this.API.putInCache(oldListURL, list);
+          }
+          // get the list of elements from the local storage by the calculated URL
+          list = await this.API.getFromCache(listURL);
+          // save the reference to the list for the next cycle
+          oldListURL = listURL;
+        }
+        // find in the list the element we want to manage
+        const index = cr.findIndexInList(list, r.element);
+        // delete the element from the list
+        if (index !== -1) list.splice(index, 1);
+        // if the element wasn't deleted (following the delta record information), insert the new version
+        if (!r.deleted) list.push(r.element);
+      }
+      // in case there were elements, save the last element's list
+      if (oldListURL) {
+        // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
+        list = list.sort(cr.sort);
+        // save the updated list
+        await this.API.putInCache(oldListURL, list);
       }
       return Promise.resolve(true);
     } catch (err) {
