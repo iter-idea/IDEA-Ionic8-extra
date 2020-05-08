@@ -327,7 +327,13 @@
       "SUBJECT": "Subject",
       "CONTENT": "Content",
       "VARIABLES_AVAILABLE": "Variables available",
-      "VARIABLES_AVAILABLE_I": "These are all the variables you can use in subject and content. When sending an email they will be substitute by their values."
+      "VARIABLES_AVAILABLE_I": "These are all the variables you can use in subject and content. When sending an email they will be substitute by their values.",
+      "ATTACHMENTS": "Attachments",
+      "SEND_EMAIL": "Send email",
+      "NO_ADDRESSES": "No addresses",
+      "NO_ATTACHMENTS": "No attachments",
+      "CHOOSE_OR_ADD_AN_ADDRESS": "Choose or add an email address",
+      "NO_ADDRESS_FOUND_YOU_CAN_ADD_ONE": "No address found; type to add one"
     },
     "LABELER": {
       "EXPLANATION": "Only the translation in the default language is mandatory. If any translation is missing, the one in the default language is used instead.",
@@ -396,17 +402,6 @@
       "SEARCH": "Search",
       "SELECT_": "Select {{suggestion}}",
       "TAP_TO_FILTER": "Tap to filter"
-    },
-    "SEND_EMAIL": {
-      "ATTACHMENTS": "Attachments",
-      "CC": "CC",
-      "CONTENT": "Content",
-      "FROM": "From",
-      "SENDING_FAILED": "Error while sending the email",
-      "SEND_EMAIL": "Send email",
-      "SUBJECT": "Subject",
-      "SUCCESSFULLY_SENT": "Successfully sent",
-      "TO": "To"
     },
     "SIGNATURE": {
       "CANCEL": "Cancel",

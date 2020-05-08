@@ -18,7 +18,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Downloader
 - Duration
 - Echo
-- Email
+- Email (configure & send)
 - Icons (Ionicons)
 - Labeler
 - List
@@ -26,7 +26,6 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Offline (delta)
 - Resource Center
 - Select
-- Send email
 - Signature
 - Team & memberships management (IDEA's pool)
 - Translations

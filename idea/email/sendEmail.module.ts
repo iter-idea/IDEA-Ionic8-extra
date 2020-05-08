@@ -5,9 +5,11 @@ import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEASendEmailComponent } from './sendEmail.component';
+import { IDEAMDEModule } from '../mde/mde.module';
+import { IDEASelectModule } from '../select/select.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAMDEModule, IDEASelectModule],
   declarations: [IDEASendEmailComponent],
   entryComponents: [IDEASendEmailComponent],
   exports: [IDEASendEmailComponent]

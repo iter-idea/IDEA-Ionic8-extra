@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar class="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ 'IDEA.EMAIL.SEND_EMAIL' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [title]="t._('IDEA.EMAIL.SEND_EMAIL')" [disabled]="!canSend()" (click)="send()">
+        <ion-icon slot="icon-only" name="send"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="aList sendEmailList">
+    <ion-list-header>
+      <ion-label>
+        <h2>{{ 'IDEA.EMAIL.TO' | translate }}</h2>
+      </ion-label>
+      <ion-button color="dark" (click)="addAddressToList(_email.to)">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-list-header>
+    <ion-item *ngIf="!_email.to.length">
+      <i>{{ 'IDEA.EMAIL.NO_ADDRESSES' | translate }}</i>
+    </ion-item>
+    <ion-item *ngFor="let x of _email.to">
+      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.to, x)">
+        <ion-icon slot="icon-only" name="remove"></ion-icon>
+      </ion-button>
+      <ion-label>{{ x }}</ion-label>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>
+        <h2>{{ 'IDEA.EMAIL.CC' | translate }}</h2>
+      </ion-label>
+      <ion-button color="dark" (click)="addAddressToList(_email.cc)">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-list-header>
+    <ion-item *ngIf="!_email.cc.length">
+      <i>{{ 'IDEA.EMAIL.NO_ADDRESSES' | translate }}</i>
+    </ion-item>
+    <ion-item *ngFor="let x of _email.cc">
+      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.cc, x)">
+        <ion-icon slot="icon-only" name="remove"></ion-icon>
+      </ion-button>
+      <ion-label>{{ x }}</ion-label>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>
+        <h2>{{ 'IDEA.EMAIL.BCC' | translate }}</h2>
+      </ion-label>
+      <ion-button color="dark" (click)="addAddressToList(_email.bcc)">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-list-header>
+    <ion-item *ngIf="!_email.bcc.length">
+      <i>{{ 'IDEA.EMAIL.NO_ADDRESSES' | translate }}</i>
+    </ion-item>
+    <ion-item *ngFor="let x of _email.bcc">
+      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.bcc, x)">
+        <ion-icon slot="icon-only" name="remove"></ion-icon>
+      </ion-button>
+      <ion-label>{{ x }}</ion-label>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>
+        <h2>{{ 'IDEA.EMAIL.SUBJECT' | translate }}</h2>
+      </ion-label>
+    </ion-list-header>
+    <ion-item [lines]="lines">
+      <ion-input type="text" [(ngModel)]="_email.subject"></ion-input>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>
+        <h2>{{ 'IDEA.EMAIL.CONTENT' | translate }}</h2>
+      </ion-label>
+    </ion-list-header>
+    <ion-item [lines]="lines">
+      <ion-textarea [rows]="13" [(ngModel)]="_email.content"></ion-textarea>
+    </ion-item>
+    <idea-mde-toolbar></idea-mde-toolbar>
+    <ion-list-header>
+      <ion-label>
+        <h2>{{ 'IDEA.EMAIL.ATTACHMENTS' | translate }}</h2>
+      </ion-label>
+    </ion-list-header>
+    <ion-item *ngIf="!attachments.length">
+      <i>{{ 'IDEA.EMAIL.NO_ATTACHMENTS' | translate }}</i>
+    </ion-item>
+    <ion-item *ngFor="let a of attachments"><ion-icon slot="start" name="attach"></ion-icon>{{ a }}</ion-item>
+  </ion-list>
+</ion-content>

@@ -327,7 +327,13 @@
       "SUBJECT": "Oggetto",
       "CONTENT": "Contenuto",
       "VARIABLES_AVAILABLE": "Variabili disponibili",
-      "VARIABLES_AVAILABLE_I": "Queste sono le variabili che puoi usare in oggetto e contenuto dell'email. All'invio di un'email verranno sostituite dai loro valori."
+      "VARIABLES_AVAILABLE_I": "Queste sono le variabili che puoi usare in oggetto e contenuto dell'email. All'invio di un'email verranno sostituite dai loro valori.",
+      "ATTACHMENTS": "Allegati",
+      "SEND_EMAIL": "Invio email",
+      "NO_ADDRESSES": "Nessun indirizzo",
+      "NO_ATTACHMENTS": "Nessun allegato",
+      "CHOOSE_OR_ADD_AN_ADDRESS": "Scegli o aggiungi un indirizzo email",
+      "NO_ADDRESS_FOUND_YOU_CAN_ADD_ONE": "Nessun indirizzo email trovato; puoi sempre inserirne uno manualmente"
     },
     "LABELER": {
       "EXPLANATION": "Solo la traduzione nella lingua di default è obbligatoria. Se una qualsiasi traduzione è mancante, verrà usata quella nella lingua di default.",
@@ -396,17 +402,6 @@
       "SEARCH": "Ricerca",
       "SELECT_": "Seleziona {{suggestion}}",
       "TAP_TO_FILTER": "Tocca per filtrare"
-    },
-    "SEND_EMAIL": {
-      "ATTACHMENTS": "Allegati",
-      "CC": "CC",
-      "CONTENT": "Contenuto",
-      "FROM": "Da",
-      "SENDING_FAILED": "Invio fallito",
-      "SEND_EMAIL": "Invio email",
-      "SUBJECT": "Oggetto",
-      "SUCCESSFULLY_SENT": "Inviato con successo",
-      "TO": "A"
     },
     "SIGNATURE": {
       "CANCEL": "Annulla",
