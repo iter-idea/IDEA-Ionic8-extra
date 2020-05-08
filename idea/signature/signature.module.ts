@@ -5,9 +5,10 @@ import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEASignatureComponent } from './signature.component';
+import { IDEASelectModule } from '../select/select.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule],
   declarations: [IDEASignatureComponent],
   entryComponents: [IDEASignatureComponent],
   exports: [IDEASignatureComponent]

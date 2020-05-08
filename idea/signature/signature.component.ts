@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import SignaturePad from 'signature_pad';
+import IdeaX = require('idea-toolbox');
 
 import { Signature } from './signature.model';
 import { IDEAMessageService } from '../message.service';
@@ -16,6 +17,10 @@ export class IDEASignatureComponent {
    * An existing signature to use.
    */
   @Input() public existingSignature: Signature;
+  /**
+   * A list of contacts that could be the signatory of this signature.
+   */
+  @Input() public contacts: Array<string>;
   /**
    * The signature to manage.
    */
@@ -36,6 +41,10 @@ export class IDEASignatureComponent {
    * Helper to report an error in the signature canvas.
    */
   public signatureError: boolean;
+  /**
+   * Helper to manage contacts suggestions.
+   */
+  public contactsSuggestions: Array<IdeaX.Suggestion>;
 
   constructor(
     public modalCtrl: ModalController,
@@ -47,13 +56,17 @@ export class IDEASignatureComponent {
     this.pad = null;
   }
   public ionViewDidEnter() {
+    // prepare the canvas area for the signature
     this.canvas = document.getElementById('signatureCanvas') as HTMLCanvasElement;
     this.pad = new SignaturePad(this.canvas);
     this.resizeCanvas();
+    // in case a signature already exists, show it
     if (this.existingSignature) {
       this.signature.load(this.existingSignature);
       this.pad.fromDataURL(this.signature.pngURL);
     }
+    // load the contacts suggestions
+    this.contactsSuggestions = (this.contacts || []).map(c => new IdeaX.Suggestion({ value: c }));
   }
 
   /**
