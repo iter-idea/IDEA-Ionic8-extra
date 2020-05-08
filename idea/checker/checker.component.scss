@@ -1,5 +1,6 @@
 .checkerItem {
-  height: 48px;
+  min-height: 48px;
+  height: auto;
   .description {
     margin: 10px 0;
     height: 20px;
@@ -17,7 +18,8 @@
   }
 }
 .checkerItem.withLabel {
-  height: 58px;
+  min-height: 58px;
+  height: auto;
   .selectIcon {
     padding-top: 25px;
   }
