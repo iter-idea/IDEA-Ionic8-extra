@@ -213,6 +213,7 @@ export class IDEAOfflineDataService {
    * Add a CacheableResource.
    */
   protected addCacheableResource(cacheableResource: CacheableResource) {
+    cacheableResource.teamId = this.teamId;
     this.cacheableResources[cacheableResource.resource] = cacheableResource;
     this.resources.push(cacheableResource.resource);
   }
@@ -530,6 +531,10 @@ export interface APIRequest {
  */
 export abstract class CacheableResource {
   /**
+   * The team owning the resource.
+   */
+  public teamId: string;
+  /**
    * The identifier of the resource.
    */
   public resource: IdeaX.DeltaResources | string;
@@ -551,6 +556,8 @@ export abstract class CacheableResource {
     this.description = description;
     this.synchronizing = false;
     this.error = false;
+    // loaded at runtime
+    this.teamId = null;
   }
 
   /**
