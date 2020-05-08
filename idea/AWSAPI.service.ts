@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
 
 import { IDEAErrorReportingService } from './errorReporting.service';
@@ -126,10 +127,6 @@ export class IDEAAWSAPIService {
 
   /**
    * GET request. Include options to cache the requests (`options.useCache`), to work also offline.
-   *
-   * If a a resource is updated in the background, e.g. `CACHE_FIRST`, throws an `AWSAPI:<resource>`
-   * event that can be listened to update a component's UI accordingly.
-   *
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
@@ -156,9 +153,7 @@ export class IDEAAWSAPIService {
               this.request(resource, 'GET', opt)
                 .then((cloudRes: any) => {
                   // update the cache (if it fails, it's ok)
-                  this.putInCache(resource, cloudRes, opt)
-                    .then(() => {})
-                    .catch(() => {});
+                  this.putInCache(resource, cloudRes, opt).catch(() => {});
                 })
                 .catch(() => {}); // we already returned the result, an error is acceptable
             } else {
@@ -167,9 +162,7 @@ export class IDEAAWSAPIService {
                 .then((res: any) => {
                   resolve(res);
                   // update the cache (if it fails, it's ok)
-                  this.putInCache(resource, res, opt)
-                    .then(() => {})
-                    .catch(() => {});
+                  this.putInCache(resource, res, opt).catch(() => {});
                 })
                 .catch((err: Error) => reject(err)); // element not found
             }
@@ -183,9 +176,7 @@ export class IDEAAWSAPIService {
               // asynchrounously get the same element from cache and decide whether to update or not
               this.getFromCache(resource, opt).then((localRes: any) => {
                 // update the cache (if it fails, it's ok)
-                this.putInCache(resource, cloudRes, opt)
-                  .then(() => {})
-                  .catch(() => {});
+                this.putInCache(resource, cloudRes, opt).catch(() => {});
               });
             })
             .catch(() => {
@@ -205,6 +196,79 @@ export class IDEAAWSAPIService {
       }
     });
   }
+
+  /**
+   * Observe a GET request. Include options to cache the requests (`options.useCache`), to work also offline.
+   * @param resource resource name (e.g. `users`)
+   * @param options the request options
+   */
+  public getResourceObserver(resource: string, options?: APIRequestOption): Observable<any> {
+    return new Observable(observer => {
+      const opt = (options || {}) as APIRequestOption;
+      // if offline and with a cache mode set, force the request to the cache
+      if (!navigator.onLine && options.useCache) opt.useCache = CacheModes.CACHE_ONLY;
+      // execute the GET request online or through the cache, depending on the chosen mode
+      switch (opt.useCache) {
+        case CacheModes.CACHE_ONLY:
+          // return the result from the cache, without retrying online if a result wasn't found
+          this.getFromCache(resource, opt).then((res: any) => {
+            if (res) observer.next(res);
+            else observer.error();
+          });
+          break;
+        case CacheModes.CACHE_FIRST:
+          // return the result from the cache
+          this.getFromCache(resource, opt).then((localRes: any) => {
+            if (localRes) {
+              console.log('aaa', localRes);
+              observer.next(localRes);
+              // asynchrounously execute the request online, to update the cache with latest data
+              this.request(resource, 'GET', opt)
+                .then((cloudRes: any) => {
+                  console.log('bbb', cloudRes);
+                  observer.next(cloudRes);
+                  // update the cache (if it fails, it's ok)
+                  this.putInCache(resource, cloudRes, opt).catch(() => {});
+                })
+                .catch(() => {}); // we already returned the result, an error is acceptable
+            } else {
+              // if the result isn't found in the cache, return the result of the online request
+              this.request(resource, 'GET', opt)
+                .then((res: any) => {
+                  observer.next(res);
+                  // update the cache (if it fails, it's ok)
+                  this.putInCache(resource, res, opt).catch(() => {});
+                })
+                .catch((err: Error) => observer.error(err)); // element not found
+            }
+          });
+          break;
+        case CacheModes.NETWORK_FIRST:
+          // return the result from an online request
+          this.request(resource, 'GET', opt)
+            .then((cloudRes: any) => {
+              observer.next(cloudRes);
+              // update the cache (if it fails, it's ok)
+              this.putInCache(resource, cloudRes, opt).catch(() => {});
+            })
+            .catch(() => {
+              // if a request to the network fails, check in cache
+              this.getFromCache(resource, opt).then((res: any) => {
+                if (res) observer.next(res);
+                else observer.error();
+              });
+            });
+          break;
+        default:
+          /* CacheModes.NO_CACHE */
+          // return the result from an online request, with no cache involved
+          this.request(resource, 'GET', opt)
+            .then((res: any) => observer.next(res))
+            .catch((err: Error) => observer.error(err));
+      }
+    });
+  }
+
   /**
    * Execute a GET request from the local storage.
    * @param resource resource name (e.g. `users`)
