@@ -155,13 +155,10 @@ export class IDEAAWSAPIService {
               // asynchrounously execute the request online, to update the cache with latest data
               this.request(resource, 'GET', opt)
                 .then((cloudRes: any) => {
-                  // update cache if backend version is more recent (or in absence of mAt mechanism)
-                  if (!cloudRes.mAt || cloudRes.mAt > localRes.mAt) {
-                    // update the cache (if it fails, it's ok)
-                    this.putInCache(resource, cloudRes, opt)
-                      .then(() => {})
-                      .catch(() => {});
-                  }
+                  // update the cache (if it fails, it's ok)
+                  this.putInCache(resource, cloudRes, opt)
+                    .then(() => {})
+                    .catch(() => {});
                 })
                 .catch(() => {}); // we already returned the result, an error is acceptable
             } else {
@@ -178,19 +175,6 @@ export class IDEAAWSAPIService {
             }
           });
           break;
-        case CacheModes.NEWEST:
-          // get the resource from the cache
-          this.getFromCache(resource, opt).then((localRes: any) => {
-            // get the resource from the network
-            this.request(resource, 'GET', opt)
-              .then((cloudRes: any) => {
-                // return the newest version
-                if (!localRes || !cloudRes.mAt || cloudRes.mAt > localRes.mAt) resolve(cloudRes);
-                else resolve(localRes);
-              })
-              .catch(() => resolve(localRes));
-          });
-          break;
         case CacheModes.NETWORK_FIRST:
           // return the result from an online request
           this.request(resource, 'GET', opt)
@@ -198,13 +182,10 @@ export class IDEAAWSAPIService {
               resolve(cloudRes);
               // asynchrounously get the same element from cache and decide whether to update or not
               this.getFromCache(resource, opt).then((localRes: any) => {
-                // update only if sever version is more recent (or in absence of the mAt mechanism)
-                if (!localRes || !cloudRes.mAt || cloudRes.mAt > localRes.mAt) {
-                  // update the cache (if it fails, it's ok)
-                  this.putInCache(resource, cloudRes, opt)
-                    .then(() => {})
-                    .catch(() => {});
-                }
+                // update the cache (if it fails, it's ok)
+                this.putInCache(resource, cloudRes, opt)
+                  .then(() => {})
+                  .catch(() => {});
               });
             })
             .catch(() => {
@@ -375,18 +356,11 @@ export enum CacheModes {
    */
   NO_CACHE = 0,
   /**
-   * Return the result from an online request, storing the result in the cache,
-   * to update it with the latest data.
+   * Return the result from an online request, storing the result in the cache, to update it with the latest data.
    */
   NETWORK_FIRST,
   /**
-   * Get the newest version (mAt mechanism) between network and cache;
-   * when offline, returns the result from the cache.
-   */
-  NEWEST,
-  /**
-   * Return the result from the cache, but also execute the request online, to update the cache
-   * with the latest data.
+   * Return the result from the cache, but also execute the request online, to update the cache with the latest data.
    */
   CACHE_FIRST,
   /**
