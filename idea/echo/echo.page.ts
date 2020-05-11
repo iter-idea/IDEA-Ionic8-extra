@@ -18,7 +18,17 @@ declare const IDEA_PROJECT: string;
   styleUrls: ['echo.page.scss']
 })
 export class IDEAEchoPage {
+  /**
+   * The message/content to show.
+   */
   public content: string;
+  /**
+   * The message/content to show, in HTML (alternative to `content`).
+   */
+  public htmlContent: string;
+  /**
+   * Whether a request was successful or not.
+   */
   public success: boolean;
 
   constructor(
@@ -36,6 +46,9 @@ export class IDEAEchoPage {
     const user: string = decodeURIComponent(this.activatedRoute.snapshot.queryParams.user);
     const state: string = this.activatedRoute.snapshot.queryParams.state;
     switch (request) {
+      case EchoRequests.MAINTENANCE:
+        this.maintenanceMode();
+        break;
       case EchoRequests.REGISTRATION:
         this.followRegistrationLink(code, user);
         break;
@@ -61,6 +74,14 @@ export class IDEAEchoPage {
         this.goHome();
         break;
     }
+  }
+
+  /**
+   * Show a message to notify users that the service is in maintenance mode.
+   */
+  public maintenanceMode() {
+    const announcement = this.tc.get('idea-announcement');
+    if (announcement && announcement.content) this.htmlContent = IdeaX.mdToHtml(announcement.content);
   }
 
   /**
@@ -167,6 +188,7 @@ export class IDEAEchoPage {
 }
 
 export enum EchoRequests {
+  MAINTENANCE = 'maintenance',
   REGISTRATION = 'registration',
   INVITATION = 'invitation',
   EMAIL_CHANGE = 'email-change',

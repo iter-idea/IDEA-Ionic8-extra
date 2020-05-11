@@ -10,6 +10,7 @@
       </ion-card-header>
       <ion-card-content class="selectable">
         {{ content }}
+        <div class="htmlContent" *ngIf="htmlContent" [innerHTML]="htmlContent"></div>
       </ion-card-content>
       <ion-button
         *ngIf="success === false || success === true"
