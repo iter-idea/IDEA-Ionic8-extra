@@ -413,8 +413,7 @@
       "SIGNATURE": "Signature",
       "SIGNATURE_EXPLANATION": "Draw the signature here below",
       "VERIFY_SIGNATORY_AND_SIGNATURE": "Verify signatory and signature",
-      "CHOOSE_OR_ADD_A_SIGNATORY": "Choose or add a signatory",
-      "NO_SIGNATORY_FOUND_YOU_CAN_ADD_ONE": "No signatory found; type to add one"
+      "CHOOSE_FROM_CONTACTS": "Scegli dai contatti"
     },
     "STRIPE": {
       "AUTHORIZATION_CHECK_TEXT": "to send instructions to the financial institution that issued my card to take payments from my card account in accordance with the terms of the service.",

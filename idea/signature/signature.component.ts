@@ -3,9 +3,12 @@ import { ModalController } from '@ionic/angular';
 import SignaturePad from 'signature_pad';
 import IdeaX = require('idea-toolbox');
 
-import { Signature } from './signature.model';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+
+import { IDEASuggestionsComponent } from '../select/suggestions.component';
+
+import { Signature } from './signature.model';
 
 @Component({
   selector: 'idea-signature',
@@ -41,10 +44,6 @@ export class IDEASignatureComponent {
    * Helper to report an error in the signature canvas.
    */
   public signatureError: boolean;
-  /**
-   * Helper to manage contacts suggestions.
-   */
-  public contactsSuggestions: Array<IdeaX.Suggestion>;
 
   constructor(
     public modalCtrl: ModalController,
@@ -65,8 +64,29 @@ export class IDEASignatureComponent {
       this.signature.load(this.existingSignature);
       this.pad.fromDataURL(this.signature.pngURL);
     }
-    // load the contacts suggestions
-    this.contactsSuggestions = (this.contacts || []).map(c => new IdeaX.Suggestion({ value: c }));
+    // pre-load the first contact, if any
+    if (this.contacts.length) this.signature.signatory = this.contacts[0];
+  }
+
+  /**
+   * Pick a signatory from the contacts.
+   */
+  public pickSignatory() {
+    this.modalCtrl
+      .create({
+        component: IDEASuggestionsComponent,
+        componentProps: {
+          data: (this.contacts || []).map(c => new IdeaX.Suggestion({ value: c })),
+          searchPlaceholder: this.t._('IDEA.SIGNATURE.CHOOSE_A_SIGNATORY'),
+          hideClearButton: true
+        }
+      })
+      .then(modal => {
+        modal.onDidDismiss().then((res: any) => {
+          if (res && res.data && res.data.value) this.signature.signatory = res.data.value;
+        });
+        modal.present();
+      });
   }
 
   /**

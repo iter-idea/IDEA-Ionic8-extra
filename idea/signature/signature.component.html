@@ -23,17 +23,24 @@
     <ion-list-header>
       <ion-label>{{ 'IDEA.SIGNATURE.SIGNATORY' | translate }}</ion-label>
     </ion-list-header>
-    <idea-select
-      [data]="contactsSuggestions"
-      [lines]="'none'"
-      [description]="signature.signatory"
-      [placeholder]="t._('IDEA.SIGNATURE.NAME_AND_SURNAME')"
-      [searchPlaceholder]="t._('IDEA.SIGNATURE.CHOOSE_OR_ADD_A_SIGNATORY')"
-      [noElementsFoundText]="t._('IDEA.SIGNATURE.NO_SIGNATORY_FOUND_YOU_CAN_ADD_ONE')"
-      [allowUnlistedValues]="true"
-      [class.fieldHasError]="signatoryError"
-      (select)="$event ? (signature.signatory = $event.value) : null"
-    ></idea-select>
+    <ion-item lines="none">
+      <ion-input
+        type="text"
+        [placeholder]="t._('IDEA.SIGNATURE.NAME_AND_SURNAME')"
+        [class.fieldHasError]="signatoryError"
+        [(ngModel)]="signature.signatory"
+      ></ion-input>
+      <ion-button
+        fill="clear"
+        color="dark"
+        slot="end"
+        *ngIf="contacts.length"
+        [title]="t._('IDEA.SIGNATURE.CHOOSE_FROM_CONTACTS')"
+        (click)="pickSignatory()"
+      >
+        <ion-icon name="person-circle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
   </ion-list>
   <ion-list class="signatureList">
     <ion-list-header>
