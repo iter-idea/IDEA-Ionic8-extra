@@ -21,7 +21,7 @@
     <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
   </ion-label>
   <ion-label class="description" [class.selectable]="!disabled" [class.placeholder]="!getPreview() || noPreviewText">
-    {{ getPreview() }}
+    {{ getPreview() || placeholder }}
   </ion-label>
   <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
 </ion-item>
