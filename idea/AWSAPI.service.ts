@@ -220,12 +220,10 @@ export class IDEAAWSAPIService {
           // return the result from the cache
           this.getFromCache(resource, opt).then((localRes: any) => {
             if (localRes) {
-              console.log('aaa', localRes);
               observer.next(localRes);
               // asynchrounously execute the request online, to update the cache with latest data
               this.request(resource, 'GET', opt)
                 .then((cloudRes: any) => {
-                  console.log('bbb', cloudRes);
                   observer.next(cloudRes);
                   // update the cache (if it fails, it's ok)
                   this.putInCache(resource, cloudRes, opt).catch(() => {});
