@@ -1,6 +1,6 @@
-<ion-item class="resources" [lines]="lines" *ngFor="let r of attachedResources">
-  <ion-button fill="clear" size="small" slot="start" (click)="openResource(r, true)">
-    <ion-icon name="open" slot="icon-only" size="small"></ion-icon>
+<ion-item class="resources" *ngFor="let r of attachedResources; let odd = odd" [lines]="lines" [class.odd]="odd">
+  <ion-button fill="clear" size="small" slot="start" *ngIf="offline.isOnline()" (click)="openResource(r, true)">
+    <ion-icon name="open-outline" slot="icon-only" size="small"></ion-icon>
   </ion-button>
   <ion-icon slot="start" *ngIf="!editMode" [name]="getFormatIcon(r.format)" [title]="r.format"></ion-icon>
   <ion-input
@@ -14,7 +14,7 @@
     <p>{{ r.originalName }}.{{ r.format }}</p>
     <p class="ion-text-wrap oldVersionAlert" *ngIf="resources && isResourceNewerVersionAvailable(r)">
       {{ 'IDEA.RESOURCE_CENTER.VERSION_ATTACHED_IS_OLDER' | translate }}.
-      <ion-text class="tappable" (click)="openResource(r)">
+      <ion-text class="tappable" *ngIf="offline.isOnline()" (click)="openResource(r)">
         {{ 'IDEA.RESOURCE_CENTER.OPEN_OLD_VERSION' | translate }}
       </ion-text>
     </p>
@@ -42,10 +42,11 @@
 <idea-select
   *ngIf="editMode && resourcesSuggestions"
   [data]="resourcesSuggestions"
-  [placeholder]="t._('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
-  [searchPlaceholder]="t._('IDEA.RESOURCE_CENTER.ADD_A_RESOURCE')"
+  [placeholder]="t._('IDEA.RESOURCE_CENTER.TAP_TO_ADD_A_RESOURCE')"
+  [searchPlaceholder]="t._('IDEA.RESOURCE_CENTER.RESOURCES_AVAILABLE')"
   [lines]="'none'"
   [clearValueAfterSelection]="true"
+  [hideClearButton]="true"
   [avoidAutoSelection]="true"
   [hideIdFromUI]="true"
   (select)="$event ? addResource($event.value) : null"

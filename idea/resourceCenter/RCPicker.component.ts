@@ -7,6 +7,7 @@ import { IDEATinCanService } from '../tinCan.service';
 import { IDEADownloaderURL } from '../downloader/downloader.component';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEAOfflineService } from '../offline/offline.service';
 
 @Component({
   selector: 'idea-rc-picker',
@@ -52,6 +53,7 @@ export class IDEARCPickerComponent {
     public t: IDEATranslationsService,
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
+    public offline: IDEAOfflineService,
     public tc: IDEATinCanService,
     public API: IDEAAWSAPIService
   ) {

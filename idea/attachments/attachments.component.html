@@ -1,10 +1,17 @@
 <ion-item
   class="attachments"
   [class.fieldHasError]="hasFieldAnError('attachments[' + index + '].attachmentId')"
+  [class.odd]="odd"
   [lines]="lines"
-  *ngFor="let att of attachments; let index = index"
+  *ngFor="let att of attachments; let index = index; let odd = odd"
 >
-  <ion-button fill="clear" size="small" slot="start" *ngIf="att.attachmentId" (click)="openAttachment(att)">
+  <ion-button
+    fill="clear"
+    size="small"
+    slot="start"
+    *ngIf="att.attachmentId && offline.isOnline()"
+    (click)="openAttachment(att)"
+  >
     <ion-icon name="open-outline" slot="icon-only" size="small"></ion-icon>
   </ion-button>
   <ion-icon
@@ -21,7 +28,7 @@
   <ion-label class="loadingWarning" *ngIf="editMode && !att.attachmentId">
     {{ 'IDEA.ATTACHMENTS.UPLOADING_ATTACHMENT_WARNING' | translate }}
   </ion-label>
-  <ion-label *ngIf="!editMode"> {{ att.name }}.{{ att.format }} </ion-label>
+  <ion-label *ngIf="!editMode">{{ att.name }}.{{ att.format }}</ion-label>
   <ion-spinner slot="end" *ngIf="!att.attachmentId" [title]="t._('IDEA.ATTACHMENTS.UPLOADING')"></ion-spinner>
   <ion-button
     *ngIf="editMode"
@@ -63,7 +70,7 @@
 </div>
 <!----->
 <ion-item lines="none" class="selectable" *ngIf="editMode" (click)="browseFiles()">
-  <ion-label color="medium">{{ 'IDEA.ATTACHMENTS.ADD_ATTACHMENT' | translate }}</ion-label>
+  <ion-label color="medium">{{ 'IDEA.ATTACHMENTS.TAP_TO_ADD_ATTACHMENT' | translate }}</ion-label>
   <input id="attachmentPicker" type="file" multiple style="display: none;" (change)="addAttachmentFromFile($event)" />
   <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="editMode"></ion-icon>
   <ion-button

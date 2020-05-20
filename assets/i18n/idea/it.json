@@ -150,7 +150,7 @@
       "WEEK": "Settimana"
     },
     "ATTACHMENTS": {
-      "ADD_ATTACHMENT": "Aggiungi un allegato",
+      "TAP_TO_ADD_ATTACHMENT": "Tocca per aggiungere un allegato...",
       "ERROR_OPENING_ATTACHMENT": "Errore nell'apertura dell'allegato",
       "ERROR_UPLOADING_ATTACHMENT": "Errore nel caricamento dell'allegato",
       "HIDE_ERROR": "Nascondi l'errore",
@@ -386,7 +386,8 @@
       "DONT_EXIT_APP_DISCLAIMER": "Per piacere, non uscire dall'app durante la sincronizzazione"
     },
     "RESOURCE_CENTER": {
-      "ADD_A_RESOURCE": "Aggiungi una risorsa",
+      "RESOURCES_AVAILABLE": "Risorse disponibili",
+      "TAP_TO_ADD_A_RESOURCE": "Tocca per aggiungere una risorsa...",
       "ERROR_OPENING_RESOURCE": "Errore durante l'apertura della risorsa",
       "NO_FOLDER_SELECTED": "Nessuna cartella selezionata",
       "NO_NAME": "Senza nome",

@@ -150,7 +150,7 @@
       "WEEK": "Week"
     },
     "ATTACHMENTS": {
-      "ADD_ATTACHMENT": "Add an attachment",
+      "TAP_TO_ADD_ATTACHMENT": "Tap to add an attachment...",
       "ERROR_OPENING_ATTACHMENT": "Error while opening the attachment",
       "ERROR_UPLOADING_ATTACHMENT": "Error while uploading the attachment",
       "HIDE_ERROR": "Hide the error",
@@ -386,7 +386,8 @@
       "DONT_EXIT_APP_DISCLAIMER": "Please, don't exit the app while synchronising"
     },
     "RESOURCE_CENTER": {
-      "ADD_A_RESOURCE": "Add a resource",
+      "RESOURCES_AVAILABLE": "Resources available",
+      "TAP_TO_ADD_A_RESOURCE": "Tap to add a resource...",
       "ERROR_OPENING_RESOURCE": "Error while opening the resource",
       "NO_FOLDER_SELECTED": "No folder selected",
       "NO_NAME": "No name",
