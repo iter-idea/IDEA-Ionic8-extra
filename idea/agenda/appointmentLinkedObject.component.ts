@@ -113,8 +113,8 @@ export class IDEAAppointmentLinkedObjectComponent {
                   `${this.tc.get('membership').teamId}/${x}.png`
               );
               this.icons = [];
-              if (activity.hasReport === 'DRAFT') this.icons.push('document');
-              else if (activity.hasReport === 'CONFIRMED') this.icons.push('document');
+              if (activity.numDays) this.icons.push('document');
+              else if (activity.completedAt) this.icons.push('checkmark-done');
               if (activity.hasBeenSent) this.icons.push('send');
               this.isThisService = IDEA_APP_URL === IDEA_SCARLETT_APP_URL;
               this.route = ['teams', this.tc.get('membership').teamId, 'activities', this.object.id];
