@@ -6,7 +6,16 @@
   [class.withLabel]="label"
   (click)="openCalendarPicker()"
 >
-  <ion-icon slot="start" *ngIf="icon" [name]="icon" [color]="iconColor" (click)="doIconSelect($event)"></ion-icon>
+  <ion-button
+    fill="clear"
+    slot="start"
+    *ngIf="icon"
+    [color]="iconColor"
+    [class.marginTop]="label"
+    (click)="doIconSelect($event)"
+  >
+    <ion-icon [name]="icon" slot="icon-only"></ion-icon>
+  </ion-button>
   <ion-label position="stacked" *ngIf="label" [class.selectable]="!disabled">
     {{ label }}
     <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
