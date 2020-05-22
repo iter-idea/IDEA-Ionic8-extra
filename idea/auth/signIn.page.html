@@ -2,7 +2,10 @@
   <form class="flexBox">
     <div>
       <ion-card class="authCard">
-        <ion-img [title]="t._('IDEA.AUTH.SERVICE_LOGO')" [src]="'assets/icons/icon-auth.svg'"></ion-img>
+        <ion-img
+          [title]="t._('IDEA.AUTH.SERVICE_LOGO')"
+          [src]="tc.get('darkMode') ? 'assets/icons/icon-auth-alt.svg' : 'assets/icons/icon-auth.svg'"
+        ></ion-img>
         <ion-card-header>
           <ion-card-title color="primary" *ngIf="title">
             {{ title }}
@@ -130,7 +133,7 @@
       <ion-img
         class="ideaLogo"
         *ngIf="website"
-        [src]="'./assets/icons/idea.png'"
+        [src]="tc.get('darkMode') ? './assets/icons/idea-alt.png' : './assets/icons/idea.png'"
         [title]="t._('IDEA.AUTH.IDEA_TAGLINE')"
         (click)="extBrowser.openLink(website)"
       ></ion-img>

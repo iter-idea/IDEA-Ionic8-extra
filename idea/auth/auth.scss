@@ -1,5 +1,5 @@
 .flexBox {
-  background: #fdfdfd;
+  background: var(--ion-color-white-shade);
 }
 .authCard {
   min-width: 400px;
@@ -9,7 +9,7 @@
   margin-right: 10px;
   padding: 20px;
   background-color: var(--ion-color-white);
-  border: 1px solid #ddd;
+  border: 1px solid var(--ion-color-light);
   border-radius: 10px;
   box-shadow: none;
   text-align: center;
