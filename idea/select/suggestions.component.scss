@@ -16,7 +16,7 @@ ion-toolbar {
 }
 .suggestionsList {
   ion-item {
-    --background: white;
+    --background: var(--ion-color-white);
   }
   .suggestion.selected {
     --background: #eee;

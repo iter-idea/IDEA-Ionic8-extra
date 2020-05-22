@@ -2,7 +2,7 @@
   max-width: 500px;
   margin: 0 auto;
   ion-item {
-    --background: white;
+    --background: var(--ion-color-white);
     --border-color: #eee;
   }
 }

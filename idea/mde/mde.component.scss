@@ -17,6 +17,6 @@ h2.header {
   font-size: 0.8em;
 }
 ion-textarea {
-  --background: white;
+  --background: var(--ion-color-white);
   padding: 10px;
 }

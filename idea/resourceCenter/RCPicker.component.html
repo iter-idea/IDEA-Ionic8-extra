@@ -2,7 +2,13 @@
   <ion-button fill="clear" size="small" slot="start" *ngIf="offline.isOnline()" (click)="openResource(r, true)">
     <ion-icon name="open-outline" slot="icon-only" size="small"></ion-icon>
   </ion-button>
-  <ion-icon slot="start" *ngIf="!editMode" [name]="getFormatIcon(r.format)" [title]="r.format"></ion-icon>
+  <ion-icon
+    slot="start"
+    color="medium"
+    *ngIf="!editMode"
+    [name]="getFormatIcon(r.format)"
+    [title]="r.format"
+  ></ion-icon>
   <ion-input
     *ngIf="editMode"
     [(ngModel)]="r.name"

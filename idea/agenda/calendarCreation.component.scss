@@ -21,7 +21,7 @@ ion-content {
     padding-bottom: 25px;
   }
   ion-card {
-    --background: white;
+    --background: var(--ion-color-white);
     --color: var(--ion-color-dark-tint);
     height: 240px;
     margin: 0 auto;
