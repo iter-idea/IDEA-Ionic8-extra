@@ -27,6 +27,7 @@ export * from './subscription/subscription.module';
 export * from './teams/teams.module';
 export * from './teams/memberships.module';
 export * from './translations/translations.module';
+export * from './variables/variables.module';
 
 export * from './auth/auth.service';
 export * from './AWSAPI.service';

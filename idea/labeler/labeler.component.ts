@@ -31,9 +31,17 @@ export class IDEALabelerComponent {
    */
   @Input() public markdown: boolean;
   /**
+   * The variables the user can use for the label content.
+   */
+  @Input() public variables: Array<IdeaX.LabelVariable>;
+  /**
    * Working helper to manage the label, to avoid changing the original label until it's time.
    */
   public _label: IdeaX.Label;
+  /**
+   * The list of variables codes to use for substitutions.
+   */
+  public _variables: Array<string>;
   /**
    * The errors to show in the UI.
    */
@@ -51,6 +59,8 @@ export class IDEALabelerComponent {
     this.title = this.title || this.t._('IDEA.LABELER.MANAGE_LABEL');
     // work on a copy
     this._label = new IdeaX.Label(this.label, this.t.languages());
+    // create a plain list of variable codes
+    this._variables = (this.variables || []).map(x => x.code);
   }
 
   /**

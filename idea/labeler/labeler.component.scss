@@ -1,4 +1,4 @@
-ion-list {
+ion-list.aList {
   border-radius: 5px;
   ion-item {
     --border-color: var(--ion-color-light);
@@ -17,8 +17,20 @@ ion-list {
     }
   }
 }
+ion-list.aList:first-of-type {
+  ion-list-header {
+    margin-top: 0;
+  }
+}
 p.explanation {
   margin: 15px 12px 20px 12px;
   font-size: 0.9em;
   color: var(--ion-color-dark-tint);
+}
+.variablesList {
+  margin: 0;
+  li {
+    padding: 3px;
+    color: var(--ion-color-dark);
+  }
 }

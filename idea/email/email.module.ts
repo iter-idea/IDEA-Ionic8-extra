@@ -7,13 +7,21 @@ import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAEmailDataComponent } from './emailData.component';
 import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.component';
 import { IDEAMDEModule } from '../mde/mde.module';
-import { IDEAHiglightedVariables } from './highlightedVariables.pipe';
 import { IDEAListModule } from '../list/list.module';
+import { IDEAVariablesModule } from '../variables/variables.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAMDEModule, IDEAListModule],
-  declarations: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent, IDEAHiglightedVariables],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    IDEATranslationsModule,
+    IDEAMDEModule,
+    IDEAListModule,
+    IDEAVariablesModule
+  ],
+  declarations: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent],
   entryComponents: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent],
-  exports: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent, IDEAHiglightedVariables]
+  exports: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent]
 })
 export class IDEAEmailModule {}

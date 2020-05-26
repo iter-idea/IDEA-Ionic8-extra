@@ -14,9 +14,22 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [class.ion-padding]="platform.width() > 500">
+  <ion-list class="aList" *ngIf="variables?.length">
+    <ion-list-header>
+      <ion-label>
+        <h2>{{ 'IDEA.LABELER.VARIABLES_AVAILABLE' | translate }}</h2>
+        <p>{{ 'IDEA.LABELER.VARIABLES_AVAILABLE_I' | translate }}</p>
+      </ion-label>
+    </ion-list-header>
+    <ul class="variablesList">
+      <li *ngFor="let v of variables">
+        <small>{{ v.code }}</small> {{ v.description }}
+      </li>
+    </ul>
+  </ion-list>
   <p class="explanation">{{ 'IDEA.LABELER.EXPLANATION' | translate }}</p>
   <idea-mde-toolbar *ngIf="markdown"></idea-mde-toolbar>
-  <ion-list *ngIf="_label">
+  <ion-list class="aList" *ngIf="_label">
     <ion-item lines="inset" *ngFor="let l of t.getLangs()" [class.fieldHasError]="hasFieldAnError(l)">
       <ion-thumbnail slot="start"><img [src]="getFlagURL(l)" /></ion-thumbnail>
       <ion-label position="stacked">

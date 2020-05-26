@@ -338,7 +338,9 @@
     "LABELER": {
       "EXPLANATION": "Solo la traduzione nella lingua di default è obbligatoria. Se una qualsiasi traduzione è mancante, verrà usata quella nella lingua di default.",
       "FILL_IN_DEFAULT_LANGUAGE": "Devi compilare almeno nella lingua di default",
-      "MANAGE_LABEL": "Gestisci etichetta"
+      "MANAGE_LABEL": "Gestisci etichetta",
+      "VARIABLES_AVAILABLE": "Variabili disponibili",
+      "VARIABLES_AVAILABLE_I": "Queste sono le variabili che puoi usare nel contenuto."
     },
     "LANGUAGE_PICKER": {
       "APP_WILL_RESTART": "L'app verrà  riavviata",

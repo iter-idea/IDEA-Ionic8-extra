@@ -338,7 +338,9 @@
     "LABELER": {
       "EXPLANATION": "Only the translation in the default language is mandatory. If any translation is missing, the one in the default language is used instead.",
       "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language",
-      "MANAGE_LABEL": "Manage label"
+      "MANAGE_LABEL": "Manage label",
+      "VARIABLES_AVAILABLE": "Variables available",
+      "VARIABLES_AVAILABLE_I": "These are all the variables you can use in the content."
     },
     "LANGUAGE_PICKER": {
       "APP_WILL_RESTART": "The app will restart",
