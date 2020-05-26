@@ -83,7 +83,7 @@ export class IDEATranslationsService {
    * Get the languages in IdeaX format.
    */
   public languages(): IdeaX.Languages {
-    return new IdeaX.Languages({ available: this.langs, default: this.currentLang });
+    return new IdeaX.Languages({ available: this.langs, default: this.defaultLang });
   }
 
   /**
