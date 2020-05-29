@@ -1,6 +1,7 @@
 .calendarsList {
   max-width: 500px;
   margin: 0 auto;
+  background: transparent;
   ion-list-header {
     padding-left: 10px;
     margin-top: 10px;
@@ -15,5 +16,8 @@
         font-weight: normal;
       }
     }
+  }
+  ion-item {
+    --border-color: var(--ion-color-light);
   }
 }

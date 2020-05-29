@@ -175,13 +175,13 @@ export class IDEACustomFieldMetaComponent {
     if (this.errors.size) return this.message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
     // save and close
     this.field.load(this._field, this.t.languages());
-    this.close();
+    this.close(true);
   }
 
   /**
    * Close the modal.
    */
-  public close() {
-    this.modalCtrl.dismiss();
+  public close(somethingChanged?: boolean) {
+    this.modalCtrl.dismiss(somethingChanged);
   }
 }

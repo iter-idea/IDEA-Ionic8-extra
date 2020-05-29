@@ -1,6 +1,7 @@
 .membershipsList {
   max-width: 500px;
   margin: 0 auto;
+  background: transparent;
   ion-list-header {
     padding-left: 10px;
     ion-label {
@@ -13,6 +14,5 @@
   }
   ion-item {
     --background: var(--ion-color-white);
-    --border-color: #eee;
   }
 }

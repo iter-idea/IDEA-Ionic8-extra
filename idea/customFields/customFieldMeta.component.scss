@@ -6,7 +6,8 @@ ion-text.obligatoryDot::after {
   color: var(--ion-color-danger);
 }
 .obligatoryToggleList {
-  --ion-background-color: transparent;
+  background: transparent;
+  --ion-item-background: transparent;
   ion-item ion-label {
     text-transform: uppercase;
     font-size: 0.75em;

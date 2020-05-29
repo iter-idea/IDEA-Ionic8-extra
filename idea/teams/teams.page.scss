@@ -2,12 +2,12 @@
   max-width: 500px;
   margin: 0 auto;
   margin-top: 10px;
+  background: transparent;
   > p {
     margin: 0 10px 20px 10px;
   }
   ion-item {
     --background: var(--ion-color-white);
-    --border-color: #eee;
   }
 }
 .noElements {
