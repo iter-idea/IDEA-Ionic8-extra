@@ -14,7 +14,7 @@
     [obligatory]="sectionMeta.fields[f].obligatory"
     [class.fieldHasError]="hasFieldAnError(errorPrefix + f)"
     (select)="$event ? (fields[f] = $event?.value) : null"
-    (iconSelect)="openDescription(s, f, $event)"
+    (iconSelect)="openDescription(f, $event)"
   ></idea-select>
   <ion-item
     *ngIf="
@@ -35,7 +35,7 @@
       class="marginTop"
       *ngIf="!hideDescriptions && !disabled"
       [color]="getLabelValue(sectionMeta.fields[f].description) ? 'primary' : 'medium'"
-      (click)="openDescription(s, f, $event)"
+      (click)="openDescription(f, $event)"
     >
       <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
     </ion-button>
@@ -72,7 +72,7 @@
       slot="start"
       *ngIf="!hideDescriptions && !disabled"
       [color]="getLabelValue(sectionMeta.fields[f].description) ? 'primary' : 'medium'"
-      (click)="openDescription(s, f, $event)"
+      (click)="openDescription(f, $event)"
     >
       <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
     </ion-button>

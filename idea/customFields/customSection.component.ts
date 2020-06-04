@@ -66,7 +66,7 @@ export class IDEACustomSectionComponent {
   /**
    * Open the description of the chosen field.
    */
-  public openDescription(sectionKey: string, fieldKey: string, event: any) {
+  public openDescription(fieldKey: string, event: any) {
     if (event) event.stopPropagation();
     const description = this.getLabelValue(this.sectionMeta.fields[fieldKey].description);
     if (description) {
