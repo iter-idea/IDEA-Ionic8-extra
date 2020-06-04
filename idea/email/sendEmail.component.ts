@@ -49,8 +49,10 @@ export class IDEASendEmailComponent {
     if (!this.values) this.values = {};
     this.variables.forEach(v => {
       if (this.values[v.code]) {
-        this._email.subject = this._email.subject.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
-        this._email.content = this._email.content.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
+        if (this._email.subject)
+          this._email.subject = this._email.subject.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
+        if (this._email.content)
+          this._email.content = this._email.content.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
       }
     });
   }
