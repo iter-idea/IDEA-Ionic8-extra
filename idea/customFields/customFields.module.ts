@@ -11,6 +11,7 @@ import { IDEALabelerModule } from '../labeler/labeler.module';
 import { IDEAIconsModule } from '../icons/icons.module';
 import { IDEACustomBlockComponent } from './customBlock.component';
 import { IDEASelectModule } from '../select/select.module';
+import { IDEACustomSectionComponent } from './customSection.component';
 
 @NgModule({
   imports: [
@@ -26,19 +27,22 @@ import { IDEASelectModule } from '../select/select.module';
     IDEACustomBlockMetaComponent,
     IDEACustomSectionMetaComponent,
     IDEACustomFieldMetaComponent,
-    IDEACustomBlockComponent
+    IDEACustomBlockComponent,
+    IDEACustomSectionComponent
   ],
   exports: [
     IDEACustomBlockMetaComponent,
     IDEACustomSectionMetaComponent,
     IDEACustomFieldMetaComponent,
-    IDEACustomBlockComponent
+    IDEACustomBlockComponent,
+    IDEACustomSectionComponent
   ],
   declarations: [
     IDEACustomBlockMetaComponent,
     IDEACustomSectionMetaComponent,
     IDEACustomFieldMetaComponent,
-    IDEACustomBlockComponent
+    IDEACustomBlockComponent,
+    IDEACustomSectionComponent
   ]
 })
 export class IDEACustomFieldsModule {}

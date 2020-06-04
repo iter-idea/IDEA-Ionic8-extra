@@ -1,0 +1,85 @@
+<div *ngFor="let f of sectionMeta.fieldsLegend">
+  <idea-select
+    *ngIf="sectionMeta.fields[f].type === CFT.ENUM"
+    [data]="sectionMeta.fields[f].getEnumAsSuggestion(t.getCurrentLang(), t.languages())"
+    [lines]="lines"
+    [description]="sectionMeta.fields[f].getEnumElement(fields[f], t.getCurrentLang(), t.languages())"
+    [label]="getLabelValue(sectionMeta.fields[f].name)"
+    [icon]="!hideDescriptions && !disabled ? 'help-circle-outline' : null"
+    [iconColor]="getLabelValue(sectionMeta.fields[f].description) ? 'primary' : 'medium'"
+    [placeholder]="t._('COMMON.TAP_TO_SELECT')"
+    [searchPlaceholder]="getLabelValue(sectionMeta.fields[f].name)"
+    [hideIdFromUI]="true"
+    [disabled]="disabled"
+    [obligatory]="sectionMeta.fields[f].obligatory"
+    [class.fieldHasError]="hasFieldAnError(errorPrefix + f)"
+    (select)="$event ? (fields[f] = $event?.value) : null"
+    (iconSelect)="openDescription(s, f, $event)"
+  ></idea-select>
+  <ion-item
+    *ngIf="
+      sectionMeta.fields[f].type === CFT.STRING ||
+      sectionMeta.fields[f].type === CFT.NUMBER ||
+      sectionMeta.fields[f].type === CFT.TEXT
+    "
+    [lines]="lines"
+    [class.fieldHasError]="hasFieldAnError(errorPrefix + f)"
+  >
+    <ion-label position="stacked" class="ion-text-wrap">
+      {{ getLabelValue(sectionMeta.fields[f].name) }}
+      <ion-text class="obligatoryDot" *ngIf="sectionMeta.fields[f].obligatory && !disabled"></ion-text>
+    </ion-label>
+    <ion-button
+      fill="clear"
+      slot="start"
+      class="marginTop"
+      *ngIf="!hideDescriptions && !disabled"
+      [color]="getLabelValue(sectionMeta.fields[f].description) ? 'primary' : 'medium'"
+      (click)="openDescription(s, f, $event)"
+    >
+      <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-input
+      type="text"
+      *ngIf="sectionMeta.fields[f].type === CFT.STRING"
+      [disabled]="disabled"
+      [(ngModel)]="fields[f]"
+    ></ion-input>
+    <ion-input
+      type="number"
+      *ngIf="sectionMeta.fields[f].type === CFT.NUMBER"
+      [min]="sectionMeta.fields[f].min"
+      [max]="sectionMeta.fields[f].max"
+      [disabled]="disabled"
+      [(ngModel)]="fields[f]"
+    ></ion-input>
+    <ion-textarea
+      *ngIf="sectionMeta.fields[f].type === CFT.TEXT"
+      [rows]="3"
+      [autoGrow]="true"
+      [disabled]="disabled"
+      [(ngModel)]="fields[f]"
+    ></ion-textarea>
+  </ion-item>
+  <ion-item
+    *ngIf="sectionMeta.fields[f].type === CFT.BOOLEAN"
+    [lines]="lines"
+    [button]="!disabled"
+    (click)="disabled ? null : (fields[f] = !fields[f])"
+  >
+    <ion-button
+      fill="clear"
+      slot="start"
+      *ngIf="!hideDescriptions && !disabled"
+      [color]="getLabelValue(sectionMeta.fields[f].description) ? 'primary' : 'medium'"
+      (click)="openDescription(s, f, $event)"
+    >
+      <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-label class="ion-text-wrap">
+      {{ getLabelValue(sectionMeta.fields[f].name) }}
+      <ion-text class="obligatoryDot" *ngIf="sectionMeta.fields[f].obligatory && !disabled"></ion-text>
+    </ion-label>
+    <ion-checkbox slot="end" [disabled]="disabled" [checked]="fields[f]"></ion-checkbox>
+  </ion-item>
+</div>

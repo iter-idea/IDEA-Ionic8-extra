@@ -5,19 +5,19 @@ import { IDEATranslationsService } from '../translations/translations.service';
 import { AlertController } from '@ionic/angular';
 
 @Component({
-  selector: 'idea-custom-block',
-  templateUrl: 'customBlock.component.html',
-  styleUrls: ['customBlock.component.scss']
+  selector: 'idea-custom-section',
+  templateUrl: 'customSection.component.html',
+  styleUrls: ['customSection.component.scss']
 })
-export class IDEACustomBlockComponent {
+export class IDEACustomSectionComponent {
   /**
-   * The custom sections to manage.
+   * The custom fields to manage.
    */
-  @Input() public sections: any;
+  @Input() public fields: any;
   /**
-   * The CustomBlockMeta that describe the custom sections.
+   * The CustomSectionMeta that describe the custom fields.
    */
-  @Input() public blockMeta: IdeaX.CustomBlockMeta;
+  @Input() public sectionMeta: IdeaX.CustomSectionMeta;
   /**
    * Whether the component is enabled or not.
    */
@@ -68,11 +68,11 @@ export class IDEACustomBlockComponent {
    */
   public openDescription(sectionKey: string, fieldKey: string, event: any) {
     if (event) event.stopPropagation();
-    const description = this.getLabelValue(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+    const description = this.getLabelValue(this.sectionMeta.fields[fieldKey].description);
     if (description) {
       this.alertCtrl
         .create({
-          header: this.getLabelValue(this.blockMeta.sections[sectionKey].fields[fieldKey].name),
+          header: this.getLabelValue(this.sectionMeta.fields[fieldKey].name),
           message: description,
           buttons: ['OK'],
           cssClass: 'alertLongOptions'

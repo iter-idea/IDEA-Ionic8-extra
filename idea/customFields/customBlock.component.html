@@ -12,7 +12,7 @@
       [lines]="lines"
       [description]="blockMeta.sections[s].fields[f].getEnumElement(sections[s][f], t.getCurrentLang(), t.languages())"
       [label]="getLabelValue(blockMeta.sections[s].fields[f].name)"
-      [icon]="disabled ? null : 'help-circle-outline'"
+      [icon]="!hideDescriptions && !disabled ? 'help-circle-outline' : null"
       [iconColor]="getLabelValue(blockMeta.sections[s].fields[f].description) ? 'primary' : 'medium'"
       [placeholder]="t._('COMMON.TAP_TO_SELECT')"
       [searchPlaceholder]="getLabelValue(blockMeta.sections[s].fields[f].name)"
@@ -40,7 +40,7 @@
         fill="clear"
         slot="start"
         class="marginTop"
-        *ngIf="!disabled"
+        *ngIf="!hideDescriptions && !disabled"
         [color]="getLabelValue(blockMeta.sections[s].fields[f].description) ? 'primary' : 'medium'"
         (click)="openDescription(s, f, $event)"
       >
@@ -77,7 +77,7 @@
       <ion-button
         fill="clear"
         slot="start"
-        *ngIf="!disabled"
+        *ngIf="!hideDescriptions && !disabled"
         [color]="getLabelValue(blockMeta.sections[s].fields[f].description) ? 'primary' : 'medium'"
         (click)="openDescription(s, f, $event)"
       >
