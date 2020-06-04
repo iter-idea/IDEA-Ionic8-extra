@@ -8,7 +8,7 @@
     [placeholder]="t._('IDEA.ADDRESS.COMPLETE_ADDRESS_HINT')"
     [value]="address.getFullAddress()"
   ></ion-input>
-  <ion-icon slot="end" [name]="addressCollapsed ? 'chevron-back' : 'chevron-down'"></ion-icon>
+  <ion-icon slot="end" class="marginTop" [name]="addressCollapsed ? 'chevron-back' : 'chevron-down'"></ion-icon>
 </ion-item>
 <div class="addressDetails" *ngIf="!addressCollapsed">
   <ion-item [lines]="lines" *ngIf="showContact">
@@ -83,7 +83,7 @@
     [data]="countriesSuggestions"
     [label]="t._('IDEA.ADDRESS.COUNTRY')"
     [lines]="editMode ? 'inset' : 'none'"
-    [description]="Countries[address.country]"
+    [description]="getCountryName(address.country)"
     [placeholder]="t._('IDEA.ADDRESS.COUNTRY_HINT')"
     [searchPlaceholder]="t._('IDEA.ADDRESS.COUNTRY_HINT')"
     [hideIdFromUI]="true"

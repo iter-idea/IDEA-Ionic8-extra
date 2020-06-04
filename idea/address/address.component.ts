@@ -41,7 +41,6 @@ export class IDEAAddressComponent {
    * If true, show obligatory dots.
    */
   @Input() public obligatory: boolean;
-
   /**
    * The suggestions for the Countries picker.
    */
@@ -74,5 +73,13 @@ export class IDEAAddressComponent {
    */
   public toggleCollapse() {
     this.addressCollapsed = !this.addressCollapsed;
+  }
+
+  /**
+   * Get the country's name.
+   */
+  public getCountryName(country: IdeaX.Countries): string {
+    if (!country) return;
+    return IdeaX.getStringEnumKeyByValue(IdeaX.Countries, country);
   }
 }
