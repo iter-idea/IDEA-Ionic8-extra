@@ -7,12 +7,12 @@ import { IDEATinCanService } from '../tinCan.service';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
-import { IDEAExtBrowserService } from '../extBrowser.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
 import { IDEACalendarComponent } from './calendar.component';
 import { IDEACalendarCreationComponent } from './calendarCreation.component';
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
+import { IDEAExtBrowserService } from '../extBrowser.service';
 
 // from idea-config.js
 declare const IDEA_MICROSOFT_API_CLIENT_ID: string;
@@ -23,10 +23,10 @@ declare const IDEA_APP_URL: string;
 
 @Component({
   selector: 'idea-calendars',
-  templateUrl: 'calendars.page.html',
-  styleUrls: ['calendars.page.scss']
+  templateUrl: 'calendars.component.html',
+  styleUrls: ['calendars.component.scss']
 })
-export class IDEACalendarsPage {
+export class IDEACalendarsComponent {
   /**
    * The calendars of the user.
    */
@@ -45,8 +45,8 @@ export class IDEACalendarsPage {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public tc: IDEATinCanService,
-    public loading: IDEALoadingService,
     public extBrowser: IDEAExtBrowserService,
+    public loading: IDEALoadingService,
     public message: IDEAMessageService,
     public t: IDEATranslationsService,
     public API: IDEAAWSAPIService
@@ -219,33 +219,33 @@ export class IDEACalendarsPage {
   /**
    * Proceed to link the calendar with the chosen external service.
    */
-  public linkExtCalendar(calendar: IdeaX.Calendar) {
+  public async linkExtCalendar(calendar: IdeaX.Calendar) {
     if (!calendar.external) return;
+    let url: string;
     switch (calendar.external.service) {
       case IdeaX.ExternalCalendarSources.GOOGLE:
-        this.extBrowser.openLink(
+        url =
           `https://accounts.google.com/o/oauth2/v2/auth?` +
-            `client_id=${IDEA_GOOGLE_API_CLIENT_ID}` +
-            `&response_type=code` +
-            `&redirect_uri=${IDEA_APP_URL.concat('/echo/google-calendars-integration')}` +
-            `&include_granted_scopes=true&` +
-            `&access_type=offline&prompt=consent` +
-            `&scope=${IDEA_GOOGLE_API_SCOPE}` +
-            `&state=${calendar.calendarId}`
-        );
+          `client_id=${encodeURIComponent(IDEA_GOOGLE_API_CLIENT_ID)}` +
+          `&response_type=code` +
+          `&redirect_uri=${encodeURIComponent(IDEA_APP_URL.concat('/echo/google-calendars-integration'))}` +
+          `&include_granted_scopes=true` +
+          `&access_type=offline&prompt=consent` +
+          `&scope=${encodeURIComponent(IDEA_GOOGLE_API_SCOPE)}` +
+          `&state=${encodeURIComponent(calendar.calendarId)}`;
         break;
       case IdeaX.ExternalCalendarSources.MICROSOFT:
-        this.extBrowser.openLink(
+        url =
           `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?` +
-            `client_id=${IDEA_MICROSOFT_API_CLIENT_ID}` +
-            `&response_type=code` +
-            `&redirect_uri=${IDEA_APP_URL.concat('/echo/microsoft-calendars-integration')}` +
-            `&response_mode=query` +
-            `&scope=${IDEA_MICROSOFT_API_SCOPE}` +
-            `&state=${calendar.calendarId}`
-        );
+          `client_id=${encodeURIComponent(IDEA_MICROSOFT_API_CLIENT_ID)}` +
+          `&response_type=code` +
+          `&redirect_uri=${encodeURIComponent(IDEA_APP_URL.concat('/echo/microsoft-calendars-integration'))}` +
+          `&response_mode=query` +
+          `&scope=${encodeURIComponent(IDEA_MICROSOFT_API_SCOPE)}` +
+          `&state=${encodeURIComponent(calendar.calendarId)}`;
         break;
     }
+    this.extBrowser.openLink(url);
     // since we don't know when/if the auth flow will finish, we wait
     this.alertCtrl
       .create({
