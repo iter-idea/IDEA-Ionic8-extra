@@ -18,21 +18,21 @@
     </ion-buttons>
     <div class="categoriesFilters" *ngIf="showCategoriesFilters">
       <ion-button
-        *ngIf="activeCategories1?.size"
         color="light"
+        *ngIf="activeCategories1?.size"
         [class.strong]="category1"
-        (click)="setFilterCategoryN(1)"
+        (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
       >
-        <ion-icon [name]="category1 ? 'filter' : 'filter-outline'" slot="start"></ion-icon>
+        <ion-icon [name]="category1 ? 'close' : 'filter'" slot="start"></ion-icon>
         {{ category1 || ('IDEA.SELECT.TAP_TO_FILTER' | translate) }}
       </ion-button>
       <ion-button
-        *ngIf="activeCategories2?.size"
         color="light"
+        *ngIf="activeCategories2?.size"
         [class.strong]="category2"
-        (click)="setFilterCategoryN(2)"
+        (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
       >
-        <ion-icon [name]="category2 ? 'filter' : 'filter-outline'" slot="start"></ion-icon>
+        <ion-icon [name]="category2 ? 'close' : 'filter'" slot="start"></ion-icon>
         {{ category2 || ('IDEA.SELECT.TAP_TO_FILTER' | translate) }}
       </ion-button>
     </div>

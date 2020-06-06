@@ -162,6 +162,18 @@ export class IDEASuggestionsComponent {
         modal.present();
       });
   }
+  /**
+   * Reset the filter for the categoryN.
+   */
+  public resetFilterCategoryN(whichCategory: number) {
+    // identify the category to manage
+    const categories = whichCategory === 2 ? this.activeCategories2 : this.activeCategories1;
+    // resset the right category
+    if (whichCategory === 2) this.category2 = null;
+    else this.category1 = null;
+    // get the suggestions
+    this.search(this.searchbar ? this.searchbar.value : null);
+  }
 
   /**
    * Close the component propagating the choice:
