@@ -17,6 +17,7 @@ export * from './email/sendEmail.module';
 export * from './icons/icons.module';
 export * from './labeler/labeler.module';
 export * from './list/list.module';
+export * from './map/map.module';
 export * from './offline/offline.module';
 export * from './mde/mde.module';
 export * from './resourceCenter/RC.module';

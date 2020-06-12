@@ -23,6 +23,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Icons (Ionicons)
 - Labeler
 - List
+- Map (Google Maps)
 - Markdown Editor (MDE)
 - Offline (delta)
 - Resource Center
