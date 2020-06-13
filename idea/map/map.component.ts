@@ -182,8 +182,8 @@ export class IDEAMapComponent {
       Geolocation.getCurrentPosition({ enableHighAccuracy: highAccuracy })
         .then(location => {
           this.setCenter(location.coords.latitude, location.coords.longitude);
-          // if a high accuracy was requested, zoom to show it
-          if (highAccuracy) this.map.setZoom(15);
+          // zoom to show the center
+          this.map.setZoom(15);
           resolve(location);
         })
         .catch(err => reject(err));
