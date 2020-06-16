@@ -1,8 +1,10 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { get } from 'scriptjs';
 import { Plugins, PluginListenerHandle, GeolocationPosition } from '@capacitor/core';
 const { Geolocation, Network } = Plugins;
+
+import { IDEATinCanService } from '../tinCan.service';
 
 // class loaded together with the SDK
 declare const MarkerClusterer: any;
@@ -67,7 +69,12 @@ export class IDEAMapComponent {
   /// Initialization.
   ///
 
-  constructor(private platform: Platform, private element: ElementRef) {}
+  constructor(
+    private platform: Platform,
+    private element: ElementRef,
+    private renderer: Renderer2,
+    private tc: IDEATinCanService
+  ) {}
   public ngOnInit() {
     // wait for the SDK to be available
     this.init().then(() => {
@@ -82,6 +89,7 @@ export class IDEAMapComponent {
         else mapOptions.center = new google.maps.LatLng(DEFAULT_POSITION.lat, DEFAULT_POSITION.long);
         // initialize the map
         this.map = new google.maps.Map(this.element.nativeElement, mapOptions);
+        this.renderer.addClass(this.element.nativeElement, 'mapReady');
         // set the helpers
         this.markers = new Array<google.maps.Marker>();
         // the component is ready
@@ -129,6 +137,7 @@ export class IDEAMapComponent {
    * Resolve the chosen promise when the SDK is fully loaded.
    */
   private injectSDK(resolve: any) {
+    if (this.tc.get('ideaMapLibsLoaded')) return resolve();
     // use the correct API key, based on the current configuration
     let key: string;
     if (IDEA_API_VERSION === 'dev') key = IDEA_GOOGLE_MAPS_API_KEY_DEV;
@@ -136,7 +145,10 @@ export class IDEAMapComponent {
     // load the library using the correct API key and set the service as "ready" when the loading ends
     get('https://maps.googleapis.com/maps/api/js?key='.concat(key), () =>
       // load the markers cluster library
-      get('https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js', () => resolve())
+      get('https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js', () => {
+        this.tc.set('ideaMapLibsLoaded', true);
+        resolve();
+      })
     );
   }
 
