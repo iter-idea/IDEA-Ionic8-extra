@@ -5,6 +5,7 @@ import { Plugins, PluginListenerHandle, GeolocationPosition } from '@capacitor/c
 const { Geolocation, Network } = Plugins;
 
 import { IDEATinCanService } from '../tinCan.service';
+import { MAP_DARK_MODE_STYLE } from './darkMode.style';
 
 // class loaded together with the SDK
 declare const MarkerClusterer: any;
@@ -87,6 +88,8 @@ export class IDEAMapComponent {
         // if we successfully acquired the position, set it as the map's center; otherwise, set the default position
         if (location) mapOptions.center = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
         else mapOptions.center = new google.maps.LatLng(DEFAULT_POSITION.lat, DEFAULT_POSITION.long);
+        // optionally set the dark mode
+        if (this.tc.get('darkMode')) mapOptions.styles = MAP_DARK_MODE_STYLE;
         // initialize the map
         this.map = new google.maps.Map(this.element.nativeElement, mapOptions);
         this.renderer.addClass(this.element.nativeElement, 'mapReady');
