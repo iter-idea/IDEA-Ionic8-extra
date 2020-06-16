@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { get } from 'scriptjs';
 import { Plugins, PluginListenerHandle, GeolocationPosition } from '@capacitor/core';
@@ -58,17 +58,25 @@ export class IDEAMapComponent {
    */
   private markerCluster: any;
 
+  /**
+   * Whether to disable the default UI.
+   */
+  @Input() public disableDefaultUI: boolean;
+
   ///
   /// Initialization.
   ///
 
-  constructor(private platform: Platform, private element: ElementRef) {
+  constructor(private platform: Platform, private element: ElementRef) {}
+  public ngOnInit() {
     // wait for the SDK to be available
     this.init().then(() => {
       // acquire the current geolocation position; note: it won't work on localhost (resolves `null`)
       this.getLocationSafely().then(location => {
         // initialize the map's options
-        const mapOptions: google.maps.MapOptions = { zoom: DEFAULT_ZOOM, fullscreenControl: false };
+        const mapOptions: google.maps.MapOptions = { zoom: DEFAULT_ZOOM };
+        if (this.disableDefaultUI) mapOptions.disableDefaultUI = true;
+        else mapOptions.fullscreenControl = false;
         // if we successfully acquired the position, set it as the map's center; otherwise, set the default position
         if (location) mapOptions.center = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
         else mapOptions.center = new google.maps.LatLng(DEFAULT_POSITION.lat, DEFAULT_POSITION.long);
@@ -224,5 +232,15 @@ export class IDEAMapComponent {
       this.markerCluster = new MarkerClusterer(this.map, this.markers, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
       });
+  }
+
+  /**
+   * Zoom and center to fit all the current markers.
+   */
+  public fitMarkersBounds() {
+    if (!this.markers.length) return;
+    const bounds = new google.maps.LatLngBounds();
+    this.markers.forEach(m => bounds.extend(m.getPosition()));
+    this.map.fitBounds(bounds);
   }
 }
