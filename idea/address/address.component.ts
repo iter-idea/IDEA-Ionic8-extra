@@ -42,6 +42,10 @@ export class IDEAAddressComponent {
    */
   @Input() public obligatory: boolean;
   /**
+   * The label to show for the field; if not set, it has a default value.
+   */
+  @Input() public label: string;
+  /**
    * The suggestions for the Countries picker.
    */
   public countriesSuggestions: Array<IdeaX.Suggestion>;

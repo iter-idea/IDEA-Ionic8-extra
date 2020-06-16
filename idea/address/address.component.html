@@ -1,6 +1,6 @@
 <ion-item class="completeAddress" [button]="true" [lines]="lines" (click)="toggleCollapse()">
   <ion-label position="stacked">
-    {{ 'IDEA.ADDRESS.COMPLETE_ADDRESS' | translate }}
+    {{ label || 'IDEA.ADDRESS.COMPLETE_ADDRESS' | translate }}
   </ion-label>
   <ion-input
     [readonly]="true"
