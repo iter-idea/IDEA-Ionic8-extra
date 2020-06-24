@@ -155,6 +155,12 @@ export class IDEATranslationsService {
   public _(key: string, interpolateParams?: object): string {
     return this.instant(key, interpolateParams);
   }
+  /**
+   * Translate (instant) and transform an expected markdown string into HTML.
+   */
+  public _md(key: string, interpolateParams?: object): string {
+    return IdeaX.mdToHtml(this._(key, interpolateParams));
+  }
 
   /**
    * Load the translations from the files.
