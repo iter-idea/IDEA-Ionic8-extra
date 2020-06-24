@@ -64,8 +64,8 @@ export class IDEASignatureComponent {
       this.signature.load(this.existingSignature);
       this.pad.fromDataURL(this.signature.pngURL);
     }
-    // pre-load the first contact, if any
-    if (this.contacts.length) this.signature.signatory = this.contacts[0];
+    // pre-load the first contact, if any (and the signatory isn't already filled out)
+    if (this.contacts.length && !this.signature.signatory) this.signature.signatory = this.contacts[0];
   }
 
   /**
