@@ -32,6 +32,10 @@ export class IDEASuggestionsComponent {
    */
   @Input() public allowUnlistedValues: boolean;
   /**
+   * If `allowUnlistedValues` is set, show this to help users understanding what happens by selecting the unlisted val.
+   */
+  @Input() public allowUnlistedValuesPrefix: string;
+  /**
    * If true, doesn't show the id in the UI.
    */
   @Input() public hideIdFromUI: boolean;

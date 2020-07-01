@@ -43,7 +43,13 @@
     <ion-item lines="none" *ngIf="!suggestions.length && !(allowUnlistedValues && searchbar.value)">
       <ion-label>
         <i>
-          {{ noElementsFoundText || ('IDEA.SELECT.NO_ELEMENTS_FOUND' | translate) }}
+          {{
+            noElementsFoundText ||
+              ((allowUnlistedValues
+                ? 'IDEA.SELECT.NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE'
+                : 'IDEA.SELECT.NO_ELEMENTS_FOUND'
+              ) | translate)
+          }}
         </i>
       </ion-label>
     </ion-item>
@@ -54,6 +60,7 @@
       [title]="t._('IDEA.SELECT.SELECT_', { suggestion: searchbar.value })"
       (click)="select({ value: searchbar.value })"
     >
+      <ion-badge slot="start" *ngIf="allowUnlistedValuesPrefix">{{ allowUnlistedValuesPrefix }}</ion-badge>
       <!-- the "key" class is used for keyboard controls -->
       <i class="key">
         {{ searchbar.value }}

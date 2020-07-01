@@ -403,6 +403,7 @@
       "CLEAR_SELECTION": "Svuota selezione",
       "CLOSE_WITHOUT_SELECTING": "Chiudi senza selezionare nulla",
       "NO_ELEMENTS_FOUND": "Nessun elemento trovato",
+      "NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE": "Nessun elemento trovato; comincia a digitare per aggiungerne uno.",
       "SEARCH": "Ricerca",
       "SELECT_": "Seleziona {{suggestion}}",
       "TAP_TO_FILTER": "Tocca per filtrare"

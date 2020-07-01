@@ -97,6 +97,10 @@ export class IDEASelectComponent {
    */
   @Input() public allowUnlistedValues: boolean;
   /**
+   * If `allowUnlistedValues` is set, show this to help users understanding what happens by selecting the unlisted val.
+   */
+  @Input() public allowUnlistedValuesPrefix: string;
+  /**
    * If true, sort the suggestions alphabetically.
    */
   @Input() public sortData: boolean;
@@ -201,6 +205,7 @@ export class IDEASelectComponent {
           searchPlaceholder: this.searchPlaceholder,
           noElementsFoundText: this.noElementsFoundText,
           allowUnlistedValues: this.allowUnlistedValues,
+          allowUnlistedValuesPrefix: this.allowUnlistedValuesPrefix,
           clearValueAfterSelection: this.clearValueAfterSelection,
           hideIdFromUI: this.hideIdFromUI,
           hideClearButton: this.hideClearButton,
