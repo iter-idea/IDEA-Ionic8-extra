@@ -29,3 +29,5 @@ window.IDEA_SCARLETT_APP_URL = 'https://scarlett.iter-idea.com';
 
 window.IDEA_ARTHUR_API_ID = 'wjl4h3m529';
 window.IDEA_ARTHUR_APP_URL = 'https://arthur.team';
+
+window.IDEA_GENERATE_TEAM_FROM_TEMPLATE = false;
