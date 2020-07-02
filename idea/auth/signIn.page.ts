@@ -12,6 +12,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
 declare const IDEA_APP_TITLE: string;
 declare const IDEA_AUTH_WEBSITE: string;
 declare const IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
+declare const IDEA_HAS_INTRO_PAGE: boolean;
 
 @Component({
   selector: 'idea-sign-in',
@@ -22,6 +23,7 @@ export class IDEASignInPage {
   // vars from configuration
   public title: string;
   public registrationPossible: boolean;
+  public hasIntroPage: boolean;
   public website: string;
 
   // working attributes
@@ -41,6 +43,7 @@ export class IDEASignInPage {
   ) {
     this.title = IDEA_APP_TITLE;
     this.registrationPossible = IDEA_AUTH_REGISTRATION_POSSIBLE;
+    this.hasIntroPage = IDEA_HAS_INTRO_PAGE;
     this.website = IDEA_AUTH_WEBSITE;
     this.agreementsCheck = true;
   }
@@ -48,7 +51,7 @@ export class IDEASignInPage {
   /**
    * Sign-in with the auth details provided.
    */
-  public login(): void {
+  public login() {
     if (!this.agreementsCheck) return;
     this.errorMsg = null;
     this.loading.show();
@@ -70,15 +73,21 @@ export class IDEASignInPage {
   }
 
   /**
+   * Go to the homepage.
+   */
+  public goToIntro() {
+    this.navCtrl.navigateBack(['intro']);
+  }
+  /**
    * Go to the forgot password page.
    */
-  public goToForgotPassword(): void {
+  public goToForgotPassword() {
     this.navCtrl.navigateForward(['auth/forgot-password']);
   }
   /**
    * Go to registration page.
    */
-  public goToRegistration(): void {
+  public goToRegistration() {
     this.tc.set('email', this.email);
     this.tc.set('password', this.password);
     this.navCtrl.navigateForward(['auth', 'sign-up']);

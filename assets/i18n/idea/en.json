@@ -194,6 +194,8 @@
       "IS_THE_EMAIL_CORRECT": "Is the email correct?",
       "I_FORGOT_MY_PASSWORD": "Forgot password",
       "I_FORGOT_MY_PASSWORD_HINT": "Recover your password",
+      "BACK_TO_INTRO": "Back to the homepage",
+      "BACK_TO_INTRO_HINT": "Navigate back to the homepage",
       "NEW_ACCOUNT": "New account",
       "NEW_PASSWORD": "New password",
       "PASSWORD": "Password",

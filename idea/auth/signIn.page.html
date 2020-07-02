@@ -128,6 +128,17 @@
           >
             {{ 'IDEA.AUTH.I_FORGOT_MY_PASSWORD' | translate }}
           </ion-button>
+          <ion-button
+            fill="clear"
+            expand="block"
+            color="medium"
+            class="smallCaseButton"
+            *ngIf="hasIntroPage"
+            [title]="t._('IDEA.AUTH.BACK_TO_INTRO_HINT')"
+            (click)="goToIntro()"
+          >
+            {{ 'IDEA.AUTH.BACK_TO_INTRO' | translate }}
+          </ion-button>
         </ion-card-content>
       </ion-card>
       <ion-img
