@@ -495,7 +495,8 @@
       "UNJOIN": "Leave the team",
       "USER_NOT_FOUND_OR_ALREADY_JOINED": "The user is already part of the team",
       "USER_REMOVED": "User removed",
-      "YOU_NEED_A_TEAM_TO_CONTINUE": "You need a team to continue"
+      "YOU_NEED_A_TEAM_TO_CONTINUE": "You need a team to continue",
+      "NO_TEAMS_AVAILABLE": "You have no teams available"
     },
     "UPDATE": {
       "CLOSE_THE_APP_TO_UPDATE": "Close completely the app or the browser to install the update",

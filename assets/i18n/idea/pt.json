@@ -439,7 +439,8 @@
       "UNJOIN": "Abandonar a equipa",
       "USER_NOT_FOUND_OR_ALREADY_JOINED": "O utilizador já faz parte da equipa",
       "USER_REMOVED": "Utilizador removido",
-      "YOU_NEED_A_TEAM_TO_CONTINUE": "Precisas de um team para continuar"
+      "YOU_NEED_A_TEAM_TO_CONTINUE": "Precisas de um team para continuar",
+      "NO_TEAMS_AVAILABLE": "Você não tem equipes disponíveis"
     },
     "UPDATE": {
       "CLOSE_THE_APP_TO_UPDATE": "Fecha a aplicação ou o teu browser para instalar a atualização",
