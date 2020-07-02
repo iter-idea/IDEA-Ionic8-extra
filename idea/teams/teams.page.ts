@@ -10,7 +10,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 
 // from idea-config.js
 declare const IDEA_PROJECT: string;
-declare const IDEA_GENERATE_TEAM_FROM_TEMPLATE: boolean;
 
 @Component({
   selector: 'teams',
@@ -60,7 +59,7 @@ export class IDEATeamsPage {
       .then(() => {
         // in case the project allows the team generation from a template and a new team has just been created;
         // redirect to team page is a new team has just been created in order to complete its configuration
-        if (IDEA_GENERATE_TEAM_FROM_TEMPLATE && newTeam) window.location.assign('team');
+        if (newTeam) window.location.assign(`teams/${teamId}/settings?newTeam=true`);
         // reload the app so that it takes the new settings and permissions), otherwise
         else window.location.assign('');
       })
