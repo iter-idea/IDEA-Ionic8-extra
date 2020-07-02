@@ -147,7 +147,8 @@ export class IDEAAWSAPIService {
         case CacheModes.CACHE_FIRST:
           // return the result from the cache
           this.getFromCache(resource, opt).then((localRes: any) => {
-            if (localRes) {
+            // check whether the local resource is present (element or list)
+            if (localRes && (opt.resourceId || localRes.length)) {
               resolve(localRes);
               // asynchrounously execute the request online, to update the cache with latest data
               this.request(resource, 'GET', opt)
