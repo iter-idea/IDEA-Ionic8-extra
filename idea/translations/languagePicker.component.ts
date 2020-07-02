@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import IdeaX = require('idea-toolbox');
@@ -17,6 +17,11 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
   styleUrls: ['languagePicker.component.scss']
 })
 export class IDEALanguagePickerComponent {
+  /**
+   * Button fill preference.
+   */
+  @Input() public fill: string;
+
   constructor(public t: IDEATranslationsService, public modalCtrl: ModalController) {}
 
   /**
