@@ -439,7 +439,8 @@
       "UNJOIN": "Dejar el grupo",
       "USER_NOT_FOUND_OR_ALREADY_JOINED": "El usuario ya forma parte del grupo.",
       "USER_REMOVED": "Usuario eliminado",
-      "YOU_NEED_A_TEAM_TO_CONTINUE": "Necesites de un equipe para continuar"
+      "YOU_NEED_A_TEAM_TO_CONTINUE": "Necesites de un equipe para continuar",
+      "NO_TEAMS_AVAILABLE": "No tienes equipos disponibles"
     },
     "UPDATE": {
       "CLOSE_THE_APP_TO_UPDATE": "Cerrar completamente la app o el navegador para instalar la actualización",

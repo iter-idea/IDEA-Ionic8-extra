@@ -47,7 +47,7 @@ export class IDEATeamsPage {
   /**
    * Change the currently selected team.
    */
-  public selectTeam(teamId: string) {
+  public selectTeam(teamId: string, newTeam?: boolean) {
     if (this.isCurrentTeam(teamId)) return this.navCtrl.navigateBack(['teams', teamId]);
     // request a team change (so that the `currentTeamId` of the user is updated)
     this.loading.show();
@@ -56,7 +56,13 @@ export class IDEATeamsPage {
       resourceId: this.tc.get('userId'),
       body: { action: 'CHANGE_TEAM', teamId, project: IDEA_PROJECT }
     })
-      .then(() => window.location.assign('')) // reload the app so that it takes the new settings and permissions
+      .then(() => {
+        // in case the project allows the team generation from a template and a new team has just been created;
+        // redirect to team page is a new team has just been created in order to complete its configuration
+        if (newTeam) window.location.assign(`teams/${teamId}/settings?newTeam=true`);
+        // reload the app so that it takes the new settings and permissions), otherwise
+        else window.location.assign('');
+      })
       .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
       .finally(() => this.loading.hide());
   }
@@ -87,7 +93,7 @@ export class IDEATeamsPage {
               // create a new team and add it to the teams list
               this.loading.show();
               this.API.postResource('teams', { idea: true, body: { name: data.name, project: IDEA_PROJECT } })
-                .then(() => this.loadTeams())
+                .then((team: IdeaX.Team) => this.selectTeam(team.teamId, true)) // select the new team as current team
                 .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
                 .finally(() => this.loading.hide());
             }
