@@ -3,22 +3,24 @@
     <ion-buttons slot="start">
       <ion-back-button icon="close" *ngIf="tc.get('membership')"></ion-back-button>
     </ion-buttons>
-    <ion-title>
-      {{ 'IDEA.TEAMS.SELECT_A_TEAM' | translate }}
-    </ion-title>
+    <ion-title>{{ 'IDEA.TEAMS.SELECT_A_TEAM' | translate }}</ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA.TEAMS.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
         <ion-icon name="person" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button [title]="t._('IDEA.TEAMS.CREATE_TEAM_HINT')" (click)="newTeam()">
+      <ion-button *ngIf="teams?.length" [title]="t._('IDEA.TEAMS.CREATE_TEAM_HINT')" (click)="newTeam()">
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <ion-list lines="full" class="teamsList">
-    <p *ngIf="!tc.get('membership')">{{ 'IDEA.TEAMS.YOU_NEED_A_TEAM_TO_CONTINUE' | translate }}.</p>
+<ion-content>
+  <ion-list lines="full" class="aList maxWidthContainer">
+    <ion-list-header *ngIf="!tc.get('membership')">
+      <ion-label class="ion-text-center">
+        <h2>{{ 'IDEA.TEAMS.YOU_NEED_A_TEAM_TO_CONTINUE' | translate }}</h2>
+      </ion-label>
+    </ion-list-header>
     <ion-item
       *ngFor="let team of teams"
       [title]="t._('IDEA.TEAMS.SELECT_TEAM_', { team: team.name })"
@@ -29,7 +31,7 @@
       <ion-label>
         {{ team.name }}
         <p *ngIf="!(team.isActivatedOnProject || team.isRequestingUserAdmin)">
-          {{ 'IDEA.TEAMS.TEAM_NOT_ACTIVATED_DISCLAIMER' | translate }}.
+          {{ 'IDEA.TEAMS.TEAM_NOT_ACTIVATED_DISCLAIMER' | translate }}
         </p>
       </ion-label>
       <ion-badge
@@ -52,11 +54,8 @@
         <ion-icon name="people" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-item>
-    <ion-item lines="none" class="noElements" *ngIf="teams && !teams.length">
-      <ion-label>
-        {{ 'IDEA.TEAMS.NO_TEAMS_AVAILABLE' | translate }}
-        <p class="tappable" (click)="newTeam()">{{ 'IDEA.TEAMS.CREATE_TEAM_HINT' | translate }}</p>
-      </ion-label>
-    </ion-item>
+    <p class="ion-text-center" *ngIf="teams && !teams.length">
+      <ion-button (click)="newTeam()">{{ 'IDEA.TEAMS.CREATE_TEAM_HINT' | translate }}</ion-button>
+    </p>
   </ion-list>
 </ion-content>

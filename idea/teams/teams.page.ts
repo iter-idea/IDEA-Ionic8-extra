@@ -57,10 +57,9 @@ export class IDEATeamsPage {
       body: { action: 'CHANGE_TEAM', teamId, project: IDEA_PROJECT }
     })
       .then(() => {
-        // in case the project allows the team generation from a template and a new team has just been created;
-        // redirect to team page is a new team has just been created in order to complete its configuration
+        // redirect to team page if a new team has just been created, in order to complete its configuration
         if (newTeam) window.location.assign(`teams/${teamId}/settings?newTeam=true`);
-        // reload the app so that it takes the new settings and permissions), otherwise
+        // reload the app so that it takes the new settings and permissions
         else window.location.assign('');
       })
       .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
@@ -93,7 +92,8 @@ export class IDEATeamsPage {
               // create a new team and add it to the teams list
               this.loading.show();
               this.API.postResource('teams', { idea: true, body: { name: data.name, project: IDEA_PROJECT } })
-                .then((team: IdeaX.Team) => this.selectTeam(team.teamId, true)) // select the new team as current team
+                // select the new team as current team
+                .then((team: IdeaX.Team) => this.selectTeam(team.teamId, true))
                 .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
                 .finally(() => this.loading.hide());
             }
