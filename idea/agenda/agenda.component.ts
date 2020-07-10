@@ -12,6 +12,8 @@ import { IDEAAppointmentComponent } from './appointment.component';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
+import { Membership } from '../../../../../api/_shared/membership.model';
+
 @Component({
   selector: 'idea-agenda',
   templateUrl: 'agenda.component.html',
@@ -77,6 +79,10 @@ export class IDEAAgendaComponent {
    * we exit from the `MONTHS_RANGE_FOR_TRIGGERING_REQUEST`.
    */
   public referenceDate: Moment.Moment;
+  /**
+   * The current membership.
+   */
+  public membership: Membership;
   /**
    * The shared and private calendars available to the current user.
    */
@@ -146,6 +152,7 @@ export class IDEAAgendaComponent {
     public API: IDEAAWSAPIService
   ) {}
   public ngOnInit() {
+    this.membership = this.membership;
     this.viewMode = AgendaViewModes.WEEK;
     // set the formats based on the current language
     Moment.locale(this.t.getCurrentLang());
@@ -163,7 +170,7 @@ export class IDEAAgendaComponent {
     this.loading.show();
     Promise.all([
       // shared calendars
-      this.API.getResource(`teams/${this.tc.get('membership').teamId}/calendars`, { idea: true }),
+      this.API.getResource(`teams/${this.membership.teamId}/calendars`, { idea: true }),
       // private calendars
       this.API.getResource(`calendars`, { idea: true })
     ])
@@ -173,10 +180,17 @@ export class IDEAAgendaComponent {
           .map((c: IdeaX.Calendar) => new IdeaX.Calendar(c))
           .sort((a: IdeaX.Calendar, b: IdeaX.Calendar) => a.name.localeCompare(b.name));
         // check whether the user have writing permissions on at least one calendar
-        this.userCanInsert = this.calendars.some(x => x.canUserManageAppointments(this.tc.get('membership').userId));
+        this.userCanInsert = this.calendars.some(x => x.canUserManageAppointments(this.membership.userId));
         // prepare the helper to allow the display of specific calendars (and so their appointments)
+        // preselect calendars to display based on user's preferences (saved on the membership)
         this.calendarsChecks = this.calendars.map(
-          c => new IdeaX.Check({ value: c.calendarId, name: c.name, checked: true, color: c.color })
+          c =>
+            new IdeaX.Check({
+              value: c.calendarId,
+              name: c.name,
+              checked: this.membership.activeCalendardsIds.includes(c.calendarId),
+              color: c.color
+            })
         );
         // load the appointments from each selected calendar
         this.loadAppointmentsBasedOnVisibileCalendars().then(() => this.loading.hide());
@@ -210,7 +224,7 @@ export class IDEAAgendaComponent {
       if (!forceRefresh && this.agendaAppointmentsByCalendar[calendar.calendarId])
         return resolve(this.agendaAppointmentsByCalendar[calendar.calendarId]);
       // request appointments remotely, from a shared or a local calendar, based on the interval around the ref. date
-      const baseURL = calendar.teamId ? `teams/${this.tc.get('membership').teamId}/` : '';
+      const baseURL = calendar.teamId ? `teams/${this.membership.teamId}/` : '';
       this.API.getResource(baseURL.concat(`calendars/${calendar.calendarId}/appointments`), {
         idea: true,
         params: {
@@ -365,6 +379,28 @@ export class IDEAAgendaComponent {
       this.loadingAppointments = true;
       this.loadAppointmentsBasedOnVisibileCalendars(true).then(() => (this.loadingAppointments = false));
     } else this.loadAppointmentsBasedOnVisibileCalendars();
+  }
+
+  /**
+   * Change the active calendars for the current membership.
+   */
+  public changeActiveCalendars() {
+    return new Promise(resolve => {
+      const activeCalendardsIds = [];
+      this.calendarsChecks.filter(c => c.checked).forEach(c => activeCalendardsIds.push(c.value));
+      this.API.patchResource(`teams/${this.membership.teamId}/memberships`, {
+        resourceId: this.membership.userId,
+        body: {
+          action: 'ACTIVE_CALENDARS',
+          activeCalendardsIds
+        }
+      })
+        .then(() => {
+          this.membership.activeCalendardsIds = activeCalendardsIds;
+          resolve();
+        })
+        .catch(() => resolve()); // ignore errors
+    });
   }
 
   /**

@@ -34,7 +34,7 @@
         [noneText]="t._('IDEA.AGENDA.NO_CALENDARS')"
         [numMaxElementsInPreview]="2"
         [showAvatars]="true"
-        (change)="loadAppointmentsBasedOnVisibileCalendars()"
+        (change)="loadAppointmentsBasedOnVisibileCalendars(); changeActiveCalendars()"
       ></idea-checker>
     </ion-col>
     <ion-col
