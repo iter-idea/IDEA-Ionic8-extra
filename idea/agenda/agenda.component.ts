@@ -188,7 +188,9 @@ export class IDEAAgendaComponent {
             new IdeaX.Check({
               value: c.calendarId,
               name: c.name,
-              checked: this.membership.activeCalendardsIds.includes(c.calendarId),
+              checked:
+                //  note: the config requires the attribute `activeCalendardsIds` in the project's Membership model
+                !this.membership.activeCalendardsIds || this.membership.activeCalendardsIds.includes(c.calendarId),
               color: c.color
             })
         );
@@ -383,23 +385,21 @@ export class IDEAAgendaComponent {
 
   /**
    * Change the active calendars for the current membership.
+   * Note: it requires the attribute `activeCalendardsIds` in the project's Membership model.
    */
   public changeActiveCalendars() {
     return new Promise(resolve => {
       const activeCalendardsIds = [];
       this.calendarsChecks.filter(c => c.checked).forEach(c => activeCalendardsIds.push(c.value));
+      // if the settings hasn't been implemented in the project, skip the following part
+      if (!this.membership.activeCalendardsIds) return;
       this.API.patchResource(`teams/${this.membership.teamId}/memberships`, {
         resourceId: this.membership.userId,
-        body: {
-          action: 'ACTIVE_CALENDARS',
-          activeCalendardsIds
-        }
+        body: { action: 'ACTIVE_CALENDARS', activeCalendardsIds }
       })
-        .then(() => {
-          this.membership.activeCalendardsIds = activeCalendardsIds;
-          resolve();
-        })
-        .catch(() => resolve()); // ignore errors
+        .then(() => (this.membership.activeCalendardsIds = activeCalendardsIds))
+        .catch(() => {}) // ignore errors
+        .finally(() => resolve());
     });
   }
 
