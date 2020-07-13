@@ -152,7 +152,7 @@ export class IDEAAgendaComponent {
     public API: IDEAAWSAPIService
   ) {}
   public ngOnInit() {
-    this.membership = this.membership;
+    this.membership = this.tc.get('membership');
     this.viewMode = AgendaViewModes.WEEK;
     // set the formats based on the current language
     Moment.locale(this.t.getCurrentLang());
