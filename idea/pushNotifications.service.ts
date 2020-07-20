@@ -26,14 +26,11 @@ export class IDEAPushNotificationsService {
     if (!this.isAvailable()) return;
     // monitor registrations
     this.registrations = new Observable(observer => {
-      Plugins.PushNotifications.addListener('registration', (token: PushNotificationToken) => {
+      Plugins.PushNotifications.addListener('registration', (token: PushNotificationToken) =>
         observer.next(
-          new IdeaX.PushNotificationsDevice({
-            token: token.value,
-            platform: IdeaX.PushNotificationsPlatforms.FCM
-          })
-        );
-      });
+          new IdeaX.PushNotificationsDevice({ token: token.value, platform: IdeaX.PushNotificationsPlatforms.FCM })
+        )
+      );
     });
     // monitor registration errors
     this.errors = new Observable(observer => {
@@ -56,16 +53,12 @@ export class IDEAPushNotificationsService {
   }
 
   /**
-   * To fire the registration of a new device.
+   * To fire the registration of a new device: it will rewquest the permission to use Push Notification.
+   * On iOS will prompt the request, on Android it's automatic.
    */
   public registerDevice() {
-    // Request permission to use push notifications
-    // iOS will prompt user and return if they granted permission or not
-    // Android will just grant without prompting
     Plugins.PushNotifications.requestPermission().then(result => {
-      if (result.granted) {
-        Plugins.PushNotifications.register();
-      } else console.log('Notification Permission denied');
+      if (result.granted) Plugins.PushNotifications.register();
     });
   }
 }
