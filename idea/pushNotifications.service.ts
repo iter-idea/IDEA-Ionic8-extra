@@ -4,10 +4,6 @@ import { Plugins, PushNotificationToken, PushNotification } from '@capacitor/cor
 import { Observable } from 'rxjs';
 import { IDEAErrorReportingService } from './errorReporting.service';
 import IdeaX = require('idea-toolbox');
-
-// from idea-config.js
-declare const IDEA_API_VERSION: string;
-
 /**
  * To subscribe push notifications events.
  */
@@ -30,18 +26,11 @@ export class IDEAPushNotificationsService {
     if (!this.isAvailable()) return;
     // monitor registrations
     this.registrations = new Observable(observer => {
-      Plugins.PushNotifications.addListener('registration', (token: PushNotificationToken) => {
+      Plugins.PushNotifications.addListener('registration', (token: PushNotificationToken) =>
         observer.next(
-          new IdeaX.PushNotificationsDevice({
-            token: token.value,
-            platform: this.platform.is('ios')
-              ? IDEA_API_VERSION === 'dev'
-                ? IdeaX.PushNotificationsPlatforms.APNS_SANDBOX
-                : IdeaX.PushNotificationsPlatforms.APNS
-              : IdeaX.PushNotificationsPlatforms.FCM
-          })
-        );
-      });
+          new IdeaX.PushNotificationsDevice({ token: token.value, platform: IdeaX.PushNotificationsPlatforms.FCM })
+        )
+      );
     });
     // monitor registration errors
     this.errors = new Observable(observer => {
@@ -64,9 +53,12 @@ export class IDEAPushNotificationsService {
   }
 
   /**
-   * To fire the registration of a new device.
+   * To fire the registration of a new device: it will rewquest the permission to use Push Notification.
+   * On iOS will prompt the request, on Android it's automatic.
    */
   public registerDevice() {
-    Plugins.PushNotifications.register();
+    Plugins.PushNotifications.requestPermission().then(result => {
+      if (result.granted) Plugins.PushNotifications.register();
+    });
   }
 }
