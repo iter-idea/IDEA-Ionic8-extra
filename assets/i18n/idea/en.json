@@ -492,7 +492,7 @@
       "TEAM_MEMBERS": "Team members",
       "TEAM_MEMBERS_HINT": "Manage the members of team {{team}}",
       "TEAM_NAME": "Team name",
-      "TEAM_NOT_ACTIVATED_DISCLAIMER": "Team has not been activated yet; contact an administrator",
+      "TEAM_NOT_ACTIVATED_DISCLAIMER": "Team has not been activated yet; contact an administrator.",
       "TEAM_SETTINGS": "Configure the settings of team {{team}}",
       "UNJOIN": "Leave the team",
       "USER_NOT_FOUND_OR_ALREADY_JOINED": "The user is already part of the team",
