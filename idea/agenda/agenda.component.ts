@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import Async = require('async');
@@ -20,6 +20,10 @@ import { Membership } from '../../../../../api/_shared/membership.model';
   styleUrls: ['agenda.component.scss']
 })
 export class IDEAAgendaComponent {
+  /**
+   * The shared and private calendars available to the current user.
+   */
+  @Input() public calendars: Array<IdeaX.Calendar>;
   /**
    * The supported linked object types for the appointments of this project.
    */
@@ -83,10 +87,6 @@ export class IDEAAgendaComponent {
    * The current membership.
    */
   public membership: Membership;
-  /**
-   * The shared and private calendars available to the current user.
-   */
-  public calendars: Array<IdeaX.Calendar>;
   /**
    * Helper to identify the calendars currently selected.
    */
@@ -160,47 +160,38 @@ export class IDEAAgendaComponent {
     // init the main working attributes
     this.goToToday();
     this.referenceDate = Moment();
-    this.calendars = new Array<IdeaX.Calendar>();
     this.calendarsChecks = new Array<IdeaX.Check>();
     this.appointments = new Array<AgendaAppointment>();
     this.appointmentsByCalendar = {};
     this.agendaAppointmentsByCalendar = {};
     this.lastTimeSelected = null;
-    // acquire all the calendars available to the user and gather their appointments (if the calendar is selected)
-    this.loading.show();
-    Promise.all([
-      // shared calendars
-      this.API.getResource(`teams/${this.membership.teamId}/calendars`, { idea: true }),
-      // private calendars
-      this.API.getResource(`calendars`, { idea: true })
-    ])
-      .then((res: Array<Array<IdeaX.Calendar>>) => {
-        // flatten the results in a single array of calendars and order them by name
-        this.calendars = this.flattenArray(res)
-          .map((c: IdeaX.Calendar) => new IdeaX.Calendar(c))
-          .sort((a: IdeaX.Calendar, b: IdeaX.Calendar) => a.name.localeCompare(b.name));
-        // check whether the user have writing permissions on at least one calendar
-        this.userCanInsert = this.calendars.some(x => x.canUserManageAppointments(this.membership.userId));
-        // prepare the helper to allow the display of specific calendars (and so their appointments)
-        // preselect calendars to display based on user's preferences (saved on the membership)
-        this.calendarsChecks = this.calendars.map(
-          c =>
-            new IdeaX.Check({
-              value: c.calendarId,
-              name: c.name,
-              checked:
-                //  note: the config requires the attribute `activeCalendardsIds` in the project's Membership model
-                !this.membership.activeCalendardsIds || this.membership.activeCalendardsIds.includes(c.calendarId),
-              color: c.color
-            })
-        );
-        // load the appointments from each selected calendar
-        this.loadAppointmentsBasedOnVisibileCalendars().then(() => this.loading.hide());
-        // (async) synchronise the external calendars
-        this.syncExternalCalendars();
-      })
-      .catch(() => this.loading.hide());
   }
+
+  public ngOnChanges(changes: SimpleChanges) {
+    if (changes['calendars']) {
+      // acquire all the calendars available to the user and gather their appointments (if the calendar is selected)
+      // check whether the user have writing permissions on at least one calendar
+      this.userCanInsert = this.calendars.some(x => x.canUserManageAppointments(this.membership.userId));
+      // prepare the helper to allow the display of specific calendars (and so their appointments)
+      // preselect calendars to display based on user's preferences (saved on the membership)
+      this.calendarsChecks = this.calendars.map(
+        c =>
+          new IdeaX.Check({
+            value: c.calendarId,
+            name: c.name,
+            checked:
+              //  note: the config requires the attribute `activeCalendardsIds` in the project's Membership model
+              !this.membership.activeCalendardsIds || this.membership.activeCalendardsIds.includes(c.calendarId),
+            color: c.color
+          })
+      );
+      // load the appointments from each selected calendar
+      this.loadAppointmentsBasedOnVisibileCalendars().then(() => this.loading.hide());
+      // (async) synchronise the external calendars
+      this.syncExternalCalendars();
+    }
+  }
+
   /**
    * Load in the UI the appointments based on the currently checked calendars.
    */
