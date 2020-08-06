@@ -6,11 +6,12 @@ import { IonicModule } from '@ionic/angular';
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEASubscriptionComponent } from './subscription.component';
 import { IDEAStripeSubscriptionModule } from './stripeSubscription.module';
+import { IDEASubscriptionSummaryComponent } from './subscriptionSummary.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAStripeSubscriptionModule],
-  declarations: [IDEASubscriptionComponent],
-  entryComponents: [IDEASubscriptionComponent],
-  exports: [IDEASubscriptionComponent]
+  declarations: [IDEASubscriptionComponent, IDEASubscriptionSummaryComponent],
+  entryComponents: [IDEASubscriptionComponent, IDEASubscriptionSummaryComponent],
+  exports: [IDEASubscriptionComponent, IDEASubscriptionSummaryComponent]
 })
 export class IDEASubscriptionModule {}

@@ -29,6 +29,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Resource Center
 - Select
 - Signature
+- Subscriptions, Plans & Limits
 - Team & memberships management (IDEA's pool)
 - Translations
 

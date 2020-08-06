@@ -22,13 +22,46 @@ declare const IDEA_PROJECT: string;
   styleUrls: ['stripeSubscription.component.scss']
 })
 export class IDEAStripeSubscriptionComponent {
-  protected stripe: any;
-
+  /**
+   * The target of the subscription, to decide which plans to load.
+   */
+  @Input() public target: IdeaX.ProjectPlanTargets;
+  /**
+   * The plan we want to activate.
+   */
   @Input() public plan: IdeaX.ProjectPlan;
+  /**
+   * The currently active plan, if any.
+   */
   @Input() public oldPlan: IdeaX.ProjectPlan;
-  @Input() public target: string;
+  /**
+   * The Stripe object to manage the payments.
+   */
+  protected stripe: any;
+  /**
+   * The object to securely manage the credit card information of the user (through Stripe).
+   */
   public creditCard: any;
+  /**
+   * Whether the user accepted the authorization check (obligatory).
+   */
   public authorizationCheck: boolean;
+  /**
+   * The id of the existing/future subscription, based on the target.
+   */
+  public subscriptionId: string;
+  /**
+   * The current membership.
+   */
+  public membership: IdeaX.Membership;
+  /**
+   * The current user.
+   */
+  public user: IdeaX.User;
+  /**
+   * The current team.
+   */
+  public team: IdeaX.Team;
 
   constructor(
     public platform: Platform,
@@ -39,26 +72,24 @@ export class IDEAStripeSubscriptionComponent {
     public tc: IDEATinCanService,
     public API: IDEAAWSAPIService,
     public t: IDEATranslationsService
-  ) {
-    this.authorizationCheck = false;
-  }
+  ) {}
   public ionViewDidEnter() {
+    this.authorizationCheck = false;
+    this.membership = this.tc.get('membership');
+    this.user = this.tc.get('user');
+    this.team = this.tc.get('team');
     // if a plan to subscribe to wasn't specified, close the component
-    if (!this.plan || !this.plan.planId) this.close();
+    if (!this.plan) return this.close();
+    // define target and subscription id
+    this.target = this.target || IdeaX.ProjectPlanTargets.TEAMS;
+    if (this.target === IdeaX.ProjectPlanTargets.TEAMS) this.subscriptionId = this.membership.teamId;
+    else this.subscriptionId = this.membership.userId;
     // init Stripe lib and its elements in the UI
     this.stripe = Stripe(STRIPE_PUBLIC_KEY);
     this.creditCard = this.stripe.elements().create('card');
     this.creditCard.mount('#cardElement');
-    // refresh the validation to align last Stripe changes with IDEA's back-end
-    // Note: the request may relate to a team or to an user subscription according to the target
-    const params: any = {
-      resourceId:
-        this.target === IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').teamId : this.tc.get('user').userId,
-      body: { action: 'VERIFY_STORE_SUBSCRIPTION', transaction: { type: 'stripe' } }
-    };
-    if (this.target !== IdeaX.ProjectPlanTargets.TEAMS) params['idea'] = true;
-    const url = this.target === IdeaX.ProjectPlanTargets.TEAMS ? 'teams' : 'user';
-    this.API.patchResource(url, params).catch(() => {});
+    // (aync) refresh the validation to align last Stripe changes with IDEA's back-end
+    this.validateSubscription(true);
   }
 
   /**
@@ -85,18 +116,15 @@ export class IDEAStripeSubscriptionComponent {
       // send the token to the back-end and request the subscription (transparent upgrade/downgrade)
       this.loading.show();
       // get the detailed information about the plan: storePlanId is needed
-      this.API.getResource(`projects/${IDEA_PROJECT}/plans`, {
-        idea: true,
-        resourceId: this.plan.planId
-      })
+      this.API.getResource(`projects/${IDEA_PROJECT}/plans`, { idea: true, resourceId: this.plan.planId })
         .then((plan: IdeaX.ProjectPlan) => {
           this.API.postResource('stripeSubscriptions', {
             idea: true,
             resourceId: plan.storePlanId,
             body: {
-              subscriberId: IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').teamId : this.tc.get('user').userId,
-              name: IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').name : this.tc.get('user').email,
-              email: this.tc.get('user').email,
+              subscriberId: this.subscriptionId,
+              name: this.target === IdeaX.ProjectPlanTargets.TEAMS ? this.team.name : this.user.email,
+              email: this.user.email,
               source: resT.token.id
             }
           })
@@ -128,29 +156,42 @@ export class IDEAStripeSubscriptionComponent {
             .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
             .finally(() => this.loading.hide());
         })
-        .catch(() => this.message.error('IDEA.SUBSCRIPTION.PLAN_NOT_FOUND'));
+        .catch(() => {
+          this.loading.hide();
+          this.message.error('IDEA.SUBSCRIPTION.PLAN_NOT_FOUND');
+        });
     });
   }
   /**
    * Validate a subscription against IDEA's back-end.
    */
-  protected validateSubscription() {
-    this.loading.show();
-    // the request may relate to a team or to an user subscription according to the target
-    const params: any = {
-      resourceId:
-        this.target === IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').teamId : this.tc.get('user').userId,
-      body: { action: 'VERIFY_STORE_SUBSCRIPTION', project: IDEA_PROJECT, transaction: { type: 'stripe' } }
-    };
-    if (this.target !== IdeaX.ProjectPlanTargets.TEAMS) params['idea'] = true;
-    const url = this.target === IdeaX.ProjectPlanTargets.TEAMS ? 'teams' : 'users';
-    this.API.patchResource(url, params)
+  protected validateSubscription(silent?: boolean) {
+    if (!silent) this.loading.show();
+    this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
+      idea: true,
+      resourceId: this.subscriptionId,
+      body: { action: 'VERIFY', transaction: { type: 'stripe' } }
+    })
       .then((subscription: IdeaX.ProjectSubscription) => {
-        this.message.success('IDEA.STRIPE.SUCCESSFULLY_SUBSCRIBED');
-        this.close(subscription);
+        if (!silent) {
+          this.message.success('IDEA.STRIPE.SUCCESSFULLY_SUBSCRIBED');
+          this.close(subscription);
+        }
       })
-      .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-      .finally(() => this.loading.hide());
+      .catch(() => {
+        if (!silent) this.message.error('COMMON.OPERATION_FAILED');
+      })
+      .finally(() => {
+        if (!silent) this.loading.hide();
+      });
+  }
+
+  /**
+   * Get a label's value.
+   */
+  public getLabelValue(label: IdeaX.Label): string {
+    if (!label) return null;
+    return label.translate(this.t.getCurrentLang(), this.t.languages());
   }
 
   /**

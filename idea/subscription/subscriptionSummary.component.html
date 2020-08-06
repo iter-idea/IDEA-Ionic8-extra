@@ -1,0 +1,22 @@
+<ion-item lines="none" *ngIf="ready" [button]="canChange()" [detail]="canChange()" (click)="openSubscriptions()">
+  <ion-label>
+    <b>{{ plan ? getLabelValue(plan.title) : ('IDEA.SUBSCRIPTION.NO_PLAN' | translate) }}</b>
+    <p *ngIf="subscription && subscription.managedByUser.userId !== membership.userId">
+      {{ 'IDEA.SUBSCRIPTION.MANAGED_BY_' | translate: { user: subscription.managedByUser.name } }}
+    </p>
+    <p *ngIf="canChange()">{{ 'IDEA.SUBSCRIPTION.TAP_TO_REVIEW_OR_CHANGE' | translate }}</p>
+  </ion-label>
+  <ion-badge color="danger" slot="end" *ngIf="isSubscriptionExpired(subscription)">
+    {{ 'IDEA.SUBSCRIPTION.EXPIRED' | translate }}
+  </ion-badge>
+</ion-item>
+<!-- SKELETON -->
+<ion-item lines="none" *ngIf="!ready">
+  <ion-label>
+    <b><ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text></b>
+    <p>
+      <i><ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text></i>
+    </p>
+    <p><ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text></p>
+  </ion-label>
+</ion-item>

@@ -1,6 +1,10 @@
-.maxWidthContainer {
-  max-width: 550px;
-}
-.tappable {
-  cursor: pointer;
+.actionBtns {
+  margin-top: 25px;
+  ion-button {
+    text-transform: none;
+  }
+  > p {
+    margin: 10px 20px;
+    font-size: 0.7em;
+  }
 }

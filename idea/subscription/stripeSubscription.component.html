@@ -1,92 +1,78 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
-    <ion-title>
-      {{ 'IDEA.STRIPE.SUBSCRIBE' | translate }}
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button [title]="t._('COMMON.CANCEL_AND_CLOSE')" (click)="close()">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-title>{{ 'IDEA.STRIPE.SUBSCRIBE' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <img src="assets/imgs/stripe.png" class="tappable" (click)="openStripeInfo()" />
-      </ion-col>
-    </ion-row>
-    <ion-list-header class="stripeHint">
+  <ion-list class="aList">
+    <p class="ion-text-center">
+      <img src="assets/imgs/stripe.png" class="tappable" (click)="openStripeInfo()" />
+    </p>
+    <ion-list-header>
       <ion-label class="ion-text-center">
-        {{ 'IDEA.STRIPE.SECURELY_SUBSCRIBE_THROUGH' | translate }}
-        <ion-text class="anchor" (click)="openStripeInfo()">
-          Stripe
-        </ion-text>
+        <h2>
+          {{ 'IDEA.STRIPE.SECURELY_SUBSCRIBE_THROUGH' | translate }}
+          <ion-text class="anchor" (click)="openStripeInfo()">Stripe</ion-text>
+        </h2>
         <p>
-          <i> {{ 'IDEA.STRIPE.NO_CREDIT_CARD_INFO_STORED_IN_OUR_SERVERS' | translate }}. </i>
+          <i>{{ 'IDEA.STRIPE.NO_CREDIT_CARD_INFO_STORED_IN_OUR_SERVERS' | translate }}.</i>
         </p>
       </ion-label>
     </ion-list-header>
-    <ion-list-header *ngIf="oldPlan.planId">
+    <ion-list-header *ngIf="oldPlan">
       <ion-label>
-        {{ 'IDEA.STRIPE.YOUR_CURRENT_PLAN' | translate }}
+        <h3>{{ 'IDEA.STRIPE.YOUR_CURRENT_PLAN' | translate }}</h3>
       </ion-label>
     </ion-list-header>
-    <ion-item lines="none" *ngIf="oldPlan.planId">
+    <ion-item lines="none" *ngIf="oldPlan">
       <ion-label>
-        {{ oldPlan.title[t.getCurrentLang()] }}
-        <p>
-          {{ oldPlan.priceStr }}
-        </p>
+        {{ getLabelValue(oldPlan.title) }}
+        <p>{{ oldPlan.priceStr }}</p>
       </ion-label>
     </ion-item>
     <ion-list-header>
       <ion-label>
-        {{ 'IDEA.STRIPE.YOU_ARE_SUBSCRIBING_TO_RECURRING_PLAN' | translate }}
+        <h3>{{ 'IDEA.STRIPE.YOU_ARE_SUBSCRIBING_TO_RECURRING_PLAN' | translate }}</h3>
       </ion-label>
     </ion-list-header>
     <ion-item lines="none">
       <ion-label>
-        {{ plan.title[t.getCurrentLang()] }}
-        <p>
-          {{ plan.priceStr }}
-        </p>
+        {{ getLabelValue(plan.title) }}
+        <p>{{ plan.priceStr }}</p>
       </ion-label>
     </ion-item>
     <ion-list-header>
       <ion-label>
-        {{ 'IDEA.STRIPE.CREDIT_DEBIT_CARD' | translate }}
+        <h3>{{ 'IDEA.STRIPE.CREDIT_DEBIT_CARD' | translate }}</h3>
       </ion-label>
     </ion-list-header>
     <div id="cardElement">
       <!-- A Stripe Element will be inserted here. -->
     </div>
     <ion-list-header>
-      <ion-label>
-        {{ 'IDEA.STRIPE.CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT' | translate }}
-      </ion-label>
+      <ion-label>{{ 'IDEA.STRIPE.CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT' | translate }}</ion-label>
     </ion-list-header>
     <ion-item lines="none">
       <ion-checkbox slot="start" [(ngModel)]="authorizationCheck"></ion-checkbox>
-      <ion-label class="ion-text-wrap" style="z-index: 3;">
+      <ion-label class="ion-text-wrap disclaimer" style="z-index: 3;">
         {{ 'IDEA.STRIPE.I_AUTHORIZE' | translate }}
-        <ion-text class="anchor" (click)="openWebsite($event)">
-          ITER IDEA
-        </ion-text>
+        <ion-text class="anchor" (click)="openWebsite($event)">ITER IDEA</ion-text>
         {{ 'IDEA.STRIPE.AUTHORIZATION_CHECK_TEXT' | translate }}
       </ion-label>
     </ion-item>
-    <ion-row>
-      <ion-col class="ion-text-right">
-        <ion-button
-          [title]="t._('IDEA.STRIPE.SUBSCRIBE_HINT')"
-          [disabled]="!authorizationCheck || creditCard._empty"
-          (click)="subscribe()"
-        >
-          {{ 'IDEA.STRIPE.SUBSCRIBE' | translate }}
-        </ion-button>
-      </ion-col>
-    </ion-row>
+    <p class="ion-text-right ion-padding">
+      <ion-button
+        [title]="t._('IDEA.STRIPE.SUBSCRIBE_HINT')"
+        [disabled]="!authorizationCheck || creditCard._empty"
+        (click)="subscribe()"
+      >
+        {{ 'IDEA.STRIPE.SUBSCRIBE' | translate }}
+      </ion-button>
+    </p>
   </ion-list>
 </ion-content>

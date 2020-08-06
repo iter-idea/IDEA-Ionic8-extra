@@ -348,6 +348,11 @@
       "APP_WILL_RESTART": "L'app verrà  riavviata",
       "CHANGE_LANGUAGE": "Cambia il linguaggio visualizzato"
     },
+    "LIMIT": {
+      "COUNTER_WILL_BE_RESET_ON_": "Il contatore verrà resettato in data {{date}}",
+      "ALMOST_REACHED_LIMIT_ALERT": "Hai quasi raggiunto il limite per la risorsa **{{name}}** ({{counter}} su {{limit}}).\nVai alla **pagina di gestione del team** per maggiori informazioni.",
+      "LIMIT_REACHED_ALERT": "Hai raggiunto il limite per la risorsa **{{name}}** ({{counter}} su {{limit}}).\nVai alla **pagina di gestione del team** per maggiori informazioni."
+    },
     "LIST": {
       "CANCEL_AND_CLOSE": "Annulla cambiamenti e chiudi",
       "DELETE_ELEMENT": "Elimina elemento",
@@ -438,28 +443,30 @@
     },
     "SUBSCRIPTION": {
       "BACK_TO_FREE_PLAN": "Torna al piano gratuito",
-      "CALCULATION_METHOD": "Il numero di utenti è calcolato contando tutti gli utenti distinti su tutti i team da te creati.",
       "CANCEL_SUBSCRIPTION": "Annulla abbonamento",
+      "COULDNT_LOAD_SUBSCRIPTION": "Errore nel caricamento dell'abbonamento.",
       "COULDNT_LOAD_PLANS": "Errore nel caricamento dei piani",
-      "DO_YOU_CONFIRM_THE_SUBSCRIPTION_": "Confermi di volerti abbonare a : {{plan}}?",
+      "DO_YOU_CONFIRM_THE_SUBSCRIPTION_": "Confermi di volerti abbonare a: {{plan}}?",
       "ERROR_CONTACTING_STORE": "Errore durante il collegamento con lo store",
       "EXPIRED": "Scaduto",
       "FREE": "Gratuito",
       "HOW_IT_WORKS_APPLE": "Il pagamento sarà  addebitato sul tuo account ID Apple alla conferma dell'acquisto. L'abbonamento si rinnova automaticamente a meno che non venga annullato almeno 24 ore prima della fine del periodo corrente. Il tuo account verrà  addebitato per il rinnovo entro 24 ore prima della fine del periodo corrente. Puoi gestire e cancellare i tuoi abbonamenti andando nelle impostazioni del tuo account su App Store dopo l'acquisto.",
-      "MAIN_EXPLANATION_TEAMS": "Con il piano gratuito hai accesso a tutte le funzionalità  del servizio e puoi creare un numero illimitato di team; per poter invitare più di due utenti ai tuoi team, dovrai sottoscrivere uno dei piani sottostanti.",
-      "MAIN_EXPLANATION_USERS": "Con il piano gratuito puoi collegare una sola sorgente dati e usufruire di un solo campo personalizzato per le tue tracce; per poter collegare fino a 3 sorgenti, sbloccare fino a 3 campi personalizzati e personalizzare i tuoi report, sottoscrivi il piano Gold.",
       "MANAGE_SUBSCRIPTION": "Gestisci abbonamento",
       "NEW_SUBSCRIPTION": "Nuovo abbonamento",
       "NEXT_BILLING_DATE": "Prossima fatturazione",
-      "NOTE_WELL": "Nota bene",
-      "OPTIONS": "Opzioni",
+      "PLANS": "Piani disponibili",
       "PLAN_NOT_FOUND": "Piano non trovato",
       "RESTORE_PURCHASES": "Ripristina acquisti",
       "STOP_SUBSCRIPTION": "Annulla abbonamento",
       "SUBSCRIPTION_CHANGE": "Cambio abbonamento",
       "SUBSCRIPTION_WONT_RENEW_ANYMORE": "L'abbonamento non verrà  rinnovato alla sua scadenza. Confermi?",
       "WONT_RENEW": "Non si rinnoverà ",
-      "WONT_RENEW_AFTER": "Non si rinnoverà  dopo il"
+      "WONT_RENEW_AFTER": "Non si rinnoverà  dopo il",
+      "RENEWS_ON_": "Si rinnova in data {{date}} per {{price}}",
+      "TAP_TO_REVIEW_OR_CHANGE": "Tocca per revisionare o cambiare il tuo piano",
+      "NO_PLANS_AVAILABLE": "Nessun piano disponibile per questa piattaforma",
+      "NO_PLAN": "Nessun piano",
+      "MANAGED_BY_": "Gestito da: {{user}}"
     },
     "TEAMS": {
       "ACTIONS_ON_USER_": "Azioni su {{user}}",

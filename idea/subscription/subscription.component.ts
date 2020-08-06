@@ -23,15 +23,34 @@ declare const IDEA_PROJECT: string;
   styleUrls: ['subscription.component.scss']
 })
 export class IDEASubscriptionComponent {
-  @Input() public target: string;
-  public platformStore: string;
-  public plans: Array<IdeaX.ProjectPlan>;
-  public subscription: IdeaX.ProjectSubscription;
-
   /**
-   * Support object for subscriptions' limits checks.
+   * The target of the subscription, to decide which plans to load.
    */
-  public ProjectPlanTargets = IdeaX.ProjectPlanTargets;
+  @Input() public target: IdeaX.ProjectPlanTargets;
+  /**
+   * The team's subscription.
+   */
+  @Input() public subscription: IdeaX.ProjectSubscription;
+  /**
+   * A general description for the plans.
+   */
+  @Input() public generalDescription: string;
+  /**
+   * The id of the existing/future subscription, based on the target.
+   */
+  public subscriptionId: string;
+  /**
+   * The current membership.
+   */
+  public membership: IdeaX.Membership;
+  /**
+   * The available plans for the team.
+   */
+  public plans: Array<IdeaX.ProjectPlan>;
+  /**
+   * The id of the platform for which to load the plans.
+   */
+  public platformStore: string;
 
   // callbacks store (defined here so we can turn them off when the component is destroyed)
   protected cbStoreOnReady: any;
@@ -54,17 +73,15 @@ export class IDEASubscriptionComponent {
     public t: IDEATranslationsService
   ) {}
   public ngOnInit() {
+    this.membership = this.tc.get('membership');
     Moment.locale(this.t.getCurrentLang());
-    // load the plans only if we are on the same platform from which we subscribed first
+    // define target and subscription id
+    this.target = this.target || IdeaX.ProjectPlanTargets.TEAMS;
+    if (this.target === IdeaX.ProjectPlanTargets.TEAMS) this.subscriptionId = this.membership.teamId;
+    else this.subscriptionId = this.membership.userId;
+    // identify the platform for which to load the plans
     this.platformStore = this.platform.is('ios') ? 'ios' : this.platform.is('android') ? 'android' : 'web';
-    // identify the current subscription according to the target: TEAMS or USERS
-    this.subscription =
-      this.target === IdeaX.ProjectPlanTargets.TEAMS
-        ? this.tc.get('team').subscription || null
-        : this.target === IdeaX.ProjectPlanTargets.USERS
-        ? this.tc.get('user').subscription || null
-        : null;
-    // get the subscription platform and check if this matches with the current platform
+    // get the subscription platform and check if this matches with the current platform; otherwise, exit
     const platformSubscription = this.subscription ? this.subscription.platform : null;
     if (platformSubscription && platformSubscription !== this.platformStore) this.close();
     else {
@@ -75,11 +92,11 @@ export class IDEASubscriptionComponent {
         params: { platform: this.platformStore, target: this.target }
       })
         .then((plans: Array<IdeaX.ProjectPlan>) => {
-          this.plans = plans;
+          this.plans = plans.map(p => new IdeaX.ProjectPlan(p, this.t.languages()));
           // if we are on ios/android, integrate the plans with the store info
           if (this.platform.is('ios') || this.platform.is('android')) {
             // register the products to get their info from the store
-            // note: the plugin save the products in the local storage: don't load the same resources twice
+            // note: the plugin saves the products in the local storage: it doesn't load live the same resources twice
             if (!this.store.products.length)
               this.store.register(this.plans.map(s => ({ id: s.storePlanId, type: this.store.PAID_SUBSCRIPTION })));
             // prepare the store mechanisms
@@ -107,22 +124,13 @@ export class IDEASubscriptionComponent {
     // set the server validation for any paid plan (special query)
     this.store.validator = (p: IAPProduct, cb: any) => {
       // request a validation (Store <-> IDEA's API)
-      // the request may relate to a team or to an user subscription according to the target
-      const params: any = {
-        resourceId:
-          this.target === IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').teamId : this.tc.get('user').userId,
-        body: {
-          action: 'VERIFY_STORE_SUBSCRIPTION',
-          project: IDEA_PROJECT,
-          transaction: p.transaction,
-          storePlanId: p.id
-        }
-      };
-      if (this.target !== IdeaX.ProjectPlanTargets.TEAMS) params['idea'] = true;
-      const url = this.target === IdeaX.ProjectPlanTargets.TEAMS ? 'teams' : 'users';
-      this.API.patchResource(url, params)
+      this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
+        idea: true,
+        resourceId: this.subscriptionId,
+        body: { action: 'VERIFY', transaction: p.transaction, storePlanId: p.id }
+      })
         .then((subscription: IdeaX.ProjectSubscription) => {
-          this.tc.get('user').subscription = subscription;
+          this.subscription = new IdeaX.ProjectSubscription(subscription);
           // to avoid multiple verifications (iOS)
           const plan = this.plans.find(x => x.planId === subscription.planId);
           if (plan && p.id === plan.storePlanId) cb(true);
@@ -133,15 +141,13 @@ export class IDEASubscriptionComponent {
         })
         .catch(err => {
           // if the error is due to a cancellation, force the product state to VALID to avoid other verifications
-          if (['E.USERS.SUBSCRIPTION_CANCELLED', 'E.USERS.SUBSCRIPTION_EXPIRED'].some(x => x === err.message))
+          if (['SUBSCRIPTION_CANCELLED', 'SUBSCRIPTION_EXPIRED'].some(x => x === err.message))
             p.state = this.store.VALID;
           cb(false);
         });
     };
     // when a product is approved (follows store.order), start the validation through IDEA's API (verify)
-    this.cbStoreOnProductApproved = (p: IAPProduct) => {
-      p.verify();
-    };
+    this.cbStoreOnProductApproved = (p: IAPProduct) => p.verify();
     this.store.when('paid subscription').approved(this.cbStoreOnProductApproved);
     // when a product has been verified (AppStore <-> IDEA's API), confirm the successful operation (finish)
     this.cbStoreOnProductVerified = (p: IAPProduct) => p.finish();
@@ -168,7 +174,7 @@ export class IDEASubscriptionComponent {
     this.store.ready(this.cbStoreOnReady);
   }
   /**
-   * Reset the callbacks to avoid duplicates if the component is opened again
+   * Reset the callbacks to avoid duplicates if the component is opened again.
    */
   private dismissStore() {
     this.store.off(this.cbStoreOnReady);
@@ -182,15 +188,15 @@ export class IDEASubscriptionComponent {
    * Subscribe one of the plans available (either on mobile stores or through Stripe).
    */
   public subscribe(plan: IdeaX.ProjectPlan) {
-    if (plan.planId === this.subscription.planId) return;
+    if (this.subscription && plan.planId === this.subscription.planId) return;
     // request confirmation
     this.alertCtrl
       .create({
-        header: this.subscription.planId
+        header: this.subscription
           ? this.t._('IDEA.SUBSCRIPTION.SUBSCRIPTION_CHANGE')
           : this.t._('IDEA.SUBSCRIPTION.NEW_SUBSCRIPTION'),
         message: this.t._('IDEA.SUBSCRIPTION.DO_YOU_CONFIRM_THE_SUBSCRIPTION_', {
-          plan: plan.title[this.t.getCurrentLang()]
+          plan: this.getLabelValue(plan.title)
         }),
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
@@ -212,9 +218,8 @@ export class IDEASubscriptionComponent {
     const params: any = {};
     if (this.platformStore === 'android') {
       // Google Play needs to know the old plan (if exists), to manage upgrades/downgrades
-      const oldPlan = this.plans.find(x => x.planId === this.tc.get('user').subscription.planId);
-      if (oldPlan && this.tc.get('user').subscription.validUntil > Date.now())
-        params.oldPurchasedSkus = [oldPlan.storePlanId];
+      const oldPlan = this.plans.find(x => this.subscription && x.planId === this.subscription.planId);
+      if (oldPlan && this.subscription.validUntil > Date.now()) params.oldPurchasedSkus = [oldPlan.storePlanId];
     }
     this.store.order(plan.storePlanId, params);
   }
@@ -222,13 +227,13 @@ export class IDEASubscriptionComponent {
    * Manage the subscription for teams plans.
    */
   protected subscribeStripe(plan: IdeaX.ProjectPlan) {
-    const oldPlan = this.plans.find(x => x.planId === this.subscription.planId) || {};
+    const oldPlan = this.plans.find(x => this.subscription && x.planId === this.subscription.planId) || null;
     this.modalCtrl
       .create({ component: IDEAStripeSubscriptionComponent, componentProps: { plan, oldPlan, target: this.target } })
       .then(modal => {
         modal.onDidDismiss().then((res: OverlayEventDetail) => {
           if (res.data) {
-            this.tc.get('team').subscription = res.data;
+            this.subscription = new IdeaX.ProjectSubscription(res.data);
             this.changeRef.detectChanges();
           }
         });
@@ -249,25 +254,16 @@ export class IDEASubscriptionComponent {
   }
   protected verifyStripeSubscription() {
     this.loading.show();
-    // the request may relate to a team or to an user subscription according to the target
-    const params: any = {
-      resourceId:
-        this.target === IdeaX.ProjectPlanTargets.TEAMS ? this.tc.get('team').teamId : this.tc.get('user').userId,
-      body: { action: 'VERIFY_STORE_SUBSCRIPTION', project: IDEA_PROJECT, transaction: { type: 'stripe' } }
-    };
-    if (this.target !== IdeaX.ProjectPlanTargets.TEAMS) params['idea'] = true;
-    const url = this.target === IdeaX.ProjectPlanTargets.TEAMS ? 'teams' : 'users';
-    this.API.patchResource(url, params)
+    this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
+      idea: true,
+      resourceId: this.subscriptionId,
+      body: { action: 'VERIFY', transaction: { type: 'stripe' } }
+    })
       .then((subscription: IdeaX.ProjectSubscription) => {
-        if (this.target === IdeaX.ProjectPlanTargets.TEAMS) this.tc.get('team').subscription = subscription;
-        else this.tc.get('user').subscription = subscription;
+        this.subscription = new IdeaX.ProjectSubscription(subscription);
         this.changeRef.detectChanges();
       })
-      .catch(() => {
-        if (this.target === IdeaX.ProjectPlanTargets.TEAMS)
-          this.tc.get('team').subscription = new IdeaX.ProjectSubscription();
-        else this.tc.get('user').subscription = new IdeaX.ProjectSubscription();
-      })
+      .catch(() => (this.subscription = null))
       .finally(() => this.loading.hide());
   }
 
@@ -275,7 +271,7 @@ export class IDEASubscriptionComponent {
    * Open the native subscription panel of the platform, so that the user can proceed to unsubscribe.
    */
   public cancelSubscription() {
-    if (!this.subscription.planId) return;
+    if (!this.subscription) return;
     if (['android', 'ios'].some(x => x === this.platformStore)) this.store.manageSubscriptions();
     else this.cancelStripeSubscriptionAtTheEndOfPeriod(this.subscription.planId);
   }
@@ -293,14 +289,12 @@ export class IDEASubscriptionComponent {
             text: this.t._('COMMON.CONFIRM'),
             handler: () => {
               // get the detailed information about the plan: storePlanId is needed
-              this.API.getResource(`projects/${IDEA_PROJECT}/plans`, {
-                idea: true,
-                resourceId: planId
-              })
+              this.API.getResource(`projects/${IDEA_PROJECT}/plans`, { idea: true, resourceId: planId })
                 .then((plan: IdeaX.ProjectPlan) => {
                   this.API.deleteResource('stripeSubscriptions', {
                     idea: true,
-                    resourceId: plan.storePlanId
+                    resourceId: plan.storePlanId,
+                    headers: { subscriberId: this.subscriptionId }
                   })
                     .then(() => this.verifyStripeSubscription())
                     .catch(() => this.message.error('COMMON.OPERATION_FAILED'));
@@ -328,20 +322,13 @@ export class IDEASubscriptionComponent {
             handler: () => {
               // request the removal
               this.loading.show();
-              // the request may relate to a team or to an user subscription according to the target
-              const params: any = {
-                resourceId:
-                  this.target === IdeaX.ProjectPlanTargets.TEAMS
-                    ? this.tc.get('team').teamId
-                    : this.tc.get('user').userId,
-                body: { action: 'REMOVE_EXPIRED_SUBSCRIPTION', project: IDEA_PROJECT }
-              };
-              if (this.target !== IdeaX.ProjectPlanTargets.TEAMS) params['idea'] = true;
-              const url = this.target === IdeaX.ProjectPlanTargets.TEAMS ? 'teams' : 'users';
-              this.API.patchResource(url, params)
+              this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
+                idea: true,
+                resourceId: this.subscriptionId,
+                body: { action: 'REMOVE_EXPIRED' }
+              })
                 .then((subscription: IdeaX.ProjectSubscription) => {
-                  if (this.target === IdeaX.ProjectPlanTargets.TEAMS) this.tc.get('team').subscription = subscription;
-                  else this.tc.get('user').subscription = subscription;
+                  this.subscription = subscription;
                   this.close();
                 })
                 .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
@@ -358,6 +345,14 @@ export class IDEASubscriptionComponent {
    */
   public isSubscriptionExpired(subscription: IdeaX.ProjectSubscription): boolean {
     return subscription ? subscription.validUntil < Number(Moment().format('x')) : false;
+  }
+
+  /**
+   * Get a label's value.
+   */
+  public getLabelValue(label: IdeaX.Label): string {
+    if (!label) return null;
+    return label.translate(this.t.getCurrentLang(), this.t.languages());
   }
 
   /**
