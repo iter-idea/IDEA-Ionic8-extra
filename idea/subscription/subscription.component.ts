@@ -291,10 +291,9 @@ export class IDEASubscriptionComponent {
               // get the detailed information about the plan: storePlanId is needed
               this.API.getResource(`projects/${IDEA_PROJECT}/plans`, { idea: true, resourceId: planId })
                 .then((plan: IdeaX.ProjectPlan) => {
-                  this.API.deleteResource('stripeSubscriptions', {
+                  this.API.deleteResource(`projects/${IDEA_PROJECT}/stripeCustomers/${this.subscriptionId}/plans`, {
                     idea: true,
-                    resourceId: plan.storePlanId,
-                    headers: { subscriberId: this.subscriptionId }
+                    resourceId: plan.storePlanId
                   })
                     .then(() => this.verifyStripeSubscription())
                     .catch(() => this.message.error('COMMON.OPERATION_FAILED'));

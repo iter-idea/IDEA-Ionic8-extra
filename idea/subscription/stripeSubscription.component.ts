@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
+import { get } from 'scriptjs';
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
@@ -9,12 +10,12 @@ import { IDEAMessageService } from '../message.service';
 import { IDEAExtBrowserService } from '../extBrowser.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-// from index.html
-declare const Stripe: any;
 // from idea-config.js
 declare const STRIPE_PUBLIC_KEY: string;
 declare const IDEA_AUTH_WEBSITE: string;
 declare const IDEA_PROJECT: string;
+// loaded via script
+declare const Stripe: any;
 
 @Component({
   selector: 'stripe-subscription',
@@ -84,12 +85,40 @@ export class IDEAStripeSubscriptionComponent {
     this.target = this.target || IdeaX.ProjectPlanTargets.TEAMS;
     if (this.target === IdeaX.ProjectPlanTargets.TEAMS) this.subscriptionId = this.membership.teamId;
     else this.subscriptionId = this.membership.userId;
-    // init Stripe lib and its elements in the UI
-    this.stripe = Stripe(STRIPE_PUBLIC_KEY);
-    this.creditCard = this.stripe.elements().create('card');
-    this.creditCard.mount('#cardElement');
-    // (aync) refresh the validation to align last Stripe changes with IDEA's back-end
-    this.validateSubscription(true);
+    // load Stripe's libs
+    this.loadStripeLibs().then(() => {
+      // init Stripe elements in the UI,
+      this.creditCard = this.stripe.elements().create('card');
+      this.creditCard.mount('#cardElement');
+      // (aync) refresh the validation to align last Stripe changes with IDEA's back-end
+      this.validateSubscription(true);
+    });
+  }
+
+  /**
+   * Load Stripe's libs. Resolve the chosen promise when the SDK is fully loaded.
+   */
+  private loadStripeLibs() {
+    return new Promise(resolve => {
+      // be sure the scripts have been injected
+      this.injectStripeScripts().then(() => {
+        // init Stripe lib
+        this.stripe = Stripe(STRIPE_PUBLIC_KEY);
+        resolve();
+      });
+    });
+  }
+  /**
+   * Inject the Stripe's scripts, avoiding repeating the import more than one time.
+   */
+  private injectStripeScripts() {
+    return new Promise(resolve => {
+      if (this.tc.get('stripeLibLoaded')) return resolve();
+      get('https://js.stripe.com/v3/', () => {
+        this.tc.set('stripeLibLoaded', true);
+        resolve();
+      });
+    });
   }
 
   /**
@@ -118,11 +147,10 @@ export class IDEAStripeSubscriptionComponent {
       // get the detailed information about the plan: storePlanId is needed
       this.API.getResource(`projects/${IDEA_PROJECT}/plans`, { idea: true, resourceId: this.plan.planId })
         .then((plan: IdeaX.ProjectPlan) => {
-          this.API.postResource('stripeSubscriptions', {
+          this.API.postResource(`projects/${IDEA_PROJECT}/stripeCustomers/${this.subscriptionId}/plans`, {
             idea: true,
             resourceId: plan.storePlanId,
             body: {
-              subscriberId: this.subscriptionId,
               name: this.target === IdeaX.ProjectPlanTargets.TEAMS ? this.team.name : this.user.email,
               email: this.user.email,
               source: resT.token.id
