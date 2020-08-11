@@ -1,7 +1,7 @@
 <ion-list class="aList customBlockList" *ngFor="let s of blockMeta.sectionsLegend">
   <ion-list-header>
     <ion-label>
-      <h2>{{ getLabelValue(blockMeta.sections[s].name) }}</h2>
+      <h2 [attr.toc]="getLabelValue(blockMeta.sections[s].name)">{{ getLabelValue(blockMeta.sections[s].name) }}</h2>
       <p>{{ getLabelValue(blockMeta.sections[s].description) }}</p>
     </ion-label>
   </ion-list-header>
