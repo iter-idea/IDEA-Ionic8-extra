@@ -303,7 +303,9 @@
       "SECTION_DESCRIPTION_HINT": "Descrivi brevemente lo scopo della sezione",
       "SECTION_FIELDS": "Campi della sezione",
       "SECTION_NAME_HINT": "Il nome per identificare la sezione",
-      "TYPE": "Tipo"
+      "TYPE": "Tipo",
+      "DEFAULT_CHOICE": "Scelta predefinita",
+      "NO_DEFAULT_CHOICE": "Nessuna scelta pre-selezionata"
     },
     "DOWNLOAD": { "TAP_TO_DOWNLOAD": "Tocca per scaricare il file" },
     "DURATION": { "HH": "ore", "HOURS": "Ore", "MINUTES": "Minuti", "MM": "min", "SECONDS": "Secondi", "SS": "sec" },

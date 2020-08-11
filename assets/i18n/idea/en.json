@@ -303,7 +303,9 @@
       "SECTION_DESCRIPTION_HINT": "Briefly describe the purpose of the section",
       "SECTION_FIELDS": "Section fields",
       "SECTION_NAME_HINT": "The name to identify the section",
-      "TYPE": "Type"
+      "TYPE": "Type",
+      "DEFAULT_CHOICE": "Default choice",
+      "NO_DEFAULT_CHOICE": "No pre-selected choice"
     },
     "DOWNLOAD": { "TAP_TO_DOWNLOAD": "Tap to download the file" },
     "DURATION": { "HH": "hh", "HOURS": "Hours", "MINUTES": "Minutes", "MM": "mm", "SECONDS": "Seconds", "SS": "ss" },

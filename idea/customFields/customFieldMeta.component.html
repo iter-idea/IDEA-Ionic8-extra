@@ -21,7 +21,12 @@
         <ion-badge color="dark">{{ 'IDEA.CUSTOM_FIELDS.FIELDS_TYPES.' + _field.type | translate }}</ion-badge>
         <ion-badge
           color="medium"
-          *ngIf="_field.default && (_field.type === CustomFieldTypes.STRING || _field.type === CustomFieldTypes.NUMBER)"
+          *ngIf="
+            _field.default &&
+            (_field.type === CustomFieldTypes.STRING ||
+              _field.type === CustomFieldTypes.NUMBER ||
+              _field.type === CustomFieldTypes.ENUM)
+          "
         >
           {{ 'IDEA.CUSTOM_FIELDS.DEFAULT' | translate }}: {{ _field.default }}
         </ion-badge>
@@ -110,6 +115,19 @@
         ></ion-input>
       </ion-item>
       <ion-item
+        *ngIf="_field.type === CustomFieldTypes.ENUM"
+        [lines]="lines"
+        [class.fieldHasError]="hasFieldAnError('default')"
+      >
+        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.DEFAULT_CHOICE' | translate }}</ion-label>
+        <ion-select [(ngModel)]="_field.default">
+          <ion-select-option value="">{{ 'IDEA.CUSTOM_FIELDS.NO_DEFAULT_CHOICE' | translate }}</ion-select-option>
+          <ion-select-option *ngFor="let e of _field.enum" [value]="e">
+            {{ _field.getEnumElement(e, t.getCurrentLang(), t.languages()) }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item
         *ngIf="_field.type === CustomFieldTypes.NUMBER"
         [lines]="lines"
         [class.fieldHasError]="hasFieldAnError('min')"
@@ -141,7 +159,7 @@
       <ion-toggle [(ngModel)]="_field.obligatory"></ion-toggle>
     </ion-item>
   </ion-list>
-  <ion-list class="aList" *ngIf="_field.type === CustomFieldTypes.ENUM">
+  <ion-list class="aList ion-padding" *ngIf="_field.type === CustomFieldTypes.ENUM">
     <ion-list-header>
       <ion-label>
         <h3>{{ 'IDEA.CUSTOM_FIELDS.OPTIONS' | translate }}</h3>
