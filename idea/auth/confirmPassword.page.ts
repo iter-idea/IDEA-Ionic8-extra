@@ -13,9 +13,21 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAConfirmPasswordPage {
+  /**
+   * The email address used to identify the account.
+   */
   public email: string;
+  /**
+   * The code (received via email), to use for confirming the account.
+   */
   public code: string;
+  /**
+   * The new password for the account.
+   */
   public newPassword: string;
+  /**
+   * The error message to display in the UI, if any.
+   */
   public errorMsg: string;
 
   constructor(
@@ -41,15 +53,14 @@ export class IDEAConfirmPasswordPage {
     this.auth
       .confirmPassword(this.email, this.code, this.newPassword)
       .then(() => {
-        this.loading.hide();
         this.message.success('IDEA.AUTH.PASSWORD_CHANGED');
         this.goToAuth();
       })
       .catch(() => {
-        this.loading.hide();
         this.errorMsg = this.t._('IDEA.AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 });
         this.message.error(this.errorMsg, true);
-      });
+      })
+      .finally(() => this.loading.hide());
   }
 
   /**

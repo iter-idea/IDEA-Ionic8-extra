@@ -13,9 +13,21 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['auth.scss']
 })
 export class IDEANewPasswordPage {
+  /**
+   * The email address used to identify the account.
+   */
   public email: string;
+  /**
+   * The current temporary password.
+   */
   public password: string;
+  /**
+   * The new password for the account.
+   */
   public newPassword: string;
+  /**
+   * The error message to display in the UI, if any.
+   */
   public errorMsg: string;
 
   constructor(
@@ -25,7 +37,8 @@ export class IDEANewPasswordPage {
     public loading: IDEALoadingService,
     public auth: IDEAAuthService,
     public t: IDEATranslationsService
-  ) {
+  ) {}
+  public ngOnInit() {
     this.email = this.tc.get('email', true);
     this.password = this.tc.get('password', true);
     if (!this.email || !this.password) this.goToAuth();
@@ -39,15 +52,13 @@ export class IDEANewPasswordPage {
     this.loading.show();
     this.auth
       .confirmNewPassword(this.email, this.password, this.newPassword)
-      .then(() => {
-        // we are logged in
-        window.location.assign('');
-      })
+      // we are logged in
+      .then(() => window.location.assign(''))
       .catch(() => {
-        this.loading.hide();
         this.errorMsg = this.t._('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
         this.message.error(this.errorMsg, true);
-      });
+      })
+      .finally(() => this.loading.hide());
   }
 
   /**

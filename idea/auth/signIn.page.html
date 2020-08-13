@@ -1,4 +1,7 @@
 <ion-content>
+  <ion-card color="warning" *ngIf="newAccountRegistered">
+    <ion-card-content>{{ 'IDEA.AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN' | translate }}</ion-card-content>
+  </ion-card>
   <form class="flexBox">
     <div>
       <ion-card class="authCard">

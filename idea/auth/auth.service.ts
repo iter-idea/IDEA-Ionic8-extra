@@ -122,7 +122,7 @@ export class IDEAAuthService {
   /**
    * Logout the currently signed in user.
    */
-  public logout(dontReload?: boolean): void {
+  public logout(dontReload?: boolean) {
     this.isAuthenticated(false)
       .then(() => {
         this.userPool.getCurrentUser().signOut();
@@ -206,11 +206,7 @@ export class IDEAAuthService {
   /**
    * Helper to refresh the session every N minutes.
    */
-  protected refreshSession(
-    user: Cognito.CognitoUser,
-    refreshToken: string,
-    callback: (freshIdToken: string) => void
-  ): void {
+  protected refreshSession(user: Cognito.CognitoUser, refreshToken: string, callback: (freshIdToken: string) => void) {
     user.refreshSession(
       new Cognito.CognitoRefreshToken({ RefreshToken: refreshToken }),
       (err: Error, session: Cognito.CognitoUserSession) => {

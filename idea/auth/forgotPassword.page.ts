@@ -11,6 +11,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAForgotPasswordPage {
+  /**
+   * The email address used to identify the account.
+   */
   public email: string;
 
   constructor(
@@ -29,14 +32,11 @@ export class IDEAForgotPasswordPage {
     this.auth
       .forgotPassword(this.email)
       .then(() => {
-        this.loading.hide();
         this.message.success('IDEA.AUTH.PASSWORD_RESET_CODE_SENT');
         this.goToConfirmPassword();
       })
-      .catch(() => {
-        this.loading.hide();
-        this.message.error('IDEA.AUTH.USER_NOT_FOUND');
-      });
+      .catch(() => this.message.error('IDEA.AUTH.USER_NOT_FOUND'))
+      .finally(() => this.loading.hide());
   }
 
   /**

@@ -20,16 +20,41 @@ declare const IDEA_HAS_INTRO_PAGE: boolean;
   styleUrls: ['auth.scss']
 })
 export class IDEASignInPage {
-  // vars from configuration
+  /**
+   * The title of the project.
+   */
   public title: string;
+  /**
+   * Whether the public registration is allowed for the project.
+   */
   public registrationPossible: boolean;
+  /**
+   * Whether the project has an intro (explanatory) page.
+   */
   public hasIntroPage: boolean;
+  /**
+   * The URL to IDEA's website.
+   */
   public website: string;
-
-  // working attributes
+  /**
+   * The email address to identify a user.
+   */
   public email: string;
+  /**
+   * The password to login for the email selected.
+   */
   public password: string;
+  /**
+   * Whether the agreements have been accepted.
+   */
   public agreementsCheck: boolean;
+  /**
+   * Whether a new account was just created through the SignUp page.
+   */
+  public newAccountRegistered: boolean;
+  /**
+   * The error message to display in the UI, if any.
+   */
   public errorMsg: string;
 
   constructor(
@@ -47,6 +72,13 @@ export class IDEASignInPage {
     this.website = IDEA_AUTH_WEBSITE;
     this.agreementsCheck = true;
   }
+  public ionViewDidEnter() {
+    // manage the scenario in which we just created a new account (show a explanatory message: email must be confirmed)
+    if (this.tc.get('newAccountRegistered')) {
+      this.newAccountRegistered = true;
+      this.email = this.tc.get('newAccountRegistered', true);
+    }
+  }
 
   /**
    * Sign-in with the auth details provided.
@@ -59,17 +91,16 @@ export class IDEASignInPage {
       .login(this.email, this.password)
       .then(needNewPassword => {
         if (needNewPassword) {
-          this.loading.hide();
           this.tc.set('email', this.email);
           this.tc.set('password', this.password);
           this.navCtrl.navigateForward(['auth/new-password']);
         } else window.location.assign(''); // hard reload
       })
       .catch(err => {
-        this.loading.hide();
         if (err.name === 'UserNotConfirmedException') this.errorMsg = this.t._('IDEA.AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
         this.message.error('IDEA.AUTH.AUTHENTICATION_FAILED');
-      });
+      })
+      .finally(() => this.loading.hide());
   }
 
   /**

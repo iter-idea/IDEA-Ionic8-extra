@@ -12,8 +12,13 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAResendLinkPage {
+  /**
+   * The email address used to identify the account.
+   */
   public email: string;
-  public password: string;
+  /**
+   * The error message to display in the UI, if any.
+   */
   public errorMsg: string;
 
   constructor(
@@ -30,7 +35,7 @@ export class IDEAResendLinkPage {
   public resendConfirmationLink() {
     this.errorMsg = null;
     if (!this.email) {
-      this.errorMsg = this.t._('IDEA.AUTH.EMAIL_OBLIGATORY');
+      this.errorMsg = this.t._('IDEA.AUTH.VALID_EMAIL_OBLIGATORY');
       this.message.error('IDEA.AUTH.SENDING_FAILED');
       return;
     }
@@ -38,15 +43,14 @@ export class IDEAResendLinkPage {
     this.auth
       .resendConfirmationCode(this.email)
       .then(() => {
-        this.loading.hide();
         this.message.success('IDEA.AUTH.CONFIRMATION_LINK_SENT');
         this.goToAuth();
       })
       .catch(() => {
-        this.loading.hide();
         this.errorMsg = this.t._('IDEA.AUTH.IS_THE_EMAIL_CORRECT');
         this.message.error('IDEA.AUTH.SENDING_FAILED');
-      });
+      })
+      .finally(() => this.loading.hide());
   }
 
   /**
