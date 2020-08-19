@@ -109,12 +109,12 @@ export class IDEARCPickerComponent {
    */
   public openResource(resource: IdeaX.RCAttachedResource, latestVersion?: boolean) {
     if (!resource) return;
-    const params: any = {};
-    if (!latestVersion) params.version = resource.version;
+    const body: any = { action: 'GET_DOWNLOAD_URL' };
+    if (!latestVersion) body.version = resource.version;
     this.loading.show();
-    this.API.getResource(`teams/${this.team}/folders/${this.folder.folderId}/resources`, {
+    this.API.patchResource(`teams/${this.team}/folders/${this.folder.folderId}/resources`, {
       resourceId: resource.resourceId,
-      params
+      body
     })
       .then((res: IdeaX.SignedURL) => (this.download = new IDEADownloaderURL(res.url)))
       .catch(() => this.message.error('IDEA.RESOURCE_CENTER.ERROR_OPENING_RESOURCE'))
@@ -124,13 +124,13 @@ export class IDEARCPickerComponent {
   /**
    * Return the name of an icon representing the format.
    */
-  public getFormatIcon(format: string): string {
+  public getFormatIcon(format: IdeaX.RCResourceFormats): string {
     switch (format) {
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
+      case IdeaX.RCResourceFormats.JPG:
+      case IdeaX.RCResourceFormats.JPEG:
+      case IdeaX.RCResourceFormats.PNG:
         return 'image';
-      case 'pdf':
+      case IdeaX.RCResourceFormats.PDF:
         return 'document';
       default:
         return 'help';

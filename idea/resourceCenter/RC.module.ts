@@ -9,11 +9,18 @@ import { IDEATranslationsModule } from '../translations/translations.module';
 
 import { IDEARCPickerComponent } from './RCPicker.component';
 import { IDEARCConfiguratorComponent } from './RCConfigurator.component';
+import { IDEARCFoldersComponent } from './RCFolders.component';
+import { IDEARCResourcesComponent } from './RCResources.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule, IDEADownloaderModule],
-  declarations: [IDEARCPickerComponent, IDEARCConfiguratorComponent],
-  entryComponents: [IDEARCPickerComponent, IDEARCConfiguratorComponent],
-  exports: [IDEARCPickerComponent, IDEARCConfiguratorComponent]
+  declarations: [IDEARCPickerComponent, IDEARCConfiguratorComponent, IDEARCFoldersComponent, IDEARCResourcesComponent],
+  entryComponents: [
+    IDEARCPickerComponent,
+    IDEARCConfiguratorComponent,
+    IDEARCFoldersComponent,
+    IDEARCResourcesComponent
+  ],
+  exports: [IDEARCPickerComponent, IDEARCConfiguratorComponent, IDEARCFoldersComponent, IDEARCResourcesComponent]
 })
 export class IDEARCModule {}
