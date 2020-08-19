@@ -8,5 +8,8 @@
   [hideIdFromUI]="true"
   [disabled]="!editMode"
   [avoidAutoSelection]="true"
+  [icon]="icon"
+  [iconColor]="iconColor"
   (select)="$event ? setFolder($event?.value) : null"
+  (iconSelect)="iconSelect.emit()"
 ></idea-select>

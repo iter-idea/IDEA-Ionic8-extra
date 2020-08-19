@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import IdeaX = require('idea-toolbox');
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
@@ -31,6 +31,18 @@ export class IDEARCConfiguratorComponent {
    * The lines attribute of the item.
    */
   @Input() public lines: string;
+  /**
+   * The icon for the field.
+   */
+  @Input() public icon: string;
+  /**
+   * The color of the icon.
+   */
+  @Input() public iconColor: string;
+  /**
+   * Icon select.
+   */
+  @Output() public iconSelect = new EventEmitter<void>();
   /**
    * The folders loaded from the resource center.
    */
