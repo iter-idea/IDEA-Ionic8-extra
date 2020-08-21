@@ -178,7 +178,7 @@ export class IDEARCResourcesComponent {
   /**
    * Update the resource by uploading a new version.
    */
-  protected async updateResource(res: IdeaX.RCResource, ev: any) {
+  public async updateResource(res: IdeaX.RCResource, ev: any) {
     this.uploadErrors = new Array<string>();
     // identify the file to upload (consider only the first file selected)
     const fileList: FileList = ev.target ? ev.target.files : {};
