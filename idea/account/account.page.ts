@@ -151,4 +151,16 @@ export class IDEAAccountPage {
       })
       .then(alert => alert.present());
   }
+
+  /**
+   * Close the page and navigate back, optionally displaying an error message.
+   */
+  public close(errorMessage?: string) {
+    if (errorMessage) this.message.error(errorMessage);
+    try {
+      this.navCtrl.back();
+    } catch (_) {
+      this.navCtrl.navigateRoot(['']);
+    }
+  }
 }
