@@ -197,6 +197,15 @@ export class IDEAAppointmentComponent {
     // if the attendance is changed, send the request to change it
     this.loading.show();
     this.sendAttendanceChangeIfNeeded().then(() => {
+      // for Microsoft calendars, if the attendance was set to DECLINED, the appointment has been deleted; skip the rest
+      if (
+        this.calendar.external.service === IdeaX.ExternalCalendarSources.MICROSOFT &&
+        this.attendance === IdeaX.AppointmentAttendance.DECLINED
+      ) {
+        this.loading.hide();
+        this.message.success('IDEA.AGENDA.APPOINTMENT.DELETED');
+        return this.modalCtrl.dismiss(-1);
+      }
       // post/put the appointment
       let request: any;
       const baseURL = this.calendar.isShared() ? `teams/${this.membership.teamId}/` : '';
