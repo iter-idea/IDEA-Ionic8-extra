@@ -8,6 +8,8 @@ import { IDEAMessageService } from '../message.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
+import { Membership } from '../../../../../api/_shared/membership.model';
+
 @Component({
   selector: 'idea-calendar',
   templateUrl: 'calendar.component.html',
@@ -22,6 +24,10 @@ export class IDEACalendarComponent {
    * Helper to allow selecting memberships.
    */
   public membershipsChecks: Array<IdeaX.Check>;
+  /**
+   * The current membership.
+   */
+  public membership: Membership;
   /**
    * Errors while validating the entity.
    */
@@ -43,6 +49,7 @@ export class IDEACalendarComponent {
     this.errors = new Set<string>();
   }
   public ngOnInit() {
+    this.membership = this.tc.get('membership');
     // prepare a request for a private or team calendar
     const baseURL = this.calendar.teamId ? `teams/${this.calendar.teamId}/` : '';
     // get the calendar (in case of external calendar, update the external info)
@@ -157,6 +164,25 @@ export class IDEACalendarComponent {
         ]
       })
       .then(alert => alert.present());
+  }
+
+  /**
+   * Make the calendar the default one for the current user.
+   */
+  public setAsDefault() {
+    // save the current settings, in case something goes wrong
+    const oldDef = this.membership.defaultCalendarId;
+    // update the attribute right away
+    this.membership.defaultCalendarId = this.calendar.calendarId;
+    // silently send the request
+    this.API.patchResource(`teams/${this.membership.teamId}/memberships`, {
+      resourceId: this.membership.userId,
+      body: { action: 'DEFAULT_CALENDAR', calendarId: this.calendar.calendarId }
+    }).catch(() => {
+      // back to old settings
+      this.membership.defaultCalendarId = oldDef;
+      this.message.error('COMMON.OPERATION_FAILED');
+    });
   }
 
   /**

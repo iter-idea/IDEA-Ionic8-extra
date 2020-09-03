@@ -11,6 +11,9 @@
       {{ calendar.description }}
     </p>
   </ion-label>
+  <ion-badge size="small" slot="end" *ngIf="calendar.calendarId === membership.defaultCalendarId">
+    {{ 'IDEA.AGENDA.CALENDARS.DEFAULT' | translate }}
+  </ion-badge>
   <ion-icon
     slot="end"
     color="danger"

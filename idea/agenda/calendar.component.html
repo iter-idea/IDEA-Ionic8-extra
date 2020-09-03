@@ -68,6 +68,17 @@
       <ion-label>
         {{ 'IDEA.AGENDA.CALENDARS.INFO_ON_CALENDAR' | translate }}
       </ion-label>
+      <ion-button
+        size="small"
+        *ngIf="calendar.calendarId !== membership.defaultCalendarId"
+        [title]="t._('IDEA.AGENDA.CALENDARS.SET_AS_DEFAULT_HINT')"
+        (click)="setAsDefault()"
+      >
+        <ion-label>{{ 'IDEA.AGENDA.CALENDARS.SET_AS_DEFAULT' | translate }}</ion-label>
+      </ion-button>
+      <ion-badge size="small" *ngIf="calendar.calendarId === membership.defaultCalendarId">
+        {{ 'IDEA.AGENDA.CALENDARS.DEFAULT' | translate }}
+      </ion-badge>
     </ion-list-header>
     <ion-item lines="inset" *ngIf="calendar.userId">
       <ion-label>

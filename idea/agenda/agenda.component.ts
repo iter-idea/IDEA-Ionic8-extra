@@ -485,10 +485,16 @@ export class IDEAAgendaComponent {
   }
   /**
    * Return the default calendar for a new appointment or an empty one.
+   * Note: it requires the attribute `defaultCalendarId` in the project's Membership model.
    */
   public getDefaultCalendar(): IdeaX.Calendar {
+    // search for the default calendar of the membership
+    const def = this.calendars.find(x => x.calendarId === this.membership.defaultCalendarId);
+    if (def) return def;
+    // in case there isn't one, choose the first selected one in the picker
     const checked = this.calendarsChecks.find(x => x.checked);
     const calendar = checked ? this.calendars.find(x => x.calendarId === checked.value) : null;
+    // return the calendar found or an empty one
     return calendar || new IdeaX.Calendar();
   }
 

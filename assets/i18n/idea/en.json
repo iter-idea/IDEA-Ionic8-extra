@@ -154,7 +154,10 @@
         "TEAM_CALENDARS_HINT": "These calendars and their appointments are visible to the whole team",
         "TEAM_CALENDAR_HINT": "The calendar and its appointments are visible to the whole team",
         "USERS_ALLOWED_TO_MANAGE_APPOINTMENTS": "Users who can manage appointments",
-        "WHO_CAN_MANAGE_APPOINTMENTS": "Who can manage appointments"
+        "WHO_CAN_MANAGE_APPOINTMENTS": "Who can manage appointments",
+        "SET_AS_DEFAULT": "Set as default",
+        "SET_AS_DEFAULT_HINT": "Configure the calendar to be the first one used in the agenda",
+        "DEFAULT": "Default"
       },
       "DAY": "Day",
       "MONTH": "Month",
