@@ -80,7 +80,20 @@
         "START_TIME": "Start of the appointment",
         "START_TIME_HINT": "Appointment start date and time",
         "TITLE": "Title",
-        "TITLE_HINT": "Brief description of the appointment"
+        "TITLE_HINT": "Brief description of the appointment",
+        "ATTENDANCE_STATUSES": {
+          "-1": "No",
+          "0": "No reply",
+          "1": "Maybe",
+          "2": "Yes"
+        },
+        "ATTENDANCE_STATUSES_HINT": {
+          "-1": "Decline the invitation",
+          "1": "Tentatively accept the invitation",
+          "2": "Accept the invitation"
+        },
+        "GOING_": "Going?",
+        "ATTENDEES": "Attendees"
       },
       "CALENDARS": {
         "ACCESS_LEVELS": {

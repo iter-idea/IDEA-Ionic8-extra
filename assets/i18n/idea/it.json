@@ -80,7 +80,20 @@
         "START_TIME": "Inizio appuntamento",
         "START_TIME_HINT": "Data e ora di inizio appunamento",
         "TITLE": "Titolo",
-        "TITLE_HINT": "Breve descrizione dell'oggetto dell'appuntamento"
+        "TITLE_HINT": "Breve descrizione dell'oggetto dell'appuntamento",
+        "ATTENDANCE_STATUSES": {
+          "-1": "No",
+          "0": "Senza risposta",
+          "1": "Forse",
+          "2": "Si"
+        },
+        "ATTENDANCE_STATUSES_HINT": {
+          "-1": "Declina invito",
+          "1": "Accetta provvisoriamente l'invito",
+          "2": "Accetta invito"
+        },
+        "GOING_": "Parteciperai?",
+        "ATTENDEES": "Partecipanti"
       },
       "CALENDARS": {
         "ACCESS_LEVELS": {

@@ -90,6 +90,24 @@ export class IDEAAppointmentComponent {
    * Enable/disable the mode in which you can remove linked objects.
    */
   public removeLinkedObjectMode: boolean;
+  /**
+   * Helper to use the enum in the UI.
+   */
+  public Attendance = IdeaX.AppointmentAttendance;
+  /**
+   * Helper to use the enum in the UI to loop over the attendance statuses, excluded the NEEDS_ACTION.
+   */
+  public AttendanceActions = IdeaX.loopNumericEnumKeys(IdeaX.AppointmentAttendance).filter(
+    x => x !== IdeaX.AppointmentAttendance.NEEDS_ACTION
+  );
+  /**
+   * The current status for the user's attendance to the event.
+   */
+  public attendance: IdeaX.AppointmentAttendance;
+  /**
+   * The current membership.
+   */
+  public membership: IdeaX.Membership;
 
   constructor(
     public platform: Platform,
@@ -102,6 +120,7 @@ export class IDEAAppointmentComponent {
     public t: IDEATranslationsService,
     public API: IDEAAWSAPIService
   ) {
+    this.membership = this.tc.get('membership');
     this.appointment = new IdeaX.Appointment();
     this.errors = new Set<string>();
   }
@@ -110,7 +129,7 @@ export class IDEAAppointmentComponent {
     this.calendarsSuggestions = this.calendars
       .map(c => new IdeaX.Calendar(c))
       // exclude the calendars for which the user doesn't have writing permissions
-      .filter(c => c.canUserManageAppointments(this.tc.get('membership').userId))
+      .filter(c => c.canUserManageAppointments(this.membership.userId))
       .map(c => new IdeaX.Suggestion({ value: c.calendarId, name: c.name, color: c.color }));
     if (!this.appointment.appointmentId) {
       // set default values for a new appointment
@@ -123,6 +142,8 @@ export class IDEAAppointmentComponent {
     this.setCalendar(
       this.appointment.calendarId || (defaultCal ? this.defaultCalendarId : this.calendarsSuggestions[0].value)
     );
+    // set the attendance, if any
+    this.attendance = this.appointment.getAttendance();
   }
 
   /**
@@ -133,7 +154,7 @@ export class IDEAAppointmentComponent {
     this.calendar = new IdeaX.Calendar(this.calendars.find(x => x.calendarId === this.appointment.calendarId));
     this.userCanEdit = !this.appointment.appointmentId
       ? true
-      : this.calendar.canUserManageAppointments(this.tc.get('membership').userId);
+      : this.calendar.canUserManageAppointments(this.membership.userId);
     this.userCanSeeDetails = this.calendar.external
       ? this.calendar.external.userAccess > IdeaX.ExternalCalendarPermissions.FREE_BUSY
       : true;
@@ -173,30 +194,33 @@ export class IDEAAppointmentComponent {
     // checkings
     this.errors = new Set(this.appointment.validate());
     if (this.errors.size) return this.message.error('IDEA.AGENDA.APPOINTMENT.FORM_HAS_ERROR_TO_CHECK');
-    // post/put the appointment
-    let request: any;
-    const baseURL = this.calendar.isShared() ? `teams/${this.tc.get('membership').teamId}/` : '';
-    const reqURL = baseURL.concat(`calendars/${this.appointment.calendarId}/appointments`);
-    if (!this.appointment.appointmentId)
-      request = this.API.postResource(reqURL, {
-        idea: true,
-        body: this.appointment
-      });
-    else
-      request = this.API.putResource(reqURL, {
-        idea: true,
-        resourceId: this.appointment.appointmentId,
-        body: this.appointment
-      });
+    // if the attendance is changed, send the request to change it
     this.loading.show();
-    request
-      .then((appointment: IdeaX.Appointment) => {
-        this.appointment.load(appointment);
-        this.message.success('IDEA.AGENDA.APPOINTMENT.SAVED');
-        this.modalCtrl.dismiss(this.appointment);
-      })
-      .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-      .finally(() => this.loading.hide());
+    this.sendAttendanceChangeIfNeeded().then(() => {
+      // post/put the appointment
+      let request: any;
+      const baseURL = this.calendar.isShared() ? `teams/${this.membership.teamId}/` : '';
+      const reqURL = baseURL.concat(`calendars/${this.appointment.calendarId}/appointments`);
+      if (!this.appointment.appointmentId)
+        request = this.API.postResource(reqURL, {
+          idea: true,
+          body: this.appointment
+        });
+      else
+        request = this.API.putResource(reqURL, {
+          idea: true,
+          resourceId: this.appointment.appointmentId,
+          body: this.appointment
+        });
+      request
+        .then((appointment: IdeaX.Appointment) => {
+          this.appointment.load(appointment);
+          this.message.success('IDEA.AGENDA.APPOINTMENT.SAVED');
+          this.modalCtrl.dismiss(this.appointment);
+        })
+        .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
+        .finally(() => this.loading.hide());
+    });
   }
   /**
    * Delete the an appointment and close the modal.
@@ -210,7 +234,7 @@ export class IDEAAppointmentComponent {
           {
             text: this.t._('COMMON.CONFIRM'),
             handler: () => {
-              const baseURL = this.calendar.isShared() ? `teams/${this.tc.get('membership').teamId}/` : '';
+              const baseURL = this.calendar.isShared() ? `teams/${this.membership.teamId}/` : '';
               this.loading.show();
               this.API.deleteResource(baseURL.concat(`calendars/${this.appointment.calendarId}/appointments`), {
                 idea: true,
@@ -256,5 +280,38 @@ export class IDEAAppointmentComponent {
       isSharedCalendar: this.calendar.isShared()
     });
     this.removeLinkedObjectMode = false;
+  }
+
+  /**
+   * Send the new attendance status change, if needed.
+   */
+  private sendAttendanceChangeIfNeeded(): Promise<void> {
+    return new Promise(resolve => {
+      // get the user as attendee
+      const attendee = this.appointment.getAttendee();
+      // skip in case the event doesn't have attendees or the attendance didn't change
+      if (!attendee || attendee.attendance === this.attendance) return resolve();
+      // Google doesn't need an extra action for this: the PUT request is enough.
+      if (!this.calendar.external || this.calendar.external.service === IdeaX.ExternalCalendarSources.GOOGLE) {
+        // set the attendance status for the user
+        attendee.attendance = this.attendance;
+        return resolve();
+      }
+      // send the request
+      const baseURL = this.calendar.isShared() ? `teams/${this.membership.teamId}/` : '';
+      const reqURL = baseURL.concat(`calendars/${this.appointment.calendarId}/appointments`);
+      this.API.patchResource(reqURL, {
+        idea: true,
+        resourceId: this.appointment.appointmentId,
+        body: { action: 'SET_ATTENDANCE', attendance: this.attendance }
+      })
+        .then(() => {
+          // set the attendance status for the user
+          attendee.attendance = this.attendance;
+          resolve();
+        })
+        // ignore error
+        .catch(() => resolve());
+    });
   }
 }

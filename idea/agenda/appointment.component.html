@@ -61,7 +61,7 @@
       </ion-button>
     </ion-col>
   </ion-row>
-  <ion-list [class.viewMode]="!userCanEdit">
+  <ion-list class="aList" [class.viewMode]="!userCanEdit">
     <ion-item
       *ngIf="userCanSeeDetails"
       [lines]="userCanEdit ? 'full' : 'inset'"
@@ -145,6 +145,7 @@
       </ion-label>
       <ion-textarea
         [rows]="5"
+        [autoGrow]="true"
         [placeholder]="t._('IDEA.AGENDA.APPOINTMENT.DESCRIPTION_HINT')"
         [disabled]="!userCanEdit"
         [(ngModel)]="appointment.description"
@@ -152,11 +153,37 @@
     </ion-item>
     <ion-button
       fill="clear"
+      color="danger"
       *ngIf="appointment.appointmentId && userCanEdit"
       [title]="t._('COMMON.DELETE')"
       (click)="delete()"
     >
-      <ion-icon name="trash-outline" slot="icon-only" color="danger"></ion-icon>
+      <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-list>
+  <ion-list class="aList" *ngIf="appointment?.attendees.length">
+    <ion-list-header>
+      <ion-label>{{ 'IDEA.AGENDA.APPOINTMENT.ATTENDEES' | translate }}</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let a of appointment.attendees">
+      <ion-label>{{ a.email }}</ion-label>
+      <ion-badge slot="end">{{ 'IDEA.AGENDA.APPOINTMENT.ATTENDANCE_STATUSES.' + a.attendance | translate }}</ion-badge>
+    </ion-item>
+  </ion-list>
 </ion-content>
+<ion-footer *ngIf="appointment?.appointmentId && appointment.attendees.length">
+  <ion-toolbar color="ideaToolbar">
+    <ion-title>{{ 'IDEA.AGENDA.APPOINTMENT.GOING_' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        *ngFor="let s of AttendanceActions"
+        [title]="t._('IDEA.AGENDA.APPOINTMENT.ATTENDANCE_STATUSES_HINT.' + s)"
+        [fill]="attendance === s ? 'solid' : 'clear'"
+        [disabled]="!userCanEdit"
+        (click)="attendance = s"
+      >
+        {{ 'IDEA.AGENDA.APPOINTMENT.ATTENDANCE_STATUSES.' + s | translate }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

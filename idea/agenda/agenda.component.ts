@@ -141,6 +141,10 @@ export class IDEAAgendaComponent {
    * Helper to know whether the user have writing permissions on at least one calendar.
    */
   public userCanInsert: boolean;
+  /**
+   * Helper to use the enum in the UI.
+   */
+  public Attendance = IdeaX.AppointmentAttendance;
 
   constructor(
     public platform: Platform,
@@ -228,9 +232,7 @@ export class IDEAAgendaComponent {
         .then((app: Array<IdeaX.Appointment>) => {
           // save the data for the next request and return it
           this.appointmentsByCalendar[calendar.calendarId] = app.map(a => new IdeaX.Appointment(a));
-          this.agendaAppointmentsByCalendar[calendar.calendarId] = app.map(
-            a => new AgendaAppointment(a, calendar.color)
-          );
+          this.agendaAppointmentsByCalendar[calendar.calendarId] = app.map(a => new AgendaAppointment(a, calendar));
           resolve(this.agendaAppointmentsByCalendar[calendar.calendarId]);
         })
         .catch(() => {});
@@ -473,7 +475,7 @@ export class IDEAAgendaComponent {
         }
       })
       .then(modal => {
-        modal.onDidDismiss().then((res: OverlayEventDetail) => {
+        modal.onDidDismiss().then(() => {
           // update the view if the appointment was deleted (we don't know if linked objects changed)
           this.loadingAppointments = true;
           this.loadAppointmentsBasedOnVisibileCalendars(true).then(() => (this.loadingAppointments = false));
@@ -577,11 +579,15 @@ export class AgendaAppointment {
    */
   public color: string;
   /**
+   * In case the user is between the attendees of the event, it represents the attendance status.
+   */
+  public attendance?: IdeaX.AppointmentAttendance;
+  /**
    * A list of linked objects (types), to show the logos in the UI and alert the user of their presence.
    */
   public linkedTo: Array<IdeaX.AppointmentLinkedObjectTypes>;
 
-  constructor(a: IdeaX.Appointment, color: string) {
+  constructor(a: IdeaX.Appointment, calendar: IdeaX.Calendar) {
     this.id = a.appointmentId;
     this.calendarId = a.calendarId;
     this.title = a.title;
@@ -589,7 +595,10 @@ export class AgendaAppointment {
     this.startTime = new Date(a.startTime);
     this.endTime = new Date(a.endTime);
     this.allDay = a.allDay;
-    this.color = color;
+    this.color = calendar.color;
+    // in case of attendees, find the attendee marked as `self` (i.e. the current user), and gather its attendance
+    const attendee = (a.attendees || []).find(at => at.self);
+    if (attendee) this.attendance = attendee.attendance;
     this.linkedTo = (a.linkedTo || []).map((x: IdeaX.AppointmentLinkedObject) => x.type);
   }
 }

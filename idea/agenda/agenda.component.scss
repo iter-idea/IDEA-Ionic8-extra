@@ -103,3 +103,18 @@ ion-spinner {
     }
   }
 }
+.needsAction {
+  opacity: 0.5;
+}
+.declined {
+  text-decoration: line-through;
+}
+.tentative {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--ion-color-white),
+    var(--ion-color-white) 10px,
+    var(--ion-color-light) 10px,
+    var(--ion-color-light) 20px
+  );
+}

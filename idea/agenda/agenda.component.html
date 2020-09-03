@@ -117,7 +117,13 @@
         </ion-list>
       </ng-template>
       <ng-template #eventTemplate let-displayEvent="displayEvent">
-        <div class="calendar-event-inner" [style.border-left-color]="displayEvent.event.color">
+        <div
+          class="calendar-event-inner"
+          [style.border-left-color]="displayEvent.event.color"
+          [class.needsAction]="Attendance.NEEDS_ACTION === displayEvent.event.attendance"
+          [class.declined]="Attendance.DECLINED === displayEvent.event.attendance"
+          [class.tentative]="Attendance.TENTATIVE === displayEvent.event.attendance"
+        >
           {{ displayEvent.event.title }}
           <p>{{ displayEvent.event.location }}</p>
           <div
