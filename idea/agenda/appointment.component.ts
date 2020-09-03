@@ -199,6 +199,7 @@ export class IDEAAppointmentComponent {
     this.sendAttendanceChangeIfNeeded().then(() => {
       // for Microsoft calendars, if the attendance was set to DECLINED, the appointment has been deleted; skip the rest
       if (
+        this.calendar.external &&
         this.calendar.external.service === IdeaX.ExternalCalendarSources.MICROSOFT &&
         this.attendance === IdeaX.AppointmentAttendance.DECLINED
       ) {
