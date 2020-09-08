@@ -9,10 +9,10 @@
       {{ 'IDEA.SIGNATURE.SIGNATURE' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA.SIGNATURE.CLEAR_SIGNATURE')" (click)="undo()">
+      <ion-button [title]="t._('IDEA.SIGNATURE.CLEAR_SIGNATURE')" *ngIf="existingSignature" (click)="undo()">
         <ion-icon name="arrow-undo" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button [title]="t._('IDEA.SIGNATURE.SAVE_SIGNATURE')" (click)="save()">
+      <ion-button [title]="t._('IDEA.SIGNATURE.SAVE_SIGNATURE')" *ngIf="canEdit()" (click)="save()">
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -27,6 +27,7 @@
       <ion-input
         type="text"
         [placeholder]="t._('IDEA.SIGNATURE.NAME_AND_SURNAME')"
+        [disabled]="!canEdit()"
         [class.fieldHasError]="signatoryError"
         [(ngModel)]="signature.signatory"
       ></ion-input>
@@ -34,7 +35,7 @@
         fill="clear"
         color="dark"
         slot="end"
-        *ngIf="contacts.length"
+        *ngIf="contacts.length && canEdit()"
         [title]="t._('IDEA.SIGNATURE.CHOOSE_FROM_CONTACTS')"
         (click)="pickSignatory()"
       >
@@ -49,7 +50,7 @@
     <div class="canvasContainer" [class.fieldHasError]="signatureError">
       <canvas id="signatureCanvas"></canvas>
     </div>
-    <ion-row>
+    <ion-row *ngIf="canEdit()">
       <ion-col class="ion-text-right">
         <ion-button fill="clear" [title]="t._('IDEA.SIGNATURE.CLEAR_SIGNATURE')" (click)="clear()">
           <ion-icon name="trash-outline" slot="icon-only"></ion-icon>

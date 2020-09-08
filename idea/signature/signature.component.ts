@@ -21,6 +21,10 @@ export class IDEASignatureComponent {
    */
   @Input() public existingSignature: IdeaX.Signature;
   /**
+   * Whether it is possible or not to edit an existing signature.
+   */
+  @Input() public preventEditing: boolean;
+  /**
    * A list of contacts that could be the signatory of this signature.
    */
   @Input() public contacts: Array<string>;
@@ -63,9 +67,18 @@ export class IDEASignatureComponent {
     if (this.existingSignature) {
       this.signature.load(this.existingSignature);
       this.pad.fromDataURL(this.signature.pngURL);
+      if (this.canEdit()) this.pad.on();
+      else this.pad.off();
     }
     // pre-load the first contact, if any (and the signatory isn't already filled out)
     if (this.contacts.length && !this.signature.signatory) this.signature.signatory = this.contacts[0];
+  }
+
+  /**
+   * Whether an existing signature can be edited.
+   */
+  public canEdit(): boolean {
+    return !this.existingSignature || !this.preventEditing;
   }
 
   /**
