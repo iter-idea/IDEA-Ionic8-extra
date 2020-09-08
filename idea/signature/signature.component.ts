@@ -8,7 +8,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
 
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
 
-import { Signature } from './signature.model';
+const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
 
 @Component({
   selector: 'idea-signature',
@@ -19,7 +19,7 @@ export class IDEASignatureComponent {
   /**
    * An existing signature to use.
    */
-  @Input() public existingSignature: Signature;
+  @Input() public existingSignature: IdeaX.Signature;
   /**
    * A list of contacts that could be the signatory of this signature.
    */
@@ -27,7 +27,7 @@ export class IDEASignatureComponent {
   /**
    * The signature to manage.
    */
-  public signature: Signature;
+  public signature: IdeaX.Signature;
   /**
    * The canvas where the signature is painted.
    */
@@ -50,7 +50,7 @@ export class IDEASignatureComponent {
     public message: IDEAMessageService,
     public t: IDEATranslationsService
   ) {
-    this.signature = new Signature();
+    this.signature = new IdeaX.Signature();
     this.canvas = null;
     this.pad = null;
   }
@@ -97,15 +97,22 @@ export class IDEASignatureComponent {
   }
 
   /**
-   * Check Close the window and return the signature (text + different formats).
+   * Check Close the window and return the signature.
    */
   public save() {
+    // check whether the fields are empty
     this.signatoryError = Boolean(!this.signature.signatory);
     this.signatureError = this.pad.isEmpty();
     if (this.signatoryError || this.signatureError)
       return this.message.warning('IDEA.SIGNATURE.VERIFY_SIGNATORY_AND_SIGNATURE');
-    this.signature.jpegURL = this.pad.toDataURL('image/jpeg');
+    // load the signature URL
     this.signature.pngURL = this.pad.toDataURL('image/png');
+    // check whether the signature size is acceptable
+    this.signatureError = this.signature.pngURL.length > SIGNATURE_SIZE_LIMIT;
+    if (this.signatureError) return this.message.warning('IDEA.SIGNATURE.SIGNATURE_IS_TOO_COMPLEX');
+    // update the timestamp
+    this.signature.timestamp = Date.now();
+    // close the modal
     this.modalCtrl.dismiss(this.signature);
   }
 

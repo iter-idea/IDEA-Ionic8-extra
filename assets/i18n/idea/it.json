@@ -472,7 +472,8 @@
       "SIGNATORY": "Firmatario",
       "SIGNATURE": "Firma",
       "SIGNATURE_EXPLANATION": "Disegna la firma qui sotto",
-      "VERIFY_SIGNATORY_AND_SIGNATURE": "Verifica firmatario e firma"
+      "VERIFY_SIGNATORY_AND_SIGNATURE": "Verifica firmatario e firma",
+      "SIGNATURE_IS_TOO_COMPLEX": "La firma è troppo complessa; per piacere, ripetila"
     },
     "STRIPE": {
       "AUTHORIZATION_CHECK_TEXT": "ad inviare istruzioni all'istituto finanziario che ha rilasciato la mia carta per prelevare pagamenti dal mio account, in accordo con i termini del del servizio.",
