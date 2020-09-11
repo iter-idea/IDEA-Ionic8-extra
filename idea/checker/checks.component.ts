@@ -16,10 +16,6 @@ export class IDEAChecksComponent {
    */
   @Input() public data: Array<IdeaX.Check>;
   /**
-   * A copy of data, to use until the changes are confirmed.
-   */
-  @Input() public workingData: Array<IdeaX.Check>;
-  /**
    * If true, sort alphabetically the data.
    */
   @Input() public sortData: boolean;
@@ -43,6 +39,10 @@ export class IDEAChecksComponent {
    * Whether to show the select/deselect all buttons.
    */
   @Input() public hideSelectDeselectAll: boolean;
+  /**
+   * A copy of data, to use until the changes are confirmed.
+   */
+  public workingData: Array<IdeaX.Check>;
 
   // SUPPORT
   public filteredChecks: Array<IdeaX.Check>;
