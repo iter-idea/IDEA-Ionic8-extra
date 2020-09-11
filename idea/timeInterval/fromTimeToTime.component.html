@@ -1,0 +1,352 @@
+<ion-header>
+  <ion-toolbar color="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [title]="t._('COMMON.RESET')" (click)="reset()">
+        <ion-icon name="arrow-undo" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-badge>
+        <ion-label *ngIf="!pm">{{ 'IDEA.FTTT.AM' | translate }}</ion-label>
+        <ion-label *ngIf="pm">{{ 'IDEA.FTTT.PM' | translate }}</ion-label>
+      </ion-badge>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid class="clockGrid">
+    <ion-row class="ion-align-items-center">
+      <ion-col [size]="5">&nbsp;</ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(12) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(12)"
+          [disabled]="!isAllowed(12)"
+          (click)="setInterval(12)"
+        >
+          {{ getClockButtonContent(12) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-left" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(12, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(12, minutes)"
+          [disabled]="!isAllowed(12, minutes)"
+          (click)="setInterval(12, minutes)"
+        >
+          {{ getClockButtonContent(12, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col [size]="3">&nbsp;</ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col [size]="2">&nbsp;</ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(11, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(11, minutes)"
+          [disabled]="!isAllowed(11, minutes)"
+          (click)="setInterval(11, minutes)"
+        >
+          {{ getClockButtonContent(11, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-left" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(11) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(11)"
+          [disabled]="!isAllowed(11)"
+          (click)="setInterval(11)"
+        >
+          {{ getClockButtonContent(11) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-right" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(1) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(1)"
+          [disabled]="!isAllowed(1)"
+          (click)="setInterval(1)"
+        >
+          {{ getClockButtonContent(1) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(1, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(1, minutes)"
+          [disabled]="!isAllowed(1, minutes)"
+          (click)="setInterval(1, minutes)"
+        >
+          {{ getClockButtonContent(1, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col [size]="2">&nbsp;</ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col [size]="1">&nbsp;</ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(10, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(10, minutes)"
+          [disabled]="!isAllowed(10, minutes)"
+          (click)="setInterval(10, minutes)"
+        >
+          {{ getClockButtonContent(10, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-left" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(10) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(10)"
+          [disabled]="!isAllowed(10)"
+          (click)="setInterval(10)"
+        >
+          {{ getClockButtonContent(10) }}
+        </ion-button>
+      </ion-col>
+      <ion-col [size]="2">&nbsp;</ion-col>
+      <ion-col class="ion-text-right" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(2) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(2)"
+          [disabled]="!isAllowed(2)"
+          (click)="setInterval(2)"
+        >
+          {{ getClockButtonContent(2) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(2, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(2, minutes)"
+          [disabled]="!isAllowed(2, minutes)"
+          (click)="setInterval(2, minutes)"
+        >
+          {{ getClockButtonContent(2, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col [size]="1">&nbsp;</ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(9, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(9, minutes)"
+          [disabled]="!isAllowed(9, minutes)"
+          (click)="setInterval(9, minutes)"
+        >
+          {{ getClockButtonContent(9, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-left" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(9) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(9)"
+          [disabled]="!isAllowed(9)"
+          (click)="setInterval(9)"
+        >
+          {{ getClockButtonContent(9) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-center displayText" [size]="4">
+        <ion-text [class.fromSelected]="segment === Segments.TO">
+          {{ 'IDEA.FTTT.FROM' | translate }}
+          <span *ngIf="segment === Segments.TO">{{ msToTimeString(_timeInterval.from) }}</span>
+        </ion-text>
+        <ion-text *ngIf="segment === Segments.TO">{{ 'IDEA.FTTT.TO' | translate }}</ion-text>
+      </ion-col>
+      <ion-col class="ion-text-right" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(3) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(3)"
+          [disabled]="!isAllowed(3)"
+          (click)="setInterval(3)"
+        >
+          {{ getClockButtonContent(3) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(3, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(3, minutes)"
+          [disabled]="!isAllowed(3, minutes)"
+          (click)="setInterval(3, minutes)"
+        >
+          {{ getClockButtonContent(3, minutes) }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col [size]="1">&nbsp;</ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(8, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(8, minutes)"
+          [disabled]="!isAllowed(8, minutes)"
+          (click)="setInterval(8, minutes)"
+        >
+          {{ getClockButtonContent(8, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-left" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(8) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(8)"
+          [disabled]="!isAllowed(8)"
+          (click)="setInterval(8)"
+        >
+          {{ getClockButtonContent(8) }}
+        </ion-button>
+      </ion-col>
+      <ion-col [size]="2">&nbsp;</ion-col>
+      <ion-col class="ion-text-right" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(4) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(4)"
+          [disabled]="!isAllowed(4)"
+          (click)="setInterval(4)"
+        >
+          {{ getClockButtonContent(4) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(4, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(4, minutes)"
+          [disabled]="!isAllowed(4, minutes)"
+          (click)="setInterval(4, minutes)"
+        >
+          {{ getClockButtonContent(4, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col [size]="1">&nbsp;</ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col [size]="2">&nbsp;</ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(7, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(7, minutes)"
+          [disabled]="!isAllowed(7, minutes)"
+          (click)="setInterval(7, minutes)"
+        >
+          {{ getClockButtonContent(7, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-left" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(7) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(7)"
+          [disabled]="!isAllowed(7)"
+          (click)="setInterval(7)"
+        >
+          {{ getClockButtonContent(7) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-right" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(5) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(5)"
+          [disabled]="!isAllowed(5)"
+          (click)="setInterval(5)"
+        >
+          {{ getClockButtonContent(5) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(5, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(5, minutes)"
+          [disabled]="!isAllowed(5, minutes)"
+          (click)="setInterval(5, minutes)"
+        >
+          {{ getClockButtonContent(5, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col [size]="2">&nbsp;</ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col [size]="3">&nbsp;</ion-col>
+      <ion-col class="ion-text-right" [size]="2">
+        <ion-button
+          size="small"
+          [color]="equalsFrom(6, minutes) ? 'primary' : 'light'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(6, minutes)"
+          [disabled]="!isAllowed(6, minutes)"
+          (click)="setInterval(6, minutes)"
+        >
+          {{ getClockButtonContent(6, minutes) }}
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-center" [size]="2">
+        <ion-button
+          size="large"
+          shape="round"
+          [color]="equalsFrom(6) ? 'primary' : 'dark'"
+          [class.oppositeMeridian]="isHourOfOppositeMeridian(6)"
+          [disabled]="!isAllowed(6)"
+          (click)="setInterval(6)"
+        >
+          {{ getClockButtonContent(6) }}
+        </ion-button>
+      </ion-col>
+      <ion-col [size]="5">&nbsp;</ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col class="ion-text-right" [size]="3" [sizeSm]="7">
+        <ion-text class="minPrefLabel">{{ 'IDEA.FTTT.MINUTES_PREFERENCE' | translate }}:</ion-text>
+      </ion-col>
+      <ion-col [size]="9" [sizeSm]="5">
+        <ion-segment [value]="minutes" (ionChange)="minutes = $event?.detail?.value || minutes">
+          <ion-segment-button value="15">
+            <ion-label>15</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="30">
+            <ion-label>30</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="45">
+            <ion-label>45</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

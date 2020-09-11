@@ -28,6 +28,7 @@ export * from './subscription/stripeSubscription.module';
 export * from './subscription/subscription.module';
 export * from './teams/teams.module';
 export * from './teams/memberships.module';
+export * from './timeInterval/timeInterval.module';
 export * from './translations/translations.module';
 export * from './variables/variables.module';
 

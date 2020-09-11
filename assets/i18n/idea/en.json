@@ -355,6 +355,13 @@
       "VARIABLES_AVAILABLE": "Variables available",
       "VARIABLES_AVAILABLE_I": "These are all the variables you can use in subject and content. When sending an email they will be substitute by their values."
     },
+    "FTTT": {
+      "FROM": "From",
+      "TO": "To",
+      "AM": "AM",
+      "PM": "PM",
+      "MINUTES_PREFERENCE": "Minutes preference"
+    },
     "LABELER": {
       "EXPLANATION": "Only the translation in the default language is mandatory. If any translation is missing, the one in the default language is used instead.",
       "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language",
