@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button *ngIf="tc.get('membership')" [title]="t._('COMMON.CLOSE')" (click)="close()">
+      <ion-button *ngIf="aTeamIsSelected()" [title]="t._('COMMON.CLOSE')" (click)="close()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA.TEAMS.SELECT_A_TEAM' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA.TEAMS.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
+      <ion-button [title]="t._('IDEA.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
         <ion-icon name="person" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-button *ngIf="teams?.length" [title]="t._('IDEA.TEAMS.CREATE_TEAM_HINT')" (click)="newTeam()">
@@ -18,7 +18,7 @@
 </ion-header>
 <ion-content>
   <ion-list lines="full" class="aList maxWidthContainer">
-    <ion-list-header *ngIf="!tc.get('membership')">
+    <ion-list-header *ngIf="!aTeamIsSelected()">
       <ion-label class="ion-text-center">
         <h2>{{ 'IDEA.TEAMS.YOU_NEED_A_TEAM_TO_CONTINUE' | translate }}</h2>
       </ion-label>
@@ -27,19 +27,28 @@
       *ngFor="let team of teams"
       [title]="t._('IDEA.TEAMS.SELECT_TEAM_', { team: team.name })"
       [button]="true"
-      [disabled]="!(team.isActivatedOnProject || team.isRequestingUserAdmin)"
-      (click)="selectTeam(team.teamId)"
+      [disabled]="!(teamIsActiveOnProject(team) || team.isUserAdmin(user))"
+      (click)="selectTeam(team)"
     >
       <ion-label>
-        {{ team.name }}
-        <p *ngIf="!(team.isActivatedOnProject || team.isRequestingUserAdmin)">
+        <b>{{ team.name }}</b>
+        <p *ngIf="!teamIsActiveOnProject(team) && !team.isUserAdmin(user)">
           {{ 'IDEA.TEAMS.TEAM_NOT_ACTIVATED_DISCLAIMER' | translate }}
+        </p>
+        <p *ngIf="!teamIsActiveOnProject(team) && team.isUserAdmin(user)">
+          {{ 'IDEA.TEAMS.TAP_TO_ACTIVATE_ON_PROJECT_' | translate: { project: getProjectName(project) } }}
+        </p>
+        <p *ngIf="team.activeInProjects.length">
+          {{ 'IDEA.TEAMS.ACTIVE_ON' | translate }}:
+          <ion-badge color="light" size="small" *ngFor="let p of team.activeInProjects">
+            {{ getProjectName(p) }}
+          </ion-badge>
         </p>
       </ion-label>
       <ion-badge
         slot="end"
         color="primary"
-        *ngIf="isCurrentTeam(team.teamId)"
+        *ngIf="isCurrentTeam(team)"
         [title]="t._('IDEA.TEAMS.CURRENT_TEAM_EXPLANATION')"
       >
         {{ 'IDEA.TEAMS.CURRENT' | translate }}
@@ -47,13 +56,12 @@
       <ion-button
         slot="end"
         fill="clear"
-        size="small"
         color="dark"
-        *ngIf="team.isRequestingUserAdmin"
-        [title]="t._('IDEA.TEAMS.TEAM_MEMBERS_HINT', { team: team.name })"
-        (click)="manageTeam(team.teamId, $event)"
+        *ngIf="team.isUserAdmin(user)"
+        [title]="t._('IDEA.TEAMS.ACTIONS_ON_TEAM_', { tean: team.name })"
+        (click)="manageTeam(team, $event)"
       >
-        <ion-icon name="people" slot="icon-only"></ion-icon>
+        <ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-item>
     <p class="ion-text-center" *ngIf="teams && !teams.length">

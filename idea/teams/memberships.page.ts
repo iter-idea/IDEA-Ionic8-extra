@@ -18,9 +18,22 @@ declare const IDEA_PROJECT: string;
   styleUrls: ['memberships.page.scss']
 })
 export class IDEAMembershipsPage {
+  /**
+   * The current user.
+   */
+  public user: IdeaX.User;
+  /**
+   * The current team.
+   */
   public team: IdeaX.Team;
-  public memberships: Array<IdeaX.Membership>;
+  /**
+   * The current membership-
+   */
   public membership: IdeaX.Membership;
+  /**
+   * The current team's memberships;
+   */
+  public memberships: Array<IdeaX.Membership>;
 
   constructor(
     public navCtrl: NavController,
@@ -34,37 +47,38 @@ export class IDEAMembershipsPage {
     public t: IDEATranslationsService
   ) {}
   public ngOnInit() {
-    // load the team
+    this.user = this.tc.get('user');
+    // load the team (since it could be different from the current one)
     this.loading.show();
     this.API.getResource('teams', { idea: true, resourceId: this.route.snapshot.paramMap.get('teamId') })
       .then((team: IdeaX.Team) => {
-        this.team = team;
+        this.team = new IdeaX.Team(team);
         // load the user's membership as IDEA team
         this.API.getResource(`teams/${this.team.teamId}/memberships`, { idea: true })
           .then((memberships: Array<IdeaX.Membership>) => {
             this.memberships = memberships.map(m => {
               const membership = new IdeaX.Membership(m);
               // identify the user's membership
-              if (membership.userId === this.tc.get('userId')) this.membership = membership;
+              if (membership.userId === this.user.userId) this.membership = membership;
               return membership;
             });
             this.loading.hide();
             // only admins can be here
-            if (!this.membership || !this.membership.permissions.admin) {
-              this.navCtrl.navigateBack(['teams']);
+            if (!this.membership || !this.team.isUserAdmin(this.membership)) {
               this.message.error('IDEA.TEAMS.COULDNT_LOAD_LIST');
+              this.navCtrl.navigateBack(['teams']);
               return;
             }
           })
-          .catch(() => this.loading.hide());
+          .catch(() => {
+            this.loading.hide();
+            this.message.error('IDEA.TEAMS.COULDNT_LOAD_LIST');
+          });
       })
-      .catch(() => this.loading.hide());
-  }
-  /**
-   * Whether the user is the owner of the team or not.
-   */
-  public isOwner(): boolean {
-    return this.team && this.membership ? this.membership.userId === this.team.ownerId : false;
+      .catch(() => {
+        this.loading.hide();
+        this.message.error('IDEA.TEAMS.COULDNT_LOAD_LIST');
+      });
   }
   /**
    * Invite a new member in the team.
@@ -104,13 +118,16 @@ export class IDEAMembershipsPage {
    */
   public manageMembership(membership: IdeaX.Membership) {
     const buttons = [];
+    // allow admin role removal only if there will be still at least one admin in the team
+    if (!this.team.isUserAdmin(membership) || this.team.admins.length > 1)
+      buttons.push({
+        text: this.team.isUserAdmin(membership)
+          ? this.t._('IDEA.TEAMS.REMOVE_ADMIN_ROLE')
+          : this.t._('IDEA.TEAMS.MAKE_USER_ADMIN'),
+        handler: () => this.toggleAdminRole(membership)
+      });
     buttons.push({
-      text: this.t._('IDEA.TEAMS.MANAGE_PERMISSIONS'),
-      handler: () => this.editPermissionsMembership(membership)
-    });
-    buttons.push({
-      text:
-        membership.userId === this.tc.get('userId') ? this.t._('IDEA.TEAMS.UNJOIN') : this.t._('IDEA.TEAMS.KICK_OUT'),
+      text: membership.userId === this.user.userId ? this.t._('IDEA.TEAMS.UNJOIN') : this.t._('IDEA.TEAMS.KICK_OUT'),
       handler: () => this.deleteMembership(membership)
     });
     buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel' });
@@ -121,43 +138,43 @@ export class IDEAMembershipsPage {
   /**
    * Edit the permissions of the team member.
    */
-  private editPermissionsMembership(membership: IdeaX.Membership) {
+  private toggleAdminRole(membership: IdeaX.Membership) {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.TEAMS.MANAGE_PERMISSIONS'),
-        inputs: [
-          {
-            type: 'checkbox',
-            label: this.t._('IDEA.TEAMS.CAN_MANAGE_TEAM'),
-            value: 'admin',
-            checked: membership.permissions.admin
-          }
-        ],
+        header: this.team.isUserAdmin(membership)
+          ? this.t._('IDEA.TEAMS.REMOVE_ADMIN_ROLE')
+          : this.t._('IDEA.TEAMS.MAKE_USER_ADMIN'),
+        message: this.t._('COMMON.ARE_YOU_SURE'),
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: (perm: Array<string>) => {
-              const permissions: any = { admin: perm.some(p => p === 'admin') };
+            handler: () => {
+              // request the change in the admin list
               this.loading.show();
-              this.API.patchResource(`teams/${this.team.teamId}/memberships`, {
+              this.API.patchResource('teams', {
                 idea: true,
-                resourceId: membership.userId,
+                resourceId: this.team.teamId,
                 body: {
-                  action: 'CHANGE_PERMISSIONS',
-                  permissions
+                  action: this.team.isUserAdmin(membership) ? 'REMOVE_ADMIN' : 'ADD_ADMIN',
+                  userId: membership.userId
                 }
               })
                 .then(() => {
-                  membership.permissions.admin = permissions.admin;
+                  // update the UI
+                  if (!this.team.isUserAdmin(membership)) this.team.admins.push(membership.userId);
+                  else
+                    this.team.admins.splice(
+                      this.team.admins.findIndex(a => a === membership.userId),
+                      1
+                    );
                   this.message.success('COMMON.OPERATION_COMPLETED');
                 })
                 .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
                 .finally(() => this.loading.hide());
             }
           }
-        ],
-        cssClass: 'alertLongOptions'
+        ]
       })
       .then(alert => alert.present());
   }
@@ -179,7 +196,7 @@ export class IDEAMembershipsPage {
                 resourceId: membership.userId
               })
                 .then(() => {
-                  if (this.tc.get('userId') === membership.userId) return window.location.assign('');
+                  if (this.user.userId === membership.userId) return window.location.assign('');
                   this.message.success('IDEA.TEAMS.USER_REMOVED');
                   this.memberships.splice(this.memberships.indexOf(membership), 1);
                 })

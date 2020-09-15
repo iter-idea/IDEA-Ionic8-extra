@@ -16,34 +16,31 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ion-list lines="full" class="membershipsList">
+  <ion-list lines="full" class="aList maxWidthContainer">
     <ion-list-header>
-      <ion-label>{{ team?.name }}</ion-label>
+      <ion-label>
+        <h2>{{ team?.name }}</h2>
+        <p>{{ 'IDEA.TEAMS.MAIN_EXPLANATION' | translate }}.</p>
+      </ion-label>
     </ion-list-header>
-    <p>{{ 'IDEA.TEAMS.MAIN_EXPLANATION' | translate }}.</p>
     <ion-item *ngFor="let m of memberships">
       <ion-label>
         {{ m.name }}
+        <p *ngIf="team.isUserAdmin(m)">
+          <ion-badge color="primary" size="small" [title]="t._('IDEA.TEAMS.CAN_MANAGE_TEAM')">
+            {{ 'IDEA.TEAMS.ADMIN' | translate }}
+          </ion-badge>
+        </p>
+        <p *ngIf="m.pendingInvitation">
+          <ion-badge color="light" size="small" [title]="t._('IDEA.TEAMS.PENDING_INVITATION')">
+            {{ 'IDEA.TEAMS.INVITED' | translate }}
+          </ion-badge>
+        </p>
       </ion-label>
-      <ion-badge slot="end" color="dark" *ngIf="m.userId === team?.ownerId" [title]="t._('IDEA.TEAMS.IS_OWNER')">
-        {{ 'IDEA.TEAMS.OWNER' | translate }}
-      </ion-badge>
-      <ion-badge
-        slot="end"
-        color="primary"
-        *ngIf="m.userId !== team?.ownerId && m.permissions.admin"
-        [title]="t._('IDEA.TEAMS.CAN_MANAGE_TEAM')"
-      >
-        {{ 'IDEA.TEAMS.ADMIN' | translate }}
-      </ion-badge>
-      <ion-badge slot="end" color="light" *ngIf="m.pendingInvitation" [title]="t._('IDEA.TEAMS.PENDING_INVITATION')">
-        {{ 'IDEA.TEAMS.INVITED' | translate }}
-      </ion-badge>
       <ion-button
         slot="end"
         fill="clear"
         color="dark"
-        [disabled]="m.userId === team?.ownerId"
         [title]="t._('IDEA.TEAMS.ACTIONS_ON_USER_', { user: m.name })"
         (click)="manageMembership(m)"
       >

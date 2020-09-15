@@ -1,18 +1,5 @@
-.membershipsList {
-  max-width: 500px;
-  margin: 0 auto;
-  background: transparent;
-  ion-list-header {
-    padding-left: 10px;
-    ion-label {
-      font-weight: 500;
-      font-size: 1.4em;
-    }
-  }
-  > p {
-    margin: 0 10px 20px 10px;
-  }
-  ion-item {
-    --background: var(--ion-color-white);
+.aList {
+  ion-item ion-label p ion-badge {
+    margin-top: 6px;
   }
 }
