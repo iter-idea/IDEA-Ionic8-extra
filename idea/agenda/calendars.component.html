@@ -1,4 +1,4 @@
-<ion-grid class="maxWidthContainer" *ngIf="ideaMembership">
+<ion-grid class="maxWidthContainer" *ngIf="ideaTeam">
   <ion-row>
     <ion-col class="ion-text-right">
       <ion-button [title]="t._('IDEA.AGENDA.CALENDARS.ADD_CALENDAR_HINT')" (click)="addCalendar()">
@@ -34,7 +34,7 @@
         <ion-list-header>
           <ion-label>
             <h2>
-              {{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDARS' | translate: { team: tc.get('team').name } }}
+              {{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDARS' | translate: { team: ideaTeam.name } }}
               <ion-icon name="people"></ion-icon>
             </h2>
             <p>{{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDARS_HINT' | translate }}</p>
@@ -44,7 +44,7 @@
           *ngFor="let cal of teamCals"
           [calendar]="cal"
           [title]="t._('IDEA.AGENDA.CALENDARS.EDIT_CALENDAR')"
-          [disabled]="!ideaMembership.permissions.admin"
+          [disabled]="!ideaTeam.isUserAdmin(membership)"
           (select)="cal.external && !cal.external.calendarId ? linkExtCalendarOrDelete(cal) : editCalendar(cal)"
         ></idea-calendar-item>
         <ion-item *ngIf="teamCals && !teamCals.length">{{ 'IDEA.AGENDA.CALENDARS.NO_CALENDARS' | translate }}</ion-item>

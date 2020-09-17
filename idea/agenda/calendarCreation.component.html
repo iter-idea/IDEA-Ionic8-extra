@@ -27,7 +27,7 @@
     </ion-row>
     <ion-row class="ion-align-items-center">
       <ion-col class="ion-text-center" [size]="12" [sizeSm]="6">
-        <ion-card [button]="true" (click)="calendar.userId = tc.get('membership').userId">
+        <ion-card [button]="true" (click)="calendar.userId = membership.userId">
           <ion-card-header>
             <ion-card-title>
               <ion-icon name="person"></ion-icon>
@@ -40,11 +40,7 @@
         </ion-card>
       </ion-col>
       <ion-col class="ion-text-center" [size]="12" [sizeSm]="6">
-        <ion-card
-          [button]="true"
-          [disabled]="!ideaMembership.permissions.admin"
-          (click)="calendar.teamId = tc.get('membership').teamId"
-        >
+        <ion-card [button]="true" [disabled]="!isUserAdmin" (click)="calendar.teamId = membership.teamId">
           <ion-card-header>
             <ion-card-title>
               <ion-icon name="people"></ion-icon>

@@ -15,10 +15,13 @@ import { IDEATranslationsService } from '../translations/translations.service';
 })
 export class IDEACalendarCreationComponent {
   /**
-   * The calendar to create.
+   * Whether the user is an administrator of the current IDEA team.
    */
-  @Input() public ideaMembership: IdeaX.Membership;
-
+  @Input() public isUserAdmin: boolean;
+  /**
+   * The current membership (generic).
+   */
+  public membership: IdeaX.Membership;
   /**
    * The calendar to create.
    */
@@ -41,6 +44,7 @@ export class IDEACalendarCreationComponent {
     public t: IDEATranslationsService
   ) {
     this.calendar = new IdeaX.Calendar();
+    this.membership = this.tc.get('membership');
   }
 
   /**

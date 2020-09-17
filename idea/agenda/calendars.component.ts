@@ -28,6 +28,14 @@ declare const IDEA_APP_URL: string;
 })
 export class IDEACalendarsComponent {
   /**
+   * The current membership (generic).
+   */
+  public membership: IdeaX.Membership;
+  /**
+   * The IDEA team, to check for permissions.
+   */
+  public ideaTeam: IdeaX.Team;
+  /**
    * The calendars of the user.
    */
   public privateCals: Array<IdeaX.Calendar>;
@@ -35,10 +43,6 @@ export class IDEACalendarsComponent {
    * The calendars of the team.
    */
   public teamCals: Array<IdeaX.Calendar>;
-  /**
-   * The IDEA membership, to check for permissions.
-   */
-  public ideaMembership: IdeaX.Membership;
 
   constructor(
     public navCtrl: NavController,
@@ -54,19 +58,18 @@ export class IDEACalendarsComponent {
   public ngOnInit() {
     // check whether the module is active
     if (!this.tc.get('team').hasModule('agenda')) return this.navCtrl.navigateRoot(['']);
+    this.membership = this.tc.get('membership');
     this.loadCalendars();
   }
   public loadCalendars(skipLoading?: boolean) {
     // get the IDEA membership
     if (!skipLoading) this.loading.show();
-    this.API.getResource(`teams/${this.tc.get('membership').teamId}/memberships/${this.tc.get('membership').userId}`, {
-      idea: true
-    })
-      .then((membership: IdeaX.Membership) => (this.ideaMembership = new IdeaX.Membership(membership)))
+    this.API.getResource('teams', { idea: true, resourceId: this.membership.teamId })
+      .then((team: IdeaX.Team) => (this.ideaTeam = new IdeaX.Team(team)))
       .catch(() => this.message.error('COMMON.NO_ELEMENT_FOUND'))
       .finally(() => (skipLoading ? null : this.loading.hide()));
     // (async) get shared calendars
-    this.API.getResource(`teams/${this.tc.get('membership').teamId}/calendars`, { idea: true })
+    this.API.getResource(`teams/${this.membership.teamId}/calendars`, { idea: true })
       .then((teamCals: Array<IdeaX.Calendar>) => (this.teamCals = teamCals.map(c => new IdeaX.Calendar(c))))
       .catch(() => {});
     // (async) get private calendars
@@ -98,7 +101,10 @@ export class IDEACalendarsComponent {
    */
   public addCalendar() {
     this.modalCtrl
-      .create({ component: IDEACalendarCreationComponent, componentProps: { ideaMembership: this.ideaMembership } })
+      .create({
+        component: IDEACalendarCreationComponent,
+        componentProps: { isUserAdmin: this.ideaTeam.isUserAdmin(this.membership) }
+      })
       .then(modal => {
         modal.onDidDismiss().then((res: OverlayEventDetail) => {
           const calendar: IdeaX.Calendar = res.data;
