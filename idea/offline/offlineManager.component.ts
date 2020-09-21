@@ -7,12 +7,19 @@ const { CapacitorKeepScreenOn } = Plugins;
 import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
+import { IDEADownloaderURL } from '../downloader/downloader.component';
+
 @Component({
   selector: 'idea-offline-manager',
   templateUrl: 'offlineManager.component.html',
   styleUrls: ['offlineManager.component.scss']
 })
 export class IDEAOfflineManagerComponent {
+  /**
+   * Support variable to trigger file downloads.
+   */
+  public download: IDEADownloaderURL;
+
   constructor(
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
@@ -74,6 +81,13 @@ export class IDEAOfflineManagerComponent {
         ]
       })
       .then(alert => alert.present());
+  }
+  /**
+   * Download a log of the request (JSON file).
+   */
+  public downloadRequestLog(request: APIRequest) {
+    const dataURL = window.URL.createObjectURL(new Blob([JSON.stringify(request)], { type: 'text/json' }));
+    this.download = new IDEADownloaderURL(dataURL);
   }
 
   /**

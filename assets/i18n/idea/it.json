@@ -412,11 +412,16 @@
       "NOW": "Adesso",
       "NO_ELEMENTS_TO_UPLOAD": "Nessun elemento da caricare",
       "OFFLINE_MANAGER": "Offline manager",
-      "REQUEST_FAILED": "Richiesta fallita; riprova o cancella la richiesta",
+      "REQUEST_FAILED_EXPLANATION_I": "Caricamento della risorsa fallito; per piacere, riprova.",
+      "REQUEST_FAILED_EXPLANATION_II": "Se l'errore persiste, cancella la richiesta per procedere.",
+      "REQUEST_FAILED_EXPLANATION_III": "Puoi richiedere un log dell'errore per ulteriori analisi.",
+      "ERROR_CODE": "Codice errore",
+      "CANCEL_REQUEST": "Annulla la richiesta",
+      "DOWNLOAD_LOG": "Scarica un log della richiesta fallita",
       "SYNC_IN_PROGRESS": "Sincronizzazione in corso",
       "SYNC_NOW": "Sync",
       "UPLOAD": "Upload",
-      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Le azioni create offline devono essere caricate online",
+      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Lista delle azioni create offline che devono essere caricate online",
       "YOU_ARE_OFFLINE": "Sei offline"
     },
     "RESOURCE_CENTER": {

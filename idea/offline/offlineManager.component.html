@@ -28,7 +28,11 @@
           {{ 'IDEA.OFFLINE.LAST_SYNC' | translate }}:
           <ion-text>{{ getLastSyncLabel() }}</ion-text>
         </h3>
-        <p class="error" *ngIf="offline.errorInLastSync">{{ 'IDEA.OFFLINE.ERROR_DURING_LAST_SYNC' | translate }}</p>
+        <p *ngIf="offline.errorInLastSync">
+          <ion-text color="danger">
+            <b>{{ 'IDEA.OFFLINE.ERROR_DURING_LAST_SYNC' | translate }}</b>
+          </ion-text>
+        </p>
       </ion-label>
       <ion-button
         size="small"
@@ -60,15 +64,37 @@
       <ion-icon slot="end" size="small" name="checkmark" color="success"></ion-icon>
     </ion-item>
     <ion-item *ngFor="let r of offline.queueAPIRequests; let odd = odd" [class.oddItem]="odd">
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         {{ r.description }}
-        <p class="error" *ngIf="r.error">{{ r.error }}</p>
+        <p *ngIf="r.error">
+          <ion-text color="danger">
+            <b>{{ 'IDEA.OFFLINE.ERROR_CODE' | translate }}: {{ r.error }}</b>
+          </ion-text>
+          <br />
+          {{ 'IDEA.OFFLINE.REQUEST_FAILED_EXPLANATION_I' | translate }}<br />
+          {{ 'IDEA.OFFLINE.REQUEST_FAILED_EXPLANATION_II' | translate }}<br />
+          {{ 'IDEA.OFFLINE.REQUEST_FAILED_EXPLANATION_III' | translate }}
+        </p>
       </ion-label>
-      <ion-badge slot="end" color="danger" *ngIf="r.error" [title]="t._('IDEA.OFFLINE.REQUEST_FAILED')">
-        !
-      </ion-badge>
-      <ion-button fill="clear" slot="end" color="danger" *ngIf="r.error" (click)="deleteRequest(r)">
+      <ion-button
+        fill="clear"
+        slot="end"
+        color="danger"
+        *ngIf="r.error"
+        [title]="t._('IDEA.OFFLINE.CANCEL_REQUEST')"
+        (click)="deleteRequest(r)"
+      >
         <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+      <ion-button
+        fill="clear"
+        slot="end"
+        color="medium"
+        *ngIf="r.error"
+        [title]="t._('IDEA.OFFLINE.DOWNLOAD_LOG')"
+        (click)="downloadRequestLog(r)"
+      >
+        <ion-icon slot="icon-only" name="download"></ion-icon>
       </ion-button>
       <ion-spinner slot="end" name="dots" *ngIf="offline.synchronizing"></ion-spinner>
     </ion-item>
@@ -86,3 +112,4 @@
     ></idea-cacheable-resource>
   </ion-list>
 </ion-content>
+<idea-downloader [download]="download" [horizontal]="'end'" [size]="'small'"></idea-downloader>

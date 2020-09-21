@@ -412,11 +412,16 @@
       "NOW": "Now",
       "NO_ELEMENTS_TO_UPLOAD": "No elements to upload",
       "OFFLINE_MANAGER": "Offline manager",
-      "REQUEST_FAILED": "Request failed; try again or cancel the request",
+      "REQUEST_FAILED_EXPLANATION_I": "Upload failed for this resource; please try again.",
+      "REQUEST_FAILED_EXPLANATION_II": "If the error persist, cancel the request to proceed.",
+      "REQUEST_FAILED_EXPLANATION_III": "You can request a log of the error for further analysis.",
+      "ERROR_CODE": "Error code",
+      "CANCEL_REQUEST": "Cancel the request",
+      "DOWNLOAD_LOG": "Download a log of the failed request",
       "SYNC_IN_PROGRESS": "Synchronisation in progress",
       "SYNC_NOW": "Sync",
       "UPLOAD": "Upload",
-      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Resources created offline must be uploaded online",
+      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Resources created offline that must be uploaded online",
       "YOU_ARE_OFFLINE": "You are offline"
     },
     "RESOURCE_CENTER": {
