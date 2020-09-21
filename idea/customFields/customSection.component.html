@@ -65,6 +65,7 @@
     *ngIf="sectionMeta.fields[f].type === CFT.BOOLEAN"
     [lines]="lines"
     [button]="!disabled"
+    [class.fieldHasError]="hasFieldAnError(errorPrefix + 'sections.' + s + '.' + f)"
     (click)="disabled ? null : (fields[f] = !fields[f])"
   >
     <ion-button
