@@ -131,6 +131,11 @@ export class IDEACustomSectionMetaComponent {
         handler: () => {
           this._section.fieldsLegend.splice(this._section.fieldsLegend.indexOf(f), 1);
           delete this._section.fields[f];
+          // filter out of the displayTemplate the fields which aren't in the fieldsLegend
+          if (this._section.displayTemplate)
+            this._section.displayTemplate.forEach(
+              (row, i, arr) => (arr[i] = row.filter(el => this._section.fieldsLegend.some(field => field === el)))
+            );
         }
       }
     ];
