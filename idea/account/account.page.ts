@@ -143,7 +143,7 @@ export class IDEAAccountPage {
                 headers: { password: data.pwd }
               })
                 .then(() => window.location.assign(''))
-                .catch(() => this.message.error('IDEA.ACCOUNT.DELETION_OPERATION_FAILED'))
+                .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
                 .finally(() => this.loading.hide());
             }
           }
