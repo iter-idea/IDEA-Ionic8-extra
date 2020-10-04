@@ -98,6 +98,12 @@
               *ngIf="suggestion.name && !hideIdFromUI"
               [innerHTML]="suggestion.value | boldprefix: searchbar.value"
             ></p>
+            <p
+              class="description"
+              *ngIf="suggestion.description"
+              [innerHTML]="suggestion.description | boldprefix: searchbar.value"
+              [class.marginTop]="suggestion.name && !hideIdFromUI"
+            ></p>
           </ion-text>
         </ion-label>
       </ion-item>

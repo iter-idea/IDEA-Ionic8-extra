@@ -19,7 +19,7 @@ ion-toolbar {
     --background: var(--ion-color-white);
   }
   .suggestion.selected {
-    --background: #eee;
+    --background: var(--ion-color-light);
   }
   .categories {
     padding-bottom: 4px;
@@ -33,5 +33,12 @@ ion-toolbar {
       font-size: 0.7em;
       vertical-align: text-bottom;
     }
+  }
+  .description {
+    font-size: 0.8em;
+    line-height: 1.1em;
+  }
+  .description.marginTop {
+    margin-top: 4px;
   }
 }

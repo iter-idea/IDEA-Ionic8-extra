@@ -134,7 +134,7 @@ export class IDEASuggestionsComponent {
         toSearch
           .split(' ')
           .every(searchTerm =>
-            [String(x.value), x.name, x.category1, x.category2]
+            [String(x.value), x.name, x.description, x.category1, x.category2]
               .filter(f => f)
               .some(f => f.toLowerCase().includes(searchTerm))
           )
