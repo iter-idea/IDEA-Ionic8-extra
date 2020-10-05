@@ -65,6 +65,10 @@ export class IDEAMapComponent {
    * Whether to disable the default UI.
    */
   @Input() public disableDefaultUI: boolean;
+  /**
+   * Whether to center the location based on the current position.
+   */
+  @Input() public centerOnCurrentPosition: boolean;
 
   ///
   /// Initialization.
@@ -79,7 +83,7 @@ export class IDEAMapComponent {
   public ngOnInit() {
     // wait for the SDK to be available
     this.init().then(() => {
-      // acquire the current geolocation position; note: it won't work on localhost (resolves `null`)
+      // if needed, acquire the current geolocation position; note: it won't work on localhost (resolves `null`)
       this.getLocationSafely().then(location => {
         // initialize the map's options
         const mapOptions: google.maps.MapOptions = { zoom: DEFAULT_ZOOM };
@@ -160,6 +164,7 @@ export class IDEAMapComponent {
    */
   private getLocationSafely(highAccuracy?: boolean): Promise<GeolocationPosition> {
     return new Promise(resolve => {
+      if (!this.centerOnCurrentPosition) return resolve();
       Geolocation.getCurrentPosition({ enableHighAccuracy: highAccuracy })
         .then(position => resolve(position))
         .catch(() => resolve());
