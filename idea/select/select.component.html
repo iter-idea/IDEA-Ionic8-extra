@@ -2,7 +2,7 @@
   class="selectItem"
   [lines]="lines || 'full'"
   [button]="!disabled"
-  [title]="placeholder || description"
+  [title]="placeholder || description || ''"
   [class.withLabel]="label"
   (click)="disabled ? doSelectWhenDisabled() : fetchDataAndOpenModal()"
 >

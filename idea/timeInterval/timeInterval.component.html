@@ -2,7 +2,7 @@
   class="timeIntervalItem"
   [lines]="lines || 'full'"
   [button]="!disabled"
-  [title]="placeholder || valueToDisplay"
+  [title]="placeholder || valueToDisplay || ''"
   [class.withLabel]="label"
   (click)="disabled ? doSelectWhenDisabled() : pickTimeInterval()"
 >

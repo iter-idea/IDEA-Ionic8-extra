@@ -2,7 +2,7 @@
   class="listItem"
   [lines]="lines || 'full'"
   [button]="!disabled"
-  [title]="placeholder"
+  [title]="placeholder || ''"
   [class.withLabel]="label"
   (click)="openList()"
 >

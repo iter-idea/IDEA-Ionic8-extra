@@ -1,7 +1,7 @@
 <ion-item
   class="dateTimeItem"
   [lines]="lines || 'full'"
-  [title]="placeholder || label"
+  [title]="placeholder || label || ''"
   [button]="!disabled"
   [class.withLabel]="label"
   (click)="openCalendarPicker()"
