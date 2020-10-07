@@ -1,9 +1,13 @@
 import { Component, HostListener, Input, ViewChild } from '@angular/core';
-import { ModalController, IonSearchbar, Platform } from '@ionic/angular';
+import { ModalController, IonSearchbar, Platform, IonVirtualScroll } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
+import { Storage } from '@ionic/storage';
 import IdeaX = require('idea-toolbox');
 
+import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+
+const SHOULD_SHOW_DETAILS_STORAGE_KEY = 'ideaSelectShouldShowDetails';
 
 @Component({
   selector: 'idea-suggestions',
@@ -79,8 +83,26 @@ export class IDEASuggestionsComponent {
    * The searchbar to filter items.
    */
   @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
+  /**
+   * Whether we should show or not the suggestions details, based on the device preference.
+   */
+  public shouldShowDetails: boolean;
+  /**
+   * Whether there are details available at least in one suggestion of this data set.
+   */
+  public detailsAreAvailable: boolean;
+  /**
+   * The virtualScroll element to control, for forcing a refresh when needed.
+   */
+  @ViewChild('virtualScroll', { read: IonVirtualScroll }) public virtualScroll: IonVirtualScroll;
 
-  constructor(public platform: Platform, public modalCtrl: ModalController, public t: IDEATranslationsService) {
+  constructor(
+    public platform: Platform,
+    public modalCtrl: ModalController,
+    public storage: Storage,
+    public tc: IDEATinCanService,
+    public t: IDEATranslationsService
+  ) {
     this.data = this.data || new Array<IdeaX.Suggestion>();
     this.suggestions = new Array<IdeaX.Suggestion>();
     this.page = 1;
@@ -94,6 +116,24 @@ export class IDEASuggestionsComponent {
       );
     // define categories based on the data
     this.loadActiveCategories();
+    // define whether there are details to show for some of the rows (apart from the name/id)
+    this.detailsAreAvailable = this.data.some(
+      x => (x.name && !this.hideIdFromUI) || x.category1 || x.category2 || x.description
+    );
+    // if the data set has details, load the device preference on their visibility (from cache, fallback to storage)
+    if (!this.detailsAreAvailable) this.shouldShowDetails = false;
+    else {
+      if (this.tc.get(SHOULD_SHOW_DETAILS_STORAGE_KEY) !== undefined)
+        this.shouldShowDetails = this.tc.get(SHOULD_SHOW_DETAILS_STORAGE_KEY);
+      else
+        this.storage
+          .get(SHOULD_SHOW_DETAILS_STORAGE_KEY)
+          .then(pref => {
+            this.shouldShowDetails = Boolean(pref);
+            this.tc.set(SHOULD_SHOW_DETAILS_STORAGE_KEY, this.shouldShowDetails);
+          })
+          .catch(() => (this.shouldShowDetails = false));
+    }
     // show the suggestions based on the data
     this.search();
   }
@@ -242,5 +282,18 @@ export class IDEASuggestionsComponent {
         if (selected) selected.classList.add('selected');
         break;
     }
+  }
+
+  /**
+   * Toggle the details visibility preference.
+   */
+  public toggleDetailsVisibilityPreference() {
+    if (!this.detailsAreAvailable) return;
+    // update the preference in cache e storage
+    this.shouldShowDetails = !this.shouldShowDetails;
+    this.tc.set(SHOULD_SHOW_DETAILS_STORAGE_KEY, this.shouldShowDetails);
+    this.storage.set(SHOULD_SHOW_DETAILS_STORAGE_KEY, this.shouldShowDetails).catch(() => {}); // ignore err
+    // refresh the (entire) list to reflect the changes in the UI
+    this.virtualScroll.checkRange(0, this.virtualScroll.items.length);
   }
 }

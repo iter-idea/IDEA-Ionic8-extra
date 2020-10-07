@@ -8,7 +8,7 @@
     <ion-searchbar
       [placeholder]="searchPlaceholder || t._('IDEA.SELECT.SEARCH')"
       [debounce]="100"
-      [class.withCategoriesFilters]="showCategoriesFilters"
+      [class.withAdditionalToolbar]="showCategoriesFilters || detailsAreAvailable"
       (ionInput)="search($event.target ? $event.target.value : '')"
     ></ion-searchbar>
     <ion-buttons slot="end" *ngIf="!hideClearButton">
@@ -16,9 +16,14 @@
         <ion-icon slot="icon-only" name="backspace"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <div class="categoriesFilters" *ngIf="showCategoriesFilters">
+    <div class="additionalToolbar" *ngIf="showCategoriesFilters || detailsAreAvailable">
+      <ion-button color="light" size="small" *ngIf="detailsAreAvailable" (click)="toggleDetailsVisibilityPreference()">
+        <ion-icon [name]="shouldShowDetails ? 'eye-off' : 'eye'" slot="start"></ion-icon>
+        {{ (shouldShowDetails ? 'IDEA.SELECT.HIDE_DETAILS' : 'IDEA.SELECT.SHOW_DETAILS') | translate }}
+      </ion-button>
       <ion-button
         color="light"
+        size="small"
         *ngIf="activeCategories1?.size"
         [class.strong]="category1"
         (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
@@ -28,6 +33,7 @@
       </ion-button>
       <ion-button
         color="light"
+        size="small"
         *ngIf="activeCategories2?.size"
         [class.strong]="category2"
         (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
@@ -66,7 +72,7 @@
         {{ searchbar.value }}
       </i>
     </ion-item>
-    <ion-virtual-scroll [items]="suggestions">
+    <ion-virtual-scroll #virtualScroll [items]="suggestions">
       <ion-item
         class="suggestion"
         *virtualItem="let suggestion"
@@ -75,7 +81,7 @@
         (click)="select(suggestion)"
       >
         <ion-label>
-          <p class="categories" *ngIf="suggestion.category1 || suggestion.category2">
+          <p class="categories" *ngIf="shouldShowDetails && (suggestion.category1 || suggestion.category2)">
             <ion-text
               *ngIf="suggestion.category1"
               [innerHTML]="suggestion.category1 | boldprefix: searchbar.value"
@@ -95,14 +101,14 @@
           <ion-text [innerHTML]="suggestion.name || suggestion.value | boldprefix: searchbar.value"></ion-text>
           <ion-text color="medium" class="ion-text-wrap">
             <p
-              *ngIf="suggestion.name && !hideIdFromUI"
+              *ngIf="suggestion.name && !hideIdFromUI && shouldShowDetails"
               [innerHTML]="suggestion.value | boldprefix: searchbar.value"
             ></p>
             <p
               class="description"
-              *ngIf="suggestion.description"
+              *ngIf="suggestion.description && shouldShowDetails"
               [innerHTML]="suggestion.description | boldprefix: searchbar.value"
-              [class.marginTop]="suggestion.name && !hideIdFromUI"
+              [class.marginTop]="suggestion.name && !hideIdFromUI && shouldShowDetails"
             ></p>
           </ion-text>
         </ion-label>

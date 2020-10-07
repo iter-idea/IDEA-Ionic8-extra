@@ -473,7 +473,9 @@
       "NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE": "No elements found; start typing to add a new one.",
       "SEARCH": "Search",
       "SELECT_": "Select {{suggestion}}",
-      "TAP_TO_FILTER": "Tap to filter"
+      "TAP_TO_FILTER": "Tap to filter",
+      "SHOW_DETAILS": "Show details",
+      "HIDE_DETAILS": "Hide details"
     },
     "SIGNATURE": {
       "CANCEL": "Cancel",

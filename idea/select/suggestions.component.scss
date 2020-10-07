@@ -1,5 +1,5 @@
 ion-toolbar {
-  .categoriesFilters {
+  .additionalToolbar {
     padding: 0px 5px 5px 5px;
     text-align: right;
     ion-button {
@@ -10,7 +10,7 @@ ion-toolbar {
       font-weight: bold;
     }
   }
-  ion-searchbar.withCategoriesFilters {
+  ion-searchbar.withAdditionalToolbar {
     padding-top: 8px;
   }
 }
