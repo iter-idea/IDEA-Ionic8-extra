@@ -140,9 +140,10 @@ export class IDEASubscriptionSummaryComponent {
 
   /**
    * Whether the subscription is expired or no.
+   * Note: when `validUntil` equals `0`, it means the subscription doesn't expire.
    */
   public isSubscriptionExpired(subscription: IdeaX.ProjectSubscription): boolean {
-    return subscription ? subscription.validUntil < Number(Moment().format('x')) : false;
+    return subscription && subscription.validUntil ? subscription.validUntil < Number(Moment().format('x')) : false;
   }
 
   /**
