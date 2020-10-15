@@ -1,0 +1,179 @@
+<div class="agenda">
+  <!-- TOOLBAR -->
+  <ion-row class="ion-align-items-center">
+    <ion-col
+      class="ion-align-self-center ion-text-right"
+      [size]="5"
+      [sizeSm]="3"
+      [pushSm]="5"
+      [sizeLg]="2"
+      [pushLg]="8"
+    >
+      <ion-item lines="none" class="calendarViewSelector">
+        <ion-select
+          interface="popover"
+          [value]="view"
+          (ionChange)="$event?.detail ? setView($event.detail.value) : null"
+        >
+          <ion-select-option [value]="CalendarView.Month">{{ 'IDEA.AGENDA.MONTH' | translate }}</ion-select-option>
+          <ion-select-option [value]="CalendarView.Week">{{ 'IDEA.AGENDA.WEEK' | translate }}</ion-select-option>
+          <ion-select-option [value]="CalendarView.Day">{{ 'IDEA.AGENDA.DAY' | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+    <ion-col
+      class="ion-align-self-center ion-text-right"
+      [size]="7"
+      [sizeSm]="4"
+      [pushSm]="5"
+      [sizeLg]="2"
+      [pushLg]="8"
+    >
+      <ion-button
+        fill="clear"
+        color="dark"
+        size="small"
+        mwlCalendarPreviousView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeDayDetailsMonthView()"
+      >
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" color="dark" size="small" mwlCalendarToday [(viewDate)]="viewDate">
+        <ion-icon name="today-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button
+        fill="clear"
+        color="dark"
+        size="small"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeDayDetailsMonthView()"
+      >
+        <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col class="ion-align-self-center" [size]="12" [sizeSm]="5" [pullSm]="7" [sizeLg]="8" [pullLg]="4">
+      <h2>
+        <ion-spinner name="crescent" *ngIf="loadingAppointments"></ion-spinner>
+        {{ viewDate | calendarDate: view + 'ViewTitle':t.getCurrentLang() }}
+      </h2>
+    </ion-col>
+  </ion-row>
+  <!-- TEMPLATES (touch only what's necessary and leave everything else as it is) -->
+  <ng-template #eventTitleTemplate let-event="event" let-view="view">
+    <span class="cal-event-title" [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'">
+      {{ event.title | calendarEventTitle: view:event }}
+      <p>{{ event.description }}</p>
+    </span>
+  </ng-template>
+  <ng-template
+    #eventTemplate
+    let-weekEvent="weekEvent"
+    let-tooltipPlacement="tooltipPlacement"
+    let-eventClicked="eventClicked"
+    let-tooltipTemplate="tooltipTemplate"
+    let-tooltipAppendToBody="tooltipAppendToBody"
+    let-tooltipDisabled="tooltipDisabled"
+    let-tooltipDelay="tooltipDelay"
+    let-column="column"
+    let-daysInWeek="daysInWeek"
+  >
+    <div
+      class="cal-event"
+      [style.border-left-color]="weekEvent.event.color.primary"
+      [style.color]="getAlternateColor(weekEvent.event.color.primary, tc.get('darkMode') ? 80 : -40)"
+      [style.background-color]="getAlternateColor(weekEvent.event.color.primary, tc.get('darkMode') ? 60 : 80, 0.2)"
+      [mwlCalendarTooltip]="!tooltipDisabled ? getTooltipContent(weekEvent.event) : ''"
+      [tooltipPlacement]="tooltipPlacement"
+      [tooltipEvent]="weekEvent.tempEvent || weekEvent.event"
+      [tooltipTemplate]="tooltipTemplate"
+      [tooltipAppendToBody]="tooltipAppendToBody"
+      [tooltipDelay]="tooltipDelay"
+      (mwlClick)="eventClicked.emit({ sourceEvent: $event })"
+      (mwlKeydownEnter)="eventClicked.emit({ sourceEvent: $event })"
+      tabindex="0"
+      role="application"
+      [attr.aria-label]="
+        { event: weekEvent.tempEvent || weekEvent.event, locale: locale } | calendarA11y: 'eventDescription'
+      "
+    >
+      <mwl-calendar-event-actions
+        [event]="weekEvent.tempEvent || weekEvent.event"
+        [customTemplate]="eventActionsTemplate"
+      >
+      </mwl-calendar-event-actions>
+      &ngsp;
+      <mwl-calendar-event-title
+        [event]="weekEvent.tempEvent || weekEvent.event"
+        [customTemplate]="eventTitleTemplate"
+        [view]="daysInWeek === 1 ? 'day' : 'week'"
+      >
+      </mwl-calendar-event-title>
+      <div class="eventIcons">
+        <ion-icon *ngFor="let icon of weekEvent.event.icons" [name]="icon.name" [title]="icon.title"></ion-icon>
+      </div>
+      <div class="eventAvatars">
+        <ion-avatar *ngFor="let avatar of weekEvent.event.avatars" [title]="avatar.title">
+          <ion-img [src]="avatar.url"></ion-img>
+        </ion-avatar>
+      </div>
+    </div>
+  </ng-template>
+  <!-- VIEWS -->
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view
+      *ngSwitchCase="CalendarView.Month"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [activeDayIsOpen]="activeDayIsOpen"
+      [locale]="locale"
+      [excludeDays]="excludeDays"
+      [weekStartsOn]="weekStartsOn"
+      [eventTitleTemplate]="eventTitleTemplate"
+      (eventClicked)="selectEvent.emit($event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+      (dayClicked)="changeDay($event.day)"
+      (beforeViewRender)="beforeMonthViewRender($event)"
+    >
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+      *ngSwitchCase="CalendarView.Week"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [locale]="locale"
+      [excludeDays]="excludeDays"
+      [weekStartsOn]="weekStartsOn"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourSegments]="hourSegments"
+      [eventTemplate]="eventTemplate"
+      (eventClicked)="selectEvent.emit($event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+      (dayHeaderClicked)="dateIsValid($event.day.date) ? selectDay.emit($event.day.date) : null"
+      (hourSegmentClicked)="dateIsValid($event.date) ? selectSlot.emit($event.date) : null"
+      (beforeViewRender)="beforeWeekOrDayViewRender($event)"
+    >
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view
+      *ngSwitchCase="CalendarView.Day"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [locale]="locale"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourSegments]="hourSegments"
+      [eventTemplate]="eventTemplate"
+      (eventClicked)="selectEvent.emit($event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+      (hourSegmentClicked)="dateIsValid($event.date) ? selectSlot.emit($event.date) : null"
+      (beforeViewRender)="beforeWeekOrDayViewRender($event)"
+    >
+    </mwl-calendar-day-view>
+  </div>
+</div>

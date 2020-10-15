@@ -51,6 +51,11 @@
       "PROVINCE": "Province",
       "PROVINCE_HINT": "Province, district, area"
     },
+    "AGENDA": {
+      "DAY": "Day",
+      "MONTH": "Month",
+      "WEEK": "Week"
+    },
     "ATTACHMENTS": {
       "ERROR_OPENING_ATTACHMENT": "Error while opening the attachment",
       "ERROR_UPLOADING_ATTACHMENT": "Error while uploading the attachment",
