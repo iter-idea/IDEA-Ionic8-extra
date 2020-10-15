@@ -56,10 +56,7 @@
       </ion-button>
     </ion-col>
     <ion-col class="ion-align-self-center" [size]="12" [sizeSm]="5" [pullSm]="7" [sizeLg]="8" [pullLg]="4">
-      <h2>
-        <ion-spinner name="crescent" *ngIf="loadingAppointments"></ion-spinner>
-        {{ viewDate | calendarDate: view + 'ViewTitle':t.getCurrentLang() }}
-      </h2>
+      <h2>{{ viewDate | calendarDate: view + 'ViewTitle':t.getCurrentLang() }}</h2>
     </ion-col>
   </ion-row>
   <!-- TEMPLATES (touch only what's necessary and leave everything else as it is) -->
@@ -100,11 +97,7 @@
         { event: weekEvent.tempEvent || weekEvent.event, locale: locale } | calendarA11y: 'eventDescription'
       "
     >
-      <mwl-calendar-event-actions
-        [event]="weekEvent.tempEvent || weekEvent.event"
-        [customTemplate]="eventActionsTemplate"
-      >
-      </mwl-calendar-event-actions>
+      <mwl-calendar-event-actions [event]="weekEvent.tempEvent || weekEvent.event"> </mwl-calendar-event-actions>
       &ngsp;
       <mwl-calendar-event-title
         [event]="weekEvent.tempEvent || weekEvent.event"
