@@ -8,7 +8,6 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 
 - IDEA Account
 - Address
-- Agenda & appointments
 - Announcements
 - Attachments
 - Auth flow (sign in, sign up, etc.) through Cognito

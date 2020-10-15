@@ -1,7 +1,5 @@
 export * from './account/account.module';
 export * from './address/address.module';
-export * from './agenda/agenda.module';
-export * from './agenda/calendars.module';
 export * from './announcement/announcement.module';
 export * from './attachments/attachments.module';
 export * from './auth/auth.module';
