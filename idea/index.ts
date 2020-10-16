@@ -23,6 +23,7 @@ export * from './mde/mde.module';
 export * from './resourceCenter/RC.module';
 export * from './select/select.module';
 export * from './signature/signature.module';
+export * from './speechRecognition/speechRecognition.module';
 export * from './subscription/stripeSubscription.module';
 export * from './subscription/subscription.module';
 export * from './teams/teams.module';
