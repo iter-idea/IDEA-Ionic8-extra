@@ -61,9 +61,13 @@
   </ion-row>
   <!-- TEMPLATES (touch only what's necessary and leave everything else as it is) -->
   <ng-template #eventTitleTemplate let-event="event" let-view="view">
-    <span class="cal-event-title" [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'">
+    <span
+      class="cal-event-title"
+      [class.noWrap]="event.allDay"
+      [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'"
+    >
       {{ event.title | calendarEventTitle: view:event }}
-      <p>{{ event.description }}</p>
+      <p *ngIf="!event.allDay">{{ event.description }}</p>
     </span>
   </ng-template>
   <ng-template
@@ -105,10 +109,10 @@
         [view]="daysInWeek === 1 ? 'day' : 'week'"
       >
       </mwl-calendar-event-title>
-      <div class="eventIcons">
+      <div class="eventIcons" *ngIf="!weekEvent.event.allDay">
         <ion-icon *ngFor="let icon of weekEvent.event.icons" [name]="icon.name" [title]="icon.title"></ion-icon>
       </div>
-      <div class="eventAvatars">
+      <div class="eventAvatars" *ngIf="!weekEvent.event.allDay">
         <ion-avatar *ngFor="let avatar of weekEvent.event.avatars" [title]="avatar.title">
           <ion-img [src]="avatar.url"></ion-img>
         </ion-avatar>
