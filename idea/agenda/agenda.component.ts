@@ -60,6 +60,10 @@ export class IDEAAgendaComponent {
    */
   @Output() public selectSlot = new EventEmitter<Date>();
   /**
+   * Trigger when an event changed date (drag&drop or resize).
+   */
+  @Output() public changeEvent = new EventEmitter<AgendaEvent>();
+  /**
    * Helper to use the enum in the UX.
    */
   public CalendarView = CalendarView;
@@ -144,20 +148,15 @@ export class IDEAAgendaComponent {
 
   /**
    * The time of an event was changed.
-   * @todo #319 scarlett
    */
   public eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent) {
-    this.events = this.events.map(iEvent => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd
-        };
-      }
-      return iEvent;
-    });
-    console.log('Dropped or resized', event);
+    // update the event
+    event.start = newStart;
+    event.end = newEnd;
+    // re-map the array to trigger the UI refresh
+    this.events = this.events.slice();
+    // trigger the event to the parent component
+    this.changeEvent.emit(event);
   }
 
   /**
