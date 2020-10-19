@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isFuture, isToday, isSameDay } from 'date-fns';
@@ -81,7 +82,7 @@ export class IDEAAgendaComponent {
    */
   public weekStartsOn: number;
 
-  constructor(public tc: IDEATinCanService, public t: IDEATranslationsService) {}
+  constructor(public platform: Platform, public tc: IDEATinCanService, public t: IDEATranslationsService) {}
   public ngOnInit() {
     this.locale = this.t.getCurrentLang();
     // in case of Italian locale the starting day for the week is monday (1), otherwise sunday (0)

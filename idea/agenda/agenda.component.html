@@ -83,7 +83,7 @@
       [style.border-left-color]="weekEvent.event.color.primary"
       [style.color]="getAlternateColor(weekEvent.event.color.primary, tc.get('darkMode') ? 80 : -40)"
       [style.background-color]="getAlternateColor(weekEvent.event.color.primary, tc.get('darkMode') ? 60 : 80, 0.2)"
-      [mwlCalendarTooltip]="!tooltipDisabled ? getTooltipContent(weekEvent.event) : ''"
+      [mwlCalendarTooltip]="!tooltipDisabled && !platform.is('mobile') ? getTooltipContent(weekEvent.event) : ''"
       [tooltipPlacement]="tooltipPlacement"
       [tooltipEvent]="weekEvent.tempEvent || weekEvent.event"
       [tooltipTemplate]="tooltipTemplate"
