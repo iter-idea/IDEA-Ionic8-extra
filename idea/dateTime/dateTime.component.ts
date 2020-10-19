@@ -80,7 +80,7 @@ export class IDEADateTimeComponent {
     if (this.langChangeSubscription) this.langChangeSubscription.unsubscribe();
   }
   public ngOnChanges(changes: SimpleChanges) {
-    if (changes.date) this.valueToDisplay = this.getValueToDisplay(changes.date.currentValue);
+    if (changes.date || changes.timePicker) this.valueToDisplay = this.getValueToDisplay(this.date);
   }
 
   /**
