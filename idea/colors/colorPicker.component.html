@@ -1,0 +1,16 @@
+<ion-item
+  class="colorPickerItem"
+  [lines]="lines || 'full'"
+  [button]="!disabled"
+  [title]="placeholder || ''"
+  [class.withLabel]="label"
+  (click)="openPalette($event)"
+>
+  <ion-label *ngIf="label" [class.selectable]="!disabled">
+    {{ label }}
+    <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
+    <p *ngIf="!disabled">{{ placeholder }}</p>
+  </ion-label>
+  <ion-avatar slot="end" class="colorCircle" [style.background-color]="current"></ion-avatar>
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
+</ion-item>

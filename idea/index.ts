@@ -5,6 +5,7 @@ export * from './announcement/announcement.module';
 export * from './attachments/attachments.module';
 export * from './auth/auth.module';
 export * from './checker/checker.module';
+export * from './colors/colorPicker.module';
 export * from './contacts/contacts.module';
 export * from './customFields/customFields.module';
 export * from './dateTime/dateTime.module';

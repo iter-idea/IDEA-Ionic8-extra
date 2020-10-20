@@ -14,6 +14,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Auth flow (sign in, sign up, etc.) through Cognito
 - Calendar & DateTime picker
 - Checker
+- Colors picker
 - Contacts
 - Custom fields (block, sections, fields)
 - Downloader
