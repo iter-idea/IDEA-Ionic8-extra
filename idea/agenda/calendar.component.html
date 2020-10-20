@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar color="ideaToolbar">
+    <ion-buttons slot="start">
+      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
+        <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ 'IDEA.AGENDA.CALENDARS.EDIT_CALENDAR' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [title]="t._('COMMON.SAVE')" (click)="save()">
+        <ion-icon name="checkmark-circle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="maxWidthContainer" *ngIf="calendar">
+    <ion-list class="aList">
+      <ion-item
+        lines="inset"
+        [class.fieldHasError]="hasFieldAnError('name')"
+        [title]="t._('IDEA.AGENDA.CALENDARS.NAME_HINT')"
+      >
+        <ion-label position="stacked">{{ 'IDEA.AGENDA.CALENDARS.NAME' | translate }} </ion-label>
+        <ion-input [placeholder]="t._('IDEA.AGENDA.CALENDARS.NAME_HINT')" [(ngModel)]="calendar.name"></ion-input>
+      </ion-item>
+      <ion-item
+        lines="inset"
+        [class.fieldHasError]="hasFieldAnError('description')"
+        [title]="t._('IDEA.AGENDA.CALENDARS.DESCRIPTION_HINT')"
+      >
+        <ion-label position="stacked">{{ 'IDEA.AGENDA.CALENDARS.DESCRIPTION' | translate }} </ion-label>
+        <ion-input
+          [placeholder]="t._('IDEA.AGENDA.CALENDARS.DESCRIPTION_HINT')"
+          [(ngModel)]="calendar.description"
+        ></ion-input>
+      </ion-item>
+      <idea-color-picker
+        [lines]="'inset'"
+        [current]="calendar.color"
+        [label]="t._('IDEA.AGENDA.CALENDARS.COLOR')"
+        [class.fieldHasError]="hasFieldAnError('color')"
+        (select)="$event ? (calendar.color = $event) : null"
+      ></idea-color-picker>
+      <idea-checker
+        *ngIf="membershipsChecks && calendar.isShared()"
+        [data]="membershipsChecks"
+        [label]="t._('IDEA.AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS')"
+        [searchPlaceholder]="t._('IDEA.AGENDA.CALENDARS.WHO_CAN_MANAGE_APPOINTMENTS')"
+        [noneText]="t._('IDEA.AGENDA.CALENDARS.NOBODY')"
+        [allText]="t._('IDEA.AGENDA.CALENDARS.EVERYONE')"
+        [lines]="'inset'"
+      ></idea-checker>
+    </ion-list>
+    <ion-list class="aList" *ngIf="calendar.external?.service">
+      <ion-list-header>
+        <ion-label>
+          <h2>{{ 'IDEA.AGENDA.CALENDARS.INFO_ON_CALENDAR' | translate }}</h2>
+        </ion-label>
+      </ion-list-header>
+      <ion-item lines="inset">
+        <ion-label>
+          {{ 'IDEA.AGENDA.CALENDARS.LINKED_TO' | translate }}
+          {{ 'IDEA.AGENDA.CALENDARS.SERVICES.' + calendar.external.service | translate }}
+          <p>{{ calendar.external.name }} ({{ calendar.external.email }})</p>
+        </ion-label>
+        <ion-icon slot="end" [name]="getServiceIcon(calendar.external.service)"></ion-icon>
+      </ion-item>
+      <ion-item lines="inset">
+        <ion-label>
+          {{ 'IDEA.AGENDA.CALENDARS.ACCESS_LEVELS.' + calendar.external.userAccess | translate }}
+          <p>{{ 'IDEA.AGENDA.CALENDARS.BASED_ON_EXTERNAL_SERVICE_SHARING_PERMISSION' | translate }}</p>
+        </ion-label>
+        <ion-icon slot="end" name="shield"></ion-icon>
+      </ion-item>
+    </ion-list>
+    <ion-list class="aList">
+      <ion-list-header>
+        <ion-label color="danger">
+          <h2>{{ 'IDEA.AGENDA.CALENDARS.DANGEROUS_ZONE' | translate }}</h2>
+        </ion-label>
+      </ion-list-header>
+      <ion-item lines="inset">
+        <ion-label class="ion-text-wrap">
+          {{ 'IDEA.AGENDA.CALENDARS.DELETE_CALENDAR' | translate }}
+          <p>{{ 'IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT' | translate }}</p>
+        </ion-label>
+        <ion-button color="danger" [title]="t._('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT')" (click)="delete()">
+          {{ 'COMMON.DELETE' | translate }}
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

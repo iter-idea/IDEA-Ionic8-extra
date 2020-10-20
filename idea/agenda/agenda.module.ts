@@ -12,8 +12,12 @@ import { CustomDateFormatter } from './dateFormatter.provider';
 registerLocaleData(localeIt, 'it');
 
 import { IDEATranslationsModule } from '../translations/translations.module';
+import { IDEAColorPickerModule } from '../colors/colorPicker.module';
 
 import { IDEAAgendaComponent } from './agenda.component';
+import { IDEACalendarComponent } from './calendar.component';
+import { IDEACalendarItemComponent } from './calendarItem.component';
+import { IDEACalendarCreationComponent } from './calendarCreation.component';
 
 @NgModule({
   imports: [
@@ -21,11 +25,17 @@ import { IDEAAgendaComponent } from './agenda.component';
     FormsModule,
     IonicModule,
     IDEATranslationsModule,
+    IDEAColorPickerModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
-  declarations: [IDEAAgendaComponent],
-  entryComponents: [IDEAAgendaComponent],
-  exports: [IDEAAgendaComponent],
+  declarations: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
+  entryComponents: [
+    IDEAAgendaComponent,
+    IDEACalendarComponent,
+    IDEACalendarItemComponent,
+    IDEACalendarCreationComponent
+  ],
+  exports: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
   providers: [{ provide: CalendarDateFormatter, useClass: CustomDateFormatter }]
 })
 export class IDEAAgendaModule {}

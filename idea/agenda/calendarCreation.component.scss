@@ -1,0 +1,50 @@
+ion-content {
+  --background: var(--ion-color-white-shade);
+}
+.choiceGrid {
+  ion-row {
+    ion-col {
+      > h1 {
+        margin: 10px 0 0 0;
+        font-size: 1.1em;
+      }
+      > p {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 0.9em;
+      }
+    }
+  }
+  ion-row:first-child ion-col {
+    padding-bottom: 25px;
+  }
+  ion-card {
+    --ion-item-background: var(--ion-color-white);
+    --color: var(--ion-color-dark-tint);
+    height: 240px;
+    margin: 0 auto;
+    text-align: center;
+    ion-card-header {
+      padding-bottom: 10px;
+      ion-card-title {
+        font-size: 2.5em;
+      }
+    }
+    ion-card-content {
+      h1 {
+        font-size: 1.4em;
+        height: 60px;
+      }
+    }
+  }
+  ion-card.step2 {
+    height: 135px;
+    ion-card-header {
+      padding-top: 10px;
+      padding-bottom: 0;
+    }
+    ion-card-content h1 {
+      height: auto;
+    }
+  }
+}
