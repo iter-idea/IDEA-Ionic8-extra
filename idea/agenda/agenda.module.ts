@@ -18,6 +18,7 @@ import { IDEAAgendaComponent } from './agenda.component';
 import { IDEACalendarComponent } from './calendar.component';
 import { IDEACalendarItemComponent } from './calendarItem.component';
 import { IDEACalendarCreationComponent } from './calendarCreation.component';
+import { IDEACheckerModule } from '../checker/checker.module';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { IDEACalendarCreationComponent } from './calendarCreation.component';
     IonicModule,
     IDEATranslationsModule,
     IDEAColorPickerModule,
+    IDEACheckerModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   declarations: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
