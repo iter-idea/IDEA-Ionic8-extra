@@ -18,6 +18,12 @@ declare const IDEA_GOOGLE_API_CLIENT_ID: string;
 declare const IDEA_GOOGLE_API_SCOPE: string;
 declare const IDEA_APP_URL: string;
 
+/**
+ * Note: to test locally, you need to temporarily change the redirect URI:
+ *  - in the lambda `idea_calendars`, e.g. `SCARLETT_URL`;
+ *  - in the client config file: `APP_URL`.
+ * In both cases, the value should be set to `http://localhost:8100` (or according to the local URL).
+ */
 @Injectable()
 export class IDEACalendarsService {
   constructor(
