@@ -64,7 +64,7 @@
     </ion-row>
     <ion-row class="ion-align-items-center">
       <ion-col class="ion-text-center" [size]="12" *ngIf="!onlyExternalCalendars">
-        <ion-card class="step2" [button]="true" (click)="addCalendar()">
+        <ion-card class="step2" [button]="true" (click)="saveNewCalendar()">
           <ion-card-header>
             <ion-card-title>
               <ion-icon name="remove"></ion-icon>
@@ -77,10 +77,10 @@
         </ion-card>
       </ion-col>
       <ion-col class="ion-text-center" *ngFor="let s of SOURCES" [size]="12">
-        <ion-card class="step2" [button]="true" (click)="addCalendar(s)">
+        <ion-card class="step2" [button]="true" (click)="saveNewCalendar(s)">
           <ion-card-header>
             <ion-card-title>
-              <ion-icon [name]="getServiceIcon(s)"></ion-icon>
+              <ion-icon [name]="calendars.getServiceIcon(s)"></ion-icon>
             </ion-card-title>
           </ion-card-header>
           <ion-card-content>

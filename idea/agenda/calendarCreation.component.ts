@@ -7,6 +7,7 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEACalendarsService } from './calendars.service';
 
 @Component({
   selector: 'idea-calendar-creation',
@@ -44,6 +45,7 @@ export class IDEACalendarCreationComponent {
   public SOURCES = Object.keys(IdeaX.ExternalCalendarSources);
 
   constructor(
+    public calendars: IDEACalendarsService,
     public modalCtrl: ModalController,
     public tc: IDEATinCanService,
     public loading: IDEALoadingService,
@@ -77,23 +79,9 @@ export class IDEACalendarCreationComponent {
   }
 
   /**
-   * Get the ionicon of a service from its name.
-   */
-  public getServiceIcon(service: IdeaX.ExternalCalendarSources): string {
-    switch (service) {
-      case IdeaX.ExternalCalendarSources.GOOGLE:
-        return 'logo-google';
-      case IdeaX.ExternalCalendarSources.MICROSOFT:
-        return 'logo-windows';
-      default:
-        return 'help';
-    }
-  }
-
-  /**
    * Add a new calendar based on the configuration set.
    */
-  public addCalendar(service?: IdeaX.ExternalCalendarSources) {
+  public saveNewCalendar(service?: IdeaX.ExternalCalendarSources) {
     // be sure the scope of the calendar was chosen
     if (!this.scopeIsSet()) return;
     // be sure we are allowed to create the calendar
@@ -109,15 +97,42 @@ export class IDEACalendarCreationComponent {
         : this.t._('IDEA.AGENDA.CALENDARS.DEFAULT_TEAM_CALENDAR_NAME');
       this.calendar.color = this.DEFAULT_COLOR;
     }
-    // prepare a request for a private or team calendar
-    const baseURL = this.calendar.teamId ? `teams/${this.calendar.teamId}/` : '';
-    // send a post request
+    // save (create) the new calendar
     this.loading.show();
-    this.API.postResource(baseURL.concat('calendars'), { idea: true, body: this.calendar })
-      .then((calendar: IdeaX.Calendar) => {
-        this.calendar.load(calendar);
+    this.calendars
+      .postCalendar(this.calendar)
+      .then(cal => {
+        this.calendar.load(cal);
         this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_CREATED');
-        this.modalCtrl.dismiss(this.calendar);
+        // if the calendar is local, no further action is needed
+        if (!cal.external) return this.modalCtrl.dismiss(this.calendar);
+        // if the calendar should be linked to an external service, proceed
+        this.calendars
+          .linkExtService(this.calendar)
+          // if the link was successful, let the user pick an external calendar to set
+          .then(() => this.calendars.chooseAndSetExternalCalendar(this.calendar))
+          .then(res => {
+            // if a calendar wasn't set, it can be done later on
+            if (!res) return this.modalCtrl.dismiss(this.calendar);
+            // if an external calendar was set, update the calendar
+            this.calendar.load(res);
+            // run a first sync for the linked external calendar
+            this.loading.show(this.t._('IDEA.AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
+            this.calendars
+              .syncCalendar(this.calendar)
+              .then(() => this.message.success('IDEA.AGENDA.CALENDARS.FIRST_SYNC_COMPLETED'))
+              .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
+              .finally(() => {
+                this.loading.hide();
+                // the calendar is ready to go
+                this.modalCtrl.dismiss(this.calendar);
+              });
+          })
+          .catch(() => {
+            this.message.error('COMMON.OPERATION_FAILED');
+            // the operation can be retried later on; close the modal anyway
+            this.modalCtrl.dismiss(this.calendar);
+          });
       })
       .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
       .finally(() => this.loading.hide());

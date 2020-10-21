@@ -25,7 +25,7 @@
   <ion-icon
     slot="end"
     *ngIf="calendar.external?.service"
-    [name]="getServiceIcon(calendar.external.service)"
+    [name]="calendars.getServiceIcon(calendar.external.service)"
     [title]="
       t._('IDEA.AGENDA.CALENDARS.LINKED_TO') + ' ' + t._('IDEA.AGENDA.CALENDARS.SERVICES.' + calendar.external.service)
     "

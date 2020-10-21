@@ -19,6 +19,7 @@ import { IDEACalendarComponent } from './calendar.component';
 import { IDEACalendarItemComponent } from './calendarItem.component';
 import { IDEACalendarCreationComponent } from './calendarCreation.component';
 import { IDEACheckerModule } from '../checker/checker.module';
+import { IDEACalendarsService } from './calendars.service';
 
 @NgModule({
   imports: [
@@ -38,6 +39,6 @@ import { IDEACheckerModule } from '../checker/checker.module';
     IDEACalendarCreationComponent
   ],
   exports: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
-  providers: [{ provide: CalendarDateFormatter, useClass: CustomDateFormatter }]
+  providers: [{ provide: CalendarDateFormatter, useClass: CustomDateFormatter }, IDEACalendarsService]
 })
 export class IDEAAgendaModule {}
