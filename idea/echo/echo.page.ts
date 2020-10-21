@@ -71,7 +71,8 @@ export class IDEAEchoPage {
         this.endExternalCalendarsIntegrationFlow(IdeaX.ExternalCalendarSources.GOOGLE, code, state);
         break;
       default:
-        this.goHome();
+        this.success = false;
+        this.content = this.t._('IDEA.ECHO.INVALID_ACTION');
         break;
     }
   }
@@ -177,13 +178,6 @@ export class IDEAEchoPage {
         this.content = this.t._(`IDEA.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR`);
       })
       .finally(() => this.loading.hide());
-  }
-
-  /**
-   * Return to the homepage.
-   */
-  public goHome() {
-    this.navCtrl.navigateRoot(['/']);
   }
 }
 

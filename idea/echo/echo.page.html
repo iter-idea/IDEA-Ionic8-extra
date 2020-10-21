@@ -11,14 +11,10 @@
       <ion-card-content class="selectable">
         {{ content }}
         <div class="htmlContent" *ngIf="htmlContent" [innerHTML]="htmlContent"></div>
+        <p class="youCanCloseMe" *ngIf="success === false || success === true">
+          <i>{{ 'IDEA.ECHO.YOU_CAN_CLOSE_THE_PAGE' | translate }}</i>
+        </p>
       </ion-card-content>
-      <ion-button
-        *ngIf="success === false || success === true"
-        [title]="t._('IDEA.ECHO.GO_TO_HOME_HINT')"
-        (click)="goHome()"
-      >
-        {{ 'IDEA.ECHO.HOMEPAGE' | translate }}
-      </ion-button>
     </ion-card>
   </div>
 </ion-content>
