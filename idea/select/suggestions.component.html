@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('IDEA.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
+      <ion-button *ngIf="!mustChoose" [title]="t._('IDEA.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
         <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
       </ion-button>
     </ion-buttons>

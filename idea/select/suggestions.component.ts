@@ -48,6 +48,10 @@ export class IDEASuggestionsComponent {
    */
   @Input() public hideClearButton: boolean;
   /**
+   * If true, the user doesn't have the option to cancel the selection: an option must be chosen.
+   */
+  @Input() public mustChoose: boolean;
+  /**
    * A pre-filter for the category1.
    */
   @Input() public category1: string;

@@ -117,6 +117,10 @@ export class IDEASelectComponent {
    */
   @Input() public hideClearButton: boolean;
   /**
+   * If true, the user doesn't have the option to cancel the selection: an option must be chosen.
+   */
+  @Input() public mustChoose: boolean;
+  /**
    * A pre-filter for the category1.
    */
   @Input() public category1: string;
@@ -209,10 +213,12 @@ export class IDEASelectComponent {
           clearValueAfterSelection: this.clearValueAfterSelection,
           hideIdFromUI: this.hideIdFromUI,
           hideClearButton: this.hideClearButton,
+          mustChoose: this.mustChoose,
           category1: this.category1,
           category2: this.category2,
           showCategoriesFilters: this.showCategoriesFilters
-        }
+        },
+        backdropDismiss: !Boolean(this.mustChoose)
       })
       .then(modal => {
         modal.onDidDismiss().then((selection: any) => {
