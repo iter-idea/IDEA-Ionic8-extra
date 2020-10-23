@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
 import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
@@ -32,6 +32,10 @@ export class IDEASubscriptionSummaryComponent {
    * A general description for the plans.
    */
   @Input() public generalDescription: string;
+  /**
+   * A timestamp to indicate (when it changes) if we should reload the subscription because it was updated.
+   */
+  @Input() public shouldUpdate: number;
   /**
    * The id of the existing/future subscription, based on the target.
    */
@@ -75,6 +79,17 @@ export class IDEASubscriptionSummaryComponent {
     this.target = this.target || IdeaX.ProjectPlanTargets.TEAMS;
     if (this.target === IdeaX.ProjectPlanTargets.TEAMS) this.subscriptionId = this.membership.teamId;
     else this.subscriptionId = this.membership.userId;
+    // load the subscription
+    this.loadSubscription();
+  }
+  public ngOnChanges(changes: SimpleChanges) {
+    // reload the subscription
+    if (changes.shouldUpdate && changes.shouldUpdate.currentValue) this.loadSubscription();
+  }
+  /**
+   * Load the updated subscription.
+   */
+  private loadSubscription() {
     // acquire the subscription of the team
     this.ready = false;
     this.API.getResource(`projects/${IDEA_PROJECT}/subscriptions`, { idea: true, resourceId: this.subscriptionId })
