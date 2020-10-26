@@ -70,6 +70,8 @@ export class IDEAFromTimeToTimeComponent {
       this._timeInterval.from = timeMs;
       this.segment = Segments.TO;
     } else {
+      // can't proceed if from and to are equal
+      if (timeMs === this._timeInterval.from) return;
       // set the end of the interval (to)
       this._timeInterval.to = timeMs;
       // save the changes and notify the parent component
