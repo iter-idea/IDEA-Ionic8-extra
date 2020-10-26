@@ -101,9 +101,9 @@ export class IDEASubscriptionComponent {
               this.store.register(this.plans.map(s => ({ id: s.storePlanId, type: this.store.PAID_SUBSCRIPTION })));
             // prepare the store mechanisms
             this.prepareStore();
-            // run the store refresh (throws store.ready)
-            this.store.refresh();
-            this.loading.hide();
+            // run the store refresh (throws store.ready);
+            // necessary "any" typing since the current version of InAppPurchase2 plugin doesn't expose `finished`
+            (this.store.refresh() as any).finished(() => this.loading.hide());
           } else this.loading.hide();
         })
         .catch(() => {
@@ -246,10 +246,9 @@ export class IDEASubscriptionComponent {
    */
   public restorePurchases() {
     if (['android', 'ios'].some(x => x === this.platformStore)) {
-      // since the method doesn't have a callback, put a fake loader
       this.loading.show();
-      setTimeout(() => this.loading.hide(), 5000);
-      this.store.refresh();
+      // necessary "any" typing since the current version of InAppPurchase2 plugin doesn't expose `finished`
+      (this.store.refresh() as any).finished(() => this.loading.hide());
     } else this.verifyStripeSubscription();
   }
   protected verifyStripeSubscription() {
