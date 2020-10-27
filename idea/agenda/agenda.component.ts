@@ -195,6 +195,10 @@ export interface AgendaEvent extends CalendarEvent {
    */
   description?: string;
   /**
+   * The location of the event.
+   */
+  location?: string;
+  /**
    * A list of URLs of images to show as small avatars.
    */
   avatars?: Array<{ url: string; title: string }>;
@@ -202,4 +206,8 @@ export interface AgendaEvent extends CalendarEvent {
    * A list of ion-icons to show.
    */
   icons?: Array<{ name: string; title: string }>;
+  /**
+   * Whether the event is external; external events are less important UI-wise.
+   */
+  external?: boolean;
 }

@@ -84,6 +84,7 @@
   >
     <div
       class="cal-event"
+      [class.external]="weekEvent.event.external"
       [style.border-left-color]="weekEvent.event.color.primary"
       [style.color]="getAlternateColor(weekEvent.event.color.primary, tc.get('darkMode') ? 80 : -40)"
       [style.background-color]="getAlternateColor(weekEvent.event.color.primary, tc.get('darkMode') ? 60 : 80, 0.2)"
@@ -109,10 +110,8 @@
         [view]="daysInWeek === 1 ? 'day' : 'week'"
       >
       </mwl-calendar-event-title>
-      <div class="eventIcons" *ngIf="!weekEvent.event.allDay">
+      <div class="eventGadgets" *ngIf="!weekEvent.event.allDay">
         <ion-icon *ngFor="let icon of weekEvent.event.icons" [name]="icon.name" [title]="icon.title"></ion-icon>
-      </div>
-      <div class="eventAvatars" *ngIf="!weekEvent.event.allDay">
         <ion-avatar *ngFor="let avatar of weekEvent.event.avatars" [title]="avatar.title">
           <ion-img [src]="avatar.url"></ion-img>
         </ion-avatar>
