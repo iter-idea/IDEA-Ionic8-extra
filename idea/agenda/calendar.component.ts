@@ -20,6 +20,10 @@ export class IDEACalendarComponent {
    */
   @Input() public calendar: IdeaX.Calendar;
   /**
+   * Whether we want to enable advanced permissions (based on the memberships) on the calendar.
+   */
+  @Input() public advancedPermissions: boolean;
+  /**
    * Working copy of the calendar, to update only when confirmed.
    */
   public _calendar: IdeaX.Calendar;
@@ -84,7 +88,7 @@ export class IDEACalendarComponent {
     // set the default color, in case none was selected
     if (!this._calendar.color) this._calendar.color = this.DEFAULT_COLOR;
     // map the memberships able to manage appointments
-    if (this._calendar.isShared())
+    if (this._calendar.isShared() && this.advancedPermissions)
       this._calendar.usersCanManageAppointments = this.membershipsChecks
         .filter(x => x.checked)
         .map(x => String(x.value));

@@ -43,7 +43,7 @@
         (select)="$event ? (_calendar.color = $event) : null"
       ></idea-color-picker>
       <idea-checker
-        *ngIf="membershipsChecks && _calendar.isShared()"
+        *ngIf="membershipsChecks && _calendar.isShared() && advancedPermissions"
         [data]="membershipsChecks"
         [label]="t._('IDEA.AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS')"
         [searchPlaceholder]="t._('IDEA.AGENDA.CALENDARS.WHO_CAN_MANAGE_APPOINTMENTS')"
@@ -58,6 +58,20 @@
           <h2>{{ 'IDEA.AGENDA.CALENDARS.INFO_ON_CALENDAR' | translate }}</h2>
         </ion-label>
       </ion-list-header>
+      <ion-item lines="inset" *ngIf="calendar.userId">
+        <ion-label>
+          {{ 'IDEA.AGENDA.CALENDARS.PRIVATE_CALENDAR' | translate }}
+          <p>{{ 'IDEA.AGENDA.CALENDARS.PRIVATE_CALENDAR_HINT' | translate }}</p>
+        </ion-label>
+        <ion-icon slot="end" name="person"></ion-icon>
+      </ion-item>
+      <ion-item lines="inset" *ngIf="calendar.teamId">
+        <ion-label>
+          {{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR' | translate }}
+          <p>{{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR_HINT' | translate }}</p>
+        </ion-label>
+        <ion-icon slot="end" name="people"></ion-icon>
+      </ion-item>
       <ion-item lines="inset">
         <ion-label>
           {{ 'IDEA.AGENDA.CALENDARS.LINKED_TO' | translate }}

@@ -24,6 +24,10 @@ export class IDEACalendarItemComponent {
    */
   @Input() public disabled: boolean;
   /**
+   * Whether we want to enable advanced permissions (based on the memberships) on the calendar.
+   */
+  @Input() public advancedPermissions: boolean;
+  /**
    * Report to parent components a change.
    */
   @Output() public somethingChanged = new EventEmitter<IdeaX.Calendar>();
@@ -43,7 +47,10 @@ export class IDEACalendarItemComponent {
   public manageCalendar() {
     if (this.disabled) return;
     this.modalCtrl
-      .create({ component: IDEACalendarComponent, componentProps: { calendar: this.calendar } })
+      .create({
+        component: IDEACalendarComponent,
+        componentProps: { calendar: this.calendar, advancedPermissions: this.advancedPermissions }
+      })
       .then(modal => {
         modal.onDidDismiss().then(res => {
           const cal = res.data;

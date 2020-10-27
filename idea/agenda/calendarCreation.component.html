@@ -40,14 +40,14 @@
         </ion-card>
       </ion-col>
       <ion-col class="ion-text-center" [size]="12" [sizeSm]="6">
-        <ion-card [button]="true" [disabled]="!isUserAdmin" (click)="calendar.teamId = membership.teamId">
+        <ion-card [button]="true" (click)="calendar.teamId = membership.teamId">
           <ion-card-header>
             <ion-card-title>
               <ion-icon name="people"></ion-icon>
             </ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <h1>{{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR' | translate: { team: tc.get('team').name } }}</h1>
+            <h1>{{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR' | translate }}</h1>
             <p>{{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR_HINT' | translate }}</p>
           </ion-card-content>
         </ion-card>

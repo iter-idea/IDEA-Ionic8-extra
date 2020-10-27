@@ -16,13 +16,9 @@ import { IDEACalendarsService } from './calendars.service';
 })
 export class IDEACalendarCreationComponent {
   /**
-   * Whether the user is an administrator of the current IDEA team.
+   * Whether we want to allow the creation of only a particular type of calendar, based on the scope.
    */
-  @Input() public isUserAdmin: boolean;
-  /**
-   * Whether we want to allow the creation of only private calendars.
-   */
-  @Input() public onlyPrivateCalendars: boolean;
+  @Input() public fixScope: CalendarScopes;
   /**
    * Whether we want to allow the creation of local calendars.
    */
@@ -56,7 +52,8 @@ export class IDEACalendarCreationComponent {
   public ngOnInit() {
     this.calendar = new IdeaX.Calendar();
     this.membership = this.tc.get('membership');
-    if (this.onlyPrivateCalendars) this.calendar.userId = this.membership.userId;
+    if (this.fixScope === CalendarScopes.SHARED) this.calendar.teamId = this.membership.teamId;
+    if (this.fixScope === CalendarScopes.PRIVATE) this.calendar.userId = this.membership.userId;
   }
 
   /**
@@ -69,7 +66,7 @@ export class IDEACalendarCreationComponent {
    * Whether we can change the scope of the calendar (private/shared).
    */
   public canChangeScope(): boolean {
-    return !this.onlyPrivateCalendars && this.scopeIsSet();
+    return !this.fixScope && this.scopeIsSet();
   }
   /**
    * Whether the scope has been set already.
@@ -144,4 +141,12 @@ export class IDEACalendarCreationComponent {
   public close() {
     this.modalCtrl.dismiss();
   }
+}
+
+/**
+ * The possible scopes of the calendar.
+ */
+export enum CalendarScopes {
+  SHARED = 'shared', // teamId
+  PRIVATE = 'private' // userId
 }
