@@ -64,6 +64,10 @@ export class IDEAAgendaComponent {
    */
   @Output() public changeEvent = new EventEmitter<AgendaEvent>();
   /**
+   * Trigger when the view date of reference changed (because we moved inside the calendar).
+   */
+  @Output() public changeDate = new EventEmitter<Date>();
+  /**
    * Helper to use the enum in the UX.
    */
   public CalendarView = CalendarView;
@@ -126,10 +130,11 @@ export class IDEAAgendaComponent {
   }
 
   /**
-   * Close a day's details in the month view.
+   * Emit the change of the view date and close the detail component of the month view, if needed.
    */
-  public closeDayDetailsMonthView() {
-    this.activeDayIsOpen = false;
+  public viewDateChanged(newDate: Date) {
+    if (this.view === CalendarView.Month) this.activeDayIsOpen = false;
+    this.changeDate.emit(newDate);
   }
 
   /**

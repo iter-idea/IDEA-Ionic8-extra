@@ -36,11 +36,18 @@
         mwlCalendarPreviousView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="closeDayDetailsMonthView()"
+        (viewDateChange)="viewDateChanged($event)"
       >
         <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" color="dark" size="small" mwlCalendarToday [(viewDate)]="viewDate">
+      <ion-button
+        fill="clear"
+        color="dark"
+        size="small"
+        mwlCalendarToday
+        [(viewDate)]="viewDate"
+        (viewDateChange)="viewDateChanged($event)"
+      >
         <ion-icon name="today-outline" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-button
@@ -50,7 +57,7 @@
         mwlCalendarNextView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="closeDayDetailsMonthView()"
+        (viewDateChange)="viewDateChanged($event)"
       >
         <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
       </ion-button>
