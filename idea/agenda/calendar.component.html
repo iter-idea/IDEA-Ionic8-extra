@@ -36,6 +36,7 @@
         ></ion-input>
       </ion-item>
       <idea-color-picker
+        *ngIf="!hideColor"
         [lines]="'inset'"
         [current]="_calendar.color"
         [label]="t._('IDEA.AGENDA.CALENDARS.COLOR')"

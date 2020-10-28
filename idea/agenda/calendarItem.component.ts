@@ -28,6 +28,10 @@ export class IDEACalendarItemComponent {
    */
   @Input() public advancedPermissions: boolean;
   /**
+   * Whether the calendar color is an important detail or it shouldn't be shown.
+   */
+  @Input() public hideColor: boolean;
+  /**
    * Report to parent components a change.
    */
   @Output() public somethingChanged = new EventEmitter<IdeaX.Calendar>();
@@ -49,7 +53,11 @@ export class IDEACalendarItemComponent {
     this.modalCtrl
       .create({
         component: IDEACalendarComponent,
-        componentProps: { calendar: this.calendar, advancedPermissions: this.advancedPermissions }
+        componentProps: {
+          calendar: this.calendar,
+          advancedPermissions: this.advancedPermissions,
+          hideColor: this.hideColor
+        }
       })
       .then(modal => {
         modal.onDidDismiss().then(res => {

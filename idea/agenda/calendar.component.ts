@@ -24,6 +24,11 @@ export class IDEACalendarComponent {
    */
   @Input() public advancedPermissions: boolean;
   /**
+   * Whether the calendar color is an important detail or it shouldn't be shown.
+   */
+  @Input() public hideColor: boolean;
+
+  /**
    * Working copy of the calendar, to update only when confirmed.
    */
   public _calendar: IdeaX.Calendar;

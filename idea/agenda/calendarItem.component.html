@@ -5,7 +5,12 @@
   [title]="t._('IDEA.AGENDA.CALENDARS.EDIT_CALENDAR')"
   (click)="calendar.external && !calendar.external.calendarId ? linkExtCalendarOrDelete() : manageCalendar()"
 >
-  <ion-avatar slot="start" class="colorCircle" [style.background-color]="calendar.color"></ion-avatar>
+  <ion-avatar
+    slot="start"
+    class="colorCircle"
+    *ngIf="!hideColor"
+    [style.background-color]="calendar.color"
+  ></ion-avatar>
   <ion-label>
     {{ calendar.name }}
     <p>
