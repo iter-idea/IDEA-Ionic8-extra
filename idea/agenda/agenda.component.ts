@@ -89,6 +89,10 @@ export class IDEAAgendaComponent {
    * @hide
    */
   public weekStartsOn: number;
+  /**
+   * Helper to use the enum in the UI.
+   */
+  public Attendance = EventAttendance;
 
   constructor(public platform: Platform, public tc: IDEATinCanService, public t: IDEATranslationsService) {}
   public ngOnInit() {
@@ -215,4 +219,18 @@ export interface AgendaEvent extends CalendarEvent {
    * Whether the event is external; external events are less important UI-wise.
    */
   external?: boolean;
+  /**
+   * The attendance status to this event, if any.
+   */
+  attendance?: EventAttendance;
+}
+
+/**
+ * Possible attendance statuses for the event.
+ */
+export enum EventAttendance {
+  DECLINED = -1,
+  NEEDS_ACTION = 0,
+  TENTATIVE,
+  ACCEPTED
 }

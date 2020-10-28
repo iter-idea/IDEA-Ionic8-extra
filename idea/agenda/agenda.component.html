@@ -92,6 +92,9 @@
     <div
       class="cal-event"
       [class.external]="weekEvent.event.external"
+      [class.needsAction]="Attendance.NEEDS_ACTION === weekEvent.event.attendance"
+      [class.declined]="Attendance.DECLINED === weekEvent.event.attendance"
+      [class.tentative]="Attendance.TENTATIVE === weekEvent.event.attendance"
       [style.border-left-color]="weekEvent.event.color.primary"
       [style.color]="getAlternateColor(weekEvent.event.color.primary, tc.get('darkMode') ? 80 : -40)"
       [style.background-color]="getAlternateColor(weekEvent.event.color.primary, tc.get('darkMode') ? 60 : 80, 0.2)"
