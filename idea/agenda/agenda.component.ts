@@ -8,6 +8,11 @@ import ColorParse = require('color-parse');
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATinCanService } from '../tinCan.service';
 
+/**
+ * A local fallback URL for the avatars.
+ */
+const AVATAR_FALLBACK_URL = './assets/imgs/no-avatar.jpg';
+
 @Component({
   selector: 'idea-agenda',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,6 +52,10 @@ export class IDEAAgendaComponent {
    * Whether to block any day/slot in the past.
    */
   @Input() public onlyFuture = false;
+  /**
+   * URL to the fallback avatar to show in case the avatar of an event isn't found.
+   */
+  @Input() public fallbackAvatar: string;
   /**
    * Trigger when an event is selected.
    */
@@ -192,6 +201,14 @@ export class IDEAAgendaComponent {
       event.avatars.forEach(x => (str = str.concat('<br>', x.title)));
     }
     return str;
+  }
+
+  /**
+   * Load a fallback url when the avatar is missing.
+   */
+  public loadFallbackAvatar(targetImg: any) {
+    const fallback = this.fallbackAvatar || AVATAR_FALLBACK_URL;
+    if (targetImg && targetImg.src !== fallback) targetImg.src = fallback;
   }
 }
 
