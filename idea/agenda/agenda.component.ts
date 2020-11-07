@@ -227,7 +227,7 @@ export interface AgendaEvent extends CalendarEvent {
   /**
    * A list of URLs of images to show as small avatars.
    */
-  avatars?: Array<{ url: string; title: string }>;
+  avatars?: Array<{ id: string; url: string; title: string }>;
   /**
    * A list of ion-icons to show.
    */
@@ -240,6 +240,10 @@ export interface AgendaEvent extends CalendarEvent {
    * The attendance status to this event, if any.
    */
   attendance?: EventAttendance;
+  /**
+   * A standard and unique id for the event, valid across multiple sources.
+   */
+  iCalUID?: string;
 }
 
 /**
