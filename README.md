@@ -43,6 +43,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - DataWedge-compatible devices' reader service (barcode)
 - Error reporting service
 - External browser service
+- Fuzzy Search Service
 - Loading service
 - Message service
 - Push notifications service

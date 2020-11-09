@@ -39,6 +39,7 @@ export * from './cachedResources.service';
 export * from './dataWedgeReader.service';
 export * from './errorReporting.service';
 export * from './extBrowser.service';
+export * from './fuzzySearchRanking.service';
 export * from './loading.service';
 export * from './message.service';
 export * from './offline/offline.service';
