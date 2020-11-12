@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ModalController, AlertController, ActionSheetController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import Moment = require('moment-timezone');
 import { Plugins } from '@capacitor/core';
 const { CapacitorKeepScreenOn } = Plugins;
 
 import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEAActionSheetController } from '../actionSheet/actionSheetController.service';
 
 import { IDEADownloaderURL } from '../downloader/downloader.component';
 
@@ -23,7 +24,7 @@ export class IDEAOfflineManagerComponent {
   constructor(
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public actionSheetCtrl: ActionSheetController,
+    public actionSheetCtrl: IDEAActionSheetController,
     public offline: IDEAOfflineDataService,
     public t: IDEATranslationsService
   ) {}
@@ -95,8 +96,8 @@ export class IDEAOfflineManagerComponent {
    */
   public actions() {
     const buttons = [
-      { text: this.t._('IDEA.OFFLINE.FORCE_FULL_SYNC'), handler: () => this.forceFullSync() },
-      { text: this.t._('COMMON.CANCEL'), role: 'cancel' }
+      { text: this.t._('IDEA.OFFLINE.FORCE_FULL_SYNC'), icon: 'sync', handler: () => this.forceFullSync() },
+      { text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' }
     ];
     this.actionSheetCtrl
       .create({ header: this.t._('IDEA.OFFLINE.ADVANCED_ACTIONS'), buttons })

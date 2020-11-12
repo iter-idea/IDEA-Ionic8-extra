@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, ActionSheetController, NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import IdeaX = require('idea-toolbox');
 
@@ -8,6 +8,7 @@ import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEAActionSheetController } from '../actionSheet/actionSheetController.service';
 
 // from idea-config.js
 declare const IDEA_PROJECT: string;
@@ -39,7 +40,7 @@ export class IDEAMembershipsPage {
     public navCtrl: NavController,
     public tc: IDEATinCanService,
     public route: ActivatedRoute,
-    public actionSheetCtrl: ActionSheetController,
+    public actionSheetCtrl: IDEAActionSheetController,
     public alertCtrl: AlertController,
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
@@ -124,13 +125,16 @@ export class IDEAMembershipsPage {
         text: this.team.isUserAdmin(membership)
           ? this.t._('IDEA.TEAMS.REMOVE_ADMIN_ROLE')
           : this.t._('IDEA.TEAMS.MAKE_USER_ADMIN'),
+        icon: 'ribbon',
         handler: () => this.toggleAdminRole(membership)
       });
     buttons.push({
       text: membership.userId === this.user.userId ? this.t._('IDEA.TEAMS.UNJOIN') : this.t._('IDEA.TEAMS.KICK_OUT'),
+      role: 'destructive',
+      icon: 'exit',
       handler: () => this.deleteMembership(membership)
     });
-    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel' });
+    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     this.actionSheetCtrl
       .create({ header: this.t._('IDEA.TEAMS.ACTIONS_ON_USER_', { user: membership.name }), buttons })
       .then(actions => actions.present());

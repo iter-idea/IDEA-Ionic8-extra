@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AlertController, ModalController, IonRefresher, IonSearchbar, ActionSheetController } from '@ionic/angular';
+import { AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
 import Moment = require('moment-timezone');
 import Async = require('async');
 import IdeaX = require('idea-toolbox');
@@ -10,6 +10,7 @@ import { IDEATinCanService } from '../tinCan.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAOfflineService } from '../offline/offline.service';
+import { IDEAActionSheetController } from '../actionSheet/actionSheetController.service';
 
 import { IDEADownloaderURL } from '../downloader/downloader.component';
 
@@ -65,7 +66,7 @@ export class IDEARCResourcesComponent {
     public tc: IDEATinCanService,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public actionSheetCtrl: ActionSheetController,
+    public actionSheetCtrl: IDEAActionSheetController,
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
     public offline: IDEAOfflineService,
@@ -158,11 +159,21 @@ export class IDEARCResourcesComponent {
     const buttons = [];
     buttons.push({
       text: this.t._('IDEA.RESOURCE_CENTER.UPLOAD_NEW_VERSION'),
+      icon: 'cloud-upload',
       handler: () => this.browseUpdateResource(res)
     });
-    buttons.push({ text: this.t._('IDEA.RESOURCE_CENTER.RENAME'), handler: () => this.renameResource(res) });
-    buttons.push({ text: this.t._('IDEA.RESOURCE_CENTER.DELETE'), handler: () => this.deleteResource(res) });
-    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel' });
+    buttons.push({
+      text: this.t._('IDEA.RESOURCE_CENTER.RENAME'),
+      icon: 'text',
+      handler: () => this.renameResource(res)
+    });
+    buttons.push({
+      text: this.t._('IDEA.RESOURCE_CENTER.DELETE'),
+      role: 'destructive',
+      icon: 'trash',
+      handler: () => this.deleteResource(res)
+    });
+    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     this.actionSheetCtrl
       .create({ header: this.t._('IDEA.RESOURCE_CENTER.ACTIONS_ON_RESOURCE'), buttons })
       .then(actions => actions.present());

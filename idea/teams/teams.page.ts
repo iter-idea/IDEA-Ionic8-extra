@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
@@ -7,6 +7,7 @@ import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEAActionSheetController } from '../actionSheet/actionSheetController.service';
 
 // from idea-config.js
 declare const IDEA_PROJECT: string;
@@ -34,7 +35,7 @@ export class IDEATeamsPage {
     public tc: IDEATinCanService,
     public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public actionSheetCtrl: ActionSheetController,
+    public actionSheetCtrl: IDEAActionSheetController,
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
     public API: IDEAAWSAPIService,
@@ -145,10 +146,16 @@ export class IDEATeamsPage {
     const buttons = [];
     buttons.push({
       text: this.t._('IDEA.TEAMS.MANAGE_TEAM_MEMBERS'),
+      icon: 'people',
       handler: () => this.navCtrl.navigateForward(['teams', team.teamId, 'users'])
     });
-    buttons.push({ text: this.t._('IDEA.TEAMS.DELETE_TEAM'), role: 'danger', handler: () => this.deleteTeam(team) });
-    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel' });
+    buttons.push({
+      text: this.t._('IDEA.TEAMS.DELETE_TEAM'),
+      role: 'destructive',
+      icon: 'trash',
+      handler: () => this.deleteTeam(team)
+    });
+    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     // show the options
     this.actionSheetCtrl
       .create({ header: this.t._('IDEA.TEAMS.ACTIONS_ON_TEAM_', { team: team.name }), buttons })
