@@ -1,0 +1,31 @@
+ion-grid.actionSheetGrid {
+  ion-row.headerRow {
+    margin-top: 8px;
+    margin-bottom: 16px;
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+  ion-row.buttonsRow {
+    ion-button {
+      text-transform: none;
+      --ion-color-base: var(--ion-color-step-750) !important;
+    }
+    ion-button.destructive {
+      --ion-color-base: var(--ion-color-danger) !important;
+    }
+    ion-button.cancel {
+      --ion-color-base: var(--ion-color-step-550) !important;
+    }
+    ion-button.withIcon {
+      height: 70px;
+      div {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        ion-icon {
+          font-size: 1.8em;
+        }
+      }
+    }
+  }
+}

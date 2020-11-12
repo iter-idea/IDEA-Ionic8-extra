@@ -1,0 +1,28 @@
+<ion-content [class]="cssClass">
+  <ion-grid class="ion-padding actionSheetGrid">
+    <ion-row class="headerRow" *ngIf="header">
+      <ion-col class="ion-text-center">
+        <ion-label>{{ header }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center buttonsRow">
+      <ion-col *ngFor="let b of buttons" [size]="withIcons ? 6 : 12">
+        <ion-button
+          fill="clear"
+          expand="full"
+          color="medium"
+          [class.withIcon]="withIcons"
+          [class.destructive]="b.role === 'destructive'"
+          [class.cancel]="b.role === 'cancel'"
+          (click)="buttonClicked(b)"
+        >
+          <div>
+            <ion-icon *ngIf="withIcons" [name]="b.icon || 'flash'"></ion-icon>
+            <br *ngIf="withIcons" />
+            <ion-label>{{ b.text }}</ion-label>
+          </div>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

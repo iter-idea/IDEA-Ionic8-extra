@@ -7,6 +7,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 ## Components
 
 - IDEA Account
+- Action Sheet
 - Address
 - Agenda (angular-calendar)
 - Announcements

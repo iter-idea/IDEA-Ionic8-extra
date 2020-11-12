@@ -1,4 +1,5 @@
 export * from './account/account.module';
+export * from './actionSheet/actionSheet.module';
 export * from './address/address.module';
 export * from './agenda/agenda.module';
 export * from './announcement/announcement.module';
@@ -33,6 +34,7 @@ export * from './timeInterval/timeInterval.module';
 export * from './translations/translations.module';
 export * from './variables/variables.module';
 
+export * from './actionSheet/actionSheetController.service';
 export * from './auth/auth.service';
 export * from './AWSAPI.service';
 export * from './cachedResources.service';
