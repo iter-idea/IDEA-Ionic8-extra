@@ -11,7 +11,7 @@ import { IDEAActionSheetController } from './actionSheetController.service';
   imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
   declarations: [IDEAActionSheetComponent],
   entryComponents: [IDEAActionSheetComponent],
-  exports: [IDEAActionSheetComponent, IDEAActionSheetController],
+  exports: [IDEAActionSheetComponent],
   providers: [IDEAActionSheetController]
 })
 export class IDEAActionSheetModule {}
