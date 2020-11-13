@@ -204,6 +204,13 @@ export class IDEAAgendaComponent {
   }
 
   /**
+   * Get a shortened version of the description as preview.
+   */
+  public getPreviewDescription(description: string): string {
+    return description && description.length > 100 ? description.slice(0, 100).concat('...') : description;
+  }
+
+  /**
    * Load a fallback url when the avatar is missing.
    */
   public loadFallbackAvatar(targetImg: any) {

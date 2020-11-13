@@ -74,7 +74,7 @@
       [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'"
     >
       {{ event.title | calendarEventTitle: view:event }}
-      <p *ngIf="!event.allDay">{{ event.description }}</p>
+      <p *ngIf="!event.allDay">{{ getPreviewDescription(event.description) }}</p>
     </span>
   </ng-template>
   <ng-template
