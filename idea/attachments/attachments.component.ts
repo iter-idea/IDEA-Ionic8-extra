@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Plugins, CameraResultType, CameraPhoto, CameraSource } from '@capacitor/core';
-const { Camera } = Plugins;
+const { Camera, Browser } = Plugins;
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
-import { IDEADownloaderURL } from '../downloader/downloader.component';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAOfflineService } from '../offline/offline.service';
@@ -44,10 +43,6 @@ export class IDEAttachmentsComponent {
   @Input() public lines: string;
 
   /**
-   * Support variable to trigger file downloads.
-   */
-  public download: IDEADownloaderURL;
-  /**
    * URL towards to make API requests, based on the path of the resource.
    */
   public requestURL: string;
@@ -71,7 +66,6 @@ export class IDEAttachmentsComponent {
     this.editMode = false;
     this.lines = 'none';
     this.errors = new Set<string>();
-    this.download = null;
     this.uploadErrors = new Array<string>();
   }
   public ngOnInit() {
@@ -188,7 +182,7 @@ export class IDEAttachmentsComponent {
     this.API.patchResource(this.requestURL, {
       body: { action: 'ATTACHMENTS_GET', attachmentId: attachment.attachmentId }
     })
-      .then((res: IdeaX.SignedURL) => (this.download = new IDEADownloaderURL(res.url)))
+      .then((res: IdeaX.SignedURL) => Browser.open({ url: res.url }))
       .catch(() => this.message.error(`IDEA.ATTACHMENTS.ERROR_OPENING_ATTACHMENT`))
       .finally(() => this.loading.hide());
   }

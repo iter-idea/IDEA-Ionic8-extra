@@ -43,8 +43,6 @@
   </ion-button>
 </ion-item>
 <!----->
-<idea-downloader [download]="download" [horizontal]="'end'" [size]="'small'"></idea-downloader>
-<!----->
 <ion-item lines="none" class="noAttachments" *ngIf="!editMode && !attachments?.length">
   <ion-label>
     {{ 'IDEA.ATTACHMENTS.NO_ATTACHMENT' | translate }}

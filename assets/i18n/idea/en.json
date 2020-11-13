@@ -277,7 +277,6 @@
       "DEFAULT_CHOICE": "Default choice",
       "NO_DEFAULT_CHOICE": "No pre-selected choice"
     },
-    "DOWNLOAD": { "TAP_TO_DOWNLOAD": "Tap to download the file" },
     "DURATION": { "HH": "hh", "HOURS": "Hours", "MINUTES": "Minutes", "MM": "mm", "SECONDS": "Seconds", "SS": "ss" },
     "ECHO": {
       "INVALID_ACTION": "Invalid action",
@@ -537,11 +536,6 @@
       "DEACTIVATE_FIRST_TEAM_FROM_PROJECTS": "To proceed, you must deactivate the team from all the products",
       "TEAM_DELETION_ARE_YOU_SURE": "You won't be able to recover the data related to the team anymore. The operation is irreversible!",
       "YOUR_CURRENT_PASSWORD": "Password of the current user"
-    },
-    "UPDATE": {
-      "CLOSE_THE_APP_TO_UPDATE": "Close completely the app or the browser to install the update",
-      "GOT_IT": "Got it",
-      "UPDATE_AVAILABLE": "An update is available"
     }
   }
 }

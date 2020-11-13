@@ -2,13 +2,11 @@ import { Component } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import Moment = require('moment-timezone');
 import { Plugins } from '@capacitor/core';
-const { CapacitorKeepScreenOn } = Plugins;
+const { CapacitorKeepScreenOn, Browser } = Plugins;
 
 import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAActionSheetController } from '../actionSheet/actionSheetController.service';
-
-import { IDEADownloaderURL } from '../downloader/downloader.component';
 
 @Component({
   selector: 'idea-offline-manager',
@@ -16,11 +14,6 @@ import { IDEADownloaderURL } from '../downloader/downloader.component';
   styleUrls: ['offlineManager.component.scss']
 })
 export class IDEAOfflineManagerComponent {
-  /**
-   * Support variable to trigger file downloads.
-   */
-  public download: IDEADownloaderURL;
-
   constructor(
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
@@ -88,7 +81,7 @@ export class IDEAOfflineManagerComponent {
    */
   public downloadRequestLog(request: APIRequest) {
     const dataURL = window.URL.createObjectURL(new Blob([JSON.stringify(request)], { type: 'text/json' }));
-    this.download = new IDEADownloaderURL(dataURL);
+    Browser.open({ url: dataURL });
   }
 
   /**

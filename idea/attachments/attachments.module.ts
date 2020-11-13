@@ -5,10 +5,9 @@ import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAttachmentsComponent } from './attachments.component';
-import { IDEADownloaderModule } from '../downloader/downloader.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEADownloaderModule],
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
   declarations: [IDEAttachmentsComponent],
   entryComponents: [IDEAttachmentsComponent],
   exports: [IDEAttachmentsComponent]

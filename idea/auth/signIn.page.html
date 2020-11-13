@@ -149,7 +149,7 @@
         *ngIf="website"
         [src]="tc.get('darkMode') ? './assets/icons/idea-alt.png' : './assets/icons/idea.png'"
         [title]="t._('IDEA.AUTH.IDEA_TAGLINE')"
-        (click)="extBrowser.openLink(website)"
+        (click)="openLink(website)"
       ></ion-img>
     </div>
   </form>

@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
+import { Plugins } from '@capacitor/core';
+const { Browser } = Plugins;
 import { get } from 'scriptjs';
 import IdeaX = require('idea-toolbox');
 
@@ -7,7 +9,6 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEAMessageService } from '../message.service';
-import { IDEAExtBrowserService } from '../extBrowser.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
 // from idea-config.js
@@ -69,7 +70,6 @@ export class IDEAStripeSubscriptionComponent {
     public modalCtrl: ModalController,
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
-    public extBrowser: IDEAExtBrowserService,
     public tc: IDEATinCanService,
     public API: IDEAAWSAPIService,
     public t: IDEATranslationsService
@@ -125,14 +125,15 @@ export class IDEAStripeSubscriptionComponent {
    * Open Stripe's website with information on how payments are secure.
    */
   public openStripeInfo() {
-    this.extBrowser.openLink('https://stripe.com/docs/security/stripe');
+    const url = 'https://stripe.com/docs/security/stripe';
+    Browser.open({ url });
   }
   /**
    * Open IDEA's website.
    */
   public openWebsite(ev: any) {
     if (ev) ev.stopPropagation();
-    this.extBrowser.openLink(IDEA_AUTH_WEBSITE);
+    Browser.open({ url: IDEA_AUTH_WEBSITE });
   }
 
   /**

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { Plugins } from '@capacitor/core';
+const { Browser } = Plugins;
 
 import { IDEAAuthService } from './auth.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEALoadingService } from '../loading.service';
-import { IDEAExtBrowserService } from '../extBrowser.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
@@ -62,7 +63,6 @@ export class IDEASignInPage {
     public tc: IDEATinCanService,
     public message: IDEAMessageService,
     public loading: IDEALoadingService,
-    public extBrowser: IDEAExtBrowserService,
     public auth: IDEAAuthService,
     public t: IDEATranslationsService
   ) {
@@ -122,5 +122,12 @@ export class IDEASignInPage {
     this.tc.set('email', this.email);
     this.tc.set('password', this.password);
     this.navCtrl.navigateForward(['auth', 'sign-up']);
+  }
+
+  /**
+   * Open a URL in the browser.
+   */
+  public openLink(url: string) {
+    Browser.open({ url });
   }
 }

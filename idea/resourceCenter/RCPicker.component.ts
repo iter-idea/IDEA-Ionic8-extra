@@ -1,10 +1,11 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
+import { Plugins } from '@capacitor/core';
+const { Browser } = Plugins;
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
-import { IDEADownloaderURL } from '../downloader/downloader.component';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAOfflineService } from '../offline/offline.service';
@@ -44,10 +45,6 @@ export class IDEARCPickerComponent {
    * The resources mapped into suggestions.
    */
   public resourcesSuggestions: Array<IdeaX.Suggestion>;
-  /**
-   * Support variable to trigger file downloads.
-   */
-  public download: IDEADownloaderURL;
 
   constructor(
     public t: IDEATranslationsService,
@@ -64,7 +61,6 @@ export class IDEARCPickerComponent {
     this.lines = 'none';
     this.resources = null;
     this.resourcesSuggestions = null;
-    this.download = null;
   }
 
   /**
@@ -116,7 +112,7 @@ export class IDEARCPickerComponent {
       resourceId: resource.resourceId,
       body
     })
-      .then((res: IdeaX.SignedURL) => (this.download = new IDEADownloaderURL(res.url)))
+      .then((res: IdeaX.SignedURL) => Browser.open({ url: res.url }))
       .catch(() => this.message.error('IDEA.RESOURCE_CENTER.ERROR_OPENING_RESOURCE'))
       .finally(() => this.loading.hide());
   }

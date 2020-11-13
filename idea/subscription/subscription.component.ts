@@ -2,6 +2,8 @@ import { Component, ChangeDetectorRef, Input } from '@angular/core';
 import { ModalController, Platform, AlertController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import { InAppPurchase2, IAPProduct } from '@ionic-native/in-app-purchase-2/ngx';
+import { Plugins } from '@capacitor/core';
+const { Browser } = Plugins;
 import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
 
@@ -9,7 +11,6 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEAMessageService } from '../message.service';
-import { IDEAExtBrowserService } from '../extBrowser.service';
 
 import { IDEAStripeSubscriptionComponent } from './stripeSubscription.component';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -67,7 +68,6 @@ export class IDEASubscriptionComponent {
     public loading: IDEALoadingService,
     public changeRef: ChangeDetectorRef,
     public tc: IDEATinCanService,
-    public extBrowser: IDEAExtBrowserService,
     public store: InAppPurchase2,
     public API: IDEAAWSAPIService,
     public t: IDEATranslationsService
@@ -351,6 +351,13 @@ export class IDEASubscriptionComponent {
   public getLabelValue(label: IdeaX.Label): string {
     if (!label) return null;
     return label.translate(this.t.getCurrentLang(), this.t.languages());
+  }
+
+  /**
+   * Open a URL in the browser.
+   */
+  public openLink(url: string) {
+    Browser.open({ url });
   }
 
   /**

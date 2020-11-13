@@ -5,11 +5,10 @@ import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAAddressComponent } from './address.component';
-import { IDEADownloaderModule } from '../downloader/downloader.module';
 import { IDEASelectModule } from '../select/select.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEADownloaderModule, IDEASelectModule],
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule],
   declarations: [IDEAAddressComponent],
   entryComponents: [IDEAAddressComponent],
   exports: [IDEAAddressComponent]

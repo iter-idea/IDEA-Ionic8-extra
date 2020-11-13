@@ -1,7 +1,0 @@
-<ion-fab [vertical]="vertical" [horizontal]="horizontal" *ngIf="download?.url">
-  <a [target]="download.target" [href]="extBrowser.sanitizeUrl(download.url)">
-    <ion-fab-button [color]="color" [title]="t._('IDEA.DOWNLOAD.TAP_TO_DOWNLOAD')" [size]="size">
-      <ion-icon [name]="icon"></ion-icon>
-    </ion-fab-button>
-  </a>
-</ion-fab>

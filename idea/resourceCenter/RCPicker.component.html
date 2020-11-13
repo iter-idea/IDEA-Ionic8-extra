@@ -37,8 +37,6 @@
   </ion-button>
 </ion-item>
 <!----->
-<idea-downloader [download]="download" [horizontal]="'end'" [size]="'small'"></idea-downloader>
-<!----->
 <ion-item lines="none" class="noResources" *ngIf="!editMode && !attachedResources?.length">
   <ion-label>
     {{ 'IDEA.RESOURCE_CENTER.NO_RESOURCES' | translate }}

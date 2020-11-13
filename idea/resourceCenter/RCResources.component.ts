@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
+import { Plugins } from '@capacitor/core';
+const { Browser } = Plugins;
 import Moment = require('moment-timezone');
 import Async = require('async');
 import IdeaX = require('idea-toolbox');
@@ -11,8 +13,6 @@ import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAOfflineService } from '../offline/offline.service';
 import { IDEAActionSheetController } from '../actionSheet/actionSheetController.service';
-
-import { IDEADownloaderURL } from '../downloader/downloader.component';
 
 /**
  * The size limit, in MB, for the files to upload.
@@ -53,10 +53,6 @@ export class IDEARCResourcesComponent {
    * A shortcut to use Moment in UI.
    */
   public Moment = Moment;
-  /**
-   * Support variable to trigger file downloads.
-   */
-  public download: IDEADownloaderURL;
   /**
    * Stack of errors from the last upload.
    */
@@ -130,7 +126,7 @@ export class IDEARCResourcesComponent {
       resourceId: resource.resourceId,
       body: { action: 'GET_DOWNLOAD_URL' }
     })
-      .then((res: IdeaX.SignedURL) => (this.download = new IDEADownloaderURL(res.url)))
+      .then((res: IdeaX.SignedURL) => Browser.open({ url: res.url }))
       .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
       .finally(() => this.loading.hide());
   }

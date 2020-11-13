@@ -18,7 +18,6 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Colors picker
 - Contacts
 - Custom fields (block, sections, fields)
-- Downloader
 - Duration
 - Echo
 - Email (configure & send)
@@ -43,7 +42,6 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - (browser's) Cached resources service
 - DataWedge-compatible devices' reader service (barcode)
 - Error reporting service
-- External browser service
 - Fuzzy Search Service
 - Loading service
 - Message service

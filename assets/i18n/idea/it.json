@@ -277,7 +277,6 @@
       "DEFAULT_CHOICE": "Scelta predefinita",
       "NO_DEFAULT_CHOICE": "Nessuna scelta pre-selezionata"
     },
-    "DOWNLOAD": { "TAP_TO_DOWNLOAD": "Tocca per scaricare il file" },
     "DURATION": { "HH": "ore", "HOURS": "Ore", "MINUTES": "Minuti", "MM": "min", "SECONDS": "Secondi", "SS": "sec" },
     "ECHO": {
       "INVALID_ACTION": "Azione non valida",
@@ -537,11 +536,6 @@
       "DEACTIVATE_FIRST_TEAM_FROM_PROJECTS": "Per procedere devi disattivare il team da tutti i prodotti",
       "TEAM_DELETION_ARE_YOU_SURE": "Non sarai più in grado di recuperare i dati legati al team. L'operazione è irreversibile!",
       "YOUR_CURRENT_PASSWORD": "Password dell'utente attuale"
-    },
-    "UPDATE": {
-      "CLOSE_THE_APP_TO_UPDATE": "Chiudi completamente l'app o il browser per installare l'aggiornamento",
-      "GOT_IT": "Ho capito",
-      "UPDATE_AVAILABLE": "Un aggiornamento è disponibile"
     }
   }
 }
