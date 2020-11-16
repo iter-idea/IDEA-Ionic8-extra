@@ -104,6 +104,8 @@ export class IDEASubscriptionComponent {
             // run the store refresh (throws store.ready);
             // necessary "any" typing since the current version of InAppPurchase2 plugin doesn't expose `finished`
             (this.store.refresh() as any).finished(() => this.loading.hide());
+            // temporary bug-fix for "finished" event not fired on iOS: fire an extra "hide" after 5 seconds
+            setTimeout(() => this.loading.hide(), 5000);
           } else this.loading.hide();
         })
         .catch(() => {
@@ -249,6 +251,8 @@ export class IDEASubscriptionComponent {
       this.loading.show();
       // necessary "any" typing since the current version of InAppPurchase2 plugin doesn't expose `finished`
       (this.store.refresh() as any).finished(() => this.loading.hide());
+      // temporary bug-fix for "finished" event not fired on iOS: fire an extra "hide" after 5 seconds
+      setTimeout(() => this.loading.hide(), 5000);
     } else this.verifyStripeSubscription();
   }
   protected verifyStripeSubscription() {
