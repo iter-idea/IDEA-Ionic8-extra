@@ -62,7 +62,7 @@ export class IDEATeamsPage {
    * Change the currently selected team.
    */
   public selectTeam(team: IdeaX.Team, newTeam?: boolean) {
-    if (this.isCurrentTeam(team)) return this.navCtrl.navigateBack(['teams', team.teamId]);
+    if (!newTeam && this.isCurrentTeam(team)) return this.navCtrl.navigateBack(['teams', team.teamId]);
     // request a team change (so that the current teamId of the user is updated)
     this.loading.show();
     this.API.patchResource('users', {
