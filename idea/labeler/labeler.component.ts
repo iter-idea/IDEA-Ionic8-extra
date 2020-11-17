@@ -35,6 +35,10 @@ export class IDEALabelerComponent {
    */
   @Input() public variables: Array<IdeaX.LabelVariable>;
   /**
+   * If true, the component is disabled.
+   */
+  @Input() public disabled: boolean;
+  /**
    * If true, the label is validated on save.
    */
   @Input() public obligatory: boolean;
