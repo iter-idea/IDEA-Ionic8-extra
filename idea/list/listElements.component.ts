@@ -133,10 +133,12 @@ export class IDEAListELementsComponent {
    * Open the component to edit a label.
    */
   public editLabel(label: IdeaX.Label) {
-    this.modalCtrl.create({ component: IDEALabelerComponent, componentProps: { label } }).then(modal => {
-      modal.onDidDismiss().then(() => this.search(this.searchbar ? this.searchbar.value : ''));
-      modal.present();
-    });
+    this.modalCtrl
+      .create({ component: IDEALabelerComponent, componentProps: { label, obligatory: true } })
+      .then(modal => {
+        modal.onDidDismiss().then(() => this.search(this.searchbar ? this.searchbar.value : ''));
+        modal.present();
+      });
   }
 
   /**

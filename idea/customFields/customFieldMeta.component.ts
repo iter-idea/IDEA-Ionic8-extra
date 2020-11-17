@@ -69,7 +69,7 @@ export class IDEACustomFieldMetaComponent {
    */
   public editLabel(title: string, label: IdeaX.Label) {
     this.modalCtrl
-      .create({ component: IDEALabelerComponent, componentProps: { title, label } })
+      .create({ component: IDEALabelerComponent, componentProps: { title, label, obligatory: true } })
       .then(modal => modal.present());
   }
   /**
