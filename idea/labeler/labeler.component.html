@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ title }}</ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="!disabled">
       <ion-button [title]="t._('COMMON.SAVE')" (click)="save()">
         <ion-icon slot="icon-only" name="checkmark"></ion-icon>
       </ion-button>
@@ -14,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [class.ion-padding]="platform.width() > 500">
-  <ion-list class="aList" *ngIf="variables?.length">
+  <ion-list class="aList" *ngIf="variables?.length && !disabled">
     <ion-list-header>
       <ion-label>
         <h2>{{ 'IDEA.LABELER.VARIABLES_AVAILABLE' | translate }}</h2>
@@ -27,17 +27,23 @@
       </li>
     </ul>
   </ion-list>
-  <p class="explanation">{{ 'IDEA.LABELER.EXPLANATION' | translate }}</p>
-  <idea-mde-toolbar *ngIf="markdown"></idea-mde-toolbar>
-  <ion-list class="aList" *ngIf="_label">
+  <p class="explanation" *ngIf="!disabled">{{ 'IDEA.LABELER.EXPLANATION' | translate }}</p>
+  <idea-mde-toolbar *ngIf="markdown && !disabled"></idea-mde-toolbar>
+  <ion-list class="aList" [class.viewMode]="disabled" *ngIf="_label">
     <ion-item lines="inset" *ngFor="let l of t.getLangs()" [class.fieldHasError]="hasFieldAnError(l)">
       <ion-thumbnail slot="start"><img [src]="getFlagURL(l)" /></ion-thumbnail>
       <ion-label position="stacked">
         {{ t.getLangNameByKey(l) }}
         <ion-text *ngIf="l === t.getDefaultLang()">- {{ 'COMMON.DEFAULT' | translate }}</ion-text>
       </ion-label>
-      <ion-input type="text" *ngIf="!textarea" [(ngModel)]="_label[l]"></ion-input>
-      <ion-textarea *ngIf="textarea" [(ngModel)]="_label[l]" [rows]="3" [autoGrow]="true"></ion-textarea>
+      <ion-input type="text" *ngIf="!textarea" [(ngModel)]="_label[l]" [disabled]="disabled"></ion-input>
+      <ion-textarea
+        *ngIf="textarea"
+        [(ngModel)]="_label[l]"
+        [disabled]="disabled"
+        [rows]="3"
+        [autoGrow]="true"
+      ></ion-textarea>
     </ion-item>
   </ion-list>
 </ion-content>

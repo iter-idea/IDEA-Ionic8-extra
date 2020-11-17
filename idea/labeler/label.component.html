@@ -1,0 +1,30 @@
+<ion-item
+  class="labelItem"
+  [lines]="lines"
+  [button]="true"
+  [title]="placeholder || ''"
+  [class.withLabel]="label"
+  (click)="edit()"
+>
+  <ion-button
+    fill="clear"
+    slot="start"
+    *ngIf="icon"
+    [color]="iconColor"
+    [class.marginTop]="label"
+    (click)="doIconSelect($event)"
+  >
+    <ion-icon [name]="icon" slot="icon-only"></ion-icon>
+  </ion-button>
+  <ion-label position="stacked" *ngIf="label">{{ label }}</ion-label>
+  <div class="description">
+    <div class="placeholder" *ngIf="!getContent()">{{ placeholder }}</div>
+    <div
+      class="innerContent"
+      *ngIf="getContent()"
+      [class.md]="markdown"
+      [innerHTML]="getContent() | highlight: _variables"
+    ></div>
+  </div>
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled"></ion-icon>
+</ion-item>

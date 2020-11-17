@@ -3,27 +3,36 @@ import { ModalController } from '@ionic/angular';
 import IdeaX = require('idea-toolbox');
 
 import { IDEATranslationsService } from '../translations/translations.service';
-import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.component';
+
+import { IDEALabelerComponent } from './labeler.component';
 
 /**
- * Configurator of IdeaX.EmailData.
+ * Manage the content of a IdeaX.Label.
  */
 @Component({
-  selector: 'idea-email-data',
-  templateUrl: 'emailData.component.html',
-  styleUrls: ['emailData.component.scss']
+  selector: 'idea-label',
+  templateUrl: 'label.component.html',
+  styleUrls: ['label.component.scss']
 })
-export class IDEAEmailDataComponent {
+export class IDEALabelComponent {
   /**
-   * The email data to manage.
+   * The label to manage. The name is set to not overlap with IDEA's components typical use of the attribute `label`.
    */
-  @Input() public emailData: IdeaX.EmailData;
+  @Input() public content: IdeaX.Label;
   /**
-   * The variables the user can use for subject and content.
+   * Whether to display the label in textareas instead of text fields.
+   */
+  @Input() public textarea: boolean;
+  /**
+   * Whether the label supports markdown.
+   */
+  @Input() public markdown: boolean;
+  /**
+   * The variables the user can use in the label.
    */
   @Input() public variables: Array<IdeaX.StringVariable>;
   /**
-   * The label for the field.
+   * The title (label) for the field.
    */
   @Input() public label: string;
   /**
@@ -47,6 +56,10 @@ export class IDEAEmailDataComponent {
    */
   @Input() public disabled: boolean;
   /**
+   * If true, the label is validated on save.
+   */
+  @Input() public obligatory: boolean;
+  /**
    * On change event.
    */
   @Output() public change = new EventEmitter<void>();
@@ -66,16 +79,19 @@ export class IDEAEmailDataComponent {
   }
 
   /**
-   * Open the modal to configure the email data.
+   * Open the modal to edit the label.
    */
-  public openEmailDataConfiguration() {
+  public edit() {
     this.modalCtrl
       .create({
-        component: IDEAEmailDataConfigurationComponent,
+        component: IDEALabelerComponent,
         componentProps: {
-          emailData: this.emailData,
+          label: this.content,
+          textarea: this.textarea,
+          markdown: this.markdown,
           variables: this.variables,
           title: this.label,
+          obligatory: this.obligatory,
           disabled: this.disabled,
           lines: this.lines
         }
@@ -84,6 +100,14 @@ export class IDEAEmailDataComponent {
         modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
         modal.present();
       });
+  }
+
+  /**
+   * Get the content (the label).
+   */
+  public getContent(): string {
+    const str = this.content.translate(this.t.getCurrentLang(), this.t.languages());
+    return str && this.markdown ? IdeaX.mdToHtml(str) : str;
   }
 
   /**

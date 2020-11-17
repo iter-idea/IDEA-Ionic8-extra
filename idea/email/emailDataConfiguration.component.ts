@@ -17,7 +17,7 @@ export class IDEAEmailDataConfigurationComponent {
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() public variables: Array<IdeaX.EmailDataVariable>;
+  @Input() public variables: Array<IdeaX.StringVariable>;
   /**
    * The title for the component.
    */

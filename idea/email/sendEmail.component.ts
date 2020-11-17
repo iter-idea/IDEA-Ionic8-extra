@@ -22,7 +22,7 @@ export class IDEASendEmailComponent {
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() public variables: Array<IdeaX.EmailDataVariable>;
+  @Input() public variables: Array<IdeaX.StringVariable>;
   /**
    * A map of the values to substitute to the variables.
    */
@@ -45,7 +45,7 @@ export class IDEASendEmailComponent {
     // use a copy, to confirm it only when saving
     this._email = new IdeaX.EmailData(this.email);
     // substitute the variables in subject and content
-    if (!this.variables) this.variables = new Array<IdeaX.EmailDataVariable>();
+    if (!this.variables) this.variables = new Array<IdeaX.StringVariable>();
     if (!this.values) this.values = {};
     this.variables.forEach(v => {
       if (this.values[v.code]) {

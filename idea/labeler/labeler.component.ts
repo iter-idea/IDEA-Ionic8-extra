@@ -35,6 +35,10 @@ export class IDEALabelerComponent {
    */
   @Input() public variables: Array<IdeaX.LabelVariable>;
   /**
+   * If true, the label is validated on save.
+   */
+  @Input() public obligatory: boolean;
+  /**
    * Working helper to manage the label, to avoid changing the original label until it's time.
    */
   public _label: IdeaX.Label;
@@ -82,8 +86,10 @@ export class IDEALabelerComponent {
    */
   public save() {
     // check for errors
-    this.errors = new Set(this._label.validate(this.t.languages()));
-    if (this.errors.size) return this.message.error('IDEA.LABELER.FILL_IN_DEFAULT_LANGUAGE');
+    if (this.obligatory) {
+      this.errors = new Set(this._label.validate(this.t.languages()));
+      if (this.errors.size) return this.message.error('IDEA.LABELER.FILL_IN_DEFAULT_LANGUAGE');
+    }
     // save changes and close
     this.label.load(this._label, this.t.languages());
     this.close();
