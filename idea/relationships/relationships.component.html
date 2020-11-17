@@ -1,0 +1,34 @@
+<ion-list class="aList">
+  <ion-list-header>
+    <ion-label>
+      <h3>{{ 'IDEA.RELATIONSHIPS.RELATIONSHIPS' | translate }}</h3>
+      <p>{{ 'IDEA.RELATIONSHIPS.RELATIONSHIPS_I' | translate }}</p>
+    </ion-label>
+  </ion-list-header>
+  <ion-item lines="none" *ngIf="!relationships.length">
+    <ion-label>
+      <i>{{ 'IDEA.RELATIONSHIPS.NO_ELEMENTS' | translate }}</i>
+    </ion-label>
+  </ion-item>
+  <div *ngFor="let c of categories">
+    <ion-item-divider>
+      {{ 'IDEA.RELATIONSHIPS.CATEGORIES.' + RelationshipCategories[c] | translate }}
+    </ion-item-divider>
+    <ion-item *ngFor="let r of getRelationshipsByCategory(c)">
+      <ion-label class="ion-text-wrap">
+        {{ r.startNode.name }}
+        {{ ('IDEA.RELATIONSHIPS.PREDICATES.' + r.predicate | translate).toLowerCase() }}
+        {{ r.endNode.name }}
+        <p *ngIf="r.autoDescription">{{ r.autoDescription }}</p>
+        <p>
+          <ion-text>
+            {{ ('IDEA.RELATIONSHIPS.CREATED_AT' | translate).toLowerCase() }} {{ humanizeDateTime(r.createdAt) }}
+          </ion-text>
+        </p>
+      </ion-label>
+      <ion-button *ngIf="r.notes" fill="clear" (click)="openNotes($event, r.notes)">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </div>
+</ion-list>

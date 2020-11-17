@@ -536,6 +536,21 @@
       "DEACTIVATE_FIRST_TEAM_FROM_PROJECTS": "To proceed, you must deactivate the team from all the products",
       "TEAM_DELETION_ARE_YOU_SURE": "You won't be able to recover the data related to the team anymore. The operation is irreversible!",
       "YOUR_CURRENT_PASSWORD": "Password of the current user"
+    },
+    "RELATIONSHIPS": {
+      "RELATIONSHIPS": "Relationships",
+      "RELATIONSHIPS_I": "The relationships of the entity divided by category",
+      "NO_ELEMENTS": "No elements",
+      "CREATED_AT": "Created",
+      "PREDICATES": {
+        "Works at": "Works at",
+        "No longer works at": "No longer works at",
+        "Knows": "Knows"
+      },
+      "CATEGORIES": {
+        "SUBJECTS": "Subjects",
+        "PERSONS": "Persons"
+      }
     }
   }
 }

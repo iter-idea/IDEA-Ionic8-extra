@@ -21,6 +21,7 @@ export * from './list/list.module';
 export * from './map/map.module';
 export * from './offline/offline.module';
 export * from './mde/mde.module';
+export * from './relationships/relationships.module';
 export * from './resourceCenter/RC.module';
 export * from './select/select.module';
 export * from './signature/signature.module';

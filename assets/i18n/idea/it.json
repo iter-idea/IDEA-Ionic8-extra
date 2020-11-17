@@ -536,6 +536,21 @@
       "DEACTIVATE_FIRST_TEAM_FROM_PROJECTS": "Per procedere devi disattivare il team da tutti i prodotti",
       "TEAM_DELETION_ARE_YOU_SURE": "Non sarai più in grado di recuperare i dati legati al team. L'operazione è irreversibile!",
       "YOUR_CURRENT_PASSWORD": "Password dell'utente attuale"
+    },
+    "RELATIONSHIPS": {
+      "RELATIONSHIPS": "Relazioni",
+      "RELATIONSHIPS_I": "Le relazioni dell' entità divise per categoria",
+      "NO_ELEMENTS": "Nessun elemento",
+      "CREATED_AT": "Creato",
+      "PREDICATES": {
+        "Works at": "Lavora presso",
+        "No longer works at": "Non lavora più presso",
+        "Knows": "Conosce"
+      },
+      "CATEGORIES": {
+        "SUBJECTS": "Soggetti",
+        "PERSONS": "Persone"
+      }
     }
   }
 }
