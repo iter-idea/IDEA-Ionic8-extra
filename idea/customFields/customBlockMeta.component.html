@@ -4,7 +4,13 @@
   </ion-label>
 </ion-item>
 <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderSectionsLegend($event)">
-  <ion-item *ngFor="let s of block.sectionsLegend" [button]="true" [lines]="lines" (click)="openSection(s)">
+  <ion-item
+    *ngFor="let s of block.sectionsLegend"
+    [button]="true"
+    [detail]="true"
+    [lines]="lines"
+    (click)="openSection(s)"
+  >
     <ion-reorder slot="start" *ngIf="!disabled"></ion-reorder>
     <ion-label>
       {{ getLabelValue(block.sections[s].name) }}

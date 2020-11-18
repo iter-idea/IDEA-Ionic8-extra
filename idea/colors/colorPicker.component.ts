@@ -52,6 +52,14 @@ export class IDEAColorPickerComponent {
    */
   @Input() public placeholder: string;
   /**
+   * The icon for the field.
+   */
+  @Input() public icon: string;
+  /**
+   * The color of the icon.
+   */
+  @Input() public iconColor: string;
+  /**
    * If true, the component is disabled.
    */
   @Input() public disabled: boolean;
@@ -67,6 +75,10 @@ export class IDEAColorPickerComponent {
    * On select event.
    */
   @Output() public select = new EventEmitter<string>();
+  /**
+   * Icon select.
+   */
+  @Output() public iconSelect = new EventEmitter<void>();
 
   constructor(public popoverCtrl: PopoverController) {}
 
@@ -87,6 +99,14 @@ export class IDEAColorPickerComponent {
         });
         popover.present();
       });
+  }
+
+  /**
+   * The icon was selected.
+   */
+  public doIconSelect(event: any) {
+    if (event) event.stopPropagation();
+    this.iconSelect.emit(event);
   }
 }
 
