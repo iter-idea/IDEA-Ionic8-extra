@@ -33,7 +33,7 @@ export class IDEALabelerComponent {
   /**
    * The variables the user can use for the label content.
    */
-  @Input() public variables: Array<IdeaX.LabelVariable>;
+  @Input() public variables: Array<IdeaX.StringVariable | IdeaX.LabelVariable>;
   /**
    * If true, the component is disabled.
    */
@@ -83,6 +83,20 @@ export class IDEALabelerComponent {
    */
   public getFlagURL(lang: string): string {
     return `assets/flags/${lang}.png`;
+  }
+
+  /**
+   * Get the description of the variable, based on its type.
+   */
+  public getVariableDescription(v: IdeaX.StringVariable | IdeaX.LabelVariable): string {
+    const isLabel = Boolean((v as any).label);
+    if (isLabel) {
+      v = v as IdeaX.LabelVariable;
+      return v.label.translate(this.t.getCurrentLang(), this.t.languages());
+    } else {
+      v = v as IdeaX.StringVariable;
+      return v.description;
+    }
   }
 
   /**

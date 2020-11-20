@@ -23,7 +23,7 @@
     </ion-list-header>
     <ul class="variablesList">
       <li *ngFor="let v of variables">
-        <small>{{ v.code }}</small> {{ v.description }}
+        <small>{{ v.code }}</small> {{ getVariableDescription(v) }}
       </li>
     </ul>
   </ion-list>
