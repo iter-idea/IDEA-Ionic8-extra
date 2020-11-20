@@ -27,6 +27,7 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - Map (Google Maps)
 - Markdown Editor (MDE)
 - Offline (delta)
+- PDF Template
 - Resource Center
 - Select
 - Signature

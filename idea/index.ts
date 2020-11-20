@@ -20,6 +20,7 @@ export * from './limit/limit.module';
 export * from './list/list.module';
 export * from './map/map.module';
 export * from './offline/offline.module';
+export * from './pdfTemplate/pdfTemplate.module';
 export * from './mde/mde.module';
 export * from './resourceCenter/RC.module';
 export * from './select/select.module';

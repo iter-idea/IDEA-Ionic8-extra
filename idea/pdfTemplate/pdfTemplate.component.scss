@@ -1,0 +1,67 @@
+.maxWidthContainer {
+  max-width: 1000px;
+}
+.breadcrumb {
+  .last {
+    font-size: 1.15em;
+  }
+  ion-icon {
+    font-size: 0.7em;
+  }
+}
+div.templateSection {
+  background: var(--ion-color-white);
+  padding: 5px;
+  ion-label.specialRow {
+    font-size: 0.75em;
+    text-transform: uppercase;
+  }
+  ion-label.normalRow {
+    ion-row {
+      border: 0.5px dashed var(--ion-color-light);
+      ion-col {
+        ion-chip {
+          margin: 0;
+          width: 100%;
+          ion-icon {
+            font-size: 1.1em;
+          }
+          ion-label {
+            font-size: 0.9em;
+            font-weight: bold;
+            small {
+              padding-right: 4px;
+              font-size: 0.8em;
+            }
+          }
+        }
+        ion-chip.simpleField {
+          ion-icon {
+            margin-right: 3px;
+          }
+          ion-label {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            padding-bottom: 2px;
+            small {
+              font-size: 0.9em;
+              padding-right: 2px;
+            }
+          }
+        }
+        @media only screen and (min-width: 768px) {
+          ion-chip ion-label small {
+            display: none;
+          }
+        }
+        ion-chip.notTappable {
+          cursor: default;
+        }
+      }
+    }
+  }
+}
+div.templateSection.hasFieldAnError,
+ion-col.hasFieldAnError {
+  border: 2px dashed var(--ion-color-danger);
+}
