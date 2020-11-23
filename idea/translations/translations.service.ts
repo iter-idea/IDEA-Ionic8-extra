@@ -138,17 +138,23 @@ export class IDEATranslationsService {
   }
 
   /**
-   * Get a translated term by key, optionally interpolating variables (e.g. `{{user}}`).
+   * Get a translated term by key in the current language, optionally interpolating variables (e.g. `{{user}}`).
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
   public instant(key: string, interpolateParams?: object): string {
+    return this.instantInLanguage(this.currentLang, key, interpolateParams);
+  }
+  /**
+   * Get a translated term by key in the selected language, optionally interpolating variables (e.g. `{{user}}`).
+   * If the term doesn't exist in the current language, it is searched in the default language.
+   */
+  public instantInLanguage(language: string, key: string, interpolateParams?: object): string {
     if (!this.isDefined(key) || !key.length) return;
-    let res = this.interpolate(this.getValue(this.translations[this.currentLang], key), interpolateParams);
-    if (res === undefined && this.defaultLang !== null && this.defaultLang !== this.currentLang)
+    let res = this.interpolate(this.getValue(this.translations[language], key), interpolateParams);
+    if (res === undefined && this.defaultLang !== null && this.defaultLang !== language)
       res = this.interpolate(this.getValue(this.translations[this.defaultLang], key), interpolateParams);
     return res;
   }
-
   /**
    * Shortcut to instant.
    */
@@ -160,6 +166,15 @@ export class IDEATranslationsService {
    */
   public _md(key: string, interpolateParams?: object): string {
     return IdeaX.mdToHtml(this._(key, interpolateParams));
+  }
+
+  /**
+   * Return a Label containing all the available translations of a key.
+   */
+  public getLabelByKey(key: string, interpolateParams?: object): IdeaX.Label {
+    const label = new IdeaX.Label(null, this.languages());
+    this.langs.forEach(lang => (label[lang] = this.instantInLanguage(lang, key, interpolateParams)));
+    return label;
   }
 
   /**
