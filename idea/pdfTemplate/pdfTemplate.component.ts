@@ -299,6 +299,8 @@ export class IDEAPDFTemplateComponent {
     content[this.languages.default] = '--';
     // set the field in the chosen column of the section
     section.columns[colIndex] = new IdeaX.PDFTemplateComplexField({ content }, this.languages);
+    // directly open the field
+    this.openField(section, colIndex);
   }
   /**
    * Allow the user to pick a variable from the list available in this layer.
