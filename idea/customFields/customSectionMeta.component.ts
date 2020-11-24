@@ -20,6 +20,10 @@ export class IDEACustomSectionMetaComponent {
    */
   @Input() public section: IdeaX.CustomSectionMeta;
   /**
+   * Whether the CustomSectionMeta should manage the display template or it should be hidden.
+   */
+  @Input() public useDisplayTemplate: boolean;
+  /**
    * Whether the compoent is enabled or not.
    */
   @Input() public disabled: boolean;
@@ -53,7 +57,8 @@ export class IDEACustomSectionMetaComponent {
   public ngOnInit() {
     this._section = new IdeaX.CustomSectionMeta(this.section, this.t.languages());
     // ensure backwards compatibility
-    if (!this._section.displayTemplate) this._section.displayTemplate = new Array<Array<string>>();
+    if (this.useDisplayTemplate && !this._section.displayTemplate)
+      this._section.displayTemplate = new Array<Array<string>>();
   }
 
   /**
@@ -247,7 +252,7 @@ export class IDEACustomSectionMetaComponent {
     this.errors = new Set(this._section.validate(this.t.languages()));
     if (this.errors.size) return this.message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
     // remove empty display template rows
-    this.cleanEmptyDisplayTemplateRows();
+    if (this.useDisplayTemplate) this.cleanEmptyDisplayTemplateRows();
     // save and close
     this.section.load(this._section, this.t.languages());
     this.close();

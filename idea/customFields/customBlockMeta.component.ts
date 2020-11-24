@@ -18,6 +18,10 @@ export class IDEACustomBlockMetaComponent {
    */
   @Input() public block: IdeaX.CustomBlockMeta;
   /**
+   * Whether the custom sections should manage the display template or it should be hidden.
+   */
+  @Input() public useDisplayTemplate: boolean;
+  /**
    * Whether the component is enabled or not.
    */
   @Input() public disabled: boolean;
@@ -59,7 +63,12 @@ export class IDEACustomBlockMetaComponent {
     this.modalCtrl
       .create({
         component: IDEACustomSectionMetaComponent,
-        componentProps: { section: this.block.sections[s], disabled: this.disabled, lines: this.lines }
+        componentProps: {
+          section: this.block.sections[s],
+          useDisplayTemplate: this.useDisplayTemplate,
+          disabled: this.disabled,
+          lines: this.lines
+        }
       })
       .then(modal => modal.present());
   }
