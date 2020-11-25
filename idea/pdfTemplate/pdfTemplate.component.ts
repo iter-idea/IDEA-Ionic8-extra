@@ -248,6 +248,7 @@ export class IDEAPDFTemplateComponent {
           label,
           title: this.t._('IDEA.PDF_TEMPLATE.HEADER'),
           obligatory: true,
+          variables: this.getCurrentLayer().blueprint.variables,
           disabled: this.disabled
         },
         cssClass: 'forceBackdrop' // needed, since this component is also fullscreen
@@ -596,6 +597,18 @@ export interface MoveModeData {
             </ion-button>
           </ion-col>
         </ion-row>
+        <ion-row class="ion-align-items-center">
+          <ion-col class="ion-text-center">
+            <ion-button size="small" color="secondary" [disabled]="size === 1" (click)="shrinkToMin()">
+              <ion-icon name="contract" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col class="ion-text-center">
+            <ion-button size="small" color="secondary" [disabled]="size === max" (click)="growToMax()">
+              <ion-icon name="expand" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </ion-content>
   `,
@@ -637,6 +650,12 @@ export class IDEAPDFTemplateFieldResizeComponent {
     }
   }
   /**
+   * Increase the size of the field till the maximum allowed.
+   */
+  public growToMax() {
+    while (this.size < this.max) this.grow();
+  }
+  /**
    * Decrease the size of the field by one.
    */
   public shrink() {
@@ -644,5 +663,11 @@ export class IDEAPDFTemplateFieldResizeComponent {
       this.columns[this.colIndex + this.size - 1] = null;
       this.size--;
     }
+  }
+  /**
+   * Decrease the size of the field till the minimum allowed.
+   */
+  public shrinkToMin() {
+    while (this.size > 1) this.shrink();
   }
 }
