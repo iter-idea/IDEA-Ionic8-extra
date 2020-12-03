@@ -392,7 +392,7 @@ export class IDEAPDFTemplateComponent {
           title: field.isComplex()
             ? this.t._('IDEA.PDF_TEMPLATE.COMPLEX_FIELD')
             : this.t._('IDEA.PDF_TEMPLATE.SIMPLE_FIELD'),
-          obligatory: true,
+          obligatory: field.isComplex(),
           markdown: field.isComplex(),
           textarea: field.isComplex(),
           disabled: this.disabled,
