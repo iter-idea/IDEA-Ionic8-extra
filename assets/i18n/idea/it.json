@@ -316,7 +316,8 @@
       "MINUTES_PREFERENCE": "Preferenza minuti"
     },
     "LABELER": {
-      "EXPLANATION": "Solo la traduzione nella lingua di default è obbligatoria. Se una qualsiasi traduzione è mancante, verrà usata quella nella lingua di default.",
+      "EXPLANATION_OBLIGATORY": "Solo la traduzione nella lingua di default è obbligatoria.",
+      "EXPLANATION": "Se una qualsiasi traduzione è mancante, verrà usata quella nella lingua di default.",
       "FILL_IN_DEFAULT_LANGUAGE": "Devi compilare almeno nella lingua di default",
       "MANAGE_LABEL": "Gestisci etichetta",
       "VARIABLES_AVAILABLE": "Variabili disponibili",
@@ -394,6 +395,9 @@
       "BLANK_ROW_I": "Visualizza una riga vuota, per spaziare i contenuti",
       "HEADER": "Intestazione",
       "HEADER_I": "Riga di intestazione per separare due aree del template",
+      "INNER_SECTION_TITLE": "Titolo della sezione interna",
+      "INNER_SECTION_TITLE_I": "Il titolo della sezione interna è mostrato solo se la sezione ha dati da mostrare; lascialo vuoto nel caso non vuoi mai mostrarlo.",
+      "INNER_SECTION_TITLE_EMPTY_NOT_SHOWN": "Il titolo è attualmente vuoto, quindi non verrà mostrato",
       "INNER_SECTION": "Sezione interna",
       "INNER_SECTION_I": "Sezione figlia dell'attuale, per gestire i campi di un altro contesto",
       "REPEATED_INNER_SECTION": "Sezione interna ripetuta",

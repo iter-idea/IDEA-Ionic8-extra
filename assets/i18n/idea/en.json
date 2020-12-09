@@ -316,7 +316,8 @@
       "MINUTES_PREFERENCE": "Minutes preference"
     },
     "LABELER": {
-      "EXPLANATION": "Only the translation in the default language is mandatory. If any translation is missing, the one in the default language is used instead.",
+      "EXPLANATION_OBLIGATORY": "Only the translation in the default language is mandatory.",
+      "EXPLANATION": "If any translation is missing, the one in the default language is used instead.",
       "FILL_IN_DEFAULT_LANGUAGE": "You must fill in the label at least in the default language",
       "MANAGE_LABEL": "Manage label",
       "VARIABLES_AVAILABLE": "Variables available",
@@ -394,6 +395,9 @@
       "BLANK_ROW_I": "View an empty row, to create space between contents",
       "HEADER": "Header",
       "HEADER_I": "Header row, to separate two areas of the template",
+      "INNER_SECTION_TITLE": "Title of the inner section",
+      "INNER_SECTION_TITLE_I": "The title of the inner section is shown only if the section has some data to display; leave it empty in case you never want to display it.",
+      "INNER_SECTION_TITLE_EMPTY_NOT_SHOWN": "The title is currently empty so it won't be displayed",
       "INNER_SECTION": "Inner section",
       "INNER_SECTION_I": "Child section of the current one; used to manage fields of an inner context",
       "REPEATED_INNER_SECTION": "Repeated inner section",

@@ -27,7 +27,10 @@
       </li>
     </ul>
   </ion-list>
-  <p class="explanation" *ngIf="!disabled">{{ 'IDEA.LABELER.EXPLANATION' | translate }}</p>
+  <p class="explanation" *ngIf="!disabled">
+    <span *ngIf="obligatory">{{ 'IDEA.LABELER.EXPLANATION_OBLIGATORY' | translate }}</span>
+    {{ 'IDEA.LABELER.EXPLANATION' | translate }}
+  </p>
   <idea-mde-toolbar *ngIf="markdown && !disabled"></idea-mde-toolbar>
   <ion-list class="aList" [class.viewMode]="disabled" *ngIf="_label">
     <ion-item lines="inset" *ngFor="let l of t.getLangs()" [class.fieldHasError]="hasFieldAnError(l)">
