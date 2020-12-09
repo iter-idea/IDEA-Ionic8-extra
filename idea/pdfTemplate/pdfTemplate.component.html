@@ -55,6 +55,23 @@
         </ion-button>
       </ng-container>
     </ion-list-header>
+    <!-- (repeated) inner section header (title) -->
+    <div class="templateSection" *ngIf="getCurrentLayer().title">
+      <ion-item
+        [detail]="!isViewLocked()"
+        [button]="!isViewLocked()"
+        (click)="editSectionTitleLabel(getCurrentLayer().title)"
+      >
+        <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+        <ion-label [title]="t._('IDEA.PDF_TEMPLATE.INNER_SECTION_TITLE_I')">
+          <b *ngIf="label(getCurrentLayer().title)">{{ label(getCurrentLayer().title) }}</b>
+          <i *ngIf="!label(getCurrentLayer().title)">
+            {{ 'IDEA.PDF_TEMPLATE.INNER_SECTION_TITLE_EMPTY_NOT_SHOWN' | translate }}
+          </i>
+          <p>{{ 'IDEA.PDF_TEMPLATE.INNER_SECTION_TITLE' | translate }}</p>
+        </ion-label>
+      </ion-item>
+    </div>
     <ion-item *ngIf="!getCurrentTemplate().length">
       <i>{{ 'IDEA.PDF_TEMPLATE.NO_SECTION_DEFINED_YET_HERE' | translate }}</i>
     </ion-item>

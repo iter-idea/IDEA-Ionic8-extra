@@ -105,7 +105,7 @@ export class IDEAPDFTemplateComponent {
     const blueprint = this.getCurrentLayer().blueprint.innerBlueprints.find(ib => ib.context === section.context);
     // if a blueprint wasn't found, we can't go on
     if (!blueprint) return;
-    this.stack.push({ blueprint, template: section.innerTemplate });
+    this.stack.push({ blueprint, template: section.innerTemplate, title: section.title });
     // check for errors, to highlight them right away
     this.checkErrorsOnCurrentLayer();
   }
@@ -249,6 +249,27 @@ export class IDEAPDFTemplateComponent {
           title: this.t._('IDEA.PDF_TEMPLATE.HEADER'),
           obligatory: true,
           variables: this.getCurrentLayer().blueprint.variables,
+          disabled: this.disabled
+        },
+        cssClass: 'forceBackdrop' // needed, since this component is also fullscreen
+      })
+      .then(modal => modal.present());
+  }
+
+  /**
+   * Edit the title of an inner section.
+   */
+  public editSectionTitleLabel(label: IdeaX.Label) {
+    // skip if we are handling other operations
+    if (this.isViewLocked()) return;
+    // open the labeler
+    this.modalCtrl
+      .create({
+        component: IDEALabelerComponent,
+        componentProps: {
+          label,
+          title: this.t._('IDEA.PDF_TEMPLATE.INNER_SECTION_TITLE'),
+          obligatory: false,
           disabled: this.disabled
         },
         cssClass: 'forceBackdrop' // needed, since this component is also fullscreen
@@ -556,6 +577,10 @@ export interface PDFTemplateLayer {
    * The actual template, based on the blueprint.
    */
   template: Array<IdeaX.PDFTemplateSection>;
+  /**
+   * The title of the level, in case of INNER_SECTION or REPEATED_INNER_SECTION.
+   */
+  title?: IdeaX.Label;
 }
 
 /**
