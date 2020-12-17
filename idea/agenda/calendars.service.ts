@@ -192,7 +192,7 @@ export class IDEACalendarsService {
       this.openModalAndPickExternalCalendar(cal)
         .then(extCalId => {
           // the external calendar will be set later on
-          if (!extCalId) return resolve();
+          if (!extCalId) return resolve(null);
           // an external calendar was chosen: set it right away
           this.setExternalCalendar(cal, extCalId)
             .then(res => resolve(res))

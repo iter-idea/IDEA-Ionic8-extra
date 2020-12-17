@@ -98,7 +98,7 @@ export class IDEAStripeSubscriptionComponent {
   /**
    * Load Stripe's libs. Resolve the chosen promise when the SDK is fully loaded.
    */
-  private loadStripeLibs() {
+  private loadStripeLibs(): Promise<void> {
     return new Promise(resolve => {
       // be sure the scripts have been injected
       this.injectStripeScripts().then(() => {
@@ -111,7 +111,7 @@ export class IDEAStripeSubscriptionComponent {
   /**
    * Inject the Stripe's scripts, avoiding repeating the import more than one time.
    */
-  private injectStripeScripts() {
+  private injectStripeScripts(): Promise<void> {
     return new Promise(resolve => {
       if (this.tc.get('stripeLibLoaded')) return resolve();
       get('https://js.stripe.com/v3/', () => {

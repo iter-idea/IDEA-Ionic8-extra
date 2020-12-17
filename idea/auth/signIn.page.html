@@ -10,9 +10,7 @@
           [src]="tc.get('darkMode') ? 'assets/icons/icon-auth-alt.svg' : 'assets/icons/icon-auth.svg'"
         ></ion-img>
         <ion-card-header>
-          <ion-card-title color="primary" *ngIf="title">
-            {{ title }}
-          </ion-card-title>
+          <ion-card-title color="primary" *ngIf="title">{{ title }}</ion-card-title>
           <ion-card-subtitle *ngIf="t._('IDEA_VARIABLES.TAGLINE')">
             {{ 'IDEA_VARIABLES.TAGLINE' | translate }}
           </ion-card-subtitle>

@@ -104,7 +104,7 @@ export class IDEAAuthService {
   /**
    * Confirm a new registration through the confirmation code sent by Cognito.
    */
-  public confirmRegistration(username: string, code: string): Promise<any> {
+  public confirmRegistration(username: string, code: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.prepareCognitoUser(username).confirmRegistration(code, true, (err: Error) =>
         err ? reject(err) : resolve()
@@ -114,7 +114,7 @@ export class IDEAAuthService {
   /**
    * Send again a confirmation code for a new registration.
    */
-  public resendConfirmationCode(username: string): Promise<any> {
+  public resendConfirmationCode(username: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.prepareCognitoUser(username).resendConfirmationCode((err: Error) => (err ? reject(err) : resolve()));
     });
@@ -135,7 +135,7 @@ export class IDEAAuthService {
   /**
    * Send a password reset request.
    */
-  public forgotPassword(username: string): Promise<any> {
+  public forgotPassword(username: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.prepareCognitoUser(username).forgotPassword({
         onSuccess: () => resolve(),
@@ -146,7 +146,7 @@ export class IDEAAuthService {
   /**
    * Confirm a new password after a password reset request.
    */
-  public confirmPassword(username: string, code: string, newPwd: string): Promise<any> {
+  public confirmPassword(username: string, code: string, newPwd: string): Promise<void> {
     return new Promise((resolve, reject) => {
       // get the user and confirm a new password
       this.prepareCognitoUser(username).confirmPassword(code, newPwd, {
@@ -226,7 +226,7 @@ export class IDEAAuthService {
   /**
    * Update the currently logged in user's attributes.
    */
-  public updateUserAttributes(attributes: any): Promise<any> {
+  public updateUserAttributes(attributes: any): Promise<void> {
     return new Promise((resolve, reject) => {
       // prepare the attributes we want to change
       const attrs = new Array<any>();

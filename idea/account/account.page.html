@@ -5,17 +5,13 @@
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>
-      {{ 'IDEA.ACCOUNT.ACCOUNT' | translate }}
-    </ion-title>
+    <ion-title>{{ 'IDEA.ACCOUNT.ACCOUNT' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <ion-list lines="full" class="account">
     <ion-item>
-      <ion-label position="stacked">
-        {{ 'IDEA.ACCOUNT.EMAIL' | translate }}
-      </ion-label>
+      <ion-label position="stacked">{{ 'IDEA.ACCOUNT.EMAIL' | translate }}</ion-label>
       <ion-input type="text" readonly="true" [(ngModel)]="newEmail"> </ion-input>
       <ion-button
         slot="end"
@@ -28,9 +24,7 @@
       </ion-button>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">
-        {{ 'IDEA.ACCOUNT.PASSWORD' | translate }}
-      </ion-label>
+      <ion-label position="stacked">{{ 'IDEA.ACCOUNT.PASSWORD' | translate }}</ion-label>
       <ion-input type="text" readonly="true" value="********"> </ion-input>
       <ion-button
         slot="end"
@@ -53,9 +47,7 @@
         <p>
           {{ 'IDEA.ACCOUNT.IRREVERSIBLE_OPERATION' | translate }}
           <br />
-          <i>
-            {{ 'IDEA.ACCOUNT.YOU_MUST_LEAVE_ALL_TEAMS_FIRST' | translate }}
-          </i>
+          <i>{{ 'IDEA.ACCOUNT.YOU_MUST_LEAVE_ALL_TEAMS_FIRST' | translate }}</i>
         </p>
       </ion-label>
       <ion-button

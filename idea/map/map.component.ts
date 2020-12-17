@@ -164,10 +164,10 @@ export class IDEAMapComponent {
    */
   private getLocationSafely(highAccuracy?: boolean): Promise<GeolocationPosition> {
     return new Promise(resolve => {
-      if (!this.centerOnCurrentPosition) return resolve();
+      if (!this.centerOnCurrentPosition) return resolve(null);
       Geolocation.getCurrentPosition({ enableHighAccuracy: highAccuracy })
         .then(position => resolve(position))
-        .catch(() => resolve());
+        .catch(() => resolve(null));
     });
   }
 

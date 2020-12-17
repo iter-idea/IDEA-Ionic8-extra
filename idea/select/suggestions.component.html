@@ -86,16 +86,14 @@
               *ngIf="suggestion.category1"
               [innerHTML]="suggestion.category1 | boldprefix: searchbar.value"
             ></ion-text>
-            <ion-text *ngIf="suggestion.category1 && suggestion.category2" class="categoriesDivider">
-              |
-            </ion-text>
+            <ion-text *ngIf="suggestion.category1 && suggestion.category2" class="categoriesDivider"> | </ion-text>
             <ion-text
               *ngIf="suggestion.category2"
               [innerHTML]="suggestion.category2 | boldprefix: searchbar.value"
             ></ion-text>
           </p>
           <!-- the "key" div is used for keyboard controls -->
-          <div class="key" style="display: none;">
+          <div class="key" style="display: none">
             {{ suggestion.value }}
           </div>
           <ion-text [innerHTML]="suggestion.name || suggestion.value | boldprefix: searchbar.value"></ion-text>

@@ -15,7 +15,7 @@ export const API_URL =
 export class IDEAErrorReportingService {
   constructor(public http: HttpClient) {}
 
-  public sendReport(error: Error, forceSend?: boolean): Promise<any> {
+  public sendReport(error: Error, forceSend?: boolean): Promise<void> {
     return new Promise(resolve => {
       if (!this.shouldSend() && !forceSend) return resolve();
       const report = new IdeaX.ErrorReport();
