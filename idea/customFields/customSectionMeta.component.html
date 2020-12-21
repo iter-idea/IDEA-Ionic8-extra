@@ -16,44 +16,52 @@
 <ion-content>
   <div [class.viewMode]="disabled" [class.editMode]="!disabled">
     <ion-list class="aList ion-padding">
-      <ion-list-header *ngIf="disabled">
-        <ion-label>
-          <h2>{{ getLabelValue(_section.name) }}</h2>
-          <p>{{ getLabelValue(_section.description) }}</p>
-        </ion-label>
-      </ion-list-header>
-      <ion-item *ngIf="!disabled" [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
-        <ion-label position="stacked">
-          {{ 'IDEA.CUSTOM_FIELDS.NAME' | translate }}
-          <ion-text class="obligatoryDot" *ngIf="!disabled"></ion-text>
-        </ion-label>
-        <ion-input
-          type="text"
-          readonly="true"
-          [value]="getLabelValue(_section.name)"
-          [placeholder]="t._('IDEA.CUSTOM_FIELDS.SECTION_NAME_HINT')"
-        ></ion-input>
-        <ion-button slot="end" fill="clear" class="marginTop" [title]="t._('COMMON.EDIT')" (click)="editName()">
-          <ion-icon slot="icon-only" name="pencil"></ion-icon>
-        </ion-button>
-      </ion-item>
-      <ion-item *ngIf="!disabled" [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
-        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.DESCRIPTION' | translate }}</ion-label>
-        <ion-input
-          type="text"
-          readonly="true"
-          [value]="getLabelValue(_section.description)"
-          [placeholder]="t._('IDEA.CUSTOM_FIELDS.SECTION_DESCRIPTION_HINT')"
-        ></ion-input>
-        <ion-button slot="end" fill="clear" class="marginTop" [title]="t._('COMMON.EDIT')" (click)="editDescription()">
-          <ion-icon slot="icon-only" name="pencil"></ion-icon>
-        </ion-button>
-      </ion-item>
-      <ion-list-header>
-        <ion-label>
-          <h3>{{ 'IDEA.CUSTOM_FIELDS.SECTION_FIELDS' | translate }}</h3>
-        </ion-label>
-      </ion-list-header>
+      <ng-container *ngIf="noHeaders">
+        <ion-list-header *ngIf="disabled">
+          <ion-label>
+            <h2>{{ getLabelValue(_section.name) }}</h2>
+            <p>{{ getLabelValue(_section.description) }}</p>
+          </ion-label>
+        </ion-list-header>
+        <ion-item *ngIf="!disabled" [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
+          <ion-label position="stacked">
+            {{ 'IDEA.CUSTOM_FIELDS.NAME' | translate }}
+            <ion-text class="obligatoryDot" *ngIf="!disabled"></ion-text>
+          </ion-label>
+          <ion-input
+            type="text"
+            readonly="true"
+            [value]="getLabelValue(_section.name)"
+            [placeholder]="t._('IDEA.CUSTOM_FIELDS.SECTION_NAME_HINT')"
+          ></ion-input>
+          <ion-button slot="end" fill="clear" class="marginTop" [title]="t._('COMMON.EDIT')" (click)="editName()">
+            <ion-icon slot="icon-only" name="pencil"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item *ngIf="!disabled" [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
+          <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.DESCRIPTION' | translate }}</ion-label>
+          <ion-input
+            type="text"
+            readonly="true"
+            [value]="getLabelValue(_section.description)"
+            [placeholder]="t._('IDEA.CUSTOM_FIELDS.SECTION_DESCRIPTION_HINT')"
+          ></ion-input>
+          <ion-button
+            slot="end"
+            fill="clear"
+            class="marginTop"
+            [title]="t._('COMMON.EDIT')"
+            (click)="editDescription()"
+          >
+            <ion-icon slot="icon-only" name="pencil"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-list-header>
+          <ion-label>
+            <h3>{{ 'IDEA.CUSTOM_FIELDS.SECTION_FIELDS' | translate }}</h3>
+          </ion-label>
+        </ion-list-header>
+      </ng-container>
       <ion-item lines="none" *ngIf="!_section.fieldsLegend.length">
         <ion-label>
           <i>{{ 'IDEA.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>

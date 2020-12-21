@@ -20,6 +20,10 @@ export class IDEACustomSectionMetaComponent {
    */
   @Input() public section: IdeaX.CustomSectionMeta;
   /**
+   * Whether to hide the headers of the section (in case we just want to display/manage the fields).
+   */
+  @Input() public hideHeaders: boolean;
+  /**
    * Whether the CustomSectionMeta should manage the display template or it should be hidden.
    */
   @Input() public useDisplayTemplate: boolean;
