@@ -20,7 +20,8 @@ export class IDEAActionSheetController {
    * Based on the platform, open the traditional or the customised ActionSheet.
    */
   public create(options: IDEAActionSheetOptions, forceCustom?: boolean): Promise<HTMLIonActionSheetElement> {
-    if (this.platform.is('mobile') && !forceCustom) return this.actionSheetCtrl.create(options);
+    if ((this.platform.is('mobile') || this.platform.width() < 576) && !forceCustom)
+      return this.actionSheetCtrl.create(options);
     else
       return (this.popoverCtrl as any).create({
         backdropDismiss: options.backdropDismiss,
