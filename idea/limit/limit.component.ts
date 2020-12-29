@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
-import Moment = require('moment-timezone');
+import { AlertController } from '@ionic/angular';
 import IdeaX = require('idea-toolbox');
 
 import { IDEATranslationsService } from '../translations/translations.service';
-import { AlertController } from '@ionic/angular';
 
 /**
  * A component to show a limit (IdeaX.LimitCounter)
@@ -34,10 +33,6 @@ export class IDEALimitComponent {
    * The timestamp when the limit's counter will be reset.
    */
   @Input() public renewsOn: IdeaX.epochDateTime;
-  /**
-   * A shortcut to use Moment in UI.
-   */
-  public Moment = Moment;
 
   constructor(public alertCtrl: AlertController, public t: IDEATranslationsService) {}
 

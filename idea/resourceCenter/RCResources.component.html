@@ -69,7 +69,7 @@
         <ion-icon slot="start" color="medium" [name]="getFormatIcon(r.format)" [title]="r.format"></ion-icon>
         <ion-label>
           {{ r.name }}
-          <p>{{ 'IDEA.RESOURCE_CENTER.LASTLY_UPDATED_X_AGO' | translate: { time: Moment(r.version).fromNow() } }}</p>
+          <p>{{ 'IDEA.RESOURCE_CENTER.LASTLY_UPDATED_X_AGO' | translate: { time: (r.version | dateLocale) } }}</p>
         </ion-label>
         <ion-note slot="end">{{ r.format }}</ion-note>
         <ion-button

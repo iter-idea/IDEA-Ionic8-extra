@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -92,7 +91,9 @@ export class IDEAFromTimeToTimeComponent {
     // adjust the hour based on the start of the interval and the settings of am/pm
     hours = this.contextualizeHour(hours, minutes);
     // convert the calculated time into a readable string; we need to format it to distinguish 0-24 vs 0-12 am/pm
-    const str = Moment.utc(this.timeToMs(hours, minutes)).format('LT');
+    const refDate = new Date();
+    refDate.setHours(hours, minutes || 0, 0);
+    const str = this.t.formatDate(refDate, 'shortTime');
     // remove the extra part (e.g. am/pm), based on the type of button we have to show
     const strArr = str.split(':');
     return String(Number(strArr[0])).concat(minutes ? ':'.concat(strArr[1].slice(0, 2)) : '');
@@ -158,7 +159,9 @@ export class IDEAFromTimeToTimeComponent {
   public msToTimeString(time: number): string {
     if (!time) return '';
     // note: the time is always considered without any timezone (UTC)
-    return Moment.utc(time).format('LT');
+    const refDate = new Date();
+    refDate.setTime(time);
+    return this.t.formatDate(refDate, 'shortTime');
   }
 
   /**

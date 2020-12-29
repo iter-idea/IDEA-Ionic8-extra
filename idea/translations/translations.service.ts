@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import IdeaX = require('idea-toolbox');
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
@@ -249,5 +250,13 @@ export class IDEATranslationsService {
    */
   protected isDefined(value: any): boolean {
     return value !== undefined && value !== null;
+  }
+
+  /**
+   * Format a date in the current locale.
+   */
+  public formatDate(value: any, pattern: string = 'mediumDate'): string {
+    const datePipe: DatePipe = new DatePipe(this.getCurrentLang());
+    return datePipe.transform(value, pattern);
   }
 }

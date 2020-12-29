@@ -1,6 +1,5 @@
 import { Component, Input, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
-import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
@@ -53,10 +52,6 @@ export class IDEASubscriptionSummaryComponent {
    */
   public plan: IdeaX.ProjectPlan;
   /**
-   * A shortcut to use Moment in UI.
-   */
-  public Moment = Moment;
-  /**
    * Whether the UI is ready or not to show.
    */
   public ready: boolean;
@@ -74,7 +69,6 @@ export class IDEASubscriptionSummaryComponent {
   public ngOnInit() {
     this.ready = false;
     this.membership = this.tc.get('membership');
-    Moment.locale(this.t.getCurrentLang());
     // define target and subscription id
     this.target = this.target || IdeaX.ProjectPlanTargets.TEAMS;
     if (this.target === IdeaX.ProjectPlanTargets.TEAMS) this.subscriptionId = this.membership.teamId;
@@ -158,7 +152,7 @@ export class IDEASubscriptionSummaryComponent {
    * Note: when `validUntil` equals `0`, it means the subscription doesn't expire.
    */
   public isSubscriptionExpired(subscription: IdeaX.ProjectSubscription): boolean {
-    return subscription && subscription.validUntil ? subscription.validUntil < Number(Moment().format('x')) : false;
+    return subscription && subscription.validUntil ? subscription.validUntil < Date.now() : false;
   }
 
   /**

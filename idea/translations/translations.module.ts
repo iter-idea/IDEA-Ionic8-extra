@@ -5,11 +5,12 @@ import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslatePipe } from './translations.pipe';
 import { IDEALanguagePickerComponent } from './languagePicker.component';
+import { IDEALocalizedDatePipe } from './dateLocale.pipe';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [IDEATranslatePipe, IDEALanguagePickerComponent],
+  declarations: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALanguagePickerComponent],
   entryComponents: [IDEALanguagePickerComponent],
-  exports: [IDEATranslatePipe, IDEALanguagePickerComponent]
+  exports: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALanguagePickerComponent]
 })
 export class IDEATranslationsModule {}

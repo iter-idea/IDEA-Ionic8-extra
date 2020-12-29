@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import Moment = require('moment-timezone');
+import { addSeconds, getSeconds, getMinutes, getHours } from 'date-fns';
 
 @Component({
   selector: 'idea-duration',
@@ -68,10 +68,12 @@ export class IDEADurationComponent {
   public ngOnChanges(changes: SimpleChanges) {
     // assign a default value to the duration
     if (changes['default'] && changes['default'].isFirstChange()) {
-      const val = Moment.duration(this.default, 'seconds');
-      this.hours = val.hours();
-      this.minutes = val.minutes();
-      this.seconds = this.hideSeconds ? 0 : val.seconds();
+      const refDate = new Date(0);
+      refDate.setHours(0, 0, 0);
+      const val = addSeconds(refDate, this.default);
+      this.hours = getHours(val);
+      this.minutes = getMinutes(val);
+      this.seconds = this.hideSeconds ? 0 : getSeconds(val);
     }
   }
 

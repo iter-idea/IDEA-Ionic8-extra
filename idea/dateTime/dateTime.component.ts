@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
-import Moment = require('moment-timezone');
+import { Subscription } from 'rxjs';
 import IdeaX = require('idea-toolbox');
 
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
 import { IDEATranslationsService } from '../translations/translations.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'idea-date-time',
@@ -69,10 +68,8 @@ export class IDEADateTimeComponent {
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {
-    Moment.locale(this.t.getCurrentLang());
     // when the language changes, set the locale
     this.langChangeSubscription = this.t.onLangChange.subscribe(() => {
-      Moment.locale(this.t.getCurrentLang());
       this.valueToDisplay = this.getValueToDisplay(this.date);
     });
   }
@@ -109,7 +106,7 @@ export class IDEADateTimeComponent {
    * Calculate the value to show.
    */
   protected getValueToDisplay(date: IdeaX.epochDateTime): string {
-    return !date ? '' : Moment(date).format(this.timePicker ? 'LLL' : 'LL');
+    return !date ? '' : this.t.formatDate(date, this.timePicker ? 'mediumDate' : 'longDate');
   }
 
   /**

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
-import Moment = require('moment-timezone');
 import { Plugins } from '@capacitor/core';
 const { CapacitorKeepScreenOn, Browser } = Plugins;
 
@@ -21,9 +20,6 @@ export class IDEAOfflineManagerComponent {
     public offline: IDEAOfflineDataService,
     public t: IDEATranslationsService
   ) {}
-  public ngOnInit() {
-    Moment.locale(this.t.getCurrentLang());
-  }
 
   /**
    * Run a synchronization (with manual confirmation), to acquire what's changed since the last one.
@@ -49,16 +45,6 @@ export class IDEAOfflineManagerComponent {
         ]
       })
       .then(alert => alert.present());
-  }
-
-  /**
-   * Smarter labeling based on a recent syncronization.
-   */
-  public getLastSyncLabel(): string {
-    if (!this.offline.lastSyncAt) return this.t._('IDEA.OFFLINE.NEVER');
-    const reasonableTime: number = 1000 * 60 * 5; // 5 minutes
-    if (Date.now() < this.offline.lastSyncAt + reasonableTime) return this.t._('IDEA.OFFLINE.NOW');
-    else return Moment.unix(this.offline.lastSyncAt / 1000).format('LL');
   }
 
   /**

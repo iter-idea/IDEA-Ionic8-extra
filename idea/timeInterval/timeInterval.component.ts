@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/
 import { OverlayEventDetail } from '@ionic/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -87,10 +86,8 @@ export class IDEATimeIntervalComponent {
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
 
   public ngOnInit() {
-    Moment.locale(this.t.getCurrentLang());
     // when the language changes, set the locale
     this.langChangeSubscription = this.t.onLangChange.subscribe(() => {
-      Moment.locale(this.t.getCurrentLang());
       this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
     });
   }
@@ -106,9 +103,11 @@ export class IDEATimeIntervalComponent {
    */
   protected getValueToDisplay(timeInterval: IdeaX.TimeInterval): string {
     if (!timeInterval || !timeInterval.isSet()) return '';
+    // since the dates are stored as UTC, we need to add the current timezone
+    const timeZoneOffset = new Date().getTimezoneOffset() * 60000;
     return (
-      `${this.t._('IDEA.FTTT.FROM')} ${Moment.utc(timeInterval.from).format('LT')} ` +
-      `${this.t._('IDEA.FTTT.TO').toLowerCase()} ${Moment.utc(timeInterval.to).format('LT')}`
+      `${this.t._('IDEA.FTTT.FROM')} ${this.t.formatDate(timeInterval.from + timeZoneOffset, 'shortTime')} ` +
+      `${this.t._('IDEA.FTTT.TO').toLowerCase()} ${this.t.formatDate(timeInterval.to + timeZoneOffset, 'shortTime')}`
     );
   }
 

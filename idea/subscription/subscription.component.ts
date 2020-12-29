@@ -4,7 +4,6 @@ import { OverlayEventDetail } from '@ionic/core';
 import { InAppPurchase2, IAPProduct } from '@ionic-native/in-app-purchase-2/ngx';
 import { Plugins } from '@capacitor/core';
 const { Browser } = Plugins;
-import Moment = require('moment-timezone');
 import IdeaX = require('idea-toolbox');
 
 import { IDEALoadingService } from '../loading.service';
@@ -74,7 +73,6 @@ export class IDEASubscriptionComponent {
   ) {}
   public ngOnInit() {
     this.membership = this.tc.get('membership');
-    Moment.locale(this.t.getCurrentLang());
     // define target and subscription id
     this.target = this.target || IdeaX.ProjectPlanTargets.TEAMS;
     if (this.target === IdeaX.ProjectPlanTargets.TEAMS) this.subscriptionId = this.membership.teamId;
@@ -346,7 +344,7 @@ export class IDEASubscriptionComponent {
    * Whether the subscription is expired or no.
    */
   public isSubscriptionExpired(subscription: IdeaX.ProjectSubscription): boolean {
-    return subscription ? subscription.validUntil < Number(Moment().format('x')) : false;
+    return subscription ? subscription.validUntil < Date.now() : false;
   }
 
   /**

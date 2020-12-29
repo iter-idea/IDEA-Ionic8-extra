@@ -32,7 +32,7 @@
             <ion-input
               type="text"
               [placeholder]="t._('IDEA.CALENDAR.YEAR')"
-              [value]="refDate.year()"
+              [value]="refDate.getFullYear()"
               (ionFocus)="$event.target.value = ''"
               (ionChange)="setYear($event)"
             >
@@ -53,7 +53,7 @@
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6" (click)="showMonths()">
-            {{ refDate.format('MMMM') }}
+            {{ refDate | dateLocale: 'MMMM' }}
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(+1)">
@@ -74,16 +74,16 @@
           size="small"
           shape="round"
           [color]="
-            calendarGrid[i][j].isSame(today, 'd') || calendarGrid[i][j].isSame(selectedDate, 'd')
+            isSameDay(calendarGrid[i][j], today) || isSameDay(calendarGrid[i][j], selectedDate)
               ? 'primary'
-              : refDate.isSame(calendarGrid[i][j], 'month')
+              : isSameMonth(refDate, calendarGrid[i][j])
               ? 'dark'
               : 'medium'
           "
           [fill]="
-            selectedDate.isSame(calendarGrid[i][j], 'd')
+            isSameDay(selectedDate, calendarGrid[i][j])
               ? 'solid'
-              : calendarGrid[i][j].isSame(today, 'd')
+              : isSameDay(calendarGrid[i][j], today)
               ? 'outline'
               : 'clear'
           "

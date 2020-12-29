@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 const { Browser } = Plugins;
-import Moment = require('moment-timezone');
 import Async = require('async');
 import IdeaX = require('idea-toolbox');
 
@@ -50,10 +49,6 @@ export class IDEARCResourcesComponent {
    */
   public searchbar: IonSearchbar;
   /**
-   * A shortcut to use Moment in UI.
-   */
-  public Moment = Moment;
-  /**
    * Stack of errors from the last upload.
    */
   public uploadErrors: Array<string>;
@@ -70,7 +65,6 @@ export class IDEARCResourcesComponent {
     public t: IDEATranslationsService
   ) {}
   public ngOnInit() {
-    Moment.locale(this.t.getCurrentLang());
     // if the team isn't specified, try to guess it in the usual IDEA's paths
     this.teamId = this.teamId || this.tc.get('membership').teamId || this.tc.get('teamId');
     // load the team's Resource Center resources for the specified folder
