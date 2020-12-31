@@ -1,0 +1,57 @@
+{
+  "name": "@idea-ionic/plans-subscription",
+  "version": "0.0.1",
+  "description": "IDEA Ionic plans subscription (and limit) logic",
+  "dependencies": {
+    "scriptjs": "^2.5.9",
+    "tslib": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=11.0.0",
+    "@angular/core": ">=11.0.0",
+    "@angular/forms": ">=11.0.0",
+    "@angular/platform-browser": ">=11.0.0",
+    "@angular/router": ">=11.0.0",
+    "@capacitor/core": ">=2.4.5",
+    "@idea-ionic/common": ">=0.0.6",
+    "@ionic/angular": ">=5.0.0",
+    "@ionic/storage": ">=2.2.0",
+    "@ionic-native/core": ">=5.0.7",
+    "@ionic-native/in-app-purchase-2": ">=5.30.0",
+    "idea-toolbox": ">=6.2.0",
+    "rxjs": ">=6.5.5",
+    "zone.js": ">=0.10.3"
+  },
+  "devDependencies": {
+    "@angular/common": ">=11.0.0",
+    "@angular/core": ">=11.0.0",
+    "@angular/forms": ">=11.0.0",
+    "@angular/platform-browser": ">=11.0.0",
+    "@angular/router": ">=11.0.0",
+    "@capacitor/core": ">=2.4.5",
+    "@idea-ionic/common": ">=0.0.6",
+    "@ionic/angular": ">=5.0.0",
+    "@ionic/storage": ">=2.2.0",
+    "@ionic-native/core": ">=5.0.7",
+    "@ionic-native/in-app-purchase-2": ">=5.30.0",
+    "google": "^2.1.0",
+    "idea-toolbox": ">=6.2.0",
+    "rxjs": ">=6.5.5",
+    "zone.js": ">=0.10.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uatisdeproblem/IDEA-Ionic-extra.git"
+  },
+  "keywords": [
+    "idea",
+    "ionic",
+    "angular"
+  ],
+  "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uatisdeproblem/IDEA-Ionic-extra/issues"
+  },
+  "homepage": "https://github.com/uatisdeproblem/IDEA-Ionic-extra/tree/master/plans-subscription"
+}

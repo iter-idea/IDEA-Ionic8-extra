@@ -1,0 +1,141 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "modules",
+  "projects": {
+    "common": {
+      "projectType": "library",
+      "root": "modules/common",
+      "sourceRoot": "modules/common/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "modules/common/tsconfig.lib.json",
+            "project": "modules/common/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/common/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    },
+    "auth": {
+      "projectType": "library",
+      "root": "modules/auth",
+      "sourceRoot": "modules/auth/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "modules/auth/tsconfig.lib.json",
+            "project": "modules/auth/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/auth/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    },
+    "agenda": {
+      "projectType": "library",
+      "root": "modules/agenda",
+      "sourceRoot": "modules/agenda/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "modules/agenda/tsconfig.lib.json",
+            "project": "modules/agenda/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/agenda/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    },
+    "speech-recognition": {
+      "projectType": "library",
+      "root": "modules/speech-recognition",
+      "sourceRoot": "modules/speech-recognition/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "modules/speech-recognition/tsconfig.lib.json",
+            "project": "modules/speech-recognition/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/speech-recognition/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    },
+    "map": {
+      "projectType": "library",
+      "root": "modules/map",
+      "sourceRoot": "modules/map/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "modules/map/tsconfig.lib.json",
+            "project": "modules/map/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/map/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    },
+    "plans-subscription": {
+      "projectType": "library",
+      "root": "modules/plans-subscription",
+      "sourceRoot": "modules/plans-subscription/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "modules/plans-subscription/tsconfig.lib.json",
+            "project": "modules/plans-subscription/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/plans-subscription/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    },
+    "teams": {
+      "projectType": "library",
+      "root": "modules/teams",
+      "sourceRoot": "modules/teams/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "modules/teams/tsconfig.lib.json",
+            "project": "modules/teams/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/teams/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "common"
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/speech-recognition",
+  "lib": {
+    "entryFile": "public-api.ts",
+    "umdModuleIds": {
+      "@capacitor/core": "@capacitor/core",
+      "@idea-ionic/common": "@idea-ionic/common",
+      "@ionic/angular": "@ionic/angular",
+      "@ionic/storage": "@ionic/storage",
+      "@ionic-native/speech-recognition": "@ionic-native/speech-recognition",
+      "@ionic-native/speech-recognition/ngx": "@ionic-native/speech-recognition/ngx",
+      "idea-toolbox": "idea-toolbox"
+    }
+  }
+}
