@@ -84,12 +84,12 @@ export class IDEACalendarItemComponent {
       .then(cal => {
         if (!cal) return new Error('NO_EXTERNAL_CALENDAR_CHOSEN');
         this.calendar.load(cal);
-        this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_LINKED');
+        this.message.success('IDEA_AGENDA.CALENDARS.CALENDAR_LINKED');
         // run a first sync for the linked external calendar
-        this.loading.show(this.t._('IDEA.AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
+        this.loading.show(this.t._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
         this.calendars
           .syncCalendar(this.calendar)
-          .then(() => this.message.success('IDEA.AGENDA.CALENDARS.FIRST_SYNC_COMPLETED'))
+          .then(() => this.message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED'))
           .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
           .finally(() => {
             this.loading.hide();
@@ -101,8 +101,8 @@ export class IDEACalendarItemComponent {
         // the external service isn't linked yet (we don't have a token): link or delete
         this.alertCtrl
           .create({
-            header: this.t._('IDEA.AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED'),
-            message: this.t._('IDEA.AGENDA.CALENDARS.DO_YOU_WANT_PROCEED_LINKING_OR_DELETE'),
+            header: this.t._('IDEA_AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED'),
+            message: this.t._('IDEA_AGENDA.CALENDARS.DO_YOU_WANT_PROCEED_LINKING_OR_DELETE'),
             buttons: [
               {
                 text: this.t._('COMMON.DELETE'),
@@ -121,7 +121,7 @@ export class IDEACalendarItemComponent {
                 }
               },
               {
-                text: this.t._('IDEA.AGENDA.CALENDARS.LINK'),
+                text: this.t._('IDEA_AGENDA.CALENDARS.LINK'),
                 handler: () =>
                   // try again to link the service
                   this.calendars

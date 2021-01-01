@@ -9,10 +9,10 @@
       </ion-button>
     </ion-buttons>
     <ion-title>
-      <span *ngIf="!scopeIsSet()">{{ 'IDEA.AGENDA.CALENDARS.ADD_A_CALENDAR' | translate }}</span>
-      <span *ngIf="calendar.userId">{{ 'IDEA.AGENDA.CALENDARS.PERSONAL_CALENDAR' | translate }}</span>
+      <span *ngIf="!scopeIsSet()">{{ 'IDEA_AGENDA.CALENDARS.ADD_A_CALENDAR' | translate }}</span>
+      <span *ngIf="calendar.userId">{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR' | translate }}</span>
       <span *ngIf="calendar.teamId">
-        {{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR' | translate: { team: tc.get('team').name } }}
+        {{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate: { team: tc.get('team').name } }}
       </span>
     </ion-title>
   </ion-toolbar>
@@ -22,7 +22,7 @@
   <ion-grid class="ion-padding choiceGrid" *ngIf="!scopeIsSet()">
     <ion-row>
       <ion-col class="ion-text-center">
-        <h1>{{ 'IDEA.AGENDA.CALENDARS.CREATE_PRIVATE_OR_TEAM' | translate }}</h1>
+        <h1>{{ 'IDEA_AGENDA.CALENDARS.CREATE_PRIVATE_OR_TEAM' | translate }}</h1>
       </ion-col>
     </ion-row>
     <ion-row class="ion-align-items-center">
@@ -34,8 +34,8 @@
             </ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <h1>{{ 'IDEA.AGENDA.CALENDARS.PERSONAL_CALENDAR' | translate }}</h1>
-            <p>{{ 'IDEA.AGENDA.CALENDARS.PERSONAL_CALENDAR_HINT' | translate }}</p>
+            <h1>{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR' | translate }}</h1>
+            <p>{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR_HINT' | translate }}</p>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -47,8 +47,8 @@
             </ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <h1>{{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR' | translate }}</h1>
-            <p>{{ 'IDEA.AGENDA.CALENDARS.TEAM_CALENDAR_HINT' | translate }}</p>
+            <h1>{{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate }}</h1>
+            <p>{{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR_HINT' | translate }}</p>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -58,8 +58,8 @@
   <ion-grid class="ion-padding choiceGrid" *ngIf="scopeIsSet()">
     <ion-row>
       <ion-col class="ion-text-center">
-        <h1>{{ 'IDEA.AGENDA.CALENDARS.WHICH_EXTERNAL_SERVICE_TO_LINK' | translate }}</h1>
-        <p>{{ 'IDEA.AGENDA.CALENDARS.WHICH_EXTERNAL_SERVICE_TO_LINK_HINT' | translate }}</p>
+        <h1>{{ 'IDEA_AGENDA.CALENDARS.WHICH_EXTERNAL_SERVICE_TO_LINK' | translate }}</h1>
+        <p>{{ 'IDEA_AGENDA.CALENDARS.WHICH_EXTERNAL_SERVICE_TO_LINK_HINT' | translate }}</p>
       </ion-col>
     </ion-row>
     <ion-row class="ion-align-items-center">
@@ -71,8 +71,8 @@
             </ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <h1>{{ 'IDEA.AGENDA.CALENDARS.DONT_LINK' | translate }}</h1>
-            <p>{{ 'IDEA.AGENDA.CALENDARS.DONT_LINK_HINT' | translate }}</p>
+            <h1>{{ 'IDEA_AGENDA.CALENDARS.DONT_LINK' | translate }}</h1>
+            <p>{{ 'IDEA_AGENDA.CALENDARS.DONT_LINK_HINT' | translate }}</p>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -85,10 +85,10 @@
           </ion-card-header>
           <ion-card-content>
             <h1>
-              {{ 'IDEA.AGENDA.CALENDARS.LINK_TO' | translate }}
-              {{ 'IDEA.AGENDA.CALENDARS.SERVICES.' + s | translate }}
+              {{ 'IDEA_AGENDA.CALENDARS.LINK_TO' | translate }}
+              {{ 'IDEA_AGENDA.CALENDARS.SERVICES.' + s | translate }}
             </h1>
-            <p>{{ 'IDEA.AGENDA.CALENDARS.LINK_TO_HINT' | translate }}</p>
+            <p>{{ 'IDEA_AGENDA.CALENDARS.LINK_TO_HINT' | translate }}</p>
           </ion-card-content>
         </ion-card>
       </ion-col>
