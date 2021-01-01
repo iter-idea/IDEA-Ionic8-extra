@@ -5,7 +5,7 @@
   <ion-label class="ion-text-wrap">
     {{ name }}
     <p *ngIf="renewsOn">
-      {{ 'IDEA.LIMIT.COUNTER_WILL_BE_RESET_ON_' | translate: { date: (renewsOn | dateLocale: 'longDate') } }}
+      {{ 'IDEA_PS.LIMIT.COUNTER_WILL_BE_RESET_ON_' | translate: { date: (renewsOn | dateLocale: 'longDate') } }}
     </p>
   </ion-label>
   <ion-badge slot="end" [color]="getLimitColor()"> {{ limit.counter }} / {{ limit.limit }} </ion-badge>

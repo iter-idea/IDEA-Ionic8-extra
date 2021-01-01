@@ -1,7 +1,7 @@
 <ion-card *ngIf="limit.isCloseToLimit()" [color]="getLimitColor()">
   <ion-card-content
     [innerHtml]="
-      t._md(limit.limitReached() ? 'IDEA.LIMIT.LIMIT_REACHED_ALERT' : 'IDEA.LIMIT.ALMOST_REACHED_LIMIT_ALERT', {
+      t._md(limit.limitReached() ? 'IDEA_PS.LIMIT.LIMIT_REACHED_ALERT' : 'IDEA_PS.LIMIT.ALMOST_REACHED_LIMIT_ALERT', {
         name: name,
         counter: limit.counter,
         limit: limit.limit

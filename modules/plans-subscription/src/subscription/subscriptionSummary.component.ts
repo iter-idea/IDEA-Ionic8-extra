@@ -98,7 +98,7 @@ export class IDEASubscriptionSummaryComponent {
             this.ready = true;
             this.changeRef.detectChanges();
           })
-          .catch(() => this.message.error('IDEA.SUBSCRIPTION.COULDNT_LOAD_PLANS'));
+          .catch(() => this.message.error('IDEA_PS.SUBSCRIPTION.COULDNT_LOAD_PLANS'));
       })
       // the team doesn't have a subscription
       .catch(() => {

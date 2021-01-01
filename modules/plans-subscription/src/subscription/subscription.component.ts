@@ -109,7 +109,7 @@ export class IDEASubscriptionComponent {
         })
         .catch(() => {
           this.loading.hide();
-          this.message.error('IDEA.SUBSCRIPTION.COULDNT_LOAD_PLANS');
+          this.message.error('IDEA_PS.SUBSCRIPTION.COULDNT_LOAD_PLANS');
           this.close();
         });
     }
@@ -157,7 +157,7 @@ export class IDEASubscriptionComponent {
     this.cbStoreOnProductFinished = () => this.changeRef.detectChanges();
     this.store.when('paid subscription').finished(this.cbStoreOnProductFinished);
     // when there is an error, show it (we can't interact with iOS/Android that much here)
-    this.cbStoreOnError = () => this.message.error('IDEA.SUBSCRIPTION.ERROR_CONTACTING_STORE');
+    this.cbStoreOnError = () => this.message.error('IDEA_PS.SUBSCRIPTION.ERROR_CONTACTING_STORE');
     this.store.error(this.cbStoreOnError);
     // when the store is ready, get the products info out of it
     this.cbStoreOnReady = () => {
@@ -194,9 +194,9 @@ export class IDEASubscriptionComponent {
     this.alertCtrl
       .create({
         header: this.subscription
-          ? this.t._('IDEA.SUBSCRIPTION.SUBSCRIPTION_CHANGE')
-          : this.t._('IDEA.SUBSCRIPTION.NEW_SUBSCRIPTION'),
-        message: this.t._('IDEA.SUBSCRIPTION.DO_YOU_CONFIRM_THE_SUBSCRIPTION_', {
+          ? this.t._('IDEA_PS.SUBSCRIPTION.SUBSCRIPTION_CHANGE')
+          : this.t._('IDEA_PS.SUBSCRIPTION.NEW_SUBSCRIPTION'),
+        message: this.t._('IDEA_PS.SUBSCRIPTION.DO_YOU_CONFIRM_THE_SUBSCRIPTION_', {
           plan: this.getLabelValue(plan.title)
         }),
         buttons: [
@@ -283,8 +283,8 @@ export class IDEASubscriptionComponent {
   protected cancelStripeSubscriptionAtTheEndOfPeriod(planId: string) {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.SUBSCRIPTION.STOP_SUBSCRIPTION'),
-        message: this.t._('IDEA.SUBSCRIPTION.SUBSCRIPTION_WONT_RENEW_ANYMORE'),
+        header: this.t._('IDEA_PS.SUBSCRIPTION.STOP_SUBSCRIPTION'),
+        message: this.t._('IDEA_PS.SUBSCRIPTION.SUBSCRIPTION_WONT_RENEW_ANYMORE'),
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
@@ -300,7 +300,7 @@ export class IDEASubscriptionComponent {
                     .then(() => this.verifyStripeSubscription())
                     .catch(() => this.message.error('COMMON.OPERATION_FAILED'));
                 })
-                .catch(() => this.message.error('IDEA.SUBSCRIPTION.PLAN_NOT_FOUND'));
+                .catch(() => this.message.error('IDEA_PS.SUBSCRIPTION.PLAN_NOT_FOUND'));
             }
           }
         ]

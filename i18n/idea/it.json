@@ -191,11 +191,6 @@
       "APP_WILL_RESTART": "L'app verrà  riavviata",
       "CHANGE_LANGUAGE": "Cambia il linguaggio visualizzato"
     },
-    "LIMIT": {
-      "COUNTER_WILL_BE_RESET_ON_": "Il contatore verrà resettato in data {{date}}",
-      "ALMOST_REACHED_LIMIT_ALERT": "Hai quasi raggiunto il limite per la risorsa **{{name}}** ({{counter}} su {{limit}}).\nVai alla **pagina di gestione del team** per maggiori informazioni.",
-      "LIMIT_REACHED_ALERT": "Hai raggiunto il limite per la risorsa **{{name}}** ({{counter}} su {{limit}}).\nVai alla **pagina di gestione del team** per maggiori informazioni."
-    },
     "LIST": {
       "CANCEL_AND_CLOSE": "Annulla cambiamenti e chiudi",
       "DELETE_ELEMENT": "Elimina elemento",
@@ -343,48 +338,6 @@
       "SIGNATURE_EXPLANATION": "Disegna la firma qui sotto",
       "VERIFY_SIGNATORY_AND_SIGNATURE": "Verifica firmatario e firma",
       "SIGNATURE_IS_TOO_COMPLEX": "La firma è troppo complessa; per piacere, ripetila"
-    },
-    "STRIPE": {
-      "AUTHORIZATION_CHECK_TEXT": "ad inviare istruzioni all'istituto finanziario che ha rilasciato la mia carta per prelevare pagamenti dal mio account, in accordo con i termini del del servizio.",
-      "CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT": "Conferma autorizzazione per pagamento ricorrente",
-      "CREDIT_DEBIT_CARD": "Carta di Credito o Debito",
-      "ERROR_DURING_PAYMENT_CHECK_CARD": "Il pagamento è stato rifiutato: controlla i dati inseriti",
-      "INVALID_CREDIT_CARD": "La carta inserita non sembra essere valida",
-      "I_AUTHORIZE": "Autorizzo",
-      "NO_CREDIT_CARD_INFO_STORED_IN_OUR_SERVERS": "Nota: nessuna informazione sulla Carta di Credito/Debito verrà  salvata sui nostri server",
-      "SECURELY_SUBSCRIBE_THROUGH": "Abbonati in maniera sicura con",
-      "SUBSCRIBE": "Abbonati",
-      "SUBSCRIBE_HINT": "Abbonati al piano selezionato tramite la carta di credito/debito specificata",
-      "SUCCESSFULLY_SUBSCRIBED": "Sei stato abbonato al piano scelto",
-      "YOUR_CURRENT_PLAN": "Il tuo attuale piano",
-      "YOU_ARE_SUBSCRIBING_TO_RECURRING_PLAN": "Ti stai abbonando al seguente piano ricorrente"
-    },
-    "SUBSCRIPTION": {
-      "BACK_TO_FREE_PLAN": "Torna al piano gratuito",
-      "CANCEL_SUBSCRIPTION": "Annulla abbonamento",
-      "COULDNT_LOAD_SUBSCRIPTION": "Errore nel caricamento dell'abbonamento.",
-      "COULDNT_LOAD_PLANS": "Errore nel caricamento dei piani",
-      "DO_YOU_CONFIRM_THE_SUBSCRIPTION_": "Confermi di volerti abbonare a: {{plan}}?",
-      "ERROR_CONTACTING_STORE": "Errore durante il collegamento con lo store",
-      "EXPIRED": "Scaduto",
-      "FREE": "Gratuito",
-      "HOW_IT_WORKS_APPLE": "Il pagamento sarà  addebitato sul tuo account ID Apple alla conferma dell'acquisto. L'abbonamento si rinnova automaticamente a meno che non venga annullato almeno 24 ore prima della fine del periodo corrente. Il tuo account verrà  addebitato per il rinnovo entro 24 ore prima della fine del periodo corrente. Puoi gestire e cancellare i tuoi abbonamenti andando nelle impostazioni del tuo account su App Store dopo l'acquisto.",
-      "MANAGE_SUBSCRIPTION": "Gestisci abbonamento",
-      "NEW_SUBSCRIPTION": "Nuovo abbonamento",
-      "NEXT_BILLING_DATE": "Prossima fatturazione",
-      "PLANS": "Piani disponibili",
-      "PLAN_NOT_FOUND": "Piano non trovato",
-      "RESTORE_PURCHASES": "Ripristina acquisti",
-      "STOP_SUBSCRIPTION": "Annulla abbonamento",
-      "SUBSCRIPTION_CHANGE": "Cambio abbonamento",
-      "SUBSCRIPTION_WONT_RENEW_ANYMORE": "L'abbonamento non verrà  rinnovato alla sua scadenza. Confermi?",
-      "WONT_RENEW": "Non si rinnoverà ",
-      "WONT_RENEW_AFTER": "Non si rinnoverà  dopo il",
-      "RENEWS_ON_": "Si rinnova in data {{date}} per {{price}}",
-      "TAP_TO_REVIEW_OR_CHANGE": "Tocca per revisionare o cambiare il tuo piano",
-      "NO_PLANS_AVAILABLE": "Nessun piano disponibile per questa piattaforma",
-      "NO_PLAN": "Nessun piano",
-      "MANAGED_BY_": "Gestito da: {{user}}"
     },
     "TEAMS": {
       "ACTIONS_ON_USER_": "Azioni su {{user}}",

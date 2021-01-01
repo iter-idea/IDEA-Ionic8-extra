@@ -5,7 +5,7 @@
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ 'IDEA.STRIPE.SUBSCRIBE' | translate }}</ion-title>
+    <ion-title>{{ 'IDEA_PS.STRIPE.SUBSCRIBE' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -16,17 +16,17 @@
     <ion-list-header>
       <ion-label class="ion-text-center">
         <h2>
-          {{ 'IDEA.STRIPE.SECURELY_SUBSCRIBE_THROUGH' | translate }}
+          {{ 'IDEA_PS.STRIPE.SECURELY_SUBSCRIBE_THROUGH' | translate }}
           <ion-text class="anchor" (click)="openStripeInfo()">Stripe</ion-text>
         </h2>
         <p>
-          <i>{{ 'IDEA.STRIPE.NO_CREDIT_CARD_INFO_STORED_IN_OUR_SERVERS' | translate }}.</i>
+          <i>{{ 'IDEA_PS.STRIPE.NO_CREDIT_CARD_INFO_STORED_IN_OUR_SERVERS' | translate }}.</i>
         </p>
       </ion-label>
     </ion-list-header>
     <ion-list-header *ngIf="oldPlan">
       <ion-label>
-        <h3>{{ 'IDEA.STRIPE.YOUR_CURRENT_PLAN' | translate }}</h3>
+        <h3>{{ 'IDEA_PS.STRIPE.YOUR_CURRENT_PLAN' | translate }}</h3>
       </ion-label>
     </ion-list-header>
     <ion-item lines="none" *ngIf="oldPlan">
@@ -37,7 +37,7 @@
     </ion-item>
     <ion-list-header>
       <ion-label>
-        <h3>{{ 'IDEA.STRIPE.YOU_ARE_SUBSCRIBING_TO_RECURRING_PLAN' | translate }}</h3>
+        <h3>{{ 'IDEA_PS.STRIPE.YOU_ARE_SUBSCRIBING_TO_RECURRING_PLAN' | translate }}</h3>
       </ion-label>
     </ion-list-header>
     <ion-item lines="none">
@@ -48,30 +48,30 @@
     </ion-item>
     <ion-list-header>
       <ion-label>
-        <h3>{{ 'IDEA.STRIPE.CREDIT_DEBIT_CARD' | translate }}</h3>
+        <h3>{{ 'IDEA_PS.STRIPE.CREDIT_DEBIT_CARD' | translate }}</h3>
       </ion-label>
     </ion-list-header>
     <div id="cardElement">
       <!-- A Stripe Element will be inserted here. -->
     </div>
     <ion-list-header>
-      <ion-label>{{ 'IDEA.STRIPE.CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT' | translate }}</ion-label>
+      <ion-label>{{ 'IDEA_PS.STRIPE.CONFIRM_AUTHORIZATION_FOR_RECURRING_PAYMENT' | translate }}</ion-label>
     </ion-list-header>
     <ion-item lines="none">
       <ion-checkbox slot="start" [(ngModel)]="authorizationCheck"></ion-checkbox>
       <ion-label class="ion-text-wrap disclaimer" style="z-index: 3">
-        {{ 'IDEA.STRIPE.I_AUTHORIZE' | translate }}
+        {{ 'IDEA_PS.STRIPE.I_AUTHORIZE' | translate }}
         <ion-text class="anchor" (click)="openWebsite($event)">ITER IDEA</ion-text>
-        {{ 'IDEA.STRIPE.AUTHORIZATION_CHECK_TEXT' | translate }}
+        {{ 'IDEA_PS.STRIPE.AUTHORIZATION_CHECK_TEXT' | translate }}
       </ion-label>
     </ion-item>
     <p class="ion-text-right ion-padding">
       <ion-button
-        [title]="t._('IDEA.STRIPE.SUBSCRIBE_HINT')"
+        [title]="t._('IDEA_PS.STRIPE.SUBSCRIBE_HINT')"
         [disabled]="!authorizationCheck || creditCard._empty"
         (click)="subscribe()"
       >
-        {{ 'IDEA.STRIPE.SUBSCRIBE' | translate }}
+        {{ 'IDEA_PS.STRIPE.SUBSCRIBE' | translate }}
       </ion-button>
     </p>
   </ion-list>
