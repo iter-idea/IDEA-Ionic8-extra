@@ -16,7 +16,7 @@ export class IDEALoadingService {
   public async show(content?: string): Promise<void> {
     await this.hide();
     this.loadingElement = await this.loadingCtrl.create({
-      message: content || this.t._('IDEA.LOADING.PLEASE_WAIT')
+      message: content || this.t._('IDEA_COMMON.LOADING.PLEASE_WAIT')
     });
     return await this.loadingElement.present();
   }

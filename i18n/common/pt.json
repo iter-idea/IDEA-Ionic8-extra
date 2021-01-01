@@ -1,5 +1,5 @@
 {
-  "IDEA": {
+  "IDEA_COMMON": {
     "ADDRESS": {
       "ADDRESS": "Endereço",
       "ADDRESS2": "Informação suplementar do endereço",
@@ -74,7 +74,6 @@
       "REMOVE_FIELD": "Remover o ambito",
       "TYPE": "Tipo"
     },
-    "DOWNLOAD": { "TAP_TO_DOWNLOAD": "Clique para descarregar o ficheiro" },
     "DURATION": { "HH": "hh", "HOURS": "Horas", "MINUTES": "Minutos", "MM": "mm", "SECONDS": "Segundos", "SS": "ss" },
     "ECHO": {
       "ACCOUNT_CONFIRMED": "Conta confirmada: Você já pode entrar com a sua conta",

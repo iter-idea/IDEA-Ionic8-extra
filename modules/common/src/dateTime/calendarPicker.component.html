@@ -4,10 +4,10 @@
       {{ title }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA.CALENDAR.RESET')" (click)="save(true)">
+      <ion-button [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
         <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
       </ion-button>
-      <ion-button [title]="t._('IDEA.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="save()">
+      <ion-button [title]="t._('IDEA_COMMON.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="save()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -17,7 +17,7 @@
   <ion-grid fixed class="ion-no-padding">
     <ion-row>
       <h1 class="headerLabel">
-        {{ 'IDEA.CALENDAR.SET_DATE' | translate }}
+        {{ 'IDEA_COMMON.CALENDAR.SET_DATE' | translate }}
       </h1>
     </ion-row>
     <ion-row style="margin-bottom: 8px">
@@ -31,7 +31,7 @@
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6">
             <ion-input
               type="text"
-              [placeholder]="t._('IDEA.CALENDAR.YEAR')"
+              [placeholder]="t._('IDEA_COMMON.CALENDAR.YEAR')"
               [value]="refDate.getFullYear()"
               (ionFocus)="$event.target.value = ''"
               (ionChange)="setYear($event)"
@@ -95,7 +95,7 @@
     </ion-row>
     <ion-row *ngIf="timePicker">
       <h1 class="headerLabel" *ngIf="timePicker">
-        {{ 'IDEA.CALENDAR.SET_TIME' | translate }}
+        {{ 'IDEA_COMMON.CALENDAR.SET_TIME' | translate }}
       </h1>
     </ion-row>
     <ion-row class="ion-align-items-center" *ngIf="timePicker">

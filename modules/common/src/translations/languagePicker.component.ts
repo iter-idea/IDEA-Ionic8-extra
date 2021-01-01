@@ -40,7 +40,7 @@ export class IDEALanguagePickerComponent {
         component: IDEASuggestionsComponent,
         componentProps: {
           data: this.t.getLangs().map(l => new Suggestion({ value: l })),
-          searchPlaceholder: this.t._('IDEA.LANGUAGE_PICKER.CHANGE_LANGUAGE'),
+          searchPlaceholder: this.t._('IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE'),
           sortData: true,
           hideIdFromUI: true,
           hideClearButton: true

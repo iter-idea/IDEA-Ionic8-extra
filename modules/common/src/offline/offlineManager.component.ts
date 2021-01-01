@@ -27,8 +27,8 @@ export class IDEAOfflineManagerComponent {
   public sync() {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.OFFLINE.SYNC_NOW'),
-        message: this.t._('IDEA.OFFLINE.DONT_EXIT_APP_DISCLAIMER'),
+        header: this.t._('IDEA_COMMON.OFFLINE.SYNC_NOW'),
+        message: this.t._('IDEA_COMMON.OFFLINE.DONT_EXIT_APP_DISCLAIMER'),
         buttons: [
           { text: this.t._('COMMON.CANCEL') },
           {
@@ -54,7 +54,7 @@ export class IDEAOfflineManagerComponent {
     this.alertCtrl
       .create({
         header: this.t._('COMMON.ARE_YOU_SURE'),
-        message: this.t._('IDEA.OFFLINE.DELETION_IS_IRREVERSIBLE'),
+        message: this.t._('IDEA_COMMON.OFFLINE.DELETION_IS_IRREVERSIBLE'),
         buttons: [
           { text: this.t._('COMMON.CANCEL') },
           { text: this.t._('COMMON.CONFIRM'), handler: () => this.offline.deleteRequest(request) }
@@ -75,11 +75,11 @@ export class IDEAOfflineManagerComponent {
    */
   public actions() {
     const buttons = [
-      { text: this.t._('IDEA.OFFLINE.FORCE_FULL_SYNC'), icon: 'sync', handler: () => this.forceFullSync() },
+      { text: this.t._('IDEA_COMMON.OFFLINE.FORCE_FULL_SYNC'), icon: 'sync', handler: () => this.forceFullSync() },
       { text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' }
     ];
     this.actionSheetCtrl
-      .create({ header: this.t._('IDEA.OFFLINE.ADVANCED_ACTIONS'), buttons })
+      .create({ header: this.t._('IDEA_COMMON.OFFLINE.ADVANCED_ACTIONS'), buttons })
       .then(actions => actions.present());
   }
 
@@ -89,9 +89,9 @@ export class IDEAOfflineManagerComponent {
   public forceFullSync() {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.OFFLINE.FORCE_FULL_SYNC'),
+        header: this.t._('IDEA_COMMON.OFFLINE.FORCE_FULL_SYNC'),
         subHeader: this.t._('COMMON.ARE_YOU_SURE'),
-        message: this.t._('IDEA.OFFLINE.FULL_SYNC_DISCLAIMER'),
+        message: this.t._('IDEA_COMMON.OFFLINE.FULL_SYNC_DISCLAIMER'),
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           { text: this.t._('COMMON.CONFIRM'), handler: () => this.offline.forceFullSync() }

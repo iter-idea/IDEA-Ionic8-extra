@@ -4,11 +4,11 @@
       <ion-button *ngIf="!isInnerLayer()" [title]="t._('COMMON.CANCEL')" (click)="close()">
         <ion-icon name="close-circle" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="isInnerLayer()" [title]="t._('IDEA.PDF_TEMPLATE.NAVIGATE_BACK')" (click)="prevLayer()">
+      <ion-button *ngIf="isInnerLayer()" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK')" (click)="prevLayer()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ 'IDEA.PDF_TEMPLATE.EDIT_TEMPLATE' | translate }}</ion-title>
+    <ion-title>{{ 'IDEA_COMMON.PDF_TEMPLATE.EDIT_TEMPLATE' | translate }}</ion-title>
     <ion-buttons slot="end" *ngIf="!isViewLocked()">
       <ion-button *ngIf="!isInnerLayer() && !disabled" [title]="t._('COMMON.SAVE')" (click)="save()">
         <ion-icon name="checkmark-circle" slot="icon-only"></ion-icon>
@@ -25,28 +25,28 @@
             *ngFor="let c of getBreadcrumb(); let len = count; let index = index; let last = last"
             [class.last]="last"
             [class.tappable]="!last && !isViewLocked()"
-            [title]="t._('IDEA.PDF_TEMPLATE.NAVIGATE_BACK')"
+            [title]="t._('IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK')"
             (click)="prevLayer(len - index - 1)"
           >
             {{ c }} <ion-icon *ngIf="!last" name="chevron-forward"></ion-icon>
           </span>
         </h2>
-        <p>{{ 'IDEA.PDF_TEMPLATE.BREADCRUMB_I' | translate }}</p>
-        <p>{{ 'IDEA.PDF_TEMPLATE.BREADCRUMB_II' | translate }}</p>
-        <p>{{ 'IDEA.PDF_TEMPLATE.INSERT_FIELDS_IN_NORMAL_SECTION' | translate }}</p>
-        <p>{{ 'IDEA.PDF_TEMPLATE.YOU_CAN_INSERT_SPECIAL_SECTIONS' | translate }}</p>
+        <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.BREADCRUMB_I' | translate }}</p>
+        <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.BREADCRUMB_II' | translate }}</p>
+        <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INSERT_FIELDS_IN_NORMAL_SECTION' | translate }}</p>
+        <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.YOU_CAN_INSERT_SPECIAL_SECTIONS' | translate }}</p>
       </ion-label>
       <ng-container *ngIf="!disabled">
         <ion-button
           color="dark"
           *ngIf="!editSections"
-          [title]="t._('IDEA.PDF_TEMPLATE.EDIT_SECTIONS')"
+          [title]="t._('IDEA_COMMON.PDF_TEMPLATE.EDIT_SECTIONS')"
           (click)="editSections = true"
         >
-          {{ 'IDEA.PDF_TEMPLATE.SECTIONS' | translate }}
+          {{ 'IDEA_COMMON.PDF_TEMPLATE.SECTIONS' | translate }}
           <ion-icon name="pencil" slot="end"></ion-icon>
         </ion-button>
-        <ion-button *ngIf="editSections" [title]="t._('IDEA.PDF_TEMPLATE.ADD_A_SECTION')" (click)="addSection()">
+        <ion-button *ngIf="editSections" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.ADD_A_SECTION')" (click)="addSection()">
           {{ 'COMMON.ADD' | translate }}
           <ion-icon name="add" slot="end"></ion-icon>
         </ion-button>
@@ -63,17 +63,17 @@
         (click)="editSectionTitleLabel(getCurrentLayer().title)"
       >
         <ion-icon name="bookmark-outline" slot="start"></ion-icon>
-        <ion-label [title]="t._('IDEA.PDF_TEMPLATE.INNER_SECTION_TITLE_I')">
+        <ion-label [title]="t._('IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_I')">
           <b *ngIf="label(getCurrentLayer().title)">{{ label(getCurrentLayer().title) }}</b>
           <i *ngIf="!label(getCurrentLayer().title)">
-            {{ 'IDEA.PDF_TEMPLATE.INNER_SECTION_TITLE_EMPTY_NOT_SHOWN' | translate }}
+            {{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_EMPTY_NOT_SHOWN' | translate }}
           </i>
-          <p>{{ 'IDEA.PDF_TEMPLATE.INNER_SECTION_TITLE' | translate }}</p>
+          <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE' | translate }}</p>
         </ion-label>
       </ion-item>
     </div>
     <ion-item *ngIf="!getCurrentTemplate().length">
-      <i>{{ 'IDEA.PDF_TEMPLATE.NO_SECTION_DEFINED_YET_HERE' | translate }}</i>
+      <i>{{ 'IDEA_COMMON.PDF_TEMPLATE.NO_SECTION_DEFINED_YET_HERE' | translate }}</i>
     </ion-item>
     <ion-reorder-group [disabled]="!editSections" (ionItemReorder)="reorderSections($event)">
       <div
@@ -86,15 +86,15 @@
           <!---->
           <ng-container *ngIf="section.type === ST.PAGE_BREAK">
             <ion-icon name="code-slash" slot="start"></ion-icon>
-            <ion-label class="specialRow" [title]="t._('IDEA.PDF_TEMPLATE.PAGE_BREAK_I')">
-              <b>{{ 'IDEA.PDF_TEMPLATE.PAGE_BREAK' | translate }}</b>
+            <ion-label class="specialRow" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK_I')">
+              <b>{{ 'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK' | translate }}</b>
             </ion-label>
           </ng-container>
           <!---->
           <ng-container *ngIf="section.type === ST.BLANK_ROW">
             <ion-icon name="code" slot="start"></ion-icon>
-            <ion-label class="specialRow" [title]="t._('IDEA.PDF_TEMPLATE.BLANK_ROW_I')">
-              <i>{{ 'IDEA.PDF_TEMPLATE.BLANK_ROW' | translate }}</i>
+            <ion-label class="specialRow" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW_I')">
+              <i>{{ 'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW' | translate }}</i>
             </ion-label>
           </ng-container>
           <!---->
@@ -182,7 +182,7 @@
             fill="clear"
             color="danger"
             *ngIf="editSections"
-            [title]="t._('IDEA.PDF_TEMPLATE.REMOVE_SECTION')"
+            [title]="t._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION')"
             (click)="deleteSection(section)"
           >
             <ion-icon name="trash" slot="icon-only"></ion-icon>
@@ -197,16 +197,16 @@
         >
           <ion-reorder slot="start" *ngIf="editSections"></ion-reorder>
           <ion-icon name="bookmark" slot="start"></ion-icon>
-          <ion-label [title]="t._('IDEA.PDF_TEMPLATE.HEADER_I')">
+          <ion-label [title]="t._('IDEA_COMMON.PDF_TEMPLATE.HEADER_I')">
             <b class="hasHTMLContent" [innerHtml]="label(section.title) | highlight: getCurrentVariables()"></b>
-            <p>{{ 'IDEA.PDF_TEMPLATE.HEADER' | translate }}</p>
+            <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.HEADER' | translate }}</p>
           </ion-label>
           <ion-button
             slot="end"
             fill="clear"
             color="danger"
             *ngIf="editSections"
-            [title]="t._('IDEA.PDF_TEMPLATE.REMOVE_SECTION')"
+            [title]="t._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION')"
             (click)="deleteSection(section)"
           >
             <ion-icon name="trash" slot="icon-only"></ion-icon>
@@ -222,17 +222,20 @@
           <ion-reorder slot="start" *ngIf="editSections"></ion-reorder>
           <ion-icon [name]="getInnerSectionIcon(section)" slot="start"></ion-icon>
           <!---->
-          <ion-label *ngIf="section.type === ST.INNER_SECTION" [title]="t._('IDEA.PDF_TEMPLATE.INNER_SECTION_I')">
+          <ion-label
+            *ngIf="section.type === ST.INNER_SECTION"
+            [title]="t._('IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_I')"
+          >
             {{ section.description }}
-            <p>{{ 'IDEA.PDF_TEMPLATE.INNER_SECTION' | translate }}</p>
+            <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION' | translate }}</p>
           </ion-label>
           <!---->
           <ion-label
             *ngIf="section.type === ST.REPEATED_INNER_SECTION"
-            [title]="t._('IDEA.PDF_TEMPLATE.REPEATED_INNER_SECTION_I')"
+            [title]="t._('IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION_I')"
           >
             {{ section.description }}
-            <p>{{ 'IDEA.PDF_TEMPLATE.REPEATED_INNER_SECTION' | translate }}</p>
+            <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION' | translate }}</p>
           </ion-label>
           <!---->
           <ion-button
@@ -240,7 +243,7 @@
             fill="clear"
             color="danger"
             *ngIf="editSections"
-            [title]="t._('IDEA.PDF_TEMPLATE.REMOVE_SECTION')"
+            [title]="t._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION')"
             (click)="deleteSection(section)"
           >
             <ion-icon name="trash" slot="icon-only"></ion-icon>

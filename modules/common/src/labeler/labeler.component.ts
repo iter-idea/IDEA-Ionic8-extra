@@ -64,7 +64,7 @@ export class IDEALabelerComponent {
     this.errors = new Set<string>();
   }
   public ionViewDidEnter() {
-    this.title = this.title || this.t._('IDEA.LABELER.MANAGE_LABEL');
+    this.title = this.title || this.t._('IDEA_COMMON.LABELER.MANAGE_LABEL');
     // work on a copy
     this._label = new Label(this.label, this.t.languages());
     // create a plain list of variable codes
@@ -106,7 +106,7 @@ export class IDEALabelerComponent {
     // check for errors
     if (this.obligatory) {
       this.errors = new Set(this._label.validate(this.t.languages()));
-      if (this.errors.size) return this.message.error('IDEA.LABELER.FILL_IN_DEFAULT_LANGUAGE');
+      if (this.errors.size) return this.message.error('IDEA_COMMON.LABELER.FILL_IN_DEFAULT_LANGUAGE');
     }
     // save changes and close
     this.label.load(this._label, this.t.languages());

@@ -11,8 +11,8 @@
         <ion-icon name="arrow-undo" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-badge>
-        <ion-label *ngIf="!pm">{{ 'IDEA.FTTT.AM' | translate }}</ion-label>
-        <ion-label *ngIf="pm">{{ 'IDEA.FTTT.PM' | translate }}</ion-label>
+        <ion-label *ngIf="!pm">{{ 'IDEA_COMMON.FTTT.AM' | translate }}</ion-label>
+        <ion-label *ngIf="pm">{{ 'IDEA_COMMON.FTTT.PM' | translate }}</ion-label>
       </ion-badge>
     </ion-buttons>
   </ion-toolbar>
@@ -173,10 +173,10 @@
       </ion-col>
       <ion-col class="ion-text-center displayText" [size]="4">
         <ion-text [class.fromSelected]="segment === Segments.TO">
-          {{ 'IDEA.FTTT.FROM' | translate }}
+          {{ 'IDEA_COMMON.FTTT.FROM' | translate }}
           <span *ngIf="segment === Segments.TO">{{ msToTimeString(_timeInterval.from) }}</span>
         </ion-text>
-        <ion-text *ngIf="segment === Segments.TO">{{ 'IDEA.FTTT.TO' | translate }}</ion-text>
+        <ion-text *ngIf="segment === Segments.TO">{{ 'IDEA_COMMON.FTTT.TO' | translate }}</ion-text>
       </ion-col>
       <ion-col class="ion-text-right" [size]="2">
         <ion-button
@@ -332,7 +332,7 @@
     </ion-row>
     <ion-row class="ion-align-items-center">
       <ion-col class="ion-text-right" [size]="3" [sizeSm]="7">
-        <ion-text class="minPrefLabel">{{ 'IDEA.FTTT.MINUTES_PREFERENCE' | translate }}:</ion-text>
+        <ion-text class="minPrefLabel">{{ 'IDEA_COMMON.FTTT.MINUTES_PREFERENCE' | translate }}:</ion-text>
       </ion-col>
       <ion-col [size]="9" [sizeSm]="5">
         <ion-segment [value]="minutes" (ionChange)="minutes = $event?.detail?.value || minutes">

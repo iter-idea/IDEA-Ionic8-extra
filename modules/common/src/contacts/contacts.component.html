@@ -1,37 +1,37 @@
 <div class="contacts">
   <ion-item [lines]="lines" *ngIf="showName">
     <ion-label position="stacked">
-      {{ 'IDEA.CONTACTS.NAME' | translate }}
+      {{ 'IDEA_COMMON.CONTACTS.NAME' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.CONTACTS.NAME_HINT')"
-      [title]="t._('IDEA.CONTACTS.NAME_HINT')"
+      [placeholder]="t._('IDEA_COMMON.CONTACTS.NAME_HINT')"
+      [title]="t._('IDEA_COMMON.CONTACTS.NAME_HINT')"
       [(ngModel)]="contacts.name"
     ></ion-input>
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
-      {{ 'IDEA.CONTACTS.PHONE' | translate }}
+      {{ 'IDEA_COMMON.CONTACTS.PHONE' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.CONTACTS.PHONE_HINT')"
-      [title]="t._('IDEA.CONTACTS.PHONE_HINT')"
+      [placeholder]="t._('IDEA_COMMON.CONTACTS.PHONE_HINT')"
+      [title]="t._('IDEA_COMMON.CONTACTS.PHONE_HINT')"
       [(ngModel)]="contacts.phone"
     ></ion-input>
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
-      {{ 'IDEA.CONTACTS.EMAIL' | translate }}
+      {{ 'IDEA_COMMON.CONTACTS.EMAIL' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.CONTACTS.EMAIL_HINT')"
-      [title]="t._('IDEA.CONTACTS.EMAIL_HINT')"
+      [placeholder]="t._('IDEA_COMMON.CONTACTS.EMAIL_HINT')"
+      [title]="t._('IDEA_COMMON.CONTACTS.EMAIL_HINT')"
       [(ngModel)]="contacts.email"
     ></ion-input>
   </ion-item>

@@ -14,7 +14,9 @@
       [(ngModel)]="hours"
       (ionChange)="setDuration('hours')"
     ></ion-input>
-    <ion-text>{{ ((shortLabels ? 'IDEA.DURATION.HH' : 'IDEA.DURATION.HOURS') | translate).toLowerCase() }}</ion-text>
+    <ion-text>{{
+      ((shortLabels ? 'IDEA_COMMON.DURATION.HH' : 'IDEA_COMMON.DURATION.HOURS') | translate).toLowerCase()
+    }}</ion-text>
     <ion-input
       type="number"
       min="0"
@@ -24,7 +26,9 @@
       [(ngModel)]="minutes"
       (ionChange)="setDuration('minutes')"
     ></ion-input>
-    <ion-text>{{ ((shortLabels ? 'IDEA.DURATION.MM' : 'IDEA.DURATION.MINUTES') | translate).toLowerCase() }}</ion-text>
+    <ion-text>{{
+      ((shortLabels ? 'IDEA_COMMON.DURATION.MM' : 'IDEA_COMMON.DURATION.MINUTES') | translate).toLowerCase()
+    }}</ion-text>
     <ion-input
       type="number"
       min="0"
@@ -36,7 +40,7 @@
       (ionChange)="setDuration('seconds')"
     ></ion-input>
     <ion-text *ngIf="!hideSeconds">
-      {{ ((shortLabels ? 'IDEA.DURATION.SS' : 'IDEA.DURATION.SECONDS') | translate).toLowerCase() }}
+      {{ ((shortLabels ? 'IDEA_COMMON.DURATION.SS' : 'IDEA_COMMON.DURATION.SECONDS') | translate).toLowerCase() }}
     </ion-text>
   </ion-label>
 </ion-item>

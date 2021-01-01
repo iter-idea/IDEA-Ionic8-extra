@@ -45,8 +45,8 @@ export class IDEAOfflineIndicatorComponent {
         if (!isOnline)
           this.alertCtrl
             .create({
-              header: this.t._('IDEA.OFFLINE.YOU_ARE_OFFLINE'),
-              message: this.t._('IDEA.OFFLINE.FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE'),
+              header: this.t._('IDEA_COMMON.OFFLINE.YOU_ARE_OFFLINE'),
+              message: this.t._('IDEA_COMMON.OFFLINE.FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE'),
               buttons: [this.t._('COMMON.GOT_IT')]
             })
             .then(alert => alert.present());

@@ -5,9 +5,9 @@
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ 'IDEA.EMAIL.SEND_EMAIL' | translate }}</ion-title>
+    <ion-title>{{ 'IDEA_COMMON.EMAIL.SEND_EMAIL' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA.EMAIL.SEND_EMAIL')" [disabled]="!canSend()" (click)="send()">
+      <ion-button [title]="t._('IDEA_COMMON.EMAIL.SEND_EMAIL')" [disabled]="!canSend()" (click)="send()">
         <ion-icon slot="icon-only" name="send"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -17,14 +17,14 @@
   <ion-list class="aList sendEmailList">
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.EMAIL.TO' | translate }}</h2>
+        <h2>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}</h2>
       </ion-label>
       <ion-button color="dark" (click)="addAddressToList(_email.to)">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
     </ion-list-header>
     <ion-item *ngIf="!_email.to.length">
-      <i>{{ 'IDEA.EMAIL.NO_ADDRESSES' | translate }}</i>
+      <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
     </ion-item>
     <ion-item *ngFor="let x of _email.to">
       <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.to, x)">
@@ -34,14 +34,14 @@
     </ion-item>
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.EMAIL.CC' | translate }}</h2>
+        <h2>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}</h2>
       </ion-label>
       <ion-button color="dark" (click)="addAddressToList(_email.cc)">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
     </ion-list-header>
     <ion-item *ngIf="!_email.cc.length">
-      <i>{{ 'IDEA.EMAIL.NO_ADDRESSES' | translate }}</i>
+      <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
     </ion-item>
     <ion-item *ngFor="let x of _email.cc">
       <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.cc, x)">
@@ -51,14 +51,14 @@
     </ion-item>
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.EMAIL.BCC' | translate }}</h2>
+        <h2>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}</h2>
       </ion-label>
       <ion-button color="dark" (click)="addAddressToList(_email.bcc)">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
     </ion-list-header>
     <ion-item *ngIf="!_email.bcc.length">
-      <i>{{ 'IDEA.EMAIL.NO_ADDRESSES' | translate }}</i>
+      <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
     </ion-item>
     <ion-item *ngFor="let x of _email.bcc">
       <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.bcc, x)">
@@ -68,7 +68,7 @@
     </ion-item>
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.EMAIL.SUBJECT' | translate }}</h2>
+        <h2>{{ 'IDEA_COMMON.EMAIL.SUBJECT' | translate }}</h2>
       </ion-label>
     </ion-list-header>
     <ion-item [lines]="lines">
@@ -76,7 +76,7 @@
     </ion-item>
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.EMAIL.CONTENT' | translate }}</h2>
+        <h2>{{ 'IDEA_COMMON.EMAIL.CONTENT' | translate }}</h2>
       </ion-label>
     </ion-list-header>
     <ion-item [lines]="lines">
@@ -85,11 +85,11 @@
     <idea-mde-toolbar></idea-mde-toolbar>
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.EMAIL.ATTACHMENTS' | translate }}</h2>
+        <h2>{{ 'IDEA_COMMON.EMAIL.ATTACHMENTS' | translate }}</h2>
       </ion-label>
     </ion-list-header>
     <ion-item *ngIf="!attachments.length">
-      <i>{{ 'IDEA.EMAIL.NO_ATTACHMENTS' | translate }}</i>
+      <i>{{ 'IDEA_COMMON.EMAIL.NO_ATTACHMENTS' | translate }}</i>
     </ion-item>
     <ion-item *ngFor="let a of attachments"><ion-icon slot="start" name="attach"></ion-icon>{{ a }}</ion-item>
   </ion-list>

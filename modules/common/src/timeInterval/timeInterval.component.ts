@@ -106,8 +106,11 @@ export class IDEATimeIntervalComponent {
     // since the dates are stored as UTC, we need to add the current timezone
     const timeZoneOffset = new Date().getTimezoneOffset() * 60000;
     return (
-      `${this.t._('IDEA.FTTT.FROM')} ${this.t.formatDate(timeInterval.from + timeZoneOffset, 'shortTime')} ` +
-      `${this.t._('IDEA.FTTT.TO').toLowerCase()} ${this.t.formatDate(timeInterval.to + timeZoneOffset, 'shortTime')}`
+      `${this.t._('IDEA_COMMON.FTTT.FROM')} ${this.t.formatDate(timeInterval.from + timeZoneOffset, 'shortTime')} ` +
+      `${this.t._('IDEA_COMMON.FTTT.TO').toLowerCase()} ${this.t.formatDate(
+        timeInterval.to + timeZoneOffset,
+        'shortTime'
+      )}`
     );
   }
 

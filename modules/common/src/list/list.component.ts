@@ -113,7 +113,7 @@ export class IDEAListComponent {
         .slice(0, this.numMaxElementsInPreview)
         .map(x => this.getElementName(x))
         .join(', ');
-    else return this.t._('IDEA.LIST.NUM_ELEMENTS_', { num: this.data.length });
+    else return this.t._('IDEA_COMMON.LIST.NUM_ELEMENTS_', { num: this.data.length });
   }
   /**
    * Get the value to show based on the type of the element.

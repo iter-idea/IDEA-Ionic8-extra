@@ -1,25 +1,25 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button *ngIf="!mustChoose" [title]="t._('IDEA.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
+      <ion-button *ngIf="!mustChoose" [title]="t._('IDEA_COMMON.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
         <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-searchbar
-      [placeholder]="searchPlaceholder || t._('IDEA.SELECT.SEARCH')"
+      [placeholder]="searchPlaceholder || t._('IDEA_COMMON.SELECT.SEARCH')"
       [debounce]="100"
       [class.withAdditionalToolbar]="showCategoriesFilters || detailsAreAvailable"
       (ionInput)="search($event.target ? $event.target.value : '')"
     ></ion-searchbar>
     <ion-buttons slot="end" *ngIf="!hideClearButton">
-      <ion-button [title]="t._('IDEA.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
+      <ion-button [title]="t._('IDEA_COMMON.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
         <ion-icon slot="icon-only" name="backspace"></ion-icon>
       </ion-button>
     </ion-buttons>
     <div class="additionalToolbar" *ngIf="showCategoriesFilters || detailsAreAvailable">
       <ion-button color="light" size="small" *ngIf="detailsAreAvailable" (click)="toggleDetailsVisibilityPreference()">
         <ion-icon [name]="shouldShowDetails ? 'eye-off' : 'eye'" slot="start"></ion-icon>
-        {{ (shouldShowDetails ? 'IDEA.SELECT.HIDE_DETAILS' : 'IDEA.SELECT.SHOW_DETAILS') | translate }}
+        {{ (shouldShowDetails ? 'IDEA_COMMON.SELECT.HIDE_DETAILS' : 'IDEA_COMMON.SELECT.SHOW_DETAILS') | translate }}
       </ion-button>
       <ion-button
         color="light"
@@ -29,7 +29,7 @@
         (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
       >
         <ion-icon [name]="category1 ? 'close' : 'filter'" slot="start"></ion-icon>
-        {{ category1 || ('IDEA.SELECT.TAP_TO_FILTER' | translate) }}
+        {{ category1 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
       </ion-button>
       <ion-button
         color="light"
@@ -39,7 +39,7 @@
         (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
       >
         <ion-icon [name]="category2 ? 'close' : 'filter'" slot="start"></ion-icon>
-        {{ category2 || ('IDEA.SELECT.TAP_TO_FILTER' | translate) }}
+        {{ category2 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
       </ion-button>
     </div>
   </ion-toolbar>
@@ -52,8 +52,8 @@
           {{
             noElementsFoundText ||
               ((allowUnlistedValues
-                ? 'IDEA.SELECT.NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE'
-                : 'IDEA.SELECT.NO_ELEMENTS_FOUND'
+                ? 'IDEA_COMMON.SELECT.NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE'
+                : 'IDEA_COMMON.SELECT.NO_ELEMENTS_FOUND'
               ) | translate)
           }}
         </i>
@@ -63,7 +63,7 @@
       class="suggestion"
       *ngIf="allowUnlistedValues && searchbar.value"
       [button]="true"
-      [title]="t._('IDEA.SELECT.SELECT_', { suggestion: searchbar.value })"
+      [title]="t._('IDEA_COMMON.SELECT.SELECT_', { suggestion: searchbar.value })"
       (click)="select({ value: searchbar.value })"
     >
       <ion-badge slot="start" *ngIf="allowUnlistedValuesPrefix">{{ allowUnlistedValuesPrefix }}</ion-badge>
@@ -77,7 +77,7 @@
         class="suggestion"
         *virtualItem="let suggestion"
         [button]="true"
-        [title]="t._('IDEA.SELECT.SELECT_', { suggestion: suggestion.name || suggestion.value })"
+        [title]="t._('IDEA_COMMON.SELECT.SELECT_', { suggestion: suggestion.name || suggestion.value })"
         (click)="select(suggestion)"
       >
         <ion-label>

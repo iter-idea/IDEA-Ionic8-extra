@@ -95,8 +95,8 @@ export class IDEACustomBlockMetaComponent {
    * Add a new section to the custom block.
    */
   public addNewSection() {
-    const header = this.t._('IDEA.CUSTOM_FIELDS.ADD_SECTION');
-    const message = this.t._('IDEA.CUSTOM_FIELDS.ADD_SECTION_HINT');
+    const header = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION');
+    const message = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION_HINT');
     const inputs: any = [{ name: 'name', type: 'text' }];
     const buttons = [
       { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
@@ -111,7 +111,7 @@ export class IDEACustomBlockMetaComponent {
           if (!key.trim()) return;
           // check wheter the key is unique
           if (this.block.sectionsLegend.some(x => x === key))
-            return this.message.error('IDEA.CUSTOM_FIELDS.DUPLICATED_KEY');
+            return this.message.error('IDEA_COMMON.CUSTOM_FIELDS.DUPLICATED_KEY');
           // initialize a new section
           const section = new CustomSectionMeta(null, this.t.languages());
           // initialize the name of the section

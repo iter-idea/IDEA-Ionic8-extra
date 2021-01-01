@@ -1,5 +1,5 @@
 {
-  "IDEA": {
+  "IDEA_COMMON": {
     "ADDRESS": {
       "ADDRESS": "Dirección",
       "ADDRESS2": "Información de dirección suplementaria  ",
@@ -74,7 +74,6 @@
       "REMOVE_FIELD": "Eliminar campo",
       "TYPE": "Tipo"
     },
-    "DOWNLOAD": { "TAP_TO_DOWNLOAD": "Seleccione para descargar archico" },
     "DURATION": { "HH": "hh", "HOURS": "Horas", "MINUTES": "Minutos", "MM": "mm", "SECONDS": "Segundos", "SS": "ss" },
     "ECHO": {
       "ACCOUNT_CONFIRMED": "Cuenta confirmada: ahora puede iniciar sesión.",

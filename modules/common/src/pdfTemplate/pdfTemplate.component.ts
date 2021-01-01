@@ -151,22 +151,22 @@ export class IDEAPDFTemplateComponent {
     const buttons = [];
     // add the standard sections
     buttons.push({
-      text: this.t._('IDEA.PDF_TEMPLATE.NORMAL_ROW'),
+      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.NORMAL_ROW'),
       icon: 'apps',
       handler: () => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.ROW }, this.languages))
     });
     buttons.push({
-      text: this.t._('IDEA.PDF_TEMPLATE.HEADER'),
+      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.HEADER'),
       icon: 'bookmark',
       handler: () => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.HEADER }, this.languages))
     });
     buttons.push({
-      text: this.t._('IDEA.PDF_TEMPLATE.BLANK_ROW'),
+      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW'),
       icon: 'code',
       handler: () => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.BLANK_ROW }, this.languages))
     });
     buttons.push({
-      text: this.t._('IDEA.PDF_TEMPLATE.PAGE_BREAK'),
+      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK'),
       icon: 'code-slash',
       handler: () => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.PAGE_BREAK }, this.languages))
     });
@@ -189,7 +189,7 @@ export class IDEAPDFTemplateComponent {
     // add the cancel button and show the action sheet
     buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     this.actionSheetCtrl
-      .create({ header: this.t._('IDEA.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_INSERT'), buttons })
+      .create({ header: this.t._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_INSERT'), buttons })
       .then(actions => actions.present());
   }
   /**
@@ -199,7 +199,7 @@ export class IDEAPDFTemplateComponent {
     // complete the section, based on its type
     switch (section.type) {
       case this.ST.HEADER:
-        section.title[this.languages.default] = this.t._('IDEA.PDF_TEMPLATE.NEW_HEADER');
+        section.title[this.languages.default] = this.t._('IDEA_COMMON.PDF_TEMPLATE.NEW_HEADER');
         break;
     }
     // add the new section to the current template
@@ -211,7 +211,7 @@ export class IDEAPDFTemplateComponent {
   public deleteSection(section: PDFTemplateSection) {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.PDF_TEMPLATE.REMOVE_SECTION'),
+        header: this.t._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION'),
         subHeader: this.t._('COMMON.ARE_YOU_SURE'),
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
@@ -257,7 +257,7 @@ export class IDEAPDFTemplateComponent {
         component: IDEALabelerComponent,
         componentProps: {
           label,
-          title: this.t._('IDEA.PDF_TEMPLATE.HEADER'),
+          title: this.t._('IDEA_COMMON.PDF_TEMPLATE.HEADER'),
           obligatory: true,
           variables: this.getCurrentLayer().blueprint.variables,
           disabled: this.disabled
@@ -279,7 +279,7 @@ export class IDEAPDFTemplateComponent {
         component: IDEALabelerComponent,
         componentProps: {
           label,
-          title: this.t._('IDEA.PDF_TEMPLATE.INNER_SECTION_TITLE'),
+          title: this.t._('IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE'),
           obligatory: false,
           disabled: this.disabled
         },
@@ -299,19 +299,19 @@ export class IDEAPDFTemplateComponent {
     // let the user choose between simple and complex field
     const buttons = [];
     buttons.push({
-      text: this.t._('IDEA.PDF_TEMPLATE.SIMPLE_FIELD'),
+      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.SIMPLE_FIELD'),
       icon: 'at',
       handler: () => this.addSimpleField(section, indexCol)
     });
     buttons.push({
-      text: this.t._('IDEA.PDF_TEMPLATE.COMPLEX_FIELD'),
+      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.COMPLEX_FIELD'),
       icon: 'shapes',
       handler: () => this.addComplexField(section, indexCol)
     });
     // add the cancel button and show the action sheet
     buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     this.actionSheetCtrl
-      .create({ header: this.t._('IDEA.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_INSERT'), buttons })
+      .create({ header: this.t._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_INSERT'), buttons })
       .then(actions => actions.present());
   }
   /**
@@ -404,7 +404,7 @@ export class IDEAPDFTemplateComponent {
     // add the cancel button and show the action sheet
     buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     this.actionSheetCtrl
-      .create({ header: this.t._('IDEA.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_DO_WITH_FIELD'), buttons })
+      .create({ header: this.t._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_DO_WITH_FIELD'), buttons })
       .then(actions => actions.present());
   }
   /**
@@ -422,8 +422,8 @@ export class IDEAPDFTemplateComponent {
             ? (field as PDFTemplateComplexField).content
             : (field as PDFTemplateSimpleField).label,
           title: field.isComplex()
-            ? this.t._('IDEA.PDF_TEMPLATE.COMPLEX_FIELD')
-            : this.t._('IDEA.PDF_TEMPLATE.SIMPLE_FIELD'),
+            ? this.t._('IDEA_COMMON.PDF_TEMPLATE.COMPLEX_FIELD')
+            : this.t._('IDEA_COMMON.PDF_TEMPLATE.SIMPLE_FIELD'),
           obligatory: field.isComplex(),
           markdown: field.isComplex(),
           textarea: field.isComplex(),
@@ -439,9 +439,10 @@ export class IDEAPDFTemplateComponent {
    */
   private moveField(section: PDFTemplateSection, colIndex: number) {
     // check whether the field has an empty column which it could move on this layer
-    if (!this.canFieldMoveAnywhere()) return this.message.error('IDEA.PDF_TEMPLATE.NO_EMPTY_SLOT_WHERE_TO_MOVE_FIELD');
+    if (!this.canFieldMoveAnywhere())
+      return this.message.error('IDEA_COMMON.PDF_TEMPLATE.NO_EMPTY_SLOT_WHERE_TO_MOVE_FIELD');
     // hint the user that the field can now be moved and save the original position; the UI enter in "move mode"
-    this.message.info('IDEA.PDF_TEMPLATE.CHOOSE_WHERE_TO_MOVE_FIELD');
+    this.message.info('IDEA_COMMON.PDF_TEMPLATE.CHOOSE_WHERE_TO_MOVE_FIELD');
     this.disabled = true;
     this.moveMode = { section, colIndex } as MoveModeData;
   }
@@ -562,7 +563,7 @@ export class IDEAPDFTemplateComponent {
   public save() {
     // check for errors (on top layer, but recursively on inner layers as well)
     this.checkErrorsOnCurrentLayer();
-    if (this.errors.size) return this.message.error('IDEA.PDF_TEMPLATE.ONE_OR_MORE_SECTIONS_HAVE_ERRORS');
+    if (this.errors.size) return this.message.error('IDEA_COMMON.PDF_TEMPLATE.ONE_OR_MORE_SECTIONS_HAVE_ERRORS');
     // save changes (without losing reference of the original array) and close
     this.template.splice(0, this.template.length);
     this._template.forEach(section => this.template.push(new PDFTemplateSection(section, this.languages)));
@@ -624,7 +625,7 @@ export interface MoveModeData {
           </ion-col>
           <ion-col class="ion-text-center">
             <ion-label>
-              {{ 'IDEA.PDF_TEMPLATE.SIZE' | translate }}: <b>{{ size }}</b>
+              {{ 'IDEA_COMMON.PDF_TEMPLATE.SIZE' | translate }}: <b>{{ size }}</b>
             </ion-label>
           </ion-col>
           <ion-col class="ion-text-center">

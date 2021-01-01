@@ -1,11 +1,11 @@
 <ion-item class="completeAddress" [button]="true" [lines]="lines" (click)="toggleCollapse()">
   <ion-label position="stacked">
-    {{ label || 'IDEA.ADDRESS.COMPLETE_ADDRESS' | translate }}
+    {{ label || 'IDEA_COMMON.ADDRESS.COMPLETE_ADDRESS' | translate }}
   </ion-label>
   <ion-input
     [readonly]="true"
-    [title]="t._('IDEA.ADDRESS.COMPLETE_ADDRESS_HINT')"
-    [placeholder]="t._('IDEA.ADDRESS.COMPLETE_ADDRESS_HINT')"
+    [title]="t._('IDEA_COMMON.ADDRESS.COMPLETE_ADDRESS_HINT')"
+    [placeholder]="t._('IDEA_COMMON.ADDRESS.COMPLETE_ADDRESS_HINT')"
     [value]="address.getFullAddress()"
   ></ion-input>
   <ion-icon slot="end" class="marginTop" [name]="addressCollapsed ? 'chevron-back' : 'chevron-down'"></ion-icon>
@@ -13,85 +13,85 @@
 <div class="addressDetails" *ngIf="!addressCollapsed">
   <ion-item [lines]="lines" *ngIf="showContact">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.CONTACT' | translate }}
+      {{ 'IDEA_COMMON.ADDRESS.CONTACT' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.ADDRESS.CONTACT_HINT')"
-      [title]="t._('IDEA.ADDRESS.CONTACT_HINT')"
+      [placeholder]="t._('IDEA_COMMON.ADDRESS.CONTACT_HINT')"
+      [title]="t._('IDEA_COMMON.ADDRESS.CONTACT_HINT')"
       [(ngModel)]="address.contact"
     ></ion-input>
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.ADDRESS' | translate }}
+      {{ 'IDEA_COMMON.ADDRESS.ADDRESS' | translate }}
       <ion-text class="obligatoryDot" *ngIf="editMode && obligatory"></ion-text>
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.ADDRESS.ADDRESS_HINT')"
-      [title]="t._('IDEA.ADDRESS.ADDRESS_HINT')"
+      [placeholder]="t._('IDEA_COMMON.ADDRESS.ADDRESS_HINT')"
+      [title]="t._('IDEA_COMMON.ADDRESS.ADDRESS_HINT')"
       [(ngModel)]="address.address"
     ></ion-input>
   </ion-item>
   <ion-item [lines]="lines" *ngIf="showAddress2">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.ADDRESS2' | translate }}
+      {{ 'IDEA_COMMON.ADDRESS.ADDRESS2' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.ADDRESS.ADDRESS2_HINT')"
-      [title]="t._('IDEA.ADDRESS.ADDRESS2_HINT')"
+      [placeholder]="t._('IDEA_COMMON.ADDRESS.ADDRESS2_HINT')"
+      [title]="t._('IDEA_COMMON.ADDRESS.ADDRESS2_HINT')"
       [(ngModel)]="address.address2"
     ></ion-input>
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.POSTCODE' | translate }}
+      {{ 'IDEA_COMMON.ADDRESS.POSTCODE' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.ADDRESS.POSTCODE_HINT')"
-      [title]="t._('IDEA.ADDRESS.POSTCODE_HINT')"
+      [placeholder]="t._('IDEA_COMMON.ADDRESS.POSTCODE_HINT')"
+      [title]="t._('IDEA_COMMON.ADDRESS.POSTCODE_HINT')"
       [(ngModel)]="address.postcode"
     ></ion-input>
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.CITY' | translate }}
+      {{ 'IDEA_COMMON.ADDRESS.CITY' | translate }}
       <ion-text class="obligatoryDot" *ngIf="editMode && obligatory"></ion-text>
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.ADDRESS.CITY_HINT')"
-      [title]="t._('IDEA.ADDRESS.CITY_HINT')"
+      [placeholder]="t._('IDEA_COMMON.ADDRESS.CITY_HINT')"
+      [title]="t._('IDEA_COMMON.ADDRESS.CITY_HINT')"
       [(ngModel)]="address.city"
     ></ion-input>
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.PROVINCE' | translate }}
+      {{ 'IDEA_COMMON.ADDRESS.PROVINCE' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.ADDRESS.PROVINCE_HINT')"
-      [title]="t._('IDEA.ADDRESS.PROVINCE_HINT')"
+      [placeholder]="t._('IDEA_COMMON.ADDRESS.PROVINCE_HINT')"
+      [title]="t._('IDEA_COMMON.ADDRESS.PROVINCE_HINT')"
       [(ngModel)]="address.province"
     ></ion-input>
   </ion-item>
   <idea-select
     [data]="countriesSuggestions"
-    [label]="t._('IDEA.ADDRESS.COUNTRY')"
+    [label]="t._('IDEA_COMMON.ADDRESS.COUNTRY')"
     [lines]="editMode ? 'inset' : 'none'"
     [description]="getCountryName(address.country)"
-    [placeholder]="t._('IDEA.ADDRESS.COUNTRY_HINT')"
-    [searchPlaceholder]="t._('IDEA.ADDRESS.COUNTRY_HINT')"
+    [placeholder]="t._('IDEA_COMMON.ADDRESS.COUNTRY_HINT')"
+    [searchPlaceholder]="t._('IDEA_COMMON.ADDRESS.COUNTRY_HINT')"
     [hideIdFromUI]="true"
     [avoidAutoSelection]="true"
     [disabled]="!editMode"
@@ -99,25 +99,25 @@
   ></idea-select>
   <ion-item [lines]="lines" *ngIf="showPhone">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.PHONE' | translate }}
+      {{ 'IDEA_COMMON.ADDRESS.PHONE' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.ADDRESS.PHONE_HINT')"
-      [title]="t._('IDEA.ADDRESS.PHONE_HINT')"
+      [placeholder]="t._('IDEA_COMMON.ADDRESS.PHONE_HINT')"
+      [title]="t._('IDEA_COMMON.ADDRESS.PHONE_HINT')"
       [(ngModel)]="address.phone"
     ></ion-input>
   </ion-item>
   <ion-item [lines]="lines" *ngIf="showEmail">
     <ion-label position="stacked">
-      {{ 'IDEA.ADDRESS.EMAIL' | translate }}
+      {{ 'IDEA_COMMON.ADDRESS.EMAIL' | translate }}
     </ion-label>
     <ion-input
       autocomplete="new"
       [disabled]="!editMode"
-      [placeholder]="t._('IDEA.ADDRESS.EMAIL_HINT')"
-      [title]="t._('IDEA.ADDRESS.EMAIL_HINT')"
+      [placeholder]="t._('IDEA_COMMON.ADDRESS.EMAIL_HINT')"
+      [title]="t._('IDEA_COMMON.ADDRESS.EMAIL_HINT')"
       [(ngModel)]="address.email"
     ></ion-input>
   </ion-item>
