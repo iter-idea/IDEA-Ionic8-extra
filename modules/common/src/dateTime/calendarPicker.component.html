@@ -76,12 +76,12 @@
           [color]="
             isSameDay(calendarGrid[i][j], today) || isSameDay(calendarGrid[i][j], selectedDate)
               ? 'primary'
-              : isSameMonth(refDate, calendarGrid[i][j])
+              : isSameMonth(calendarGrid[i][j], refDate)
               ? 'dark'
               : 'medium'
           "
           [fill]="
-            isSameDay(selectedDate, calendarGrid[i][j])
+            isSameDay(calendarGrid[i][j], selectedDate)
               ? 'solid'
               : isSameDay(calendarGrid[i][j], today)
               ? 'outline'

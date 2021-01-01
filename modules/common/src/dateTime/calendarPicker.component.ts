@@ -185,15 +185,15 @@ export class IDEACalendarPickerComponent {
   /**
    * Whether the two date are the same.
    */
-  public isSameDay(dateA: Date, dateB: Date): boolean {
-    return dateA.toISOString().slice(0, 10) === dateB.toISOString().slice(0, 10);
+  public isSameDay(a: Date, b: Date): boolean {
+    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
   }
 
   /**
    * Whether the two date are in the same month.
    */
-  public isSameMonth(dateA: Date, dateB: Date): boolean {
-    return dateA.toISOString().slice(0, 7) === dateB.toISOString().slice(0, 7);
+  public isSameMonth(a: Date, b: Date): boolean {
+    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
   }
 
   /**
