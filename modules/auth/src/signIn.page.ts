@@ -94,8 +94,8 @@ export class IDEASignInPage {
         } else window.location.assign(''); // hard reload
       })
       .catch(err => {
-        if (err.name === 'UserNotConfirmedException') this.errorMsg = this.t._('IDEA.AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
-        this.message.error('IDEA.AUTH.AUTHENTICATION_FAILED');
+        if (err.name === 'UserNotConfirmedException') this.errorMsg = this.t._('IDEA_AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
+        this.message.error('IDEA_AUTH.AUTHENTICATION_FAILED');
       })
       .finally(() => this.loading.hide());
   }

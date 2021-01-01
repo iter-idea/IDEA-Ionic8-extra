@@ -104,7 +104,7 @@ export class IDEATeamsPage {
    * Get the name of a project.
    */
   public getProjectName(project: string): string {
-    return this.t._('IDEA.TEAMS.PROJECTS_NAMES.'.concat(project));
+    return this.t._('IDEA_TEAMS.TEAMS.PROJECTS_NAMES.'.concat(project));
   }
 
   /**
@@ -114,9 +114,9 @@ export class IDEATeamsPage {
     // ask for the name of the new team
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.TEAMS.NEW_TEAM'),
-        subHeader: this.t._('IDEA.TEAMS.SELECT_NAME_FOR_NEW_TEAM'),
-        inputs: [{ name: 'name', placeholder: this.t._('IDEA.TEAMS.TEAM_NAME') }],
+        header: this.t._('IDEA_TEAMS.TEAMS.NEW_TEAM'),
+        subHeader: this.t._('IDEA_TEAMS.TEAMS.SELECT_NAME_FOR_NEW_TEAM'),
+        inputs: [{ name: 'name', placeholder: this.t._('IDEA_TEAMS.TEAMS.TEAM_NAME') }],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
@@ -146,12 +146,12 @@ export class IDEATeamsPage {
     // prepare the options
     const buttons = [];
     buttons.push({
-      text: this.t._('IDEA.TEAMS.MANAGE_TEAM_MEMBERS'),
+      text: this.t._('IDEA_TEAMS.TEAMS.MANAGE_TEAM_MEMBERS'),
       icon: 'people',
       handler: () => this.navCtrl.navigateForward(['teams', team.teamId, 'users'])
     });
     buttons.push({
-      text: this.t._('IDEA.TEAMS.DELETE_TEAM'),
+      text: this.t._('IDEA_TEAMS.TEAMS.DELETE_TEAM'),
       role: 'destructive',
       icon: 'trash',
       handler: () => this.deleteTeam(team)
@@ -159,7 +159,7 @@ export class IDEATeamsPage {
     buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     // show the options
     this.actionSheetCtrl
-      .create({ header: this.t._('IDEA.TEAMS.ACTIONS_ON_TEAM_', { team: team.name }), buttons })
+      .create({ header: this.t._('IDEA_TEAMS.TEAMS.ACTIONS_ON_TEAM_', { team: team.name }), buttons })
       .then(actions => actions.present());
   }
 
@@ -168,14 +168,14 @@ export class IDEATeamsPage {
    */
   public deleteTeam(team: Team) {
     // be sure the team isn't active in any project
-    if (team.activeInProjects.length) return this.message.error('IDEA.TEAMS.DEACTIVATE_FIRST_TEAM_FROM_PROJECTS');
+    if (team.activeInProjects.length) return this.message.error('IDEA_TEAMS.TEAMS.DEACTIVATE_FIRST_TEAM_FROM_PROJECTS');
     // request the password of the current user (admin) to proceed
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.TEAMS.DELETE_TEAM'),
+        header: this.t._('IDEA_TEAMS.TEAMS.DELETE_TEAM'),
         subHeader: this.t._('COMMON.ARE_YOU_SURE'),
-        message: this.t._('IDEA.TEAMS.TEAM_DELETION_ARE_YOU_SURE'),
-        inputs: [{ name: 'pwd', type: 'password', placeholder: this.t._('IDEA.TEAMS.YOUR_CURRENT_PASSWORD') }],
+        message: this.t._('IDEA_TEAMS.TEAMS.TEAM_DELETION_ARE_YOU_SURE'),
+        inputs: [{ name: 'pwd', type: 'password', placeholder: this.t._('IDEA_TEAMS.TEAMS.YOUR_CURRENT_PASSWORD') }],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {

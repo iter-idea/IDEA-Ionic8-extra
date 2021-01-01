@@ -6,14 +6,14 @@
       </ion-button>
     </ion-buttons>
     <ion-searchbar
-      [placeholder]="t._('IDEA.RESOURCE_CENTER.SEARCH_FOR_FOLDERS')"
+      [placeholder]="t._('IDEA_TEAMS.RESOURCE_CENTER.SEARCH_FOR_FOLDERS')"
       (ionInput)="search($event.target ? $event.target.value : '')"
     ></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button
         *ngIf="admin"
         [disabled]="offline.isOffline()"
-        [title]="t._('IDEA.RESOURCE_CENTER.CREATE_NEW_FOLDER')"
+        [title]="t._('IDEA_TEAMS.RESOURCE_CENTER.CREATE_NEW_FOLDER')"
         (click)="newFolder()"
       >
         <ion-icon slot="icon-only" name="add"></ion-icon>
@@ -41,7 +41,7 @@
           color="medium"
           fill="clear"
           slot="end"
-          [title]="t._('IDEA.RESOURCE_CENTER.RENAME')"
+          [title]="t._('IDEA_TEAMS.RESOURCE_CENTER.RENAME')"
           [disabled]="offline.isOffline()"
           (click)="renameFolder(folder, $event)"
         >
@@ -51,7 +51,7 @@
           color="danger"
           fill="clear"
           slot="end"
-          [title]="t._('IDEA.RESOURCE_CENTER.DELETE')"
+          [title]="t._('IDEA_TEAMS.RESOURCE_CENTER.DELETE')"
           [disabled]="offline.isOffline()"
           (click)="deleteFolder(folder, $event)"
         >

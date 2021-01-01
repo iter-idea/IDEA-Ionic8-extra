@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { ChangeDetectorRef } from '@angular/core';
 import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
-import { IDEATranslationsService, IDEAOfflineService } from '@idea-ionic/common';
+import { IDEAOfflineService } from '@idea-ionic/common';
 
 /**
  * The default language to use if no other preferred one is available.
@@ -67,8 +67,7 @@ export class IDEASpeechRecognitionComponent {
     public platform: Platform,
     public cd: ChangeDetectorRef,
     public speechRecognition: SpeechRecognition,
-    public offline: IDEAOfflineService,
-    public t: IDEATranslationsService
+    public offline: IDEAOfflineService
   ) {}
   public ngOnInit() {
     // check whether the feature available

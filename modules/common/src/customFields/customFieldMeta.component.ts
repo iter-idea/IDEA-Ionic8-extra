@@ -120,8 +120,8 @@ export class IDEACustomFieldMetaComponent {
    * Add an option to the list.
    */
   public addOption() {
-    const header = this.t._('IDEA.CUSTOM_FIELDS.ADD_OPTION');
-    const message = this.t._('IDEA.CUSTOM_FIELDS.ADD_OPTION_HINT');
+    const header = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_OPTION');
+    const message = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_OPTION_HINT');
     const inputs: any = [{ name: 'enum', type: 'text' }];
     const buttons = [
       { text: this.t._('COMMON.CANCEL'), role: 'cancel' },

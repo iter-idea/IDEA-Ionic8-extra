@@ -5,32 +5,32 @@
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ 'IDEA.ACCOUNT.ACCOUNT' | translate }}</ion-title>
+    <ion-title>{{ 'IDEA_TEAMS.ACCOUNT.ACCOUNT' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <ion-list lines="full" class="account">
     <ion-item>
-      <ion-label position="stacked">{{ 'IDEA.ACCOUNT.EMAIL' | translate }}</ion-label>
+      <ion-label position="stacked">{{ 'IDEA_TEAMS.ACCOUNT.EMAIL' | translate }}</ion-label>
       <ion-input type="text" readonly="true" [(ngModel)]="newEmail"> </ion-input>
       <ion-button
         slot="end"
         fill="clear"
         class="marginTop"
-        [title]="t._('IDEA.ACCOUNT.SET_A_NEW_EMAIL')"
+        [title]="t._('IDEA_TEAMS.ACCOUNT.SET_A_NEW_EMAIL')"
         (click)="updateEmail()"
       >
         <ion-icon name="pencil" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">{{ 'IDEA.ACCOUNT.PASSWORD' | translate }}</ion-label>
+      <ion-label position="stacked">{{ 'IDEA_TEAMS.ACCOUNT.PASSWORD' | translate }}</ion-label>
       <ion-input type="text" readonly="true" value="********"> </ion-input>
       <ion-button
         slot="end"
         fill="clear"
         class="marginTop"
-        [title]="t._('IDEA.ACCOUNT.SET_A_NEW_PASSWORD')"
+        [title]="t._('IDEA_TEAMS.ACCOUNT.SET_A_NEW_PASSWORD')"
         (click)="updatePassword()"
       >
         <ion-icon name="pencil" slot="icon-only"></ion-icon>
@@ -38,25 +38,25 @@
     </ion-item>
     <ion-list-header class="disruptive">
       <ion-badge color="danger">
-        <ion-icon name="nuclear"></ion-icon> {{ 'IDEA.ACCOUNT.DISRUPTIVE_ACTIONS' | translate }}
+        <ion-icon name="nuclear"></ion-icon> {{ 'IDEA_TEAMS.ACCOUNT.DISRUPTIVE_ACTIONS' | translate }}
       </ion-badge>
     </ion-list-header>
     <ion-item>
       <ion-label class="ion-text-wrap">
-        {{ 'IDEA.ACCOUNT.USER_DELETION' | translate }}
+        {{ 'IDEA_TEAMS.ACCOUNT.USER_DELETION' | translate }}
         <p>
-          {{ 'IDEA.ACCOUNT.IRREVERSIBLE_OPERATION' | translate }}
+          {{ 'IDEA_TEAMS.ACCOUNT.IRREVERSIBLE_OPERATION' | translate }}
           <br />
-          <i>{{ 'IDEA.ACCOUNT.YOU_MUST_LEAVE_ALL_TEAMS_FIRST' | translate }}</i>
+          <i>{{ 'IDEA_TEAMS.ACCOUNT.YOU_MUST_LEAVE_ALL_TEAMS_FIRST' | translate }}</i>
         </p>
       </ion-label>
       <ion-button
         slot="end"
         color="danger"
-        [title]="t._('IDEA.ACCOUNT.DELETE_PERMANENTLY_USER')"
+        [title]="t._('IDEA_TEAMS.ACCOUNT.DELETE_PERMANENTLY_USER')"
         (click)="deleteUser()"
       >
-        {{ 'IDEA.ACCOUNT.DELETE' | translate }}
+        {{ 'IDEA_TEAMS.ACCOUNT.DELETE' | translate }}
       </ion-button>
     </ion-item>
   </ion-list>

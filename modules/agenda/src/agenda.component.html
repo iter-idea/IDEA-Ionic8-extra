@@ -15,9 +15,9 @@
           [value]="view"
           (ionChange)="$event?.detail ? setView($event.detail.value) : null"
         >
-          <ion-select-option [value]="CalendarView.Month">{{ 'IDEA.AGENDA.MONTH' | translate }}</ion-select-option>
-          <ion-select-option [value]="CalendarView.Week">{{ 'IDEA.AGENDA.WEEK' | translate }}</ion-select-option>
-          <ion-select-option [value]="CalendarView.Day">{{ 'IDEA.AGENDA.DAY' | translate }}</ion-select-option>
+          <ion-select-option [value]="CalendarView.Month">{{ 'IDEA_AGENDA.MONTH' | translate }}</ion-select-option>
+          <ion-select-option [value]="CalendarView.Week">{{ 'IDEA_AGENDA.WEEK' | translate }}</ion-select-option>
+          <ion-select-option [value]="CalendarView.Day">{{ 'IDEA_AGENDA.DAY' | translate }}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-col>

@@ -5,7 +5,7 @@
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ title || 'IDEA.EMAIL.EMAIL_DATA' | translate }}</ion-title>
+    <ion-title>{{ title || 'IDEA_COMMON.EMAIL.EMAIL_DATA' | translate }}</ion-title>
     <ion-buttons slot="end" *ngIf="!disabled">
       <ion-button [title]="t._('COMMON.SAVE')" (click)="save()">
         <ion-icon name="checkmark-circle" slot="icon-only"></ion-icon>
@@ -15,21 +15,31 @@
 </ion-header>
 <ion-content>
   <ion-list class="aList ion-padding" [class.viewMode]="disabled" [class.editMode]="!disabled">
-    <idea-list [data]="_emailData.to" [label]="t._('IDEA.EMAIL.TO')" [lines]="lines" [disabled]="disabled"></idea-list>
-    <idea-list [data]="_emailData.cc" [label]="t._('IDEA.EMAIL.CC')" [lines]="lines" [disabled]="disabled"></idea-list>
+    <idea-list
+      [data]="_emailData.to"
+      [label]="t._('IDEA_COMMON.EMAIL.TO')"
+      [lines]="lines"
+      [disabled]="disabled"
+    ></idea-list>
+    <idea-list
+      [data]="_emailData.cc"
+      [label]="t._('IDEA_COMMON.EMAIL.CC')"
+      [lines]="lines"
+      [disabled]="disabled"
+    ></idea-list>
     <idea-list
       [data]="_emailData.bcc"
-      [label]="t._('IDEA.EMAIL.BCC')"
+      [label]="t._('IDEA_COMMON.EMAIL.BCC')"
       [lines]="lines"
       [disabled]="disabled"
     ></idea-list>
     <ion-item [lines]="lines">
-      <ion-label position="stacked">{{ 'IDEA.EMAIL.SUBJECT' | translate }}</ion-label>
+      <ion-label position="stacked">{{ 'IDEA_COMMON.EMAIL.SUBJECT' | translate }}</ion-label>
       <div class="innerContent" *ngIf="disabled" [innerHTML]="_emailData.subject | highlight: _variables"></div>
       <ion-input type="text" *ngIf="!disabled" [(ngModel)]="_emailData.subject"></ion-input>
     </ion-item>
     <ion-item [lines]="lines">
-      <ion-label position="stacked">{{ 'IDEA.EMAIL.CONTENT' | translate }}</ion-label>
+      <ion-label position="stacked">{{ 'IDEA_COMMON.EMAIL.CONTENT' | translate }}</ion-label>
       <div
         class="innerContent md"
         *ngIf="disabled"
@@ -42,8 +52,8 @@
   <ion-list class="aList ion-padding" *ngIf="!disabled">
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.EMAIL.VARIABLES_AVAILABLE' | translate }}</h2>
-        <p>{{ 'IDEA.EMAIL.VARIABLES_AVAILABLE_I' | translate }}</p>
+        <h2>{{ 'IDEA_COMMON.EMAIL.VARIABLES_AVAILABLE' | translate }}</h2>
+        <p>{{ 'IDEA_COMMON.EMAIL.VARIABLES_AVAILABLE_I' | translate }}</p>
       </ion-label>
     </ion-list-header>
     <ul class="variablesList">

@@ -143,7 +143,7 @@ export class IDEAStripeSubscriptionComponent {
   public subscribe() {
     // acquire the credid card info and create a token to be sent to Stripe through our back-end
     this.stripe.createToken(this.creditCard).then((resT: any) => {
-      if (resT.error) return this.message.error('IDEA.STRIPE.INVALID_CREDIT_CARD');
+      if (resT.error) return this.message.error('IDEA_PS.STRIPE.INVALID_CREDIT_CARD');
       // send the token to the back-end and request the subscription (transparent upgrade/downgrade)
       this.loading.show();
       // get the detailed information about the plan: storePlanId is needed
@@ -169,7 +169,7 @@ export class IDEAStripeSubscriptionComponent {
                     this.validateSubscription();
                     break;
                   case 'requires_payment_method':
-                    this.message.error('IDEA.STRIPE.ERROR_DURING_PAYMENT_CHECK_CARD');
+                    this.message.error('IDEA_PS.STRIPE.ERROR_DURING_PAYMENT_CHECK_CARD');
                     break;
                   case 'requires_action':
                     this.stripe
@@ -188,7 +188,7 @@ export class IDEAStripeSubscriptionComponent {
         })
         .catch(() => {
           this.loading.hide();
-          this.message.error('IDEA.SUBSCRIPTION.PLAN_NOT_FOUND');
+          this.message.error('IDEA_PS.SUBSCRIPTION.PLAN_NOT_FOUND');
         });
     });
   }
@@ -204,7 +204,7 @@ export class IDEAStripeSubscriptionComponent {
     })
       .then((subscription: ProjectSubscription) => {
         if (!silent) {
-          this.message.success('IDEA.STRIPE.SUCCESSFULLY_SUBSCRIBED');
+          this.message.success('IDEA_PS.STRIPE.SUCCESSFULLY_SUBSCRIBED');
           this.close(subscription);
         }
       })

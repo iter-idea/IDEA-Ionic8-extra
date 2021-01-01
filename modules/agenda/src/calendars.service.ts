@@ -130,8 +130,8 @@ export class IDEACalendarsService {
         // since we don't know when/if the auth flow will finish, we wait
         this.alertCtrl
           .create({
-            header: this.t._('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR'),
-            message: this.t._('IDEA.AGENDA.CALENDARS.LINKING_CALENDAR_CONFIRM_ONCE_DONE'),
+            header: this.t._('IDEA_AGENDA.CALENDARS.LINKING_CALENDAR'),
+            message: this.t._('IDEA_AGENDA.CALENDARS.LINKING_CALENDAR_CONFIRM_ONCE_DONE'),
             backdropDismiss: false,
             buttons: [{ text: this.t._('COMMON.DONE'), handler: () => resolve() }]
           })
@@ -211,7 +211,7 @@ export class IDEACalendarsService {
               component: 'idea-suggestions',
               componentProps: {
                 data: extCals.map(c => new Suggestion({ value: c.id, name: c.name })),
-                searchPlaceholder: this.t._('IDEA.AGENDA.CALENDARS.CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK'),
+                searchPlaceholder: this.t._('IDEA_AGENDA.CALENDARS.CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK'),
                 sortData: true,
                 hideIdFromUI: true,
                 hideClearButton: true,

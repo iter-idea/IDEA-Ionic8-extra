@@ -1,0 +1,155 @@
+{
+  "IDEA_COMMON": {
+    "ADDRESS": {
+      "ADDRESS": "Dirección",
+      "ADDRESS2": "Información de dirección suplementaria  ",
+      "ADDRESS2_HINT": "Apartamento, bloque, edificio, piso, etc.",
+      "ADDRESS_HINT": "Codigo postal, buzón, nombre de la compaía, c/o",
+      "CITY": "Ciudad",
+      "CITY_HINT": "Ciudad",
+      "COMPLETE_ADDRESS": "Dirección ",
+      "COMPLETE_ADDRESS_HINT": "Completa tu dirección; tap para más detalles",
+      "CONTACT": "Nombre completo",
+      "CONTACT_HINT": "Nombre completo del contacto/receptor ",
+      "COUNTRY": "País",
+      "COUNTRY_HINT": "País",
+      "EMAIL": "Correo electrónico",
+      "EMAIL_HINT": "Correo electrónico de contacto",
+      "PHONE": "Teléfono",
+      "PHONE_HINT": "Teléfono de contacto/número de teléfono móvil",
+      "POSTCODE": "Código postal",
+      "POSTCODE_HINT": "Código postal",
+      "PROVINCE": "Provincia",
+      "PROVINCE_HINT": "Provincia, distrito, área"
+    },
+    "CALENDAR": {
+      "CLOSE_WITHOUT_SAVING": "Cerrar sin guardar",
+      "MONTH": "Mes",
+      "RESET": "Reset",
+      "SET_DATE": "Fija una fecha",
+      "SET_TIME": "Fija una hora",
+      "YEAR": "Año"
+    },
+    "CHECKER": {
+      "ALL": "Todos",
+      "CLOSE_WITHOUT_SELECTING": "Cerrar sin seleccionar nada",
+      "CONFIRM_SELECTION": "Confirma tu selección",
+      "DESELECT_ALL": "Deseleccionar todo",
+      "DONE": "Hecho",
+      "NONE": "Ninguna",
+      "NO_ELEMENTS_FOUND": "Ningún elemento encontrado",
+      "NUM_ELEMENTS_SELECTED": "{{num}} elementos seleccionados",
+      "SEARCH": "Buscar",
+      "SELECT_ALL": "Seleccionar todo"
+    },
+    "CONTACTS": {
+      "EMAIL": "Email",
+      "EMAIL_HINT": "Dirección de correo electrónico",
+      "NAME": "Nombre",
+      "NAME_HINT": "Nombre de contacto",
+      "PHONE": "Telefono",
+      "PHONE_HINT": "Telefono móvil"
+    },
+    "CUSTOM_FIELDS": {
+      "CHOICES": "Posibles opciones",
+      "CHOOSE_A_KEY": "Elige un nombre para el campo",
+      "CLOSE_WITHOUT_SAVING": "Cerrar sin guardar",
+      "DEFAULT": "Valor por defecto",
+      "DESCRIPTION": "Descripción",
+      "DUPLICATED_KEY": "Ya existe un campo con ese nombre",
+      "FIELDS_TYPES": {
+        "BOOLEAN": "Si / No",
+        "ENUM": "Opción",
+        "NUMBER": "Número",
+        "STRING": "Texto corto",
+        "TEXT": "Texto largo"
+      },
+      "FIELD_DELETION_ALERT": "El campo se eliminará irreversiblemente.",
+      "MANAGE_FIELD": "Administrar campo",
+      "MAX": "Máximo",
+      "MIN": "Mínimo",
+      "NAME": "Nombre",
+      "NEW_FIELD": "Nuevo campo",
+      "OBLIGATORY": "Obligatorio",
+      "REMOVE_FIELD": "Eliminar campo",
+      "TYPE": "Tipo"
+    },
+    "DURATION": { "HH": "hh", "HOURS": "Horas", "MINUTES": "Minutos", "MM": "mm", "SECONDS": "Segundos", "SS": "ss" },
+    "ECHO": {
+      "ACCOUNT_CONFIRMED": "Cuenta confirmada: ahora puede iniciar sesión.",
+      "EMAIL_CHANGED": "Dirección de correo electrónico actualizada correctamente. Ahora debe iniciar sesión de nuevo.",
+      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR": "Error al vincular la cuenta externa; Inténtalo de nuevo",
+      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "La cuenta externa ahora está vinculada. Regrese a la página de calendarios para completar la configuración",
+      "GITHUB_SOURCE_INTEGRATION_ERROR": "Error durante la integración de GitHub; Inténtalo de nuevo.",
+      "GITHUB_SOURCE_INTEGRATION_SUCCESS": "GitHub ha sido conectado. Ahora puede completar la configuración.",
+      "GO_TO_HOME_HINT": "Haga clic para ir a la página de inicio del servicio.",
+      "HOMEPAGE": "Volver a la página de inicio",
+      "REQUEST_FAILED": "La solicitud falló; Inténtalo de nuevo.",
+      "TEAM_JOINED": "Te uniste con éxito al grupo.",
+      "TRELLO_SOURCE_INTEGRATION_ERROR": "Error durante la integración de Trello; Inténtalo de nuevo.",
+      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copie y pegue el siguiente token en la página anterior para completar la configuración: {{token}}"
+    },
+    "LABELER": {
+      "EXPLANATION": "Solo la traducción en el idioma predeterminado es obligatoria. Si falta alguna traducción, se utiliza la del idioma predeterminado.",
+      "FILL_IN_DEFAULT_LANGUAGE": "Debe completar la etiqueta al menos en el idioma predeterminado",
+      "MANAGE_LABEL": "Administrar etiqueta"
+    },
+    "LANGUAGE_PICKER": {
+      "APP_WILL_RESTART": "La aplicación se reiniciará",
+      "CHANGE_LANGUAGE": "Cambiar el idioma mostrado"
+    },
+    "LIST": {
+      "CANCEL_AND_CLOSE": "Cancelar y cerrar",
+      "DELETE_ELEMENT": "Elemento borrado",
+      "ELEMENT": "Elemento",
+      "NEW_ELEMENT": "Nuevo elemento",
+      "SAVE_AND_CLOSE": "Salvar y cerrar"
+    },
+    "LOADING": { "PLEASE_WAIT": "Espera por favor..." },
+    "MDE": {
+      "CLOSE_WITHOUT_SAVING": "Cerrar sin guardar",
+      "SAVE_AND_CLOSE": "Guardar y cerrar",
+      "TITLE": "Editor de rebajas",
+      "TOOLBAR": { "BOLD": "Negrita", "ITALIC": "Italic", "STRIKE": "Huelga" },
+      "VARIABLES": "Variables"
+    },
+    "OFFLINE": {
+      "DELETION_IS_IRREVERSIBLE": "La eliminación es irreversible.",
+      "DOWNLOAD": "Descargar",
+      "DOWNLOAD_RESOURCES_EXPLANATION": "Lista de los recursos disponibles sin conexión",
+      "ERROR_DURING_LAST_SYNC": "Hubo un error durante la última sincronización; Inténtalo de nuevo.",
+      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "La funcionalidad se reduce y los contenidos pueden no estar actualizados",
+      "FORCE_FULL_SYNC": "Forzar sincronización completa",
+      "HUGE_SYNC_NEED_MANUAL_CONFIRMATION": "Hay muchos datos para sincronizar. Confirmar para continuar.",
+      "LAST_SYNC": "Última sincronización",
+      "LOADING": "Cargando...",
+      "NOW": "Ahora",
+      "NO_ELEMENTS_TO_UPLOAD": "No hay elementos para cargar",
+      "OFFLINE_MANAGER": "Administrador sin conexión\n",
+      "REQUEST_FAILED": "Solicitud fallida; intente nuevamente o cancele la solicitud",
+      "SYNC_IN_PROGRESS": "Sincronización en progreso",
+      "SYNC_NOW": "Sincronizar",
+      "UPLOAD": "Subir archivo",
+      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Los recursos creados sin conexión deben cargarse en línea",
+      "YOU_ARE_OFFLINE": "Está fuera de línea"
+    },
+    "SELECT": {
+      "CLEAR_SELECTION": "Borrar selección",
+      "CLOSE_WITHOUT_SELECTING": "Cerrar sin seleccionar nada",
+      "NO_ELEMENTS_FOUND": "No se encontraron elementos",
+      "SEARCH": "Buscar",
+      "SELECT_": "Seleccione {{sugerencia}}",
+      "TAP_TO_FILTER": "Seleccionar para filtrar"
+    },
+    "SIGNATURE": {
+      "CANCEL": "Cancelar",
+      "CLEAR_SIGNATURE": "Borrar la firma",
+      "NAME_AND_SURNAME": "Nombre y apellidos",
+      "SAVE_SIGNATURE": "Guardar la firma",
+      "SIGNATORY": "El firmante",
+      "SIGNATURE": "Firma",
+      "SIGNATURE_EXPLANATION": "Firme abajo",
+      "VERIFY_SIGNATORY_AND_SIGNATURE": "Verifica la firma y el firmante"
+    }
+  }
+}

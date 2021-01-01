@@ -6,10 +6,10 @@
       </ion-button>
     </ion-buttons>
     <ion-title>
-      {{ 'IDEA.OFFLINE.OFFLINE_MANAGER' | translate }}
+      {{ 'IDEA_COMMON.OFFLINE.OFFLINE_MANAGER' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA.OFFLINE.ADVANCED_ACTIONS')" (click)="actions()">
+      <ion-button [title]="t._('IDEA_COMMON.OFFLINE.ADVANCED_ACTIONS')" (click)="actions()">
         <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -19,20 +19,24 @@
   <ion-list class="aList">
     <ion-list-header *ngIf="!offline.synchronizing && offline.requiresManualConfirmation">
       <ion-label>
-        <h2>{{ 'IDEA.OFFLINE.HUGE_SYNC_NEED_MANUAL_CONFIRMATION' | translate }}</h2>
+        <h2>{{ 'IDEA_COMMON.OFFLINE.HUGE_SYNC_NEED_MANUAL_CONFIRMATION' | translate }}</h2>
       </ion-label>
     </ion-list-header>
     <ion-list-header *ngIf="!offline.synchronizing">
       <ion-label class="ion-text-wrap">
         <h3 class="lastSyncAt">
-          {{ 'IDEA.OFFLINE.LAST_SYNC' | translate }}:
+          {{ 'IDEA_COMMON.OFFLINE.LAST_SYNC' | translate }}:
           <ion-text>
-            {{ offline.lastSyncAt ? (offline.lastSyncAt | dateLocale: 'medium') : ('IDEA.OFFLINE.NEVER' | translate) }}
+            {{
+              offline.lastSyncAt
+                ? (offline.lastSyncAt | dateLocale: 'medium')
+                : ('IDEA_COMMON.OFFLINE.NEVER' | translate)
+            }}
           </ion-text>
         </h3>
         <p *ngIf="offline.errorInLastSync">
           <ion-text color="danger">
-            <b>{{ 'IDEA.OFFLINE.ERROR_DURING_LAST_SYNC' | translate }}</b>
+            <b>{{ 'IDEA_COMMON.OFFLINE.ERROR_DURING_LAST_SYNC' | translate }}</b>
           </ion-text>
         </p>
       </ion-label>
@@ -43,7 +47,7 @@
         [disabled]="offline.isOffline()"
         (click)="sync()"
       >
-        <ion-icon slot="start" name="sync"></ion-icon> {{ 'IDEA.OFFLINE.SYNC_NOW' | translate }}
+        <ion-icon slot="start" name="sync"></ion-icon> {{ 'IDEA_COMMON.OFFLINE.SYNC_NOW' | translate }}
       </ion-button>
     </ion-list-header>
   </ion-list>
@@ -57,12 +61,12 @@
   <ion-list class="aList" *ngIf="offline.useQueueAPIRequests">
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.OFFLINE.UPLOAD' | translate }}</h2>
-        <p>{{ 'IDEA.OFFLINE.UPLOAD_QUEUE_REQUESTS_EXPLANATION' | translate }}</p>
+        <h2>{{ 'IDEA_COMMON.OFFLINE.UPLOAD' | translate }}</h2>
+        <p>{{ 'IDEA_COMMON.OFFLINE.UPLOAD_QUEUE_REQUESTS_EXPLANATION' | translate }}</p>
       </ion-label>
     </ion-list-header>
     <ion-item *ngIf="!offline.queueAPIRequests.length">
-      <i>{{ 'IDEA.OFFLINE.NO_ELEMENTS_TO_UPLOAD' | translate }}</i>
+      <i>{{ 'IDEA_COMMON.OFFLINE.NO_ELEMENTS_TO_UPLOAD' | translate }}</i>
       <ion-icon slot="end" size="small" name="checkmark" color="success"></ion-icon>
     </ion-item>
     <ion-item *ngFor="let r of offline.queueAPIRequests; let odd = odd" [class.oddItem]="odd">
@@ -70,12 +74,12 @@
         {{ r.description }}
         <p *ngIf="r.error">
           <ion-text color="danger">
-            <b>{{ 'IDEA.OFFLINE.ERROR_CODE' | translate }}: {{ r.error }}</b>
+            <b>{{ 'IDEA_COMMON.OFFLINE.ERROR_CODE' | translate }}: {{ r.error }}</b>
           </ion-text>
           <br />
-          {{ 'IDEA.OFFLINE.REQUEST_FAILED_EXPLANATION_I' | translate }}<br />
-          {{ 'IDEA.OFFLINE.REQUEST_FAILED_EXPLANATION_II' | translate }}<br />
-          {{ 'IDEA.OFFLINE.REQUEST_FAILED_EXPLANATION_III' | translate }}
+          {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_I' | translate }}<br />
+          {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_II' | translate }}<br />
+          {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_III' | translate }}
         </p>
       </ion-label>
       <ion-button
@@ -83,7 +87,7 @@
         slot="end"
         color="danger"
         *ngIf="r.error"
-        [title]="t._('IDEA.OFFLINE.CANCEL_REQUEST')"
+        [title]="t._('IDEA_COMMON.OFFLINE.CANCEL_REQUEST')"
         (click)="deleteRequest(r)"
       >
         <ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -93,7 +97,7 @@
         slot="end"
         color="medium"
         *ngIf="r.error"
-        [title]="t._('IDEA.OFFLINE.DOWNLOAD_LOG')"
+        [title]="t._('IDEA_COMMON.OFFLINE.DOWNLOAD_LOG')"
         (click)="downloadRequestLog(r)"
       >
         <ion-icon slot="icon-only" name="download"></ion-icon>
@@ -104,8 +108,8 @@
   <ion-list class="aList" *ngIf="offline.getResources().length">
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.OFFLINE.DOWNLOAD' | translate }}</h2>
-        <p>{{ 'IDEA.OFFLINE.DOWNLOAD_RESOURCES_EXPLANATION' | translate }}</p>
+        <h2>{{ 'IDEA_COMMON.OFFLINE.DOWNLOAD' | translate }}</h2>
+        <p>{{ 'IDEA_COMMON.OFFLINE.DOWNLOAD_RESOURCES_EXPLANATION' | translate }}</p>
       </ion-label>
     </ion-list-header>
     <idea-cacheable-resource

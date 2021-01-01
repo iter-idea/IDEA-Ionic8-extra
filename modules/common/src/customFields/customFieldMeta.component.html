@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('IDEA.CUSTOM_FIELDS.CLOSE_WITHOUT_SAVING')" (click)="close()">
+      <ion-button [title]="t._('IDEA_COMMON.CUSTOM_FIELDS.CLOSE_WITHOUT_SAVING')" (click)="close()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ 'IDEA.CUSTOM_FIELDS.MANAGE_FIELD' | translate }}</ion-title>
+    <ion-title>{{ 'IDEA_COMMON.CUSTOM_FIELDS.MANAGE_FIELD' | translate }}</ion-title>
     <ion-buttons slot="end" *ngIf="!disabled">
-      <ion-button [title]="t._('IDEA.CUSTOM_FIELDS.SAVE_CHANGES')" (click)="save()">
+      <ion-button [title]="t._('IDEA_COMMON.CUSTOM_FIELDS.SAVE_CHANGES')" (click)="save()">
         <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -18,7 +18,7 @@
     <ion-list-header *ngIf="disabled">
       <ion-label>
         <h2>{{ getLabelValue(_field.name) }} <ion-text class="obligatoryDot" *ngIf="_field.obligatory"></ion-text></h2>
-        <ion-badge color="dark">{{ 'IDEA.CUSTOM_FIELDS.FIELDS_TYPES.' + _field.type | translate }}</ion-badge>
+        <ion-badge color="dark">{{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _field.type | translate }}</ion-badge>
         <ion-badge
           color="medium"
           *ngIf="
@@ -28,13 +28,13 @@
               _field.type === CustomFieldTypes.ENUM)
           "
         >
-          {{ 'IDEA.CUSTOM_FIELDS.DEFAULT' | translate }}: {{ _field.default }}
+          {{ 'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT' | translate }}: {{ _field.default }}
         </ion-badge>
         <ion-badge color="medium" *ngIf="_field.type === CustomFieldTypes.NUMBER">
-          {{ 'IDEA.CUSTOM_FIELDS.MIN' | translate }}: {{ _field.min }}
+          {{ 'IDEA_COMMON.CUSTOM_FIELDS.MIN' | translate }}: {{ _field.min }}
         </ion-badge>
         <ion-badge color="medium" *ngIf="_field.type === CustomFieldTypes.NUMBER">
-          {{ 'IDEA.CUSTOM_FIELDS.MAX' | translate }}: {{ _field.max }}
+          {{ 'IDEA_COMMON.CUSTOM_FIELDS.MAX' | translate }}: {{ _field.max }}
         </ion-badge>
         <p>{{ getLabelValue(_field.description) }}</p>
       </ion-label>
@@ -43,49 +43,49 @@
     <div *ngIf="!disabled">
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
         <ion-label position="stacked">
-          {{ 'IDEA.CUSTOM_FIELDS.NAME' | translate }} <ion-text class="obligatoryDot"></ion-text>
+          {{ 'IDEA_COMMON.CUSTOM_FIELDS.NAME' | translate }} <ion-text class="obligatoryDot"></ion-text>
         </ion-label>
         <ion-input
           type="text"
           readonly="true"
           [value]="getLabelValue(_field.name)"
-          [placeholder]="t._('IDEA.CUSTOM_FIELDS.NAME_HINT')"
+          [placeholder]="t._('IDEA_COMMON.CUSTOM_FIELDS.NAME_HINT')"
         ></ion-input>
         <ion-button
           slot="end"
           fill="clear"
           class="marginTop"
           [title]="t._('COMMON.EDIT')"
-          (click)="editLabel(t._('IDEA.CUSTOM_FIELDS.NAME'), _field.name)"
+          (click)="editLabel(t._('IDEA_COMMON.CUSTOM_FIELDS.NAME'), _field.name)"
         >
           <ion-icon slot="icon-only" name="pencil"></ion-icon>
         </ion-button>
       </ion-item>
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
-        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.DESCRIPTION' | translate }}</ion-label>
+        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate }}</ion-label>
         <ion-input
           type="text"
           readonly="true"
           [value]="getLabelValue(_field.description)"
-          [placeholder]="t._('IDEA.CUSTOM_FIELDS.DESCRIPTION_HINT')"
+          [placeholder]="t._('IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION_HINT')"
         ></ion-input>
         <ion-button
           slot="end"
           fill="clear"
           class="marginTop"
           [title]="t._('COMMON.EDIT')"
-          (click)="editLabel(t._('IDEA.CUSTOM_FIELDS.DESCRIPTION'), _field.description)"
+          (click)="editLabel(t._('IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION'), _field.description)"
         >
           <ion-icon slot="icon-only" name="pencil"></ion-icon>
         </ion-button>
       </ion-item>
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('icon')">
-        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.ICON' | translate }}</ion-label>
+        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.ICON' | translate }}</ion-label>
         <ion-input
           type="text"
           readonly="true"
           [value]="_field.icon"
-          [placeholder]="t._('IDEA.CUSTOM_FIELDS.ICON_HINT')"
+          [placeholder]="t._('IDEA_COMMON.CUSTOM_FIELDS.ICON_HINT')"
         ></ion-input>
         <ion-badge slot="end" color="dark" class="marginTop" *ngIf="_field.icon">
           <ion-icon [name]="_field.icon"></ion-icon>
@@ -95,10 +95,10 @@
         </ion-button>
       </ion-item>
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('type')">
-        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.TYPE' | translate }}</ion-label>
+        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.TYPE' | translate }}</ion-label>
         <ion-select [(ngModel)]="_field.type">
           <ion-select-option *ngFor="let t of FIELD_TYPES" [value]="t">
-            {{ 'IDEA.CUSTOM_FIELDS.FIELDS_TYPES.' + t | translate }}
+            {{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + t | translate }}
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -107,10 +107,10 @@
         [lines]="lines"
         [class.fieldHasError]="hasFieldAnError('default')"
       >
-        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.DEFAULT' | translate }}</ion-label>
+        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT' | translate }}</ion-label>
         <ion-input
           type="text"
-          [placeholder]="t._('IDEA.CUSTOM_FIELDS.DEFAULT_HINT')"
+          [placeholder]="t._('IDEA_COMMON.CUSTOM_FIELDS.DEFAULT_HINT')"
           [(ngModel)]="_field.default"
         ></ion-input>
       </ion-item>
@@ -119,9 +119,11 @@
         [lines]="lines"
         [class.fieldHasError]="hasFieldAnError('default')"
       >
-        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.DEFAULT_CHOICE' | translate }}</ion-label>
+        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT_CHOICE' | translate }}</ion-label>
         <ion-select [(ngModel)]="_field.default">
-          <ion-select-option value="">{{ 'IDEA.CUSTOM_FIELDS.NO_DEFAULT_CHOICE' | translate }}</ion-select-option>
+          <ion-select-option value="">{{
+            'IDEA_COMMON.CUSTOM_FIELDS.NO_DEFAULT_CHOICE' | translate
+          }}</ion-select-option>
           <ion-select-option *ngFor="let e of _field.enum" [value]="e">
             {{ _field.getEnumElement(e, t.getCurrentLang(), t.languages()) }}
           </ion-select-option>
@@ -132,10 +134,10 @@
         [lines]="lines"
         [class.fieldHasError]="hasFieldAnError('min')"
       >
-        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.MIN' | translate }}</ion-label>
+        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.MIN' | translate }}</ion-label>
         <ion-input
           type="number"
-          [placeholder]="t._('IDEA.CUSTOM_FIELDS.MIN_HINT')"
+          [placeholder]="t._('IDEA_COMMON.CUSTOM_FIELDS.MIN_HINT')"
           [(ngModel)]="_field.min"
         ></ion-input>
       </ion-item>
@@ -144,10 +146,10 @@
         [lines]="lines"
         [class.fieldHasError]="hasFieldAnError('max')"
       >
-        <ion-label position="stacked">{{ 'IDEA.CUSTOM_FIELDS.MAX' | translate }} </ion-label>
+        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.MAX' | translate }} </ion-label>
         <ion-input
           type="number"
-          [placeholder]="t._('IDEA.CUSTOM_FIELDS.MAX_HINT')"
+          [placeholder]="t._('IDEA_COMMON.CUSTOM_FIELDS.MAX_HINT')"
           [(ngModel)]="_field.max"
         ></ion-input>
       </ion-item>
@@ -155,19 +157,19 @@
   </ion-list>
   <ion-list class="obligatoryToggleList" *ngIf="!disabled">
     <ion-item lines="none" class="ion-text-right">
-      <ion-label>{{ 'IDEA.CUSTOM_FIELDS.OBLIGATORY' | translate }}</ion-label>
+      <ion-label>{{ 'IDEA_COMMON.CUSTOM_FIELDS.OBLIGATORY' | translate }}</ion-label>
       <ion-toggle [(ngModel)]="_field.obligatory"></ion-toggle>
     </ion-item>
   </ion-list>
   <ion-list class="aList ion-padding" *ngIf="_field.type === CustomFieldTypes.ENUM">
     <ion-list-header>
       <ion-label>
-        <h3>{{ 'IDEA.CUSTOM_FIELDS.OPTIONS' | translate }}</h3>
+        <h3>{{ 'IDEA_COMMON.CUSTOM_FIELDS.OPTIONS' | translate }}</h3>
       </ion-label>
     </ion-list-header>
     <ion-item lines="none" *ngIf="!_field.enum?.length" [class.fieldHasError]="hasFieldAnError('enum')">
       <ion-label>
-        <i>{{ 'IDEA.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
+        <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
       </ion-label>
     </ion-item>
     <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderOptions($event)">
@@ -186,7 +188,7 @@
           fill="clear"
           color="danger"
           *ngIf="!disabled"
-          [title]="t._('IDEA.CUSTOM_FIELDS.REMOVE_OPTION')"
+          [title]="t._('IDEA_COMMON.CUSTOM_FIELDS.REMOVE_OPTION')"
           (click)="removeOptionByIndex(index)"
         >
           <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
@@ -198,10 +200,10 @@
         <ion-button
           size="small"
           color="medium"
-          [title]="t._('IDEA.CUSTOM_FIELDS.ADD_OPTION_HINT')"
+          [title]="t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_OPTION_HINT')"
           (click)="addOption()"
         >
-          {{ 'IDEA.CUSTOM_FIELDS.ADD_OPTION' | translate }}
+          {{ 'IDEA_COMMON.CUSTOM_FIELDS.ADD_OPTION' | translate }}
         </ion-button>
       </ion-col>
     </ion-row>

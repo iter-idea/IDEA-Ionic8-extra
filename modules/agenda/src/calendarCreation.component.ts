@@ -92,8 +92,8 @@ export class IDEACalendarCreationComponent {
     } else {
       // default values for local calendars
       this.calendar.name = this.calendar.userId
-        ? this.t._('IDEA.AGENDA.CALENDARS.DEFAULT_PERSONAL_CALENDAR_NAME')
-        : this.t._('IDEA.AGENDA.CALENDARS.DEFAULT_TEAM_CALENDAR_NAME');
+        ? this.t._('IDEA_AGENDA.CALENDARS.DEFAULT_PERSONAL_CALENDAR_NAME')
+        : this.t._('IDEA_AGENDA.CALENDARS.DEFAULT_TEAM_CALENDAR_NAME');
       this.calendar.color = this.DEFAULT_COLOR;
     }
     // save (create) the new calendar
@@ -102,7 +102,7 @@ export class IDEACalendarCreationComponent {
       .postCalendar(this.calendar)
       .then(cal => {
         this.calendar.load(cal);
-        this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_CREATED');
+        this.message.success('IDEA_AGENDA.CALENDARS.CALENDAR_CREATED');
         // if the calendar is local, no further action is needed
         if (!cal.external) return this.modalCtrl.dismiss(this.calendar);
         // if the calendar should be linked to an external service, proceed
@@ -116,10 +116,10 @@ export class IDEACalendarCreationComponent {
             // if an external calendar was set, update the calendar
             this.calendar.load(res);
             // run a first sync for the linked external calendar
-            this.loading.show(this.t._('IDEA.AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
+            this.loading.show(this.t._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
             this.calendars
               .syncCalendar(this.calendar)
-              .then(() => this.message.success('IDEA.AGENDA.CALENDARS.FIRST_SYNC_COMPLETED'))
+              .then(() => this.message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED'))
               .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
               .finally(() => {
                 this.loading.hide();

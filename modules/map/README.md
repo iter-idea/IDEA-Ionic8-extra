@@ -4,7 +4,7 @@ Map powered by Google Maps.
 
 [Package on NPM](https://www.npmjs.com/package/@idea-ionic/map).
 
-To install:
+## To install
 
 ```
 npm i --save @idea-ionic/map

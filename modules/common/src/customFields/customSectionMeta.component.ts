@@ -81,7 +81,7 @@ export class IDEACustomSectionMetaComponent {
       this._section.name = new Label(null, this.t.languages());
       this._section.name[this.t.getDefaultLang()] = '-';
     }
-    this.editLabel(this.t._('IDEA.CUSTOM_FIELDS.NAME'), this._section.name);
+    this.editLabel(this.t._('IDEA_COMMON.CUSTOM_FIELDS.NAME'), this._section.name);
   }
   /**
    * Edit the description of the section.
@@ -92,7 +92,7 @@ export class IDEACustomSectionMetaComponent {
       this._section.description = new Label(null, this.t.languages());
       this._section.description[this.t.getDefaultLang()] = '-';
     }
-    this.editLabel(this.t._('IDEA.CUSTOM_FIELDS.DESCRIPTION'), this._section.description);
+    this.editLabel(this.t._('IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION'), this._section.description);
   }
   /**
    * Open the component to edit a label.
@@ -154,8 +154,8 @@ export class IDEACustomSectionMetaComponent {
    * Add a new field to the custom section.
    */
   public addNewField() {
-    const header = this.t._('IDEA.CUSTOM_FIELDS.ADD_FIELD');
-    const message = this.t._('IDEA.CUSTOM_FIELDS.ADD_FIELD_HINT');
+    const header = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD');
+    const message = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD_HINT');
     const inputs: any = [{ name: 'name', type: 'text' }];
     const buttons = [
       { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
@@ -169,7 +169,7 @@ export class IDEACustomSectionMetaComponent {
           if (!key.trim()) return;
           // check wheter the key is unique
           if (this._section.fieldsLegend.some(x => x === key))
-            return this.message.error('IDEA.CUSTOM_FIELDS.DUPLICATED_KEY');
+            return this.message.error('IDEA_COMMON.CUSTOM_FIELDS.DUPLICATED_KEY');
           // initialize a new field
           const field = new CustomFieldMeta(null, this.t.languages());
           // initialize the name of the field
@@ -222,7 +222,7 @@ export class IDEACustomSectionMetaComponent {
           data: this._section.fieldsLegend.map(
             x => new Suggestion({ value: x, name: this.getLabelValue(this._section.fields[x].name) })
           ),
-          searchPlaceholder: this.t._('IDEA.CUSTOM_FIELDS.ADD_FIELD'),
+          searchPlaceholder: this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD'),
           hideIdFromUI: true,
           hideClearButton: true
         }

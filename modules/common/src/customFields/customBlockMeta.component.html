@@ -1,6 +1,6 @@
 <ion-item lines="none" *ngIf="!block.sectionsLegend.length">
   <ion-label>
-    <i>{{ 'IDEA.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
+    <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
   </ion-label>
 </ion-item>
 <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderSectionsLegend($event)">
@@ -24,7 +24,7 @@
 <ion-row *ngIf="!disabled">
   <ion-col class="ion-padding ion-text-center">
     <ion-button size="small" color="primary" (click)="addNewSection()">
-      {{ 'IDEA.CUSTOM_FIELDS.ADD_SECTION' | translate }}
+      {{ 'IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION' | translate }}
     </ion-button>
   </ion-col>
 </ion-row>

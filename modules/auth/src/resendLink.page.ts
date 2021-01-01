@@ -33,20 +33,20 @@ export class IDEAResendLinkPage {
   public resendConfirmationLink() {
     this.errorMsg = null;
     if (!this.email) {
-      this.errorMsg = this.t._('IDEA.AUTH.VALID_EMAIL_OBLIGATORY');
-      this.message.error('IDEA.AUTH.SENDING_FAILED');
+      this.errorMsg = this.t._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
+      this.message.error('IDEA_AUTH.SENDING_FAILED');
       return;
     }
     this.loading.show();
     this.auth
       .resendConfirmationCode(this.email)
       .then(() => {
-        this.message.success('IDEA.AUTH.CONFIRMATION_LINK_SENT');
+        this.message.success('IDEA_AUTH.CONFIRMATION_LINK_SENT');
         this.goToAuth();
       })
       .catch(() => {
-        this.errorMsg = this.t._('IDEA.AUTH.IS_THE_EMAIL_CORRECT');
-        this.message.error('IDEA.AUTH.SENDING_FAILED');
+        this.errorMsg = this.t._('IDEA_AUTH.IS_THE_EMAIL_CORRECT');
+        this.message.error('IDEA_AUTH.SENDING_FAILED');
       })
       .finally(() => this.loading.hide());
   }

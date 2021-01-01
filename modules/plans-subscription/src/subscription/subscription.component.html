@@ -5,7 +5,7 @@
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ 'IDEA.SUBSCRIPTION.MANAGE_SUBSCRIPTION' | translate }}</ion-title>
+    <ion-title>{{ 'IDEA_PS.SUBSCRIPTION.MANAGE_SUBSCRIPTION' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -15,12 +15,12 @@
     </ion-card>
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.SUBSCRIPTION.PLANS' | translate }}</h2>
+        <h2>{{ 'IDEA_PS.SUBSCRIPTION.PLANS' | translate }}</h2>
       </ion-label>
     </ion-list-header>
     <ion-item *ngIf="plans && !plans.length">
       <ion-label>
-        <i>{{ 'IDEA.SUBSCRIPTION.NO_PLANS_AVAILABLE' | translate }}</i>
+        <i>{{ 'IDEA_PS.SUBSCRIPTION.NO_PLANS_AVAILABLE' | translate }}</i>
       </ion-label>
     </ion-item>
     <ion-item
@@ -33,10 +33,10 @@
         <p>{{ getLabelValue(plan.description) }}</p>
         <p *ngIf="subscription && subscription.planId === plan.planId">
           <ion-badge color="danger" *ngIf="isSubscriptionExpired(subscription)">
-            {{ 'IDEA.SUBSCRIPTION.EXPIRED' | translate }}
+            {{ 'IDEA_PS.SUBSCRIPTION.EXPIRED' | translate }}
           </ion-badge>
           <ion-badge color="danger" *ngIf="!isSubscriptionExpired(subscription) && !subscription.autoRenewing">
-            {{ 'IDEA.SUBSCRIPTION.WONT_RENEW' | translate }}
+            {{ 'IDEA_PS.SUBSCRIPTION.WONT_RENEW' | translate }}
           </ion-badge>
         </p>
       </ion-label>
@@ -50,7 +50,7 @@
     </ion-item>
     <div class="actionBtns" *ngIf="plans?.length">
       <ion-button expand="block" fill="clear" color="medium" (click)="restorePurchases()">
-        {{ 'IDEA.SUBSCRIPTION.RESTORE_PURCHASES' | translate }}
+        {{ 'IDEA_PS.SUBSCRIPTION.RESTORE_PURCHASES' | translate }}
       </ion-button>
       <ion-button
         expand="block"
@@ -59,11 +59,11 @@
         *ngIf="subscription && isSubscriptionExpired(subscription)"
         (click)="removeExpiredSubscription()"
       >
-        {{ 'IDEA.SUBSCRIPTION.BACK_TO_FREE_PLAN' | translate }}
+        {{ 'IDEA_PS.SUBSCRIPTION.BACK_TO_FREE_PLAN' | translate }}
       </ion-button>
       <p *ngIf="platformStore === 'ios'">
         <ion-text color="medium">
-          {{ 'IDEA.SUBSCRIPTION.HOW_IT_WORKS_APPLE' | translate }}
+          {{ 'IDEA_PS.SUBSCRIPTION.HOW_IT_WORKS_APPLE' | translate }}
         </ion-text>
       </p>
       <ion-button
@@ -84,7 +84,7 @@
         {{ 'IDEA.AUTH.PRIVACY_POLICY' | translate }}
       </ion-button>
       <ion-button expand="block" fill="clear" color="danger" *ngIf="subscription" (click)="cancelSubscription()">
-        {{ 'IDEA.SUBSCRIPTION.CANCEL_SUBSCRIPTION' | translate }}
+        {{ 'IDEA_PS.SUBSCRIPTION.CANCEL_SUBSCRIPTION' | translate }}
       </ion-button>
     </div>
   </ion-list>

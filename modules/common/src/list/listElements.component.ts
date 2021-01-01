@@ -106,8 +106,8 @@ export class IDEAListELementsComponent {
   public addStrElement() {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.LIST.NEW_ELEMENT'),
-        inputs: [{ type: 'text', name: 'element', placeholder: this.t._('IDEA.LIST.ELEMENT') }],
+        header: this.t._('IDEA_COMMON.LIST.NEW_ELEMENT'),
+        inputs: [{ type: 'text', name: 'element', placeholder: this.t._('IDEA_COMMON.LIST.ELEMENT') }],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {

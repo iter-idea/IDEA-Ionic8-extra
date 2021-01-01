@@ -177,7 +177,7 @@ export class IDEACheckerComponent {
           .slice(0, this.numMaxElementsInPreview)
           .map(x => x.name)
           .join(', ');
-      else return this.t._('IDEA.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
+      else return this.t._('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
     }
   }
 

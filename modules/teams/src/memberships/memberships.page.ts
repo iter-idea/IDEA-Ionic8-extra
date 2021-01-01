@@ -67,19 +67,19 @@ export class IDEAMembershipsPage {
             this.loading.hide();
             // only admins can be here
             if (!this.membership || !this.team.isUserAdmin(this.membership)) {
-              this.message.error('IDEA.TEAMS.COULDNT_LOAD_LIST');
+              this.message.error('IDEA_TEAMS.TEAMS.COULDNT_LOAD_LIST');
               this.navCtrl.navigateBack(['teams']);
               return;
             }
           })
           .catch(() => {
             this.loading.hide();
-            this.message.error('IDEA.TEAMS.COULDNT_LOAD_LIST');
+            this.message.error('IDEA_TEAMS.TEAMS.COULDNT_LOAD_LIST');
           });
       })
       .catch(() => {
         this.loading.hide();
-        this.message.error('IDEA.TEAMS.COULDNT_LOAD_LIST');
+        this.message.error('IDEA_TEAMS.TEAMS.COULDNT_LOAD_LIST');
       });
   }
   /**
@@ -88,12 +88,12 @@ export class IDEAMembershipsPage {
   public addMember() {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.TEAMS.INVITE_USER'),
-        inputs: [{ name: 'email', type: 'email', placeholder: this.t._('IDEA.TEAMS.EMAIL_TO_INVITE') }],
+        header: this.t._('IDEA_TEAMS.TEAMS.INVITE_USER'),
+        inputs: [{ name: 'email', type: 'email', placeholder: this.t._('IDEA_TEAMS.TEAMS.EMAIL_TO_INVITE') }],
         buttons: [
-          { text: this.t._('IDEA.TEAMS.CANCEL'), role: 'cancel' },
+          { text: this.t._('IDEA_TEAMS.TEAMS.CANCEL'), role: 'cancel' },
           {
-            text: this.t._('IDEA.TEAMS.INVITE'),
+            text: this.t._('IDEA_TEAMS.TEAMS.INVITE'),
             handler: data => {
               if (!data.email) return;
               this.loading.show();
@@ -104,9 +104,9 @@ export class IDEAMembershipsPage {
                 .then((membership: Membership) => {
                   // if the user was already part of the user pool, return the membership (otherwise it's an invitation)
                   if (membership && membership.userId) this.memberships.push(membership);
-                  this.message.success('IDEA.TEAMS.INVITE_SENT');
+                  this.message.success('IDEA_TEAMS.TEAMS.INVITE_SENT');
                 })
-                .catch(() => this.message.error('IDEA.TEAMS.USER_NOT_FOUND_OR_ALREADY_JOINED'))
+                .catch(() => this.message.error('IDEA_TEAMS.TEAMS.USER_NOT_FOUND_OR_ALREADY_JOINED'))
                 .finally(() => this.loading.hide());
             }
           }
@@ -124,20 +124,23 @@ export class IDEAMembershipsPage {
     if (!this.team.isUserAdmin(membership) || this.team.admins.length > 1)
       buttons.push({
         text: this.team.isUserAdmin(membership)
-          ? this.t._('IDEA.TEAMS.REMOVE_ADMIN_ROLE')
-          : this.t._('IDEA.TEAMS.MAKE_USER_ADMIN'),
+          ? this.t._('IDEA_TEAMS.TEAMS.REMOVE_ADMIN_ROLE')
+          : this.t._('IDEA_TEAMS.TEAMS.MAKE_USER_ADMIN'),
         icon: 'ribbon',
         handler: () => this.toggleAdminRole(membership)
       });
     buttons.push({
-      text: membership.userId === this.user.userId ? this.t._('IDEA.TEAMS.UNJOIN') : this.t._('IDEA.TEAMS.KICK_OUT'),
+      text:
+        membership.userId === this.user.userId
+          ? this.t._('IDEA_TEAMS.TEAMS.UNJOIN')
+          : this.t._('IDEA_TEAMS.TEAMS.KICK_OUT'),
       role: 'destructive',
       icon: 'exit',
       handler: () => this.deleteMembership(membership)
     });
     buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     this.actionSheetCtrl
-      .create({ header: this.t._('IDEA.TEAMS.ACTIONS_ON_USER_', { user: membership.name }), buttons })
+      .create({ header: this.t._('IDEA_TEAMS.TEAMS.ACTIONS_ON_USER_', { user: membership.name }), buttons })
       .then(actions => actions.present());
   }
   /**
@@ -147,8 +150,8 @@ export class IDEAMembershipsPage {
     this.alertCtrl
       .create({
         header: this.team.isUserAdmin(membership)
-          ? this.t._('IDEA.TEAMS.REMOVE_ADMIN_ROLE')
-          : this.t._('IDEA.TEAMS.MAKE_USER_ADMIN'),
+          ? this.t._('IDEA_TEAMS.TEAMS.REMOVE_ADMIN_ROLE')
+          : this.t._('IDEA_TEAMS.TEAMS.MAKE_USER_ADMIN'),
         message: this.t._('COMMON.ARE_YOU_SURE'),
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
@@ -202,10 +205,10 @@ export class IDEAMembershipsPage {
               })
                 .then(() => {
                   if (this.user.userId === membership.userId) return window.location.assign('');
-                  this.message.success('IDEA.TEAMS.USER_REMOVED');
+                  this.message.success('IDEA_TEAMS.TEAMS.USER_REMOVED');
                   this.memberships.splice(this.memberships.indexOf(membership), 1);
                 })
-                .catch(() => this.message.error('IDEA.TEAMS.DELETION_OPERATION_FAILED'))
+                .catch(() => this.message.error('IDEA_TEAMS.TEAMS.DELETION_OPERATION_FAILED'))
                 .finally(() => this.loading.hide());
             }
           }

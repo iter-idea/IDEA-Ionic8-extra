@@ -109,7 +109,7 @@ export class IDEACalendarComponent {
       .putCalendar(this._calendar)
       .then((res: Calendar) => {
         this.calendar.load(res);
-        this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_SAVED');
+        this.message.success('IDEA_AGENDA.CALENDARS.CALENDAR_SAVED');
         this.modalCtrl.dismiss(this.calendar);
       })
       .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
@@ -123,8 +123,8 @@ export class IDEACalendarComponent {
     this.alertCtrl
       .create({
         header: this.t._('COMMON.ARE_YOU_SURE'),
-        subHeader: this.t._('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR'),
-        message: this.t._('IDEA.AGENDA.CALENDARS.DELETE_CALENDAR_HINT'),
+        subHeader: this.t._('IDEA_AGENDA.CALENDARS.DELETE_CALENDAR'),
+        message: this.t._('IDEA_AGENDA.CALENDARS.DELETE_CALENDAR_HINT'),
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
@@ -134,7 +134,7 @@ export class IDEACalendarComponent {
               this.calendars
                 .deleteCalendar(this._calendar)
                 .then(() => {
-                  this.message.success('IDEA.AGENDA.CALENDARS.CALENDAR_DELETED');
+                  this.message.success('IDEA_AGENDA.CALENDARS.CALENDAR_DELETED');
                   this.modalCtrl.dismiss(true);
                 })
                 .catch(() => this.message.error('COMMON.OPERATION_FAILED'))

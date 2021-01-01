@@ -1,24 +1,32 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('IDEA.CHECKER.CLOSE_WITHOUT_SELECTING')" (click)="cancel()">
+      <ion-button [title]="t._('IDEA_COMMON.CHECKER.CLOSE_WITHOUT_SELECTING')" (click)="cancel()">
         <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-searchbar
       [debounce]="100"
-      [placeholder]="searchPlaceholder || t._('IDEA.CHECKER.SEARCH')"
+      [placeholder]="searchPlaceholder || t._('IDEA_COMMON.CHECKER.SEARCH')"
       (ionInput)="search($event.target ? $event.target.value : '')"
     ></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button *ngIf="!hideSelectDeselectAll" [title]="t._('IDEA.CHECKER.DESELECT_ALL')" (click)="checkAll(false)">
+      <ion-button
+        *ngIf="!hideSelectDeselectAll"
+        [title]="t._('IDEA_COMMON.CHECKER.DESELECT_ALL')"
+        (click)="checkAll(false)"
+      >
         <ion-icon slot="icon-only" name="square-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="!hideSelectDeselectAll" [title]="t._('IDEA.CHECKER.SELECT_ALL')" (click)="checkAll(true)">
+      <ion-button
+        *ngIf="!hideSelectDeselectAll"
+        [title]="t._('IDEA_COMMON.CHECKER.SELECT_ALL')"
+        (click)="checkAll(true)"
+      >
         <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
       </ion-button>
-      <ion-button [title]="t._('IDEA.CHECKER.CONFIRM_SELECTION')" (click)="confirm()">
-        {{ 'IDEA.CHECKER.DONE' | translate }}
+      <ion-button [title]="t._('IDEA_COMMON.CHECKER.CONFIRM_SELECTION')" (click)="confirm()">
+        {{ 'IDEA_COMMON.CHECKER.DONE' | translate }}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -28,7 +36,7 @@
     <ion-item lines="none" *ngIf="!filteredChecks.length">
       <ion-label>
         <i>
-          {{ noElementsFoundText || ('IDEA.CHECKER.NO_ELEMENTS_FOUND' | translate) }}
+          {{ noElementsFoundText || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}
         </i>
       </ion-label>
     </ion-item>

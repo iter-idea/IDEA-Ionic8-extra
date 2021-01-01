@@ -17,8 +17,8 @@
   <ion-list class="aList" *ngIf="variables?.length && !disabled">
     <ion-list-header>
       <ion-label>
-        <h2>{{ 'IDEA.LABELER.VARIABLES_AVAILABLE' | translate }}</h2>
-        <p>{{ 'IDEA.LABELER.VARIABLES_AVAILABLE_I' | translate }}</p>
+        <h2>{{ 'IDEA_COMMON.LABELER.VARIABLES_AVAILABLE' | translate }}</h2>
+        <p>{{ 'IDEA_COMMON.LABELER.VARIABLES_AVAILABLE_I' | translate }}</p>
       </ion-label>
     </ion-list-header>
     <ul class="variablesList">
@@ -28,8 +28,8 @@
     </ul>
   </ion-list>
   <p class="explanation" *ngIf="!disabled">
-    <span *ngIf="obligatory">{{ 'IDEA.LABELER.EXPLANATION_OBLIGATORY' | translate }}</span>
-    {{ 'IDEA.LABELER.EXPLANATION' | translate }}
+    <span *ngIf="obligatory">{{ 'IDEA_COMMON.LABELER.EXPLANATION_OBLIGATORY' | translate }}</span>
+    {{ 'IDEA_COMMON.LABELER.EXPLANATION' | translate }}
   </p>
   <idea-mde-toolbar *ngIf="markdown && !disabled"></idea-mde-toolbar>
   <ion-list class="aList" [class.viewMode]="disabled" *ngIf="_label">

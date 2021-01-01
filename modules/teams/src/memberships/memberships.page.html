@@ -5,9 +5,9 @@
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ 'IDEA.TEAMS.TEAM_MEMBERS' | translate }}</ion-title>
+    <ion-title>{{ 'IDEA_TEAMS.TEAMS.TEAM_MEMBERS' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA.TEAMS.INVITE_USER_HINT')" (click)="addMember()">
+      <ion-button [title]="t._('IDEA_TEAMS.TEAMS.INVITE_USER_HINT')" (click)="addMember()">
         <ion-icon name="person-add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -18,20 +18,20 @@
     <ion-list-header>
       <ion-label>
         <h2>{{ team?.name }}</h2>
-        <p>{{ 'IDEA.TEAMS.MAIN_EXPLANATION' | translate }}.</p>
+        <p>{{ 'IDEA_TEAMS.TEAMS.MAIN_EXPLANATION' | translate }}.</p>
       </ion-label>
     </ion-list-header>
     <ion-item *ngFor="let m of memberships">
       <ion-label>
         {{ m.name }}
         <p *ngIf="team.isUserAdmin(m)">
-          <ion-badge color="primary" size="small" [title]="t._('IDEA.TEAMS.CAN_MANAGE_TEAM')">
-            {{ 'IDEA.TEAMS.ADMIN' | translate }}
+          <ion-badge color="primary" size="small" [title]="t._('IDEA_TEAMS.TEAMS.CAN_MANAGE_TEAM')">
+            {{ 'IDEA_TEAMS.TEAMS.ADMIN' | translate }}
           </ion-badge>
         </p>
         <p *ngIf="m.pendingInvitation">
-          <ion-badge color="light" size="small" [title]="t._('IDEA.TEAMS.PENDING_INVITATION')">
-            {{ 'IDEA.TEAMS.INVITED' | translate }}
+          <ion-badge color="light" size="small" [title]="t._('IDEA_TEAMS.TEAMS.PENDING_INVITATION')">
+            {{ 'IDEA_TEAMS.TEAMS.INVITED' | translate }}
           </ion-badge>
         </p>
       </ion-label>
@@ -39,7 +39,7 @@
         slot="end"
         fill="clear"
         color="dark"
-        [title]="t._('IDEA.TEAMS.ACTIONS_ON_USER_', { user: m.name })"
+        [title]="t._('IDEA_TEAMS.TEAMS.ACTIONS_ON_USER_', { user: m.name })"
         (click)="manageMembership(m)"
       >
         <ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>

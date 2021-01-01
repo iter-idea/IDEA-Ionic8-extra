@@ -58,24 +58,24 @@ export class IDEASignUpPage {
   public register() {
     this.errorMsg = null;
     // check the fields
-    if (isEmpty(this.email, 'email')) this.errorMsg = this.t._('IDEA.AUTH.VALID_EMAIL_OBLIGATORY');
+    if (isEmpty(this.email, 'email')) this.errorMsg = this.t._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
     else if (!this.password || this.password.length < 8)
-      this.errorMsg = this.t._('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
+      this.errorMsg = this.t._('IDEA_AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
     // output the error, if there was one
-    if (this.errorMsg) return this.message.error('IDEA.AUTH.REGISTRATION_FAILED');
+    if (this.errorMsg) return this.message.error('IDEA_AUTH.REGISTRATION_FAILED');
     // start the registration
     this.loading.show();
     this.auth
       .register(this.email, this.password)
       .then(() => {
-        this.message.success('IDEA.AUTH.REGISTRATION_COMPLETED');
+        this.message.success('IDEA_AUTH.REGISTRATION_COMPLETED');
         this.tc.set('newAccountRegistered', this.email);
         this.goToAuth();
       })
       .catch(err => {
         // show the unexpected error on screen (english)
         this.errorMsg = err.message;
-        this.message.error('IDEA.AUTH.REGISTRATION_FAILED');
+        this.message.error('IDEA_AUTH.REGISTRATION_FAILED');
       })
       .finally(() => this.loading.hide());
   }

@@ -1,0 +1,8 @@
+{
+  "IDEA_COMMON": {
+    "CALENDAR": { "MONTH": "Month", "RESET": "Zurücksetzen", "YEAR": "Year" },
+    "CHECKER": { "DONE": "Erledigt" },
+    "LANGUAGE_PICKER": { "APP_WILL_RESTART": "Die App wird neu gestartet" },
+    "LOADING": { "PLEASE_WAIT": "Bitte warten ..." }
+  }
+}

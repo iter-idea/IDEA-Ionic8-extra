@@ -88,7 +88,7 @@ export class IDEASignatureComponent {
         component: 'idea-suggestions',
         componentProps: {
           data: (this.contacts || []).map(c => new Suggestion({ value: c })),
-          searchPlaceholder: this.t._('IDEA.SIGNATURE.CHOOSE_A_SIGNATORY'),
+          searchPlaceholder: this.t._('IDEA_COMMON.SIGNATURE.CHOOSE_A_SIGNATORY'),
           hideClearButton: true
         }
       })
@@ -115,12 +115,12 @@ export class IDEASignatureComponent {
     this.signatoryError = Boolean(!this.signature.signatory);
     this.signatureError = this.pad.isEmpty();
     if (this.signatoryError || this.signatureError)
-      return this.message.warning('IDEA.SIGNATURE.VERIFY_SIGNATORY_AND_SIGNATURE');
+      return this.message.warning('IDEA_COMMON.SIGNATURE.VERIFY_SIGNATORY_AND_SIGNATURE');
     // load the signature URL
     this.signature.pngURL = this.pad.toDataURL('image/png');
     // check whether the signature size is acceptable
     this.signatureError = this.signature.pngURL.length > SIGNATURE_SIZE_LIMIT;
-    if (this.signatureError) return this.message.warning('IDEA.SIGNATURE.SIGNATURE_IS_TOO_COMPLEX');
+    if (this.signatureError) return this.message.warning('IDEA_COMMON.SIGNATURE.SIGNATURE_IS_TOO_COMPLEX');
     // update the timestamp
     this.signature.timestamp = Date.now();
     // close the modal

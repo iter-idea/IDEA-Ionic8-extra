@@ -24,19 +24,19 @@
   <ion-input
     *ngIf="editMode && att.attachmentId"
     [(ngModel)]="att.name"
-    (ionBlur)="$event.target.value = $event.target.value || t._('IDEA.ATTACHMENTS.NO_NAME')"
+    (ionBlur)="$event.target.value = $event.target.value || t._('IDEA_TEAMS.ATTACHMENTS.NO_NAME')"
   ></ion-input>
   <ion-label class="loadingWarning" *ngIf="editMode && !att.attachmentId">
-    {{ 'IDEA.ATTACHMENTS.UPLOADING_ATTACHMENT_WARNING' | translate }}
+    {{ 'IDEA_TEAMS.ATTACHMENTS.UPLOADING_ATTACHMENT_WARNING' | translate }}
   </ion-label>
   <ion-label *ngIf="!editMode">{{ att.name }}.{{ att.format }}</ion-label>
-  <ion-spinner slot="end" *ngIf="!att.attachmentId" [title]="t._('IDEA.ATTACHMENTS.UPLOADING')"></ion-spinner>
+  <ion-spinner slot="end" *ngIf="!att.attachmentId" [title]="t._('IDEA_TEAMS.ATTACHMENTS.UPLOADING')"></ion-spinner>
   <ion-button
     *ngIf="editMode"
     slot="end"
     color="danger"
     fill="clear"
-    [title]="t._('IDEA.ATTACHMENTS.REMOVE_ATTACHMENT')"
+    [title]="t._('IDEA_TEAMS.ATTACHMENTS.REMOVE_ATTACHMENT')"
     (click)="removeAttachment(att)"
   >
     <ion-icon name="remove" slot="icon-only"></ion-icon>
@@ -45,7 +45,7 @@
 <!----->
 <ion-item lines="none" class="noAttachments" *ngIf="!editMode && !attachments?.length">
   <ion-label>
-    {{ 'IDEA.ATTACHMENTS.NO_ATTACHMENT' | translate }}
+    {{ 'IDEA_TEAMS.ATTACHMENTS.NO_ATTACHMENT' | translate }}
   </ion-label>
 </ion-item>
 <!----->
@@ -54,13 +54,13 @@
     <ion-icon name="alert-circle" slot="start" color="danger"></ion-icon>
     <ion-label color="danger">
       {{ err }}
-      <p>{{ 'IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT' | translate }}</p>
+      <p>{{ 'IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT' | translate }}</p>
     </ion-label>
     <ion-button
       slot="end"
       color="danger"
       fill="clear"
-      [title]="t._('IDEA.ATTACHMENTS.HIDE_ERROR')"
+      [title]="t._('IDEA_TEAMS.ATTACHMENTS.HIDE_ERROR')"
       (click)="uploadErrors.splice(uploadErrors.indexOf(err), 1)"
     >
       <ion-icon name="close" slot="icon-only"></ion-icon>
@@ -69,7 +69,7 @@
 </div>
 <!----->
 <ion-item lines="none" class="selectable" *ngIf="editMode" (click)="browseFiles()">
-  <ion-label color="medium">{{ 'IDEA.ATTACHMENTS.TAP_TO_ADD_ATTACHMENT' | translate }}</ion-label>
+  <ion-label color="medium">{{ 'IDEA_TEAMS.ATTACHMENTS.TAP_TO_ADD_ATTACHMENT' | translate }}</ion-label>
   <input id="attachmentPicker" type="file" multiple style="display: none" (change)="addAttachmentFromFile($event)" />
   <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="editMode"></ion-icon>
   <ion-button

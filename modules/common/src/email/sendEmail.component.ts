@@ -67,8 +67,8 @@ export class IDEASendEmailComponent {
         componentProps: {
           data: this.contacts || [],
           sortData: true,
-          searchPlaceholder: this.t._('IDEA.EMAIL.CHOOSE_OR_ADD_AN_ADDRESS'),
-          noElementsFoundText: this.t._('IDEA.EMAIL.NO_ADDRESS_FOUND_YOU_CAN_ADD_ONE'),
+          searchPlaceholder: this.t._('IDEA_COMMON.EMAIL.CHOOSE_OR_ADD_AN_ADDRESS'),
+          noElementsFoundText: this.t._('IDEA_COMMON.EMAIL.NO_ADDRESS_FOUND_YOU_CAN_ADD_ONE'),
           allowUnlistedValues: true,
           lines: this.lines
         }

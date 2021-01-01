@@ -4,6 +4,18 @@ import { Label, Languages, mdToHtml } from 'idea-toolbox';
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
+// from idea-config.js
+declare const IDEA_IONIC_MODULES: Array<string>;
+
+/**
+ * Base folder containing the translations.
+ */
+const BASE_PATH = 'assets/i18n/';
+/**
+ * The modules for which to load the translations.
+ */
+const MODULES_PATH = [''].concat(IDEA_IONIC_MODULES || []);
+
 /**
  * Translations service.
  */
@@ -13,18 +25,6 @@ export class IDEATranslationsService {
    * Template matcher to interpolate complex strings (e.g. `{{user}}`).
    */
   protected templateMatcher: RegExp = /{{\s?([^{}\s]*)\s?}}/g;
-  /**
-   * Main translations.
-   */
-  public MAIN_PATH = 'assets/i18n';
-  /**
-   * IDEA shared translations.
-   */
-  public IDEA_PATH = 'assets/i18n/idea';
-  /**
-   * IDEA variables.
-   */
-  public VARIABLES_PATH = 'assets/i18n/variables';
   /**
    * The available languages.
    */
@@ -176,18 +176,10 @@ export class IDEATranslationsService {
     return new Promise(resolve => {
       this.translations = {};
       this.translations[this.defaultLang] = {};
-      const promises = [
-        this.loadTranslationFileHelper(this.MAIN_PATH, this.defaultLang),
-        this.loadTranslationFileHelper(this.IDEA_PATH, this.defaultLang),
-        this.loadTranslationFileHelper(this.VARIABLES_PATH, this.defaultLang)
-      ];
+      let promises = MODULES_PATH.map(m => this.loadTranslationFileHelper(BASE_PATH.concat(m), this.defaultLang));
       if (lang !== this.defaultLang) {
         this.translations[lang] = {};
-        promises.push(
-          this.loadTranslationFileHelper(this.MAIN_PATH, lang),
-          this.loadTranslationFileHelper(this.IDEA_PATH, lang),
-          this.loadTranslationFileHelper(this.VARIABLES_PATH, lang)
-        );
+        promises = promises.concat(MODULES_PATH.map(m => this.loadTranslationFileHelper(BASE_PATH.concat(m), lang)));
       }
       Promise.all(promises).then(() => resolve());
     });
@@ -203,7 +195,8 @@ export class IDEATranslationsService {
         .then((obj: object) => {
           for (const key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
           resolve();
-        });
+        })
+        .catch(() => resolve());
     });
   }
 
