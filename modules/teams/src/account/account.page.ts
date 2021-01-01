@@ -43,11 +43,11 @@ export class IDEAAccountPage {
   public updateEmail() {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.ACCOUNT.UPDATE_EMAIL'),
-        subHeader: this.t._('IDEA.ACCOUNT.UPDATE_EMAIL_EXPLANATION'),
+        header: this.t._('IDEA_TEAMS.ACCOUNT.UPDATE_EMAIL'),
+        subHeader: this.t._('IDEA_TEAMS.ACCOUNT.UPDATE_EMAIL_EXPLANATION'),
         inputs: [
-          { name: 'pwd', type: 'password', placeholder: this.t._('IDEA.ACCOUNT.YOUR_CURRENT_PASSWORD') },
-          { name: 'email', placeholder: this.t._('IDEA.ACCOUNT.NEW_EMAIL') }
+          { name: 'pwd', type: 'password', placeholder: this.t._('IDEA_TEAMS.ACCOUNT.YOUR_CURRENT_PASSWORD') },
+          { name: 'email', placeholder: this.t._('IDEA_TEAMS.ACCOUNT.NEW_EMAIL') }
         ],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
@@ -55,7 +55,7 @@ export class IDEAAccountPage {
             text: this.t._('COMMON.CONFIRM'),
             handler: data => {
               if (!data.email) {
-                this.message.info('IDEA.ACCOUNT.INVALID_EMAIL');
+                this.message.info('IDEA_TEAMS.ACCOUNT.INVALID_EMAIL');
                 return;
               }
               this.loading.show();
@@ -67,12 +67,12 @@ export class IDEAAccountPage {
                   this.alertCtrl
                     .create({
                       header: this.t._('COMMON.OPERATION_COMPLETED'),
-                      subHeader: this.t._('IDEA.ACCOUNT.UPDATE_EMAIL_FLOW_EXPLANATION'),
+                      subHeader: this.t._('IDEA_TEAMS.ACCOUNT.UPDATE_EMAIL_FLOW_EXPLANATION'),
                       buttons: [{ text: this.t._('COMMON.GOT_IT') }]
                     })
                     .then(alert => alert.present());
                 })
-                .catch(() => this.message.error('IDEA.ACCOUNT.OPERATION_FAILED_PASSWORD'))
+                .catch(() => this.message.error('IDEA_TEAMS.ACCOUNT.OPERATION_FAILED_PASSWORD'))
                 .finally(() => this.loading.hide());
             }
           }
@@ -86,19 +86,21 @@ export class IDEAAccountPage {
   public updatePassword() {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.ACCOUNT.UPDATE_PASSWORD'),
+        header: this.t._('IDEA_TEAMS.ACCOUNT.UPDATE_PASSWORD'),
         inputs: [
-          { name: 'old', type: 'password', placeholder: this.t._('IDEA.ACCOUNT.YOUR_CURRENT_PASSWORD') },
-          { name: 'new', type: 'password', placeholder: this.t._('IDEA.ACCOUNT.NEW_PASSWORD_', { n: 8 }) },
-          { name: 'new2', type: 'password', placeholder: this.t._('IDEA.ACCOUNT.CONFIRM_NEW_PASSWORD') }
+          { name: 'old', type: 'password', placeholder: this.t._('IDEA_TEAMS.ACCOUNT.YOUR_CURRENT_PASSWORD') },
+          { name: 'new', type: 'password', placeholder: this.t._('IDEA_TEAMS.ACCOUNT.NEW_PASSWORD_', { n: 8 }) },
+          { name: 'new2', type: 'password', placeholder: this.t._('IDEA_TEAMS.ACCOUNT.CONFIRM_NEW_PASSWORD') }
         ],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
             handler: data => {
-              if (data.new.length < 8) this.message.warning(this.t._('IDEA.ACCOUNT.INVALID_PASSWORD', { n: 8 }), true);
-              else if (data.new !== data.new2) this.message.warning('IDEA.ACCOUNT.PASSWORD_CONFIRMATION_DONT_MATCH');
+              if (data.new.length < 8)
+                this.message.warning(this.t._('IDEA_TEAMS.ACCOUNT.INVALID_PASSWORD', { n: 8 }), true);
+              else if (data.new !== data.new2)
+                this.message.warning('IDEA_TEAMS.ACCOUNT.PASSWORD_CONFIRMATION_DONT_MATCH');
               else {
                 // PATCH the user
                 this.loading.show();
@@ -111,8 +113,8 @@ export class IDEAAccountPage {
                     newPassword: data.new
                   }
                 })
-                  .then(() => this.message.success('IDEA.ACCOUNT.PASSWORD_UPDATED'))
-                  .catch(() => this.message.error('IDEA.ACCOUNT.OPERATION_FAILED_PASSWORD'))
+                  .then(() => this.message.success('IDEA_TEAMS.ACCOUNT.PASSWORD_UPDATED'))
+                  .catch(() => this.message.error('IDEA_TEAMS.ACCOUNT.OPERATION_FAILED_PASSWORD'))
                   .finally(() => this.loading.hide());
               }
             }
@@ -128,9 +130,9 @@ export class IDEAAccountPage {
   public deleteUser() {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.ACCOUNT.USER_DELETION'),
-        subHeader: this.t._('IDEA.ACCOUNT.USER_DELETION_ARE_YOU_SURE'),
-        inputs: [{ name: 'pwd', type: 'password', placeholder: this.t._('IDEA.ACCOUNT.YOUR_CURRENT_PASSWORD') }],
+        header: this.t._('IDEA_TEAMS.ACCOUNT.USER_DELETION'),
+        subHeader: this.t._('IDEA_TEAMS.ACCOUNT.USER_DELETION_ARE_YOU_SURE'),
+        inputs: [{ name: 'pwd', type: 'password', placeholder: this.t._('IDEA_TEAMS.ACCOUNT.YOUR_CURRENT_PASSWORD') }],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {

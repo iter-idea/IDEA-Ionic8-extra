@@ -158,13 +158,13 @@ export class IDEAttachmentsComponent {
           .catch(() => {
             this.uploadErrors.push(name);
             this.removeAttachment(attachment);
-            this.message.error('IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+            this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
           });
       })
       .catch(() => {
         this.uploadErrors.push(name);
         this.removeAttachment(attachment);
-        this.message.error(`IDEA.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT`);
+        this.message.error(`IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT`);
       });
   }
 
@@ -184,7 +184,7 @@ export class IDEAttachmentsComponent {
       body: { action: 'ATTACHMENTS_GET', attachmentId: attachment.attachmentId }
     })
       .then((res: SignedURL) => Browser.open({ url: res.url }))
-      .catch(() => this.message.error(`IDEA.ATTACHMENTS.ERROR_OPENING_ATTACHMENT`))
+      .catch(() => this.message.error(`IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT`))
       .finally(() => this.loading.hide());
   }
 

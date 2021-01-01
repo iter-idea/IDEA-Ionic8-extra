@@ -69,7 +69,7 @@ export class IDEARCFoldersComponent {
         this.folders = folders.map(f => new RCFolder(f));
         this.search(this.searchbar ? this.searchbar.value : null);
       })
-      .catch(() => this.message.error('IDEA.RESOURCE_CENTER.COULDNT_LOAD_LIST'));
+      .catch(() => this.message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST'));
   }
 
   /**
@@ -111,10 +111,10 @@ export class IDEARCFoldersComponent {
     // ask for the name of the new folder
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.RESOURCE_CENTER.CREATE_NEW_FOLDER'),
-        subHeader: this.t._('IDEA.RESOURCE_CENTER.SELECT_FOLDER_NAME'),
-        message: this.t._('IDEA.RESOURCE_CENTER.NAME_MUST_BE_UNIQUE_IN_RC'),
-        inputs: [{ name: 'name', placeholder: this.t._('IDEA.RESOURCE_CENTER.NAME') }],
+        header: this.t._('IDEA_TEAMS.RESOURCE_CENTER.CREATE_NEW_FOLDER'),
+        subHeader: this.t._('IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER_NAME'),
+        message: this.t._('IDEA_TEAMS.RESOURCE_CENTER.NAME_MUST_BE_UNIQUE_IN_RC'),
+        inputs: [{ name: 'name', placeholder: this.t._('IDEA_TEAMS.RESOURCE_CENTER.NAME') }],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
@@ -123,7 +123,7 @@ export class IDEARCFoldersComponent {
               if (!data.name) return;
               // check for name uniqueness (front-end check)
               if (this.folders.some(x => x.name === data.name))
-                return this.message.error('IDEA.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
+                return this.message.error('IDEA_TEAMS.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
               // create a new folder and refresh the list
               this.loading.show();
               this.API.postResource(`teams/${this.teamId}/folders`, { body: { name: data.name } })
@@ -131,7 +131,7 @@ export class IDEARCFoldersComponent {
                 .then(() => this.loadFolders(true))
                 .catch(err => {
                   if (err.message === 'FOLDER_WITH_SAME_NAME_ALREADY_EXISTS')
-                    this.message.error('IDEA.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
+                    this.message.error('IDEA_TEAMS.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
                   else this.message.error('COMMON.OPERATION_FAILED');
                 })
                 .finally(() => this.loading.hide());
@@ -150,10 +150,10 @@ export class IDEARCFoldersComponent {
     if (!this.admin) return;
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.RESOURCE_CENTER.RENAME_FOLDER'),
-        subHeader: this.t._('IDEA.RESOURCE_CENTER.SELECT_FOLDER_NAME'),
-        message: this.t._('IDEA.RESOURCE_CENTER.NAME_MUST_BE_UNIQUE_IN_RC'),
-        inputs: [{ name: 'name', placeholder: this.t._('IDEA.RESOURCE_CENTER.NAME'), value: folder.name }],
+        header: this.t._('IDEA_TEAMS.RESOURCE_CENTER.RENAME_FOLDER'),
+        subHeader: this.t._('IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER_NAME'),
+        message: this.t._('IDEA_TEAMS.RESOURCE_CENTER.NAME_MUST_BE_UNIQUE_IN_RC'),
+        inputs: [{ name: 'name', placeholder: this.t._('IDEA_TEAMS.RESOURCE_CENTER.NAME'), value: folder.name }],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
@@ -162,7 +162,7 @@ export class IDEARCFoldersComponent {
               if (!data.name) return;
               // check for name uniqueness (front-end check)
               if (this.folders.some(x => x.folderId !== folder.folderId && x.name === data.name))
-                return this.message.error('IDEA.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
+                return this.message.error('IDEA_TEAMS.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
               // set the new name
               folder.name = data.name;
               this.loading.show();
@@ -171,7 +171,7 @@ export class IDEARCFoldersComponent {
                 .then(() => this.loadFolders(true))
                 .catch(err => {
                   if (err.message === 'FOLDER_WITH_SAME_NAME_ALREADY_EXISTS')
-                    this.message.error('IDEA.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
+                    this.message.error('IDEA_TEAMS.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
                   else this.message.error('COMMON.OPERATION_FAILED');
                 })
                 .finally(() => this.loading.hide());
@@ -191,7 +191,7 @@ export class IDEARCFoldersComponent {
       .create({
         header: this.t._('COMMON.ARE_YOU_SURE'),
         subHeader: this.t._('COMMON.OPERATION_IRREVERSIBLE'),
-        message: this.t._('IDEA.RESOURCE_CENTER.YOU_WILL_USE_ALL_FILES_IN_FOLDER'),
+        message: this.t._('IDEA_TEAMS.RESOURCE_CENTER.YOU_WILL_USE_ALL_FILES_IN_FOLDER'),
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {

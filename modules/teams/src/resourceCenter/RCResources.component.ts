@@ -83,7 +83,7 @@ export class IDEARCResourcesComponent {
         this.resources = resources.map(r => new RCResource(r));
         this.search(this.searchbar ? this.searchbar.value : null);
       })
-      .catch(() => this.message.error('IDEA.RESOURCE_CENTER.COULDNT_LOAD_LIST'));
+      .catch(() => this.message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST'));
   }
 
   /**
@@ -149,24 +149,24 @@ export class IDEARCResourcesComponent {
     if (!this.admin) return;
     const buttons = [];
     buttons.push({
-      text: this.t._('IDEA.RESOURCE_CENTER.UPLOAD_NEW_VERSION'),
+      text: this.t._('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_NEW_VERSION'),
       icon: 'cloud-upload',
       handler: () => this.browseUpdateResource(res)
     });
     buttons.push({
-      text: this.t._('IDEA.RESOURCE_CENTER.RENAME'),
+      text: this.t._('IDEA_TEAMS.RESOURCE_CENTER.RENAME'),
       icon: 'text',
       handler: () => this.renameResource(res)
     });
     buttons.push({
-      text: this.t._('IDEA.RESOURCE_CENTER.DELETE'),
+      text: this.t._('IDEA_TEAMS.RESOURCE_CENTER.DELETE'),
       role: 'destructive',
       icon: 'trash',
       handler: () => this.deleteResource(res)
     });
     buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
     this.actionSheetCtrl
-      .create({ header: this.t._('IDEA.RESOURCE_CENTER.ACTIONS_ON_RESOURCE'), buttons })
+      .create({ header: this.t._('IDEA_TEAMS.RESOURCE_CENTER.ACTIONS_ON_RESOURCE'), buttons })
       .then(actions => actions.present());
   }
   /**
@@ -189,8 +189,8 @@ export class IDEARCResourcesComponent {
     await this.loading.show();
     this.uploadFile(file).then(() => {
       this.loading.hide();
-      if (this.uploadErrors.length) this.message.error('IDEA.RESOURCE_CENTER.ONE_OR_MORE_FILE_UPLOAD_FAILED');
-      else this.message.success('IDEA.RESOURCE_CENTER.UPLOAD_COMPLETED');
+      if (this.uploadErrors.length) this.message.error('IDEA_TEAMS.RESOURCE_CENTER.ONE_OR_MORE_FILE_UPLOAD_FAILED');
+      else this.message.success('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_COMPLETED');
     });
   }
   /**
@@ -199,10 +199,10 @@ export class IDEARCResourcesComponent {
   protected renameResource(res: RCResource) {
     this.alertCtrl
       .create({
-        header: this.t._('IDEA.RESOURCE_CENTER.RENAME_RESOURCE'),
-        subHeader: this.t._('IDEA.RESOURCE_CENTER.SELECT_RESOURCE_NAME'),
-        message: this.t._('IDEA.RESOURCE_CENTER.NAME_MUST_BE_UNIQUE_IN_FOLDER'),
-        inputs: [{ name: 'name', placeholder: this.t._('IDEA.RESOURCE_CENTER.NAME'), value: res.name }],
+        header: this.t._('IDEA_TEAMS.RESOURCE_CENTER.RENAME_RESOURCE'),
+        subHeader: this.t._('IDEA_TEAMS.RESOURCE_CENTER.SELECT_RESOURCE_NAME'),
+        message: this.t._('IDEA_TEAMS.RESOURCE_CENTER.NAME_MUST_BE_UNIQUE_IN_FOLDER'),
+        inputs: [{ name: 'name', placeholder: this.t._('IDEA_TEAMS.RESOURCE_CENTER.NAME'), value: res.name }],
         buttons: [
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
@@ -211,7 +211,7 @@ export class IDEARCResourcesComponent {
               if (!data.name) return;
               // check for name uniqueness (front-end check)
               if (this.resources.some(x => x.resourceId !== res.resourceId && x.name === data.name))
-                return this.message.error('IDEA.RESOURCE_CENTER.RESOURCE_WITH_SAME_NAME_ALREADY_EXISTS');
+                return this.message.error('IDEA_TEAMS.RESOURCE_CENTER.RESOURCE_WITH_SAME_NAME_ALREADY_EXISTS');
               // set the new name
               res.name = data.name;
               this.loading.show();
@@ -223,7 +223,7 @@ export class IDEARCResourcesComponent {
                 .then(() => this.loadResources(true))
                 .catch(err => {
                   if (err.message === 'RESOURCE_WITH_SAME_NAME_ALREADY_EXISTS')
-                    this.message.error('IDEA.RESOURCE_CENTER.RESOURCE_WITH_SAME_NAME_ALREADY_EXISTS');
+                    this.message.error('IDEA_TEAMS.RESOURCE_CENTER.RESOURCE_WITH_SAME_NAME_ALREADY_EXISTS');
                   else this.message.error('COMMON.OPERATION_FAILED');
                 })
                 .finally(() => this.loading.hide());
@@ -283,8 +283,8 @@ export class IDEARCResourcesComponent {
     await this.loading.show();
     files.forEach(async file => await this.uploadFile(file));
     this.loading.hide();
-    if (this.uploadErrors.length) this.message.error('IDEA.RESOURCE_CENTER.ONE_OR_MORE_FILE_UPLOAD_FAILED');
-    else this.message.success('IDEA.RESOURCE_CENTER.UPLOAD_COMPLETED');
+    if (this.uploadErrors.length) this.message.error('IDEA_TEAMS.RESOURCE_CENTER.ONE_OR_MORE_FILE_UPLOAD_FAILED');
+    else this.message.success('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_COMPLETED');
     // reload the resources (force update cache)
     this.loadResources(true);
   }
@@ -305,13 +305,13 @@ export class IDEARCResourcesComponent {
       } else resource = new RCResource({ name, format });
       // check the file format
       if (!loopStringEnumValues(RCResourceFormats).some(x => x === format)) {
-        this.uploadErrors.push(this.t._('IDEA.RESOURCE_CENTER.INVALID_FORMAT_FILE_', { name }));
+        this.uploadErrors.push(this.t._('IDEA_TEAMS.RESOURCE_CENTER.INVALID_FORMAT_FILE_', { name }));
         return resolve();
       }
       // check the file size
       const sizeMB = Number((file.size / 1024 / 1024).toFixed(4));
       if (sizeMB > FILE_SIZE_LIMIT_MB) {
-        this.uploadErrors.push(this.t._('IDEA.RESOURCE_CENTER.INVALID_SIZE_FILE_', { name }));
+        this.uploadErrors.push(this.t._('IDEA_TEAMS.RESOURCE_CENTER.INVALID_SIZE_FILE_', { name }));
         return resolve();
       }
       // identify the action (POST/PUT)
@@ -333,15 +333,17 @@ export class IDEARCResourcesComponent {
                 .put(signedURL.url, file)
                 .toPromise()
                 .finally(() => resolve())
-                .catch(() => this.uploadErrors.push(this.t._('IDEA.RESOURCE_CENTER.UPLOAD_ERROR_FILE', { name })));
+                .catch(() =>
+                  this.uploadErrors.push(this.t._('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_ERROR_FILE', { name }))
+                );
             })
             .catch(() => {
-              this.uploadErrors.push(this.t._('IDEA.RESOURCE_CENTER.UPLOAD_ERROR_FILE', { name }));
+              this.uploadErrors.push(this.t._('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_ERROR_FILE', { name }));
               resolve();
             });
         })
         .catch(() => {
-          this.uploadErrors.push(this.t._('IDEA.RESOURCE_CENTER.ERROR_CREATING_RESOURCE_FILE', { name }));
+          this.uploadErrors.push(this.t._('IDEA_TEAMS.RESOURCE_CENTER.ERROR_CREATING_RESOURCE_FILE', { name }));
           resolve();
         });
     });

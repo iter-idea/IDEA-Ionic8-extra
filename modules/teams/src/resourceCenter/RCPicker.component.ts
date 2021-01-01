@@ -121,7 +121,7 @@ export class IDEARCPickerComponent {
       body
     })
       .then((res: SignedURL) => Browser.open({ url: res.url }))
-      .catch(() => this.message.error('IDEA.RESOURCE_CENTER.ERROR_OPENING_RESOURCE'))
+      .catch(() => this.message.error('IDEA_TEAMS.RESOURCE_CENTER.ERROR_OPENING_RESOURCE'))
       .finally(() => this.loading.hide());
   }
 

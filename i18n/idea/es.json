@@ -1,34 +1,5 @@
 {
   "IDEA": {
-    "ACCOUNT": {
-      "ACCOUNT": "Usuario",
-      "CONFIRM_NEW_PASSWORD": "Repita la nueva contraseña",
-      "DELETE": "Borrar",
-      "DELETE_PERMANENTLY_USER": "Eliminar permanentemente la cuenta",
-      "DISRUPTIVE_ACTIONS": "Interrupción de la acción",
-      "EMAIL": "Correo electrónico (para inicio de sesión y notificaciones)",
-      "INVALID_EMAIL": "La dirección de correo electrónico introducida no es válida.",
-      "INVALID_PASSWORD": "La contraseña debe tener al menos {{n}} caracteres de longitud",
-      "IRREVERSIBLE_OPERATION": "Advertencia: ¡la acción es irreversible!",
-      "MANAGE_YOUR_ACCOUNT": "Gestione su cuenta",
-      "MANAGE_YOUR_ACCOUNT_HINT": "Gestiona tu cuenta IDEA",
-      "NEW_EMAIL": "Nuevo correo electrónico",
-      "NEW_PASSWORD_": "Nueva contraseña: mínimo {{n}} caracteres",
-      "OPERATION_FAILED_PASSWORD": "Operación fallida: ¿está seguro de que escribió la contraseña correctamente?",
-      "PASSWORD": "Contraseña",
-      "PASSWORD_CONFIRMATION_DONT_MATCH": "La confirmación de la contraseña no coincide",
-      "PASSWORD_UPDATED": "Contraseña actualizada",
-      "SET_A_NEW_EMAIL": "Para cambiar la dirección de correo electrónico se requiere la contraseña actual",
-      "SET_A_NEW_PASSWORD": "Para cambiar la contraseña se requiere la contraseña actual",
-      "UPDATE_EMAIL": "Cambiar la dirección de correo electrónico",
-      "UPDATE_EMAIL_EXPLANATION": "La nueva dirección de correo no estará activada hasta que la confirme",
-      "UPDATE_EMAIL_FLOW_EXPLANATION": "Enviamos un email a la nueva dirección de correo: siga el procedimiento para confirmar los cambios.",
-      "UPDATE_PASSWORD": "Cambiar la contraseña.",
-      "USER_DELETION": "Borrar cuenta.",
-      "USER_DELETION_ARE_YOU_SURE": "¿Está seguro? ¡La operación es irreversible!",
-      "YOUR_CURRENT_PASSWORD": "Su contraseña actual",
-      "YOU_MUST_LEAVE_ALL_TEAMS_FIRST": "Antes de continuar deberá dejar todos los grupos que siga."
-    },
     "ADDRESS": {
       "ADDRESS": "Dirección",
       "ADDRESS2": "Información de dirección suplementaria  ",
@@ -50,16 +21,6 @@
       "POSTCODE_HINT": "Código postal",
       "PROVINCE": "Provincia",
       "PROVINCE_HINT": "Provincia, distrito, área"
-    },
-    "ATTACHMENTS": {
-      "ERROR_OPENING_ATTACHMENT": "Error al abrir el archivo adjunto",
-      "ERROR_UPLOADING_ATTACHMENT": "Error al cargar el archivo adjunto",
-      "HIDE_ERROR": "Ocultar el error",
-      "NO_ATTACHMENT": "No hay adjuntos",
-      "NO_NAME": "Sin nombre",
-      "REMOVE_ATTACHMENT": "Eliminar el archivo adjunto",
-      "UPLOADING": "Actualizando...",
-      "UPLOADING_ATTACHMENT_WARNING": "Cargando el archivo adjunto, no salga de la página"
     },
     "CALENDAR": {
       "CLOSE_WITHOUT_SAVING": "Cerrar sin guardar",
@@ -173,16 +134,6 @@
       "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Los recursos creados sin conexión deben cargarse en línea",
       "YOU_ARE_OFFLINE": "Está fuera de línea"
     },
-    "RESOURCE_CENTER": {
-      "ERROR_OPENING_RESOURCE": "Error al abrir el recurso",
-      "NO_FOLDER_SELECTED": "Ninguna carpeta seleccionada",
-      "NO_NAME": "No hay nombre",
-      "NO_RESOURCES": "No hay recursos",
-      "OPEN_OLD_VERSION": "Abrir la versión más antigua",
-      "REMOVE_RESOURCE": "Eliminar el recurso",
-      "SELECT_FOLDER": "Selecciona una carpeta",
-      "VERSION_ATTACHED_IS_OLDER": "El recurso se ha actualizado desde que se adjuntó"
-    },
     "SELECT": {
       "CLEAR_SELECTION": "Borrar selección",
       "CLOSE_WITHOUT_SELECTING": "Cerrar sin seleccionar nada",
@@ -240,50 +191,6 @@
       "SUBSCRIPTION_WONT_RENEW_ANYMORE": "La suscripción no se renovará después de su vencimiento. ¿Confirmas?",
       "WONT_RENEW": "No se renovará",
       "WONT_RENEW_AFTER": "No se renovará después"
-    },
-    "TEAMS": {
-      "ACTIONS_ON_USER_": "Acciones en {{usuario}}",
-      "ADMIN": "Administrador",
-      "CANCEL": "Cancelar",
-      "CAN_MANAGE_TEAM": "El usuario puede editar la configuración del grupo y administrar los miembros del grupo.",
-      "COULDNT_LOAD_LIST": "No se pudo cargar la lista",
-      "CREATE": "Crear",
-      "CREATE_TEAM_HINT": "Crear un nuevo grupo",
-      "CURRENT": "Actual",
-      "CURRENT_TEAM_EXPLANATION": "Seleccionar grupo actual",
-      "DELETION_OPERATION_FAILED": "La operación falló; asegúrese de que el usuario no tenga membresías activas en otros servicios",
-      "EMAIL_TO_INVITE": "La dirección de correo electrónico del usuario.",
-      "INVITE": "Invitación",
-      "INVITED": "Invitado",
-      "INVITE_SENT": "Mandar invitación",
-      "INVITE_USER": "Invitar a un usuario",
-      "INVITE_USER_HINT": "Invitar a un miembro del grupo",
-      "IS_OWNER": "El usuario es el actual propietario del grupo.",
-      "KICK_OUT": "Expulsar al usuario",
-      "MAIN_EXPLANATION": "Los usuarios de tu grupo. Puede administrar sus permisos y agregar nuevos usuarios",
-      "MANAGE_PERMISSIONS": "Administra los permisos",
-      "MEMBERS": "Miembros",
-      "NEW_TEAM": "Nuevo grupo",
-      "OWNER": "Propietario",
-      "PENDING_INVITATION": "El usuario ha sido invitado al grupo pero aún no ha aceptado.",
-      "SELECT_A_TEAM": "Seleccionar grupo",
-      "SELECT_NAME_FOR_NEW_TEAM": "Elegir un nombre",
-      "SELECT_TEAM_": "Seleccional un grupo {{team}}",
-      "TEAM_MEMBERS": "Miembros del grupo",
-      "TEAM_MEMBERS_HINT": "Administrar los miembros del grupo {{equipo}}",
-      "TEAM_NAME": "Nombre del grupo",
-      "TEAM_NOT_ACTIVATED_DISCLAIMER": "El grupo aún no se ha activado; contactar a un administrador",
-      "TEAM_SETTINGS": "Configure los ajustes del grupo {{equipo}}",
-      "UNJOIN": "Dejar el grupo",
-      "USER_NOT_FOUND_OR_ALREADY_JOINED": "El usuario ya forma parte del grupo.",
-      "USER_REMOVED": "Usuario eliminado",
-      "YOU_NEED_A_TEAM_TO_CONTINUE": "Necesites de un equipe para continuar",
-      "NO_TEAMS_AVAILABLE": "No tienes equipos disponibles"
-    },
-    "UPDATE": {
-      "CLOSE_THE_APP_TO_UPDATE": "Cerrar completamente la app o el navegador para instalar la actualización",
-      "GOT_IT": "Lo he entendido",
-      "UPDATE_AVAILABLE": "Una actualización está disponible"
     }
   }
 }

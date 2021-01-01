@@ -3,11 +3,6 @@
     "CALENDAR": { "MONTH": "Month", "RESET": "Zurücksetzen", "YEAR": "Year" },
     "CHECKER": { "DONE": "Erledigt" },
     "LANGUAGE_PICKER": { "APP_WILL_RESTART": "Die App wird neu gestartet" },
-    "LOADING": { "PLEASE_WAIT": "Bitte warten ..." },
-    "UPDATE": {
-      "CLOSE_THE_APP_TO_UPDATE": "Schließe die App oder den Browser, um das Update zu installlieren.",
-      "GOT_IT": "Verstanden",
-      "UPDATE_AVAILABLE": "Ein Update ist verfügbar"
-    }
+    "LOADING": { "PLEASE_WAIT": "Bitte warten ..." }
   }
 }
