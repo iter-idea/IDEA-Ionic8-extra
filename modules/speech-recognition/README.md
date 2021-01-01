@@ -4,7 +4,7 @@ Speech recognition through the mobile devices capabilities.
 
 [Package on NPM](https://www.npmjs.com/package/@idea-ionic/speech-recognition).
 
-To install:
+## To install
 
 ```
 npm i --save @idea-ionic/speech-recognition
