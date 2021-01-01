@@ -51,11 +51,11 @@ export class IDEAConfirmPasswordPage {
     this.auth
       .confirmPassword(this.email, this.code, this.newPassword)
       .then(() => {
-        this.message.success('IDEA.AUTH.PASSWORD_CHANGED');
+        this.message.success('IDEA_AUTH.PASSWORD_CHANGED');
         this.goToAuth();
       })
       .catch(() => {
-        this.errorMsg = this.t._('IDEA.AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 });
+        this.errorMsg = this.t._('IDEA_AUTH.CONFIRM_PASSWORD_ERROR', { n: 8 });
         this.message.error(this.errorMsg, true);
       })
       .finally(() => this.loading.hide());

@@ -2,12 +2,12 @@
   <form class="flexBox">
     <ion-card class="authCard">
       <ion-card-header>
-        <ion-card-title color="primary">{{ 'IDEA.AUTH.CONFIRM_ACCOUNT' | translate }}</ion-card-title>
-        <ion-card-subtitle>{{ 'IDEA.AUTH.RESEND_CONFIRMATION_LINK_HINT' | translate }}</ion-card-subtitle>
+        <ion-card-title color="primary">{{ 'IDEA_AUTH.CONFIRM_ACCOUNT' | translate }}</ion-card-title>
+        <ion-card-subtitle>{{ 'IDEA_AUTH.RESEND_CONFIRMATION_LINK_HINT' | translate }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
         <p class="errorBox" *ngIf="errorMsg">
-          <b> {{ 'IDEA.AUTH.ERROR' | translate }}. </b>
+          <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
           {{ errorMsg }}
         </p>
         <ion-item>
@@ -22,24 +22,24 @@
             autocorrect="off"
             autocapitalize="off"
             autocomplete="email"
-            [placeholder]="t._('IDEA.AUTH.EMAIL')"
-            [title]="t._('IDEA.AUTH.EMAIL_HINT')"
+            [placeholder]="t._('IDEA_AUTH.EMAIL')"
+            [title]="t._('IDEA_AUTH.EMAIL_HINT')"
             [ngModelOptions]="{ standalone: true }"
             [(ngModel)]="email"
             (keyup.enter)="resendConfirmationLink()"
           ></ion-input>
         </ion-item>
-        <ion-button expand="block" [title]="t._('IDEA.AUTH.RESEND_LINK_HINT')" (click)="resendConfirmationLink()">
-          {{ 'IDEA.AUTH.RESEND_LINK' | translate }}
+        <ion-button expand="block" [title]="t._('IDEA_AUTH.RESEND_LINK_HINT')" (click)="resendConfirmationLink()">
+          {{ 'IDEA_AUTH.RESEND_LINK' | translate }}
         </ion-button>
         <ion-button
           fill="clear"
           expand="block"
           class="smallCaseButton"
-          [title]="t._('IDEA.AUTH.BACK_TO_SIGN_IN_HINT')"
+          [title]="t._('IDEA_AUTH.BACK_TO_SIGN_IN_HINT')"
           (click)="goToAuth()"
         >
-          {{ 'IDEA.AUTH.BACK_TO_SIGN_IN' | translate }}
+          {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
         </ion-button>
       </ion-card-content>
     </ion-card>

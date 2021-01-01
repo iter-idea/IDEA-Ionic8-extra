@@ -52,7 +52,7 @@ export class IDEANewPasswordPage {
       // we are logged in
       .then(() => window.location.assign(''))
       .catch(() => {
-        this.errorMsg = this.t._('IDEA.AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
+        this.errorMsg = this.t._('IDEA_AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
         this.message.error(this.errorMsg, true);
       })
       .finally(() => this.loading.hide());
