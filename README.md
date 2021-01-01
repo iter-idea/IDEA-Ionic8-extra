@@ -42,21 +42,14 @@ To do so, firstly run (root folder):
 ng build --watch
 ```
 
-Then, open the module in the dist folder (e.g `dist/common`) and init the link between the global node_module and the developed module:
+After, open the module in the dist folder (e.g `dist/common`) and init the link between the global node_module and the developed module:
 
 ```
 cd dist/<module>
 npn link
 ```
 
-Now, in the IDEA's project that we are developing, establish the link created so that the current build of the node_module is used instead of the default one:
-
-```
-cd client
-npm link @idea-ionic/<module>
-```
-
-Note: make sure that in the `angular.json` file of the project the following option is set:
+Now, in the IDEA's project that we are developing, make sure that in the `angular.json` file the following option is set:
 
 ```
 "projects": {
@@ -71,6 +64,22 @@ Note: make sure that in the `angular.json` file of the project the following opt
       }
     }
 }
+```
+
+Then, (in the project) establish the link created so that the current build of the node_module is used instead of the default one:
+
+```
+cd client
+npm link @idea-ionic/<module>
+```
+
+In case the project's compiler starts looping, you may also need to **temporarily** turn Ivy off in the project's `angular.json` file; **when you commit changes, Ivy must be active!!**
+
+```
+ "angularCompilerOptions": {
+    //
+    "enableIvy": false
+  }
 ```
 
 _Note: running `npm i` on a project's client deletes the link and replaces the module with NPM's latest version._
