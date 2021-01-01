@@ -4,14 +4,17 @@ import { Label, Languages, mdToHtml } from 'idea-toolbox';
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
+// from idea-config.js
+declare const IDEA_IONIC_MODULES: Array<string>;
+
 /**
  * Base folder containing the translations.
  */
 const BASE_PATH = 'assets/i18n/';
 /**
- *
+ * The modules for which to load the translations.
  */
-const MODULES_PATH = ['', 'agenda', 'auth', 'common', 'plans-subscription', 'teams', 'variables'];
+const MODULES_PATH = [''].concat(IDEA_IONIC_MODULES || []);
 
 /**
  * Translations service.
