@@ -190,7 +190,7 @@ export class IDEATranslationsService {
   protected loadTranslationFileHelper(path: string, lang: string): Promise<void> {
     return new Promise(resolve => {
       this.API.rawRequest()
-        .get(`${path ? path.concat('/') : ''}${lang}.json`)
+        .get(`${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`)
         .toPromise()
         .then((obj: object) => {
           for (const key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
