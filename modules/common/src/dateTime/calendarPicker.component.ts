@@ -138,7 +138,7 @@ export class IDEACalendarPickerComponent {
    */
   public showMonths() {
     const buttons = [];
-    const inputs = [];
+    const inputs: Array<any> = [];
     const month = new Date(0);
     for (let i = 1; i <= 12; i++) {
       inputs.push({

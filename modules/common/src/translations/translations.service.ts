@@ -192,7 +192,7 @@ export class IDEATranslationsService {
       this.API.rawRequest()
         .get(`${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`)
         .toPromise()
-        .then((obj: object) => {
+        .then((obj: any) => {
           for (const key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
           resolve();
         })

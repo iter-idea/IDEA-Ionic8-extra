@@ -66,7 +66,9 @@ export class IDEAAddressComponent {
     this.showEmail = false;
     this.editMode = true;
     this.lines = 'inset';
-    this.countriesSuggestions = Object.keys(Countries).map(k => new Suggestion({ value: Countries[k], name: k }));
+    this.countriesSuggestions = Object.keys(Countries).map(
+      k => new Suggestion({ value: (Countries as any)[k], name: k })
+    );
     this.addressCollapsed = true;
   }
 

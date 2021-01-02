@@ -3,6 +3,7 @@ import { Platform } from '@ionic/angular';
 import { get } from 'scriptjs';
 import { Plugins, PluginListenerHandle, GeolocationPosition } from '@capacitor/core';
 const { Geolocation, Network } = Plugins;
+// @ts-ignore
 import { google } from '@google/maps';
 import { IDEATinCanService } from '@idea-ionic/common';
 

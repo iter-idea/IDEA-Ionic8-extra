@@ -123,7 +123,7 @@ export class IDEASubscriptionComponent {
    */
   private prepareStore() {
     // set the server validation for any paid plan (special query)
-    this.store.validator = (p: IAPProduct, cb: any) => {
+    this.store.validator = (p: any, cb: any) => {
       // request a validation (Store <-> IDEA's API)
       this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
         idea: true,

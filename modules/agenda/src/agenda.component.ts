@@ -3,6 +3,7 @@ import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isFuture, isToday, isSameDay } from 'date-fns';
+// @ts-ignore
 import ColorParse from 'color-parse';
 import { IDEATinCanService, IDEATranslationsService } from '@idea-ionic/common';
 
