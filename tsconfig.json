@@ -1,19 +1,6 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "forceConsistentCasingInFileNames": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "es2020",
-    "lib": ["es2018", "dom"],
     "paths": {
       "agenda": ["dist/agenda"],
       "auth": ["dist/auth"],
@@ -22,7 +9,24 @@
       "plans-subscription": ["dist/plans-subscription"],
       "speechRecognition": ["dist/speech-recognition"],
       "teams": ["dist/teams"]
-    }
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "importHelpers": true,
+    "module": "commonjs",
+    "removeComments": true,
+    "sourceMap": true,
+    "target": "es6",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
