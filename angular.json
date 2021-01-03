@@ -19,6 +19,12 @@
               "tsConfig": "modules/common/tsconfig.lib.prod.json"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/common/src/**/*.ts", "modules/common/src/**/*.html"]
+          }
         }
       }
     },
@@ -37,6 +43,12 @@
             "production": {
               "tsConfig": "modules/auth/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/auth/src/**/*.ts", "modules/auth/src/**/*.html"]
           }
         }
       }
@@ -57,6 +69,12 @@
               "tsConfig": "modules/agenda/tsconfig.lib.prod.json"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/agenda/src/**/*.ts", "modules/agenda/src/**/*.html"]
+          }
         }
       }
     },
@@ -75,6 +93,12 @@
             "production": {
               "tsConfig": "modules/speech-recognition/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/speech-recognition/src/**/*.ts", "modules/speech-recognition/src/**/*.html"]
           }
         }
       }
@@ -95,6 +119,12 @@
               "tsConfig": "modules/map/tsconfig.lib.prod.json"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/map/src/**/*.ts", "modules/map/src/**/*.html"]
+          }
         }
       }
     },
@@ -114,6 +144,12 @@
               "tsConfig": "modules/plans-subscription/tsconfig.lib.prod.json"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/plans-subscription/src/**/*.ts", "modules/plans-subscription/src/**/*.html"]
+          }
         }
       }
     },
@@ -132,6 +168,12 @@
             "production": {
               "tsConfig": "modules/teams/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/teams/src/**/*.ts", "modules/teams/src/**/*.html"]
           }
         }
       }
