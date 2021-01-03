@@ -18,11 +18,11 @@ export class IDEASendEmailComponent {
   /**
    * Visual indicators of the attachments that will be sent.
    */
-  @Input() public attachments: Array<string>;
+  @Input() public attachments: string[];
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() public variables: Array<StringVariable>;
+  @Input() public variables: StringVariable[];
   /**
    * A map of the values to substitute to the variables.
    */
@@ -30,7 +30,7 @@ export class IDEASendEmailComponent {
   /**
    * The suggested contacts for the email composer.
    */
-  @Input() public contacts: Array<Suggestion>;
+  @Input() public contacts: Suggestion[];
   /**
    * Lines preferences for the items.
    */
@@ -60,7 +60,7 @@ export class IDEASendEmailComponent {
   /**
    * Add an email address to the list.
    */
-  public addAddressToList(list: Array<string>) {
+  public addAddressToList(list: string[]) {
     this.modalCtrl
       .create({
         component: IDEASuggestionsComponent,
@@ -83,7 +83,7 @@ export class IDEASendEmailComponent {
   /**
    * Remove the address from the list.
    */
-  public removeAddressFromList(list: Array<string>, address: string) {
+  public removeAddressFromList(list: string[], address: string) {
     list.splice(list.indexOf(address), 1);
   }
 

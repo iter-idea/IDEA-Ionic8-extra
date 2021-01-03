@@ -25,11 +25,11 @@ export class IDEAttachmentsComponent {
   /**
    * The path to the online API resource, as an array. Don't include the team. E.g. `['entities', entityId]`.
    */
-  @Input() public pathResource: Array<string>;
+  @Input() public pathResource: string[];
   /**
    * The array in which we want to add/remove attachments.
    */
-  @Input() public attachments: Array<Attachment>;
+  @Input() public attachments: Attachment[];
   /**
    * Regulate the mode (view/edit).
    */
@@ -50,7 +50,7 @@ export class IDEAttachmentsComponent {
   /**
    * Stack of errors from the last upload.
    */
-  public uploadErrors: Array<string>;
+  public uploadErrors: string[];
 
   constructor(
     public platform: Platform,
@@ -164,7 +164,7 @@ export class IDEAttachmentsComponent {
       .catch(() => {
         this.uploadErrors.push(name);
         this.removeAttachment(attachment);
-        this.message.error(`IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT`);
+        this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
       });
   }
 
@@ -184,7 +184,7 @@ export class IDEAttachmentsComponent {
       body: { action: 'ATTACHMENTS_GET', attachmentId: attachment.attachmentId }
     })
       .then((res: SignedURL) => Browser.open({ url: res.url }))
-      .catch(() => this.message.error(`IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT`))
+      .catch(() => this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT'))
       .finally(() => this.loading.hide());
   }
 

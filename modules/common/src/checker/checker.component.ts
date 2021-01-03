@@ -31,7 +31,7 @@ export class IDEACheckerComponent {
   /**
    * The checks to show.
    */
-  @Input() public data: Array<Check>;
+  @Input() public data: Check[];
   /**
    *  Alternative to the case above; function that returns a Promise<Array<Check>>.
    */
@@ -128,7 +128,7 @@ export class IDEACheckerComponent {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
       this.dataProvider()
-        .then((data: Array<Check>) => {
+        .then((data: Check[]) => {
           this.data = data;
           this.openChecker();
         })

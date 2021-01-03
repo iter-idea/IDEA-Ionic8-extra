@@ -28,7 +28,7 @@ export class IDEAMDEComponent {
   /**
    * A series of text variables to substitute with values.
    */
-  @Input() public variables: Array<string>;
+  @Input() public variables: string[];
   /**
    * If set, will customize the initial value of the editor.
    */

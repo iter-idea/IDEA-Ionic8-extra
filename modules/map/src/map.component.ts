@@ -55,7 +55,7 @@ export class IDEAMapComponent {
   /**
    * The markers set on the map.
    */
-  private markers: Array<google.maps.Marker>;
+  private markers: google.maps.Marker[];
   /**
    * The marker cluster.
    * Ref: https://developers.google.com/maps/documentation/javascript/marker-clustering.

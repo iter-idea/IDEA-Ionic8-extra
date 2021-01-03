@@ -13,7 +13,7 @@ export class IDEAColorPickerComponent {
   /**
    * The pickable colors.
    */
-  @Input() public colors: Array<Color> = [
+  @Input() public colors: Color[] = [
     { name: 'Radicchio', hex: '#AD1457' },
     { name: 'Tangerine', hex: '#F4511E' },
     { name: 'Citron', hex: '#E4C441' },
@@ -156,7 +156,7 @@ export class ColorsPaletteComponent {
   /**
    * The pickable colors.
    */
-  @Input() public colors: Array<Color>;
+  @Input() public colors: Color[];
   /**
    * The current color.
    */

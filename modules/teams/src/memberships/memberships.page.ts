@@ -35,7 +35,7 @@ export class IDEAMembershipsPage {
   /**
    * The current team's memberships;
    */
-  public memberships: Array<Membership>;
+  public memberships: Membership[];
 
   constructor(
     public navCtrl: NavController,
@@ -57,7 +57,7 @@ export class IDEAMembershipsPage {
         this.team = new Team(team);
         // load the user's membership as IDEA team
         this.API.getResource(`teams/${this.team.teamId}/memberships`, { idea: true })
-          .then((memberships: Array<Membership>) => {
+          .then((memberships: Membership[]) => {
             this.memberships = memberships.map(m => {
               const membership = new Membership(m);
               // identify the user's membership

@@ -25,7 +25,7 @@ export class IDEASignatureComponent {
   /**
    * A list of contacts that could be the signatory of this signature.
    */
-  @Input() public contacts: Array<string>;
+  @Input() public contacts: string[];
   /**
    * The signature to manage.
    */

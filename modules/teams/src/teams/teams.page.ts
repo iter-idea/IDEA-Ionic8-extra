@@ -26,7 +26,7 @@ export class IDEATeamsPage {
   /**
    * The teams available to the user.
    */
-  public teams: Array<Team>;
+  public teams: Team[];
   /**
    * The current project.
    */
@@ -54,7 +54,7 @@ export class IDEATeamsPage {
     this.loading.show();
     // get all the teams joined by the user
     this.API.getResource('teams', { idea: true, params: { project: this.project } })
-      .then((teams: Array<Team>) => (this.teams = teams.map(t => new Team(t))))
+      .then((teams: Team[]) => (this.teams = teams.map(t => new Team(t))))
       .catch(() => this.navCtrl.navigateRoot(['auth']))
       .finally(() => this.loading.hide());
   }

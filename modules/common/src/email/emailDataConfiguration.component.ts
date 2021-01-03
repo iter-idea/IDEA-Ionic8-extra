@@ -17,7 +17,7 @@ export class IDEAEmailDataConfigurationComponent {
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() public variables: Array<StringVariable>;
+  @Input() public variables: StringVariable[];
   /**
    * The title for the component.
    */
@@ -37,7 +37,7 @@ export class IDEAEmailDataConfigurationComponent {
   /**
    * The list of variables codes to use for substitutions.
    */
-  public _variables: Array<string>;
+  public _variables: string[];
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {

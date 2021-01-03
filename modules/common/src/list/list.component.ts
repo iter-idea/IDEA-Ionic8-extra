@@ -17,7 +17,7 @@ export class IDEAListComponent {
   /**
    * The list to manage.
    */
-  @Input() public data: Array<Label | string>;
+  @Input() public data: (Label | string)[];
   /**
    * Whether the elements are labels or simple strings.
    */

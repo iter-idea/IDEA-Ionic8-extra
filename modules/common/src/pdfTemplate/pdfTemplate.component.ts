@@ -36,7 +36,7 @@ export class IDEAPDFTemplateComponent {
   /**
    * The PDF template to manage, as list of sections.
    */
-  @Input() public template: Array<PDFTemplateSection>;
+  @Input() public template: PDFTemplateSection[];
   /**
    * Language preferences.
    */
@@ -48,11 +48,11 @@ export class IDEAPDFTemplateComponent {
   /**
    * The working copy of the PDF template to manage, to avoid touching the original until changes are saved.
    */
-  public _template: Array<PDFTemplateSection>;
+  public _template: PDFTemplateSection[];
   /**
    * A stack of inner layers of the main template, to navigate and modify the inner sections, following a path.
    */
-  public stack: Array<PDFTemplateLayer> = [];
+  public stack: PDFTemplateLayer[] = [];
   /**
    * Helper to use the enum in the UI.
    */
@@ -97,13 +97,13 @@ export class IDEAPDFTemplateComponent {
   /**
    * Get the template of the top layer of the stack.
    */
-  public getCurrentTemplate(): Array<PDFTemplateSection> {
+  public getCurrentTemplate(): PDFTemplateSection[] {
     return this.getCurrentLayer().template;
   }
   /**
    * Map as an array of strings the variables available in this stack.
    */
-  public getCurrentVariables(): Array<string> {
+  public getCurrentVariables(): string[] {
     return this.getCurrentLayer().blueprint.variables.map(v => v.code);
   }
   /**
@@ -123,7 +123,7 @@ export class IDEAPDFTemplateComponent {
   /**
    * Calculate the breadcrumb based on the stack.
    */
-  public getBreadcrumb(): Array<string> {
+  public getBreadcrumb(): string[] {
     return this.stack.map(c => c.blueprint.description);
   }
   /**
@@ -588,7 +588,7 @@ export interface PDFTemplateLayer {
   /**
    * The actual template, based on the blueprint.
    */
-  template: Array<PDFTemplateSection>;
+  template: PDFTemplateSection[];
   /**
    * The title of the level, in case of INNER_SECTION or REPEATED_INNER_SECTION.
    */
@@ -661,7 +661,7 @@ export class IDEAPDFTemplateFieldResizeComponent {
   /**
    * The columns of the section containing the field.
    */
-  @Input() public columns: Array<string>;
+  @Input() public columns: string[];
   /**
    * The current position of the field.
    */

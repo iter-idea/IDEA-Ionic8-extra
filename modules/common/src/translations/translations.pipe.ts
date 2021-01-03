@@ -28,7 +28,7 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
 
   constructor(private translate: IDEATranslationsService, private _ref: ChangeDetectorRef) {}
 
-  public updateValue(key: string, interpolateParams?: object) {
+  public updateValue(key: string, interpolateParams?: any) {
     const res = this.translate.instant(key, interpolateParams);
     this.value = res !== undefined ? res : key;
     this.lastKey = key;
@@ -39,13 +39,15 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
     if (!query || !query.length) return query;
     // if we ask another time for the same key, return the last value
     if (equals(query, this.lastKey) && equals(args, this.lastParams)) return this.value;
-    let interpolateParams: object;
+    let interpolateParams: any;
     if (args[0] !== undefined && args[0] !== null && args.length) {
       if (typeof args[0] === 'string' && args[0].length) {
         // we accept objects written in the template such as {n:1}, {'n':1}, {n:'v'}
         // which is why we might need to change it to real JSON objects such as {"n":1} or {"n":"v"}
         const validArgs: string = args[0]
+          // eslint-disable-next-line no-useless-escape
           .replace(/(\')?([a-zA-Z0-9_]+)(\')?(\s)?:/g, '"$2":')
+          // eslint-disable-next-line no-useless-escape
           .replace(/:(\s)?(\')(.*?)(\')/g, ':"$3"');
         try {
           interpolateParams = JSON.parse(validArgs);
@@ -64,12 +66,12 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
     this._dispose();
     // subscribe to onLangChange event, in case the language changes
     if (!this.onLangChange) {
-      this.onLangChange = this.translate.onLangChange.subscribe(() => {
+      this.onLangChange = (this.translate.onLangChange.subscribe(() => {
         if (this.lastKey) {
           this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
           this.updateValue(query, interpolateParams);
         }
-      });
+      }) as any) as Subscription;
     }
     return this.value;
   }
@@ -89,7 +91,6 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
   }
 }
 
-/* tslint:disable */
 /**
  * Determines if two objects or two values are equivalent.
  *
@@ -107,15 +108,13 @@ export function equals(o1: any, o2: any): boolean {
   if (o1 === o2) return true;
   if (o1 === null || o2 === null) return false;
   if (o1 !== o1 && o2 !== o2) return true; // NaN === NaN
-  let t1 = typeof o1,
-    t2 = typeof o2,
-    length: number,
-    key: any,
-    keySet: any;
-  if (t1 == t2 && t1 == 'object') {
+  const t1 = typeof o1,
+    t2 = typeof o2;
+  let length: number, key: any, keySet: any;
+  if (t1 === t2 && t1 === 'object') {
     if (Array.isArray(o1)) {
       if (!Array.isArray(o2)) return false;
-      if ((length = o1.length) == o2.length) {
+      if ((length = o1.length) === o2.length) {
         for (key = 0; key < length; key++) {
           if (!equals(o1[key], o2[key])) return false;
         }
@@ -127,19 +126,21 @@ export function equals(o1: any, o2: any): boolean {
       }
       keySet = Object.create(null);
       for (key in o1) {
-        if (!equals(o1[key], o2[key])) {
-          return false;
+        if (o1[key]) {
+          if (!equals(o1[key], o2[key])) {
+            return false;
+          }
+          keySet[key] = true;
         }
-        keySet[key] = true;
       }
       for (key in o2) {
-        if (!(key in keySet) && typeof o2[key] !== 'undefined') {
-          return false;
-        }
+        if (o2[key])
+          if (!(key in keySet) && typeof o2[key] !== 'undefined') {
+            return false;
+          }
       }
       return true;
     }
   }
   return false;
 }
-/* tslint:enable */

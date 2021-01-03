@@ -104,22 +104,22 @@ export class IDEACalendarsService {
       switch (cal.external.service) {
         case ExternalCalendarSources.GOOGLE:
           url =
-            `https://accounts.google.com/o/oauth2/v2/auth?` +
+            'https://accounts.google.com/o/oauth2/v2/auth?' +
             `client_id=${encodeURIComponent(IDEA_GOOGLE_API_CLIENT_ID)}` +
-            `&response_type=code` +
+            '&response_type=code' +
             `&redirect_uri=${encodeURIComponent(IDEA_APP_URL.concat('/echo/google-calendars-integration'))}` +
-            `&include_granted_scopes=true` +
-            `&access_type=offline&prompt=consent` +
+            '&include_granted_scopes=true' +
+            '&access_type=offline&prompt=consent' +
             `&scope=${encodeURIComponent(IDEA_GOOGLE_API_SCOPE)}` +
             `&state=${encodeURIComponent(cal.calendarId)}`;
           break;
         case ExternalCalendarSources.MICROSOFT:
           url =
-            `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?` +
+            'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?' +
             `client_id=${encodeURIComponent(IDEA_MICROSOFT_API_CLIENT_ID)}` +
-            `&response_type=code` +
+            '&response_type=code' +
             `&redirect_uri=${encodeURIComponent(IDEA_APP_URL.concat('/echo/microsoft-calendars-integration'))}` +
-            `&response_mode=query` +
+            '&response_mode=query' +
             `&scope=${encodeURIComponent(IDEA_MICROSOFT_API_SCOPE)}` +
             `&state=${encodeURIComponent(cal.calendarId)}`;
           break;
@@ -143,7 +143,7 @@ export class IDEACalendarsService {
   /**
    * Get the external calendars list of the external service.
    */
-  public getExternalCalendars(cal: Calendar): Promise<Array<ExtCalendar>> {
+  public getExternalCalendars(cal: Calendar): Promise<ExtCalendar[]> {
     return new Promise((resolve, reject) => {
       if (!cal.external) return reject(new Error('NOT_EXTERNAL'));
       // get the access token to make requests; in case it fails, proceed to link the external service
@@ -203,7 +203,7 @@ export class IDEACalendarsService {
     return new Promise((resolve, reject) => {
       this.loading.show();
       this.getExternalCalendars(cal)
-        .then((extCals: Array<ExtCalendar>) => {
+        .then((extCals: ExtCalendar[]) => {
           if (!extCals.length) return reject(new Error('NO_EXTERNAL_CALENDARS'));
           // let the user to choose the external calendar to associate
           this.modalCtrl

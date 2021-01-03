@@ -23,12 +23,12 @@ export class IDEACalendarPickerComponent {
   public refDate: Date;
   public selectedDate: Date;
   public today: Date;
-  public calendarGrid: Array<Array<Date>>;
+  public calendarGrid: Date[][];
   public hour: number;
   public minute: number;
-  public hours: Array<string>;
-  public minutes: Array<string>;
-  public weekDays: Array<string>;
+  public hours: string[];
+  public minutes: string[];
+  public weekDays: string[];
 
   constructor(public modal: ModalController, public alertCtrl: AlertController, public t: IDEATranslationsService) {}
   public ngOnInit() {
@@ -65,8 +65,6 @@ export class IDEACalendarPickerComponent {
       case 'it':
         n = --n < 0 ? 6 : n;
         break;
-      default:
-        n;
     }
     return n;
   }
@@ -83,7 +81,7 @@ export class IDEACalendarPickerComponent {
     let haventFoundFirstDay = true;
     // index used to build the dates of the month, starting from the first one
     let index = 1;
-    this.calendarGrid = new Array<Array<Date>>();
+    this.calendarGrid = new Array<Date[]>();
     for (let i = 0; i < 6; i++) {
       this.calendarGrid[i] = new Array<Date>();
       for (let j = 0; j < 7; j++) {
@@ -138,7 +136,7 @@ export class IDEACalendarPickerComponent {
    */
   public showMonths() {
     const buttons = [];
-    const inputs: Array<any> = [];
+    const inputs: any[] = [];
     const month = new Date(0);
     for (let i = 1; i <= 12; i++) {
       inputs.push({

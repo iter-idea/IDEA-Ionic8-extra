@@ -37,7 +37,7 @@ export class IDEACustomFieldMetaComponent {
   /**
    * Iterable list of the custom field types available.
    */
-  public FIELD_TYPES: Array<string> = loopStringEnumKeys(CustomFieldTypes);
+  public FIELD_TYPES: string[] = loopStringEnumKeys(CustomFieldTypes);
   /**
    * Helper to show the enum in the UI.
    */

@@ -33,7 +33,7 @@ export class IDEALabelerComponent {
   /**
    * The variables the user can use for the label content.
    */
-  @Input() public variables: Array<StringVariable | LabelVariable>;
+  @Input() public variables: (StringVariable | LabelVariable)[];
   /**
    * If true, the component is disabled.
    */
@@ -49,7 +49,7 @@ export class IDEALabelerComponent {
   /**
    * The list of variables codes to use for substitutions.
    */
-  public _variables: Array<string>;
+  public _variables: string[];
   /**
    * The errors to show in the UI.
    */

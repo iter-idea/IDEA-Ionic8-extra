@@ -22,11 +22,11 @@ export class IDEAAgendaComponent {
   /**
    * The events to display in the calendar.
    */
-  @Input() public events: Array<AgendaEvent> = [];
+  @Input() public events: AgendaEvent[] = [];
   /**
    * An array of day indexes (0 = sunday, 1 = monday, etc.) that will be hidden on the view.
    */
-  @Input() public excludeDays: Array<number> = [];
+  @Input() public excludeDays: number[] = [];
   /**
    * The day start hours in 24 hour time. Must be 0-23
    */
@@ -181,9 +181,9 @@ export class IDEAAgendaComponent {
    */
   public getAlternateColor(color: string, amount: number, opacity?: number): string {
     const alt = ColorParse(color);
-    const r = Math.max(Math.min(255, alt.values[0] + amount), 0);
-    const g = Math.max(Math.min(255, alt.values[1] + amount), 0);
-    const b = Math.max(Math.min(255, alt.values[2] + amount), 0);
+    const r = Math.max(Math.min(255, Number(alt.values[0]) + amount), 0);
+    const g = Math.max(Math.min(255, Number(alt.values[1]) + amount), 0);
+    const b = Math.max(Math.min(255, Number(alt.values[2]) + amount), 0);
     return `rgba(${r}, ${g}, ${b}, ${opacity || 1})`;
   }
 
@@ -233,11 +233,11 @@ export interface AgendaEvent extends CalendarEvent {
   /**
    * A list of URLs of images to show as small avatars.
    */
-  avatars?: Array<{ id: string; url: string; title: string }>;
+  avatars?: { id: string; url: string; title: string }[];
   /**
    * A list of ion-icons to show.
    */
-  icons?: Array<{ name: string; title: string }>;
+  icons?: { name: string; title: string }[];
   /**
    * Whether the event is external; external events are less important UI-wise.
    */

@@ -90,7 +90,7 @@ export class IDEAOfflineDataService {
   /**
    * The array of the requests not executed because we are/were offline; they need to run once online.
    */
-  public queueAPIRequests: Array<APIRequest>;
+  public queueAPIRequests: APIRequest[];
 
   /**
    * The id of the team of which to manage data offline.
@@ -99,7 +99,7 @@ export class IDEAOfflineDataService {
   /**
    * The array of DeltaResources to cache offline.
    */
-  protected resources: Array<DeltaResources | string>;
+  protected resources: (DeltaResources | string)[];
   /**
    * Helper structure to manage the CacheableResource for each DeltaResource.
    */
@@ -174,7 +174,7 @@ export class IDEAOfflineDataService {
   /**
    * Set up the service to use and sync offline data.
    */
-  public setUpOfflineData(teamId: string, useQueueAPIRequests: boolean, cacheableResources: Array<CacheableResource>) {
+  public setUpOfflineData(teamId: string, useQueueAPIRequests: boolean, cacheableResources: CacheableResource[]) {
     // set the team
     this.teamId = teamId;
     // decide if to allow certain API request while offline
@@ -226,7 +226,7 @@ export class IDEAOfflineDataService {
   /**
    * Get the the DeltaResourced configured.
    */
-  public getResources(): Array<DeltaResources | string> {
+  public getResources(): (DeltaResources | string)[] {
     return this.resources;
   }
   /**
@@ -280,10 +280,10 @@ export class IDEAOfflineDataService {
   /**
    * Load from the local storage the API requests queue.
    */
-  protected loadQueueAPIRequest(): Promise<Array<APIRequest>> {
+  protected loadQueueAPIRequest(): Promise<APIRequest[]> {
     return new Promise(resolve => {
       if (!this.useQueueAPIRequests) return resolve([]);
-      this.storage.get(this.queueAPIRequestKey).then((queue: Array<APIRequest>) => {
+      this.storage.get(this.queueAPIRequestKey).then((queue: APIRequest[]) => {
         this.queueAPIRequests = queue || [];
         resolve(this.queueAPIRequests);
       });
@@ -292,7 +292,7 @@ export class IDEAOfflineDataService {
   /**
    * Update the queue in memory and also save the copy in the local storage.
    */
-  public saveQueueAPIRequest(queue?: Array<APIRequest>): Promise<void> {
+  public saveQueueAPIRequest(queue?: APIRequest[]): Promise<void> {
     if (!this.isAllowed()) return Promise.reject();
     this.queueAPIRequests = queue || this.queueAPIRequests;
     return this.storage.set(this.queueAPIRequestKey, this.queueAPIRequests);
@@ -350,13 +350,13 @@ export class IDEAOfflineDataService {
   /**
    * Save offline a list of DeltaRecords for this resource, creating a map of all the corresponding API GET requests.
    */
-  protected async syncResourceDeltaRecords(resource: string, records: Array<DeltaRecord>): Promise<boolean> {
+  protected async syncResourceDeltaRecords(resource: string, records: DeltaRecord[]): Promise<boolean> {
     // acquire the info an a cacheable resource
     const cr = this.cacheableResources[resource];
     if (!cr) return Promise.resolve(true);
     try {
       // prepare helpers to group executions of elements of the same list
-      let list: Array<any> = null,
+      let list: any[] = null,
         oldListURL: string = null;
       for (const r of records) {
         // calculate the URL to access the API request key for this element
@@ -372,6 +372,7 @@ export class IDEAOfflineDataService {
           // skip first cycle (oldListURL === null)
           if (oldListURL) {
             // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
+            // eslint-disable-next-line @typescript-eslint/unbound-method
             list = list.sort(cr.sort);
             // save the updated list
             await this.API.putInCache(oldListURL, list);
@@ -391,6 +392,7 @@ export class IDEAOfflineDataService {
       // in case there were elements, save the last element's list
       if (oldListURL) {
         // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         list = list.sort(cr.sort);
         // save the updated list
         await this.API.putInCache(oldListURL, list);
@@ -439,7 +441,7 @@ export class IDEAOfflineDataService {
         // try to run all the pending API requests in the queue, i.e. uploading the offline resources changed
         this.runQueueAPIRequests()
           .then(() => {
-            // set this moment in time, so that if anything happened before the end of the sync, we don't lose fresh data
+            // set this moment in time: if anything happened before the end of the sync, we don't lose fresh data
             const now = Date.now();
             // prepare a first "short" Delta request, to see if there is a lot of data to process
             const params: any = { limit: NUM_ELEMENTS_WITHOUT_MANUAL_SYNC };
@@ -519,7 +521,7 @@ export interface APIRequest {
   /**
    * The body of the request.
    */
-  body: object;
+  body: any;
   /**
    * A description to show for the request.
    */
@@ -578,7 +580,7 @@ export abstract class CacheableResource {
    * How to uniquely identify an element in the list (by its ids).
    * E.g. `return list.findIndex(x => x.customerId === element.customerId);`
    */
-  public abstract findIndexInList(list: Array<any>, element: any): number;
+  public abstract findIndexInList(list: any[], element: any): number;
   /**
    * How to keep the list sorted.
    * E.g. `return a.name.localeCompare(b.name);`

@@ -187,7 +187,7 @@ export class IDEAAuthService {
             return reject(err);
           }
           // get user attributes
-          user.getUserAttributes((e: Error, attributes: Array<CognitoUserAttribute>) => {
+          user.getUserAttributes((e: Error, attributes: CognitoUserAttribute[]) => {
             if (e) {
               return reject(e);
             }

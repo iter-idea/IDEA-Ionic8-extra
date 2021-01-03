@@ -43,11 +43,11 @@ export class IDEARCConfiguratorComponent {
   /**
    * The folders loaded from the resource center.
    */
-  public folders: Array<RCFolder>;
+  public folders: RCFolder[];
   /**
    * The folders mapped into suggestions.
    */
-  public foldersSuggestions: Array<Suggestion>;
+  public foldersSuggestions: Suggestion[];
 
   constructor(public t: IDEATranslationsService, public tc: IDEATinCanService, public API: IDEAAWSAPIService) {}
 
@@ -59,7 +59,7 @@ export class IDEARCConfiguratorComponent {
     this.team = this.team || this.tc.get('membership').teamId || this.tc.get('teamId');
     // load the Resource Center folders
     this.API.getResource(`teams/${this.team}/folders`)
-      .then((folders: Array<RCFolder>) => {
+      .then((folders: RCFolder[]) => {
         this.folders = folders;
         this.foldersSuggestions = folders.map(x => new Suggestion({ value: x.folderId, name: x.name }));
       })

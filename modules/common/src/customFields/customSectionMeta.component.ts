@@ -62,7 +62,7 @@ export class IDEACustomSectionMetaComponent {
     this._section = new CustomSectionMeta(this.section, this.t.languages());
     // ensure backwards compatibility
     if (this.useDisplayTemplate && !this._section.displayTemplate)
-      this._section.displayTemplate = new Array<Array<string>>();
+      this._section.displayTemplate = new Array<string[]>();
   }
 
   /**

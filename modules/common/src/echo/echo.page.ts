@@ -171,11 +171,11 @@ export class IDEAEchoPage {
     })
       .then(() => {
         this.success = true;
-        this.content = this.t._(`IDEA_COMMON.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS`);
+        this.content = this.t._('IDEA_COMMON.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS');
       })
       .catch(() => {
         this.success = false;
-        this.content = this.t._(`IDEA_COMMON.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR`);
+        this.content = this.t._('IDEA_COMMON.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR');
       })
       .finally(() => this.loading.hide());
   }

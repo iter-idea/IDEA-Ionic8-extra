@@ -17,7 +17,7 @@ export class IDEAActionSheetComponent {
   /**
    * An array of buttons for the actions panel.
    */
-  @Input() public buttons: Array<ActionSheetButton> = [];
+  @Input() public buttons: ActionSheetButton[] = [];
   /**
    * Additional classes to apply for custom CSS. If multiple classes are provided they should be separated by spaces.
    */

@@ -47,7 +47,7 @@ export class IDEASubscriptionComponent {
   /**
    * The available plans for the team.
    */
-  public plans: Array<ProjectPlan>;
+  public plans: ProjectPlan[];
   /**
    * The id of the platform for which to load the plans.
    */
@@ -90,7 +90,7 @@ export class IDEASubscriptionComponent {
         idea: true,
         params: { platform: this.platformStore, target: this.target }
       })
-        .then((plans: Array<ProjectPlan>) => {
+        .then((plans: ProjectPlan[]) => {
           this.plans = plans.map(p => new ProjectPlan(p, this.t.languages()));
           // if we are on ios/android, integrate the plans with the store info
           if (this.platform.is('ios') || this.platform.is('android')) {

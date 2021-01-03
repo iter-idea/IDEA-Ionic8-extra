@@ -44,7 +44,7 @@ export class IDEAAWSAPIService {
    */
   protected request(resource: string, method: string, options?: APIRequestOption): Promise<any> {
     return new Promise((resolve, reject) => {
-      const opt = (options || {}) as APIRequestOption;
+      const opt = options || {};
       // decide if to use IDEA's API or project's API
       let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
@@ -76,7 +76,9 @@ export class IDEAAWSAPIService {
           // prepare the query params; note: HttpParams is immutable!
           let searchParams = new HttpParams();
           if (opt.params && opt.params instanceof HttpParams) searchParams = opt.params;
-          else if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
+          else if (opt.params)
+            for (const prop in opt.params)
+              if (opt.params[prop]) searchParams = searchParams.set(prop, opt.params[prop]);
           req = this.http.get(url, { headers, params: searchParams });
         }
       }
@@ -132,7 +134,7 @@ export class IDEAAWSAPIService {
    */
   public getResource(resource: string, options?: APIRequestOption): Promise<any> {
     return new Promise((resolve, reject) => {
-      const opt = (options || {}) as APIRequestOption;
+      const opt = options || {};
       // if offline and with a cache mode set, force the request to the cache
       if (!navigator.onLine && options.useCache) opt.useCache = CacheModes.CACHE_ONLY;
       // execute the GET request online or through the cache, depending on the chosen mode
@@ -175,7 +177,7 @@ export class IDEAAWSAPIService {
             .then((cloudRes: any) => {
               resolve(cloudRes);
               // asynchrounously get the same element from cache and decide whether to update or not
-              this.getFromCache(resource, opt).then((localRes: any) => {
+              this.getFromCache(resource, opt).then(() => {
                 // update the cache (if it fails, it's ok)
                 this.putInCache(resource, cloudRes, opt).catch(() => {});
               });
@@ -205,7 +207,7 @@ export class IDEAAWSAPIService {
    */
   public getResourceObserver(resource: string, options?: APIRequestOption): Observable<any> {
     return new Observable(observer => {
-      const opt = (options || {}) as APIRequestOption;
+      const opt = options || {};
       // if offline and with a cache mode set, force the request to the cache
       if (!navigator.onLine && options.useCache) opt.useCache = CacheModes.CACHE_ONLY;
       // execute the GET request online or through the cache, depending on the chosen mode
@@ -275,7 +277,7 @@ export class IDEAAWSAPIService {
    */
   public getFromCache(resource: string, options?: APIRequestOption): Promise<any> {
     return new Promise(resolve => {
-      const opt = (options || {}) as APIRequestOption;
+      const opt = options || {};
       // decide if to use IDEA's API or project's API
       let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
@@ -283,7 +285,8 @@ export class IDEAAWSAPIService {
       if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
       // prepare the query params; note: HttpParams is immutable!
       let searchParams = new HttpParams();
-      if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
+      if (opt.params)
+        for (const prop in opt.params) if (opt.params[prop]) searchParams = searchParams.set(prop, opt.params[prop]);
       // get from storage
       this.storage
         .get(url.concat(searchParams.toString()))
@@ -298,7 +301,7 @@ export class IDEAAWSAPIService {
    */
   public putInCache(resource: string, data: any, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
-      const opt = (options || {}) as APIRequestOption;
+      const opt = options || {};
       // decide if to use IDEA's API or project's API
       let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
@@ -306,7 +309,8 @@ export class IDEAAWSAPIService {
       if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
       // prepare the query params; note: HttpParams is immutable!
       let searchParams = new HttpParams();
-      if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
+      if (opt.params)
+        for (const prop in opt.params) if (opt.params[prop]) searchParams = searchParams.set(prop, opt.params[prop]);
       // put in the storage
       this.storage
         .set(url.concat(searchParams.toString()), data)
@@ -321,7 +325,7 @@ export class IDEAAWSAPIService {
    */
   public deleteFromCache(resource: string, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
-      const opt = (options || {}) as APIRequestOption;
+      const opt = options || {};
       // decide if to use IDEA's API or project's API
       let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
       // prepare a single resource request (by id) or a normal one
@@ -329,7 +333,8 @@ export class IDEAAWSAPIService {
       if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
       // prepare the query params; note: HttpParams is immutable!
       let searchParams = new HttpParams();
-      if (opt.params) for (const prop in opt.params) searchParams = searchParams.set(prop, opt.params[prop]);
+      if (opt.params)
+        for (const prop in opt.params) if (opt.params[prop]) searchParams = searchParams.set(prop, opt.params[prop]);
       // delete from the storage
       this.storage
         .remove(url.concat(searchParams.toString()))

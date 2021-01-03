@@ -14,7 +14,7 @@ export class IDEAChecksComponent {
   /**
    * It should be read only until the component closure.
    */
-  @Input() public data: Array<Check>;
+  @Input() public data: Check[];
   /**
    * If true, sort alphabetically the data.
    */
@@ -42,10 +42,10 @@ export class IDEAChecksComponent {
   /**
    * A copy of data, to use until the changes are confirmed.
    */
-  public workingData: Array<Check>;
+  public workingData: Check[];
 
   // SUPPORT
-  public filteredChecks: Array<Check>;
+  public filteredChecks: Check[];
   public N_PER_PAGE = 30;
   public page: number;
 

@@ -48,7 +48,7 @@ export class IDEAAddressComponent {
   /**
    * The suggestions for the Countries picker.
    */
-  public countriesSuggestions: Array<Suggestion>;
+  public countriesSuggestions: Suggestion[];
   /**
    * Shortcut to Countries enum.
    */

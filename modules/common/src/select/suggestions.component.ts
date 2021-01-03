@@ -18,7 +18,7 @@ export class IDEASuggestionsComponent {
   /**
    * The suggestions to show.
    */
-  @Input() public data: Array<Suggestion>;
+  @Input() public data: Suggestion[];
   /**
    * If true, sort the suggestions alphabetically.
    */
@@ -70,7 +70,7 @@ export class IDEASuggestionsComponent {
   /**
    * Paginated suggestions (from the data).
    */
-  public suggestions: Array<Suggestion>;
+  public suggestions: Suggestion[];
   /**
    * The current page for the paginated suggestions.
    */
@@ -159,7 +159,7 @@ export class IDEASuggestionsComponent {
   /**
    * Helper to get in the template a sorted array of suggestions out of a set
    */
-  public mapIntoSuggestions(set: Set<string>): Array<Suggestion> {
+  public mapIntoSuggestions(set: Set<string>): Suggestion[] {
     return Array.from(set)
       .sort()
       .map(x => new Suggestion({ value: x }));
@@ -214,8 +214,6 @@ export class IDEASuggestionsComponent {
    * Reset the filter for the categoryN.
    */
   public resetFilterCategoryN(whichCategory: number) {
-    // identify the category to manage
-    const categories = whichCategory === 2 ? this.activeCategories2 : this.activeCategories1;
     // resset the right category
     if (whichCategory === 2) this.category2 = null;
     else this.category1 = null;
@@ -267,8 +265,8 @@ export class IDEASuggestionsComponent {
       case 'ArrowDown':
         if (!suggestionsList) return;
         // identify the currently selected suggestion or select the first one
-        let selected = null;
-        let elements = suggestionsList.getElementsByClassName('selected');
+        let selected = null,
+          elements = suggestionsList.getElementsByClassName('selected');
         if (elements.length) {
           // a suggestion was already selected: go to the next/previous one
           selected = elements[0];

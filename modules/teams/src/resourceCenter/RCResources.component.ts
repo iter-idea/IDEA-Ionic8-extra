@@ -40,11 +40,11 @@ export class IDEARCResourcesComponent {
   /**
    * The resources available to the team.
    */
-  public resources: Array<RCResource>;
+  public resources: RCResource[];
   /**
    * The resources filtered based on the current search.
    */
-  public filteredResources: Array<RCResource>;
+  public filteredResources: RCResource[];
   /**
    * The searchbar to locally filter the list.
    */
@@ -52,7 +52,7 @@ export class IDEARCResourcesComponent {
   /**
    * Stack of errors from the last upload.
    */
-  public uploadErrors: Array<string>;
+  public uploadErrors: string[];
 
   constructor(
     public tc: IDEATinCanService,
@@ -79,7 +79,7 @@ export class IDEARCResourcesComponent {
     this.API.getResource(`teams/${this.teamId}/folders/${this.folder.folderId}/resources`, {
       useCache: getFromNetwork ? CacheModes.NETWORK_FIRST : CacheModes.CACHE_FIRST
     })
-      .then((resources: Array<RCResource>) => {
+      .then((resources: RCResource[]) => {
         this.resources = resources.map(r => new RCResource(r));
         this.search(this.searchbar ? this.searchbar.value : null);
       })

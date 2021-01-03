@@ -47,7 +47,7 @@ export class IDEASelectComponent {
   /**
    * The suggestions to show.
    */
-  @Input() public data: Array<Suggestion>;
+  @Input() public data: Suggestion[];
   /**
    *  Alternative to the case above; function that returns a Promise<Array<Suggestion>>.
    */
@@ -177,7 +177,7 @@ export class IDEASelectComponent {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
       this.dataProvider()
-        .then((data: Array<Suggestion>) => {
+        .then((data: Suggestion[]) => {
           this.data = data;
           this.openSuggestions();
         })
@@ -218,7 +218,7 @@ export class IDEASelectComponent {
           category2: this.category2,
           showCategoriesFilters: this.showCategoriesFilters
         },
-        backdropDismiss: !Boolean(this.mustChoose)
+        backdropDismiss: !this.mustChoose
       })
       .then(modal => {
         modal.onDidDismiss().then((selection: any) => {

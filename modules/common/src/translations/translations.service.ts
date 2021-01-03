@@ -5,7 +5,7 @@ import { Label, Languages, mdToHtml } from 'idea-toolbox';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
 // from idea-config.js
-declare const IDEA_IONIC_MODULES: Array<string>;
+declare const IDEA_IONIC_MODULES: string[];
 
 /**
  * Base folder containing the translations.
@@ -24,11 +24,11 @@ export class IDEATranslationsService {
   /**
    * Template matcher to interpolate complex strings (e.g. `{{user}}`).
    */
-  protected templateMatcher: RegExp = /{{\s?([^{}\s]*)\s?}}/g;
+  protected templateMatcher = /{{\s?([^{}\s]*)\s?}}/g;
   /**
    * The available languages.
    */
-  protected langs: Array<string>;
+  protected langs: string[];
   /**
    * The current language.
    */
@@ -53,13 +53,13 @@ export class IDEATranslationsService {
   /**
    * Set the available languages.
    */
-  public setLangs(langs: Array<string>) {
+  public setLangs(langs: string[]) {
     this.langs = langs.slice();
   }
   /**
    * Returns an array of currently available languages.
    */
-  public getLangs(): Array<string> {
+  public getLangs(): string[] {
     return this.langs;
   }
 
@@ -133,14 +133,14 @@ export class IDEATranslationsService {
    * Get a translated term by key in the current language, optionally interpolating variables (e.g. `{{user}}`).
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
-  public instant(key: string, interpolateParams?: object): string {
+  public instant(key: string, interpolateParams?: any): string {
     return this.instantInLanguage(this.currentLang, key, interpolateParams);
   }
   /**
    * Get a translated term by key in the selected language, optionally interpolating variables (e.g. `{{user}}`).
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
-  public instantInLanguage(language: string, key: string, interpolateParams?: object): string {
+  public instantInLanguage(language: string, key: string, interpolateParams?: any): string {
     if (!this.isDefined(key) || !key.length) return;
     let res = this.interpolate(this.getValue(this.translations[language], key), interpolateParams);
     if (res === undefined && this.defaultLang !== null && this.defaultLang !== language)
@@ -150,20 +150,20 @@ export class IDEATranslationsService {
   /**
    * Shortcut to instant.
    */
-  public _(key: string, interpolateParams?: object): string {
+  public _(key: string, interpolateParams?: any): string {
     return this.instant(key, interpolateParams);
   }
   /**
    * Translate (instant) and transform an expected markdown string into HTML.
    */
-  public _md(key: string, interpolateParams?: object): string {
+  public _md(key: string, interpolateParams?: any): string {
     return mdToHtml(this._(key, interpolateParams));
   }
 
   /**
    * Return a Label containing all the available translations of a key.
    */
-  public getLabelByKey(key: string, interpolateParams?: object): Label {
+  public getLabelByKey(key: string, interpolateParams?: any): Label {
     const label = new Label(null, this.languages());
     this.langs.forEach(lang => (label[lang] = this.instantInLanguage(lang, key, interpolateParams)));
     return label;

@@ -21,7 +21,7 @@ export class IDEAEmailDataComponent {
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() public variables: Array<StringVariable>;
+  @Input() public variables: StringVariable[];
   /**
    * The label for the field.
    */
@@ -57,7 +57,7 @@ export class IDEAEmailDataComponent {
   /**
    * The list of variables codes to use for substitutions.
    */
-  public _variables: Array<string>;
+  public _variables: string[];
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {

@@ -14,7 +14,7 @@ export class IDEAListELementsComponent {
   /**
    * It should be read only until the component closure.
    */
-  @Input() public data: Array<Label | string>;
+  @Input() public data: (Label | string)[];
   /**
    * Whether the elements are labels or simple strings.
    */
@@ -30,11 +30,11 @@ export class IDEAListELementsComponent {
   /**
    * A copy of data, to use until the changes are confirmed.
    */
-  public workingData: Array<Label | string>;
+  public workingData: (Label | string)[];
   /**
    * The list filtered by the current search terms.
    */
-  public filteredList: Array<Label | string>;
+  public filteredList: (Label | string)[];
   /**
    * Manage the searchbar component.
    */

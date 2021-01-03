@@ -30,7 +30,7 @@ export class IDEALabelComponent {
   /**
    * The variables the user can use in the label.
    */
-  @Input() public variables: Array<StringVariable>;
+  @Input() public variables: StringVariable[];
   /**
    * The title (label) for the field.
    */
@@ -70,7 +70,7 @@ export class IDEALabelComponent {
   /**
    * The list of variables codes to use for substitutions.
    */
-  public _variables: Array<string>;
+  public _variables: string[];
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {

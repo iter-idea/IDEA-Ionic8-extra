@@ -28,7 +28,7 @@ export class IDEACachedResourcesService {
    * Optionally update the cache key and forces the image cache deletion.
    */
   public getCachedResource(url: string, updateCacheKey?: boolean) {
-    const key = updateCacheKey ? this.updateCacheKey() : this.tc.get(this.cacheKeyIndex);
+    const key = String(updateCacheKey ? this.updateCacheKey() : this.tc.get(this.cacheKeyIndex));
     return url.concat(`?crs=${key}`);
   }
 

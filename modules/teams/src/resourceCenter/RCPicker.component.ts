@@ -35,7 +35,7 @@ export class IDEARCPickerComponent {
   /**
    * The array in which we want to add/remove resources.
    */
-  @Input() public attachedResources: Array<RCAttachedResource>;
+  @Input() public attachedResources: RCAttachedResource[];
   /**
    * Regulate the mode (view/edit).
    */
@@ -48,11 +48,11 @@ export class IDEARCPickerComponent {
   /**
    * The resources loaded from the resource center.
    */
-  public resources: Array<RCResource>;
+  public resources: RCResource[];
   /**
    * The resources mapped into suggestions.
    */
-  public resourcesSuggestions: Array<Suggestion>;
+  public resourcesSuggestions: Suggestion[];
 
   constructor(
     public t: IDEATranslationsService,
@@ -81,7 +81,7 @@ export class IDEARCPickerComponent {
       this.team = this.team || this.tc.get('membership').teamId || this.tc.get('teamId');
       // load the resources from the specified folder and map them into suggestions (for idea-select)
       this.API.getResource(`teams/${this.team}/folders/${this.folder.folderId}/resources`)
-        .then((resources: Array<RCResource>) => {
+        .then((resources: RCResource[]) => {
           this.resources = resources;
           this.resourcesSuggestions = resources.map(
             x => new Suggestion({ value: x.resourceId, name: `${x.name}.${x.format}` })

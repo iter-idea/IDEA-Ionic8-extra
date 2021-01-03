@@ -92,7 +92,7 @@ export class IDEASpeechRecognitionComponent {
     return new Promise(resolve => {
       // get the list of supported languages for the device
       this.speechRecognition.getSupportedLanguages().then(
-        (languages: Array<string>) => {
+        (languages: string[]) => {
           // get the language currently active on the device
           const deviceLanguage = window.navigator.language.toLowerCase();
           // search for an exact match (e.g. `es-BO`)
@@ -137,7 +137,7 @@ export class IDEASpeechRecognitionComponent {
         this.initText = this.text || '';
         // start the recognition
         this.speechRecognition.startListening({ language: this.language, matches: 1, showPartial: true }).subscribe(
-          (matches: Array<string>) => {
+          (matches: string[]) => {
             // be sure to prevent multiple emit events to occur on iOS
             if (this.isListening || this.platform.is('android')) {
               // concatenate the new text with the previous content (new line) and capitalize the first new letter

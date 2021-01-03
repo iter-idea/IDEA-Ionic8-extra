@@ -37,7 +37,7 @@ export class IDEACalendarComponent {
   /**
    * Helper to allow selecting memberships.
    */
-  public membershipsChecks: Array<Check>;
+  public membershipsChecks: Check[];
   /**
    * The current membership.
    */
@@ -68,7 +68,7 @@ export class IDEACalendarComponent {
     // load the teammates to use for shared calendars permissions
     this.API.getResource(`teams/${this.membership.teamId}/memberships`)
       .then(
-        (memberships: Array<Membership>) =>
+        (memberships: Membership[]) =>
           (this.membershipsChecks = memberships.map(
             m =>
               new Check({

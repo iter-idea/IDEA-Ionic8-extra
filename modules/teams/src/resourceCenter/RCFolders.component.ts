@@ -31,11 +31,11 @@ export class IDEARCFoldersComponent {
   /**
    * The folders available to the team.
    */
-  public folders: Array<RCFolder>;
+  public folders: RCFolder[];
   /**
    * The folders filtered based on the current search.
    */
-  public filteredFolders: Array<RCFolder>;
+  public filteredFolders: RCFolder[];
   /**
    * The searchbar to locally filter the list.
    */
@@ -65,7 +65,7 @@ export class IDEARCFoldersComponent {
     this.API.getResource(`teams/${this.teamId}/folders`, {
       useCache: getFromNetwork ? CacheModes.NETWORK_FIRST : CacheModes.CACHE_FIRST
     })
-      .then((folders: Array<RCFolder>) => {
+      .then((folders: RCFolder[]) => {
         this.folders = folders.map(f => new RCFolder(f));
         this.search(this.searchbar ? this.searchbar.value : null);
       })

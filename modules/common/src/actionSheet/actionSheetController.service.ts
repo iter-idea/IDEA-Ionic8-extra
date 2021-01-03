@@ -43,7 +43,7 @@ export interface IDEAActionSheetOptions {
   /**
    * An array of buttons for the action sheet.
    */
-  buttons: Array<ActionSheetButton>;
+  buttons: ActionSheetButton[];
   /**
    * Additional classes to apply for custom CSS. If multiple classes are provided they should be separated by spaces.
    */
