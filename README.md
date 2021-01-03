@@ -22,15 +22,7 @@ To use a module in a project, install it through NPM (together with its dependen
 npm i --save @idea-ionic/<module>
 ```
 
-Make sure to install also the translations (see below).
-
-## Translations
-
-Every component requires the `IDEATranslationsService` module and the `i18n` translations folder (with subfolders `idea` and `variables`) set up in the project, following IDEA's standard.
-
-The **translations for the components are available (and should be kept updated) in the `i18n` folder** of this repository.
-
-When changes are made, the entire translations files should be copied into the IDEA's projects.
+Make sure to install to follow the instructions of each specific module.
 
 ## Development
 
@@ -46,7 +38,7 @@ After, open the module in the dist folder (e.g `dist/common`) and init the link 
 
 ```
 cd dist/<module>
-npn link
+npm link
 ```
 
 Now, in the IDEA's project that we are developing, make sure that in the `angular.json` file the following option is set:
@@ -94,7 +86,10 @@ To release a new version of a module, set the according version in the `package.
 cd modules/<module>
 npm i
 cd ../../
+
+ng lint <module> --fix
 ng build <module> --prod
+
 cd dist/<module>
 npm publish
 ```
