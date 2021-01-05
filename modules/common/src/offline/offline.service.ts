@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
-
-// from idea-config.js
-declare const IDEA_API_IDEA_ID: string;
-declare const IDEA_API_IDEA_REGION: string;
-declare const IDEA_API_IDEA_VERSION: string;
-
-const API_URL_IDEA =
-  `https://${IDEA_API_IDEA_ID}.execute-api.${IDEA_API_IDEA_REGION}.amazonaws.com/` + `${IDEA_API_IDEA_VERSION}`;
+import { Plugins } from '@capacitor/core';
+const { Network } = Plugins;
 
 /**
  * Utility to monitor the network connection.
@@ -25,25 +18,30 @@ export class IDEAOfflineService {
    */
   protected observable: Observable<boolean>;
   /**
-   * The handler for the repeated connection check in the background.
+   * The handler for listenig to network changes.
    */
-  protected intervalHandler: any;
+  protected listenerHandler: any;
 
-  constructor(protected http: HttpClient) {
+  constructor() {
+    // get an instant status
     this._isOffline = !navigator.onLine;
-    // create the observable to subscribe to the network changes
+    // set the basic listener for changes
+    this.listenerHandler = Network.addListener('networkStatusChange', status => (this._isOffline = !status.connected));
+    // create the observable to subscribe to the network changes; note: it won't run until subscribed
     this.observable = new Observable(observer => {
-      window.addEventListener('online', () => {
-        this.setOffline(false);
-        observer.next(true);
-      });
-      window.addEventListener('offline', () => {
-        this.setOffline(true);
-        observer.next(false);
+      // remove the basic listener add add one that supports a subscription
+      if (this.listenerHandler) this.listenerHandler.remove();
+      this.listenerHandler = Network.addListener('networkStatusChange', status => {
+        this._isOffline = !status.connected;
+        if (observer) observer.next(status.connected);
       });
     });
-    // run a connection test every once in a while
-    this.runContinousCheck();
+  }
+  /**
+   * Subscribe to be notified when the connection status changes.
+   */
+  public subscribe(callback: (isOnline: boolean) => void): Subscription {
+    return this.observable.subscribe(callback);
   }
 
   /**
@@ -58,51 +56,13 @@ export class IDEAOfflineService {
   public isOffline(): boolean {
     return this._isOffline;
   }
-  /**
-   * Quickly set both the helpers that determs the connection status.
-   */
-  protected setOffline(isOffline: boolean) {
-    const changed = this._isOffline !== isOffline;
-    if (changed) {
-      this._isOffline = isOffline;
-      window.dispatchEvent(new Event(isOffline ? 'offline' : 'online'));
-      this.runContinousCheck(isOffline ? 20 : 60);
-    }
-  }
-
-  /**
-   * Subscribe to the service to be notified when the connection status changes.
-   */
-  public subscribe(callback: (isOnline: boolean) => void): Subscription {
-    return this.observable.subscribe(callback);
-  }
 
   /**
    * Quickly check for online connection.
    */
-  public check(): Promise<boolean> {
-    return new Promise(resolve =>
-      // note: it doesn't use this.API to avoid loops
-      this.http
-        .head(API_URL_IDEA.concat('/online'))
-        .toPromise()
-        .then(() => {
-          this.setOffline(false);
-          resolve(true);
-        })
-        .catch(() => {
-          this.setOffline(true);
-          resolve(false);
-        })
-    );
-  }
-
-  /**
-   * Run a connection test every once in a while.
-   */
-  protected runContinousCheck(interval?: number) {
-    interval = interval || 60;
-    if (this.intervalHandler) clearInterval(this.intervalHandler);
-    this.intervalHandler = setInterval(() => this.check(), interval * 1000);
+  public async check(): Promise<boolean> {
+    const status = await Network.getStatus();
+    this._isOffline = !status.connected;
+    return status.connected;
   }
 }
