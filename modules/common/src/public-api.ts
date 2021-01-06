@@ -26,6 +26,7 @@ export * from './translations/translations.service';
 export * from './variables/variables.module';
 
 export * from './AWSAPI.service';
+export * from './AWSAPISocket.service';
 export * from './cachedResources.service';
 export * from './dataWedgeReader.service';
 export * from './errorReporting.service';
