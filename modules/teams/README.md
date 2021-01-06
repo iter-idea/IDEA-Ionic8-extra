@@ -17,6 +17,12 @@ To make sure the translations are loaded into the project:
 - in the project's `assets/configs/idea-config.js` file, add the string `'teams'` to the array `window.IDEA_IONIC_MODULES`;
 - copy the `i18n/teams` folder (you can filter the languages you need) of the module in the project's `assets/i18n` folder.
 
+Finally, add the according configuration (if needed) in the `assets/configs/idea-config.js`:
+
+```
+window.PROJECT: string;
+```
+
 ## Components
 
 - Account

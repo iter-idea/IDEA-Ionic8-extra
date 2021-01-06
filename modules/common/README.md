@@ -17,6 +17,25 @@ To make sure the translations are loaded into the project:
 - in the project's `assets/configs/idea-config.js` file, add the string `'common'` to the array `window.IDEA_IONIC_MODULES`;
 - copy the `i18n/common` folder (you can filter the languages you need) of the module in the project's `assets/i18n` folder.
 
+Finally, add the according configuration (if needed) in the `assets/configs/idea-config.js`:
+
+```
+window.IDEA_PROJECT: string;
+
+window.IDEA_API_ID: string;
+window.IDEA_API_REGION: string;
+window.IDEA_API_VERSION: string;
+window.IDEA_API_IDEA_ID: string;
+window.IDEA_API_IDEA_REGION: string;
+window.IDEA_API_IDEA_VERSION: string;
+
+window.IDEA_SOCKET_API_ID: string;
+window.IDEA_SOCKET_API_REGION: string;
+window.IDEA_SOCKET_API_VERSION: string;
+
+window.IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
+```
+
 ## Components
 
 - Action Sheet
@@ -44,6 +63,7 @@ To make sure the translations are loaded into the project:
 ## Services
 
 - AWSAPI service
+- AWSAPI socket service
 - (browser's) Cached resources service
 - DataWedge-compatible devices' reader service (barcode)
 - Error reporting service
