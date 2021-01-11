@@ -3,7 +3,13 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 const { Browser } = Plugins;
 import { Calendar, ExternalCalendarSources, Suggestion } from 'idea-toolbox';
-import { IDEALoadingService, IDEAAWSAPIService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import {
+  IDEALoadingService,
+  IDEAAWSAPIService,
+  IDEAMessageService,
+  IDEATranslationsService,
+  IDEASuggestionsComponent
+} from '@idea-ionic/common';
 
 // from idea-config.js
 declare const IDEA_MICROSOFT_API_CLIENT_ID: string;
@@ -208,7 +214,7 @@ export class IDEACalendarsService {
           // let the user to choose the external calendar to associate
           this.modalCtrl
             .create({
-              component: 'idea-suggestions',
+              component: IDEASuggestionsComponent,
               componentProps: {
                 data: extCals.map(c => new Suggestion({ value: c.id, name: c.name })),
                 searchPlaceholder: this.t._('IDEA_AGENDA.CALENDARS.CHOOSE_AN_EXTERNAL_CALENDAR_TO_LINK'),

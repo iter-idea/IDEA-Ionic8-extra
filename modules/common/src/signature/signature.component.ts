@@ -6,6 +6,8 @@ import { Signature, Suggestion } from 'idea-toolbox';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAMessageService } from '../message.service';
 
+import { IDEASuggestionsComponent } from '../select/suggestions.component';
+
 const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
 
 @Component({
@@ -85,7 +87,7 @@ export class IDEASignatureComponent {
   public pickSignatory() {
     this.modalCtrl
       .create({
-        component: 'idea-suggestions',
+        component: IDEASuggestionsComponent,
         componentProps: {
           data: (this.contacts || []).map(c => new Suggestion({ value: c })),
           searchPlaceholder: this.t._('IDEA_COMMON.SIGNATURE.CHOOSE_A_SIGNATORY'),
