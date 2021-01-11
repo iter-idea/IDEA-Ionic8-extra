@@ -20,6 +20,7 @@ export * from './src/offline/offlineData.service';
 export * from './src/pdfTemplate/pdfTemplate.module';
 export * from './src/mde/mde.module';
 export * from './src/select/select.module';
+export * from './src/select/suggestions.component';
 export * from './src/timeInterval/timeInterval.module';
 export * from './src/translations/translations.module';
 export * from './src/translations/translations.service';
