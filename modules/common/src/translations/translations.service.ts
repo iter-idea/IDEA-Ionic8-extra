@@ -14,7 +14,7 @@ const BASE_PATH = 'assets/i18n/';
 /**
  * The modules for which to load the translations.
  */
-const MODULES_PATH = [''].concat(IDEA_IONIC_MODULES || []);
+const MODULES_PATH = ['', 'variables'].concat(IDEA_IONIC_MODULES || []);
 
 /**
  * Translations service.
