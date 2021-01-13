@@ -16,7 +16,7 @@
     "@idea-ionic/common": ">=0.0.17",
     "@ionic/angular": ">=5.0.0",
     "@ionic/storage": ">=2.2.0",
-    "idea-toolbox": ">=6.2.0",
+    "idea-toolbox": ">=6.2.3",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
   },
@@ -35,7 +35,7 @@
     "@types/googlemaps": "^3.43.0",
     "@types/scriptjs": "0.0.2",
     "google": "^2.1.0",
-    "idea-toolbox": ">=6.2.0",
+    "idea-toolbox": ">=6.2.3",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
   },
