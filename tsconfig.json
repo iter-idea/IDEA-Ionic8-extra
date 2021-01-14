@@ -12,7 +12,7 @@
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "types": ["googlemaps"],
+    "types": ["node", "googlemaps"],
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
