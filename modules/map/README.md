@@ -25,18 +25,6 @@ idea-map.mapReady {
 }
 ```
 
-Add the following attribute to the `tsconfig.json` file:
-
-```
-{
-  // ...
-  "compilerOptions": {
-    // ...
-    "types": ["googlemaps"]
-  }
-}
-```
-
 Finally, add the according configuration in the `assets/configs/idea-config.js`:
 
 ```

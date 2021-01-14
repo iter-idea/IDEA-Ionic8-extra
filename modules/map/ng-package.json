@@ -10,8 +10,9 @@
       "@ionic/angular": "@ionic/angular",
       "@ionic/storage": "@ionic/storage",
       "idea-toolbox": "idea-toolbox",
-      "scriptjs": "scriptjs"
+      "scriptjs": "scriptjs",
+      "@types/googlemaps": "@types/googlemaps"
     }
   },
-  "whitelistedNonPeerDependencies": ["scriptjs"]
+  "whitelistedNonPeerDependencies": ["scriptjs", "@types/googlemaps"]
 }
