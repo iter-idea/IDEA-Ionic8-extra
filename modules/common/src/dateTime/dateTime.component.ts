@@ -106,7 +106,7 @@ export class IDEADateTimeComponent {
    * Calculate the value to show.
    */
   protected getValueToDisplay(date: epochDateTime): string {
-    return !date ? '' : this.t.formatDate(date, this.timePicker ? 'mediumDate' : 'longDate');
+    return !date ? '' : this.t.formatDate(date, this.timePicker ? 'medium' : 'mediumDate');
   }
 
   /**
