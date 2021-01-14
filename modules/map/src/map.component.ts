@@ -3,14 +3,12 @@ import { Platform } from '@ionic/angular';
 import { get } from 'scriptjs';
 import { Plugins, PluginListenerHandle, GeolocationPosition } from '@capacitor/core';
 const { Geolocation, Network } = Plugins;
-// @ts-ignore
-import { google } from '@google/maps';
 import { IDEATinCanService } from '@idea-ionic/common';
 
-import { MAP_DARK_MODE_STYLE } from './darkMode.style';
-
-// class loaded together with the SDK
+// class loaded together with the Google Map SDK script
 declare const MarkerClusterer: any;
+
+import { MAP_DARK_MODE_STYLE } from './darkMode.style';
 
 // from idea-config.js
 declare const IDEA_API_VERSION: string;
@@ -87,7 +85,7 @@ export class IDEAMapComponent {
       // if needed, acquire the current geolocation position; note: it won't work on localhost (resolves `null`)
       this.getLocationSafely().then(location => {
         // initialize the map's options
-        const mapOptions: google.maps.MapOptions = { zoom: DEFAULT_ZOOM };
+        const mapOptions: any = { zoom: DEFAULT_ZOOM };
         if (this.disableDefaultUI) mapOptions.disableDefaultUI = true;
         else mapOptions.fullscreenControl = false;
         // if we successfully acquired the position, set it as the map's center; otherwise, set the default position
@@ -99,7 +97,7 @@ export class IDEAMapComponent {
         this.map = new google.maps.Map(this.element.nativeElement, mapOptions);
         this.renderer.addClass(this.element.nativeElement, 'mapReady');
         // set the helpers
-        this.markers = new Array<google.maps.Marker>();
+        this.markers = new Array<any>();
         // the component is ready
         this.isReady = true;
       });
