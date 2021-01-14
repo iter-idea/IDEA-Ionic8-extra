@@ -71,7 +71,7 @@ export class IDEADateTimeComponent {
     // when the language changes, set the locale
     this.langChangeSubscription = this.t.onLangChange.subscribe(() => {
       this.valueToDisplay = this.getValueToDisplay(this.date);
-    });
+    }) as any;
   }
   public ngOnDestroy() {
     if (this.langChangeSubscription) this.langChangeSubscription.unsubscribe();
@@ -106,7 +106,7 @@ export class IDEADateTimeComponent {
    * Calculate the value to show.
    */
   protected getValueToDisplay(date: epochDateTime): string {
-    return !date ? '' : this.t.formatDate(date, this.timePicker ? 'medium' : 'mediumDate');
+    return !date ? '' : this.t.formatDate(date, this.timePicker ? 'MMM d, y, h:mm a' : 'medium');
   }
 
   /**
