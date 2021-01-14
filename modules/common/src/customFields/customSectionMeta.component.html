@@ -16,7 +16,7 @@
 <ion-content>
   <div [class.viewMode]="disabled" [class.editMode]="!disabled">
     <ion-list class="aList ion-padding">
-      <ng-container *ngIf="hideHeaders">
+      <ng-container *ngIf="!hideHeaders">
         <ion-list-header *ngIf="disabled">
           <ion-label>
             <h2>{{ getLabelValue(_section.name) }}</h2>
