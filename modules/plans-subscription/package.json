@@ -18,7 +18,7 @@
     "@ionic/storage": ">=2.2.0",
     "@ionic-native/core": ">=5.0.7",
     "@ionic-native/in-app-purchase-2": ">=5.30.0",
-    "idea-toolbox": ">=6.2.3",
+    "idea-toolbox": ">=6.2.4",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
   },
@@ -36,7 +36,7 @@
     "@ionic/storage": ">=2.2.0",
     "@types/scriptjs": "0.0.2",
     "google": "^2.1.0",
-    "idea-toolbox": ">=6.2.3",
+    "idea-toolbox": ">=6.2.4",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
   },
