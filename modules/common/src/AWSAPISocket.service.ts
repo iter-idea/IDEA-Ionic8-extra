@@ -11,18 +11,17 @@ declare const IDEA_SOCKET_API_REGION: string;
 declare const IDEA_SOCKET_API_VERSION: string;
 
 /**
- * The URL to connect for socket communication.
- */
-export const WEBSOCKET_API_URL =
-  `wss://${IDEA_SOCKET_API_ID}.execute-api.${IDEA_SOCKET_API_REGION}.amazonaws.com/` + `${IDEA_SOCKET_API_VERSION}`;
-
-/**
  * To communicate with an AWS API Gateway websocket istance.
  *
  * Note: requires an `AWSAPIAuthToken` variable to be set by IDEATinCanService service.
  */
 @Injectable()
 export class IDEAAWSAPISocketService {
+  /**
+   * The URL to connect for socket communication.
+   */
+  public WEBSOCKET_API_URL =
+    `wss://${IDEA_SOCKET_API_ID}.execute-api.${IDEA_SOCKET_API_REGION}.amazonaws.com/` + `${IDEA_SOCKET_API_VERSION}`;
   /**
    * The current websocket connection.
    */
@@ -77,8 +76,9 @@ export class IDEAAWSAPISocketService {
     // prepare optional query params for the connection/authorization request
     let qp = '';
     Object.entries(this.options.openParams || {}).forEach(([key, value]) => (qp += `&${key}=${String(value)}`));
-    // open a connection
-    this.connection = new WebSocket(WEBSOCKET_API_URL.concat('?Authorization=', this.tc.get('AWSAPIAuthToken'), qp));
+    // open a connection (with IDEA authentication or not)
+    const auth = this.options.noAuth ? '?noAuth=' : '?Authorization='.concat(this.tc.get('AWSAPIAuthToken'));
+    this.connection = new WebSocket(this.WEBSOCKET_API_URL.concat(auth, qp));
     // set the event listeners
     this.connection.onopen = (event: any) => {
       if (this.options.debug) console.log('WEBSOCKET IS OPEN', event);
@@ -207,9 +207,13 @@ export class IDEAAWSAPISocketService {
 export interface IDEAAWSAPISocketServiceOpenOptions {
   /**
    * Optional parameters needed to be passed to the socket's authorizer to open the connection.
-   * Note: the authentication (IDEA standard) is automatically included.
+   * Note: the authentication (IDEA standard) is automatically included, if `noAuth` isn't set.
    */
   openParams?: { [key: string]: any };
+  /**
+   * If set, the socket connection won't require authentication.
+   */
+  noAuth?: boolean;
   /**
    * Action to execute when the connection is confirmed "open" by the server.
    */
