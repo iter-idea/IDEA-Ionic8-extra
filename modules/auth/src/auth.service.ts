@@ -131,11 +131,13 @@ export class IDEAAuthService {
    */
   public logout(dontReload?: boolean) {
     this.isAuthenticated(false)
-      .then(() => {
+      .then(async () => {
+        // sign-out from the pool
         this.userPool.getCurrentUser().signOut();
-        if (!dontReload) {
-          window.location.assign('');
-        }
+        // (async) remove the refresh token previosly saved
+        await this.storage.remove('AuthRefreshToken');
+        // reload the page and go back to auth pages
+        if (!dontReload) window.location.assign('');
       })
       .catch(() => window.location.assign(''));
   }
@@ -194,15 +196,15 @@ export class IDEAAuthService {
             // remap user attributes
             const userDetails: any = [];
             attributes.forEach((a: CognitoUserAttribute) => (userDetails[a.getName()] = a.getValue()));
+            // (async) save the refresh token so it can be accessed by other procedures
+            this.storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
             // set a timer to manage the autorefresh of the idToken (through the refreshToken)
             setTimeout(
               () => this.refreshSession(user, session.getRefreshToken().getToken(), getFreshIdTokenOnExp),
               15 * 60 * 1000
             ); // every 15 minutes
-            // if offlineAllowed, save data locally, to use it next time we'll be offline
-            if (offlineAllowed) {
-              this.storage.set('AuthUserDetails', userDetails); // async
-            }
+            // (async) if offlineAllowed, save data locally, to use it next time we'll be offline
+            if (offlineAllowed) this.storage.set('AuthUserDetails', userDetails);
             // return the idToken (to use with API)
             resolve({ idToken: session.getIdToken().getJwtToken(), userDetails });
           });
@@ -221,11 +223,12 @@ export class IDEAAuthService {
           // try again in 1 minute
           setTimeout(() => this.refreshSession(user, refreshToken, callback), 1 * 60 * 1000);
         } else {
-          // every 15 minutes
+          // (async) save the refresh token so it can be accessed by other procedures
+          this.storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
+          // repeat every 15 minutes
           setTimeout(() => this.refreshSession(user, session.getRefreshToken().getToken(), callback), 15 * 60 * 1000);
-          if (callback) {
-            callback(session.getIdToken().getJwtToken());
-          }
+          // run the callback action, if set
+          if (callback) callback(session.getIdToken().getJwtToken());
         }
       }
     );
