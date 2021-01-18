@@ -136,6 +136,8 @@ export class IDEAAuthService {
         this.userPool.getCurrentUser().signOut();
         // (async) remove the refresh token previosly saved
         await this.storage.remove('AuthRefreshToken');
+        // (async) remove the optional auth details
+        await this.storage.remove('AuthUserDetails');
         // reload the page and go back to auth pages
         if (!dontReload) window.location.assign('');
       })
