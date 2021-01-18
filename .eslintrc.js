@@ -143,7 +143,7 @@ module.exports = {
         'prefer-const': 'error',
         'quote-props': ['error', 'as-needed'],
         radix: 'error',
-        'space-before-function-paren': ['error', 'never'],
+        'space-before-function-paren': 'off',
         'space-in-parens': ['error', 'never'],
         'spaced-comment': ['error', 'always', { markers: ['/'] }],
         'use-isnan': 'error',
