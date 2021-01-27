@@ -1,12 +1,10 @@
 import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { get } from 'scriptjs';
+import { Loader } from '@googlemaps/js-api-loader';
+import MarkerClusterer from '@googlemaps/markerclustererplus';
 import { Plugins, PluginListenerHandle, GeolocationPosition } from '@capacitor/core';
 const { Geolocation, Network } = Plugins;
 import { IDEATinCanService } from '@idea-ionic/common';
-
-// class loaded together with the Google Map SDK script
-declare const MarkerClusterer: any;
 
 import { MAP_DARK_MODE_STYLE } from './darkMode.style';
 
@@ -22,6 +20,15 @@ const DEFAULT_POSITION = {
   lat: 44.709551,
   long: 10.6483528
 };
+
+/**
+ * The style for markers, defined in `global.scss`.
+ */
+const MARKERS_STYLES = [
+  { width: 30, height: 30, className: 'idea-map-clustericon-1' },
+  { width: 40, height: 40, className: 'idea-map-clustericon-2' },
+  { width: 50, height: 50, className: 'idea-map-clustericon-3' }
+];
 
 /**
  * The default zoom level for the map.
@@ -56,9 +63,12 @@ export class IDEAMapComponent {
   private markers: google.maps.Marker[];
   /**
    * The marker cluster.
-   * Ref: https://developers.google.com/maps/documentation/javascript/marker-clustering.
    */
-  private markerCluster: any;
+  private markerCluster: MarkerClusterer;
+  /**
+   * The info window to show when a marker is clicked (default behaviour if markerClickFn isn't set).
+   */
+  private infoWindow: google.maps.InfoWindow;
 
   /**
    * Whether to disable the default UI.
@@ -68,6 +78,10 @@ export class IDEAMapComponent {
    * Whether to center the location based on the current position.
    */
   @Input() public centerOnCurrentPosition: boolean;
+  /**
+   * If set, when a marker is clicked, trigger this function instead of showing the default infoWindow.
+   */
+  @Input() public markerClickFn: (event: any, marker: google.maps.Marker) => void;
 
   ///
   /// Initialization.
@@ -95,10 +109,17 @@ export class IDEAMapComponent {
         if (this.tc.get('darkMode')) mapOptions.styles = MAP_DARK_MODE_STYLE;
         // initialize the map
         this.map = new google.maps.Map(this.element.nativeElement, mapOptions);
+        // initialise the markers list and the cluster
+        this.markers = new Array<google.maps.Marker>();
+        this.markerCluster = new MarkerClusterer(this.map, this.markers, {
+          styles: MARKERS_STYLES,
+          // the class should be defined in `global.scss`
+          clusterClass: 'idea-map-clustericon'
+        });
+        // initialise the info window (popup) to open when a marker is clicked (default behaviour)
+        this.infoWindow = new google.maps.InfoWindow();
+        // mark the component as ready
         this.renderer.addClass(this.element.nativeElement, 'mapReady');
-        // set the helpers
-        this.markers = new Array<any>();
-        // the component is ready
         this.isReady = true;
       });
     });
@@ -149,13 +170,10 @@ export class IDEAMapComponent {
     if (IDEA_API_VERSION === 'dev') key = IDEA_GOOGLE_MAPS_API_KEY_DEV;
     else key = IDEA_GOOGLE_MAPS_API_KEY_PROD;
     // load the library using the correct API key and set the service as "ready" when the loading ends
-    get('https://maps.googleapis.com/maps/api/js?key='.concat(key), () =>
-      // load the markers cluster library
-      get('https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js', () => {
-        this.tc.set('ideaMapLibsLoaded', true);
-        resolve();
-      })
-    );
+    new Loader({ apiKey: key }).load().then(() => {
+      this.tc.set('ideaMapLibsLoaded', true);
+      resolve();
+    });
   }
 
   /**
@@ -220,37 +238,61 @@ export class IDEAMapComponent {
   /**
    * Add a marker to the map, by latitude and longitude and build its info window.
    */
-  public addMarker(lat: number, lng: number, title?: string, animate?: boolean) {
-    // create the marker
-    const marker = new google.maps.Marker({
-      map: this.map,
-      animation: animate ? google.maps.Animation.DROP : undefined,
-      position: new google.maps.LatLng(lat, lng),
-      title
-    });
-    // prepare a window to show for when the marker is clicked
-    const infoWindow = new google.maps.InfoWindow({ content: `<p style="color: black">${title}</p>` });
-    marker.addListener('click', () => infoWindow.open(this.map, marker));
+  public addMarker(lat: number, lng: number, options: { title?: string; attributes?: any; animate?: boolean }) {
+    // create the marker, that will be added to the map later on
+    const marker = new google.maps.Marker({ position: new google.maps.LatLng(lat, lng) });
+    // set the title if required
+    if (options.title) marker.setTitle(options.title);
+    // set additional attributes to the marker, if required
+    if (options.attributes)
+      for (const prop in options.attributes) if (options.attributes[prop]) marker.set(prop, options.attributes[prop]);
+    // animate the marker on insertion, if required
+    if (options.animate) marker.setAnimation(google.maps.Animation.DROP);
+    // add the click handler to the marker (default or custom function)
+    if (options.title || this.markerClickFn)
+      google.maps.event.addListener(marker, 'click', event =>
+        this.markerClickFn ? this.markerClickFn(event, marker) : this.defaultMarkerClickFn(event, marker)
+      );
     // add the marker to the list
     this.markers.push(marker);
   }
+  /**
+   * The defailt click handler function for the marker: display a popup with containing the title.
+   */
+  private defaultMarkerClickFn(e: any, marker: google.maps.Marker) {
+    e.cancelBubble = true;
+    e.returnValue = false;
+    if (e.stopPropagation) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    // open the popup to display the title
+    const content = `<p style="color: black">${marker.getTitle()}</p>`;
+    this.openInfoWindow(content, marker.getPosition());
+  }
+
+  /**
+   * Open a popup in the map, to display some HTML content.
+   */
+  public openInfoWindow(htmlContent: string, position?: google.maps.LatLng) {
+    this.infoWindow.setContent(htmlContent);
+    if (position) this.infoWindow.setPosition(position);
+    this.infoWindow.open(this.map);
+  }
+
   /**
    * Clear the current markers on the map.
    */
   public clearMarkers() {
     this.markers = this.markers.slice(0, 0);
-    // in case the marker cluster is set, clear it as well
-    if (this.markerCluster) this.markerCluster.clearMarkers();
+    this.markerCluster.clearMarkers();
   }
   /**
    * Create/update the markers cluster based on the defined markers.
    */
-  public setMarkersClusters() {
-    if (this.markerCluster) this.markerCluster.addMarkers(this.markers);
-    else
-      this.markerCluster = new MarkerClusterer(this.map, this.markers, {
-        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-      });
+  public setMarkersClusters(fitToMarkersBounds = false) {
+    this.markerCluster.addMarkers(this.markers);
+    if (fitToMarkersBounds) this.fitMarkersBounds();
   }
 
   /**

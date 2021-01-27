@@ -3,8 +3,9 @@
   "version": "1.0.2",
   "description": "IDEA Ionic map component",
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.11.1",
+    "@googlemaps/markerclustererplus": "^1.0.3",
     "@types/googlemaps": "^3.43.0",
-    "scriptjs": "^2.5.9",
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
@@ -31,8 +32,6 @@
     "@idea-ionic/common": ">=1.0.5",
     "@ionic/angular": ">=5.0.0",
     "@ionic/storage": ">=2.2.0",
-    "@types/scriptjs": "0.0.2",
-    "google": "^2.1.0",
     "idea-toolbox": ">=6.2.5",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
