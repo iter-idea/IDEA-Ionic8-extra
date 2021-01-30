@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Label, Languages, mdToHtml } from 'idea-toolbox';
+import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml } from 'idea-toolbox';
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
@@ -242,5 +242,12 @@ export class IDEATranslationsService {
   public formatDate(value: any, pattern: string = 'mediumDate'): string {
     const datePipe: DatePipe = new DatePipe(this.getCurrentLang());
     return datePipe.transform(value, pattern);
+  }
+
+  /**
+   * Get a readable string to represent the current language (standard ISO639).
+   */
+  public getLanguageNameByKey(lang?: string): string {
+    return getStringEnumKeyByValue(LanguagesISO639, lang || this.getCurrentLang());
   }
 }
