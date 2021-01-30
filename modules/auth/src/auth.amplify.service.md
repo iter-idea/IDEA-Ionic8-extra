@@ -10,7 +10,6 @@ import { Storage } from '@ionic/storage';
 import Auth from '@aws-amplify/auth';
 
 // from idea-config.js
-declare const IDEA_API_REGION: string;
 declare const IDEA_AWS_COGNITO_USER_POOL_ID: string;
 declare const IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
 
@@ -23,7 +22,6 @@ declare const IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
 export class IDEAAuthService {
  constructor(protected storage: Storage) {
    Auth.configure({
-     region: IDEA_API_REGION,
      userPoolId: IDEA_AWS_COGNITO_USER_POOL_ID,
      userPoolWebClientId: IDEA_AWS_COGNITO_WEB_CLIENT_ID
    });

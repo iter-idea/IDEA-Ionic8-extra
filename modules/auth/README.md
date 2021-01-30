@@ -20,7 +20,6 @@ To make sure the translations are loaded into the project:
 Finally, add the according configuration (if needed) in the `assets/configs/idea-config.js`:
 
 ```
-window.IDEA_API_REGION: string;
 window.IDEA_AWS_COGNITO_USER_POOL_ID: string;
 window.IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
 window.IDEA_APP_TITLE: string;
