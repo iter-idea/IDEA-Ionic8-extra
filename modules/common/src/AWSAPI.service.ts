@@ -13,8 +13,8 @@ declare const IDEA_API_VERSION: string;
 declare const IDEA_API_IDEA_URL: string;
 declare const IDEA_API_IDEA_VERSION: string;
 
-export const API_URL_PROJECT = IDEA_API_URL.concat('/', IDEA_API_VERSION);
-export const API_URL_IDEA = IDEA_API_IDEA_URL.concat('/', IDEA_API_IDEA_VERSION);
+export const API_URL_PROJECT = 'https://'.concat(IDEA_API_URL, '/', IDEA_API_VERSION);
+export const API_URL_IDEA = 'https://'.concat(IDEA_API_IDEA_URL, '/', IDEA_API_IDEA_VERSION);
 
 /**
  * To communicate with an AWS's API Gateway istance.

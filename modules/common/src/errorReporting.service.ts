@@ -7,7 +7,7 @@ declare const IDEA_PROJECT: string;
 declare const IDEA_API_IDEA_URL: string;
 declare const IDEA_API_IDEA_VERSION: string;
 
-export const API_URL = IDEA_API_IDEA_URL.concat('/', IDEA_API_IDEA_VERSION);
+export const API_URL = 'https://'.concat(IDEA_API_IDEA_URL, '/', IDEA_API_IDEA_VERSION);
 
 @Injectable()
 export class IDEAErrorReportingService {
