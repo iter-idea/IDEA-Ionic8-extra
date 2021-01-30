@@ -6,8 +6,7 @@ import { IDEAOfflineService } from './offline/offline.service';
 import { IDEATinCanService } from './tinCan.service';
 
 // from idea-config.js
-declare const IDEA_SOCKET_API_ID: string;
-declare const IDEA_SOCKET_API_REGION: string;
+declare const IDEA_SOCKET_API_URL: string;
 declare const IDEA_SOCKET_API_VERSION: string;
 
 /**
@@ -20,8 +19,7 @@ export class IDEAAWSAPISocketService {
   /**
    * The URL to connect for socket communication.
    */
-  public WEBSOCKET_API_URL =
-    `wss://${IDEA_SOCKET_API_ID}.execute-api.${IDEA_SOCKET_API_REGION}.amazonaws.com/` + `${IDEA_SOCKET_API_VERSION}`;
+  public WEBSOCKET_API_URL = 'wss://'.concat(IDEA_SOCKET_API_URL, '/', IDEA_SOCKET_API_VERSION);
   /**
    * The current websocket connection.
    */

@@ -8,16 +8,13 @@ import { IDEATinCanService } from './tinCan.service';
 import { IDEAOfflineService } from './offline/offline.service';
 
 // from idea-config.js
-declare const IDEA_API_ID: string;
-declare const IDEA_API_REGION: string;
+declare const IDEA_API_URL: string;
 declare const IDEA_API_VERSION: string;
-declare const IDEA_API_IDEA_ID: string;
-declare const IDEA_API_IDEA_REGION: string;
+declare const IDEA_API_IDEA_URL: string;
 declare const IDEA_API_IDEA_VERSION: string;
 
-export const API_URL_PROJECT = `https://@API_URL.execute-api.${IDEA_API_REGION}.amazonaws.com/` + `${IDEA_API_VERSION}`;
-export const API_URL_IDEA =
-  `https://${IDEA_API_IDEA_ID}.execute-api.${IDEA_API_IDEA_REGION}.amazonaws.com/` + `${IDEA_API_IDEA_VERSION}`;
+export const API_URL_PROJECT = IDEA_API_URL.concat('/', IDEA_API_VERSION);
+export const API_URL_IDEA = IDEA_API_IDEA_URL.concat('/', IDEA_API_IDEA_VERSION);
 
 /**
  * To communicate with an AWS's API Gateway istance.
@@ -45,8 +42,8 @@ export class IDEAAWSAPIService {
   protected request(resource: string, method: string, options?: APIRequestOption): Promise<any> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
-      // decide if to use IDEA's API or project's API
-      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
+      // decide if to use IDEA's API or project's API (or an alternative API)
+      let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
       // prepare a single resource request (by id) or a normal one
       url = `${url}/${resource}`;
       if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
@@ -278,8 +275,8 @@ export class IDEAAWSAPIService {
   public getFromCache(resource: string, options?: APIRequestOption): Promise<any> {
     return new Promise(resolve => {
       const opt = options || {};
-      // decide if to use IDEA's API or project's API
-      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
+      // decide if to use IDEA's API or project's API (or an alternative API)
+      let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
       // prepare a single resource request (by id) or a normal one
       url = `${url}/${resource}`;
       if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
@@ -302,8 +299,8 @@ export class IDEAAWSAPIService {
   public putInCache(resource: string, data: any, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
-      // decide if to use IDEA's API or project's API
-      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
+      // decide if to use IDEA's API or project's API (or an alternative API)
+      let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
       // prepare a single resource request (by id) or a normal one
       url = `${url}/${resource}`;
       if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
@@ -326,8 +323,8 @@ export class IDEAAWSAPIService {
   public deleteFromCache(resource: string, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
-      // decide if to use IDEA's API or project's API
-      let url = opt.idea ? API_URL_IDEA : API_URL_PROJECT.replace('@API_URL', opt.alternativeAPI || IDEA_API_ID);
+      // decide if to use IDEA's API or project's API (or an alternative API)
+      let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
       // prepare a single resource request (by id) or a normal one
       url = `${url}/${resource}`;
       if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
@@ -410,7 +407,7 @@ export class APIRequestOption {
    */
   public idea?: boolean;
   /**
-   * If `idea` is not set, set this to use an alternative API id for the request.
+   * If `idea` is not set, set this to use an alternative API URL for the request.
    */
   public alternativeAPI?: string;
 }

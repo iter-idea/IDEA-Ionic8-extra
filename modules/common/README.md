@@ -22,15 +22,13 @@ Finally, add the according configuration (if needed) in the `assets/configs/idea
 ```
 window.IDEA_PROJECT: string;
 
-window.IDEA_API_ID: string;
-window.IDEA_API_REGION: string;
+window.IDEA_API_URL: string;
 window.IDEA_API_VERSION: string;
-window.IDEA_API_IDEA_ID: string;
-window.IDEA_API_IDEA_REGION: string;
+
+window.IDEA_API_IDEA_URL: string;
 window.IDEA_API_IDEA_VERSION: string;
 
-window.IDEA_SOCKET_API_ID: string;
-window.IDEA_SOCKET_API_REGION: string;
+window.IDEA_SOCKET_API_URL: string;
 window.IDEA_SOCKET_API_VERSION: string;
 
 window.IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;

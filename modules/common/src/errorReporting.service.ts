@@ -4,12 +4,10 @@ import { ClientInfo, ErrorReport } from 'idea-toolbox';
 
 // from idea-config.js
 declare const IDEA_PROJECT: string;
-declare const IDEA_API_IDEA_ID: string;
-declare const IDEA_API_IDEA_REGION: string;
+declare const IDEA_API_IDEA_URL: string;
 declare const IDEA_API_IDEA_VERSION: string;
 
-export const API_URL =
-  `https://${IDEA_API_IDEA_ID}.execute-api.${IDEA_API_IDEA_REGION}.amazonaws.com/` + `${IDEA_API_IDEA_VERSION}`;
+export const API_URL = IDEA_API_IDEA_URL.concat('/', IDEA_API_IDEA_VERSION);
 
 @Injectable()
 export class IDEAErrorReportingService {
