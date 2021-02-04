@@ -50,8 +50,8 @@ export class IDEATeamsPage {
   /**
    * Load the user's teams.
    */
-  public loadTeams() {
-    this.loading.show();
+  public async loadTeams() {
+    await this.loading.show();
     // get all the teams joined by the user
     this.API.getResource('teams', { idea: true, params: { project: this.project } })
       .then((teams: Team[]) => (this.teams = teams.map(t => new Team(t))))
@@ -62,10 +62,10 @@ export class IDEATeamsPage {
   /**
    * Change the currently selected team.
    */
-  public selectTeam(team: Team, newTeam?: boolean) {
+  public async selectTeam(team: Team, newTeam?: boolean) {
     if (!newTeam && this.isCurrentTeam(team)) return this.navCtrl.navigateBack(['teams', team.teamId]);
     // request a team change (so that the current teamId of the user is updated)
-    this.loading.show();
+    await this.loading.show();
     this.API.patchResource('users', {
       idea: true,
       resourceId: this.user.userId,
@@ -121,10 +121,10 @@ export class IDEATeamsPage {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: data => {
+            handler: async data => {
               if (!data.name) return;
               // create a new team and add it to the teams list
-              this.loading.show();
+              await this.loading.show();
               this.API.postResource('teams', { idea: true, body: { name: data.name, project: this.project } })
                 // select the new team as current team
                 .then((team: Team) => this.selectTeam(team, true))
@@ -180,9 +180,9 @@ export class IDEATeamsPage {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.DELETE'),
-            handler: data => {
+            handler: async data => {
               // DELETE the team
-              this.loading.show();
+              await this.loading.show();
               this.API.deleteResource('teams', {
                 idea: true,
                 resourceId: team.teamId,

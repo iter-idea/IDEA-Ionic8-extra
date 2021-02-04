@@ -80,10 +80,10 @@ export class IDEASignInPage {
   /**
    * Sign-in with the auth details provided.
    */
-  public login() {
+  public async login() {
     if (!this.agreementsCheck) return;
     this.errorMsg = null;
-    this.loading.show();
+    await this.loading.show();
     this.auth
       .login(this.email, this.password)
       .then(needNewPassword => {

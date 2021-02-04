@@ -205,9 +205,9 @@ export class IDEACalendarsService {
    * Open the modal to pick a calendar from the external service.
    * @return the id of the external calendar.
    */
-  private openModalAndPickExternalCalendar(cal: Calendar): Promise<string> {
+  private async openModalAndPickExternalCalendar(cal: Calendar): Promise<string> {
+    await this.loading.show();
     return new Promise((resolve, reject) => {
-      this.loading.show();
       this.getExternalCalendars(cal)
         .then((extCals: ExtCalendar[]) => {
           if (!extCals.length) return reject(new Error('NO_EXTERNAL_CALENDARS'));

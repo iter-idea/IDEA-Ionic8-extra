@@ -53,12 +53,12 @@ export class IDEAAccountPage {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: data => {
+            handler: async data => {
               if (!data.email) {
                 this.message.info('IDEA_TEAMS.ACCOUNT.INVALID_EMAIL');
                 return;
               }
-              this.loading.show();
+              await this.loading.show();
               this.API.postResource('emailChangeRequests', {
                 idea: true,
                 body: { password: data.pwd, newEmail: data.email, project: IDEA_PROJECT }
@@ -96,14 +96,14 @@ export class IDEAAccountPage {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: data => {
+            handler: async data => {
               if (data.new.length < 8)
                 this.message.warning(this.t._('IDEA_TEAMS.ACCOUNT.INVALID_PASSWORD', { n: 8 }), true);
               else if (data.new !== data.new2)
                 this.message.warning('IDEA_TEAMS.ACCOUNT.PASSWORD_CONFIRMATION_DONT_MATCH');
               else {
                 // PATCH the user
-                this.loading.show();
+                await this.loading.show();
                 this.API.patchResource('users', {
                   idea: true,
                   resourceId: this.user.userId,
@@ -137,9 +137,9 @@ export class IDEAAccountPage {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: data => {
+            handler: async data => {
               // DELETE the user
-              this.loading.show();
+              await this.loading.show();
               this.API.deleteResource('users', {
                 idea: true,
                 resourceId: this.user.userId,

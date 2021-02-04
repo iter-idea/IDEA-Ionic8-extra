@@ -45,9 +45,9 @@ export class IDEAConfirmPasswordPage {
   /**
    * Confirm new password.
    */
-  public confirmPassword() {
+  public async confirmPassword() {
     this.errorMsg = null;
-    this.loading.show();
+    await this.loading.show();
     this.auth
       .confirmPassword(this.email, this.code, this.newPassword)
       .then(() => {

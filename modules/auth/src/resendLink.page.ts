@@ -30,14 +30,14 @@ export class IDEAResendLinkPage {
   /**
    * Resend the link to confirm the email address.
    */
-  public resendConfirmationLink() {
+  public async resendConfirmationLink() {
     this.errorMsg = null;
     if (!this.email) {
       this.errorMsg = this.t._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
       this.message.error('IDEA_AUTH.SENDING_FAILED');
       return;
     }
-    this.loading.show();
+    await this.loading.show();
     this.auth
       .resendConfirmationCode(this.email)
       .then(() => {

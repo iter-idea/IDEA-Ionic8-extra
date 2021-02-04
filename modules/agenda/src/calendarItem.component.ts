@@ -81,12 +81,12 @@ export class IDEACalendarItemComponent {
     // let the user pick an external calendar, in case the external service is linked
     this.calendars
       .chooseAndSetExternalCalendar(this.calendar)
-      .then(cal => {
+      .then(async cal => {
         if (!cal) return new Error('NO_EXTERNAL_CALENDAR_CHOSEN');
         this.calendar.load(cal);
         this.message.success('IDEA_AGENDA.CALENDARS.CALENDAR_LINKED');
         // run a first sync for the linked external calendar
-        this.loading.show(this.t._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
+        await this.loading.show(this.t._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
         this.calendars
           .syncCalendar(this.calendar)
           .then(() => this.message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED'))
@@ -106,9 +106,9 @@ export class IDEACalendarItemComponent {
             buttons: [
               {
                 text: this.t._('COMMON.DELETE'),
-                handler: () => {
+                handler: async () => {
                   // request the calendar deletion
-                  this.loading.show();
+                  await this.loading.show();
                   this.calendars
                     .deleteCalendar(this.calendar)
                     .then(() => {

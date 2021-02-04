@@ -91,7 +91,7 @@ export class IDEACalendarComponent {
   /**
    * Save a calendar with the new info.
    */
-  public save() {
+  public async save() {
     // set the default color, in case none was selected
     if (!this._calendar.color) this._calendar.color = this.DEFAULT_COLOR;
     // map the memberships able to manage appointments
@@ -104,7 +104,7 @@ export class IDEACalendarComponent {
     this.errors = new Set(this._calendar.validate());
     if (this.errors.size) return this.message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
     // send a put request
-    this.loading.show();
+    await this.loading.show();
     this.calendars
       .putCalendar(this._calendar)
       .then((res: Calendar) => {
@@ -129,8 +129,8 @@ export class IDEACalendarComponent {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.DELETE'),
-            handler: () => {
-              this.loading.show();
+            handler: async () => {
+              await this.loading.show();
               this.calendars
                 .deleteCalendar(this._calendar)
                 .then(() => {

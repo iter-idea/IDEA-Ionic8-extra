@@ -119,13 +119,13 @@ export class IDEARCFoldersComponent {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: data => {
+            handler: async data => {
               if (!data.name) return;
               // check for name uniqueness (front-end check)
               if (this.folders.some(x => x.name === data.name))
                 return this.message.error('IDEA_TEAMS.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
               // create a new folder and refresh the list
-              this.loading.show();
+              await this.loading.show();
               this.API.postResource(`teams/${this.teamId}/folders`, { body: { name: data.name } })
                 // full-refresh to be sure we update the cache
                 .then(() => this.loadFolders(true))
@@ -158,14 +158,14 @@ export class IDEARCFoldersComponent {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: data => {
+            handler: async data => {
               if (!data.name) return;
               // check for name uniqueness (front-end check)
               if (this.folders.some(x => x.folderId !== folder.folderId && x.name === data.name))
                 return this.message.error('IDEA_TEAMS.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
               // set the new name
               folder.name = data.name;
-              this.loading.show();
+              await this.loading.show();
               this.API.putResource(`teams/${this.teamId}/folders`, { resourceId: folder.folderId, body: folder })
                 // full-refresh to be sure we update the cache
                 .then(() => this.loadFolders(true))
@@ -196,9 +196,9 @@ export class IDEARCFoldersComponent {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.DELETE'),
-            handler: () => {
+            handler: async () => {
               // delete the folder and its files and update the list
-              this.loading.show();
+              await this.loading.show();
               this.API.deleteResource(`teams/${this.teamId}/folders`, { resourceId: folder.folderId })
                 // full-refresh to be sure we update the cache
                 .then(() => this.loadFolders(true))

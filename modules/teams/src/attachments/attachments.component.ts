@@ -178,8 +178,8 @@ export class IDEAttachmentsComponent {
   /**
    * Request the attachment and open it.
    */
-  public openAttachment(attachment: Attachment) {
-    this.loading.show();
+  public async openAttachment(attachment: Attachment) {
+    await this.loading.show();
     this.API.patchResource(this.requestURL, {
       body: { action: 'ATTACHMENTS_GET', attachmentId: attachment.attachmentId }
     })

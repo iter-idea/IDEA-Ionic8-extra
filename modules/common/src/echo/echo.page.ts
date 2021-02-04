@@ -89,8 +89,8 @@ export class IDEAEchoPage {
    * Follow a registration link, to confirm a user account.
    * Note: uses Cognito's domain.
    */
-  public followRegistrationLink(code: string, user: string) {
-    this.loading.show();
+  public async followRegistrationLink(code: string, user: string) {
+    await this.loading.show();
     this.API.postResource('cognito2', {
       idea: true,
       body: {
@@ -113,8 +113,8 @@ export class IDEAEchoPage {
   /**
    * Follow an invitation link, to join a team.
    */
-  public followInvitationLink(code: string) {
-    this.loading.show();
+  public async followInvitationLink(code: string) {
+    await this.loading.show();
     this.API.getResource('invitations', { idea: true, resourceId: code })
       .then(() => {
         this.success = true;
@@ -129,8 +129,8 @@ export class IDEAEchoPage {
   /**
    * Follow an email change link, to confirm the new email address.
    */
-  public followEmailChangeConfirmationLink(code: string) {
-    this.loading.show();
+  public async followEmailChangeConfirmationLink(code: string) {
+    await this.loading.show();
     this.API.getResource('emailChangeRequests', { idea: true, resourceId: code, params: { project: IDEA_PROJECT } })
       .then(() => {
         this.success = true;
@@ -163,8 +163,8 @@ export class IDEAEchoPage {
   /**
    * Complete the integration with external calendars (Google, Microsoft, ecc.).
    */
-  public endExternalCalendarsIntegrationFlow(service: ExternalCalendarSources, code: string, calendarId: string) {
-    this.loading.show();
+  public async endExternalCalendarsIntegrationFlow(service: ExternalCalendarSources, code: string, calendarId: string) {
+    await this.loading.show();
     this.API.patchResource('calendars', {
       idea: true,
       body: { action: 'SET_EXTERNAL_INTEGRATION', service, code, calendarId, project: IDEA_PROJECT }

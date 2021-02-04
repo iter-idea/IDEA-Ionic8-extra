@@ -25,8 +25,8 @@ export class IDEAForgotPasswordPage {
   /**
    * "I forgot my password" procedure.
    */
-  public forgotPassword() {
-    this.loading.show();
+  public async forgotPassword() {
+    await this.loading.show();
     this.auth
       .forgotPassword(this.email)
       .then(() => {

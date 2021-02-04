@@ -48,10 +48,10 @@ export class IDEAMembershipsPage {
     public API: IDEAAWSAPIService,
     public t: IDEATranslationsService
   ) {}
-  public ngOnInit() {
+  public async ngOnInit() {
     this.user = this.tc.get('user');
     // load the team (since it could be different from the current one)
-    this.loading.show();
+    await this.loading.show();
     this.API.getResource('teams', { idea: true, resourceId: this.route.snapshot.paramMap.get('teamId') })
       .then((team: Team) => {
         this.team = new Team(team);
@@ -94,9 +94,9 @@ export class IDEAMembershipsPage {
           { text: this.t._('IDEA_TEAMS.TEAMS.CANCEL'), role: 'cancel' },
           {
             text: this.t._('IDEA_TEAMS.TEAMS.INVITE'),
-            handler: data => {
+            handler: async data => {
               if (!data.email) return;
-              this.loading.show();
+              await this.loading.show();
               this.API.postResource(`teams/${this.team.teamId}/memberships`, {
                 idea: true,
                 body: { email: data.email, project: IDEA_PROJECT }
@@ -157,9 +157,9 @@ export class IDEAMembershipsPage {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: () => {
+            handler: async () => {
               // request the change in the admin list
-              this.loading.show();
+              await this.loading.show();
               this.API.patchResource('teams', {
                 idea: true,
                 resourceId: this.team.teamId,
@@ -197,8 +197,8 @@ export class IDEAMembershipsPage {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: () => {
-              this.loading.show();
+            handler: async () => {
+              await this.loading.show();
               this.API.deleteResource(`teams/${this.team.teamId}/memberships`, {
                 idea: true,
                 resourceId: membership.userId

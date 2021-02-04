@@ -44,9 +44,9 @@ export class IDEANewPasswordPage {
   /**
    * Confirm a new password (auth flow that follows a registration or a password reset).
    */
-  public confirmNewPassword() {
+  public async confirmNewPassword() {
     this.errorMsg = null;
-    this.loading.show();
+    await this.loading.show();
     this.auth
       .confirmNewPassword(this.email, this.password, this.newPassword)
       // we are logged in

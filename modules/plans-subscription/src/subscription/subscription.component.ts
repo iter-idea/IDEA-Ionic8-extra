@@ -72,7 +72,7 @@ export class IDEASubscriptionComponent {
     public API: IDEAAWSAPIService,
     public t: IDEATranslationsService
   ) {}
-  public ngOnInit() {
+  public async ngOnInit() {
     this.membership = this.tc.get('membership');
     // define target and subscription id
     this.target = this.target || ProjectPlanTargets.TEAMS;
@@ -85,7 +85,7 @@ export class IDEASubscriptionComponent {
     if (platformSubscription && platformSubscription !== this.platformStore) this.close();
     else {
       // load the plans allowed on this platform
-      this.loading.show();
+      await this.loading.show();
       this.API.getResource(`projects/${IDEA_PROJECT}/plans`, {
         idea: true,
         params: { platform: this.platformStore, target: this.target }
@@ -245,17 +245,17 @@ export class IDEASubscriptionComponent {
   /**
    * Reload the info from the store (/align the store with IDEA's back-end).
    */
-  public restorePurchases() {
+  public async restorePurchases() {
     if (['android', 'ios'].some(x => x === this.platformStore)) {
-      this.loading.show();
+      await this.loading.show();
       // necessary "any" typing since the current version of InAppPurchase2 plugin doesn't expose `finished`
       (this.store.refresh() as any).finished(() => this.loading.hide());
       // temporary bug-fix for "finished" event not fired on iOS: fire an extra "hide" after 5 seconds
       setTimeout(() => this.loading.hide(), 5000);
     } else this.verifyStripeSubscription();
   }
-  protected verifyStripeSubscription() {
-    this.loading.show();
+  protected async verifyStripeSubscription() {
+    await this.loading.show();
     this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
       idea: true,
       resourceId: this.subscriptionId,
@@ -320,9 +320,9 @@ export class IDEASubscriptionComponent {
           { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
           {
             text: this.t._('COMMON.CONFIRM'),
-            handler: () => {
+            handler: async () => {
               // request the removal
-              this.loading.show();
+              await this.loading.show();
               this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
                 idea: true,
                 resourceId: this.subscriptionId,

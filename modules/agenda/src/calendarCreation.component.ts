@@ -80,7 +80,7 @@ export class IDEACalendarCreationComponent {
   /**
    * Add a new calendar based on the configuration set.
    */
-  public saveNewCalendar(service?: ExternalCalendarSources) {
+  public async saveNewCalendar(service?: ExternalCalendarSources) {
     // be sure the scope of the calendar was chosen
     if (!this.scopeIsSet()) return;
     // be sure we are allowed to create the calendar
@@ -97,7 +97,7 @@ export class IDEACalendarCreationComponent {
       this.calendar.color = this.DEFAULT_COLOR;
     }
     // save (create) the new calendar
-    this.loading.show();
+    await this.loading.show();
     this.calendars
       .postCalendar(this.calendar)
       .then(cal => {
@@ -110,13 +110,13 @@ export class IDEACalendarCreationComponent {
           .linkExtService(this.calendar)
           // if the link was successful, let the user pick an external calendar to set
           .then(() => this.calendars.chooseAndSetExternalCalendar(this.calendar))
-          .then(res => {
+          .then(async res => {
             // if a calendar wasn't set, it can be done later on
             if (!res) return this.modalCtrl.dismiss(this.calendar);
             // if an external calendar was set, update the calendar
             this.calendar.load(res);
             // run a first sync for the linked external calendar
-            this.loading.show(this.t._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
+            await this.loading.show(this.t._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
             this.calendars
               .syncCalendar(this.calendar)
               .then(() => this.message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED'))

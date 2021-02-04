@@ -142,10 +142,10 @@ export class IDEAStripeSubscriptionComponent {
    */
   public subscribe() {
     // acquire the credid card info and create a token to be sent to Stripe through our back-end
-    this.stripe.createToken(this.creditCard).then((resT: any) => {
+    this.stripe.createToken(this.creditCard).then(async (resT: any) => {
       if (resT.error) return this.message.error('IDEA_PS.STRIPE.INVALID_CREDIT_CARD');
       // send the token to the back-end and request the subscription (transparent upgrade/downgrade)
-      this.loading.show();
+      await this.loading.show();
       // get the detailed information about the plan: storePlanId is needed
       this.API.getResource(`projects/${IDEA_PROJECT}/plans`, { idea: true, resourceId: this.plan.planId })
         .then((plan: ProjectPlan) => {
@@ -195,8 +195,8 @@ export class IDEAStripeSubscriptionComponent {
   /**
    * Validate a subscription against IDEA's back-end.
    */
-  protected validateSubscription(silent?: boolean) {
-    if (!silent) this.loading.show();
+  protected async validateSubscription(silent?: boolean) {
+    if (!silent) await this.loading.show();
     this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
       idea: true,
       resourceId: this.subscriptionId,
