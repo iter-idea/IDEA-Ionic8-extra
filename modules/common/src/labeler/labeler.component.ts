@@ -110,7 +110,7 @@ export class IDEALabelerComponent {
     }
     // save changes and close
     this.label.load(this._label, this.t.languages());
-    this.close();
+    this.modalCtrl.dismiss(true);
   }
 
   /**

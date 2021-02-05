@@ -20,12 +20,12 @@
     {{ label }} <ion-text class="obligatoryDot" *ngIf="!disabled && obligatory"></ion-text>
   </ion-label>
   <div class="description">
-    <div class="placeholder" *ngIf="!getContent()">{{ placeholder }}</div>
+    <div class="placeholder" *ngIf="!htmlContent">{{ placeholder }}</div>
     <div
       class="innerContent"
-      *ngIf="getContent()"
+      *ngIf="htmlContent"
       [class.md]="markdown"
-      [innerHTML]="getContent() | highlight: _variables"
+      [innerHTML]="htmlContent | highlight: _variables"
     ></div>
   </div>
   <ion-icon slot="end" name="chevron-forward" class="selectIcon"></ion-icon>

@@ -71,11 +71,17 @@ export class IDEALabelComponent {
    * The list of variables codes to use for substitutions.
    */
   public _variables: string[];
+  /**
+   * The label's HTML content to display.
+   */
+  public htmlContent: string;
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {
     // create a plain list of variable codes
     this._variables = (this.variables || []).map(x => x.code);
+    // init the HTML content of the label
+    this.calcContent();
   }
 
   /**
@@ -97,17 +103,22 @@ export class IDEALabelComponent {
         }
       })
       .then(modal => {
-        modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
+        modal.onDidDismiss().then(res => {
+          if (res?.data) {
+            this.calcContent();
+            this.change.emit();
+          }
+        });
         modal.present();
       });
   }
 
   /**
-   * Get the content (the label).
+   * Calculate the HTML content of the label.
    */
-  public getContent(): string {
+  private calcContent() {
     const str = this.content.translate(this.t.getCurrentLang(), this.t.languages());
-    return str && this.markdown ? mdToHtml(str) : str;
+    this.htmlContent = str && this.markdown ? mdToHtml(str) : str;
   }
 
   /**
