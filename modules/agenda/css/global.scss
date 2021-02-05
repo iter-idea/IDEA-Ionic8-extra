@@ -1,0 +1,177 @@
+// @idea to import in project's global.scss; example:
+// @import '../node_modules/@idea-ionic/agenda/css/global.scss';
+
+idea-agenda .agenda {
+  // "now" marker
+  .cal-current-time-marker {
+    height: 3px;
+    background: var(--ion-color-dark-tint);
+  }
+  // remove table (external) border
+  .cal-time-events {
+    border: none !important;
+  }
+  // remove focused effect on cells (it depends on the SO, so it's unpredictable)
+  *:focus {
+    outline-width: 0;
+  }
+  // general border color
+  .cal-day-headers,
+  .cal-header,
+  .cal-week-view,
+  .cal-hour,
+  .cal-day-column,
+  .cal-hour-segment,
+  .cal-days,
+  .cal-day-cell,
+  .cal-cell-row,
+  .cal-all-day-events {
+    border-color: var(--ion-color-light-shade) !important;
+    @media (prefers-color-scheme: dark) {
+      border-color: var(--ion-color-white) !important;
+    }
+  }
+  // fixed border top header month view
+  .cal-month-view .cal-header {
+    border-top: 1px solid var(--ion-color-light-shade) !important;
+    @media (prefers-color-scheme: dark) {
+      border-top: 1px solid var(--ion-color-white) !important;
+    }
+  }
+  // add border bottom to the agenda block (day and week view)
+  .cal-week-view {
+    border-bottom: 1px solid var(--ion-color-light-shade) !important;
+    @media (prefers-color-scheme: dark) {
+      border-bottom: 1px solid var(--ion-color-white) !important;
+    }
+  }
+  // headers rows and cells
+  .cal-day-headers,
+  .cal-all-day-events,
+  .cal-time-label-column .cal-hour,
+  .cal-time-label-column .cal-hour-segment,
+  .cal-month-view .cal-header {
+    background-color: var(--ion-color-light);
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--ion-color-white-shade);
+    }
+  }
+  // text color for the weekends' detail label in the header (e.g. oct 17)
+  .cal-weekend span {
+    color: inherit !important;
+  }
+  // highlight the header cells when hovered and the selected day in month view
+  .cal-day-headers .cal-header:hover,
+  .cal-day-headers .cal-drag-over,
+  .cal-hour-segment:hover,
+  .cal-cell:hover,
+  .cal-open {
+    background-color: rgba(var(--ion-color-medium-rgb), 0.06) !important;
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--ion-color-light-shade) !important;
+    }
+  }
+  // highlight today's date
+  .cal-today {
+    background-color: rgba(var(--ion-color-medium-rgb), 0.2) !important;
+    @media (prefers-color-scheme: dark) {
+      background-color: rgba(var(--ion-color-light-rgb), 0.3) !important;
+    }
+  }
+  // avoid highlighting entire rows in month view
+  .cal-month-view .cal-cell-row:hover {
+    background-color: transparent;
+  }
+  // cells background color (no difference between even and odd)
+  .cal-month-view,
+  .cal-hour,
+  .cal-hour-odd {
+    background-color: var(--ion-color-light-tint);
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--ion-color-white-shade);
+    }
+  }
+  // month view day's details row style
+  .cal-month-view .cal-open-day-events {
+    background-color: var(--ion-color-light);
+    color: var(--ion-color-light-contrast);
+    box-shadow: inset 0 0 6px 0 rgba(0, 0, 0, 0.5);
+  }
+  // events style for week and day view
+  mwl-calendar-week-view-event .cal-event,
+  mwl-calendar-day-view .cal-event {
+    border: none;
+    border-radius: 3px;
+    border-left: 4px solid var(--ion-color-primary-shade);
+    box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+    background: var(--ion-color-white);
+  }
+  // give less focus to external events
+  .cal-event.external {
+    opacity: 0.6;
+    border: 1px solid var(--ion-color-medium-tint) !important;
+    @media (prefers-color-scheme: dark) {
+      border: 1px solid var(--ion-color-light-tint) !important;
+    }
+    .cal-event-title {
+      color: var(--ion-text-color) !important;
+    }
+  }
+  // manage the attendance of external events
+  .cal-event.external.needsAction {
+    opacity: 0.3;
+  }
+  .cal-event.external.declined .cal-event-title {
+    text-decoration: line-through;
+    font-weight: normal;
+    font-style: italic;
+  }
+  .cal-event.external.tentative {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--ion-color-light-shade),
+      var(--ion-color-light-shade) 10px,
+      var(--ion-color-light) 10px,
+      var(--ion-color-light) 20px
+    );
+  }
+  // event-content (title) style
+  .cal-event-title {
+    display: block;
+    padding: 6px;
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 500;
+    white-space: normal;
+    font-weight: 600;
+    p {
+      font-weight: normal;
+      margin: 2px 0 0 0;
+    }
+  }
+  .cal-event-title.noWrap {
+    white-space: nowrap;
+  }
+  // month view event dot
+  mwl-calendar-open-day-events .cal-event-title,
+  mwl-calendar-open-day-events .cal-event {
+    top: 0 !important;
+    vertical-align: middle;
+  }
+  // month view day details color dot
+  mwl-calendar-open-day-events .cal-event-title {
+    display: inline-block;
+  }
+  // month view events counter badge
+  .cal-day-badge {
+    background-color: var(--ion-color-primary);
+  }
+  // show as disabled the cells/days that aren't valid
+  .cal-disabled {
+    pointer-events: none;
+  }
+  .cal-disabled .cal-day-number,
+  .cal-disabled.cal-header {
+    opacity: 0.1;
+  }
+}

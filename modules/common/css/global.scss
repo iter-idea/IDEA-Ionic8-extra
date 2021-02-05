@@ -1,0 +1,170 @@
+// @idea to import in project's global.scss; example:
+// @import '../node_modules/@idea-ionic/common/css/global.scss';
+
+.selectable {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+.selectableAll {
+  -webkit-user-select: all !important;
+  -moz-user-select: all !important;
+  -ms-user-select: all !important;
+  user-select: all !important;
+}
+.tappable {
+  cursor: pointer;
+}
+
+.flexBox {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.normalCase {
+  text-transform: none;
+}
+
+.alert-wrapper {
+  --max-width: 300px;
+  --width: 300px;
+}
+.alertLongOptions {
+  .alert-wrapper {
+    --max-width: 400px;
+    --width: 400px;
+  }
+  .alert-checkbox-button {
+    height: 70px !important;
+  }
+  .alert-checkbox-label {
+    white-space: pre-line !important;
+  }
+}
+
+.popoverLarge {
+  .popover-content {
+    width: 300px;
+  }
+}
+
+ion-modal.modalFullScreen {
+  --height: 100%;
+  --width: 100%;
+}
+// to use to force the backdrop on modal over full screen modals (.modalFullScreen)
+ion-modal.forceBackdrop {
+  backdrop-filter: brightness(50%);
+}
+
+.plt-ios .action-sheet-wrapper .action-sheet-group:last-of-type {
+  padding-bottom: 30px;
+}
+
+.announcementCard,
+.echoCard {
+  .htmlContent {
+    h1,
+    h2 {
+      margin-bottom: 20px;
+    }
+    p {
+      margin: 10px 0;
+    }
+  }
+}
+
+ion-popover.actionSheetPopover {
+  --width: 400px;
+  ion-content {
+    --background: var(--ion-color-white);
+  }
+}
+
+/* Better readability in view-mode */
+.viewMode {
+  .native-input[disabled],
+  .item-disabled,
+  .native-textarea[disabled],
+  ion-item ion-label,
+  ion-input {
+    opacity: 1 !important;
+    -webkit-text-fill-color: inherit;
+  }
+}
+
+ion-text.obligatoryDot::after {
+  content: '*';
+  font-size: 1.1em;
+  color: var(--ion-color-danger);
+}
+
+.fieldHasError,
+.fieldHasError ion-item {
+  // note: all this css is needed to obtain the result in every platform
+  --border-color: var(--ion-color-danger) !important;
+  --inner-border-width: 0 !important;
+  border-bottom: 4px solid var(--ion-color-danger) !important;
+  border-bottom-color: var(--ion-color-danger) !important;
+}
+
+idea-label,
+idea-labeler,
+idea-email-data,
+idea-email-data-configuration,
+.hasHTMLContent {
+  .innerContent {
+    margin: 10px 0;
+    min-height: 20px;
+    height: auto;
+    line-height: 20px;
+    width: 100%;
+  }
+  .innerContent.md > p:first-child {
+    margin: 0;
+  }
+  small {
+    display: inline-block;
+    background: var(--ion-color-medium-shade);
+    color: white;
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 3px;
+    font-size: 0.7em;
+    padding: 0 2px;
+    font-weight: 500;
+  }
+}
+
+.addressDetails ion-item {
+  --padding-start: 30px;
+}
+
+.ion-color-ideaToolbar {
+  --ion-color-base: var(--ion-color-ideaToolbar) !important;
+  --ion-color-base-rgb: var(--ion-color-ideaToolbar-rgb) !important;
+  --ion-color-contrast: var(--ion-color-ideaToolbar-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-ideaToolbar-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-ideaToolbar-shade) !important;
+  --ion-color-tint: var(--ion-color-ideaToolbar-tint) !important;
+}
+
+.ion-color-white {
+  --ion-color-base: var(--ion-color-white) !important;
+  --ion-color-base-rgb: var(--ion-color-white-rgb) !important;
+  --ion-color-contrast: var(--ion-color-white-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-white-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-white-shade) !important;
+  --ion-color-tint: var(--ion-color-white-tint) !important;
+}
+
+.ion-color-transparent {
+  --ion-color-base: var(--ion-color-transparent) !important;
+  --ion-color-base-rgb: var(--ion-color-transparent-rgb) !important;
+  --ion-color-contrast: var(--ion-color-transparent-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-transparent-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-transparent-shade) !important;
+  --ion-color-tint: var(--ion-color-transparent-tint) !important;
+}

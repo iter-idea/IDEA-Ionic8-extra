@@ -15,5 +15,6 @@
       "idea-toolbox": "idea-toolbox"
     }
   },
-  "whitelistedNonPeerDependencies": ["color-parse"]
+  "whitelistedNonPeerDependencies": ["color-parse"],
+  "assets": ["./css/*.scss"]
 }

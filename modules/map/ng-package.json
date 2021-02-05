@@ -19,5 +19,6 @@
     "@googlemaps/js-api-loader",
     "@googlemaps/markerclustererplus",
     "@types/googlemaps"
-  ]
+  ],
+  "assets": ["./css/*.scss"]
 }

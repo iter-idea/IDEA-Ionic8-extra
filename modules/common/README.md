@@ -12,6 +12,12 @@ npm i --save @idea-ionic/common
 
 _Be sure to install all the requested peer dependencies._
 
+Then, add this imports into the `global.scss` file, after the import on the top of the page:
+
+```
+@import '../node_modules/@idea-ionic/common/css/global.scss';
+```
+
 To make sure the translations are loaded into the project:
 
 - in the project's `assets/configs/idea-config.js` file, add the string `'common'` to the array `window.IDEA_IONIC_MODULES`;
