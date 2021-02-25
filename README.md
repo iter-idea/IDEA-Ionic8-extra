@@ -31,7 +31,7 @@ When you need to develop changes or new components, you can create a symlink so 
 To do so, firstly run (root folder):
 
 ```
-ng build --watch
+ng build <module> --watch
 ```
 
 After, open the module in the dist folder (e.g `dist/common`) and init the link between the global node_module and the developed module:
@@ -65,7 +65,7 @@ cd client
 npm link @idea-ionic/<module>
 ```
 
-In case the project's compiler starts looping, you may also need to **temporarily** turn Ivy off in the project's `angular.json` file; **when you commit changes, Ivy must be active!!**
+In case the project's compiler starts looping, you may also need to **temporarily** turn Ivy off in the project's `tsconfig.json` file; **when you commit changes, Ivy must be active!!**
 
 ```
  "angularCompilerOptions": {
