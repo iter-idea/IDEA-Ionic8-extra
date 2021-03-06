@@ -22,11 +22,17 @@ Finally, add the according configuration (if needed) in the `assets/configs/idea
 ```
 window.IDEA_AWS_COGNITO_USER_POOL_ID: string;
 window.IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
+window.IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION: string;
+
+window.IDEA_PROJECT: string;
 window.IDEA_APP_TITLE: string;
+
 window.IDEA_AUTH_WEBSITE: string;
 window.IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
 window.IDEA_HAS_INTRO_PAGE: boolean;
 ```
+
+Additionaly, if you want to allow only one simultaneous session per account, [implement what is suggested in this document](https://iterinformatica.atlassian.net/wiki/spaces/idea/pages/2739798099/Allow+only+simultaneous+session+per+account+idea-ionic+auth).
 
 ## Components
 

@@ -65,6 +65,12 @@
     "TERMS_AND_CONDITIONS": "Terms and Conditions",
     "TERMS_AND_CONDITIONS_HINT": "Read our Terms and Conditions",
     "USER_NOT_FOUND": "User not found",
-    "YOU_NEED_TO_CHOOSE_A_NEW_PASSWORD": "Choose a new password for your account"
+    "YOU_NEED_TO_CHOOSE_A_NEW_PASSWORD": "Choose a new password for your account",
+    "ROBOT_USERS_CANT_SIGN_INTO_APPS": "Robot user detected",
+    "ROBOT_USERS_CANT_SIGN_INTO_APPS_I": "Robot users can't sign-into the app; they are created for back-end purposes.",
+    "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED": "Multiple sessions detected",
+    "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED_I": "Only one active session per account is allowed",
+    "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED_II": "There is already one active session for this account on another device; to proceed, you need to terminate the other session. You can terminate all the sessions with a global sign-out, but head's up: be sure to save any local data of the app on the other device first, since it will be deleted.",
+    "GLOBAL_SIGN_OUT": "Global sign-out"
   }
 }

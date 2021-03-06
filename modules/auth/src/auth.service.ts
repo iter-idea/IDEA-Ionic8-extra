@@ -11,8 +11,15 @@ import {
 } from 'amazon-cognito-identity-js';
 
 // from idea-config.js
+declare const IDEA_PROJECT: string;
 declare const IDEA_AWS_COGNITO_USER_POOL_ID: string;
 declare const IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
+declare const IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION: boolean;
+
+/**
+ * The name of the Cognito's user attribute which contains the key of the last device to login in this project.
+ */
+const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(IDEA_PROJECT);
 
 /**
  * Cognito wrapper to manage the authentication flow.
@@ -93,15 +100,10 @@ export class IDEAAuthService {
     return new Promise((resolve, reject) => {
       // add attributes like the email address and the fullname
       const attrs = [];
-      for (const prop in attributes) {
-        if (attributes[prop]) {
-          attrs.push(this.prepareUserAttribute(prop, attributes[prop]));
-        }
-      }
+      for (const prop in attributes)
+        if (attributes[prop]) attrs.push(this.prepareUserAttribute(prop, attributes[prop]));
       // add the email, which is equal to the username for most of our Pools
-      if (!attributes.email) {
-        attrs.push(this.prepareUserAttribute('email', username));
-      }
+      if (!attributes.email) attrs.push(this.prepareUserAttribute('email', username));
       // register the new user to the pool
       this.userPool.signUp(username, password, attrs, null, (err: Error, res: ISignUpResult) =>
         err ? reject(err) : resolve(res.user)
@@ -127,21 +129,32 @@ export class IDEAAuthService {
     });
   }
   /**
-   * Logout the currently signed in user.
+   * Logout the currently signed-in user.
    */
-  public logout(dontReload?: boolean) {
-    this.isAuthenticated(false)
-      .then(async () => {
-        // sign-out from the pool
-        this.userPool.getCurrentUser().signOut();
-        // (async) remove the refresh token previosly saved
-        await this.storage.remove('AuthRefreshToken');
-        // (async) remove the optional auth details
-        await this.storage.remove('AuthUserDetails');
-        // reload the page and go back to auth pages
-        if (!dontReload) window.location.assign('');
-      })
-      .catch(() => window.location.assign(''));
+  public logout(options?: { global: boolean }): Promise<void> {
+    options = Object.assign({ global: false }, options);
+    return new Promise((resolve, reject) => {
+      // remove the refresh token previosly saved
+      this.storage.remove('AuthRefreshToken').then(() =>
+        // remove the optional auth details
+        this.storage.remove('AuthUserDetails').then(() => {
+          // get the user and the session
+          const user = this.userPool.getCurrentUser();
+          user.getSession(async (err: Error) => {
+            // if the session is active, run the online sign-out; otherwise, only the local data has been deleted
+            if (err) return resolve();
+            // if a reference to the device was saved, forget it
+            if (IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION) await this.setCurrentDeviceForProject(null);
+            // sign-out from the pool (terminate the current session or all the sessions)
+            if (options.global) user.globalSignOut({ onSuccess: () => resolve(), onFailure: err => reject(err) });
+            else {
+              user.signOut();
+              resolve();
+            }
+          });
+        })
+      );
+    });
   }
   /**
    * Send a password reset request.
@@ -183,32 +196,31 @@ export class IDEAAuthService {
         );
       } else {
         const user = this.userPool.getCurrentUser();
-        if (!user) {
-          return reject();
-        }
+        if (!user) return reject();
         user.getSession((err: Error, session: CognitoUserSession) => {
-          if (err) {
-            return reject(err);
-          }
+          if (err) return reject(err);
           // get user attributes
           user.getUserAttributes((e: Error, attributes: CognitoUserAttribute[]) => {
-            if (e) {
-              return reject(e);
-            }
+            if (e) return reject(e);
             // remap user attributes
             const userDetails: any = [];
             attributes.forEach((a: CognitoUserAttribute) => (userDetails[a.getName()] = a.getValue()));
-            // (async) save the refresh token so it can be accessed by other procedures
-            this.storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
-            // set a timer to manage the autorefresh of the idToken (through the refreshToken)
-            setTimeout(
-              () => this.refreshSession(user, session.getRefreshToken().getToken(), getFreshIdTokenOnExp),
-              15 * 60 * 1000
-            ); // every 15 minutes
-            // (async) if offlineAllowed, save data locally, to use it next time we'll be offline
-            if (offlineAllowed) this.storage.set('AuthUserDetails', userDetails);
-            // return the idToken (to use with API)
-            resolve({ idToken: session.getIdToken().getJwtToken(), userDetails });
+            // run some checks considering the user's groups and devices (based on the project's configuration)
+            this.runPostAuthChecks(session, userDetails, err => {
+              // in case some check failed, reject the authorisation flow
+              if (err) return reject(err);
+              // (async) save the refresh token so it can be accessed by other procedures
+              this.storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
+              // set a timer to manage the autorefresh of the idToken (through the refreshToken)
+              setTimeout(
+                () => this.refreshSession(user, session.getRefreshToken().getToken(), getFreshIdTokenOnExp),
+                15 * 60 * 1000
+              ); // every 15 minutes
+              // (async) if offlineAllowed, save data locally, to use it next time we'll be offline
+              if (offlineAllowed) this.storage.set('AuthUserDetails', userDetails);
+              // return the idToken (to use with API)
+              resolve({ idToken: session.getIdToken().getJwtToken(), userDetails });
+            });
           });
         });
       }
@@ -236,28 +248,73 @@ export class IDEAAuthService {
     );
   }
   /**
+   * Run some post-auth checks, based on the users groups and on the app's configuration:
+   *  - users in the Cognito's "admins" grup skip all the following rules.
+   *  - users in the Cognito's "robots" group can't sign-into front-ends (they serve only back-end purposes).
+   *  - if `IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION` is on, make sure there is only one active session per user.
+   */
+  protected runPostAuthChecks(session: CognitoUserSession, userDetails: any, callback: (err?: Error) => void) {
+    // acquire the session's info to run some check
+    const sessionInfo = session.getAccessToken().decodePayload();
+    const groups: string[] = sessionInfo['cognito:groups'] || [];
+    // skip checks if the user is in the "admins" group
+    const isAdmin = groups.some(x => x === 'admins');
+    if (isAdmin) return callback();
+    // users in the "robots" group can't sign-into front-ends (they serve only back-end purposes)
+    const isRobot = groups.some(x => x === 'robots');
+    if (isRobot) return callback(new Error('ROBOT_USER'));
+    // in case the project limits each account to only one simultaneous session, run a check
+    if (IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION) return this.checkForSimultaneousSessions(userDetails, callback);
+    // otherwise, we're done
+    callback();
+  }
+  /**
+   * Check whether the user signed-into multiple devices.
+   */
+  protected async checkForSimultaneousSessions(userDetails: any, callback: (err?: Error) => void) {
+    // get or create a key for the current device (~random)
+    let currentDeviceKey = await this.storage.get('AuthDeviceKey');
+    if (!currentDeviceKey) {
+      const randomKey = Math.random().toString(36).substring(10);
+      currentDeviceKey = randomKey.concat(String(Date.now()));
+      await this.storage.set('AuthDeviceKey', currentDeviceKey);
+    }
+    // check whether the last device to sign-into this project (if any) is the current one
+    const lastDeviceToSignIntoThisProject = userDetails[DEVICE_KEY_ATTRIBUTE];
+    // if it's the first user's device to sign-in, save the reference in Cognito and resolve
+    if (!lastDeviceToSignIntoThisProject) {
+      this.setCurrentDeviceForProject(currentDeviceKey)
+        .then(() => callback())
+        .catch(() => callback(new Error('CANT_SET_DEVICE')));
+      // if the device didn't change, resolve
+    } else if (lastDeviceToSignIntoThisProject === currentDeviceKey) callback();
+    // othwerwise, report there is more than one simultaneous session
+    else callback(new Error('SIMULTANEOUS_SESSION'));
+  }
+  /**
+   * Set (or reset) the current user's device (by key) in the current project (stored in Cognito).
+   */
+  protected setCurrentDeviceForProject(deviceKey?: string): Promise<void> {
+    const attributes: any = {};
+    // note: an empty string will remove the attribute from Cognito
+    attributes[DEVICE_KEY_ATTRIBUTE] = deviceKey || '';
+    return this.updateUserAttributes(attributes);
+  }
+  /**
    * Update the currently logged in user's attributes.
    */
   public updateUserAttributes(attributes: any): Promise<void> {
     return new Promise((resolve, reject) => {
       // prepare the attributes we want to change
       const attrs = new Array<any>();
-      for (const prop in attributes) {
-        if (attributes[prop]) {
-          attrs.push(this.prepareUserAttribute(prop, attributes[prop]));
-        }
-      }
+      for (const prop in attributes)
+        if (attributes[prop] !== undefined) attrs.push(this.prepareUserAttribute(prop, attributes[prop]));
       const user = this.userPool.getCurrentUser();
-      if (!user) {
-        return reject();
-      }
+      if (!user) return reject();
       // we need to get the session before to make changes
       user.getSession((err: Error) => {
-        if (err) {
-          reject(err);
-        } else {
-          user.updateAttributes(attrs, (e: Error) => (e ? reject(e) : resolve()));
-        }
+        if (err) reject(err);
+        else user.updateAttributes(attrs, (e: Error) => (e ? reject(e) : resolve()));
       });
     });
   }
