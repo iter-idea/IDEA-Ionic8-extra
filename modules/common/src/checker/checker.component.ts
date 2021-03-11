@@ -31,7 +31,7 @@ export class IDEACheckerComponent {
   /**
    * The checks to show.
    */
-  @Input() public data: Check[];
+  @Input() public data: Check[] = new Array<Check>();
   /**
    *  Alternative to the case above; function that returns a Promise<Array<Check>>.
    */
@@ -95,7 +95,7 @@ export class IDEACheckerComponent {
   /**
    * How many elements to show in the preview before to generalize on the number.
    */
-  @Input() public numMaxElementsInPreview: number;
+  @Input() public numMaxElementsInPreview = 4;
   /**
    * Whether to show an avatar aside each element.
    */
@@ -104,6 +104,11 @@ export class IDEACheckerComponent {
    * URL to the fallback avatar to show in case the element's avatar isn't found.
    */
   @Input() public fallbackAvatar: string;
+  /**
+   * Limit the number of selectable elements to the value provided.
+   * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
+   */
+  @Input() public limitSelectionToNum: number;
   /**
    * Whether to allow the select/deselect-all buttons.
    */
@@ -117,10 +122,7 @@ export class IDEACheckerComponent {
    */
   @Output() public iconSelect = new EventEmitter<void>();
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {
-    this.data = new Array<Check>();
-    this.numMaxElementsInPreview = 4;
-  }
+  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   /**
    * Fetch the promised data from a function and set it before to open the checks.
    */
@@ -151,7 +153,8 @@ export class IDEACheckerComponent {
           noElementsFoundText: this.noElementsFoundText,
           showAvatars: this.showAvatars,
           fallbackAvatar: this.fallbackAvatar,
-          allowSelectDeselectAll: this.allowSelectDeselectAll
+          allowSelectDeselectAll: this.allowSelectDeselectAll,
+          limitSelectionToNum: this.limitSelectionToNum
         }
       })
       .then(modal => {

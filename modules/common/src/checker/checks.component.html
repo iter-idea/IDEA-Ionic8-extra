@@ -17,8 +17,13 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar color="ideaToolbar" class="secondary">
-    <ion-title>{{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}</ion-title>
-    <ion-buttons slot="end" *ngIf="allowSelectDeselectAll">
+    <ion-title>
+      {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}
+      <span *ngIf="limitSelectionToNum">
+        {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
+      </span>
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="!limitSelectionToNum && allowSelectDeselectAll">
       <ion-button [title]="t._('IDEA_COMMON.CHECKER.DESELECT_ALL')" (click)="checkAll(false)">
         <ion-icon slot="icon-only" name="square-outline"></ion-icon>
       </ion-button>
@@ -26,7 +31,7 @@
         <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf="!allowSelectDeselectAll">
+    <ion-buttons slot="end" *ngIf="limitSelectionToNum || !allowSelectDeselectAll">
       <ion-button [title]="t._('IDEA_COMMON.CHECKER.RESET')" (click)="checkAll(false)">
         {{ 'IDEA_COMMON.CHECKER.RESET' | translate }}
       </ion-button>
@@ -42,7 +47,11 @@
     </ion-item>
     <ion-virtual-scroll [items]="filteredChecks">
       <ion-item class="check" *virtualItem="let check">
-        <ion-checkbox slot="start" [(ngModel)]="check.checked"></ion-checkbox>
+        <ion-checkbox
+          slot="start"
+          [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
+          [(ngModel)]="check.checked"
+        ></ion-checkbox>
         <ion-avatar slot="start" *ngIf="showAvatars">
           <div class="circle" *ngIf="check.color" [style.background-color]="check.color"></div>
           <ion-img *ngIf="!check.color" [src]="check.avatar" (ionError)="loadFallbackAvatar($event?.target)"></ion-img>

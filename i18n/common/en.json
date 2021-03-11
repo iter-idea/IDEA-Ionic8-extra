@@ -41,7 +41,8 @@
       "NUM_ELEMENTS_SELECTED": "{{num}} elements selected",
       "SEARCH": "Search",
       "SELECT_ALL": "Select all",
-      "RESET": "Reset"
+      "RESET": "Reset",
+      "LIMIT_OF_NUM": "(of {{num}})"
     },
     "CONTACTS": {
       "EMAIL": "Email",

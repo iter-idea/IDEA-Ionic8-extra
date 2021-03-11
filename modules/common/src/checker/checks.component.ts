@@ -36,6 +36,11 @@ export class IDEAChecksComponent {
    */
   @Input() public fallbackAvatar: string;
   /**
+   * Limit the number of selectable elements to the value provided.
+   * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
+   */
+  @Input() public limitSelectionToNum: number;
+  /**
    * Whether to allow the select/deselect-all buttons.
    */
   @Input() public allowSelectDeselectAll: boolean;
