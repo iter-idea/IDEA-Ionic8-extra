@@ -8,25 +8,27 @@
     <ion-searchbar
       [debounce]="100"
       [placeholder]="searchPlaceholder || t._('IDEA_COMMON.CHECKER.SEARCH')"
-      (ionInput)="search($event.target ? $event.target.value : '')"
+      (ionInput)="search($event?.target?.value)"
     ></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button
-        *ngIf="!hideSelectDeselectAll"
-        [title]="t._('IDEA_COMMON.CHECKER.DESELECT_ALL')"
-        (click)="checkAll(false)"
-      >
-        <ion-icon slot="icon-only" name="square-outline"></ion-icon>
-      </ion-button>
-      <ion-button
-        *ngIf="!hideSelectDeselectAll"
-        [title]="t._('IDEA_COMMON.CHECKER.SELECT_ALL')"
-        (click)="checkAll(true)"
-      >
-        <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
-      </ion-button>
       <ion-button [title]="t._('IDEA_COMMON.CHECKER.CONFIRM_SELECTION')" (click)="confirm()">
         {{ 'IDEA_COMMON.CHECKER.DONE' | translate }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar color="ideaToolbar" class="secondary">
+    <ion-title>{{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}</ion-title>
+    <ion-buttons slot="end" *ngIf="allowSelectDeselectAll">
+      <ion-button [title]="t._('IDEA_COMMON.CHECKER.DESELECT_ALL')" (click)="checkAll(false)">
+        <ion-icon slot="icon-only" name="square-outline"></ion-icon>
+      </ion-button>
+      <ion-button [title]="t._('IDEA_COMMON.CHECKER.SELECT_ALL')" (click)="checkAll(true)">
+        <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="!allowSelectDeselectAll">
+      <ion-button [title]="t._('IDEA_COMMON.CHECKER.RESET')" (click)="checkAll(false)">
+        {{ 'IDEA_COMMON.CHECKER.RESET' | translate }}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -35,9 +37,7 @@
   <ion-list class="checksList">
     <ion-item lines="none" *ngIf="!filteredChecks.length">
       <ion-label>
-        <i>
-          {{ noElementsFoundText || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}
-        </i>
+        <i>{{ noElementsFoundText || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
       </ion-label>
     </ion-item>
     <ion-virtual-scroll [items]="filteredChecks">
@@ -45,16 +45,9 @@
         <ion-checkbox slot="start" [(ngModel)]="check.checked"></ion-checkbox>
         <ion-avatar slot="start" *ngIf="showAvatars">
           <div class="circle" *ngIf="check.color" [style.background-color]="check.color"></div>
-          <img
-            onerror="this.src === this.alt ? '' : this.src=this.alt;"
-            *ngIf="!check.color"
-            [src]="check.avatar"
-            [alt]="fallbackAvatar"
-          />
+          <ion-img *ngIf="!check.color" [src]="check.avatar" (ionError)="loadFallbackAvatar($event?.target)"></ion-img>
         </ion-avatar>
-        <ion-label>
-          {{ check.name }}
-        </ion-label>
+        <ion-label>{{ check.name }}</ion-label>
       </ion-item>
     </ion-virtual-scroll>
   </ion-list>

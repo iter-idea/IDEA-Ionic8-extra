@@ -36,18 +36,17 @@ export class IDEAChecksComponent {
    */
   @Input() public fallbackAvatar: string;
   /**
-   * Whether to show the select/deselect all buttons.
+   * Whether to allow the select/deselect-all buttons.
    */
-  @Input() public hideSelectDeselectAll: boolean;
+  @Input() public allowSelectDeselectAll: boolean;
   /**
    * A copy of data, to use until the changes are confirmed.
    */
   public workingData: Check[];
-
-  // SUPPORT
+  /**
+   * The filtered working data, based on the content of the searchbox.
+   */
   public filteredChecks: Check[];
-  public N_PER_PAGE = 30;
-  public page: number;
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
   public ngOnInit() {
@@ -77,10 +76,24 @@ export class IDEAChecksComponent {
   }
 
   /**
+   * Get the count of the elements currently checked.
+   */
+  public getNumChecked(): number {
+    return this.workingData.filter(x => x.checked).length;
+  }
+
+  /**
    * Check/unckeck all the elements.
    */
   public checkAll(check: boolean) {
     this.filteredChecks.forEach(x => (x.checked = check));
+  }
+
+  /**
+   * Load a fallback url when the avatar is missing.
+   */
+  public loadFallbackAvatar(targetImg: any) {
+    if (targetImg && targetImg.src !== this.fallbackAvatar) targetImg.src = this.fallbackAvatar;
   }
 
   /**

@@ -40,7 +40,8 @@
       "NO_ELEMENTS_FOUND": "Ningún elemento encontrado",
       "NUM_ELEMENTS_SELECTED": "{{num}} elementos seleccionados",
       "SEARCH": "Buscar",
-      "SELECT_ALL": "Seleccionar todo"
+      "SELECT_ALL": "Seleccionar todo",
+      "RESET": "Reiniciar"
     },
     "CONTACTS": {
       "EMAIL": "Email",
