@@ -168,6 +168,18 @@ export class IDEATranslationsService {
     this.langs.forEach(lang => (label[lang] = this.instantInLanguage(lang, key, interpolateParams)));
     return label;
   }
+  /**
+   * Return the translation in the current language of a label.
+   */
+   public translateLabel(label: Label): string {
+    return label.translate(this.getCurrentLang(), this.languages());
+  }
+  /**
+   * Shortcut to translateLabel.
+   */
+   public _label(label: Label): string {
+    return this.translateLabel(label);
+  }
 
   /**
    * Load the translations from the files.
