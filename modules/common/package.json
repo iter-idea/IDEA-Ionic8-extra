@@ -15,7 +15,7 @@
     "@capacitor/core": ">=2.4.5",
     "@ionic/angular": ">=5.0.0",
     "@ionic/storage": ">=2.2.0",
-    "idea-toolbox": ">=6.2.5",
+    "idea-toolbox": ">=6.2.13",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
   },
@@ -28,7 +28,7 @@
     "@capacitor/core": ">=2.4.5",
     "@ionic/angular": ">=5.0.0",
     "@ionic/storage": ">=2.2.0",
-    "idea-toolbox": ">=6.2.5",
+    "idea-toolbox": ">=6.2.13",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
   },
