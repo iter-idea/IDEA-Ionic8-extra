@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 import { IDEAErrorReportingService } from './errorReporting.service';
@@ -8,6 +9,7 @@ import { IDEATinCanService } from './tinCan.service';
 import { IDEAOfflineService } from './offline/offline.service';
 
 // from idea-config.js
+declare const IDEA_APP_VERSION: string;
 declare const IDEA_API_URL: string;
 declare const IDEA_API_VERSION: string;
 declare const IDEA_API_IDEA_URL: string;
@@ -26,11 +28,12 @@ export const API_URL_IDEA = `https://${IDEA_API_IDEA_URL}/${IDEA_API_IDEA_VERSIO
 @Injectable()
 export class IDEAAWSAPIService {
   constructor(
-    public http: HttpClient,
-    public tc: IDEATinCanService,
-    public storage: Storage,
-    public errorReporting: IDEAErrorReportingService,
-    public offline: IDEAOfflineService
+    protected http: HttpClient,
+    protected platform: Platform,
+    protected tc: IDEATinCanService,
+    protected storage: Storage,
+    protected errorReporting: IDEAErrorReportingService,
+    protected offline: IDEAOfflineService
   ) {}
 
   /**
@@ -42,56 +45,85 @@ export class IDEAAWSAPIService {
   protected request(resource: string, method: string, options?: APIRequestOption): Promise<any> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
-      // decide if to use IDEA's API or project's API (or an alternative API)
-      let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
-      // prepare a single resource request (by id) or a normal one
-      url = `${url}/${resource}`;
-      if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
-      // preare the headers and set the Authorization; note: HttpHeaders is immutable!
-      let headers = new HttpHeaders(opt.headers || null);
-      if (!headers.get('Authorization') && this.tc.get('AWSAPIAuthToken'))
-        headers = headers.append('Authorization', this.tc.get('AWSAPIAuthToken'));
+      // prepare the url
+      const url = this.prepareURL(resource, opt);
+      // prepare the headers and set the Authorization token
+      const headers = this.prepareHeaders(opt.headers);
+      // prepare the query params and add some info about the client
+      const params = this.prepareQueryParams(opt.params, true);
       // execute the request
       let req: any;
       switch (method) {
         case 'HEAD':
-          req = this.http.head(url, { headers });
+          req = this.http.head(url, { headers, params });
           break;
         case 'POST':
-          req = this.http.post(url, opt.body, { headers });
+          req = this.http.post(url, opt.body, { headers, params });
           break;
         case 'PUT':
-          req = this.http.put(url, opt.body, { headers });
+          req = this.http.put(url, opt.body, { headers, params });
           break;
         case 'PATCH':
-          req = this.http.patch(url, opt.body, { headers });
+          req = this.http.patch(url, opt.body, { headers, params });
           break;
         case 'DELETE':
-          req = this.http.delete(url, { headers });
+          req = this.http.delete(url, { headers, params });
           break;
-        default: /* GET */ {
-          // prepare the query params; note: HttpParams is immutable!
-          let searchParams = new HttpParams();
-          if (opt.params && opt.params instanceof HttpParams) searchParams = opt.params;
-          else if (opt.params)
-            for (const prop in opt.params)
-              if (opt.params[prop]) searchParams = searchParams.set(prop, opt.params[prop]);
-          req = this.http.get(url, { headers, params: searchParams });
-        }
+        case 'GET':
+        default:
+          req = this.http.get(url, { headers, params });
       }
       // handle the request response
       req.subscribe(
         (res: any) => resolve(res),
-        (err: HttpErrorResponse) => {
+        async (err: HttpErrorResponse) => {
           // check if the request failed for network reasons (to trigger offline mode if needed)
-          this.offline.check();
-          // send a report, if wanted
+          await this.offline.check();
+          // (async) send a report, if wanted
           if (opt.reportError) this.errorReporting.sendReport(err);
           // fix and return the error
           this.fixErrMessageBeforeReject(err, reject);
         }
       );
     });
+  }
+  /**
+   * Prepare the URL to which execute the request.
+   */
+  protected prepareURL(resource: string, opt: APIRequestOption): string {
+    // decide whether to use IDEA's API or the project's API (or an alternative API)
+    let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
+    // prepare a single-resource request (by id) or a normal one
+    url = `${url}/${resource}`;
+    if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
+    return url;
+  }
+  /**
+   * Prepare the headers object to send with a request.
+   * Note: it always adds the Authorization token, if set.
+   */
+  protected prepareHeaders(h: HttpHeaders | any): HttpHeaders {
+    // preare the headers; note: HttpHeaders is immutable!
+    let headers = new HttpHeaders(h || null);
+    // set the Authorization token
+    if (!headers.get('Authorization') && this.tc.get('AWSAPIAuthToken'))
+      headers = headers.set('Authorization', this.tc.get('AWSAPIAuthToken'));
+    return headers;
+  }
+  /**
+   * Prepare the queryParams object to send with a request; if requested, add some info about the client.
+   */
+  protected prepareQueryParams(qp: HttpParams | any, addClientInfo?: boolean): HttpParams {
+    // prepare the query params; note: HttpParams is immutable!
+    let searchParams = new HttpParams();
+    if (qp && qp instanceof HttpParams) searchParams = qp;
+    else if (qp) for (const prop in qp) if (qp[prop]) searchParams = searchParams.set(prop, qp[prop]);
+    // if requested, add app version and client platform to the info we send to the back-end
+    if (addClientInfo) {
+      searchParams = searchParams.set('_v', IDEA_APP_VERSION);
+      searchParams = searchParams.set('_p', this.platform.platforms().join(' '));
+    }
+    return searchParams;
   }
   /**
    * Converts the error message to be readable.
@@ -275,18 +307,12 @@ export class IDEAAWSAPIService {
   public getFromCache(resource: string, options?: APIRequestOption): Promise<any> {
     return new Promise(resolve => {
       const opt = options || {};
-      // decide if to use IDEA's API or project's API (or an alternative API)
-      let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
-      // prepare a single resource request (by id) or a normal one
-      url = `${url}/${resource}`;
-      if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
-      // prepare the query params; note: HttpParams is immutable!
-      let searchParams = new HttpParams();
-      if (opt.params)
-        for (const prop in opt.params) if (opt.params[prop]) searchParams = searchParams.set(prop, opt.params[prop]);
-      // get from storage
+      // prepare the url and the query params
+      const url = this.prepareURL(resource, opt);
+      const queryParams = this.prepareQueryParams(opt.params);
+      // get from storage, by the complete url
       this.storage
-        .get(url.concat(searchParams.toString()))
+        .get(url.concat(queryParams.toString()))
         .then((res: any) => (res ? resolve(res) : opt.resourceId ? resolve(null) : resolve([])));
     });
   }
@@ -299,18 +325,12 @@ export class IDEAAWSAPIService {
   public putInCache(resource: string, data: any, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
-      // decide if to use IDEA's API or project's API (or an alternative API)
-      let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
-      // prepare a single resource request (by id) or a normal one
-      url = `${url}/${resource}`;
-      if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
-      // prepare the query params; note: HttpParams is immutable!
-      let searchParams = new HttpParams();
-      if (opt.params)
-        for (const prop in opt.params) if (opt.params[prop]) searchParams = searchParams.set(prop, opt.params[prop]);
-      // put in the storage
+      // prepare the url and the query params
+      const url = this.prepareURL(resource, opt);
+      const queryParams = this.prepareQueryParams(opt.params);
+      // put in the storage, by the complete url
       this.storage
-        .set(url.concat(searchParams.toString()), data)
+        .set(url.concat(queryParams.toString()), data)
         .then(() => resolve())
         .catch((err: Error) => reject(err));
     });
@@ -323,18 +343,12 @@ export class IDEAAWSAPIService {
   public deleteFromCache(resource: string, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
-      // decide if to use IDEA's API or project's API (or an alternative API)
-      let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
-      // prepare a single resource request (by id) or a normal one
-      url = `${url}/${resource}`;
-      if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
-      // prepare the query params; note: HttpParams is immutable!
-      let searchParams = new HttpParams();
-      if (opt.params)
-        for (const prop in opt.params) if (opt.params[prop]) searchParams = searchParams.set(prop, opt.params[prop]);
-      // delete from the storage
+      // prepare the url and the query params
+      const url = this.prepareURL(resource, opt);
+      const queryParams = this.prepareQueryParams(opt.params);
+      // delete from storage, by the complete url
       this.storage
-        .remove(url.concat(searchParams.toString()))
+        .remove(url.concat(queryParams.toString()))
         .then(() => resolve())
         .catch((err: Error) => reject(err));
     });
@@ -377,6 +391,9 @@ export class IDEAAWSAPIService {
   }
 }
 
+/**
+ * The options of an API request.
+ */
 export class APIRequestOption {
   /**
    * To identify a specific resource by id.
