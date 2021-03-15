@@ -27,6 +27,7 @@ Finally, add the according configuration (if needed) in the `assets/configs/idea
 
 ```
 window.IDEA_PROJECT: string;
+window.IDEA_APP_VERSION: string;
 
 window.IDEA_API_URL: string;
 window.IDEA_API_VERSION: string;
