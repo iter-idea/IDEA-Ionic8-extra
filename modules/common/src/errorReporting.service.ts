@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { ClientInfo, ErrorReport } from 'idea-toolbox';
 
-import { IDEATranslationsService } from './translations/translations.service';
-
 // from idea-config.js
 declare const IDEA_PROJECT: string;
 declare const IDEA_APP_VERSION: string;
@@ -15,7 +13,7 @@ export const API_URL = `https://${IDEA_API_IDEA_URL}/${IDEA_API_IDEA_VERSION}`;
 
 @Injectable()
 export class IDEAErrorReportingService {
-  constructor(protected http: HttpClient, protected platform: Platform, protected t: IDEATranslationsService) {}
+  constructor(protected http: HttpClient, protected platform: Platform) {}
 
   /**
    * Send the error report to the back-end.
@@ -28,7 +26,6 @@ export class IDEAErrorReportingService {
       const report = new ErrorReport({
         version: IDEA_APP_VERSION,
         stage: IDEA_API_IDEA_VERSION,
-        language: this.t.getCurrentLang(),
         client: this.getClientInfo(),
         type: error.name,
         error: error.message,
