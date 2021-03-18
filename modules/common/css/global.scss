@@ -89,10 +89,9 @@ ion-popover.actionSheetPopover {
   .native-input[disabled],
   .item-disabled,
   .native-textarea[disabled],
-  ion-item ion-label,
   ion-input {
     opacity: 1 !important;
-    -webkit-text-fill-color: inherit;
+    -webkit-text-fill-color: var(--ion-text-color);
   }
 }
 
