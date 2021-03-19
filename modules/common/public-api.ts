@@ -70,6 +70,9 @@ export * from './src/select/select.component';
 export * from './src/select/select.module';
 export * from './src/select/suggestions.component';
 
+export * from './src/sentiment/sentiment.component';
+export * from './src/sentiment/sentiment.module';
+
 export * from './src/signature/signature.component';
 export * from './src/signature/signature.module';
 

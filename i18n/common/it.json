@@ -247,6 +247,15 @@
       "SHOW_DETAILS": "Mostra dettagli",
       "HIDE_DETAILS": "Nascondi dettagli"
     },
+    "SENTIMENT": {
+      "RESULT": {
+        "POSITIVE": "Positivo",
+        "NEGATIVE": "Negativo",
+        "NEUTRAL": "Neutro",
+        "MIXED": "Misto"
+      },
+      "RESULT_HINT": "Si deduce dal testo un sentimento generalmente {{sentiment}}"
+    },
     "SIGNATURE": {
       "CANCEL": "Annulla",
       "CHOOSE_FROM_CONTACTS": "Choose from contacts",

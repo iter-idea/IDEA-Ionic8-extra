@@ -61,6 +61,7 @@ window.IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
 - Offline (delta)
 - PDF Template
 - Select
+- Sentiment analysis
 - Signature
 - Time interval
 - Translations

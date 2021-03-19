@@ -247,6 +247,15 @@
       "SHOW_DETAILS": "Show details",
       "HIDE_DETAILS": "Hide details"
     },
+    "SENTIMENT": {
+      "RESULT": {
+        "POSITIVE": "Positive",
+        "NEGATIVE": "Negative",
+        "NEUTRAL": "Neutral",
+        "MIXED": "Mixed"
+      },
+      "RESULT_HINT": "We detected a generally {{sentiment}} sentiment from the text"
+    },
     "SIGNATURE": {
       "CANCEL": "Cancel",
       "CHOOSE_FROM_CONTACTS": "Scegli dai contatti",
