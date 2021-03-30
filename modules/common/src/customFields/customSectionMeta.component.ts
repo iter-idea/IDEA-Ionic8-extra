@@ -165,7 +165,7 @@ export class IDEACustomSectionMetaComponent {
           const name = data ? data.name.trim() : null;
           if (!name) return;
           // clean the key to avoid weird chars in the JSON
-          const key = name.replace(/[^\w\d]/g, '');
+          const key = name.replace(/[^\w]/g, '');
           if (!key.trim()) return;
           // check wheter the key is unique
           if (this._section.fieldsLegend.some(x => x === key))
