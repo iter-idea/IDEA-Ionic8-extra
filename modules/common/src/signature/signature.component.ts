@@ -114,7 +114,7 @@ export class IDEASignatureComponent {
    */
   public save() {
     // check whether the fields are empty
-    this.signatoryError = Boolean(!this.signature.signatory);
+    this.signatoryError = !this.signature.signatory?.trim();
     this.signatureError = this.pad.isEmpty();
     if (this.signatoryError || this.signatureError)
       return this.message.warning('IDEA_COMMON.SIGNATURE.VERIFY_SIGNATORY_AND_SIGNATURE');
@@ -123,6 +123,8 @@ export class IDEASignatureComponent {
     // check whether the signature size is acceptable
     this.signatureError = this.signature.pngURL.length > SIGNATURE_SIZE_LIMIT;
     if (this.signatureError) return this.message.warning('IDEA_COMMON.SIGNATURE.SIGNATURE_IS_TOO_COMPLEX');
+    // clean the signatory string
+    this.signature.signatory = this.signature.signatory.trim();
     // update the timestamp
     this.signature.timestamp = Date.now();
     // close the modal
