@@ -37,10 +37,12 @@
     --max-width: 400px;
     --width: 400px;
   }
-  .alert-checkbox-button {
-    height: 70px !important;
+  .alert-checkbox-button,
+  .alert-radio-button {
+    height: auto !important;
   }
-  .alert-checkbox-label {
+  .alert-checkbox-label,
+  .alert-radio-label {
     white-space: pre-line !important;
   }
 }
