@@ -33,20 +33,17 @@ export class IDEACustomSectionComponent {
   /**
    * Show errors as reported from the parent component.
    */
-  @Input() public errors: Set<string>;
+  @Input() public errors: Set<string> = new Set();
   /**
    * Add a custom prefix to the error string identifier.
    */
-  @Input() public errorPrefix: string;
+  @Input() public errorPrefix = '';
   /**
    * A shortcut to custom fields types.
    */
   public CFT = CustomFieldTypes;
 
   constructor(public alertCtrl: AlertController, public t: IDEATranslationsService) {}
-  public ngOnInit() {
-    this.errorPrefix = this.errorPrefix || '';
-  }
 
   /**
    * Set the support array to display errors in the UI.
