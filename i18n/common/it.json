@@ -50,7 +50,9 @@
       "NAME": "Nome",
       "NAME_HINT": "Nome completo del contatto",
       "PHONE": "Telefono",
-      "PHONE_HINT": "Numero di telefono/cellulare"
+      "PHONE_HINT": "Numero di telefono/cellulare",
+      "CALL": "Chiama",
+      "SEND_EMAIL": "Invia email"
     },
     "CUSTOM_FIELDS": {
       "ADD_FIELD": "Aggiungi un campo",

@@ -22,6 +22,17 @@
       [title]="t._('IDEA_COMMON.CONTACTS.PHONE_HINT')"
       [(ngModel)]="contacts.phone"
     ></ion-input>
+    <ion-button
+      slot="end"
+      fill="clear"
+      color="dark"
+      class="marginTop"
+      *ngIf="!editMode"
+      [title]="t._('IDEA_COMMON.CONTACTS.CALL')"
+      (click)="call()"
+    >
+      <ion-icon name="call" slot="icon-only"></ion-icon>
+    </ion-button>
   </ion-item>
   <ion-item [lines]="lines">
     <ion-label position="stacked">
@@ -34,5 +45,16 @@
       [title]="t._('IDEA_COMMON.CONTACTS.EMAIL_HINT')"
       [(ngModel)]="contacts.email"
     ></ion-input>
+    <ion-button
+      slot="end"
+      fill="clear"
+      color="dark"
+      class="marginTop"
+      *ngIf="!editMode"
+      [title]="t._('IDEA_COMMON.CONTACTS.SEND_EMAIL')"
+      (click)="sendEmail()"
+    >
+      <ion-icon name="mail" slot="icon-only"></ion-icon>
+    </ion-button>
   </ion-item>
 </div>
