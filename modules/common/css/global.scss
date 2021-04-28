@@ -40,6 +40,8 @@
   .alert-checkbox-button,
   .alert-radio-button {
     height: auto !important;
+    // necessary for Chrome to display the buttons:
+    min-height: 50px;
   }
   .alert-checkbox-label,
   .alert-radio-label {
