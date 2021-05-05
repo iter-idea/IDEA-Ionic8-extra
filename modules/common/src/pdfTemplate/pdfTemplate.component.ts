@@ -227,8 +227,7 @@ export class IDEAPDFTemplateComponent {
    * Reorder the sections.
    */
   public reorderSections(ev: any) {
-    this.getCurrentTemplate().splice(ev.detail.to, 0, this.getCurrentTemplate().splice(ev.detail.from, 1)[0]);
-    ev.detail.complete();
+    this.getCurrentLayer().template = ev.detail.complete(this.getCurrentLayer().template);
   }
   /**
    * Get the icon of an inner (repated) section, based on its blueprint.
