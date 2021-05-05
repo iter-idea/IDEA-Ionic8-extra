@@ -52,8 +52,7 @@ export class IDEACustomBlockMetaComponent {
    * Reorder the sections legend.
    */
   public reorderSectionsLegend(ev: any) {
-    this.block.sectionsLegend.splice(ev.detail.to, 0, this.block.sectionsLegend.splice(ev.detail.from, 1)[0]);
-    ev.detail.complete();
+    this.block.sectionsLegend = ev.detail.complete(this.block.sectionsLegend);
   }
 
   /**

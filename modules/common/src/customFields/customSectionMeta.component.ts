@@ -114,8 +114,7 @@ export class IDEACustomSectionMetaComponent {
    * Reorder the fields legend.
    */
   public reorderFieldsLegend(ev: any) {
-    this._section.fieldsLegend.splice(ev.detail.to, 0, this._section.fieldsLegend.splice(ev.detail.from, 1)[0]);
-    ev.detail.complete();
+    this._section.fieldsLegend = ev.detail.complete(this._section.fieldsLegend);
   }
   /**
    * Open a custom field meta component.
@@ -196,8 +195,7 @@ export class IDEACustomSectionMetaComponent {
    * Reorder the rows of the display template.
    */
   public reorderDisplayTemplateRows(ev: any) {
-    this._section.displayTemplate.splice(ev.detail.to, 0, this._section.displayTemplate.splice(ev.detail.from, 1)[0]);
-    ev.detail.complete();
+    this._section.displayTemplate = ev.detail.complete(this._section.displayTemplate);
   }
   /**
    * Check whether the row is full or has empty spots for new fields.

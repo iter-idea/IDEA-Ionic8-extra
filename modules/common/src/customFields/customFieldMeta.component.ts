@@ -96,8 +96,7 @@ export class IDEACustomFieldMetaComponent {
    * Reorder the options.
    */
   public reorderOptions(ev: any) {
-    this._field.enum.splice(ev.detail.to, 0, this._field.enum.splice(ev.detail.from, 1)[0]);
-    ev.detail.complete();
+    this._field.enum = ev.detail.complete(this._field.enum);
   }
   /**
    * Remove an option from the list (after a confirmation prompt).
