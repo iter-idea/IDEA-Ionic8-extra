@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { ChangeDetectorRef } from '@angular/core';
 import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
-import { IDEAOfflineService } from '@idea-ionic/common';
+import { IDEAOfflineService, IDEATinCanService } from '@idea-ionic/common';
 
 /**
  * The default language to use if no other preferred one is available.
@@ -67,45 +67,55 @@ export class IDEASpeechRecognitionComponent {
     public platform: Platform,
     public cd: ChangeDetectorRef,
     public speechRecognition: SpeechRecognition,
-    public offline: IDEAOfflineService
+    public offline: IDEAOfflineService,
+    public tc: IDEATinCanService
   ) {}
-  public ngOnInit() {
+  public async ngOnInit() {
     // check whether the feature available
     if (!this.platform.is('cordova') || !(this.platform.is('ios') || this.platform.is('android'))) return;
-    this.speechRecognition.isRecognitionAvailable().then((available: boolean) => {
-      this.isSRAvailable = available;
-      this.isListening = false;
-      this.timer = new Timer();
-      this.initText = this.text || '';
-      // get the lanaguage to use, based on the user preferences and on the languages available on the device
-      this.getLanguageToUse().then(language => {
-        this.language = language;
-        // check whether we have the required device permissions
-        this.speechRecognition.hasPermission().then((hasPermission: boolean) => (this.isSRGranted = hasPermission));
+    this.isSRAvailable = await this.speechRecognition.isRecognitionAvailable();
+    this.isListening = false;
+    this.timer = new Timer();
+    this.initText = this.text || '';
+    this.isSRGranted = await this.speechRecognition.hasPermission();
+    this.language = await this.getLanguageToUse();
+  }
+  /**
+   * Get the language to use, based on the user/team preferences and on the languages available on the device.
+   */
+  private getLanguageToUse(): Promise<string> {
+    return new Promise(resolve => {
+      this.getSupportedLanguages().then(languages => {
+        // map the languages in a clean standard, to be ready for comparisons
+        languages = languages.map(l => l.replace('_', '-').toLowerCase());
+        // get the language currently active on the device (cleaned)
+        const deviceLanguage = window.navigator.language.replace('_', '-').toLowerCase();
+        // search for an exact match (e.g. `es-bo`)
+        let langToUse = languages.find(l => l === deviceLanguage);
+        if (langToUse) return resolve(langToUse);
+        // if an exact match wasn't found, search for a partial one (e.g. `es`); the first match we find, we keep it
+        langToUse = languages.find(l => l.slice(0, 2) === deviceLanguage.slice(0, 2));
+        if (langToUse) return resolve(langToUse);
+        // if no match wasn't found, return the default language
+        resolve(DEFAULT_LANGUAGE);
       });
     });
   }
   /**
-   * Get the language to use, based on the user preferences and on the languages available on the device.
+   * Get the device's supported languages, with a fallback to the team's languages (subset of ServiceLanguages).
+   * Note: this wrapper (with the fallback) is needed for some versions of Android that fail to get the supported langs.
    */
-  private getLanguageToUse(): Promise<string> {
+  private getSupportedLanguages(): Promise<string[]> {
     return new Promise(resolve => {
-      // get the list of supported languages for the device
       this.speechRecognition.getSupportedLanguages().then(
-        (languages: string[]) => {
-          // get the language currently active on the device
-          const deviceLanguage = window.navigator.language.toLowerCase();
-          // search for an exact match (e.g. `es-BO`)
-          let langToUse = languages.find(l => l.toLowerCase() === deviceLanguage);
-          if (langToUse) return resolve(langToUse);
-          // if an exact match wasn't found, search for a partial one (e.g. `es`); the first match we find, we keep it
-          langToUse = languages.find(l => l.toLocaleLowerCase().slice(0, 2) === deviceLanguage);
-          if (langToUse) return resolve(langToUse);
-          // if no match wasn't found, return the default language
-          resolve(DEFAULT_LANGUAGE);
-        },
-        // fallback to the default language
-        () => resolve(DEFAULT_LANGUAGE)
+        languages => resolve(languages),
+        () => {
+          // try to acquire the team's languages with the standard IDEA
+          const teamLanguages: string[] = this.tc.get('team')?.languages?.available;
+          if (teamLanguages && Array.isArray(teamLanguages)) resolve(teamLanguages);
+          // otherwise, fallback with a list containing only the default language
+          else resolve([DEFAULT_LANGUAGE]);
+        }
       );
     });
   }
