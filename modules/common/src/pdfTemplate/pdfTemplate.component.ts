@@ -224,10 +224,25 @@ export class IDEAPDFTemplateComponent {
       .then(alert => alert.present());
   }
   /**
-   * Reorder the sections.
+   * Move the section up of one position in the template.
    */
-  public reorderSections(ev: any) {
-    this.getCurrentLayer().template = ev.detail.complete(this.getCurrentLayer().template);
+  public moveSectionUpInTemplate(section: PDFTemplateSection) {
+    this.moveSectionInTemplateByNumPositions(section, -1);
+  }
+  /**
+   * Move the section down of one position in the template.
+   */
+  public moveSectionDownInTemplate(section: PDFTemplateSection) {
+    this.moveSectionInTemplateByNumPositions(section, 1);
+  }
+  /**
+   * Move the section up (negative) / down (positive) of `numPosition` in the template's array.
+   */
+  protected moveSectionInTemplateByNumPositions(section: PDFTemplateSection, numPositions: number) {
+    const fromIndex = this.getCurrentTemplate().indexOf(section);
+    const toIndex = fromIndex + numPositions;
+    if (toIndex >= 0 && toIndex <= this.getCurrentTemplate().length)
+      this.getCurrentTemplate().splice(toIndex, 0, this.getCurrentTemplate().splice(fromIndex, 1)[0]);
   }
   /**
    * Get the icon of an inner (repated) section, based on its blueprint.
