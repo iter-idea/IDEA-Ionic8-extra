@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/agenda",
-  "version": "1.1.0",
+  "version": "5.26.0",
   "description": "IDEA Ionic agenda (calendar)",
   "dependencies": {
     "tslib": "^2.0.0",
