@@ -15,10 +15,6 @@
       "@types/googlemaps": "@types/googlemaps"
     }
   },
-  "whitelistedNonPeerDependencies": [
-    "@googlemaps/js-api-loader",
-    "@googlemaps/markerclustererplus",
-    "@types/googlemaps"
-  ],
+  "allowedNonPeerDependencies": ["@googlemaps/js-api-loader", "@googlemaps/markerclustererplus", "@types/googlemaps"],
   "assets": ["./css/*.scss"]
 }

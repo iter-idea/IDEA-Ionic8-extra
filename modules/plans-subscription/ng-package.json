@@ -14,5 +14,5 @@
       "scriptjs": "scriptjs"
     }
   },
-  "whitelistedNonPeerDependencies": ["scriptjs"]
+  "allowedNonPeerDependencies": ["scriptjs"]
 }

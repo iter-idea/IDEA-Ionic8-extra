@@ -10,6 +10,6 @@
       "idea-toolbox": "idea-toolbox"
     }
   },
-  "whitelistedNonPeerDependencies": ["signature_pad"],
+  "allowedNonPeerDependencies": ["signature_pad"],
   "assets": ["./css/*.scss"]
 }
