@@ -80,18 +80,12 @@ _Note: running `npm i` on a project's client deletes the link and replaces the m
 
 _**Note well: before to release, test everything and make a pull request with the changes to be approved.**_
 
-To release a new version of a module, set the according version in the `package.json` file of the module (_not the file in the root directory!_) and then run
+Note: the versions of this lib's modules should advance together (Angular's standard); therefore, **all the modules (also unchanged ones) will publish a new version!**
+
+To release a new version, make sure all the files are committed, then run (depending on the version type):
 
 ```
-cd modules/<module>
-npm i
-cd ../../
-
-ng lint <module> --fix
-ng build <module> --prod
-
-cd dist/<module>
-npm publish
+./publish.sh major|minor|patch
 ```
 
 Then, **commit the changes** (commit message: `vX.Y.Z`).
