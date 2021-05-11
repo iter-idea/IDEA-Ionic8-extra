@@ -14,7 +14,6 @@
     "@angular/platform-browser": ">=11.0.0",
     "@angular/router": ">=11.0.0",
     "@capacitor/core": ">=2.4.5",
-    "@idea-ionic/common": "latest",
     "@ionic/angular": ">=5.0.0",
     "@ionic/storage": ">=2.2.0",
     "angular-calendar": ">=0.28.20",
