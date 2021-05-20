@@ -203,10 +203,14 @@ export class IDEAAuthService {
           user.getUserAttributes((e: Error, attributes: CognitoUserAttribute[]) => {
             if (e) return reject(e);
             // remap user attributes
-            const userDetails: any = [];
+            const userDetails: any = {};
             attributes.forEach((a: CognitoUserAttribute) => (userDetails[a.getName()] = a.getValue()));
+            // add the user's groups to the attributes
+            const sessionInfo = session.getAccessToken().decodePayload();
+            const groups: string[] = sessionInfo['cognito:groups'] || [];
+            userDetails['groups'] = groups;
             // run some checks considering the user's groups and devices (based on the project's configuration)
-            this.runPostAuthChecks(session, userDetails, err => {
+            this.runPostAuthChecks(userDetails, err => {
               // in case some check failed, reject the authorisation flow
               if (err) return reject(err);
               // (async) save the refresh token so it can be accessed by other procedures
@@ -253,10 +257,8 @@ export class IDEAAuthService {
    *  - users in the Cognito's "robots" group can't sign-into front-ends (they serve only back-end purposes).
    *  - if `IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION` is on, make sure there is only one active session per user.
    */
-  protected runPostAuthChecks(session: CognitoUserSession, userDetails: any, callback: (err?: Error) => void) {
-    // acquire the session's info to run some check
-    const sessionInfo = session.getAccessToken().decodePayload();
-    const groups: string[] = sessionInfo['cognito:groups'] || [];
+  protected runPostAuthChecks(userDetails: any, callback: (err?: Error) => void) {
+    const groups: string[] = userDetails['groups'];
     // skip checks if the user is in the "admins" group
     const isAdmin = groups.some(x => x === 'admins');
     if (isAdmin) return callback();
