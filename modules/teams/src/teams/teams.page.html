@@ -10,9 +10,6 @@
       <ion-button [title]="t._('IDEA_TEAMS.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
         <ion-icon name="person" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="teams?.length" [title]="t._('IDEA_TEAMS.TEAMS.CREATE_TEAM_HINT')" (click)="newTeam()">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
-      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -27,17 +24,12 @@
       *ngFor="let team of teams"
       [title]="t._('IDEA_TEAMS.TEAMS.SELECT_TEAM_', { team: team.name })"
       [button]="true"
-      [disabled]="!(teamIsActiveOnProject(team) || team.isUserAdmin(user))"
+      [disabled]="!teamIsActiveOnProject(team)"
       (click)="selectTeam(team)"
     >
       <ion-label>
         <b>{{ team.name }}</b>
-        <p *ngIf="!teamIsActiveOnProject(team) && !team.isUserAdmin(user)">
-          {{ 'IDEA_TEAMS.TEAMS.TEAM_NOT_ACTIVATED_DISCLAIMER' | translate }}
-        </p>
-        <p *ngIf="!teamIsActiveOnProject(team) && team.isUserAdmin(user)">
-          {{ 'IDEA_TEAMS.TEAMS.TAP_TO_ACTIVATE_ON_PROJECT_' | translate: { project: getProjectName(project) } }}
-        </p>
+        <p *ngIf="!teamIsActiveOnProject(team)">{{ 'IDEA_TEAMS.TEAMS.TEAM_NOT_ACTIVATED_DISCLAIMER' | translate }}</p>
         <p *ngIf="team.activeInProjects.length">
           {{ 'IDEA_TEAMS.TEAMS.ACTIVE_ON' | translate }}:
           <ion-badge color="light" size="small" *ngFor="let p of team.activeInProjects">
@@ -53,19 +45,6 @@
       >
         {{ 'IDEA_TEAMS.TEAMS.CURRENT' | translate }}
       </ion-badge>
-      <ion-button
-        slot="end"
-        fill="clear"
-        color="dark"
-        *ngIf="team.isUserAdmin(user)"
-        [title]="t._('IDEA_TEAMS.TEAMS.ACTIONS_ON_TEAM_', { tean: team.name })"
-        (click)="manageTeam(team, $event)"
-      >
-        <ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>
-      </ion-button>
     </ion-item>
-    <p class="ion-text-center" *ngIf="teams && !teams.length">
-      <ion-button (click)="newTeam()">{{ 'IDEA_TEAMS.TEAMS.CREATE_TEAM_HINT' | translate }}</ion-button>
-    </p>
   </ion-list>
 </ion-content>

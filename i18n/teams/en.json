@@ -83,44 +83,13 @@
       "UPLOAD_ERROR_FILE": "{{name}}: error uploading the file."
     },
     "TEAMS": {
-      "ACTIONS_ON_USER_": "Actions on {{user}}",
-      "ADMIN": "Admin",
-      "CANCEL": "Cancel",
-      "CAN_MANAGE_TEAM": "The user can edit the team settings and manage the team members",
-      "COULDNT_LOAD_LIST": "Couldn't load the list",
-      "CREATE": "Create",
-      "CREATE_TEAM_HINT": "Create a new team",
       "CURRENT": "Current",
       "CURRENT_TEAM_EXPLANATION": "Currently selected team",
-      "DELETION_OPERATION_FAILED": "The operation failed; make sure the user doesn't have active memberships in other services",
-      "EMAIL_TO_INVITE": "The email address of the user",
-      "INVITE": "Invite",
-      "INVITED": "Invited",
-      "INVITE_SENT": "Invite sent",
-      "INVITE_USER": "Invite a user",
-      "INVITE_USER_HINT": "Invite a member to the team",
-      "IS_OWNER": "The user is the current owner of the team",
-      "KICK_OUT": "Kick-out user",
-      "MAIN_EXPLANATION": "The users in your team. You can manage their permissions and add new users",
-      "MAKE_USER_ADMIN": "Make administrator",
-      "REMOVE_ADMIN_ROLE": "Remove from administrators",
-      "MEMBERS": "Members",
-      "NEW_TEAM": "New team",
-      "OWNER": "Owner",
-      "PENDING_INVITATION": "The user has been invited in the team but hasn't accepted yet",
       "SELECT_A_TEAM": "Select a team",
-      "SELECT_NAME_FOR_NEW_TEAM": "Choose a name",
       "SELECT_TEAM_": "Select team {{team}}",
-      "TEAM_MEMBERS": "Team members",
-      "MANAGE_TEAM_MEMBERS": "Manage the members",
       "TEAM_NAME": "Team name",
       "TEAM_NOT_ACTIVATED_DISCLAIMER": "Team has not been activated for this product; contact an administrator.",
       "ACTIVE_ON": "Active on",
-      "TAP_TO_ACTIVATE_ON_PROJECT_": "Tap to activate the team on {{project}}!",
-      "TEAM_SETTINGS": "Configure the settings of team {{team}}",
-      "UNJOIN": "Leave the team",
-      "USER_NOT_FOUND_OR_ALREADY_JOINED": "The user is already part of the team",
-      "USER_REMOVED": "User removed",
       "YOU_NEED_A_TEAM_TO_CONTINUE": "You need a team to continue",
       "NO_TEAMS_AVAILABLE": "You have no teams available",
       "PROJECTS_NAMES": {
@@ -128,12 +97,7 @@
         "luigi": "Luigi",
         "orazio": "Horace",
         "scarlett": "Scarlett"
-      },
-      "ACTIONS_ON_TEAM_": "Actions on {{team}}",
-      "DELETE_TEAM": "Delete team",
-      "DEACTIVATE_FIRST_TEAM_FROM_PROJECTS": "To proceed, you must deactivate the team from all the products",
-      "TEAM_DELETION_ARE_YOU_SURE": "You won't be able to recover the data related to the team anymore. The operation is irreversible!",
-      "YOUR_CURRENT_PASSWORD": "Password of the current user"
+      }
     }
   }
 }

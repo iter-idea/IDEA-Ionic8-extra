@@ -1,6 +1,6 @@
 # IDEA Ionic extra ≫ Teams
 
-Components and services used related to teams and memberships according to IDEA's standard.
+Components and services used related to teams according to IDEA's standard.
 
 [Package on NPM](https://www.npmjs.com/package/@idea-ionic/teams).
 
@@ -27,7 +27,6 @@ window.PROJECT: string;
 
 - Account
 - Attachments
-- Memberships
 - Resource Center
 - Teams
 

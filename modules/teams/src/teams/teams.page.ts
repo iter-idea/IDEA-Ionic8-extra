@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { Team, User } from 'idea-toolbox';
 import {
   IDEALoadingService,
   IDEAAWSAPIService,
   IDEATinCanService,
   IDEAMessageService,
-  IDEATranslationsService,
-  IDEAActionSheetController
+  IDEATranslationsService
 } from '@idea-ionic/common';
 
 // from idea-config.js
@@ -35,8 +34,6 @@ export class IDEATeamsPage {
   constructor(
     public tc: IDEATinCanService,
     public navCtrl: NavController,
-    public alertCtrl: AlertController,
-    public actionSheetCtrl: IDEAActionSheetController,
     public loading: IDEALoadingService,
     public message: IDEAMessageService,
     public API: IDEAAWSAPIService,
@@ -62,8 +59,8 @@ export class IDEATeamsPage {
   /**
    * Change the currently selected team.
    */
-  public async selectTeam(team: Team, newTeam?: boolean) {
-    if (!newTeam && this.isCurrentTeam(team)) return this.navCtrl.navigateBack(['teams', team.teamId]);
+  public async selectTeam(team: Team) {
+    if (this.isCurrentTeam(team)) return this.navCtrl.navigateBack(['teams', team.teamId]);
     // request a team change (so that the current teamId of the user is updated)
     await this.loading.show();
     this.API.patchResource('users', {
@@ -71,12 +68,7 @@ export class IDEATeamsPage {
       resourceId: this.user.userId,
       body: { action: 'CHANGE_TEAM', teamId: team.teamId, project: this.project }
     })
-      .then(() => {
-        // redirect to team page if a new team has just been created, in order to complete its configuration
-        if (newTeam) window.location.assign(`teams/${team.teamId}/settings?newTeam=true`);
-        // reload the app so that it takes the new settings and permissions
-        else window.location.assign('');
-      })
+      .then(() => window.location.assign(''))
       .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
       .finally(() => this.loading.hide());
   }
@@ -105,97 +97,6 @@ export class IDEATeamsPage {
    */
   public getProjectName(project: string): string {
     return this.t._('IDEA_TEAMS.TEAMS.PROJECTS_NAMES.'.concat(project));
-  }
-
-  /**
-   * Create a new team.
-   */
-  public newTeam() {
-    // ask for the name of the new team
-    this.alertCtrl
-      .create({
-        header: this.t._('IDEA_TEAMS.TEAMS.NEW_TEAM'),
-        subHeader: this.t._('IDEA_TEAMS.TEAMS.SELECT_NAME_FOR_NEW_TEAM'),
-        inputs: [{ name: 'name', placeholder: this.t._('IDEA_TEAMS.TEAMS.TEAM_NAME') }],
-        buttons: [
-          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-          {
-            text: this.t._('COMMON.CONFIRM'),
-            handler: async data => {
-              if (!data.name) return;
-              // create a new team and add it to the teams list
-              await this.loading.show();
-              this.API.postResource('teams', { idea: true, body: { name: data.name, project: this.project } })
-                // select the new team as current team
-                .then((team: Team) => this.selectTeam(team, true))
-                .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-                .finally(() => this.loading.hide());
-            }
-          }
-        ]
-      })
-      .then(alert => alert.present());
-  }
-
-  /**
-   * Actions on the team.
-   */
-  public manageTeam(team: Team, event?: any) {
-    // stop the event propagation, to avoid the "click" on the main item
-    if (event) event.stopPropagation();
-    // prepare the options
-    const buttons = [];
-    buttons.push({
-      text: this.t._('IDEA_TEAMS.TEAMS.MANAGE_TEAM_MEMBERS'),
-      icon: 'people',
-      handler: () => this.navCtrl.navigateForward(['teams', team.teamId, 'users'])
-    });
-    buttons.push({
-      text: this.t._('IDEA_TEAMS.TEAMS.DELETE_TEAM'),
-      role: 'destructive',
-      icon: 'trash',
-      handler: () => this.deleteTeam(team)
-    });
-    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
-    // show the options
-    this.actionSheetCtrl
-      .create({ header: this.t._('IDEA_TEAMS.TEAMS.ACTIONS_ON_TEAM_', { team: team.name }), buttons })
-      .then(actions => actions.present());
-  }
-
-  /**
-   * Delete a team, if possible.
-   */
-  public deleteTeam(team: Team) {
-    // be sure the team isn't active in any project
-    if (team.activeInProjects.length) return this.message.error('IDEA_TEAMS.TEAMS.DEACTIVATE_FIRST_TEAM_FROM_PROJECTS');
-    // request the password of the current user (admin) to proceed
-    this.alertCtrl
-      .create({
-        header: this.t._('IDEA_TEAMS.TEAMS.DELETE_TEAM'),
-        subHeader: this.t._('COMMON.ARE_YOU_SURE'),
-        message: this.t._('IDEA_TEAMS.TEAMS.TEAM_DELETION_ARE_YOU_SURE'),
-        inputs: [{ name: 'pwd', type: 'password', placeholder: this.t._('IDEA_TEAMS.TEAMS.YOUR_CURRENT_PASSWORD') }],
-        buttons: [
-          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-          {
-            text: this.t._('COMMON.DELETE'),
-            handler: async data => {
-              // DELETE the team
-              await this.loading.show();
-              this.API.deleteResource('teams', {
-                idea: true,
-                resourceId: team.teamId,
-                headers: { password: data.pwd }
-              })
-                .then(() => window.location.assign(''))
-                .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-                .finally(() => this.loading.hide());
-            }
-          }
-        ]
-      })
-      .then(alert => alert.present());
   }
 
   /**
