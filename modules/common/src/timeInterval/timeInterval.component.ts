@@ -103,14 +103,16 @@ export class IDEATimeIntervalComponent {
    */
   protected getValueToDisplay(timeInterval: TimeInterval): string {
     if (!timeInterval || !timeInterval.isSet()) return '';
-    // since the dates are stored as UTC, we need to add the current timezone
-    const timeZoneOffset = new Date().getTimezoneOffset() * 60000;
-    return (
-      `${this.t._('IDEA_COMMON.FTTT.FROM')} ${this.t.formatDate(timeInterval.from + timeZoneOffset, 'shortTime')} ` +
-      `${this.t._('IDEA_COMMON.FTTT.TO').toLowerCase()} ${this.t.formatDate(
-        timeInterval.to + timeZoneOffset,
-        'shortTime'
-      )}`
+    // note: the time must be always considered without any timezone (UTC)
+    const dateOpts = { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' } as const;
+    return ''.concat(
+      this.t._('IDEA_COMMON.FTTT.FROM'),
+      ' ',
+      new Date(timeInterval.from).toLocaleTimeString(this.t.getCurrentLang(), dateOpts),
+      ' ',
+      this.t._('IDEA_COMMON.FTTT.TO').toLowerCase(),
+      ' ',
+      new Date(timeInterval.to).toLocaleTimeString(this.t.getCurrentLang(), dateOpts)
     );
   }
 

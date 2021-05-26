@@ -158,10 +158,11 @@ export class IDEAFromTimeToTimeComponent {
    */
   public msToTimeString(time: number): string {
     if (!time) return '';
-    // note: the time is always considered without any timezone (UTC)
+    // note: the time must be always considered without any timezone (UTC)
     const refDate = new Date();
     refDate.setTime(time);
-    return this.t.formatDate(refDate, 'shortTime');
+    const dateOpts = { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' } as const;
+    return refDate.toLocaleTimeString(this.t.getCurrentLang(), dateOpts);
   }
 
   /**
