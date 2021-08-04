@@ -10,10 +10,6 @@
       <ion-button [title]="t._('COMMON.RESET')" (click)="reset()">
         <ion-icon name="arrow-undo" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-badge>
-        <ion-label *ngIf="!pm">{{ 'IDEA_COMMON.FTTT.AM' | translate }}</ion-label>
-        <ion-label *ngIf="pm">{{ 'IDEA_COMMON.FTTT.PM' | translate }}</ion-label>
-      </ion-badge>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -332,7 +328,22 @@
     </ion-row>
     <ion-row class="ion-align-items-center">
       <ion-col class="ion-text-right" [size]="3" [sizeSm]="7">
-        <ion-text class="minPrefLabel">{{ 'IDEA_COMMON.FTTT.MINUTES_PREFERENCE' | translate }}:</ion-text>
+        <ion-text class="prefLabel">{{ 'IDEA_COMMON.FTTT.PERIOD' | translate }}:</ion-text>
+      </ion-col>
+      <ion-col [size]="9" [sizeSm]="5">
+        <ion-segment [value]="period" (ionChange)="period = $event?.detail?.value || period">
+          <ion-segment-button [value]="Periods.AM">
+            <ion-label>{{ 'IDEA_COMMON.FTTT.AM' | translate }}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button [value]="Periods.PM">
+            <ion-label>{{ 'IDEA_COMMON.FTTT.PM' | translate }}</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col class="ion-text-right" [size]="3" [sizeSm]="7">
+        <ion-text class="prefLabel">{{ 'IDEA_COMMON.FTTT.MINUTES_PREFERENCE' | translate }}:</ion-text>
       </ion-col>
       <ion-col [size]="9" [sizeSm]="5">
         <ion-segment [value]="minutes" (ionChange)="minutes = $event?.detail?.value || minutes">

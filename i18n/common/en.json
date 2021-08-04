@@ -141,7 +141,8 @@
       "TO": "To",
       "AM": "AM",
       "PM": "PM",
-      "MINUTES_PREFERENCE": "Minutes preference"
+      "MINUTES_PREFERENCE": "Minutes preference",
+      "PERIOD": "Period"
     },
     "LABELER": {
       "EXPLANATION_OBLIGATORY": "Only the translation in the default language is mandatory.",

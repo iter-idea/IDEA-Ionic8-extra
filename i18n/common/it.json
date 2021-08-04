@@ -141,7 +141,8 @@
       "TO": "Alle",
       "AM": "Mattina",
       "PM": "Pomeriggio",
-      "MINUTES_PREFERENCE": "Preferenza minuti"
+      "MINUTES_PREFERENCE": "Preferenza minuti",
+      "PERIOD": "Periodo"
     },
     "LABELER": {
       "EXPLANATION_OBLIGATORY": "Solo la traduzione nella lingua di default è obbligatoria.",

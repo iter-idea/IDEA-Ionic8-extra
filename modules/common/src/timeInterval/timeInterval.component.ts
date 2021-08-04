@@ -6,7 +6,7 @@ import { TimeInterval } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
 
-import { IDEAFromTimeToTimeComponent } from './fromTimeToTime.component';
+import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component';
 
 @Component({
   selector: 'idea-time-interval',
@@ -21,7 +21,7 @@ export class IDEATimeIntervalComponent {
   /**
    * Whether we should start picking the time displaying the afternoon (PM) or the morning (AM, default).
    */
-  @Input() public pm: boolean;
+  @Input() public period: Periods = Periods.AM;
   /**
    * A time to use as lower limit for the possible choices.
    */
@@ -125,7 +125,7 @@ export class IDEATimeIntervalComponent {
         component: IDEAFromTimeToTimeComponent,
         componentProps: {
           timeInterval: this.timeInterval,
-          pm: this.pm,
+          period: this.period,
           notEarlierThan: this.notEarlierThan,
           notLaterThan: this.notLaterThan,
           title: this.label

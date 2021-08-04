@@ -1,8 +1,3 @@
-ion-toolbar ion-buttons {
-  ion-badge {
-    margin: 0 10px;
-  }
-}
 ion-grid.clockGrid {
   ion-button[size='large'] {
     width: 50px;
@@ -34,7 +29,7 @@ ion-grid.clockGrid {
     --color-checked: var(--ion-color-dark);
     --border-color: var(--ion-color-dark);
   }
-  .minPrefLabel {
+  .prefLabel {
     font-size: 0.6em;
     font-weight: bold;
     text-transform: uppercase;

@@ -17,7 +17,7 @@ export class IDEAFromTimeToTimeComponent {
   /**
    * Whether we should start picking the time displaying the afternoon (PM) or the morning (AM, default).
    */
-  @Input() public pm: boolean;
+  @Input() public period: Periods = Periods.AM;
   /**
    * A time to use as lower limit for the possible choices.
    */
@@ -38,6 +38,10 @@ export class IDEAFromTimeToTimeComponent {
    * Helper to use the enum in the UI.
    */
   public Segments = Segments;
+  /**
+   * Helper to use the enum in the UI.
+   */
+  public Periods = Periods;
   /**
    * A copy of the timeInterval, to use until the changes are confirmed.
    */
@@ -103,11 +107,11 @@ export class IDEAFromTimeToTimeComponent {
    */
   private contextualizeHour(hours: number, minutes?: number) {
     // adjust the content to the afternoon hours, if needed
-    if (this.pm) hours += 12;
+    if (this.period === Periods.PM) hours += 12;
     // if we already selected the start of the interval, check whether we need to adjust the time: the center of the
     // clock will be moved to the selected hour (from), to have a reasonable set of choices for the end (to)
     if (this.segment === Segments.TO && this.timeToMs(hours, minutes) < this._timeInterval.from)
-      hours += this.pm ? -12 : 12;
+      hours += this.period === Periods.PM ? -12 : 12;
     // set midnight to 00
     if (hours === 24) hours = 0;
     return hours;
@@ -150,7 +154,7 @@ export class IDEAFromTimeToTimeComponent {
     const timeMs = this.timeToMs(hours, minutes);
     const noonMs = this.timeToMs(12);
     // return true in case the hour doesn't belong to the current meridian
-    return (!this.pm && timeMs > noonMs) || (this.pm && timeMs < noonMs);
+    return (this.period === Periods.AM && timeMs > noonMs) || (this.period === Periods.PM && timeMs < noonMs);
   }
 
   /**
@@ -195,4 +199,12 @@ export class IDEAFromTimeToTimeComponent {
 enum Segments {
   FROM = 'FROM',
   TO = 'TO'
+}
+
+/**
+ * The two possible periods of the component, to interpret the clock the right way.
+ */
+export enum Periods {
+  AM = 'AM',
+  PM = 'PM'
 }
