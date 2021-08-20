@@ -6,11 +6,11 @@ body:
   - type: checkboxes
     id: no-duplicate
     attributes:
-       label: Is there an existing issue for this?
+      label: Is there an existing issue for this?
       description: Please search to see if an issue already exists for the bug you encountered.
       options:
-      - label: I have searched the existing issues
-        required: true
+        - label: I have searched the existing issues
+          required: true
   - type: textarea
     id: feature
     attributes:
@@ -45,12 +45,13 @@ body:
     attributes:
       label: Example
       description: 'Example to reproduce the bug: step-by-step example to reproduce the bug; add screenshots, if applicable.'
-      placeholder: 'Example:
-        1. Sign-in with the team XYZ and a non-admin user.
-        2. Open the dasboard.
-        3. Select an activity not completed.
-        4. Enter in edit mode.
-        5. Try to add a new user as assignee of the activity.'
+      placeholder: |
+        Example:
+          1. Sign-in with the team XYZ and a non-admin user.
+          2. Open the dasboard.
+          3. Select an activity not completed.
+          4. Enter in edit mode.
+          5. Try to add a new user as assignee of the activity.
     validations:
       required: true
   - type: dropdown
@@ -66,7 +67,7 @@ body:
         - Smartphone (Android)
         - Smartphone (iOS)
         - Other
-      validations:
+    validations:
       required: true
   - type: dropdown
     id: browsers
@@ -85,4 +86,5 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
+        ---
+        ## Thanks for taking the time to fill out this bug report!
