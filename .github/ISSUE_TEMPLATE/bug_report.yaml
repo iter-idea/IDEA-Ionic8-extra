@@ -45,8 +45,9 @@ body:
     attributes:
       label: Example
       description: 'Example to reproduce the bug: step-by-step example to reproduce the bug; add screenshots, if applicable.'
-      placeholder: >
+      placeholder: |
         Example:
+
         1. Sign-in with the team XYZ and a non-admin user.
         2. Open the dasboard.
         3. Select an activity not completed.
@@ -85,4 +86,6 @@ body:
       required: true
   - type: markdown
     attributes:
-      value: '## Thanks for taking the time to fill out this bug report!'
+      value: |
+        ---
+        ## Thanks for taking the time to fill out this bug report!
