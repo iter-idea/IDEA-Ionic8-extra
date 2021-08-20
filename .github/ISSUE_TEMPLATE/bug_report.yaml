@@ -68,7 +68,7 @@ body:
         - Smartphone (iOS)
         - Other
       validations:
-      required: true
+        required: true
   - type: dropdown
     id: browsers
     attributes:
