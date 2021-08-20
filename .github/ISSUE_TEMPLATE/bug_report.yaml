@@ -45,12 +45,13 @@ body:
     attributes:
       label: Example
       description: 'Example to reproduce the bug: step-by-step example to reproduce the bug; add screenshots, if applicable.'
-      placeholder: 'Example:
+      placeholder: |
+        Example:
         1. Sign-in with the team XYZ and a non-admin user.
         2. Open the dasboard.
         3. Select an activity not completed.
         4. Enter in edit mode.
-        5. Try to add a new user as assignee of the activity.'
+        5. Try to add a new user as assignee of the activity.
     validations:
       required: true
   - type: dropdown
@@ -84,5 +85,4 @@ body:
       required: true
   - type: markdown
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
+      value: Thanks for taking the time to fill out this bug report!
