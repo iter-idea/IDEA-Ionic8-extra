@@ -9,8 +9,7 @@ import {
   IDEATranslationsService
 } from '@idea-ionic/common';
 
-// from idea-config.js
-declare const IDEA_PROJECT: string;
+import { environment as env } from '@env';
 
 @Component({
   selector: 'account',
@@ -61,7 +60,7 @@ export class IDEAAccountPage {
               await this.loading.show();
               this.API.postResource('emailChangeRequests', {
                 idea: true,
-                body: { password: data.pwd, newEmail: data.email, project: IDEA_PROJECT }
+                body: { password: data.pwd, newEmail: data.email, project: env.idea.project }
               })
                 .then(() => {
                   this.alertCtrl

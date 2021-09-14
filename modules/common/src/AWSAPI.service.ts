@@ -8,15 +8,10 @@ import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEATinCanService } from './tinCan.service';
 import { IDEAOfflineService } from './offline/offline.service';
 
-// from idea-config.js
-declare const IDEA_APP_VERSION: string;
-declare const IDEA_API_URL: string;
-declare const IDEA_API_VERSION: string;
-declare const IDEA_API_IDEA_URL: string;
-declare const IDEA_API_IDEA_VERSION: string;
+import { environment as env } from '@env';
 
-export const API_URL_PROJECT = `https://${IDEA_API_URL}/${IDEA_API_VERSION}`;
-export const API_URL_IDEA = `https://${IDEA_API_IDEA_URL}/${IDEA_API_IDEA_VERSION}`;
+export const API_URL_PROJECT = `https://${String(env.idea.api.url)}/${String(env.idea.api.version)}`;
+export const API_URL_IDEA = `https://${String(env.idea.ideaApi.url)}/${String(env.idea.ideaApi.version)}`;
 
 /**
  * To communicate with an AWS's API Gateway istance.
@@ -120,7 +115,7 @@ export class IDEAAWSAPIService {
     else if (qp) for (const prop in qp) if (qp[prop]) searchParams = searchParams.set(prop, qp[prop]);
     // if requested, add app version and client platform to the info we send to the back-end
     if (addClientInfo) {
-      searchParams = searchParams.set('_v', IDEA_APP_VERSION);
+      searchParams = searchParams.set('_v', env.idea.api.version);
       searchParams = searchParams.set('_p', this.platform.platforms().join(' '));
     }
     return searchParams;

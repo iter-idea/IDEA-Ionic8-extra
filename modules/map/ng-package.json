@@ -10,6 +10,7 @@
       "@ionic/angular": "@ionic/angular",
       "@ionic/storage": "@ionic/storage",
       "idea-toolbox": "idea-toolbox",
+      "@env": "@env",
       "@googlemaps/js-api-loader": "@googlemaps/js-api-loader",
       "@googlemaps/markerclustererplus": "@googlemaps/markerclustererplus",
       "@types/googlemaps": "@types/googlemaps"

@@ -9,8 +9,7 @@ import {
   IDEATranslationsService
 } from '@idea-ionic/common';
 
-// from idea-config.js
-declare const IDEA_PROJECT: string;
+import { environment as env } from '@env';
 
 @Component({
   selector: 'teams',
@@ -29,7 +28,7 @@ export class IDEATeamsPage {
   /**
    * The current project.
    */
-  public project = IDEA_PROJECT;
+  public project = env.idea.project;
 
   constructor(
     public tc: IDEATinCanService,

@@ -11,6 +11,7 @@
       "@ionic-native/core": "@ionic-native/core",
       "@ionic-native/in-app-purchase-2/ngx": "@ionic-native/in-app-purchase-2/ngx",
       "idea-toolbox": "idea-toolbox",
+      "@env": "@env",
       "scriptjs": "scriptjs"
     }
   },

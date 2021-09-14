@@ -7,7 +7,8 @@
       "@capacitor/core": "@capacitor/core",
       "@ionic/angular": "@ionic/angular",
       "@ionic/storage": "@ionic/storage",
-      "idea-toolbox": "idea-toolbox"
+      "idea-toolbox": "idea-toolbox",
+      "@env": "@env"
     }
   },
   "allowedNonPeerDependencies": ["signature_pad"],

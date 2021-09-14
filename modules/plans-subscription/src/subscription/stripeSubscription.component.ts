@@ -12,10 +12,8 @@ import {
   IDEATranslationsService
 } from '@idea-ionic/common';
 
-// from idea-config.js
-declare const STRIPE_PUBLIC_KEY: string;
-declare const IDEA_AUTH_WEBSITE: string;
-declare const IDEA_PROJECT: string;
+import { environment as env } from '@env';
+
 // loaded via script
 declare const Stripe: any;
 
@@ -104,7 +102,7 @@ export class IDEAStripeSubscriptionComponent {
       // be sure the scripts have been injected
       this.injectStripeScripts().then(() => {
         // init Stripe lib
-        this.stripe = Stripe(STRIPE_PUBLIC_KEY);
+        this.stripe = Stripe(env.stripe.publicKey);
         resolve();
       });
     });
@@ -134,7 +132,7 @@ export class IDEAStripeSubscriptionComponent {
    */
   public openWebsite(ev: any) {
     if (ev) ev.stopPropagation();
-    Browser.open({ url: IDEA_AUTH_WEBSITE });
+    Browser.open({ url: env.idea.website });
   }
 
   /**
@@ -147,9 +145,9 @@ export class IDEAStripeSubscriptionComponent {
       // send the token to the back-end and request the subscription (transparent upgrade/downgrade)
       await this.loading.show();
       // get the detailed information about the plan: storePlanId is needed
-      this.API.getResource(`projects/${IDEA_PROJECT}/plans`, { idea: true, resourceId: this.plan.planId })
+      this.API.getResource(`projects/${String(env.idea.project)}/plans`, { idea: true, resourceId: this.plan.planId })
         .then((plan: ProjectPlan) => {
-          this.API.postResource(`projects/${IDEA_PROJECT}/stripeCustomers/${this.subscriptionId}/plans`, {
+          this.API.postResource(`projects/${String(env.idea.project)}/stripeCustomers/${this.subscriptionId}/plans`, {
             idea: true,
             resourceId: plan.storePlanId,
             body: {
@@ -197,7 +195,7 @@ export class IDEAStripeSubscriptionComponent {
    */
   protected async validateSubscription(silent?: boolean) {
     if (!silent) await this.loading.show();
-    this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
+    this.API.patchResource(`projects/${String(env.idea.project)}/subscriptions`, {
       idea: true,
       resourceId: this.subscriptionId,
       body: { action: 'VERIFY', transaction: { type: 'stripe' } }

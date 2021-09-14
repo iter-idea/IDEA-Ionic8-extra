@@ -5,8 +5,7 @@ import { IDEAMessageService, IDEALoadingService, IDEATinCanService, IDEATranslat
 
 import { IDEAAuthService } from './auth.service';
 
-// from idea-config.js
-declare const IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
+import { environment as env } from '@env';
 
 @Component({
   selector: 'idea-sign-up',
@@ -44,7 +43,7 @@ export class IDEASignUpPage {
     this.agreementsCheck = false;
   }
   public ngOnInit() {
-    if (IDEA_AUTH_REGISTRATION_POSSIBLE === false) return this.goToAuth();
+    if (!env.idea.auth.registrationIsPossible) return this.goToAuth();
     // if there isn't any agreement to agree to, set the check true
     this.agreementsCheck =
       this.t._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || this.t._('IDEA_VARIABLES.PRIVACY_POLICY_URL')

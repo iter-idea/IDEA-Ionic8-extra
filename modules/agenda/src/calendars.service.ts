@@ -10,13 +10,7 @@ import {
   IDEATranslationsService,
   IDEASuggestionsComponent
 } from '@idea-ionic/common';
-
-// from idea-config.js
-declare const IDEA_MICROSOFT_API_CLIENT_ID: string;
-declare const IDEA_MICROSOFT_API_SCOPE: string;
-declare const IDEA_GOOGLE_API_CLIENT_ID: string;
-declare const IDEA_GOOGLE_API_SCOPE: string;
-declare const IDEA_APP_URL: string;
+import { environment as env } from '@env';
 
 /**
  * Note: to test locally, you need to temporarily change the redirect URI:
@@ -111,22 +105,22 @@ export class IDEACalendarsService {
         case ExternalCalendarSources.GOOGLE:
           url =
             'https://accounts.google.com/o/oauth2/v2/auth?' +
-            `client_id=${encodeURIComponent(IDEA_GOOGLE_API_CLIENT_ID)}` +
+            `client_id=${encodeURIComponent(env.google.apiClientId)}` +
             '&response_type=code' +
-            `&redirect_uri=${encodeURIComponent(IDEA_APP_URL.concat('/echo/google-calendars-integration'))}` +
+            `&redirect_uri=${encodeURIComponent(env.idea.app.url.concat('/echo/google-calendars-integration'))}` +
             '&include_granted_scopes=true' +
             '&access_type=offline&prompt=consent' +
-            `&scope=${encodeURIComponent(IDEA_GOOGLE_API_SCOPE)}` +
+            `&scope=${encodeURIComponent(env.google.apiScope)}` +
             `&state=${encodeURIComponent(cal.calendarId)}`;
           break;
         case ExternalCalendarSources.MICROSOFT:
           url =
             'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?' +
-            `client_id=${encodeURIComponent(IDEA_MICROSOFT_API_CLIENT_ID)}` +
+            `client_id=${encodeURIComponent(env.microsoft.apiClientId)}` +
             '&response_type=code' +
-            `&redirect_uri=${encodeURIComponent(IDEA_APP_URL.concat('/echo/microsoft-calendars-integration'))}` +
+            `&redirect_uri=${encodeURIComponent(env.idea.app.url.concat('/echo/microsoft-calendars-integration'))}` +
             '&response_mode=query' +
-            `&scope=${encodeURIComponent(IDEA_MICROSOFT_API_SCOPE)}` +
+            `&scope=${encodeURIComponent(env.microsoft.apiScope)}` +
             `&state=${encodeURIComponent(cal.calendarId)}`;
           break;
       }

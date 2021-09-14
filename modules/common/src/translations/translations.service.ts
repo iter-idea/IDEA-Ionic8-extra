@@ -4,8 +4,7 @@ import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml } 
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 
-// from idea-config.js
-declare const IDEA_IONIC_MODULES: string[];
+import { environment as env } from '@env';
 
 /**
  * Base folder containing the translations.
@@ -14,7 +13,7 @@ const BASE_PATH = 'assets/i18n/';
 /**
  * The modules for which to load the translations.
  */
-const MODULES_PATH = ['', 'variables'].concat(IDEA_IONIC_MODULES || []);
+const MODULES_PATH = ['', 'variables'].concat(env.idea.ionicExtraModules || []);
 
 /**
  * Translations service.
@@ -171,13 +170,13 @@ export class IDEATranslationsService {
   /**
    * Return the translation in the current language of a label.
    */
-   public translateLabel(label: Label): string {
+  public translateLabel(label: Label): string {
     return label.translate(this.getCurrentLang(), this.languages());
   }
   /**
    * Shortcut to translateLabel.
    */
-   public _label(label: Label): string {
+  public _label(label: Label): string {
     return this.translateLabel(label);
   }
 

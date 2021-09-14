@@ -12,7 +12,8 @@
       "angular-calendar/date-adapters/date-fns": "angular-calendar/date-adapters/date-fns",
       "color-parse": "color-parse",
       "date-fns": "date-fns",
-      "idea-toolbox": "idea-toolbox"
+      "idea-toolbox": "idea-toolbox",
+      "@env": "@env"
     }
   },
   "allowedNonPeerDependencies": ["color-parse"],

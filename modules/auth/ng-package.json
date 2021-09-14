@@ -9,7 +9,8 @@
       "@ionic/angular": "@ionic/angular",
       "@ionic/storage": "@ionic/storage",
       "amazon-cognito-identity-js": "amazon-cognito-identity-js",
-      "idea-toolbox": "idea-toolbox"
+      "idea-toolbox": "idea-toolbox",
+      "@env": "@env"
     }
   }
 }

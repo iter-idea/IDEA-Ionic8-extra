@@ -8,10 +8,7 @@ import { IDEATinCanService } from '@idea-ionic/common';
 
 import { MAP_DARK_MODE_STYLE } from './darkMode.style';
 
-// from idea-config.js
-declare const IDEA_API_VERSION: string;
-declare const IDEA_GOOGLE_MAPS_API_KEY_PROD: string;
-declare const IDEA_GOOGLE_MAPS_API_KEY_DEV: string;
+import { environment as env } from '@env';
 
 /**
  * Default geolocation: ITER IDEA's office.
@@ -165,12 +162,8 @@ export class IDEAMapComponent {
    */
   private injectSDK(resolve: any) {
     if (this.tc.get('ideaMapLibsLoaded')) return resolve();
-    // use the correct API key, based on the current configuration
-    let key: string;
-    if (IDEA_API_VERSION === 'dev') key = IDEA_GOOGLE_MAPS_API_KEY_DEV;
-    else key = IDEA_GOOGLE_MAPS_API_KEY_PROD;
     // load the library using the correct API key and set the service as "ready" when the loading ends
-    new Loader({ apiKey: key }).load().then(() => {
+    new Loader({ apiKey: env.google.mapsApiKey }).load().then(() => {
       this.tc.set('ideaMapLibsLoaded', true);
       resolve();
     });

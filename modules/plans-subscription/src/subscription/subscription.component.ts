@@ -15,8 +15,7 @@ import {
 
 import { IDEAStripeSubscriptionComponent } from './stripeSubscription.component';
 
-// from idea-config.js
-declare const IDEA_PROJECT: string;
+import { environment as env } from '@env';
 
 @Component({
   selector: 'subscription',
@@ -86,7 +85,7 @@ export class IDEASubscriptionComponent {
     else {
       // load the plans allowed on this platform
       await this.loading.show();
-      this.API.getResource(`projects/${IDEA_PROJECT}/plans`, {
+      this.API.getResource(`projects/${String(env.idea.project)}/plans`, {
         idea: true,
         params: { platform: this.platformStore, target: this.target }
       })
@@ -125,7 +124,7 @@ export class IDEASubscriptionComponent {
     // set the server validation for any paid plan (special query)
     this.store.validator = (p: any, cb: any) => {
       // request a validation (Store <-> IDEA's API)
-      this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
+      this.API.patchResource(`projects/${String(env.idea.project)}/subscriptions`, {
         idea: true,
         resourceId: this.subscriptionId,
         body: { action: 'VERIFY', transaction: p.transaction, storePlanId: p.id }
@@ -256,7 +255,7 @@ export class IDEASubscriptionComponent {
   }
   protected async verifyStripeSubscription() {
     await this.loading.show();
-    this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
+    this.API.patchResource(`projects/${String(env.idea.project)}/subscriptions`, {
       idea: true,
       resourceId: this.subscriptionId,
       body: { action: 'VERIFY', transaction: { type: 'stripe' } }
@@ -291,12 +290,15 @@ export class IDEASubscriptionComponent {
             text: this.t._('COMMON.CONFIRM'),
             handler: () => {
               // get the detailed information about the plan: storePlanId is needed
-              this.API.getResource(`projects/${IDEA_PROJECT}/plans`, { idea: true, resourceId: planId })
+              this.API.getResource(`projects/${String(env.idea.project)}/plans`, { idea: true, resourceId: planId })
                 .then((plan: ProjectPlan) => {
-                  this.API.deleteResource(`projects/${IDEA_PROJECT}/stripeCustomers/${this.subscriptionId}/plans`, {
-                    idea: true,
-                    resourceId: plan.storePlanId
-                  })
+                  this.API.deleteResource(
+                    `projects/${String(env.idea.project)}/stripeCustomers/${this.subscriptionId}/plans`,
+                    {
+                      idea: true,
+                      resourceId: plan.storePlanId
+                    }
+                  )
                     .then(() => this.verifyStripeSubscription())
                     .catch(() => this.message.error('COMMON.OPERATION_FAILED'));
                 })
@@ -323,7 +325,7 @@ export class IDEASubscriptionComponent {
             handler: async () => {
               // request the removal
               await this.loading.show();
-              this.API.patchResource(`projects/${IDEA_PROJECT}/subscriptions`, {
+              this.API.patchResource(`projects/${String(env.idea.project)}/subscriptions`, {
                 idea: true,
                 resourceId: this.subscriptionId,
                 body: { action: 'REMOVE_EXPIRED' }

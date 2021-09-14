@@ -5,9 +5,7 @@ import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEAOfflineService } from './offline/offline.service';
 import { IDEATinCanService } from './tinCan.service';
 
-// from idea-config.js
-declare const IDEA_SOCKET_API_URL: string;
-declare const IDEA_SOCKET_API_VERSION: string;
+import { environment as env } from '@env';
 
 /**
  * To communicate with an AWS API Gateway websocket istance.
@@ -19,7 +17,7 @@ export class IDEAAWSAPISocketService {
   /**
    * The URL to connect for socket communication.
    */
-  public WEBSOCKET_API_URL = `wss://${IDEA_SOCKET_API_URL}/${IDEA_SOCKET_API_VERSION}`;
+  public WEBSOCKET_API_URL = `wss://${String(env.idea.socket.url)}/${String(env.idea.socket.version)}`;
   /**
    * The current websocket connection.
    */

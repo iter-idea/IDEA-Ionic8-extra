@@ -5,13 +5,12 @@ import { Announcement, mdToHtml } from 'idea-toolbox';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-// from idea-config.js
-declare const IDEA_PROJECT: string;
+import { environment as env } from '@env';
 
 /**
  * The storage key to save th last announcement read on this device.
  */
-export const ANNOUNCEMENT_STORAGE_KEY = IDEA_PROJECT.concat('_LAST_ANNOUNCEMENT');
+export const ANNOUNCEMENT_STORAGE_KEY = env.idea.project.concat('_LAST_ANNOUNCEMENT');
 
 /**
  * Announcement card that can be set in any interface to show the alert for this project.

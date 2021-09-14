@@ -8,7 +8,8 @@
       "map": ["dist/map"],
       "plans-subscription": ["dist/plans-subscription"],
       "speechRecognition": ["dist/speech-recognition"],
-      "teams": ["dist/teams"]
+      "teams": ["dist/teams"],
+      "@env": ["environment.ts"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

@@ -8,9 +8,7 @@ import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-// from idea-config.js
-declare const IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
-declare const IDEA_PROJECT: string;
+import { environment as env } from '@env';
 
 @Component({
   selector: 'idea-echo',
@@ -97,7 +95,7 @@ export class IDEAEchoPage {
         action: 'CONFIRM_SIGN_UP',
         username: user,
         confirmationCode: code,
-        cognitoUserPoolClientId: IDEA_AWS_COGNITO_WEB_CLIENT_ID
+        cognitoUserPoolClientId: env.aws.cognito.userPoolClientId
       }
     })
       .then(() => {
@@ -131,7 +129,7 @@ export class IDEAEchoPage {
    */
   public async followEmailChangeConfirmationLink(code: string) {
     await this.loading.show();
-    this.API.getResource('emailChangeRequests', { idea: true, resourceId: code, params: { project: IDEA_PROJECT } })
+    this.API.getResource('emailChangeRequests', { idea: true, resourceId: code, params: { project: env.idea.project } })
       .then(() => {
         this.success = true;
         this.content = this.t._('IDEA_COMMON.ECHO.EMAIL_CHANGED');
@@ -167,7 +165,7 @@ export class IDEAEchoPage {
     await this.loading.show();
     this.API.patchResource('calendars', {
       idea: true,
-      body: { action: 'SET_EXTERNAL_INTEGRATION', service, code, calendarId, project: IDEA_PROJECT }
+      body: { action: 'SET_EXTERNAL_INTEGRATION', service, code, calendarId, project: env.idea.project }
     })
       .then(() => {
         this.success = true;

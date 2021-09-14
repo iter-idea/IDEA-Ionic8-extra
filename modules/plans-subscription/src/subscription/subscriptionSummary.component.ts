@@ -12,8 +12,7 @@ import { Label, Membership, ProjectPlan, ProjectPlanTargets, ProjectSubscription
 
 import { IDEASubscriptionComponent } from './subscription.component';
 
-// from idea-config.js
-declare const IDEA_PROJECT: string;
+import { environment as env } from '@env';
 
 @Component({
   selector: 'idea-subscription-summary',
@@ -88,11 +87,17 @@ export class IDEASubscriptionSummaryComponent {
   private loadSubscription() {
     // acquire the subscription of the team
     this.ready = false;
-    this.API.getResource(`projects/${IDEA_PROJECT}/subscriptions`, { idea: true, resourceId: this.subscriptionId })
+    this.API.getResource(`projects/${String(env.idea.project)}/subscriptions`, {
+      idea: true,
+      resourceId: this.subscriptionId
+    })
       .then((subscription: ProjectSubscription) => {
         this.subscription = new ProjectSubscription(subscription);
         // acquire the subscribed plan, to display basic information
-        this.API.getResource(`projects/${IDEA_PROJECT}/plans`, { idea: true, resourceId: this.subscription.planId })
+        this.API.getResource(`projects/${String(env.idea.project)}/plans`, {
+          idea: true,
+          resourceId: this.subscription.planId
+        })
           .then((plan: ProjectPlan) => {
             this.plan = new ProjectPlan(plan, this.t.languages());
             this.ready = true;

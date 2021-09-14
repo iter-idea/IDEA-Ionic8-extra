@@ -6,11 +6,7 @@ import { IDEAMessageService, IDEALoadingService, IDEATinCanService, IDEATranslat
 
 import { IDEAAuthService } from './auth.service';
 
-// from idea-config.js
-declare const IDEA_APP_TITLE: string;
-declare const IDEA_AUTH_WEBSITE: string;
-declare const IDEA_AUTH_REGISTRATION_POSSIBLE: boolean;
-declare const IDEA_HAS_INTRO_PAGE: boolean;
+import { environment as env } from '@env';
 
 @Component({
   selector: 'idea-sign-in',
@@ -63,10 +59,10 @@ export class IDEASignInPage {
     public auth: IDEAAuthService,
     public t: IDEATranslationsService
   ) {
-    this.title = IDEA_APP_TITLE;
-    this.registrationPossible = IDEA_AUTH_REGISTRATION_POSSIBLE;
-    this.hasIntroPage = IDEA_HAS_INTRO_PAGE;
-    this.website = IDEA_AUTH_WEBSITE;
+    this.title = env.idea.app.title;
+    this.registrationPossible = env.idea.auth.registrationIsPossible;
+    this.hasIntroPage = env.idea.app.hasIntroPage;
+    this.website = env.idea.website;
     this.agreementsCheck = true;
   }
   public ionViewDidEnter() {

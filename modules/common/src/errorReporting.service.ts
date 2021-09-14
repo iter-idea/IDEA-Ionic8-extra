@@ -3,13 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { ClientInfo, ErrorReport } from 'idea-toolbox';
 
-// from idea-config.js
-declare const IDEA_PROJECT: string;
-declare const IDEA_APP_VERSION: string;
-declare const IDEA_API_IDEA_URL: string;
-declare const IDEA_API_IDEA_VERSION: string;
+import { environment as env } from '@env';
 
-export const API_URL = `https://${IDEA_API_IDEA_URL}/${IDEA_API_IDEA_VERSION}`;
+export const API_URL = `https://${String(env.idea.ideaApi.url)}/${String(env.idea.ideaApi.version)}`;
 
 @Injectable()
 export class IDEAErrorReportingService {
@@ -24,15 +20,15 @@ export class IDEAErrorReportingService {
       if ((!this.shouldSend() && !forceSend) || !error?.name) return resolve();
       // prepare and send the report
       const report = new ErrorReport({
-        version: IDEA_APP_VERSION,
-        stage: IDEA_API_IDEA_VERSION,
+        version: env.idea.app.version,
+        stage: env.idea.api.version,
         client: this.getClientInfo(),
         type: error.name,
         error: error.message,
         stack: error.stack
       });
       this.http
-        .post(API_URL.concat(`/projects/${IDEA_PROJECT}/errorReporting`), report)
+        .post(API_URL.concat(`/projects/${String(env.idea.project)}/errorReporting`), report)
         .toPromise()
         .catch(() => {}) // note: never throw an error when reporting an error
         .finally(() => resolve());
@@ -43,7 +39,7 @@ export class IDEAErrorReportingService {
    * Whether we should send the reporting or we are in a scenario in which we should skip it.
    */
   public shouldSend(): boolean {
-    return IDEA_API_IDEA_VERSION === 'prod';
+    return env.idea.ideaApi.version === 'prod';
   }
 
   /**

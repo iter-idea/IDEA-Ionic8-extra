@@ -10,16 +10,12 @@ import {
   ISignUpResult
 } from 'amazon-cognito-identity-js';
 
-// from idea-config.js
-declare const IDEA_PROJECT: string;
-declare const IDEA_AWS_COGNITO_USER_POOL_ID: string;
-declare const IDEA_AWS_COGNITO_WEB_CLIENT_ID: string;
-declare const IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION: boolean;
+import { environment as env } from '@env';
 
 /**
  * The name of the Cognito's user attribute which contains the key of the last device to login in this project.
  */
-const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(IDEA_PROJECT);
+const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(env.idea.project);
 
 /**
  * Cognito wrapper to manage the authentication flow.
@@ -32,8 +28,8 @@ export class IDEAAuthService {
 
   constructor(protected storage: Storage) {
     this.userPool = new CognitoUserPool({
-      UserPoolId: IDEA_AWS_COGNITO_USER_POOL_ID,
-      ClientId: IDEA_AWS_COGNITO_WEB_CLIENT_ID
+      UserPoolId: env.aws.cognito.userPoolId,
+      ClientId: env.aws.cognito.userPoolClientId
     });
   }
 
@@ -144,7 +140,7 @@ export class IDEAAuthService {
             // if the session is active, run the online sign-out; otherwise, only the local data has been deleted
             if (err) return resolve();
             // if a reference to the device was saved, forget it
-            if (IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION) await this.setCurrentDeviceForProject(null);
+            if (env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
             // sign-out from the pool (terminate the current session or all the sessions)
             if (options.global) user.globalSignOut({ onSuccess: () => resolve(), onFailure: err => reject(err) });
             else {
@@ -255,7 +251,7 @@ export class IDEAAuthService {
    * Run some post-auth checks, based on the users groups and on the app's configuration:
    *  - users in the Cognito's "admins" grup skip all the following rules.
    *  - users in the Cognito's "robots" group can't sign-into front-ends (they serve only back-end purposes).
-   *  - if `IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION` is on, make sure there is only one active session per user.
+   *  - if `env.idea.auth.singleSimultaneousSession` is on, make sure there is only one active session per user.
    */
   protected runPostAuthChecks(userDetails: any, callback: (err?: Error) => void) {
     const groups: string[] = userDetails['groups'];
@@ -266,7 +262,7 @@ export class IDEAAuthService {
     const isRobot = groups.some(x => x === 'robots');
     if (isRobot) return callback(new Error('ROBOT_USER'));
     // in case the project limits each account to only one simultaneous session, run a check
-    if (IDEA_AWS_COGNITO_ONLY_ONE_SIMULTANEOUS_SESSION) return this.checkForSimultaneousSessions(userDetails, callback);
+    if (env.idea.auth.singleSimultaneousSession) return this.checkForSimultaneousSessions(userDetails, callback);
     // otherwise, we're done
     callback();
   }

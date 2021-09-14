@@ -5,8 +5,7 @@ import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAOfflineService } from '../offline/offline.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-// from idea-config.js
-declare const IDEA_PROJECT: string;
+import { environment as env } from '@env';
 
 @Component({
   selector: 'idea-sentiment',
@@ -43,7 +42,7 @@ export class IDEASentimentComponent {
     else {
       this.API.postResource('sentiment', {
         idea: true,
-        body: { project: IDEA_PROJECT, language: this.t.getCurrentLang(), text: this.text }
+        body: { project: env.idea.project, language: this.t.getCurrentLang(), text: this.text }
       })
         .then(res => {
           this.sentiment = res.sentiment as Sentiment;
