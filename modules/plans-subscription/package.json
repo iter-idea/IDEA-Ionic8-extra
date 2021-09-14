@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/plans-subscription",
-  "version": "5.28.2",
+  "version": "5.29.0",
   "description": "IDEA Ionic plans subscription (and limit) logic",
   "dependencies": {
     "scriptjs": "^2.5.9",
