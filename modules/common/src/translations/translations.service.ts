@@ -1,8 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml } from 'idea-toolbox';
-
-import { IDEAAWSAPIService } from '../AWSAPI.service';
 
 import { environment as env } from '@env';
 
@@ -45,7 +44,7 @@ export class IDEATranslationsService {
    */
   public onLangChange = new EventEmitter<string>();
 
-  constructor(public API: IDEAAWSAPIService) {
+  constructor(private http: HttpClient) {
     this.translations = {};
   }
 
@@ -200,7 +199,7 @@ export class IDEATranslationsService {
    */
   protected loadTranslationFileHelper(path: string, lang: string): Promise<void> {
     return new Promise(resolve => {
-      this.API.rawRequest()
+      this.http
         .get(`${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`)
         .toPromise()
         .then((obj: any) => {
