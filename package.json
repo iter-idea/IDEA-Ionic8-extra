@@ -1,6 +1,6 @@
 {
   "name": "idea-ionic-extra",
-  "version": "5.29.0",
+  "version": "5.29.1",
   "scripts": {
     "ng": "ng",
     "build": "ng build",
