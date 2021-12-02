@@ -17,7 +17,7 @@
     "@ionic-native/core": ">=5.0.7",
     "@ionic-native/speech-recognition": ">=5.29.0",
     "cordova-plugin-speechrecognition": ">=1.2.0",
-    "idea-toolbox": ">=6.3.1",
+    "idea-toolbox": ">=6.5.3",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
   },
@@ -34,7 +34,7 @@
     "@ionic-native/core": ">=5.0.7",
     "@ionic-native/speech-recognition": ">=5.29.0",
     "cordova-plugin-speechrecognition": ">=1.2.0",
-    "idea-toolbox": ">=6.3.1",
+    "idea-toolbox": ">=6.5.3",
     "rxjs": ">=6.5.5",
     "zone.js": ">=0.10.3"
   },
