@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/speech-recognition",
-  "version": "5.29.1",
+  "version": "5.29.2",
   "description": "IDEA Ionic speech recognition component",
   "dependencies": {
     "tslib": "^2.0.0"
