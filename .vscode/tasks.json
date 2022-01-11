@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "module",
+      "description": "The module to build",
+      "type": "promptString",
+      "default": "common"
+    },
+    {
+      "id": "versionBump",
+      "description": "The type of version bump",
+      "type": "pickString",
+      "options": ["patch", "minor", "major"],
+      "default": "patch"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Install the npm packages of all modules",
+      "type": "shell",
+      "command": "./install.sh",
+      "group": "build",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Build a module",
+      "type": "shell",
+      "command": "ng",
+      "args": ["build", "${input:module}"],
+      "group": "build",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Publish a new version",
+      "type": "shell",
+      "command": "./publish.sh",
+      "args": ["${input:versionBump}"],
+      "group": "build",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 {
   "recommendations": [
-    "msjsdiag.debugger-for-chrome",
     "github.vscode-pull-request-github",
     "github.github-vscode-theme",
     "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "johnpapa.angular2",
+    "angular.ng-template"
   ],
   "unwantedRecommendations": []
 }
