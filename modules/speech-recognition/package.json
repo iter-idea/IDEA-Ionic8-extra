@@ -28,7 +28,7 @@
     "@angular/platform-browser": ">=11.0.0",
     "@angular/router": ">=11.0.0",
     "@capacitor/core": ">=2.4.5",
-    "@idea-ionic/common": "latest",
+    "@idea-ionic/common": ">=5.x.x",
     "@ionic/angular": ">=5.0.0",
     "@ionic/storage-angular": ">=3.0.6",
     "@ionic-native/core": ">=5.0.7",
