@@ -14,7 +14,8 @@
     "node_modules": true,
     "npm-debug.log": true,
     "www": true,
-    ".vs": true
+    ".vs": true,
+    ".angular": true
   },
   "files.trimTrailingWhitespace": true,
   "git.confirmSync": false,
