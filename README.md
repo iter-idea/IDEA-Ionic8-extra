@@ -1,8 +1,8 @@
 # IDEA Ionic extra
 
-IDEA's extra components and services built on Ionic 5, and distributed with different NPM packages.
+IDEA's extra components and services built on **Ionic 6**, and distributed with different NPM packages.
 
-_The old version, compatible with Ionic 3, [is available here](https://github.com/uatisdeproblem/IDEA-Ionic3-extra)_.
+_The last version fully compatible with **Ionic 5** is [v5.29.4](https://github.com/iter-idea/IDEA-Ionic5-extra/releases/tag/v5.29.4)._
 
 ## Modules
 
@@ -11,6 +11,8 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - [auth](modules/auth)
 - [map](modules/map)
 - [teams](modules/teams)
+
+_Note: the module **speech-recognition** has been temporarily removed because it used unsupported libraries (@ionic-native)._
 
 ## Use
 

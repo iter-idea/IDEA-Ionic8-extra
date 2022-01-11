@@ -15,7 +15,7 @@ _Be sure to install all the requested peer dependencies._
 Then, add this imports into the `global.scss` file, after the import on the top of the page:
 
 ```
-@import '../node_modules/@idea-ionic/common/css/global.scss';
+@import '~@idea-ionic/common/css/global.scss';
 ```
 
 To make sure the translations are loaded into the project:
@@ -61,6 +61,7 @@ Finally, add in the environments desired the variables you find in the `environm
 - Loading service
 - Message service
 - Push notifications service
+- Storage service
 - Tin can service
 - Translation service
 - Variables highlight (pipe)

@@ -15,7 +15,7 @@ _Be sure to install all the requested peer dependencies._
 Then, add this imports into the `global.scss` file, after the import on the top of the page:
 
 ```
-@import '../node_modules/@idea-ionic/map/css/global.scss';
+@import '~@idea-ionic/map/css/global.scss';
 ```
 
 Make sure that there is a path (tsconfig file) pointing to `@env` which contains the environment files (Angular standard).

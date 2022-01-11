@@ -15,8 +15,8 @@ _Be sure to install all the requested peer dependencies._
 Then, add this imports into the `global.scss` file, after the import on the top of the page:
 
 ```
-@import '../node_modules/angular-calendar/css/angular-calendar.css';
-@import '../node_modules/@idea-ionic/agenda/css/global.scss';
+@import '~angular-calendar/css/angular-calendar.css';
+@import '~@idea-ionic/agenda/css/global.scss';
 ```
 
 To make sure the translations are loaded into the project:
