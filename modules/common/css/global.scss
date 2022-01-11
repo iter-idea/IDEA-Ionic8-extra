@@ -49,10 +49,8 @@
   }
 }
 
-.popoverLarge {
-  .popover-content {
-    width: 300px;
-  }
+ion-popover.popoverLarge::part(content) {
+  width: 300px;
 }
 
 ion-modal.modalFullScreen {
