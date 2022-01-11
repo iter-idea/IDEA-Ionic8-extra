@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit
 import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
+// @ts-ignore
 import { isFuture, isToday, isSameDay } from 'date-fns';
 // @ts-ignore
 import ColorParse from 'color-parse';
