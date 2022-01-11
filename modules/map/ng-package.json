@@ -8,7 +8,7 @@
       "@google/maps": "@google/maps",
       "@idea-ionic/common": "@idea-ionic/common",
       "@ionic/angular": "@ionic/angular",
-      "@ionic/storage": "@ionic/storage",
+      "@ionic/storage-angular": "@ionic/storage-angular",
       "idea-toolbox": "idea-toolbox",
       "@env": "@env",
       "@googlemaps/js-api-loader": "@googlemaps/js-api-loader",

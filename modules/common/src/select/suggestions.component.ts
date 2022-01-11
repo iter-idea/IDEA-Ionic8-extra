@@ -1,9 +1,9 @@
 import { Component, HostListener, Input, ViewChild } from '@angular/core';
 import { ModalController, IonSearchbar, Platform, IonVirtualScroll } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
-import { Storage } from '@ionic/storage';
 import { Suggestion } from 'idea-toolbox';
 
+import { IDEAStorageService } from '../storage.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
@@ -103,7 +103,7 @@ export class IDEASuggestionsComponent {
   constructor(
     public platform: Platform,
     public modalCtrl: ModalController,
-    public storage: Storage,
+    public storage: IDEAStorageService,
     public tc: IDEATinCanService,
     public t: IDEATranslationsService
   ) {

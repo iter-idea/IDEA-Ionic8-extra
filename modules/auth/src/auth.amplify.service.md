@@ -6,7 +6,7 @@ When this changes, we can implement the following file (already tested) rather t
 
 ```
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { IDEAStorageService } from '@idea-ionic/common';
 import Auth from '@aws-amplify/auth';
 
 /**
@@ -21,7 +21,7 @@ const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(env.idea.project);
  */
 @Injectable()
 export class IDEAAuthService {
-  constructor(protected storage: Storage) {
+  constructor(protected storage: IDEAStorageService) {
     Auth.configure({ userPoolId: env.aws.cognito.userPoolId, userPoolWebClientId: env.aws.cognito.userPoolClientId });
   }
   /**

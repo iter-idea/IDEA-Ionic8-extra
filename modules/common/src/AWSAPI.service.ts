@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Platform } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 
+import { IDEAStorageService } from './storage.service';
 import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEATinCanService } from './tinCan.service';
 import { IDEAOfflineService } from './offline/offline.service';
@@ -26,7 +26,7 @@ export class IDEAAWSAPIService {
     protected http: HttpClient,
     protected platform: Platform,
     protected tc: IDEATinCanService,
-    protected storage: Storage,
+    protected storage: IDEAStorageService,
     protected errorReporting: IDEAErrorReportingService,
     protected offline: IDEAOfflineService
   ) {}

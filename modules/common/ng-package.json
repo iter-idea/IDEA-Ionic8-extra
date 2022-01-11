@@ -6,7 +6,7 @@
     "umdModuleIds": {
       "@capacitor/core": "@capacitor/core",
       "@ionic/angular": "@ionic/angular",
-      "@ionic/storage": "@ionic/storage",
+      "@ionic/storage-angular": "@ionic/storage-angular",
       "idea-toolbox": "idea-toolbox",
       "@env": "@env"
     }

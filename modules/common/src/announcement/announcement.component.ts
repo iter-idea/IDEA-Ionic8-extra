@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { Announcement, mdToHtml } from 'idea-toolbox';
 
+import { IDEAStorageService } from '../storage.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
@@ -35,7 +35,7 @@ export class IDEAAnnouncementComponent {
    */
   public htmlContent: string;
 
-  constructor(public t: IDEATranslationsService, public tc: IDEATinCanService, public storage: Storage) {
+  constructor(public t: IDEATranslationsService, public tc: IDEATinCanService, public storage: IDEAStorageService) {
     this.color = 'dark';
   }
   public ngOnInit() {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
 import { Delta, DeltaRecord, DeltaResources, epochDateTime } from 'idea-toolbox';
 
+import { IDEAStorageService } from '../storage.service';
 import { IDEAAWSAPIService, APIRequestOption } from '../AWSAPI.service';
 import { IDEAOfflineService } from './offline.service';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -114,7 +114,7 @@ export class IDEAOfflineDataService {
   protected queueAPIRequestKey: string;
 
   constructor(
-    protected storage: Storage,
+    protected storage: IDEAStorageService,
     protected t: IDEATranslationsService,
     protected offline: IDEAOfflineService,
     protected API: IDEAAWSAPIService

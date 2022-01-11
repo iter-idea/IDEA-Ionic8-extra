@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 
+import { IDEAStorageService } from './storage.service';
 import { IDEATinCanService } from './tinCan.service';
 
 /**
@@ -19,7 +19,7 @@ export class IDEACachedResourcesService {
    */
   public cacheKeyIndex = 'IDEA_CACHED_RESOURCES_KEY';
 
-  constructor(public storage: Storage, public tc: IDEATinCanService) {
+  constructor(public storage: IDEAStorageService, public tc: IDEATinCanService) {
     this.loadKeyFromStorage();
   }
 
@@ -36,11 +36,9 @@ export class IDEACachedResourcesService {
    * Load the cache key from the local storage.
    */
   public loadKeyFromStorage() {
-    this.storage.ready().then(() => {
-      this.storage.get(this.cacheKeyIndex).then(key => {
-        if (key) this.tc.set(this.cacheKeyIndex, key);
-        else this.updateCacheKey(Date.now());
-      });
+    this.storage.get(this.cacheKeyIndex).then(key => {
+      if (key) this.tc.set(this.cacheKeyIndex, key);
+      else this.updateCacheKey(Date.now());
     });
   }
 

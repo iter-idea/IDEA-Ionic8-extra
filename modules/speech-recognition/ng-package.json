@@ -7,7 +7,7 @@
       "@capacitor/core": "@capacitor/core",
       "@idea-ionic/common": "@idea-ionic/common",
       "@ionic/angular": "@ionic/angular",
-      "@ionic/storage": "@ionic/storage",
+      "@ionic/storage-angular": "@ionic/storage-angular",
       "@ionic-native/speech-recognition": "@ionic-native/speech-recognition",
       "@ionic-native/speech-recognition/ngx": "@ionic-native/speech-recognition/ngx",
       "idea-toolbox": "idea-toolbox"
