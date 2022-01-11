@@ -97,4 +97,5 @@ export * from './src/errorReporting.service';
 export * from './src/loading.service';
 export * from './src/message.service';
 export * from './src/pushNotifications.service';
+export * from './src/storage.service';
 export * from './src/tinCan.service';
