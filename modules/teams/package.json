@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/teams",
-  "version": "5.29.4",
+  "version": "6.0.0",
   "description": "IDEA Ionic teams components",
   "dependencies": {
     "tslib": ">=2.0.0"
@@ -25,7 +25,7 @@
     "@angular/platform-browser": ">=13.1.0",
     "@angular/router": ">=13.1.0",
     "@capacitor/core": "^2.x.x",
-    "@idea-ionic/common": ">=5.x.x",
+    "@idea-ionic/common": ">=6.x.x",
     "@ionic/angular": ">=6.0.1",
     "@ionic/storage-angular": ">=3.0.6",
     "idea-toolbox": ">=6.5.7",
