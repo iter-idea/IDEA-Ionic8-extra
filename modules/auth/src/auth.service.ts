@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -9,6 +8,8 @@ import {
   CognitoUserSession,
   ISignUpResult
 } from 'amazon-cognito-identity-js';
+
+import { IDEAStorageService } from '@idea-ionic/common';
 
 import { environment as env } from '@env';
 
@@ -26,7 +27,7 @@ const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(env.idea.project);
 export class IDEAAuthService {
   protected userPool: CognitoUserPool;
 
-  constructor(protected storage: Storage) {
+  constructor(protected storage: IDEAStorageService) {
     this.userPool = new CognitoUserPool({
       UserPoolId: env.aws.cognito.userPoolId,
       ClientId: env.aws.cognito.userPoolClientId
