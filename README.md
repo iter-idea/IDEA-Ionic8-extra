@@ -12,8 +12,6 @@ _The last version fully compatible with **Ionic 5** is [v5.29.4](https://github.
 - [map](modules/map)
 - [teams](modules/teams)
 
-_Note: the module **speech-recognition** has been temporarily removed because it used unsupported libraries (@ionic-native)._
-
 ## Use
 
 To use a module in a project, install it through NPM (together with its dependencies):
