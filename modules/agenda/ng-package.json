@@ -2,19 +2,7 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/agenda",
   "lib": {
-    "entryFile": "public-api.ts",
-    "umdModuleIds": {
-      "@capacitor/core": "@capacitor/core",
-      "@idea-ionic/common": "@idea-ionic/common",
-      "@ionic/angular": "@ionic/angular",
-      "@ionic/storage-angular": "@ionic/storage-angular",
-      "angular-calendar": "angular-calendar",
-      "angular-calendar/date-adapters/date-fns": "angular-calendar/date-adapters/date-fns",
-      "color-parse": "color-parse",
-      "date-fns": "date-fns",
-      "idea-toolbox": "idea-toolbox",
-      "@env": "@env"
-    }
+    "entryFile": "public-api.ts"
   },
   "allowedNonPeerDependencies": ["color-parse"],
   "assets": ["./css/*.scss"]

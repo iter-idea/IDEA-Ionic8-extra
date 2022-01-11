@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { IDEAMessageService, IDEALoadingService, IDEATinCanService, IDEATranslationsService } from '@idea-ionic/common';
 
@@ -9,7 +9,7 @@ import { IDEAAuthService } from './auth.service';
   templateUrl: 'newPassword.page.html',
   styleUrls: ['auth.scss']
 })
-export class IDEANewPasswordPage {
+export class IDEANewPasswordPage implements OnInit {
   /**
    * The email address used to identify the account.
    */

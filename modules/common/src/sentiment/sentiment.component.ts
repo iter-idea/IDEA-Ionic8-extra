@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
@@ -12,7 +12,7 @@ import { environment as env } from '@env';
   templateUrl: 'sentiment.component.html',
   styleUrls: ['sentiment.component.scss']
 })
-export class IDEASentimentComponent {
+export class IDEASentimentComponent implements OnChanges {
   /**
    * The sentiment detected from the input text.
    */
@@ -31,7 +31,7 @@ export class IDEASentimentComponent {
   @Output() public change = new EventEmitter<Sentiment>();
 
   constructor(public offline: IDEAOfflineService, public API: IDEAAWSAPIService, public t: IDEATranslationsService) {}
-  protected ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes.text.previousValue !== changes.text.currentValue) this.detectSentiment(changes.text.currentValue);
   }
   /**

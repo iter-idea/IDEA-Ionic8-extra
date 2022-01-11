@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { OverlayEventDetail } from '@ionic/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
   templateUrl: 'timeInterval.component.html',
   styleUrls: ['timeInterval.component.scss']
 })
-export class IDEATimeIntervalComponent {
+export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The time interval to set.
    */

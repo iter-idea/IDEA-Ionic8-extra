@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -8,7 +8,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   templateUrl: 'mde.component.html',
   styleUrls: ['mde.component.scss']
 })
-export class IDEAMDEComponent {
+export class IDEAMDEComponent implements OnInit {
   /**
    * Id to identify this specific Markdown Editor (default: 'mde').
    */

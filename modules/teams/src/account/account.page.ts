@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { User } from 'idea-toolbox';
 import {
@@ -16,7 +16,7 @@ import { environment as env } from '@env';
   templateUrl: 'account.page.html',
   styleUrls: ['account.page.scss']
 })
-export class IDEAAccountPage {
+export class IDEAAccountPage implements OnInit {
   public user: User;
   public newEmail: string;
   public newPassword: string;

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Plugins, CameraResultType, CameraPhoto, CameraSource } from '@capacitor/core';
 const { Camera, Browser } = Plugins;
@@ -17,7 +17,7 @@ import {
   templateUrl: 'attachments.component.html',
   styleUrls: ['attachments.component.scss']
 })
-export class IDEAttachmentsComponent {
+export class IDEAttachmentsComponent implements OnInit {
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */

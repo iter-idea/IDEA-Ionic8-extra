@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
@@ -18,7 +18,7 @@ const AVATAR_FALLBACK_URL = './assets/imgs/no-avatar.jpg';
   templateUrl: 'agenda.component.html',
   styleUrls: ['agenda.component.scss']
 })
-export class IDEAAgendaComponent {
+export class IDEAAgendaComponent implements OnInit {
   /**
    * The events to display in the calendar.
    */

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Calendar, ExternalCalendarInfo, ExternalCalendarSources, Membership } from 'idea-toolbox';
 import {
@@ -16,7 +16,7 @@ import { IDEACalendarsService } from './calendars.service';
   templateUrl: 'calendarCreation.component.html',
   styleUrls: ['calendarCreation.component.scss']
 })
-export class IDEACalendarCreationComponent {
+export class IDEACalendarCreationComponent implements OnInit {
   /**
    * Whether we want to allow the creation of only a particular type of calendar, based on the scope.
    */

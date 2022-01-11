@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ExternalCalendarSources, mdToHtml } from 'idea-toolbox';
@@ -15,7 +15,7 @@ import { environment as env } from '@env';
   templateUrl: 'echo.page.html',
   styleUrls: ['echo.page.scss']
 })
-export class IDEAEchoPage {
+export class IDEAEchoPage implements OnInit {
   /**
    * The message/content to show.
    */

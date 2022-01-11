@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TimeInterval } from 'idea-toolbox';
 
@@ -9,7 +9,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   templateUrl: 'fromTimeToTime.component.html',
   styleUrls: ['fromTimeToTime.component.scss']
 })
-export class IDEAFromTimeToTimeComponent {
+export class IDEAFromTimeToTimeComponent implements OnInit {
   /**
    * The time interval to set.
    */

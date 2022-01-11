@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
 
 import {
@@ -19,7 +19,7 @@ import { IDEARCResourcesComponent } from './RCResources.component';
   templateUrl: 'RCFolders.component.html',
   styleUrls: ['RCFolders.component.scss']
 })
-export class IDEARCFoldersComponent {
+export class IDEARCFoldersComponent implements OnInit {
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */

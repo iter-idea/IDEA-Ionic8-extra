@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 const { Browser } = Plugins;
 import {
@@ -23,7 +23,7 @@ import {
   templateUrl: 'RCPicker.component.html',
   styleUrls: ['RCPicker.component.scss']
 })
-export class IDEARCPickerComponent {
+export class IDEARCPickerComponent implements OnChanges {
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */

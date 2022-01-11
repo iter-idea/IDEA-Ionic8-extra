@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { epochDateTime } from 'idea-toolbox';
 
@@ -14,7 +14,7 @@ const SUNDAY = 259200000;
   templateUrl: 'calendarPicker.component.html',
   styleUrls: ['calendarPicker.component.scss']
 })
-export class IDEACalendarPickerComponent {
+export class IDEACalendarPickerComponent implements OnInit {
   @Input() public inputDate: epochDateTime;
   @Input() public timePicker: boolean;
   @Input() public title: string;

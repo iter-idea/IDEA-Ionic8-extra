@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EmailData, StringVariable, Suggestion } from 'idea-toolbox';
 
@@ -10,7 +10,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
   templateUrl: 'sendEmail.component.html',
   styleUrls: ['sendEmail.component.scss']
 })
-export class IDEASendEmailComponent {
+export class IDEASendEmailComponent implements OnInit {
   /**
    * The content and receivers of the email.
    */

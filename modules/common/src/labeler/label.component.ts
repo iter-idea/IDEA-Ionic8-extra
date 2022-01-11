@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Label, mdToHtml, StringVariable } from 'idea-toolbox';
 
@@ -14,7 +14,7 @@ import { IDEALabelerComponent } from './labeler.component';
   templateUrl: 'label.component.html',
   styleUrls: ['label.component.scss']
 })
-export class IDEALabelComponent {
+export class IDEALabelComponent implements OnInit {
   /**
    * The label to manage. The name is set to not overlap with IDEA's components typical use of the attribute `label`.
    */

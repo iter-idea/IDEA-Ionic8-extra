@@ -63,15 +63,6 @@ cd client
 npm link @idea-ionic/<module>
 ```
 
-In case the project's compiler starts looping, you may also need to **temporarily** turn Ivy off in the project's `tsconfig.json` file; **when you commit changes, Ivy must be active!!**
-
-```
- "angularCompilerOptions": {
-    //
-    "enableIvy": false
-  }
-```
-
 _Note: running `npm i` on a project's client deletes the link and replaces the module with NPM's latest version._
 
 ## Release

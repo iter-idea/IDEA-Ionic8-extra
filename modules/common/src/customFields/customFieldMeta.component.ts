@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { OverlayEventDetail } from '@ionic/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { CustomFieldMeta, CustomFieldTypes, Label, loopStringEnumKeys } from 'idea-toolbox';
@@ -13,7 +13,7 @@ import { IDEAIconsComponent } from '../icons/icons.component';
   templateUrl: 'customFieldMeta.component.html',
   styleUrls: ['customFieldMeta.component.scss']
 })
-export class IDEACustomFieldMetaComponent {
+export class IDEACustomFieldMetaComponent implements OnInit {
   /**
    * The CustomFieldMeta to manage.
    */

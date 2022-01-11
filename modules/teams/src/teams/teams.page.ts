@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Team, User } from 'idea-toolbox';
 import {
@@ -16,7 +16,7 @@ import { environment as env } from '@env';
   templateUrl: 'teams.page.html',
   styleUrls: ['teams.page.scss']
 })
-export class IDEATeamsPage {
+export class IDEATeamsPage implements OnInit {
   /**
    * The current user.
    */

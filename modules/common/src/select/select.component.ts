@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Suggestion } from 'idea-toolbox';
 
@@ -31,7 +31,7 @@ import { IDEASuggestionsComponent } from './suggestions.component';
   templateUrl: 'select.component.html',
   styleUrls: ['select.component.scss']
 })
-export class IDEASelectComponent {
+export class IDEASelectComponent implements OnChanges {
   /**
    * The description to show in the field.
    * Set the property so it detects changes.

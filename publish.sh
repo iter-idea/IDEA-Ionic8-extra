@@ -22,7 +22,7 @@ done
 # build the modules (for production)
 for MODULE in ${MODULES_DIR}/*/;
 do
-  ng build $(basename ${MODULE}) --prod
+  ng build $(basename ${MODULE}) --configuration production
 done
 
 # bump the module's versions

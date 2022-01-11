@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EmailData, mdToHtml, StringVariable } from 'idea-toolbox';
 
@@ -9,7 +9,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   templateUrl: 'emailDataConfiguration.component.html',
   styleUrls: ['emailDataConfiguration.component.scss']
 })
-export class IDEAEmailDataConfigurationComponent {
+export class IDEAEmailDataConfigurationComponent implements OnInit {
   /**
    * The emailData to configure.
    */

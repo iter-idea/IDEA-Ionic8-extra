@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 const { Browser } = Plugins;
@@ -24,7 +24,7 @@ const FILE_SIZE_LIMIT_MB = 10;
   templateUrl: 'RCResources.component.html',
   styleUrls: ['RCResources.component.scss']
 })
-export class IDEARCResourcesComponent {
+export class IDEARCResourcesComponent implements OnInit {
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */

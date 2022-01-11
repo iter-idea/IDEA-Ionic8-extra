@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { RCConfiguredFolder, RCFolder, Suggestion } from 'idea-toolbox';
 import { IDEAAWSAPIService, IDEATinCanService, IDEATranslationsService } from '@idea-ionic/common';
 
@@ -7,7 +7,7 @@ import { IDEAAWSAPIService, IDEATinCanService, IDEATranslationsService } from '@
   templateUrl: 'RCConfigurator.component.html',
   styleUrls: ['RCConfigurator.component.scss']
 })
-export class IDEARCConfiguratorComponent {
+export class IDEARCConfiguratorComponent implements OnInit {
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */

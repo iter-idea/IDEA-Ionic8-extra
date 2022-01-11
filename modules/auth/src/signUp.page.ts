@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { isEmpty } from 'idea-toolbox';
 import { IDEAMessageService, IDEALoadingService, IDEATinCanService, IDEATranslationsService } from '@idea-ionic/common';
@@ -12,7 +12,7 @@ import { environment as env } from '@env';
   templateUrl: 'signUp.page.html',
   styleUrls: ['auth.scss']
 })
-export class IDEASignUpPage {
+export class IDEASignUpPage implements OnInit {
   /**
    * The email address used to identify the new account.
    */

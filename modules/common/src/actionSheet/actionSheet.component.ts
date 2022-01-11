@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import { PopoverController } from '@ionic/angular';
 
@@ -13,7 +13,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   templateUrl: 'actionSheet.component.html',
   styleUrls: ['actionSheet.component.scss']
 })
-export class IDEAActionSheetComponent {
+export class IDEAActionSheetComponent implements OnInit {
   /**
    * An array of buttons for the actions panel.
    */

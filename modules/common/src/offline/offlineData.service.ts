@@ -266,7 +266,7 @@ export class IDEAOfflineDataService {
           if (!promise) request.error = 'INVALID_METHOD';
           else request.error = null;
         } catch (err) {
-          request.error = err.message || 'UNKNOWN_ERROR';
+          request.error = (err as Error).message || 'UNKNOWN_ERROR';
         }
       });
       // keep the requests NOT successfully executed

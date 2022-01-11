@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Loader } from '@googlemaps/js-api-loader';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
@@ -41,7 +41,7 @@ const DEFAULT_ZOOM = 8;
   selector: 'idea-map',
   template: ''
 })
-export class IDEAMapComponent {
+export class IDEAMapComponent implements OnInit {
   /**
    * The Google Maps' map object.
    */
@@ -243,7 +243,7 @@ export class IDEAMapComponent {
     if (options.animate) marker.setAnimation(google.maps.Animation.DROP);
     // add the click handler to the marker (default or custom function)
     if (options.title || this.markerClickFn)
-      google.maps.event.addListener(marker, 'click', event =>
+      google.maps.event.addListener(marker, 'click', (event: any) =>
         this.markerClickFn ? this.markerClickFn(event, marker) : this.defaultMarkerClickFn(event, marker)
       );
     // add the marker to the list

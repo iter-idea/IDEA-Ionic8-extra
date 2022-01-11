@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { CustomFieldMeta, CustomSectionMeta, Label, Suggestion } from 'idea-toolbox';
 
@@ -14,7 +14,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
   templateUrl: 'customSectionMeta.component.html',
   styleUrls: ['customSectionMeta.component.scss']
 })
-export class IDEACustomSectionMetaComponent {
+export class IDEACustomSectionMetaComponent implements OnInit {
   /**
    * The CustomSectionMeta to manage.
    */

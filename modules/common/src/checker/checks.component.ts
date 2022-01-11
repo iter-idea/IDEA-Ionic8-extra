@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input } from '@angular/core';
+import { Component, ViewChild, Input, OnInit } from '@angular/core';
 import { IonSearchbar, ModalController } from '@ionic/angular';
 import { Check } from 'idea-toolbox';
 
@@ -9,7 +9,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   templateUrl: 'checks.component.html',
   styleUrls: ['checks.component.scss']
 })
-export class IDEAChecksComponent {
+export class IDEAChecksComponent implements OnInit {
   @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
   /**
    * It should be read only until the component closure.

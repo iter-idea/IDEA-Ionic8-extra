@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Announcement, mdToHtml } from 'idea-toolbox';
 
 import { IDEAStorageService } from '../storage.service';
@@ -20,7 +20,7 @@ export const ANNOUNCEMENT_STORAGE_KEY = env.idea.project.concat('_LAST_ANNOUNCEM
   templateUrl: 'announcement.component.html',
   styleUrls: ['announcement.component.scss']
 })
-export class IDEAAnnouncementComponent {
+export class IDEAAnnouncementComponent implements OnInit {
   /**
    * The color for the announcement card.
    */

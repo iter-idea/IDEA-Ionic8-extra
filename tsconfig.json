@@ -1,36 +1,36 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictNullChecks": false,
+    "noFallthroughCasesInSwitch": true,
+    "strictPropertyInitialization": false,
+    "sourceMap": true,
     "paths": {
-      "agenda": ["dist/agenda"],
-      "auth": ["dist/auth"],
-      "common": ["dist/common"],
-      "map": ["dist/map"],
-      "teams": ["dist/teams"],
+      "agenda": ["dist/agenda", "dist/agenda/agenda"],
+      "auth": ["dist/auth", "dist/auth/auth"],
+      "common": ["dist/common/common", "dist/common"],
+      "map": ["dist/map", "dist/map/map"],
+      "teams": ["dist/teams", "dist/teams/teams"],
       "@env": ["environment.ts"]
     },
-    "emitDecoratorMetadata": true,
+    "declaration": false,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "types": ["node", "googlemaps"],
-    "declaration": true,
-    "declarationMap": true,
-    "inlineSources": true,
-    "importHelpers": true,
-    "module": "es2020",
-    "removeComments": true,
-    "sourceMap": true,
-    "target": "es6",
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "strictNullChecks": false,
-    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true
+    "importHelpers": true,
+    "target": "es2017",
+    "module": "es2020",
+    "lib": ["es2020", "dom"]
   },
   "angularCompilerOptions": {
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true,
-    "enableIvy": false
+    "enableI18nLegacyMessageIdFormat": false,
+    // @idea the parameters below should be turned on (and the warning should be fixed)
+    "strictInjectionParameters": false,
+    "strictInputAccessModifiers": false,
+    "strictTemplates": false
   }
 }

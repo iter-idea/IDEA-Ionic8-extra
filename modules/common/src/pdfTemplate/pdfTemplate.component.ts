@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import {
   Label,
@@ -28,7 +28,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
   templateUrl: 'pdfTemplate.component.html',
   styleUrls: ['pdfTemplate.component.scss']
 })
-export class IDEAPDFTemplateComponent {
+export class IDEAPDFTemplateComponent implements OnInit {
   /**
    * The blueprint to define the allowed sections and fields for this PDF template.
    */

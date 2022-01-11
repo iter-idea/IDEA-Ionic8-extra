@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { Calendar, Check, Membership } from 'idea-toolbox';
 import {
@@ -16,7 +16,7 @@ import { IDEACalendarsService } from './calendars.service';
   templateUrl: 'calendar.component.html',
   styleUrls: ['calendar.component.scss']
 })
-export class IDEACalendarComponent {
+export class IDEACalendarComponent implements OnInit {
   /**
    * The calendar to manage.
    */

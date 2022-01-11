@@ -1,11 +1,11 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'idea-duration',
   templateUrl: 'duration.component.html',
   styleUrls: ['duration.component.scss']
 })
-export class IDEADurationComponent {
+export class IDEADurationComponent implements OnChanges {
   /**
    * The default number of seconds, to build the duration.
    */

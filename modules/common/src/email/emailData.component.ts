@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EmailData, StringVariable } from 'idea-toolbox';
 
@@ -13,7 +13,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
   templateUrl: 'emailData.component.html',
   styleUrls: ['emailData.component.scss']
 })
-export class IDEAEmailDataComponent {
+export class IDEAEmailDataComponent implements OnInit {
   /**
    * The email data to manage.
    */

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController, IonSearchbar } from '@ionic/angular';
 import { Label } from 'idea-toolbox';
 
@@ -10,7 +10,7 @@ import { IDEALabelerComponent } from '../labeler/labeler.component';
   templateUrl: 'listElements.component.html',
   styleUrls: ['listElements.component.scss']
 })
-export class IDEAListELementsComponent {
+export class IDEAListELementsComponent implements OnInit {
   /**
    * It should be read only until the component closure.
    */

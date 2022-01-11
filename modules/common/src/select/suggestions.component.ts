@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalController, IonSearchbar, Platform, IonVirtualScroll } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import { Suggestion } from 'idea-toolbox';
@@ -14,7 +14,7 @@ const SHOULD_SHOW_DETAILS_STORAGE_KEY = 'ideaSelectShouldShowDetails';
   templateUrl: 'suggestions.component.html',
   styleUrls: ['suggestions.component.scss']
 })
-export class IDEASuggestionsComponent {
+export class IDEASuggestionsComponent implements OnInit {
   /**
    * The suggestions to show.
    */

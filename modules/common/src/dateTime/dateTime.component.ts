@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   templateUrl: 'dateTime.component.html',
   styleUrls: ['dateTime.component.scss']
 })
-export class IDEADateTimeComponent {
+export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The date to show.
    */

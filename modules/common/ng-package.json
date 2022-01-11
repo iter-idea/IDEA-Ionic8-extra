@@ -2,14 +2,7 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/common",
   "lib": {
-    "entryFile": "public-api.ts",
-    "umdModuleIds": {
-      "@capacitor/core": "@capacitor/core",
-      "@ionic/angular": "@ionic/angular",
-      "@ionic/storage-angular": "@ionic/storage-angular",
-      "idea-toolbox": "idea-toolbox",
-      "@env": "@env"
-    }
+    "entryFile": "public-api.ts"
   },
   "allowedNonPeerDependencies": ["signature_pad"],
   "assets": ["./css/*.scss"]

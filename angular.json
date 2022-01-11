@@ -11,14 +11,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "modules/common/tsconfig.lib.json",
             "project": "modules/common/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "modules/common/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "modules/common/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -36,14 +39,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "modules/auth/tsconfig.lib.json",
             "project": "modules/auth/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "modules/auth/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "modules/auth/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -61,14 +67,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "modules/agenda/tsconfig.lib.json",
             "project": "modules/agenda/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "modules/agenda/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "modules/agenda/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -86,14 +95,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "modules/map/tsconfig.lib.json",
             "project": "modules/map/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "modules/map/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "modules/map/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -111,14 +123,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "modules/teams/tsconfig.lib.json",
             "project": "modules/teams/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "modules/teams/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "modules/teams/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
