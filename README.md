@@ -10,8 +10,6 @@ _The old version, compatible with Ionic 3, [is available here](https://github.co
 - [agenda](modules/agenda)
 - [auth](modules/auth)
 - [map](modules/map)
-- [plans-subscription](modules/plans-subscription)
-- [speechRecognition](modules/speech-recognition)
 - [teams](modules/teams)
 
 ## Use

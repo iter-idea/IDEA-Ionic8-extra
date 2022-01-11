@@ -78,31 +78,6 @@
         }
       }
     },
-    "speech-recognition": {
-      "projectType": "library",
-      "root": "modules/speech-recognition",
-      "sourceRoot": "modules/speech-recognition/src",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "modules/speech-recognition/tsconfig.lib.json",
-            "project": "modules/speech-recognition/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "modules/speech-recognition/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": ["modules/speech-recognition/src/**/*.ts", "modules/speech-recognition/src/**/*.html"]
-          }
-        }
-      }
-    },
     "map": {
       "projectType": "library",
       "root": "modules/map",
@@ -124,31 +99,6 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": ["modules/map/src/**/*.ts", "modules/map/src/**/*.html"]
-          }
-        }
-      }
-    },
-    "plans-subscription": {
-      "projectType": "library",
-      "root": "modules/plans-subscription",
-      "sourceRoot": "modules/plans-subscription/src",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "modules/plans-subscription/tsconfig.lib.json",
-            "project": "modules/plans-subscription/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "modules/plans-subscription/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": ["modules/plans-subscription/src/**/*.ts", "modules/plans-subscription/src/**/*.html"]
           }
         }
       }
