@@ -14,6 +14,13 @@ export class IDEAStorageService {
     const storage = await this.storage.create();
     this._storage = storage;
   }
+  async ready(): Promise<void> {
+    return new Promise(resolve => this.readyHelper(resolve));
+  }
+  private readyHelper(resolve: any) {
+    if (this._storage) resolve();
+    else setTimeout(() => this.readyHelper(resolve), 100);
+  }
 
   async set(key: string, value: any): Promise<void> {
     return await this._storage?.set(key, value);
