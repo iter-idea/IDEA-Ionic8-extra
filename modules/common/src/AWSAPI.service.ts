@@ -95,7 +95,7 @@ export class IDEAAWSAPIService {
   }
   /**
    * Prepare the headers object to send with a request.
-   * Note: it always adds the Authorization token, if set.
+   * Note: it always adds the Authorization token (`AWSAPIAuthToken`) and the API key (`AWSAPIKey`), if set.
    */
   protected prepareHeaders(h: HttpHeaders | any): HttpHeaders {
     // preare the headers; note: HttpHeaders is immutable!
@@ -103,6 +103,9 @@ export class IDEAAWSAPIService {
     // set the Authorization token
     if (!headers.get('Authorization') && this.tc.get('AWSAPIAuthToken'))
       headers = headers.set('Authorization', this.tc.get('AWSAPIAuthToken'));
+    // set the API key
+    if (!headers.get('X-API-Key') && this.tc.get('AWSAPIKey'))
+      headers = headers.set('X-API-Key', this.tc.get('AWSAPIKey'));
     return headers;
   }
   /**
