@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/map",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "IDEA Ionic map component",
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.11.1",
