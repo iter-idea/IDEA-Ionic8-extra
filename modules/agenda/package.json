@@ -18,7 +18,7 @@
     "@ionic/storage-angular": ">=3.0.6",
     "angular-calendar": ">=0.28.20",
     "date-fns": ">=2.16.1",
-    "idea-toolbox": ">=6.5.8",
+    "idea-toolbox": ">=6.5.9",
     "rxjs": ">=7.4.0",
     "zone.js": ">=0.11.4"
   },
@@ -35,7 +35,7 @@
     "@ionic/storage-angular": ">=3.0.6",
     "angular-calendar": ">=0.28.20",
     "date-fns": ">=2.16.1",
-    "idea-toolbox": ">=6.5.8",
+    "idea-toolbox": ">=6.5.9",
     "rxjs": ">=7.4.0",
     "zone.js": ">=0.11.4"
   },
