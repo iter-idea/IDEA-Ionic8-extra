@@ -118,7 +118,7 @@ export class IDEAAWSAPIService {
     else if (qp) for (const prop in qp) if (qp[prop]) searchParams = searchParams.set(prop, qp[prop]);
     // if requested, add app version and client platform to the info we send to the back-end
     if (addClientInfo) {
-      searchParams = searchParams.set('_v', env.idea.api.version);
+      searchParams = searchParams.set('_v', env.idea.app.version);
       searchParams = searchParams.set('_p', this.platform.platforms().join(' '));
     }
     return searchParams;
