@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
-const { Browser } = Plugins;
+import { Browser } from '@capacitor/browser';
 import { Calendar, ExternalCalendarSources, Suggestion } from 'idea-toolbox';
 import {
   IDEALoadingService,

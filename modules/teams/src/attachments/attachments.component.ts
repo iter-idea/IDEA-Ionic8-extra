@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { Plugins, CameraResultType, CameraPhoto, CameraSource } from '@capacitor/core';
-const { Camera, Browser } = Plugins;
+import { Browser } from '@capacitor/browser';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { Attachment, SignedURL } from 'idea-toolbox';
 import {
   IDEALoadingService,
@@ -121,7 +121,7 @@ export class IDEAttachmentsComponent implements OnInit {
       allowEditing: false,
       source: CameraSource.Camera,
       resultType: CameraResultType.Base64
-    }).then((image: CameraPhoto) => {
+    }).then((image: Photo) => {
       const filename = new Date().toISOString();
       const content = this.base64toBlob(image.base64String, 'image/jpeg');
       this.addAttachment(filename, image.format, content);

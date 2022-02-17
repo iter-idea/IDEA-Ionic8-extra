@@ -2,8 +2,9 @@ import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Loader } from '@googlemaps/js-api-loader';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
-import { Plugins, PluginListenerHandle, GeolocationPosition } from '@capacitor/core';
-const { Geolocation, Network } = Plugins;
+import { PluginListenerHandle } from '@capacitor/core';
+import { Geolocation } from '@capacitor/geolocation';
+import { Network } from '@capacitor/network';
 import { IDEATinCanService } from '@idea-ionic/common';
 
 import { MAP_DARK_MODE_STYLE } from './darkMode.style';

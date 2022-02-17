@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
-const { Browser } = Plugins;
+import { Browser } from '@capacitor/browser';
 import { IDEAMessageService, IDEALoadingService, IDEATinCanService, IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEAAuthService } from './auth.service';

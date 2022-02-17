@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
-const { Browser } = Plugins;
+import { Browser } from '@capacitor/browser';
 import { loopStringEnumValues, RCFolder, RCResource, RCResourceFormats, SignedURL } from 'idea-toolbox';
 import {
   IDEALoadingService,

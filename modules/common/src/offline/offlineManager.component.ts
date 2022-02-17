@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
-const { CapacitorKeepScreenOn, Browser } = Plugins;
+import { Browser } from '@capacitor/browser';
+import { KeepAwake } from '@capacitor-community/keep-awake';
 
 import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -35,10 +35,10 @@ export class IDEAOfflineManagerComponent {
             text: this.t._('COMMON.GOT_IT'),
             handler: () => {
               // if the plugin is available, avoid the screen to turn off during the synchronisation
-              if (CapacitorKeepScreenOn) CapacitorKeepScreenOn.enable();
+              if (KeepAwake) KeepAwake.keepAwake();
               // run a manual synchronisation
               this.offline.synchronize(true).finally(() => {
-                if (CapacitorKeepScreenOn) CapacitorKeepScreenOn.disable();
+                if (KeepAwake) KeepAwake.allowSleep();
               });
             }
           }

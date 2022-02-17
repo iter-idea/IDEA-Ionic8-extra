@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Plugins } from '@capacitor/core';
-const { Network } = Plugins;
+import { Network } from '@capacitor/network';
 
 /**
  * Utility to monitor the network connection.
