@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
-@Injectable()
+/**
+ * @deprecated use a specific App service instead.
+ */
+@Injectable({ providedIn: 'root' })
 export class IDEATinCanService {
   protected data: any;
 
@@ -13,7 +16,7 @@ export class IDEATinCanService {
    * @param variable variable to set
    * @param value value to assign to the variable
    */
-  public set(variable: string, value: any) {
+  set(variable: string, value: any): void {
     this.data[variable] = value;
   }
   /**
@@ -21,7 +24,7 @@ export class IDEATinCanService {
    * @param variable variable to acquire
    * @param getAndDelete if set, delete the variable after the acquisition
    */
-  public get(variable: string, getAndDelete?: boolean): any {
+  get(variable: string, getAndDelete?: boolean): any {
     const ret = this.data[variable];
     if (getAndDelete) this.remove(variable);
     return ret;
@@ -30,13 +33,13 @@ export class IDEATinCanService {
    * Remove a variable.
    * @param variable variable to remove
    */
-  public remove(variable: string) {
+  remove(variable: string): void {
     delete this.data[variable];
   }
   /**
    * Clear all the variables.
    */
-  public clear() {
+  clear(): void {
     this.data = {};
   }
 }
