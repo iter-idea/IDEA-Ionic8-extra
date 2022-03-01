@@ -16,7 +16,7 @@ const MODULES_PATH = ['', 'variables'].concat(env.idea.ionicExtraModules || []);
 /**
  * Translations service.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEATranslationsService {
   /**
    * Template matcher to interpolate complex strings (e.g. `{{user}}`).
@@ -57,7 +57,7 @@ export class IDEATranslationsService {
   /**
    * Set the available languages.
    */
-  setLangs(langs: string[]) {
+  setLangs(langs: string[]): void {
     this.langs = langs.slice();
   }
   /**
