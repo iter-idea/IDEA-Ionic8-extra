@@ -1,6 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml } from 'idea-toolbox';
 
 import { environment as env } from '@env';
@@ -22,56 +21,62 @@ export class IDEATranslationsService {
   /**
    * Template matcher to interpolate complex strings (e.g. `{{user}}`).
    */
-  protected templateMatcher = /{{\s?([^{}\s]*)\s?}}/g;
+  private templateMatcher = /{{\s?([^{}\s]*)\s?}}/g;
   /**
    * The available languages.
    */
-  protected langs: string[];
+  private langs: string[];
   /**
    * The current language.
    */
-  protected currentLang: string;
+  private currentLang: string;
   /**
    * The fallback language.
    */
-  protected defaultLang: string;
+  private defaultLang: string;
   /**
    * The translations.
    */
-  protected translations: any;
+  private translations: any = {};
   /**
    * To subscribe to language changes.
    */
-  public onLangChange = new EventEmitter<string>();
+  onLangChange = new EventEmitter<string>();
 
-  constructor(private http: HttpClient) {
-    this.translations = {};
+  /**
+   * Initialize the service.
+   */
+  async init(languages: string[] = ['en'], defaultLang = 'en'): Promise<void> {
+    this.setLangs(languages);
+    this.setDefaultLang(defaultLang);
+    let lang = this.getBrowserLang();
+    if (!languages.includes(lang)) lang = this.getDefaultLang();
+    await this.use(lang, true);
   }
 
   /**
    * Set the available languages.
    */
-  public setLangs(langs: string[]) {
+  setLangs(langs: string[]) {
     this.langs = langs.slice();
   }
   /**
    * Returns an array of currently available languages.
    */
-  public getLangs(): string[] {
+  getLangs(): string[] {
     return this.langs;
   }
 
   /**
    * Get the fallback language.
    */
-  public getDefaultLang(): string {
+  getDefaultLang(): string {
     return this.defaultLang;
   }
   /**
    * Sets the default language to use as a fallback.
    */
-  public setDefaultLang(lang: string) {
-    // check whether the language is among the ServiceLanguages; otherwise, fallback to the first available
+  setDefaultLang(lang: string) {
     if (this.langs.includes(lang)) this.defaultLang = lang;
     else this.defaultLang = this.langs[0];
   }
@@ -79,14 +84,14 @@ export class IDEATranslationsService {
   /**
    * Get the languages in IdeaX format.
    */
-  public languages(): Languages {
+  languages(): Languages {
     return new Languages({ available: this.langs, default: this.defaultLang });
   }
 
   /**
    * Returns the language code name from the browser, e.g. "it"
    */
-  public getBrowserLang(): string {
+  getBrowserLang(): string {
     if (typeof window === 'undefined' || typeof window.navigator === 'undefined') return undefined;
     let browserLang: any = window.navigator.languages ? window.navigator.languages[0] : null;
     browserLang =
@@ -103,13 +108,13 @@ export class IDEATranslationsService {
   /**
    * The lang currently used.
    */
-  public getCurrentLang(): string {
+  getCurrentLang(): string {
     return this.currentLang;
   }
   /**
    * Set a language to use.
    */
-  public use(lang: string, force?: boolean): Promise<void> {
+  use(lang: string, force?: boolean): Promise<void> {
     return new Promise(resolve => {
       const changed = lang !== this.currentLang;
       if (!changed && !force) return;
@@ -131,14 +136,14 @@ export class IDEATranslationsService {
    * Get a translated term by key in the current language, optionally interpolating variables (e.g. `{{user}}`).
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
-  public instant(key: string, interpolateParams?: any): string {
+  instant(key: string, interpolateParams?: any): string {
     return this.instantInLanguage(this.currentLang, key, interpolateParams);
   }
   /**
    * Get a translated term by key in the selected language, optionally interpolating variables (e.g. `{{user}}`).
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
-  public instantInLanguage(language: string, key: string, interpolateParams?: any): string {
+  instantInLanguage(language: string, key: string, interpolateParams?: any): string {
     if (!this.isDefined(key) || !key.length) return;
     let res = this.interpolate(this.getValue(this.translations[language], key), interpolateParams);
     if (res === undefined && this.defaultLang !== null && this.defaultLang !== language)
@@ -148,20 +153,20 @@ export class IDEATranslationsService {
   /**
    * Shortcut to instant.
    */
-  public _(key: string, interpolateParams?: any): string {
+  _(key: string, interpolateParams?: any): string {
     return this.instant(key, interpolateParams);
   }
   /**
    * Translate (instant) and transform an expected markdown string into HTML.
    */
-  public _md(key: string, interpolateParams?: any): string {
+  _md(key: string, interpolateParams?: any): string {
     return mdToHtml(this._(key, interpolateParams));
   }
 
   /**
    * Return a Label containing all the available translations of a key.
    */
-  public getLabelByKey(key: string, interpolateParams?: any): Label {
+  getLabelByKey(key: string, interpolateParams?: any): Label {
     const label = new Label(null, this.languages());
     this.langs.forEach(lang => (label[lang] = this.instantInLanguage(lang, key, interpolateParams)));
     return label;
@@ -169,20 +174,20 @@ export class IDEATranslationsService {
   /**
    * Return the translation in the current language of a label.
    */
-  public translateLabel(label: Label): string {
+  translateLabel(label: Label): string {
     return label.translate(this.getCurrentLang(), this.languages());
   }
   /**
    * Shortcut to translateLabel.
    */
-  public _label(label: Label): string {
+  _label(label: Label): string {
     return this.translateLabel(label);
   }
 
   /**
    * Load the translations from the files.
    */
-  protected loadTranlations(lang: string): Promise<void> {
+  private loadTranlations(lang: string): Promise<void> {
     return new Promise(resolve => {
       this.translations = {};
       this.translations[this.defaultLang] = {};
@@ -197,24 +202,19 @@ export class IDEATranslationsService {
   /**
    * Load a file into the translations.
    */
-  protected loadTranslationFileHelper(path: string, lang: string): Promise<void> {
-    return new Promise(resolve => {
-      this.http
-        .get(`${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`)
-        .toPromise()
-        .then((obj: any) => {
-          for (const key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
-          resolve();
-        })
-        .catch(() => resolve());
-    });
+  private async loadTranslationFileHelper(path: string, lang: string): Promise<void> {
+    const res = await fetch(`${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`, { method: 'GET' });
+    if (res.status !== 200) return;
+
+    const obj = await res.json();
+    for (const key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
   }
 
   /**
    * Interpolates a string to replace parameters.
    * "This is a {{ key }}" ==> "This is a value", with params = { key: "value" }
    */
-  protected interpolate(expr: string, params?: any): string {
+  private interpolate(expr: string, params?: any): string {
     if (!params || !expr) return expr;
     return expr.replace(this.templateMatcher, (substring: string, b: string) => {
       const r = this.getValue(params, b);
@@ -225,7 +225,7 @@ export class IDEATranslationsService {
    * Gets a value from an object by composed key.
    * getValue({ key1: { keyA: 'valueI' }}, 'key1.keyA') ==> 'valueI'
    */
-  protected getValue(target: any, key: string): any {
+  private getValue(target: any, key: string): any {
     const keys = typeof key === 'string' ? key.split('.') : [key];
     key = '';
     do {
@@ -242,14 +242,14 @@ export class IDEATranslationsService {
   /**
    * Helper to quicly check if the value is defined.
    */
-  protected isDefined(value: any): boolean {
+  private isDefined(value: any): boolean {
     return value !== undefined && value !== null;
   }
 
   /**
    * Format a date in the current locale.
    */
-  public formatDate(value: any, pattern: string = 'mediumDate'): string {
+  formatDate(value: any, pattern: string = 'mediumDate'): string {
     const datePipe: DatePipe = new DatePipe(this.getCurrentLang());
     return datePipe.transform(value, pattern);
   }
@@ -257,7 +257,7 @@ export class IDEATranslationsService {
   /**
    * Get a readable string to represent the current language (standard ISO639).
    */
-  public getLanguageNameByKey(lang?: string): string {
+  getLanguageNameByKey(lang?: string): string {
     return getStringEnumKeyByValue(LanguagesISO639, lang || this.getCurrentLang());
   }
 }
