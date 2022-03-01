@@ -5,7 +5,8 @@ import { ClientInfo, ErrorReport } from 'idea-toolbox';
 
 import { environment as env } from '@env';
 
-export const API_URL = `https://${String(env.idea.ideaApi?.url)}/${String(env.idea.ideaApi?.version)}`;
+const API_STAGE = env.idea.ideaApi?.stage || (env.idea.ideaApi as any)?.version;
+const API_URL = `https://${String(env.idea.ideaApi?.url)}/${String(API_STAGE)}`;
 
 @Injectable()
 export class IDEAErrorReportingService {
@@ -21,7 +22,7 @@ export class IDEAErrorReportingService {
       // prepare and send the report
       const report = new ErrorReport({
         version: env.idea.app.version,
-        stage: env.idea.api.version,
+        stage: API_STAGE,
         client: this.getClientInfo(),
         type: error.name,
         error: error.message,
@@ -39,7 +40,7 @@ export class IDEAErrorReportingService {
    * Whether we should send the reporting or we are in a scenario in which we should skip it.
    */
   public shouldSend(): boolean {
-    return env.idea.ideaApi.version === 'prod';
+    return API_STAGE === 'prod';
   }
 
   /**

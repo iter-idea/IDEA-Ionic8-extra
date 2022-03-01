@@ -4,7 +4,7 @@
 export const environment = {
   idea: {
     api: {
-      version: ''
+      stage: ''
     }
   },
   google: {

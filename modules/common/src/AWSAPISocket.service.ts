@@ -7,6 +7,8 @@ import { IDEATinCanService } from './tinCan.service';
 
 import { environment as env } from '@env';
 
+const API_STAGE = env.idea.socket?.stage || (env.idea.socket as any)?.version;
+
 /**
  * To communicate with an AWS API Gateway websocket istance.
  *
@@ -17,7 +19,7 @@ export class IDEAAWSAPISocketService {
   /**
    * The URL to connect for socket communication.
    */
-  public WEBSOCKET_API_URL = `wss://${String(env.idea.socket.url)}/${String(env.idea.socket.version)}`;
+  public WEBSOCKET_API_URL = `wss://${String(env.idea.socket.url)}/${String(API_STAGE)}`;
   /**
    * The current websocket connection.
    */

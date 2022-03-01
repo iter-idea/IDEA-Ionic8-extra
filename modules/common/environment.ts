@@ -10,15 +10,15 @@ export const environment = {
     },
     api: {
       url: '',
-      version: ''
+      stage: ''
     },
     ideaApi: {
       url: '',
-      version: ''
+      stage: ''
     },
     socket: {
       url: '',
-      version: ''
+      stage: ''
     }
   },
   aws: {
