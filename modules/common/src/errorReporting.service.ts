@@ -5,7 +5,7 @@ import { ClientInfo, ErrorReport } from 'idea-toolbox';
 
 import { environment as env } from '@env';
 
-export const API_URL = `https://${String(env.idea.ideaApi.url)}/${String(env.idea.ideaApi.version)}`;
+export const API_URL = `https://${String(env.idea.ideaApi?.url)}/${String(env.idea.ideaApi?.version)}`;
 
 @Injectable()
 export class IDEAErrorReportingService {

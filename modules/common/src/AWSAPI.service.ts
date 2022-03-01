@@ -11,7 +11,7 @@ import { IDEAOfflineService } from './offline/offline.service';
 import { environment as env } from '@env';
 
 export const API_URL_PROJECT = `https://${String(env.idea.api.url)}/${String(env.idea.api.version)}`;
-export const API_URL_IDEA = `https://${String(env.idea.ideaApi.url)}/${String(env.idea.ideaApi.version)}`;
+export const API_URL_IDEA = `https://${String(env.idea.ideaApi?.url)}/${String(env.idea.ideaApi?.version)}`;
 
 /**
  * To communicate with an AWS's API Gateway istance.
