@@ -7,7 +7,7 @@ import { environment as env } from '@env';
  * To communicate with an AWS API Gateway istance.
  * Lighter, alternative version of _IDEAAWSAPIService_.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAApiService {
   /**
    * The base URL to which to make requests.

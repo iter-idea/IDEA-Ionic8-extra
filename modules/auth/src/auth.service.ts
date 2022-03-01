@@ -23,7 +23,7 @@ const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(env.idea.project);
  *
  * Note: in IDEA's Cognito users pools, the email is an alias of the username.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAAuthService {
   protected userPool: CognitoUserPool;
 
