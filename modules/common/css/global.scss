@@ -97,6 +97,9 @@ ion-popover.actionSheetPopover {
     -webkit-text-fill-color: var(--ion-text-color);
     --placeholder-opacity: 0 !important;
   }
+  ion-text.obligatoryDot {
+    display: none;
+  }
 }
 
 ion-text.obligatoryDot::after {
