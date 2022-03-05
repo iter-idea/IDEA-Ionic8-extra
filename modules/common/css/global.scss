@@ -86,9 +86,16 @@ ion-popover.actionSheetPopover {
   }
 }
 
+ion-text.obligatoryDot::after {
+  content: '*';
+  font-size: 1.1em;
+  color: var(--ion-color-danger);
+}
+
 /* Better readability in view-mode */
 .viewMode {
   .native-input[disabled],
+  .select-disabled,
   .item-disabled,
   .native-textarea[disabled],
   ion-item ion-label[position='stacked'],
@@ -97,15 +104,11 @@ ion-popover.actionSheetPopover {
     -webkit-text-fill-color: var(--ion-text-color);
     --placeholder-opacity: 0 !important;
   }
+  ion-select.select-disabled::part(icon),
   ion-text.obligatoryDot {
-    display: none;
+    display: none !important;
+    opacity: 0 !important;
   }
-}
-
-ion-text.obligatoryDot::after {
-  content: '*';
-  font-size: 1.1em;
-  color: var(--ion-color-danger);
 }
 
 .fieldHasError,
