@@ -58,11 +58,11 @@ export class IDEAApiService {
     if (options.body) body = JSON.stringify(options.body);
 
     const res = await fetch(url.concat(params), { method, headers, body });
-    if (res.status === 200) return res.json();
+    if (res.status === 200) return await res.json();
 
     let errMessage: string;
     try {
-      errMessage = (res.json() as any).message;
+      errMessage = (await res.json()).message;
     } catch (err) {
       errMessage = 'Operation failed';
     }
