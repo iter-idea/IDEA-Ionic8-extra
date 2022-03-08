@@ -1,8 +1,7 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core';
 import { Subscription } from 'rxjs';
-import { epochDateTime } from 'idea-toolbox';
+import { epochDateTime, epochISOString } from 'idea-toolbox';
 
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -16,104 +15,86 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The date to show.
    */
-  @Input() public date: epochDateTime;
+  @Input() date: epochDateTime | epochISOString;
   /**
    * Whether to show the time picker (datetime) or not (date).
    */
-  @Input() public timePicker: boolean;
+  @Input() timePicker: boolean;
   /**
    * The label for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * The icon for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() public iconColor: string;
+  @Input() iconColor: string;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
   /**
    * A placeholder for the field.
    */
-  @Input() public placeholder: string;
+  @Input() placeholder: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() public obligatory: boolean;
-  /**
-   * On select event.
-   */
-  @Output() public select = new EventEmitter<number>();
-  /**
-   * Icon select.
-   */
-  @Output() public iconSelect = new EventEmitter<void>();
-  /**
-   * The value to display in the field preview.
-   */
-  public valueToDisplay: string;
-  /**
-   * Language change subscription
-   */
-  protected langChangeSubscription: Subscription;
+  @Input() obligatory: boolean;
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
-  public ngOnInit() {
-    // when the language changes, set the locale
+  @Output() select = new EventEmitter<epochDateTime>();
+  @Output() selectISO = new EventEmitter<epochISOString>();
+  @Output() iconSelect = new EventEmitter<void>();
+
+  valueToDisplay: string;
+  private langChangeSubscription: Subscription;
+
+  constructor(private modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  ngOnInit(): void {
     this.langChangeSubscription = this.t.onLangChange.subscribe(() => {
       this.valueToDisplay = this.getValueToDisplay(this.date);
-    }) as any;
+    });
   }
-  public ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.langChangeSubscription) this.langChangeSubscription.unsubscribe();
   }
-  public ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.date || changes.timePicker) this.valueToDisplay = this.getValueToDisplay(this.date);
   }
 
-  /**
-   * Open the calendar picker to select a date.
-   */
-  public openCalendarPicker() {
+  async openCalendarPicker(): Promise<void> {
     if (this.disabled) return;
-    this.modalCtrl
-      .create({
-        component: IDEACalendarPickerComponent,
-        componentProps: { inputDate: this.date, title: this.label, timePicker: this.timePicker }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then((selection: OverlayEventDetail) => {
-          const date = selection.data;
-          if (date !== undefined && date !== null) {
-            if (date === '') this.select.emit(null);
-            else this.select.emit(date.valueOf());
-          }
-        });
-        modal.present();
-      });
+
+    const modal = await this.modalCtrl.create({
+      component: IDEACalendarPickerComponent,
+      componentProps: { inputDate: this.date, title: this.label, timePicker: this.timePicker }
+    });
+    modal.onDidDismiss().then(({ data }) => {
+      if (data !== undefined && data !== null) {
+        if (data === '') this.doSelect(null);
+        else this.doSelect(data as Date);
+      }
+    });
+    modal.present();
   }
 
-  /**
-   * Calculate the value to show.
-   */
-  protected getValueToDisplay(date: epochDateTime): string {
+  private getValueToDisplay(date: epochDateTime | epochISOString): string {
     return !date ? '' : this.t.formatDate(date, this.timePicker ? 'd MMM yyyy, HH:mm' : 'mediumDate');
   }
 
-  /**
-   * The icon was selected.
-   */
-  public doIconSelect(event: any) {
+  doSelect(date: Date): void {
+    this.select.emit(date.valueOf());
+    this.selectISO.emit(date.toISOString());
+  }
+  doIconSelect(event: Event): void {
     if (event) event.stopPropagation();
-    this.iconSelect.emit(event);
+    this.iconSelect.emit();
   }
 }

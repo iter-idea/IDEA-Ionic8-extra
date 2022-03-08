@@ -1,8 +1,6 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
-    <ion-title>
-      {{ title }}
-    </ion-title>
+    <ion-title>{{ title }}</ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
         <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
@@ -16,9 +14,7 @@
 <ion-content>
   <ion-grid fixed class="ion-no-padding">
     <ion-row>
-      <h1 class="headerLabel">
-        {{ 'IDEA_COMMON.CALENDAR.SET_DATE' | translate }}
-      </h1>
+      <h1 class="headerLabel">{{ 'IDEA_COMMON.CALENDAR.SET_DATE' | translate }}</h1>
     </ion-row>
     <ion-row style="margin-bottom: 8px">
       <ion-col class="ion-text-center ion-no-padding" [size]="5">
@@ -34,7 +30,7 @@
               [placeholder]="t._('IDEA_COMMON.CALENDAR.YEAR')"
               [value]="refDate.getFullYear()"
               (ionFocus)="$event.target.value = ''"
-              (ionChange)="setYear($event)"
+              (ionChange)="setYear($event?.target?.value)"
             >
             </ion-input>
           </ion-col>

@@ -15,23 +15,22 @@ const SUNDAY = 259200000;
   styleUrls: ['calendarPicker.component.scss']
 })
 export class IDEACalendarPickerComponent implements OnInit {
-  @Input() public inputDate: epochDateTime;
-  @Input() public timePicker: boolean;
-  @Input() public title: string;
+  @Input() inputDate: epochDateTime;
+  @Input() timePicker: boolean;
+  @Input() title: string;
 
-  // support
-  public refDate: Date;
-  public selectedDate: Date;
-  public today: Date;
-  public calendarGrid: Date[][];
-  public hour: number;
-  public minute: number;
-  public hours: string[];
-  public minutes: string[];
-  public weekDays: string[];
+  refDate: Date;
+  selectedDate: Date;
+  today: Date;
+  calendarGrid: Date[][];
+  hour: number;
+  minute: number;
+  hours: string[];
+  minutes: string[];
+  weekDays: string[];
 
-  constructor(public modal: ModalController, public alertCtrl: AlertController, public t: IDEATranslationsService) {}
-  public ngOnInit() {
+  constructor(private modal: ModalController, private alertCtrl: AlertController, public t: IDEATranslationsService) {}
+  ngOnInit(): void {
     this.today = new Date();
     this.refDate = this.inputDate ? new Date(this.inputDate) : new Date(this.today);
     this.selectedDate = new Date(this.refDate);
@@ -56,10 +55,7 @@ export class IDEACalendarPickerComponent implements OnInit {
     }
   }
 
-  /**
-   * Get the localised day.
-   */
-  public getLocalisedDay(date: Date): number {
+  getLocalisedDay(date: Date): number {
     let n = date.getDay();
     switch (this.t.getCurrentLang()) {
       case 'it':
@@ -69,11 +65,7 @@ export class IDEACalendarPickerComponent implements OnInit {
     return n;
   }
 
-  /**
-   * Build the calendar grid based on the month of the *refDate*.
-   * 6 rows and 7 columns (the days, from Monday to Sunday).
-   */
-  public buildCalendarGrid(refDate: Date) {
+  buildCalendarGrid(refDate: Date): void {
     // find the first day in the month: the important data here is the day of the week
     const firstDateOfMonth = new Date(refDate.getFullYear(), refDate.getMonth(), 1);
     // the following flag is used to divide the logic so I can fill the calendar
@@ -108,33 +100,21 @@ export class IDEACalendarPickerComponent implements OnInit {
     }
   }
 
-  /**
-   * +- num years to the current one.
-   */
-  public addYears(offset: number) {
+  addYears(offset: number): void {
     this.refDate.setFullYear(this.refDate.getFullYear() + offset);
     this.buildCalendarGrid(this.refDate);
   }
-  /**
-   * Manual selection of the year.
-   */
-  public setYear(ev: any) {
-    const year = parseInt(ev.target.value, 10);
+  setYear(year: string | number): void {
     if (!year) return;
-    this.refDate.setFullYear(year);
+
+    this.refDate.setFullYear(Number(year));
     this.buildCalendarGrid(this.refDate);
   }
-  /**
-   * +- num months to the current one.
-   */
-  public addMonths(offset: number) {
+  addMonths(offset: number): void {
     this.refDate.setMonth(this.refDate.getMonth() + offset);
     this.buildCalendarGrid(this.refDate);
   }
-  /**
-   * Manual selection of the month.
-   */
-  public showMonths() {
+  async showMonths(): Promise<void> {
     const buttons = [];
     const inputs: any[] = [];
     const month = new Date(0);
@@ -155,64 +135,39 @@ export class IDEACalendarPickerComponent implements OnInit {
         this.buildCalendarGrid(this.refDate);
       }
     });
-    this.alertCtrl
-      .create({ header: this.t._('IDEA_COMMON.CALENDAR.MONTH'), buttons, inputs })
-      .then(alert => alert.present());
+
+    const alert = await this.alertCtrl.create({ header: this.t._('IDEA_COMMON.CALENDAR.MONTH'), buttons, inputs });
+    alert.present();
   }
 
-  /**
-   * Set the new date.
-   */
-  public selectDate(date: Date) {
+  selectDate(date: Date): void {
     this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), this.hour, this.minute);
   }
 
-  /**
-   * Set the new hour.
-   */
-  public selectHour(hour: string) {
+  selectHour(hour: string): void {
     this.hour = Number(hour);
     this.selectedDate.setHours(this.hour);
   }
-  /**
-   * Set the new minute.
-   */
-  public selectMinute(minute: string) {
+  selectMinute(minute: string): void {
     this.minute = Number(minute);
     this.selectedDate.setMinutes(this.minute);
   }
 
-  /**
-   * Whether the two date are the same.
-   */
-  public isSameDay(a: Date, b: Date): boolean {
+  isSameDay(a: Date, b: Date): boolean {
     return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
   }
-
-  /**
-   * Whether the two date are in the same month.
-   */
-  public isSameMonth(a: Date, b: Date): boolean {
+  isSameMonth(a: Date, b: Date): boolean {
     return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
   }
 
-  /**
-   * Return true if the hour in the UI is the selected one.
-   */
-  public isSameHour(hour: string): boolean {
-    return this.selectedDate.getHours() === parseInt(hour, 10);
+  isSameHour(hour: string): boolean {
+    return this.selectedDate.getHours() === Number(hour);
   }
-  /**
-   * Return true if the minute in the UI is the selected one.
-   */
-  public isSameMinute(minute: string): boolean {
-    return this.selectedDate.getMinutes() === parseInt(minute, 10);
+  isSameMinute(minute: string): boolean {
+    return this.selectedDate.getMinutes() === Number(minute);
   }
 
-  /**
-   * Confirm and close.
-   */
-  public save(reset?: boolean) {
+  save(reset?: boolean): void {
     this.modal.dismiss(reset ? '' : this.selectedDate);
   }
 }
