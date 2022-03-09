@@ -81,6 +81,8 @@ export class IDEAMapComponent implements OnInit {
    */
   @Input() public markerClickFn: (event: any, marker: google.maps.Marker) => void;
 
+  darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
   ///
   /// Initialization.
   ///
@@ -104,7 +106,7 @@ export class IDEAMapComponent implements OnInit {
         if (location) mapOptions.center = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
         else mapOptions.center = new google.maps.LatLng(DEFAULT_POSITION.lat, DEFAULT_POSITION.long);
         // optionally set the dark mode
-        if (this.tc.get('darkMode')) mapOptions.styles = MAP_DARK_MODE_STYLE;
+        if (this.darkMode) mapOptions.styles = MAP_DARK_MODE_STYLE;
         // initialize the map
         this.map = new google.maps.Map(this.element.nativeElement, mapOptions);
         // initialise the markers list and the cluster

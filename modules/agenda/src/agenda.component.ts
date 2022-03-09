@@ -103,6 +103,8 @@ export class IDEAAgendaComponent implements OnInit {
    */
   public Attendance = EventAttendance;
 
+  darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
   constructor(public platform: Platform, public tc: IDEATinCanService, public t: IDEATranslationsService) {}
   public ngOnInit() {
     this.locale = this.t.getCurrentLang();

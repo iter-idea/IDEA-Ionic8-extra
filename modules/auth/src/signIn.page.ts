@@ -50,6 +50,8 @@ export class IDEASignInPage {
    */
   public errorMsg: string;
 
+  darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
   constructor(
     public navCtrl: NavController,
     public tc: IDEATinCanService,
