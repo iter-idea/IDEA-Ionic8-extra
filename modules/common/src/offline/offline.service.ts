@@ -29,7 +29,7 @@ export class IDEAOfflineService {
     // create the observable to subscribe to the network changes; note: it won't run until subscribed
     this.observable = new Observable(observer => {
       // remove the basic listener add add one that supports a subscription
-      if (this.listenerHandler) this.listenerHandler.remove();
+      Network.removeAllListeners();
       this.listenerHandler = Network.addListener('networkStatusChange', status => {
         this._isOffline = !status.connected;
         if (observer) observer.next(status.connected);
