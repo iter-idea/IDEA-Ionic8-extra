@@ -94,6 +94,7 @@ export class IDEAOfflineDataService {
 
   /**
    * The id of the team of which to manage data offline.
+   * If null, the project isn't teams-based.
    */
   protected teamId: string;
   /**
@@ -169,7 +170,7 @@ export class IDEAOfflineDataService {
    * Whether the offline mode is allowed. You can customize this function, if needed.
    */
   public isAllowed() {
-    return this.teamId && this.resources.length;
+    return this.resources.length;
   }
   /**
    * Set up the service to use and sync offline data.
@@ -180,10 +181,10 @@ export class IDEAOfflineDataService {
     // decide if to allow certain API request while offline
     this.useQueueAPIRequests = useQueueAPIRequests;
     // load the API request pending queue, if any
-    this.queueAPIRequestKey = `${QUEUE_API_REQUESTS_KEY}_${this.teamId}`;
+    this.queueAPIRequestKey = this.teamId ? `${QUEUE_API_REQUESTS_KEY}_${this.teamId}` : QUEUE_API_REQUESTS_KEY;
     this.loadQueueAPIRequest();
     // load the lastSyncAt information for the team
-    this.lastSyncKey = `${LAST_SYNC_KEY}_${this.teamId}`;
+    this.lastSyncKey = this.teamId ? `${LAST_SYNC_KEY}_${this.teamId}` : LAST_SYNC_KEY;
     this.loadLastSyncAt();
     // load the cacheable resources
     this.resources = new Array<DeltaResources | string>();
@@ -212,7 +213,7 @@ export class IDEAOfflineDataService {
    * Add a CacheableResource.
    */
   protected addCacheableResource(cacheableResource: CacheableResource) {
-    cacheableResource.teamId = this.teamId;
+    if (this.teamId) cacheableResource.teamId = this.teamId;
     this.cacheableResources[cacheableResource.resource] = cacheableResource;
     this.resources.push(cacheableResource.resource);
   }
@@ -339,7 +340,7 @@ export class IDEAOfflineDataService {
       // otherwise, get the next page of the delta and go recursive until we are done
       const params: any = { next: delta.next, limit: NUM_ELEMENTS_WITH_MANUAL_SYNC };
       if (this.lastSyncAt) params.since = this.lastSyncAt;
-      const newDelta = await this.API.getResource(`teams/${this.teamId}/delta`, { params });
+      const newDelta = await this.API.getResource(this.teamId ? `teams/${this.teamId}/delta` : 'delta', { params });
       this.syncDeltaRecords(newDelta, done);
     } catch (err) {
       // if something went wrong, stops the operation, since we need to make sure the entire flow is consistent
@@ -446,7 +447,7 @@ export class IDEAOfflineDataService {
             // prepare a first "short" Delta request, to see if there is a lot of data to process
             const params: any = { limit: NUM_ELEMENTS_WITHOUT_MANUAL_SYNC };
             if (this.lastSyncAt) params.since = this.lastSyncAt;
-            this.API.getResource(`teams/${this.teamId}/delta`, { params })
+            this.API.getResource(this.teamId ? `teams/${this.teamId}/delta` : 'delta', { params })
               .then((delta: Delta) => {
                 // decide if to proceed with the sync: in case there is another page, it requires a manual confirmation
                 if (delta.next && !manualConfirmation) {
@@ -538,6 +539,7 @@ export interface APIRequest {
 export abstract class CacheableResource {
   /**
    * The team owning the resource.
+   * If null, the project isn't teams-based.
    */
   public teamId: string;
   /**
@@ -568,12 +570,12 @@ export abstract class CacheableResource {
 
   /**
    * How to build the relative URL to the resource (list).
-   * E.g. `teams/${element.teamId}/customers`
+   * E.g. `teams/${element.teamId}/customers` or `customers`.
    */
   public abstract listURL(element: any): string;
   /**
    * How to build the relative URL to the resource element (detail).
-   * E.g. `teams/${element.teamId}/customers/${element.customerId}`
+   * E.g. `teams/${element.teamId}/customers/${element.customerId}` or `customers/${element.customerId}`.
    */
   public abstract elementURL(element: any): string;
   /**
