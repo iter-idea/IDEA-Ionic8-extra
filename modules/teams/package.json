@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/teams",
-  "version": "6.2.8",
+  "version": "6.2.9",
   "description": "IDEA Ionic teams components",
   "dependencies": {
     "tslib": ">=2.0.0"
