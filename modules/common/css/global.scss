@@ -95,7 +95,7 @@ ion-text.obligatoryDot::after {
 /* Better readability in view-mode */
 .viewMode {
   .native-input[disabled],
-  .select-disabled,
+  ion-select.select-disabled,
   .item-disabled,
   .native-textarea[disabled],
   ion-item ion-label[position='stacked'],
