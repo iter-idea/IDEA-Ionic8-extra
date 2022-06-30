@@ -28,7 +28,7 @@
     "@angular/router": ">=13.1.0",
     "@capacitor/core": "^3.x.x",
     "@capacitor/browser": "^1.x.x",
-    "@idea-ionic/common": ">=6.x.x",
+    "@idea-ionic/common": "^6.3.0",
     "@ionic/angular": ">=6.0.1",
     "@ionic/storage-angular": ">=3.0.6",
     "amazon-cognito-identity-js": ">=4.5.6",
