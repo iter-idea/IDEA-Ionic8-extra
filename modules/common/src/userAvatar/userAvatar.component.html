@@ -1,0 +1,21 @@
+<div class="container">
+  <ion-avatar style="height: var(--avatar-size); width: var(--avatar-size)" *ngIf="src" [ngClass]="size" [title]="name">
+    <ion-img [src]="src" (ionError)="fallbackToInitials()"></ion-img>
+  </ion-avatar>
+  <div
+    class="circle"
+    style="height: var(--avatar-size); width: var(--avatar-size)"
+    *ngIf="!src"
+    [ngClass]="size"
+    [title]="name"
+    [style.background]="'#' + color"
+  >
+    <div
+      class="text"
+      style="line-height: var(--avatar-size); font-size: var(--avatar-font-size)"
+      [style.color]="'#' + fontColor"
+    >
+      {{ initials }}
+    </div>
+  </div>
+</div>

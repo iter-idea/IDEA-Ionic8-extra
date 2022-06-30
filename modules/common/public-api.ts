@@ -86,6 +86,9 @@ export * from './src/translations/translations.module';
 export * from './src/translations/translations.pipe';
 export * from './src/translations/translations.service';
 
+export * from './src/userAvatar/userAvatar.component';
+export * from './src/userAvatar/userAvatar.module';
+
 export * from './src/variables/highlightedVariables.pipe';
 export * from './src/variables/variables.module';
 
@@ -93,6 +96,7 @@ export * from './src/api.service';
 export * from './src/AWSAPI.service';
 export * from './src/AWSAPISocket.service';
 export * from './src/cachedResources.service';
+export * from './src/colors.model';
 export * from './src/dataWedgeReader.service';
 export * from './src/errorReporting.service';
 export * from './src/loading.service';

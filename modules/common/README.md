@@ -50,6 +50,7 @@ Finally, add in the environments desired the variables you find in the `environm
 - Signature
 - Time interval
 - Translations
+- User avatar
 
 ## Services
 

@@ -1,0 +1,36 @@
+div.container {
+  text-align: center;
+}
+
+ion-avatar,
+div.circle {
+  border: 0.5px solid var(--ion-color-dark-tint);
+  margin: 0 auto;
+}
+
+div.circle {
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  div.text {
+    font-weight: bold;
+    letter-spacing: -0.5px;
+  }
+}
+
+.small {
+  --avatar-size: 24px;
+  --avatar-font-size: 9px;
+}
+.default {
+  --avatar-size: 40px;
+  --avatar-font-size: 16px;
+}
+.large {
+  --avatar-size: 80px;
+  --avatar-font-size: 32px;
+}
+.extraLarge {
+  --avatar-size: 120px;
+  --avatar-font-size: 52px;
+}
