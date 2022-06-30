@@ -19,7 +19,7 @@ export class IDEAUserAvatarComponent implements OnInit {
   /**
    * The size of the avatar.
    */
-  @Input() size: 'small' | 'default' | 'large' | 'extraLarge' = 'default';
+  @Input() size: 'mini' | 'small' | 'default' | 'large' | 'extraLarge' = 'default';
   /**
    * The HEX color of the avatar's background.
    */
@@ -45,7 +45,10 @@ export class IDEAUserAvatarComponent implements OnInit {
         .reduce((initials, name): string => initials + name.charAt(0), '')
         .toUpperCase();
 
-      this.initials = initials.length > 1 ? initials.charAt(0).concat(initials.charAt(initials.length - 1)) : initials;
+      this.initials =
+        initials.length > 1 && this.size !== 'mini'
+          ? initials.charAt(0).concat(initials.charAt(initials.length - 1))
+          : initials.charAt(0);
     }
   }
   fallbackToInitials(): void {
