@@ -54,7 +54,7 @@
         ></ion-checkbox>
         <ion-avatar slot="start" *ngIf="showAvatars">
           <div class="circle" *ngIf="check.color" [style.background-color]="check.color"></div>
-          <ion-img *ngIf="!check.color" [src]="check.avatar" (ionError)="loadFallbackAvatar($event?.target)"></ion-img>
+          <idea-user-avatar *ngIf="!check.color" [src]="check.avatar" [name]="check.name"></idea-user-avatar>
         </ion-avatar>
         <ion-label>{{ check.name }}</ion-label>
       </ion-item>

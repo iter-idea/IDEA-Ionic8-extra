@@ -122,9 +122,12 @@
       </mwl-calendar-event-title>
       <div class="eventGadgets" *ngIf="!weekEvent.event.allDay">
         <ion-icon *ngFor="let icon of weekEvent.event.icons" [name]="icon.name" [title]="icon.title"></ion-icon>
-        <ion-avatar *ngFor="let avatar of weekEvent.event.avatars" [title]="avatar.title">
-          <ion-img [src]="avatar.url" (ionError)="loadFallbackAvatar($event?.target)"></ion-img>
-        </ion-avatar>
+        <idea-user-avatar
+          size="mini"
+          *ngFor="let avatar of weekEvent.event.avatars"
+          [src]="avatar.url"
+          [name]="avatar.title"
+        ></idea-user-avatar>
       </div>
     </div>
   </ng-template>

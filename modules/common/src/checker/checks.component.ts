@@ -32,10 +32,6 @@ export class IDEAChecksComponent implements OnInit {
    */
   @Input() public showAvatars: boolean;
   /**
-   * URL to the fallback avatar to show in case the element's avatar isn't found.
-   */
-  @Input() public fallbackAvatar: string;
-  /**
    * Limit the number of selectable elements to the value provided.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
@@ -92,13 +88,6 @@ export class IDEAChecksComponent implements OnInit {
    */
   public checkAll(check: boolean) {
     this.filteredChecks.forEach(x => (x.checked = check));
-  }
-
-  /**
-   * Load a fallback url when the avatar is missing.
-   */
-  public loadFallbackAvatar(targetImg: any) {
-    if (targetImg && targetImg.src !== this.fallbackAvatar) targetImg.src = this.fallbackAvatar;
   }
 
   /**

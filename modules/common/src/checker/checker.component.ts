@@ -101,10 +101,6 @@ export class IDEACheckerComponent {
    */
   @Input() public showAvatars: boolean;
   /**
-   * URL to the fallback avatar to show in case the element's avatar isn't found.
-   */
-  @Input() public fallbackAvatar: string;
-  /**
    * Limit the number of selectable elements to the value provided.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
@@ -152,7 +148,6 @@ export class IDEACheckerComponent {
           searchPlaceholder: this.searchPlaceholder,
           noElementsFoundText: this.noElementsFoundText,
           showAvatars: this.showAvatars,
-          fallbackAvatar: this.fallbackAvatar,
           allowSelectDeselectAll: this.allowSelectDeselectAll,
           limitSelectionToNum: this.limitSelectionToNum
         }

@@ -6,9 +6,10 @@ import { IonicModule } from '@ionic/angular';
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEACheckerComponent } from './checker.component';
 import { IDEAChecksComponent } from './checks.component';
+import { IDEAUserAvatarModule } from '../userAvatar/userAvatar.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAUserAvatarModule],
   declarations: [IDEACheckerComponent, IDEAChecksComponent],
   entryComponents: [IDEACheckerComponent, IDEAChecksComponent],
   exports: [IDEACheckerComponent, IDEAChecksComponent]

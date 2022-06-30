@@ -7,7 +7,12 @@ import { CalendarDateFormatter, CalendarModule, DateAdapter } from 'angular-cale
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CustomDateFormatter } from './dateFormatter.provider';
 
-import { IDEATranslationsModule, IDEAColorPickerModule, IDEACheckerModule } from '@idea-ionic/common';
+import {
+  IDEATranslationsModule,
+  IDEAColorPickerModule,
+  IDEACheckerModule,
+  IDEAUserAvatarModule
+} from '@idea-ionic/common';
 
 import { IDEAAgendaComponent } from './agenda.component';
 import { IDEACalendarComponent } from './calendar.component';
@@ -24,6 +29,7 @@ import { IDEACalendarsService } from './calendars.service';
     IDEATranslationsModule,
     IDEAColorPickerModule,
     IDEACheckerModule,
+    IDEAUserAvatarModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   declarations: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
