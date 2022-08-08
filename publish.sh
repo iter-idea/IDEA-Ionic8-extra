@@ -43,7 +43,7 @@ done
 for MODULE in ${MODULES_DIR}/*/;
 do
   cd dist/$(basename ${MODULE})
-  npm publish
+  npm publish --access public
   cd ../../
 done
 
