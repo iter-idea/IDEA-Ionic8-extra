@@ -21,7 +21,7 @@ export class IDEADataWedgeReaderService {
    */
   protected observable: Observable<ScanData>;
 
-  constructor(public platform: Platform) {
+  constructor(private platform: Platform) {
     this.platform.ready().then(() => {
       // load the intent manager
       this.intent = (window as any).plugins ? (window as any).plugins.intentShim : null;

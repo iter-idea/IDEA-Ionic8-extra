@@ -142,6 +142,34 @@
           }
         }
       }
+    },
+    "barcode": {
+      "projectType": "library",
+      "root": "modules/barcode",
+      "sourceRoot": "modules/barcode/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "modules/barcode/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/barcode/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "modules/barcode/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/barcode/src/**/*.ts", "modules/barcode/src/**/*.html"]
+          }
+        }
+      }
     }
   },
   "defaultProject": "common"

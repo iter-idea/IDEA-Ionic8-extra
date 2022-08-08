@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/barcode",
+  "lib": {
+    "entryFile": "public-api.ts"
+  },
+  "allowedNonPeerDependencies": ["@capacitor-community/barcode-scanner"],
+  "assets": []
+}

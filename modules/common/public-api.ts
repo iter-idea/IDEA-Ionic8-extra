@@ -97,7 +97,6 @@ export * from './src/AWSAPI.service';
 export * from './src/AWSAPISocket.service';
 export * from './src/cachedResources.service';
 export * from './src/colors.model';
-export * from './src/dataWedgeReader.service';
 export * from './src/errorReporting.service';
 export * from './src/loading.service';
 export * from './src/message.service';

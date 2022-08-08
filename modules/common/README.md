@@ -57,7 +57,6 @@ Finally, add in the environments desired the variables you find in the `environm
 - AWSAPI service
 - AWSAPI socket service
 - (browser's) Cached resources service
-- DataWedge-compatible devices' reader service (barcode)
 - Error reporting service
 - Loading service
 - Message service
