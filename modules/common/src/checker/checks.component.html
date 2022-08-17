@@ -56,7 +56,10 @@
           <div class="circle" *ngIf="check.color" [style.background-color]="check.color"></div>
           <idea-user-avatar *ngIf="!check.color" [src]="check.avatar" [name]="check.name"></idea-user-avatar>
         </ion-avatar>
-        <ion-label>{{ check.name }}</ion-label>
+        <ion-label>
+          {{ check.name }}
+          <p *ngIf="check.description">{{ check.description }}</p>
+        </ion-label>
       </ion-item>
     </ion-virtual-scroll>
   </ion-list>

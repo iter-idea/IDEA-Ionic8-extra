@@ -72,7 +72,9 @@ export class IDEAChecksComponent implements OnInit {
       .filter(x =>
         toSearch
           .split(' ')
-          .every(searchTerm => [x.name, String(x.value)].filter(f => f).some(f => f.toLowerCase().includes(searchTerm)))
+          .every(searchTerm =>
+            [x.name, String(x.value), x.description].filter(f => f).some(f => f.toLowerCase().includes(searchTerm))
+          )
       );
   }
 
