@@ -18,6 +18,7 @@ export class IDEACalendarPickerComponent implements OnInit {
   @Input() inputDate: epochDateTime;
   @Input() timePicker: boolean;
   @Input() title: string;
+  @Input() hideClearButton = false;
 
   refDate: Date;
   selectedDate: Date;

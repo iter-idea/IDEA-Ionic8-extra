@@ -13,13 +13,17 @@ import { IDEATranslationsService } from '../translations/translations.service';
 })
 export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   /**
-   * The date to show.
+   * The date to show/pick.
    */
   @Input() date: epochDateTime | epochISOString;
   /**
    * Whether to show the time picker (datetime) or not (date).
    */
-  @Input() timePicker: boolean;
+  @Input() timePicker = false;
+  /**
+   * Whether to use the `epochISOString` format instead of `epochDateTime`.
+   */
+  @Input() useISOFormat = false;
   /**
    * The label for the field.
    */
@@ -43,14 +47,17 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * If true, the component is disabled.
    */
-  @Input() disabled: boolean;
+  @Input() disabled = false;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() obligatory: boolean;
+  @Input() obligatory = false;
+  /**
+   * If true, hidew the clear button in the header.
+   */
+  @Input() hideClearButton = false;
 
-  @Output() select = new EventEmitter<epochDateTime>();
-  @Output() selectISO = new EventEmitter<epochISOString>();
+  @Output() dateChange = new EventEmitter<epochDateTime | epochISOString | null | any>();
   @Output() iconSelect = new EventEmitter<void>();
 
   valueToDisplay: string;
@@ -74,7 +81,12 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
 
     const modal = await this.modalCtrl.create({
       component: IDEACalendarPickerComponent,
-      componentProps: { inputDate: this.date, title: this.label, timePicker: this.timePicker }
+      componentProps: {
+        inputDate: this.date,
+        title: this.label,
+        timePicker: this.timePicker,
+        hideClearButton: this.hideClearButton
+      }
     });
     modal.onDidDismiss().then(({ data }) => {
       if (data !== undefined && data !== null) {
@@ -90,8 +102,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   doSelect(date: Date): void {
-    this.select.emit(date.valueOf());
-    this.selectISO.emit(date.toISOString());
+    this.dateChange.emit(date ? (this.useISOFormat ? date.toISOString() : date.valueOf()) : null);
   }
   doIconSelect(event: Event): void {
     if (event) event.stopPropagation();

@@ -2,7 +2,7 @@
   <ion-toolbar color="ideaToolbar">
     <ion-title>{{ title }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
+      <ion-button *ngIf="!hideClearButton" [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
         <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
       </ion-button>
       <ion-button [title]="t._('IDEA_COMMON.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="save()">
