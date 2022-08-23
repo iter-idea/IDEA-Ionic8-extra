@@ -16,10 +16,7 @@
           </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-          <p class="errorBox" *ngIf="errorMsg">
-            <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
-            {{ errorMsg }}
-          </p>
+          <p class="errorBox" *ngIf="errorMsg"><b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg }}</p>
           <ion-item>
             <ion-label position="inline">
               <ion-icon name="person-circle" color="primary"> </ion-icon>

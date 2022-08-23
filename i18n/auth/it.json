@@ -71,6 +71,8 @@
     "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED": "Sessioni multiple individuate",
     "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED_I": "È permessa solo una sessione attiva contemporanea per account",
     "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED_II": "È già presente una sessione attiva per questo account su un altro dispositivo; per procedere, occorre terminare l'altra sessione. Puoi terminare tutte le sessioni con un logout globale, ma attenzione: assicurati prima di aver salvato tutti i dati locali dell'app sull'altro dispositivo, perchè verranno eliminati.",
-    "GLOBAL_SIGN_OUT": "Logout globale"
+    "GLOBAL_SIGN_OUT": "Logout globale",
+    "WARNING": "Attenzione",
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Per effettuare l'accesso devi prima aggiornare la tua password. Hai ricevuto istruzioni al tuo indirizzo email; per piacere, controlla nella tua posta in arrivo o nello SPAM."
   }
 }

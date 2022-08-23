@@ -92,6 +92,8 @@ export class IDEASignInPage {
       })
       .catch(err => {
         if (err.name === 'UserNotConfirmedException') this.errorMsg = this.t._('IDEA_AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
+        else if (err.name === 'UserLambdaValidationException' && err.message?.includes('@IDEA_COGNITO_TRANSITION'))
+          this.errorMsg = this.t._('IDEA_AUTH.CHANGE_YOUR_PASSWORD_TO_LOGIN');
         this.message.error('IDEA_AUTH.AUTHENTICATION_FAILED');
       })
       .finally(() => this.loading.hide());

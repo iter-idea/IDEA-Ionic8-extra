@@ -71,6 +71,8 @@
     "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED": "Multiple sessions detected",
     "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED_I": "Only one active session per account is allowed",
     "ONLY_ONE_SIMULTANEOUS_SESSION_ALLOWED_II": "There is already one active session for this account on another device; to proceed, you need to terminate the other session. You can terminate all the sessions with a global sign-out, but head's up: be sure to save any local data of the app on the other device first, since it will be deleted.",
-    "GLOBAL_SIGN_OUT": "Global sign-out"
+    "GLOBAL_SIGN_OUT": "Global sign-out",
+    "WARNING": "Warning",
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Before to log-in, you need to change your password. You've received instructions to your email address. Please, check in your inbox or into the SPAM folder."
   }
 }
