@@ -46,18 +46,21 @@ export class IDEAApiService {
     if (this.authToken) headers.Authorization = this.authToken;
     if (this.apiKey) headers['X-API-Key'] = this.apiKey;
 
-    const params =
-      '?' +
-      new URLSearchParams({
-        _v: this.appVersion,
-        _p: this.platform.platforms().join(' '),
-        ...(options.params || {})
-      }).toString();
+    const searchParams = new URLSearchParams();
+    searchParams.append('_v', this.appVersion);
+    searchParams.append('_p', this.platform.platforms().join(' '));
+    if (options.params) {
+      for (const paramName in options.params) {
+        const param = options.params[paramName];
+        if (Array.isArray(param)) for (const arrayElement of param) searchParams.append(paramName, arrayElement);
+        else searchParams.append(paramName, param as string);
+      }
+    }
 
     let body: any = null;
     if (options.body) body = JSON.stringify(options.body);
 
-    const res = await fetch(url.concat(params), { method, headers, body });
+    const res = await fetch(url.concat('?', searchParams.toString()), { method, headers, body });
     if (res.status === 200) return await res.json();
 
     let errMessage: string;
