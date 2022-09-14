@@ -1,8 +1,5 @@
 {
   "IDEA_AGENDA": {
-    "DAY": "Day",
-    "MONTH": "Month",
-    "WEEK": "Week",
     "CALENDARS": {
       "ACCESS_LEVELS": {
         "0": "See only free/busy occupation",
@@ -24,6 +21,7 @@
       "COLOR": "Distinctive colour",
       "CREATE_PRIVATE_OR_TEAM": "Do you want to create a private or a team-shared calendar?",
       "DANGEROUS_ZONE": "Dangerous zone",
+      "DEFAULT": "Default",
       "DEFAULT_PERSONAL_CALENDAR_NAME": "My calendar",
       "DEFAULT_TEAM_CALENDAR_NAME": "My team's calendar",
       "DELETE_CALENDAR": "Delete calendar",
@@ -32,8 +30,6 @@
       "DESCRIPTION_HINT": "Description of the calendar",
       "DONT_LINK": "Don't link",
       "DONT_LINK_HINT": "The calendar won't be synchronised with any external service",
-      "WHICH_EXTERNAL_SERVICE_TO_LINK": "Which external service you want to link to the calendar?",
-      "WHICH_EXTERNAL_SERVICE_TO_LINK_HINT": "Note well: you can't change this configuration later",
       "DO_YOU_WANT_PROCEED_LINKING_OR_DELETE": "Do you want to try again to link the calendar or you wish to delete it?",
       "EDIT_CALENDAR": "Edit calendar",
       "EVERYONE": "Everyone",
@@ -55,16 +51,20 @@
       "PERSONAL_CALENDARS_HINT": "These calendars and their appointments are visible only to you",
       "PERSONAL_CALENDAR_HINT": "The calendars and its appointments are visible only to you",
       "SERVICES": { "GOOGLE": "Google Calendar", "MICROSOFT": "Microsoft Outlook" },
+      "SET_AS_DEFAULT": "Set as default",
+      "SET_AS_DEFAULT_HINT": "Configure the calendar to be the first one used in the agenda",
       "TAP_TO_CONFIGURE": "Tap here to configure",
       "TEAM_CALENDAR": "Team calendar",
       "TEAM_CALENDARS": "Team calendars",
       "TEAM_CALENDARS_HINT": "These calendars and their appointments are visible to the whole team",
       "TEAM_CALENDAR_HINT": "The calendar and its appointments are visible to the whole team",
       "USERS_ALLOWED_TO_MANAGE_APPOINTMENTS": "Users who can manage appointments",
-      "WHO_CAN_MANAGE_APPOINTMENTS": "Who can manage appointments",
-      "SET_AS_DEFAULT": "Set as default",
-      "SET_AS_DEFAULT_HINT": "Configure the calendar to be the first one used in the agenda",
-      "DEFAULT": "Default"
-    }
+      "WHICH_EXTERNAL_SERVICE_TO_LINK": "Which external service you want to link to the calendar?",
+      "WHICH_EXTERNAL_SERVICE_TO_LINK_HINT": "Note well: you can't change this configuration later",
+      "WHO_CAN_MANAGE_APPOINTMENTS": "Who can manage appointments"
+    },
+    "DAY": "Day",
+    "MONTH": "Month",
+    "WEEK": "Week"
   }
 }
