@@ -2,26 +2,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Check } from 'idea-toolbox';
 
-import { IDEAChecksComponent } from './checks.component';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-/**
- * Data can either be populated directly from the namesake attribute, passing an array of values, or through the
- * _dataProvider_, which is a function that returns a Promise<Array<Check>>, i.e. a promise with an array of
- * Checks fetched from somewhere.
- * Tip: to execute from another context, pass to the `idea-checker` an helper function like the following:
- * ```
- *   runInContext(methodName: string): any {
- *     return () => (<any>this)[methodName]();
- *   }
- * ```
- * using it then:
- * ```
- *   <idea-checker
- *     [dataProvider]="runInContext('method')"
- *   ></idea-checker>
- * ```
- */
+import { IDEAChecksComponent } from './checks.component';
+
 @Component({
   selector: 'idea-checker',
   templateUrl: 'checker.component.html',
@@ -31,137 +15,124 @@ export class IDEACheckerComponent {
   /**
    * The checks to show.
    */
-  @Input() public data: Check[] = new Array<Check>();
+  @Input() data: Check[] = [];
   /**
-   *  Alternative to the case above; function that returns a Promise<Array<Check>>.
+   * @deprecated Alternative to the case above; function that returns a Promise<Array<Check>>.
    */
-  @Input() public dataProvider: any;
+  @Input() dataProvider: any;
   /**
    * The label for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * The icon for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() public iconColor: string;
+  @Input() iconColor: string;
   /**
    * A placeholder for the searchbar.
    */
-  @Input() public searchPlaceholder: string;
+  @Input() searchPlaceholder: string;
   /**
    * If true, show the string instead of the preview text.
    */
-  @Input() public noPreviewText: string;
+  @Input() noPreviewText: string;
   /**
    * The text to show in case no element is found after a search.
    */
-  @Input() public noElementsFoundText: string;
+  @Input() noElementsFoundText: string;
   /**
    * If true, no elements selected equals all the elements selected.
    */
-  @Input() public noneEqualsAll: boolean;
+  @Input() noneEqualsAll: boolean;
   /**
    * If no element is selected, set this custom text.
    */
-  @Input() public noneText: string;
+  @Input() noneText: string;
   /**
    * If all the elements are selected, set this custom text.
    */
-  @Input() public allText: string;
+  @Input() allText: string;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.
    */
-  @Input() public tappableWhenDisabled: boolean;
+  @Input() tappableWhenDisabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() public obligatory: boolean;
+  @Input() obligatory: boolean;
   /**
    * If true, sort alphabetically the data.
    */
-  @Input() public sortData: boolean;
+  @Input() sortData: boolean;
   /**
    * How many elements to show in the preview before to generalize on the number.
    */
-  @Input() public numMaxElementsInPreview = 4;
+  @Input() numMaxElementsInPreview = 4;
   /**
    * Whether to show an avatar aside each element.
    */
-  @Input() public showAvatars: boolean;
+  @Input() showAvatars: boolean;
   /**
    * Limit the number of selectable elements to the value provided.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
-  @Input() public limitSelectionToNum: number;
+  @Input() limitSelectionToNum: number;
   /**
    * Whether to allow the select/deselect-all buttons.
    */
-  @Input() public allowSelectDeselectAll: boolean;
+  @Input() allowSelectDeselectAll: boolean;
   /**
    * On change event.
    */
-  @Output() public change = new EventEmitter<void>();
+  @Output() change = new EventEmitter<void>();
   /**
    * Icon select.
    */
-  @Output() public iconSelect = new EventEmitter<void>();
+  @Output() iconSelect = new EventEmitter<void>();
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
-  /**
-   * Fetch the promised data from a function and set it before to open the checks.
-   */
-  public fetchDataAndOpenModal() {
+  constructor(private modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  async fetchDataAndOpenModal(): Promise<void> {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
-      this.dataProvider()
-        .then((data: Check[]) => {
-          this.data = data;
-          this.openChecker();
-        })
-        .catch(() => {}); // data will be empty
+      try {
+        this.data = await this.dataProvider();
+        this.openChecker();
+      } catch (error) {
+        this.data = [];
+      }
     } else this.openChecker();
   }
-  /**
-   * Open the checks modal and later fetch the selection (plain value).
-   */
-  protected openChecker() {
+  private async openChecker(): Promise<void> {
     if (this.disabled) return;
-    // open the modal to let the user to check the desired items
-    this.modalCtrl
-      .create({
-        component: IDEAChecksComponent,
-        componentProps: {
-          data: this.data,
-          sortData: this.sortData,
-          searchPlaceholder: this.searchPlaceholder,
-          noElementsFoundText: this.noElementsFoundText,
-          showAvatars: this.showAvatars,
-          allowSelectDeselectAll: this.allowSelectDeselectAll,
-          limitSelectionToNum: this.limitSelectionToNum
-        }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
-        modal.present();
-      });
+    const modal = await this.modalCtrl.create({
+      component: IDEAChecksComponent,
+      componentProps: {
+        data: this.data,
+        sortData: this.sortData,
+        searchPlaceholder: this.searchPlaceholder,
+        noElementsFoundText: this.noElementsFoundText,
+        showAvatars: this.showAvatars,
+        allowSelectDeselectAll: this.allowSelectDeselectAll,
+        limitSelectionToNum: this.limitSelectionToNum
+      }
+    });
+    modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
+    modal.present();
   }
 
-  /**
-   * Calculate the preview.
-   */
-  public getPreview(): string {
+  getPreview(): string {
     if (!this.data || !this.data.length) return null;
     if (this.noPreviewText) return this.noPreviewText;
     if (this.allText && (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll)))
@@ -179,10 +150,7 @@ export class IDEACheckerComponent {
     }
   }
 
-  /**
-   * The icon was selected.
-   */
-  public doIconSelect(event: any) {
+  doIconSelect(event: any): void {
     if (event) event.stopPropagation();
     this.iconSelect.emit(event);
   }

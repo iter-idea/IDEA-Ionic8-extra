@@ -1,9 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AlertController, ModalController, IonSearchbar } from '@ionic/angular';
+import { IonInfiniteScroll, AlertController, ModalController, IonSearchbar } from '@ionic/angular';
 import { Label } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEALabelerComponent } from '../labeler/labeler.component';
+
+const MAX_PAGE_SIZE = 24;
 
 @Component({
   selector: 'idea-list-elements',
@@ -14,58 +16,43 @@ export class IDEAListELementsComponent implements OnInit {
   /**
    * It should be read only until the component closure.
    */
-  @Input() public data: (Label | string)[];
+  @Input() data: (Label | string)[];
   /**
    * Whether the elements are labels or simple strings.
    */
-  @Input() public labelElements: boolean;
+  @Input() labelElements: boolean;
   /**
    * A placeholder for the searchbar.
    */
-  @Input() public searchPlaceholder: string;
+  @Input() searchPlaceholder: string;
   /**
    * The text to show in case no element is found after a search.
    */
-  @Input() public noElementsFoundText: string;
-  /**
-   * A copy of data, to use until the changes are confirmed.
-   */
-  public workingData: (Label | string)[];
-  /**
-   * The list filtered by the current search terms.
-   */
-  public filteredList: (Label | string)[];
-  /**
-   * Manage the searchbar component.
-   */
-  @ViewChild(IonSearchbar, { static: true }) public searchbar: IonSearchbar;
+  @Input() noElementsFoundText: string;
+
+  workingData: (Label | string)[];
+  filteredList: (Label | string)[];
+  currentPage: number;
+
+  @ViewChild('searchbar') searchbar: IonSearchbar;
 
   constructor(
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     public t: IDEATranslationsService
   ) {}
-  public ngOnInit() {
-    // use a copy of the array, to confirm it only when saving
+  ngOnInit(): void {
     this.workingData = Array.from(this.data || (this.labelElements ? new Array<Label>() : new Array<string>()));
-    // fire the first search
     this.search();
   }
 
-  /**
-   * Get the value to show based on the type of the element.
-   */
-  public getElementName(x: Label | string) {
+  getElementName(x: Label | string): any {
     return this.labelElements ? (x as Label).translate(this.t.getCurrentLang(), this.t.languages()) : x;
   }
 
-  /**
-   * Get the filtered list while typing into the input.
-   */
-  public search(toSearch?: string) {
-    // acquire and clean the searchTerm
+  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
-    // load the list
+
     this.filteredList = (this.workingData || [])
       .filter(x =>
         toSearch
@@ -73,12 +60,15 @@ export class IDEAListELementsComponent implements OnInit {
           .every(searchTerm => [this.getElementName(x)].filter(f => f).some(f => f.toLowerCase().includes(searchTerm)))
       )
       .sort();
+
+    if (scrollToNextPage) this.currentPage++;
+    else this.currentPage = 0;
+    this.filteredList = this.filteredList.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+
+    if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
 
-  /**
-   * Add a new element to the list.
-   */
-  public addElement() {
+  addElement(): void {
     if (this.labelElements) {
       const l = new Label(null, this.t.languages());
       l[this.t.getDefaultLang()] = '-';
@@ -86,65 +76,45 @@ export class IDEAListELementsComponent implements OnInit {
       this.editLabel(l);
     } else this.addStrElement();
   }
-  /**
-   * Edit an element of the list, it it's a label.
-   */
-  public editElement(element: Label | string) {
+  editElement(element: Label | string): void {
     if (this.labelElements) this.editLabel(element as Label);
   }
-  /**
-   * Remove the selected element from the list.
-   */
-  public removeElement(element: Label | string) {
+  removeElement(element: Label | string): void {
     this.workingData.splice(this.workingData.indexOf(element), 1);
     this.search(this.searchbar ? this.searchbar.value : '');
   }
 
-  /**
-   * Prompt to edit a string element.
-   */
-  public addStrElement() {
-    this.alertCtrl
-      .create({
-        header: this.t._('IDEA_COMMON.LIST.NEW_ELEMENT'),
-        inputs: [{ type: 'text', name: 'element', placeholder: this.t._('IDEA_COMMON.LIST.ELEMENT') }],
-        buttons: [
-          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-          {
-            text: this.t._('COMMON.SAVE'),
-            handler: data => {
-              if (data.element && data.element.trim()) {
-                this.workingData.push(data.element);
-                this.search(this.searchbar ? this.searchbar.value : '');
-              }
+  async addStrElement(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: this.t._('IDEA_COMMON.LIST.NEW_ELEMENT'),
+      inputs: [{ type: 'text', name: 'element', placeholder: this.t._('IDEA_COMMON.LIST.ELEMENT') }],
+      buttons: [
+        { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
+        {
+          text: this.t._('COMMON.SAVE'),
+          handler: ({ element }): void => {
+            if (element && element.trim()) {
+              this.workingData.push(element);
+              this.search(this.searchbar ? this.searchbar.value : '');
             }
           }
-        ]
-      })
-      .then(alert =>
-        alert.present().then(() => {
-          const firstInput: any = document.querySelector('ion-alert input');
-          firstInput.focus();
-          return;
-        })
-      );
+        }
+      ]
+    });
+    await alert.present();
+    const firstInput: HTMLInputElement = document.querySelector('ion-alert input');
+    if (firstInput) firstInput.focus();
   }
-  /**
-   * Open the component to edit a label.
-   */
-  public editLabel(label: Label) {
-    this.modalCtrl
-      .create({ component: IDEALabelerComponent, componentProps: { label, obligatory: true } })
-      .then(modal => {
-        modal.onDidDismiss().then(() => this.search(this.searchbar ? this.searchbar.value : ''));
-        modal.present();
-      });
+  async editLabel(label: Label): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: IDEALabelerComponent,
+      componentProps: { label, obligatory: true }
+    });
+    modal.onDidDismiss().then((): void => this.search(this.searchbar ? this.searchbar.value : ''));
+    modal.present();
   }
 
-  /**
-   * Close and save or simply dismiss.
-   */
-  public close(save?: boolean) {
+  close(save?: boolean): void {
     // empty and refill the array without losing the reference
     if (save) {
       this.data.length = 0;

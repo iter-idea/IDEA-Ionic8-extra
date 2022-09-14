@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
+import { ViewChild, Component, Input, OnInit } from '@angular/core';
+import { IonInfiniteScroll, AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { loopStringEnumValues, RCFolder, RCResource, RCResourceFormats, SignedURL } from 'idea-toolbox';
 import {
@@ -13,10 +13,9 @@ import {
   IDEAActionSheetController
 } from '@idea-ionic/common';
 
-/**
- * The size limit, in MB, for the files to upload.
- */
 const FILE_SIZE_LIMIT_MB = 10;
+
+const MAX_PAGE_SIZE = 24;
 
 @Component({
   selector: 'idea-rc-resources',
@@ -27,54 +26,42 @@ export class IDEARCResourcesComponent implements OnInit {
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */
-  @Input() public teamId: string;
+  @Input() teamId: string;
   /**
    * The Resource Center's folder of which to show the resources.
    */
-  @Input() public folder: RCFolder;
+  @Input() folder: RCFolder;
   /**
    * Whether the user has permissions to manage the resource center.
    */
-  @Input() public admin: boolean;
-  /**
-   * The resources available to the team.
-   */
-  public resources: RCResource[];
-  /**
-   * The resources filtered based on the current search.
-   */
-  public filteredResources: RCResource[];
-  /**
-   * The searchbar to locally filter the list.
-   */
-  public searchbar: IonSearchbar;
-  /**
-   * Stack of errors from the last upload.
-   */
-  public uploadErrors: string[];
+  @Input() admin: boolean;
+
+  resources: RCResource[];
+  filteredResources: RCResource[];
+  currentPage: number;
+
+  @ViewChild('searchbar') searchbar: IonSearchbar;
+
+  uploadErrors: string[];
 
   constructor(
-    public tc: IDEATinCanService,
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-    public actionSheetCtrl: IDEAActionSheetController,
-    public loading: IDEALoadingService,
-    public message: IDEAMessageService,
+    private tc: IDEATinCanService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private actionSheetCtrl: IDEAActionSheetController,
+    private loading: IDEALoadingService,
+    private message: IDEAMessageService,
+    private API: IDEAAWSAPIService,
     public offline: IDEAOfflineService,
-    public API: IDEAAWSAPIService,
     public t: IDEATranslationsService
   ) {}
-  public ngOnInit() {
+  ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
     this.teamId = this.teamId || this.tc.get('membership').teamId || this.tc.get('teamId');
-    // load the team's Resource Center resources for the specified folder
     this.loadResources();
   }
 
-  /**
-   * (re)Load the Resource Center resources of the current folder.
-   */
-  public loadResources(getFromNetwork?: boolean) {
+  loadResources(getFromNetwork?: boolean): void {
     this.API.getResource(`teams/${this.teamId}/folders/${this.folder.folderId}/resources`, {
       useCache: getFromNetwork ? CacheModes.NETWORK_FIRST : CacheModes.CACHE_FIRST
     })
@@ -85,12 +72,9 @@ export class IDEARCResourcesComponent implements OnInit {
       .catch(() => this.message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST'));
   }
 
-  /**
-   * Search within the list by filtering on the main fields.
-   */
-  public search(toSearch?: string) {
+  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
-    // filter based on the main fields of the models and paginate
+
     this.filteredResources = (this.resources || [])
       .filter(m =>
         toSearch
@@ -98,11 +82,14 @@ export class IDEARCResourcesComponent implements OnInit {
           .every(searchTerm => [m.name, m.format].filter(f => f).some(f => f.toLowerCase().includes(searchTerm)))
       )
       .sort((a, b) => a.name.localeCompare(b.name));
+
+    if (scrollToNextPage) this.currentPage++;
+    else this.currentPage = 0;
+    this.filteredResources = this.filteredResources.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+
+    if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
-  /**
-   * Refresh the list.
-   */
-  public doRefresh(refresher?: IonRefresher) {
+  doRefresh(refresher?: IonRefresher): void {
     this.filteredResources = null;
     setTimeout(() => {
       this.loadResources(Boolean(refresher));
@@ -110,10 +97,7 @@ export class IDEARCResourcesComponent implements OnInit {
     }, 500); // the timeout is needed
   }
 
-  /**
-   * Open a resource in the external browser.
-   */
-  public async openResource(resource: RCResource) {
+  async openResource(resource: RCResource): Promise<void> {
     // get a (signed) URL to the resource and opens it in an external browser
     await this.loading.show();
     this.API.patchResource(`teams/${this.teamId}/folders/${this.folder.folderId}/resources`, {
@@ -125,10 +109,7 @@ export class IDEARCResourcesComponent implements OnInit {
       .finally(() => this.loading.hide());
   }
 
-  /**
-   * Return the name of an icon representing the format.
-   */
-  public getFormatIcon(format: RCResourceFormats): string {
+  getFormatIcon(format: RCResourceFormats): string {
     switch (format) {
       case RCResourceFormats.JPG:
       case RCResourceFormats.JPEG:
@@ -141,10 +122,7 @@ export class IDEARCResourcesComponent implements OnInit {
     }
   }
 
-  /**
-   * Actions on the resource.
-   */
-  public actionsOnResource(res: RCResource) {
+  actionsOnResource(res: RCResource): void {
     if (!this.admin) return;
     const buttons = [];
     buttons.push({
@@ -168,18 +146,11 @@ export class IDEARCResourcesComponent implements OnInit {
       .create({ header: this.t._('IDEA_TEAMS.RESOURCE_CENTER.ACTIONS_ON_RESOURCE'), buttons })
       .then(actions => actions.present());
   }
-  /**
-   * Browse the local files to pick a new file (version) for the resource.
-   */
-  public browseUpdateResource(res: RCResource) {
+  browseUpdateResource(res: RCResource): void {
     if (!this.admin) return;
-    // browse a local file
     document.getElementById(res.resourceId.concat('_picker')).click();
   }
-  /**
-   * Update the resource by uploading a new version.
-   */
-  public async updateResource(res: RCResource, ev: any) {
+  async updateResource(res: RCResource, ev: any): Promise<void> {
     this.uploadErrors = new Array<string>();
     // identify the file to upload (consider only the first file selected)
     const fileList: FileList = ev.target ? ev.target.files : {};
@@ -192,10 +163,7 @@ export class IDEARCResourcesComponent implements OnInit {
       else this.message.success('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_COMPLETED');
     });
   }
-  /**
-   * Rename a resource.
-   */
-  protected renameResource(res: RCResource) {
+  renameResource(res: RCResource): void {
     this.alertCtrl
       .create({
         header: this.t._('IDEA_TEAMS.RESOURCE_CENTER.RENAME_RESOURCE'),
@@ -232,10 +200,7 @@ export class IDEARCResourcesComponent implements OnInit {
       })
       .then(alert => alert.present());
   }
-  /**
-   * Delete a resource.
-   */
-  protected deleteResource(res: RCResource) {
+  deleteResource(res: RCResource): void {
     this.alertCtrl
       .create({
         header: this.t._('COMMON.ARE_YOU_SURE'),
@@ -261,18 +226,12 @@ export class IDEARCResourcesComponent implements OnInit {
       .then(alert => alert.present());
   }
 
-  /**
-   * Browse the local files to pick new resources to upload.
-   */
-  public browseUploadNewResource() {
+  browseUploadNewResource(): void {
     if (!this.admin) return;
     // browse the local file(s)
     document.getElementById('newResourcePicker').click();
   }
-  /**
-   * Upload new resources (triggered by a completed browse action).
-   */
-  public async uploadNewResources(ev: any) {
+  async uploadNewResources(ev: any): Promise<void> {
     this.uploadErrors = new Array<string>();
     // gather the files to upload
     const fileList: FileList = ev.target ? ev.target.files : {};
@@ -288,10 +247,7 @@ export class IDEARCResourcesComponent implements OnInit {
     this.loadResources(true);
   }
 
-  /**
-   * Upload a file. It could create a new resource or update an existing one.
-   */
-  protected uploadFile(file: File, existingRes?: RCResource): Promise<void> {
+  uploadFile(file: File, existingRes?: RCResource): Promise<void> {
     return new Promise(resolve => {
       // prepare the resource metadata
       const fullName = file.name.split('.');
@@ -348,10 +304,7 @@ export class IDEARCResourcesComponent implements OnInit {
     });
   }
 
-  /**
-   * Close the modal.
-   */
-  public close() {
+  close(): void {
     this.modalCtrl.dismiss();
   }
 }

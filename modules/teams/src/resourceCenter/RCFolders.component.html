@@ -6,6 +6,7 @@
       </ion-button>
     </ion-buttons>
     <ion-searchbar
+      #searchbar
       [placeholder]="t._('IDEA_TEAMS.RESOURCE_CENTER.SEARCH_FOR_FOLDERS')"
       (ionInput)="search($event.target ? $event.target.value : '')"
     ></ion-searchbar>
@@ -34,30 +35,31 @@
     <ion-item class="noElements" *ngIf="filteredFolders && !filteredFolders.length">
       <ion-label>{{ 'COMMON.NO_ELEMENT_FOUND' | translate }}</ion-label>
     </ion-item>
-    <ion-virtual-scroll *ngIf="filteredFolders" [items]="filteredFolders">
-      <ion-item *virtualItem="let folder" [button]="true" (click)="openFolder(folder)">
-        <ion-label>{{ folder.name }}</ion-label>
-        <ion-button
-          color="medium"
-          fill="clear"
-          slot="end"
-          [title]="t._('IDEA_TEAMS.RESOURCE_CENTER.RENAME')"
-          [disabled]="offline.isOffline()"
-          (click)="renameFolder(folder, $event)"
-        >
-          <ion-icon name="pencil" slot="icon-only"></ion-icon>
-        </ion-button>
-        <ion-button
-          color="danger"
-          fill="clear"
-          slot="end"
-          [title]="t._('IDEA_TEAMS.RESOURCE_CENTER.DELETE')"
-          [disabled]="offline.isOffline()"
-          (click)="deleteFolder(folder, $event)"
-        >
-          <ion-icon name="trash" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-virtual-scroll>
+    <ion-item *ngFor="let folder of filteredFolders" button (click)="openFolder(folder)">
+      <ion-label>{{ folder.name }}</ion-label>
+      <ion-button
+        color="medium"
+        fill="clear"
+        slot="end"
+        [title]="t._('IDEA_TEAMS.RESOURCE_CENTER.RENAME')"
+        [disabled]="offline.isOffline()"
+        (click)="renameFolder(folder, $event)"
+      >
+        <ion-icon name="pencil" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button
+        color="danger"
+        fill="clear"
+        slot="end"
+        [title]="t._('IDEA_TEAMS.RESOURCE_CENTER.DELETE')"
+        [disabled]="offline.isOffline()"
+        (click)="deleteFolder(folder, $event)"
+      >
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
   </ion-list>
+  <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
+    <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

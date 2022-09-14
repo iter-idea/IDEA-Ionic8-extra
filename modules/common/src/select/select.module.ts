@@ -11,7 +11,6 @@ import { IDEASuggestionsComponent } from './suggestions.component';
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
   declarations: [IDEASelectComponent, IDEASuggestionsComponent, IDEABoldPrefix],
-  entryComponents: [IDEASelectComponent, IDEASuggestionsComponent],
   exports: [IDEASelectComponent, IDEASuggestionsComponent, IDEABoldPrefix]
 })
 export class IDEASelectModule {}

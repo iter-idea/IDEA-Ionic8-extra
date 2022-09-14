@@ -5,9 +5,6 @@ import { Label } from 'idea-toolbox';
 import { IDEAListELementsComponent } from './listElements.component';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-/**
- * Show and manage a list of elements.
- */
 @Component({
   selector: 'idea-list',
   templateUrl: 'list.component.html',
@@ -17,95 +14,82 @@ export class IDEAListComponent {
   /**
    * The list to manage.
    */
-  @Input() public data: (Label | string)[];
+  @Input() data: (Label | string)[] = [];
   /**
    * Whether the elements are labels or simple strings.
    */
-  @Input() public labelElements: boolean;
+  @Input() labelElements: boolean;
   /**
    * The label for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * The icon for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() public iconColor: string;
+  @Input() iconColor: string;
   /**
    * A placeholder for the searchbar.
    */
-  @Input() public searchPlaceholder: string;
+  @Input() searchPlaceholder: string;
   /**
    * Text to show when there isn't a result.
    */
-  @Input() public noElementsFoundText: string;
+  @Input() noElementsFoundText: string;
   /**
    * If true, show the string instead of the preview text.
    */
-  @Input() public noPreviewText: string;
+  @Input() noPreviewText: string;
   /**
    * A placeholder for the field.
    */
-  @Input() public placeholder: string;
+  @Input() placeholder: string;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() public obligatory: boolean;
+  @Input() obligatory: boolean;
   /**
    * How many elements to show in the preview before to generalize on the number.
    */
-  @Input() public numMaxElementsInPreview: number;
+  @Input() numMaxElementsInPreview = 4;
   /**
    * On change event.
    */
-  @Output() public change = new EventEmitter<void>();
+  @Output() change = new EventEmitter<void>();
   /**
    * Icon select.
    */
-  @Output() public iconSelect = new EventEmitter<void>();
+  @Output() iconSelect = new EventEmitter<void>();
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {
-    this.data = new Array<Label | string>();
-    this.numMaxElementsInPreview = 4;
-  }
+  constructor(private modalCtrl: ModalController, public t: IDEATranslationsService) {}
 
-  /**
-   * Open the checks modal and later fetch the selection.
-   */
-  public openList() {
+  async openList(): Promise<void> {
     if (this.disabled) return;
-    // open the modal to let the user to manage the list
-    this.modalCtrl
-      .create({
-        component: IDEAListELementsComponent,
-        componentProps: {
-          data: this.data,
-          labelElements: this.labelElements,
-          searchPlaceholder: this.searchPlaceholder,
-          noElementsFoundText: this.noElementsFoundText
-        }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
-        modal.present();
-      });
+    const modal = await this.modalCtrl.create({
+      component: IDEAListELementsComponent,
+      componentProps: {
+        data: this.data,
+        labelElements: this.labelElements,
+        searchPlaceholder: this.searchPlaceholder,
+        noElementsFoundText: this.noElementsFoundText
+      }
+    });
+    modal.onDidDismiss().then(({ data }) => (data ? this.change.emit() : null));
+    modal.present();
   }
 
-  /**
-   * Calculate the preview.
-   */
-  public getPreview(): string {
+  getPreview(): string {
     if (!this.data || !this.data.length) return null;
     if (this.noPreviewText) return this.noPreviewText;
     if (this.data.length <= this.numMaxElementsInPreview)
@@ -115,17 +99,11 @@ export class IDEAListComponent {
         .join(', ');
     else return this.t._('IDEA_COMMON.LIST.NUM_ELEMENTS_', { num: this.data.length });
   }
-  /**
-   * Get the value to show based on the type of the element.
-   */
-  public getElementName(x: Label | string) {
+  getElementName(x: Label | string): any {
     return this.labelElements ? (x as Label).translate(this.t.getCurrentLang(), this.t.languages()) : x;
   }
 
-  /**
-   * The icon was selected.
-   */
-  public doIconSelect(event: any) {
+  doIconSelect(event: any): void {
     if (event) event.stopPropagation();
     this.iconSelect.emit(event);
   }

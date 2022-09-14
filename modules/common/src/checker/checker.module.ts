@@ -11,7 +11,6 @@ import { IDEAUserAvatarModule } from '../userAvatar/userAvatar.module';
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAUserAvatarModule],
   declarations: [IDEACheckerComponent, IDEAChecksComponent],
-  entryComponents: [IDEACheckerComponent, IDEAChecksComponent],
   exports: [IDEACheckerComponent, IDEAChecksComponent]
 })
 export class IDEACheckerModule {}

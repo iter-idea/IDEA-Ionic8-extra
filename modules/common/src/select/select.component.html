@@ -1,8 +1,8 @@
 <ion-item
   class="selectItem"
-  [lines]="lines || 'full'"
+  [lines]="lines ?? 'full'"
   [button]="!disabled"
-  [title]="placeholder || description || ''"
+  [title]="placeholder ?? description ?? ''"
   [class.withLabel]="label"
   (click)="disabled ? doSelectWhenDisabled() : fetchDataAndOpenModal()"
 >
@@ -14,7 +14,7 @@
     [class.marginTop]="label"
     (click)="doIconSelect($event)"
   >
-    <ion-icon [name]="icon" slot="icon-only"></ion-icon>
+    <ion-icon [icon]="icon" slot="icon-only"></ion-icon>
   </ion-button>
   <ion-label position="stacked" *ngIf="label" [class.selectable]="!disabled || tappableWhenDisabled">
     {{ label }}
@@ -26,5 +26,5 @@
     </ion-text>
     {{ description }}
   </ion-label>
-  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
+  <ion-icon slot="end" icon="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
 </ion-item>

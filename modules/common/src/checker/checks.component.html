@@ -6,9 +6,10 @@
       </ion-button>
     </ion-buttons>
     <ion-searchbar
+      #searchbar
       [debounce]="100"
-      [placeholder]="searchPlaceholder || t._('IDEA_COMMON.CHECKER.SEARCH')"
-      (ionInput)="search($event?.target?.value)"
+      [placeholder]="searchPlaceholder ?? t._('IDEA_COMMON.CHECKER.SEARCH')"
+      (ionInput)="search($event.target.value)"
     ></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA_COMMON.CHECKER.CONFIRM_SELECTION')" (click)="confirm()">
@@ -45,22 +46,23 @@
         <i>{{ noElementsFoundText || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
       </ion-label>
     </ion-item>
-    <ion-virtual-scroll [items]="filteredChecks">
-      <ion-item class="check" *virtualItem="let check">
-        <ion-checkbox
-          slot="start"
-          [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
-          [(ngModel)]="check.checked"
-        ></ion-checkbox>
-        <ion-avatar slot="start" *ngIf="showAvatars">
-          <div class="circle" *ngIf="check.color" [style.background-color]="check.color"></div>
-          <idea-user-avatar *ngIf="!check.color" [src]="check.avatar" [name]="check.name"></idea-user-avatar>
-        </ion-avatar>
-        <ion-label>
-          {{ check.name }}
-          <p *ngIf="check.description">{{ check.description }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-virtual-scroll>
+    <ion-item class="check" *ngFor="let check of filteredChecks; trackBy: trackBy">
+      <ion-checkbox
+        slot="start"
+        [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
+        [(ngModel)]="check.checked"
+      ></ion-checkbox>
+      <ion-avatar slot="start" *ngIf="showAvatars">
+        <div class="circle" *ngIf="check.color" [style.background-color]="check.color"></div>
+        <idea-user-avatar *ngIf="!check.color" [src]="check.avatar" [name]="check.name"></idea-user-avatar>
+      </ion-avatar>
+      <ion-label>
+        {{ check.name }}
+        <p *ngIf="check.description">{{ check.description }}</p>
+      </ion-label>
+    </ion-item>
   </ion-list>
+  <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
+    <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

@@ -1,8 +1,8 @@
 <ion-item
   class="listItem"
-  [lines]="lines || 'full'"
+  [lines]="lines ?? 'full'"
   [button]="!disabled"
-  [title]="placeholder || ''"
+  [title]="placeholder ?? ''"
   [class.withLabel]="label"
   (click)="openList()"
 >
@@ -14,14 +14,14 @@
     [class.marginTop]="label"
     (click)="doIconSelect($event)"
   >
-    <ion-icon [name]="icon" slot="icon-only"></ion-icon>
+    <ion-icon [icon]="icon" slot="icon-only"></ion-icon>
   </ion-button>
   <ion-label position="stacked" *ngIf="label" [class.selectable]="!disabled">
     {{ label }}
     <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
   </ion-label>
   <ion-label class="description" [class.selectable]="!disabled" [class.placeholder]="!getPreview() || noPreviewText">
-    {{ getPreview() || placeholder }}
+    {{ getPreview() ?? placeholder }}
   </ion-label>
-  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
+  <ion-icon slot="end" icon="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
 </ion-item>

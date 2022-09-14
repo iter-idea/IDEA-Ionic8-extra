@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
-
+import { ViewChild, Component, Input, OnInit } from '@angular/core';
+import { IonInfiniteScroll, AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
 import {
   IDEALoadingService,
   IDEAAWSAPIService,
@@ -14,6 +13,8 @@ import { RCFolder } from 'idea-toolbox';
 
 import { IDEARCResourcesComponent } from './RCResources.component';
 
+const MAX_PAGE_SIZE = 24;
+
 @Component({
   selector: 'idea-rc-folders',
   templateUrl: 'RCFolders.component.html',
@@ -23,45 +24,34 @@ export class IDEARCFoldersComponent implements OnInit {
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */
-  @Input() public teamId: string;
+  @Input() teamId: string;
   /**
    * Whether the user has permissions to manage the resource center.
    */
-  @Input() public admin: boolean;
-  /**
-   * The folders available to the team.
-   */
-  public folders: RCFolder[];
-  /**
-   * The folders filtered based on the current search.
-   */
-  public filteredFolders: RCFolder[];
-  /**
-   * The searchbar to locally filter the list.
-   */
-  public searchbar: IonSearchbar;
+  @Input() admin: boolean;
+
+  folders: RCFolder[];
+  filteredFolders: RCFolder[];
+  currentPage: number;
+
+  @ViewChild('searchbar') searchbar: IonSearchbar;
 
   constructor(
-    public tc: IDEATinCanService,
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-    public loading: IDEALoadingService,
-    public message: IDEAMessageService,
+    private tc: IDEATinCanService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private loading: IDEALoadingService,
+    private message: IDEAMessageService,
+    private API: IDEAAWSAPIService,
     public offline: IDEAOfflineService,
-    public API: IDEAAWSAPIService,
     public t: IDEATranslationsService
   ) {}
-  public ngOnInit() {
+  ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
     this.teamId = this.teamId || this.tc.get('membership').teamId || this.tc.get('teamId');
-    // load the Resource Center folders of the team
     this.loadFolders();
   }
-
-  /**
-   * (re)Load the Resource Center folders of the team.
-   */
-  public loadFolders(getFromNetwork?: boolean) {
+  loadFolders(getFromNetwork?: boolean): void {
     this.API.getResource(`teams/${this.teamId}/folders`, {
       useCache: getFromNetwork ? CacheModes.NETWORK_FIRST : CacheModes.CACHE_FIRST
     })
@@ -72,41 +62,35 @@ export class IDEARCFoldersComponent implements OnInit {
       .catch(() => this.message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST'));
   }
 
-  /**
-   * Search within the list by filtering on the main fields.
-   */
-  public search(toSearch?: string) {
+  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
-    // filter based on the main fields of the models and paginate
+
     this.filteredFolders = (this.folders || [])
       .filter(m =>
         toSearch.split(' ').every(searchTerm => [m.name].filter(f => f).some(f => f.toLowerCase().includes(searchTerm)))
       )
       .sort((a, b) => a.name.localeCompare(b.name));
+
+    if (scrollToNextPage) this.currentPage++;
+    else this.currentPage = 0;
+    this.filteredFolders = this.filteredFolders.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+
+    if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
-  /**
-   * Refresh the list.
-   */
-  public doRefresh(refresher?: IonRefresher) {
+  doRefresh(refresher?: IonRefresher): void {
     this.filteredFolders = null;
-    setTimeout(() => {
+    setTimeout((): void => {
       this.loadFolders(Boolean(refresher));
       if (refresher) refresher.complete();
     }, 500); // the timeout is needed
   }
 
-  /**
-   * Open a folder to see and manage its resources.
-   */
-  public openFolder(folder: RCFolder) {
+  openFolder(folder: RCFolder): void {
     this.modalCtrl
       .create({ component: IDEARCResourcesComponent, componentProps: { folder, admin: this.admin } })
       .then(modal => modal.present());
   }
-  /**
-   * Create a new folder in the current resource center.
-   */
-  public newFolder() {
+  newFolder(): void {
     if (!this.admin) return;
     // ask for the name of the new folder
     this.alertCtrl
@@ -142,10 +126,7 @@ export class IDEARCFoldersComponent implements OnInit {
       .then(alert => alert.present());
   }
 
-  /**
-   * Rename a folder.
-   */
-  public renameFolder(folder: RCFolder, event?: any) {
+  renameFolder(folder: RCFolder, event?: any): void {
     if (event) event.stopPropagation();
     if (!this.admin) return;
     this.alertCtrl
@@ -181,10 +162,7 @@ export class IDEARCFoldersComponent implements OnInit {
       })
       .then(alert => alert.present());
   }
-  /**
-   * Delete a folder.
-   */
-  public deleteFolder(folder: RCFolder, event?: any) {
+  deleteFolder(folder: RCFolder, event?: any): void {
     if (event) event.stopPropagation();
     if (!this.admin) return;
     this.alertCtrl
@@ -211,10 +189,7 @@ export class IDEARCFoldersComponent implements OnInit {
       .then(alert => alert.present());
   }
 
-  /**
-   * Close the modal.
-   */
-  public close() {
+  close(): void {
     this.modalCtrl.dismiss();
   }
 }
