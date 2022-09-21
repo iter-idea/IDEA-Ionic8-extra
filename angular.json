@@ -170,6 +170,34 @@
           }
         }
       }
+    },
+    "auth0": {
+      "projectType": "library",
+      "root": "modules/auth0",
+      "sourceRoot": "modules/auth0/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "modules/auth0/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/auth0/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "modules/auth0/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/auth0/src/**/*.ts", "modules/auth0/src/**/*.html"]
+          }
+        }
+      }
     }
   },
   "defaultProject": "common"

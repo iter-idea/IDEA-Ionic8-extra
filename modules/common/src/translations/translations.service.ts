@@ -11,7 +11,7 @@ const BASE_PATH = 'assets/i18n/';
 /**
  * The modules for which to load the translations.
  */
-const MODULES_PATH = ['', 'variables'].concat(env.idea.ionicExtraModules || []);
+const MODULES_PATH = [''].concat(env.idea.ionicExtraModules ?? []);
 
 /**
  * Translations service.
