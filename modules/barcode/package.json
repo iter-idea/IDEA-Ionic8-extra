@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uatisdeproblem/IDEA-Ionic-extra.git"
+    "url": "git+https://github.com/iter-idea/IDEA-Ionic-extra.git"
   },
   "keywords": [
     "idea",
@@ -34,7 +34,7 @@
   "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/uatisdeproblem/IDEA-Ionic-extra/issues"
+    "url": "https://github.com/iter-idea/IDEA-Ionic-extra/issues"
   },
-  "homepage": "https://github.com/uatisdeproblem/IDEA-Ionic-extra/tree/master/barcode"
+  "homepage": "https://github.com/iter-idea/IDEA-Ionic-extra/tree/master/barcode"
 }
