@@ -1,32 +1,30 @@
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Route, RouterStateSnapshot, UrlSegment } from '@angular/router';
-import { AuthGuard, AuthService } from '@auth0/auth0-angular';
-
+import { RouterStateSnapshot, CanActivate, CanLoad, CanActivateChild, ActivatedRouteSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { IDEAApiService } from '@idea-ionic/common';
 
+import { IDEAAuth0Service } from './auth0.service';
+
 @Injectable({ providedIn: 'root' })
-export class IDEAAuth0Guard extends AuthGuard {
-  constructor(private auth0: AuthService, private api: IDEAApiService) {
-    super(auth0);
-  }
-
+export class IDEAAuth0Guard implements CanActivate, CanLoad, CanActivateChild {
+  constructor(private auth0: IDEAAuth0Service, private api: IDEAApiService) {}
   private setApiAuthToken(): void {
-    this.auth0.idTokenClaims$.subscribe(claims => (this.api.authToken = claims ? claims.__raw : null));
+    this.auth0.__raw.idTokenClaims$.subscribe(claims => (this.api.authToken = claims ? claims.__raw : null));
   }
 
-  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
+  canLoad(): Observable<boolean> {
     this.setApiAuthToken();
-    return super.canLoad(route, segments);
+    return this.auth0.__raw.isAuthenticated$.pipe(take(1));
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     this.setApiAuthToken();
-    return super.canActivate(next, state);
+    return this.auth0.redirectIfUnauthenticated(state.url);
   }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     this.setApiAuthToken();
-    return super.canActivateChild(childRoute, state);
+    return this.auth0.redirectIfUnauthenticated(state.url);
   }
 }

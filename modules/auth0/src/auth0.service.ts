@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/internal/Observable';
 import { mergeMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
@@ -23,22 +24,30 @@ export class IDEAAuth0Service {
     this.auth0.user$.subscribe(user => (this.user = user ? new Auth0User(user) : null));
   }
 
+  /**
+   * The internal Auth0's service.
+   */
+  get __raw(): AuthService {
+    return this.auth0;
+  }
+
   private isMobileDevice(): boolean {
     return this.platform.is('capacitor');
   }
 
   /**
    * Open (if needed) Auth0's Universal Login page, to authenticate a user.
+   * @param afterRedirectTo where to go after a successful login
    */
-  goToLogin(): void {
-    this.isMobileDevice() ? this.loginWithMobile() : this.loginWithSPA();
+  goToLogin(afterRedirectTo?: string): void {
+    this.isMobileDevice() ? this.loginWithMobile(afterRedirectTo) : this.loginWithSPA(afterRedirectTo);
   }
-  private loginWithSPA(): void {
-    this.auth0.loginWithRedirect();
+  private loginWithSPA(afterRedirectTo?: string): void {
+    this.auth0.loginWithRedirect({ appState: { target: afterRedirectTo } });
   }
-  private loginWithMobile(): void {
+  private loginWithMobile(afterRedirectTo?: string): void {
     this.auth0
-      .buildAuthorizeUrl({ redirect_uri: env.auth0.callbackUri })
+      .buildAuthorizeUrl({ redirect_uri: env.auth0.callbackUri, appState: { target: afterRedirectTo } })
       .pipe(mergeMap(url => Browser.open({ url })))
       .subscribe();
   }
@@ -62,6 +71,23 @@ export class IDEAAuth0Service {
         })
       )
       .subscribe();
+  }
+
+  /**
+   * Redirect to login if not authenticated.
+   * Meant to be used in a Guard; example:
+   * ```
+    canActivate(_, state: RouterStateSnapshot): Observable<boolean> {
+      return this.auth.redirectIfUnauthenticated(state.url);
+    }
+   * ```
+   */
+  redirectIfUnauthenticated(afterRedirectUrl: string): Observable<boolean> {
+    return this.auth0.isAuthenticated$.pipe(
+      tap(loggedIn => {
+        if (!loggedIn) this.goToLogin(afterRedirectUrl);
+      })
+    );
   }
 
   /**
