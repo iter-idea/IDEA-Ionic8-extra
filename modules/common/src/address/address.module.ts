@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
-import { IDEAAddressComponent } from './address.component';
 import { IDEASelectModule } from '../select/select.module';
+
+import { IDEAAddressComponent } from './address.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule],
   declarations: [IDEAAddressComponent],
-  entryComponents: [IDEAAddressComponent],
   exports: [IDEAAddressComponent]
 })
 export class IDEAAddressModule {}

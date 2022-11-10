@@ -1,89 +1,75 @@
-import { Component, Input } from '@angular/core';
-import { Address, Countries, getStringEnumKeyByValue, Suggestion } from 'idea-toolbox';
-
-import { IDEATranslationsService } from '../translations/translations.service';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { IonAccordionGroup } from '@ionic/angular';
+import { Address, Countries, Suggestion } from 'idea-toolbox';
 
 @Component({
   selector: 'idea-address',
   templateUrl: 'address.component.html',
   styleUrls: ['address.component.scss']
 })
-export class IDEAAddressComponent {
+export class IDEAAddressComponent implements OnInit {
   /**
    * The address to manage.
    */
-  @Input() public address: Address;
+  @Input() address: Address;
   /**
    * If true, show the field `contact`.
    */
-  @Input() public showContact: boolean;
+  @Input() showContact = false;
   /**
    * If true, show the field `address2`.
    */
-  @Input() public showAddress2: boolean;
+  @Input() showAddress2 = false;
   /**
    * If true, show the field `phone`.
    */
-  @Input() public showPhone: boolean;
+  @Input() showPhone = false;
   /**
    * If true, show the field `email`.
    */
-  @Input() public showEmail: boolean;
+  @Input() showEmail = false;
   /**
    * Whether the fields are editable or disabled.
    */
-  @Input() public editMode: boolean;
-  /**
-   * The lines attribute of the item.
-   */
-  @Input() public lines: string;
+  @Input() editMode = true;
   /**
    * If true, show obligatory dots.
    */
-  @Input() public obligatory: boolean;
+  @Input() obligatory = false;
+  /**
+   * The lines attribute of the item.
+   */
+  @Input() lines: string;
   /**
    * The label to show for the field; if not set, it has a default value.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
-   * The suggestions for the Countries picker.
+   * The placeholder to show for the field.
    */
-  public countriesSuggestions: Suggestion[];
-  /**
-   * Shortcut to Countries enum.
-   */
-  public Countries = Countries;
+  @Input() placeholder: string;
   /**
    * To toggle the detailed view.
    */
-  public addressCollapsed: boolean;
+  @Input() openByDefault = false;
 
-  constructor(public t: IDEATranslationsService) {
-    this.address = new Address();
-    this.showContact = false;
-    this.showAddress2 = false;
-    this.showPhone = false;
-    this.showEmail = false;
-    this.editMode = true;
-    this.lines = 'inset';
+  countriesSuggestions: Suggestion[];
+  Countries = Countries;
+  @ViewChild('accordion') accordion: IonAccordionGroup;
+
+  ngOnInit(): void {
     this.countriesSuggestions = Object.keys(Countries).map(
       k => new Suggestion({ value: (Countries as any)[k], name: k })
     );
-    this.addressCollapsed = true;
   }
 
-  /**
-   * Toggle the detailed/collapsed view.
-   */
-  public toggleCollapse() {
-    this.addressCollapsed = !this.addressCollapsed;
+  isCollapsed(): boolean {
+    return this.accordion?.value !== 'open';
   }
 
-  /**
-   * Get the country's name.
-   */
-  public getCountryName(country: Countries): string {
-    if (!country) return;
-    return getStringEnumKeyByValue(Countries, country);
+  getCountryName(countryCode: Countries): string {
+    if (!countryCode) return;
+    const country = Object.entries(Countries).find(([_, value]): boolean => value === countryCode);
+    return country ? country[0] : null;
   }
 }
