@@ -112,7 +112,7 @@ export class IDEAAgendaComponent implements OnInit {
     });
   }
   /**
-   * Run some checks before the weel/day view is rendered (e.g. disable invalid days).
+   * Run some checks before the week/day view is rendered (e.g. disable invalid days).
    */
   public beforeWeekOrDayViewRender({ header }: { header: any }) {
     header.forEach((day: any) => {
