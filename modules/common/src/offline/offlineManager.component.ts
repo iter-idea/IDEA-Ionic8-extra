@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { KeepAwake } from '@capacitor-community/keep-awake';
 
@@ -14,6 +14,7 @@ import { IDEAActionSheetController } from '../actionSheet/actionSheetController.
 })
 export class IDEAOfflineManagerComponent {
   constructor(
+    private platform: Platform,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public actionSheetCtrl: IDEAActionSheetController,
@@ -35,10 +36,10 @@ export class IDEAOfflineManagerComponent {
             text: this.t._('COMMON.GOT_IT'),
             handler: () => {
               // if the plugin is available, avoid the screen to turn off during the synchronisation
-              if (KeepAwake) KeepAwake.keepAwake();
+              if (this.platform.is('capacitor') && KeepAwake) KeepAwake.keepAwake();
               // run a manual synchronisation
               this.offline.synchronize(true).finally(() => {
-                if (KeepAwake) KeepAwake.allowSleep();
+                if (this.platform.is('capacitor') && KeepAwake) KeepAwake.allowSleep();
               });
             }
           }
