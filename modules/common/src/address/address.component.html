@@ -10,6 +10,7 @@
         [title]="'IDEA_COMMON.ADDRESS.COMPLETE_ADDRESS_HINT' | translate"
         [placeholder]="placeholder"
         [value]="address.getFullAddress()"
+        (ionChange)="addressChange.emit(address)"
       ></ion-input>
     </ion-item>
     <ion-list slot="content">
@@ -21,6 +22,7 @@
           [placeholder]="'IDEA_COMMON.ADDRESS.CONTACT_HINT' | translate"
           [title]="'IDEA_COMMON.ADDRESS.CONTACT_HINT' | translate"
           [(ngModel)]="address.contact"
+          (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
       <ion-item *ngIf="showEmail">
@@ -31,6 +33,7 @@
           [placeholder]="'IDEA_COMMON.ADDRESS.EMAIL_HINT' | translate"
           [title]="'IDEA_COMMON.ADDRESS.EMAIL_HINT' | translate"
           [(ngModel)]="address.email"
+          (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
       <ion-item *ngIf="showPhone">
@@ -41,6 +44,7 @@
           [placeholder]="'IDEA_COMMON.ADDRESS.PHONE_HINT' | translate"
           [title]="'IDEA_COMMON.ADDRESS.PHONE_HINT' | translate"
           [(ngModel)]="address.phone"
+          (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -54,6 +58,7 @@
           [placeholder]="'IDEA_COMMON.ADDRESS.ADDRESS_HINT' | translate"
           [title]="'IDEA_COMMON.ADDRESS.ADDRESS_HINT' | translate"
           [(ngModel)]="address.address"
+          (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
       <ion-item *ngIf="showAddress2">
@@ -64,6 +69,7 @@
           [placeholder]="'IDEA_COMMON.ADDRESS.ADDRESS2_HINT' | translate"
           [title]="'IDEA_COMMON.ADDRESS.ADDRESS2_HINT' | translate"
           [(ngModel)]="address.address2"
+          (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -74,6 +80,7 @@
           [placeholder]="'IDEA_COMMON.ADDRESS.POSTCODE_HINT' | translate"
           [title]="'IDEA_COMMON.ADDRESS.POSTCODE_HINT' | translate"
           [(ngModel)]="address.postcode"
+          (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -87,6 +94,7 @@
           [placeholder]="'IDEA_COMMON.ADDRESS.CITY_HINT' | translate"
           [title]="'IDEA_COMMON.ADDRESS.CITY_HINT' | translate"
           [(ngModel)]="address.city"
+          (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -97,6 +105,7 @@
           [placeholder]="'IDEA_COMMON.ADDRESS.PROVINCE_HINT' | translate"
           [title]="'IDEA_COMMON.ADDRESS.PROVINCE_HINT' | translate"
           [(ngModel)]="address.province"
+          (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
       <idea-select
@@ -109,7 +118,7 @@
         [hideIdFromUI]="true"
         [avoidAutoSelection]="true"
         [disabled]="!editMode"
-        (select)="$event ? (address.country = $event.value) : null"
+        (select)="setCountryFromSuggestion($event)"
       ></idea-select>
     </ion-list>
   </ion-accordion>

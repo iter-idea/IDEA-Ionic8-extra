@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { IonAccordionGroup } from '@ionic/angular';
 import { Address, Countries, Suggestion } from 'idea-toolbox';
 
@@ -12,6 +12,7 @@ export class IDEAAddressComponent implements OnInit {
    * The address to manage.
    */
   @Input() address: Address;
+  @Output() addressChange = new EventEmitter<Address>();
   /**
    * If true, show the field `contact`.
    */
@@ -71,5 +72,10 @@ export class IDEAAddressComponent implements OnInit {
     if (!countryCode) return;
     const country = Object.entries(Countries).find(([_, value]): boolean => value === countryCode);
     return country ? country[0] : null;
+  }
+  setCountryFromSuggestion(suggestion: Suggestion): void {
+    if (!suggestion) return;
+    this.address.country = suggestion.value;
+    this.addressChange.emit(this.address);
   }
 }
