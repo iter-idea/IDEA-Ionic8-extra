@@ -9,9 +9,8 @@ import { IDEAMDEModule } from '../mde/mde.module';
 import { IDEASelectModule } from '../select/select.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAMDEModule, IDEASelectModule],
-  declarations: [IDEASendEmailComponent],
-  entryComponents: [IDEASendEmailComponent],
-  exports: [IDEASendEmailComponent]
+    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAMDEModule, IDEASelectModule],
+    declarations: [IDEASendEmailComponent],
+    exports: [IDEASendEmailComponent]
 })
 export class IDEASendEmailModule {}

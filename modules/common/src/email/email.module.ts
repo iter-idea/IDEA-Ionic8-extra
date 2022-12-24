@@ -11,17 +11,16 @@ import { IDEAListModule } from '../list/list.module';
 import { IDEAVariablesModule } from '../variables/variables.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    IDEATranslationsModule,
-    IDEAMDEModule,
-    IDEAListModule,
-    IDEAVariablesModule
-  ],
-  declarations: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent],
-  entryComponents: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent],
-  exports: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        IDEATranslationsModule,
+        IDEAMDEModule,
+        IDEAListModule,
+        IDEAVariablesModule
+    ],
+    declarations: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent],
+    exports: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent]
 })
 export class IDEAEmailModule {}

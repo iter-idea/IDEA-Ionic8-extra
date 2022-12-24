@@ -11,14 +11,8 @@ import { IDEARCFoldersComponent } from './RCFolders.component';
 import { IDEARCResourcesComponent } from './RCResources.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule],
-  declarations: [IDEARCPickerComponent, IDEARCConfiguratorComponent, IDEARCFoldersComponent, IDEARCResourcesComponent],
-  entryComponents: [
-    IDEARCPickerComponent,
-    IDEARCConfiguratorComponent,
-    IDEARCFoldersComponent,
-    IDEARCResourcesComponent
-  ],
-  exports: [IDEARCPickerComponent, IDEARCConfiguratorComponent, IDEARCFoldersComponent, IDEARCResourcesComponent]
+    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule],
+    declarations: [IDEARCPickerComponent, IDEARCConfiguratorComponent, IDEARCFoldersComponent, IDEARCResourcesComponent],
+    exports: [IDEARCPickerComponent, IDEARCConfiguratorComponent, IDEARCFoldersComponent, IDEARCResourcesComponent]
 })
 export class IDEARCModule {}

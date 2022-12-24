@@ -6,9 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import { ColorsPaletteComponent, IDEAColorPickerComponent } from './colorPicker.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [IDEAColorPickerComponent, ColorsPaletteComponent],
-  entryComponents: [IDEAColorPickerComponent, ColorsPaletteComponent],
-  exports: [IDEAColorPickerComponent, ColorsPaletteComponent]
+    imports: [CommonModule, FormsModule, IonicModule],
+    declarations: [IDEAColorPickerComponent, ColorsPaletteComponent],
+    exports: [IDEAColorPickerComponent, ColorsPaletteComponent]
 })
 export class IDEAColorPickerModule {}

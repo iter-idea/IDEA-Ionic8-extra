@@ -8,9 +8,8 @@ import { IDEADateTimeComponent } from './dateTime.component';
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
-  declarations: [IDEADateTimeComponent, IDEACalendarPickerComponent],
-  entryComponents: [IDEADateTimeComponent, IDEACalendarPickerComponent],
-  exports: [IDEADateTimeComponent, IDEACalendarPickerComponent]
+    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+    declarations: [IDEADateTimeComponent, IDEACalendarPickerComponent],
+    exports: [IDEADateTimeComponent, IDEACalendarPickerComponent]
 })
 export class IDEADateTimeModule {}

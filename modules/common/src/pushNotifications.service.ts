@@ -23,7 +23,8 @@ export class IDEAPushNotificationsService {
       );
     });
     this.errors = new Observable(observer => {
-      PushNotifications.addListener('registrationError', (err: Error) => {
+      // rif. https://forum.ionicframework.com/t/226376
+      (PushNotifications as any).addListener('registrationError', (err: Error) => {
         this.errorReporting.sendReport(err);
         observer.next(err);
       });

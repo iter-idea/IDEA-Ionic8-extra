@@ -8,9 +8,8 @@ import { IDEALanguagePickerComponent } from './languagePicker.component';
 import { IDEALocalizedDatePipe } from './dateLocale.pipe';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALanguagePickerComponent],
-  entryComponents: [IDEALanguagePickerComponent],
-  exports: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALanguagePickerComponent]
+    imports: [CommonModule, FormsModule, IonicModule],
+    declarations: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALanguagePickerComponent],
+    exports: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALanguagePickerComponent]
 })
 export class IDEATranslationsModule {}

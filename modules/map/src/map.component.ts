@@ -2,7 +2,6 @@ import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Loader } from '@googlemaps/js-api-loader';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
-import { PluginListenerHandle } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { Network } from '@capacitor/network';
 import { IDEATinCanService } from '@idea-ionic/common';
@@ -54,7 +53,7 @@ export class IDEAMapComponent implements OnInit {
   /**
    * If set, handles the changes in the network connection.
    */
-  private networkHandler: PluginListenerHandle;
+  private networkHandler: any;
   /**
    * The markers set on the map.
    */

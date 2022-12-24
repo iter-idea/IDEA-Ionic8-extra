@@ -8,9 +8,8 @@ import { IDEATranslationsModule } from '@idea-ionic/common';
 import { IDEAttachmentsComponent } from './attachments.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
-  declarations: [IDEAttachmentsComponent],
-  entryComponents: [IDEAttachmentsComponent],
-  exports: [IDEAttachmentsComponent]
+    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+    declarations: [IDEAttachmentsComponent],
+    exports: [IDEAttachmentsComponent]
 })
 export class IDEAAttachmentsModule {}

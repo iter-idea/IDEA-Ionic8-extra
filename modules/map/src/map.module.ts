@@ -6,9 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import { IDEAMapComponent } from './map.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [IDEAMapComponent],
-  entryComponents: [IDEAMapComponent],
-  exports: [IDEAMapComponent]
+    imports: [CommonModule, FormsModule, IonicModule],
+    declarations: [IDEAMapComponent],
+    exports: [IDEAMapComponent]
 })
 export class IDEAMapModule {}

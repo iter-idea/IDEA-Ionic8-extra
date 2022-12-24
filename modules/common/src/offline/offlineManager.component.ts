@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, AlertController, Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
-import { KeepAwake } from '@capacitor-community/keep-awake';
 
 import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -32,17 +31,7 @@ export class IDEAOfflineManagerComponent {
         message: this.t._('IDEA_COMMON.OFFLINE.DONT_EXIT_APP_DISCLAIMER'),
         buttons: [
           { text: this.t._('COMMON.CANCEL') },
-          {
-            text: this.t._('COMMON.GOT_IT'),
-            handler: () => {
-              // if the plugin is available, avoid the screen to turn off during the synchronisation
-              if (this.platform.is('capacitor') && KeepAwake) KeepAwake.keepAwake();
-              // run a manual synchronisation
-              this.offline.synchronize(true).finally(() => {
-                if (this.platform.is('capacitor') && KeepAwake) KeepAwake.allowSleep();
-              });
-            }
-          }
+          { text: this.t._('COMMON.GOT_IT'), handler: () => this.offline.synchronize(true) }
         ]
       })
       .then(alert => alert.present());

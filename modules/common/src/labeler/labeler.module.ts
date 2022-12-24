@@ -10,9 +10,8 @@ import { IDEALabelComponent } from './label.component';
 import { IDEAVariablesModule } from '../variables/variables.module';
 
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule, IDEATranslationsModule, IDEAMDEModule, IDEAVariablesModule],
-  declarations: [IDEALabelerComponent, IDEALabelComponent],
-  entryComponents: [IDEALabelerComponent, IDEALabelComponent],
-  exports: [IDEALabelerComponent, IDEALabelComponent]
+    imports: [IonicModule, CommonModule, FormsModule, IDEATranslationsModule, IDEAMDEModule, IDEAVariablesModule],
+    declarations: [IDEALabelerComponent, IDEALabelComponent],
+    exports: [IDEALabelerComponent, IDEALabelComponent]
 })
 export class IDEALabelerModule {}

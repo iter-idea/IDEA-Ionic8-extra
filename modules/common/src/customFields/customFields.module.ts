@@ -14,35 +14,28 @@ import { IDEASelectModule } from '../select/select.module';
 import { IDEACustomSectionComponent } from './customSection.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    IDEATranslationsModule,
-    IDEALabelerModule,
-    IDEAIconsModule,
-    IDEASelectModule
-  ],
-  entryComponents: [
-    IDEACustomBlockMetaComponent,
-    IDEACustomSectionMetaComponent,
-    IDEACustomFieldMetaComponent,
-    IDEACustomBlockComponent,
-    IDEACustomSectionComponent
-  ],
-  exports: [
-    IDEACustomBlockMetaComponent,
-    IDEACustomSectionMetaComponent,
-    IDEACustomFieldMetaComponent,
-    IDEACustomBlockComponent,
-    IDEACustomSectionComponent
-  ],
-  declarations: [
-    IDEACustomBlockMetaComponent,
-    IDEACustomSectionMetaComponent,
-    IDEACustomFieldMetaComponent,
-    IDEACustomBlockComponent,
-    IDEACustomSectionComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        IDEATranslationsModule,
+        IDEALabelerModule,
+        IDEAIconsModule,
+        IDEASelectModule
+    ],
+    exports: [
+        IDEACustomBlockMetaComponent,
+        IDEACustomSectionMetaComponent,
+        IDEACustomFieldMetaComponent,
+        IDEACustomBlockComponent,
+        IDEACustomSectionComponent
+    ],
+    declarations: [
+        IDEACustomBlockMetaComponent,
+        IDEACustomSectionMetaComponent,
+        IDEACustomFieldMetaComponent,
+        IDEACustomBlockComponent,
+        IDEACustomSectionComponent
+    ]
 })
 export class IDEACustomFieldsModule {}
