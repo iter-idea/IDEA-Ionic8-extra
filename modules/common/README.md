@@ -47,6 +47,7 @@ Finally, add in the environments desired the variables you find in the `environm
 - PDF Template
 - Select
 - Sentiment analysis
+- Show hint button
 - Signature
 - Time interval
 - Translations
