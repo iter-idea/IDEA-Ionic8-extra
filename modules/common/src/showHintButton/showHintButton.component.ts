@@ -3,11 +3,11 @@ import { AlertController } from '@ionic/angular';
 import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
-  selector: 'app-show-hint-button',
+  selector: 'idea-show-hint-button',
   templateUrl: 'showHintButton.component.html',
   styleUrls: ['showHintButton.component.scss']
 })
-export class ShowHintButtonComponent {
+export class IDEAShowHintButtonComponent {
   /**
    * The string to show as title of the alert.
    */
