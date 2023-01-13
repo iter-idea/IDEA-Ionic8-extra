@@ -99,7 +99,8 @@ ion-text.obligatoryDot::after {
   .item-disabled,
   .native-textarea[disabled],
   ion-item ion-label[position='stacked'],
-  ion-input {
+  ion-input,
+  ion-checkbox[slot='start'] + ion-label {
     opacity: 1 !important;
     -webkit-text-fill-color: var(--ion-text-color);
     --placeholder-opacity: 0 !important;
