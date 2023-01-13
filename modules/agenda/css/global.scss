@@ -2,18 +2,39 @@
 // @import '../node_modules/@idea-ionic/agenda/css/global.scss';
 
 idea-agenda .agenda {
-  // "now" marker
-  .cal-current-time-marker {
-    height: 3px;
-    background: var(--ion-color-dark-tint);
+  --idea-agenda-marker-color: var(--ion-color-primary);
+  --idea-agenda-border-color: var(--ion-color-light);
+  --idea-agenda-header-background: var(--ion-color-white);
+  --idea-agenda-header-highlight: rgba(var(--ion-color-medium-rgb), 0.06);
+  --idea-agenda-today-highlight: rgba(var(--ion-color-medium-rgb), 0.2);
+  --idea-agenda-cell-background: var(--ion-color-white);
+  --idea-agenda-month-badge: var(--ion-color-primary);
+  --idea-agenda-event-background: var(--ion-color-primary-shade);
+  --idea-agenda-event-border-color: var(--ion-color-white);
+  --idea-agenda-month-detail-background: var(--ion-color-light);
+  --idea-agenda-month-detail-color: var(--ion-color-light-contrast);
+  --idea-agenda-month-detail-shadow-box: inset 0 0 6px 0 rgba(0, 0, 0, 0.5);
+  --idea-agenda-disabled-background: var(--ion-color-light);
+  --idea-agenda-disabled-opacity: 0.7;
+  --idea-agenda-external-event-border-color: var(--ion-color-medium-tint);
+
+  @media (prefers-color-scheme: dark) {
+    --idea-agenda-border-color: var(--ion-color-white);
+    --idea-agenda-header-background: var(--ion-color-white-shade);
+    --idea-agenda-header-highlight: var(--ion-color-light-shade);
+    --idea-agenda-today-highlight: rgba(var(--ion-color-light-rgb), 0.3);
+    --idea-agenda-cell-background: var(--ion-color-white-shade);
+    --idea-agenda-external-event-border-color: var(--ion-color-light-tint);
   }
-  // remove table (external) border
-  .cal-time-events {
-    border: none !important;
-  }
+
   // remove focused effect on cells (it depends on the SO, so it's unpredictable)
   *:focus {
     outline-width: 0;
+  }
+  // "now" marker
+  .cal-current-time-marker {
+    height: 3px;
+    background-color: var(--idea-agenda-marker-color);
   }
   // general border color
   .cal-day-headers,
@@ -25,25 +46,9 @@ idea-agenda .agenda {
   .cal-days,
   .cal-day-cell,
   .cal-cell-row,
-  .cal-all-day-events {
-    border-color: var(--ion-color-light-shade) !important;
-    @media (prefers-color-scheme: dark) {
-      border-color: var(--ion-color-white) !important;
-    }
-  }
-  // fixed border top header month view
-  .cal-month-view .cal-header {
-    border-top: 1px solid var(--ion-color-light-shade) !important;
-    @media (prefers-color-scheme: dark) {
-      border-top: 1px solid var(--ion-color-white) !important;
-    }
-  }
-  // add border bottom to the agenda block (day and week view)
-  .cal-week-view {
-    border-bottom: 1px solid var(--ion-color-light-shade) !important;
-    @media (prefers-color-scheme: dark) {
-      border-bottom: 1px solid var(--ion-color-white) !important;
-    }
+  .cal-all-day-events,
+  .cal-time-events {
+    border-color: var(--idea-agenda-border-color) !important;
   }
   // headers rows and cells
   .cal-day-headers,
@@ -51,10 +56,7 @@ idea-agenda .agenda {
   .cal-time-label-column .cal-hour,
   .cal-time-label-column .cal-hour-segment,
   .cal-month-view .cal-header {
-    background-color: var(--ion-color-light);
-    @media (prefers-color-scheme: dark) {
-      background-color: var(--ion-color-white-shade);
-    }
+    background-color: var(--idea-agenda-header-background);
   }
   // text color for the weekends' detail label in the header (e.g. oct 17)
   .cal-weekend span {
@@ -66,17 +68,11 @@ idea-agenda .agenda {
   .cal-hour-segment:hover,
   .cal-cell:hover,
   .cal-open {
-    background-color: rgba(var(--ion-color-medium-rgb), 0.06) !important;
-    @media (prefers-color-scheme: dark) {
-      background-color: var(--ion-color-light-shade) !important;
-    }
+    background-color: var(--idea-agenda-header-highlight) !important;
   }
   // highlight today's date
   .cal-today {
-    background-color: rgba(var(--ion-color-medium-rgb), 0.2) !important;
-    @media (prefers-color-scheme: dark) {
-      background-color: rgba(var(--ion-color-light-rgb), 0.3) !important;
-    }
+    background-color: var(--idea-agenda-header-highlight) !important;
   }
   // avoid highlighting entire rows in month view
   .cal-month-view .cal-cell-row:hover {
@@ -86,33 +82,27 @@ idea-agenda .agenda {
   .cal-month-view,
   .cal-hour,
   .cal-hour-odd {
-    background-color: var(--ion-color-light-tint);
-    @media (prefers-color-scheme: dark) {
-      background-color: var(--ion-color-white-shade);
-    }
+    background-color: var(--idea-agenda-cell-background);
   }
   // month view day's details row style
   .cal-month-view .cal-open-day-events {
-    background-color: var(--ion-color-light);
-    color: var(--ion-color-light-contrast);
-    box-shadow: inset 0 0 6px 0 rgba(0, 0, 0, 0.5);
+    background-color: var(--idea-agenda-month-detail-background);
+    color: var(--idea-agenda-month-detail-color);
+    box-shadow: var(--idea-agenda-month-detail-shadow-box);
   }
   // events style for week and day view
   mwl-calendar-week-view-event .cal-event,
   mwl-calendar-day-view .cal-event {
     border: none;
     border-radius: 3px;
-    border-left: 4px solid var(--ion-color-primary-shade);
+    border-left: 4px solid var(--idea-agenda-event-border-color);
     box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-    background: var(--ion-color-white);
+    background: var(--idea-agenda-event-background);
   }
   // give less focus to external events
   .cal-event.external {
     opacity: 0.6;
-    border: 1px solid var(--ion-color-medium-tint) !important;
-    @media (prefers-color-scheme: dark) {
-      border: 1px solid var(--ion-color-light-tint) !important;
-    }
+    border: 1px solid var(--idea-agenda-external-event-border-color) !important;
     .cal-event-title {
       color: var(--ion-text-color) !important;
     }
@@ -164,14 +154,12 @@ idea-agenda .agenda {
   }
   // month view events counter badge
   .cal-day-badge {
-    background-color: var(--ion-color-primary);
+    background-color: var(--idea-agenda-month-badge);
   }
   // show as disabled the cells/days that aren't valid
   .cal-disabled {
     pointer-events: none;
-  }
-  .cal-disabled .cal-day-number,
-  .cal-disabled.cal-header {
-    opacity: 0.1;
+    opacity: var(--idea-agenda-disabled-opacity);
+    background-color: var(--idea-agenda-disabled-background);
   }
 }

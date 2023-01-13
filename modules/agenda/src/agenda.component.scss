@@ -1,11 +1,24 @@
 .agenda {
   margin-top: 15px;
-  h2 {
-    margin: 6px 10px;
-    font-size: 1.2em;
+  ion-col.titleCol {
+    padding-left: 8px;
+    h2,
+    p {
+      margin: 0;
+    }
+    h2 {
+      font-size: 1.2em;
+    }
+    p {
+      font-size: 0.8em;
+      font-style: italic;
+    }
   }
+
   .calendarViewSelector {
-    --ion-item-background: transparent;
+    background-color: transparent;
+    --ion-background-color: transparent;
+    --background: transparent;
     ion-select {
       max-width: 100%;
       width: 100%;
@@ -29,8 +42,8 @@
     }
   }
   @media only screen and (max-width: 575px) {
-    h2 {
-      margin: 0 8px 12px 8px;
+    ion-col.titleCol {
+      padding: 0 8px 12px 8px;
       text-align: center;
     }
   }

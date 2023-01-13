@@ -22,18 +22,18 @@ import { IDEACalendarCreationComponent } from './calendarCreation.component';
 import { IDEACalendarsService } from './calendars.service';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        IDEATranslationsModule,
-        IDEAColorPickerModule,
-        IDEACheckerModule,
-        IDEAUserAvatarModule,
-        CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
-    ],
-    declarations: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
-    exports: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
-    providers: [{ provide: CalendarDateFormatter, useClass: CustomDateFormatter }, IDEACalendarsService]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    IDEATranslationsModule,
+    IDEAColorPickerModule,
+    IDEACheckerModule,
+    IDEAUserAvatarModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
+  ],
+  declarations: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
+  exports: [IDEAAgendaComponent, IDEACalendarComponent, IDEACalendarItemComponent, IDEACalendarCreationComponent],
+  providers: [{ provide: CalendarDateFormatter, useClass: CustomDateFormatter }, IDEACalendarsService]
 })
 export class IDEAAgendaModule {}
