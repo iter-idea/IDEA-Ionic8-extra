@@ -17,7 +17,7 @@ ion-grid.actionSheetGrid {
       --ion-color-base: var(--ion-color-step-550) !important;
     }
     ion-button.withIcon {
-      height: 70px;
+      height: 100%;
       div {
         display: flex;
         flex-flow: column nowrap;
