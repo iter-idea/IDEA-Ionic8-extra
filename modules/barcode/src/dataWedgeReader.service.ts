@@ -10,7 +10,7 @@ import { Observable, Subscription } from 'rxjs';
  * This service, inspired by the [ZebraIonicDemo repo](https://github.com/Zebra/ZebraIonicDemo) needs,
  * in order to work, the following plugin: `com-darryncampbell-cordova-plugin-intent`.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEADataWedgeReaderService {
   /**
    * To manage device's intents.
