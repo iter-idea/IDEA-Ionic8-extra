@@ -11,15 +11,15 @@ import { IDEAActionSheetComponent } from './actionSheet.component';
 @Injectable()
 export class IDEAActionSheetController {
   constructor(
-    public platform: Platform,
-    public actionSheetCtrl: ActionSheetController,
-    public popoverCtrl: PopoverController
+    private platform: Platform,
+    private actionSheetCtrl: ActionSheetController,
+    private popoverCtrl: PopoverController
   ) {}
 
   /**
    * Based on the platform, open the traditional or the customised ActionSheet.
    */
-  public create(options: IDEAActionSheetOptions, forceCustom?: boolean): Promise<HTMLIonActionSheetElement> {
+  create(options: IDEAActionSheetOptions, forceCustom?: boolean): Promise<HTMLIonActionSheetElement> {
     if ((this.platform.is('mobile') || this.platform.width() < 576) && !forceCustom)
       return this.actionSheetCtrl.create(options);
     else
@@ -52,4 +52,8 @@ export interface IDEAActionSheetOptions {
    * Title for the action sheet.
    */
   header?: string;
+  /**
+   * Subtitle for the action sheet.
+   */
+  subHeader?: string;
 }

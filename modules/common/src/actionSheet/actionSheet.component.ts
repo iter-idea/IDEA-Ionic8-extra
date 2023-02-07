@@ -2,8 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import { PopoverController } from '@ionic/angular';
 
-import { IDEATranslationsService } from '../translations/translations.service';
-
 /**
  * It's an alternative for desktop devices to the traditional ActionSheet.
  * It shares (almost) the same inputs so they are interchangeable.
@@ -17,30 +15,29 @@ export class IDEAActionSheetComponent implements OnInit {
   /**
    * An array of buttons for the actions panel.
    */
-  @Input() public buttons: ActionSheetButton[] = [];
+  @Input() buttons: ActionSheetButton[] = [];
   /**
    * Additional classes to apply for custom CSS. If multiple classes are provided they should be separated by spaces.
    */
-  @Input() public cssClass: string;
+  @Input() cssClass: string;
   /**
    * Title for the actions panel.
    */
-  @Input() public header: string;
+  @Input() header: string;
   /**
-   * Whether at least one button has an icon set; it changes the way the UI behaves.
+   * Subtitle for the actions panel.
    */
-  public withIcons: boolean;
+  @Input() subHeader: string;
 
-  constructor(public popoverCtrl: PopoverController, public t: IDEATranslationsService) {}
-  public ngOnInit() {
+  withIcons: boolean;
+
+  constructor(private popoverCtrl: PopoverController) {}
+  ngOnInit(): void {
     // based on the input, changes the way the UI behaves
     this.withIcons = this.buttons.some(b => b.icon);
   }
 
-  /**
-   * Execute the button's action and close the action sheet.
-   */
-  public buttonClicked(b: ActionSheetButton) {
+  buttonClicked(b: ActionSheetButton): void {
     if (b.handler) b.handler();
     this.popoverCtrl.dismiss();
   }
