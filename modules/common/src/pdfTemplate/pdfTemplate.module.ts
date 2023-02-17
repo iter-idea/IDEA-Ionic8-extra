@@ -9,8 +9,8 @@ import { IDEAVariablesModule } from '../variables/variables.module';
 import { IDEAPDFTemplateComponent, IDEAPDFTemplateFieldResizeComponent } from './pdfTemplate.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAVariablesModule],
-    declarations: [IDEAPDFTemplateComponent, IDEAPDFTemplateFieldResizeComponent],
-    exports: [IDEAPDFTemplateComponent, IDEAPDFTemplateFieldResizeComponent]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAVariablesModule],
+  declarations: [IDEAPDFTemplateComponent, IDEAPDFTemplateFieldResizeComponent],
+  exports: [IDEAPDFTemplateComponent, IDEAPDFTemplateFieldResizeComponent]
 })
 export class IDEAPDFTemplateModule {}

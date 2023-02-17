@@ -1,16 +1,20 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start" *ngIf="!isViewLocked()">
-      <ion-button *ngIf="!isInnerLayer()" [title]="t._('COMMON.CANCEL')" (click)="close()">
+      <ion-button *ngIf="!isInnerLayer()" [title]="'COMMON.CANCEL' | translate" (click)="close()">
         <ion-icon name="close-circle" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="isInnerLayer()" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK')" (click)="prevLayer()">
+      <ion-button
+        *ngIf="isInnerLayer()"
+        [title]="'IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK' | translate"
+        (click)="prevLayer()"
+      >
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA_COMMON.PDF_TEMPLATE.EDIT_TEMPLATE' | translate }}</ion-title>
     <ion-buttons slot="end" *ngIf="!isViewLocked()">
-      <ion-button *ngIf="!isInnerLayer() && !disabled" [title]="t._('COMMON.SAVE')" (click)="save()">
+      <ion-button *ngIf="!isInnerLayer() && !disabled" [title]="'COMMON.SAVE' | translate" (click)="save()">
         <ion-icon name="checkmark-circle" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -25,7 +29,7 @@
             *ngFor="let c of getBreadcrumb(); let len = count; let index = index; let last = last"
             [class.last]="last"
             [class.tappable]="!last && !isViewLocked()"
-            [title]="t._('IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK')"
+            [title]="'IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK' | translate"
             (click)="prevLayer(len - index - 1)"
           >
             {{ c }} <ion-icon *ngIf="!last" name="chevron-forward"></ion-icon>
@@ -40,13 +44,17 @@
         <ion-button
           color="dark"
           *ngIf="!editSections"
-          [title]="t._('IDEA_COMMON.PDF_TEMPLATE.EDIT_SECTIONS')"
+          [title]="'IDEA_COMMON.PDF_TEMPLATE.EDIT_SECTIONS' | translate"
           (click)="editSections = true"
         >
           {{ 'IDEA_COMMON.PDF_TEMPLATE.SECTIONS' | translate }}
           <ion-icon name="pencil" slot="end"></ion-icon>
         </ion-button>
-        <ion-button *ngIf="editSections" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.ADD_A_SECTION')" (click)="addSection()">
+        <ion-button
+          *ngIf="editSections"
+          [title]="'IDEA_COMMON.PDF_TEMPLATE.ADD_A_SECTION' | translate"
+          (click)="addSection()"
+        >
           {{ 'COMMON.ADD' | translate }}
           <ion-icon name="add" slot="end"></ion-icon>
         </ion-button>
@@ -63,9 +71,9 @@
         (click)="editSectionTitleLabel(getCurrentLayer().title)"
       >
         <ion-icon name="bookmark-outline" slot="start"></ion-icon>
-        <ion-label [title]="t._('IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_I')">
-          <b *ngIf="label(getCurrentLayer().title)">{{ label(getCurrentLayer().title) }}</b>
-          <i *ngIf="!label(getCurrentLayer().title)">
+        <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_I' | translate">
+          <b *ngIf="getCurrentLayer().title | label">{{ getCurrentLayer().title | label }}</b>
+          <i *ngIf="!(getCurrentLayer().title | label)">
             {{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_EMPTY_NOT_SHOWN' | translate }}
           </i>
           <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE' | translate }}</p>
@@ -104,14 +112,14 @@
         <!---->
         <ng-container *ngIf="section.type === ST.PAGE_BREAK">
           <ion-icon name="code-slash" slot="start"></ion-icon>
-          <ion-label class="specialRow" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK_I')">
+          <ion-label class="specialRow" [title]="'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK_I' | translate">
             <b>{{ 'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK' | translate }}</b>
           </ion-label>
         </ng-container>
         <!---->
         <ng-container *ngIf="section.type === ST.BLANK_ROW">
           <ion-icon name="code" slot="start"></ion-icon>
-          <ion-label class="specialRow" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW_I')">
+          <ion-label class="specialRow" [title]="'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW_I' | translate">
             <i>{{ 'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW' | translate }}</i>
           </ion-label>
         </ng-container>
@@ -154,7 +162,7 @@
                       <small>{{ section.getColumnFieldSize(i) }}</small>
                       <span
                         class="hasHTMLContent"
-                        [innerHtml]="displayField(section, i) | highlight: getCurrentVariables()"
+                        [innerHtml]="displayField(section, i) | highlight : getCurrentVariables()"
                       ></span>
                     </ion-label>
                   </ion-chip>
@@ -190,7 +198,7 @@
           fill="clear"
           color="medium"
           *ngIf="moveMode && section.type === ST.ROW"
-          [title]="t._('COMMON.CANCEL')"
+          [title]="'COMMON.CANCEL' | translate"
           (click)="completeMove(moveMode.section, moveMode.colIndex)"
         >
           <ion-icon name="arrow-undo" slot="icon-only"></ion-icon>
@@ -200,7 +208,7 @@
           fill="clear"
           color="danger"
           *ngIf="editSections"
-          [title]="t._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION')"
+          [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
           (click)="deleteSection(section)"
         >
           <ion-icon name="trash" slot="icon-only"></ion-icon>
@@ -234,8 +242,8 @@
           <ion-icon name="arrow-down" slot="icon-only"></ion-icon>
         </ion-button>
         <ion-icon name="bookmark" slot="start"></ion-icon>
-        <ion-label [title]="t._('IDEA_COMMON.PDF_TEMPLATE.HEADER_I')">
-          <b class="hasHTMLContent" [innerHtml]="label(section.title) | highlight: getCurrentVariables()"></b>
+        <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.HEADER_I' | translate">
+          <b class="hasHTMLContent" [innerHtml]="section.title | label | highlight : getCurrentVariables()"></b>
           <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.HEADER' | translate }}</p>
         </ion-label>
         <ion-button
@@ -243,7 +251,7 @@
           fill="clear"
           color="danger"
           *ngIf="editSections"
-          [title]="t._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION')"
+          [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
           (click)="deleteSection(section)"
         >
           <ion-icon name="trash" slot="icon-only"></ion-icon>
@@ -278,14 +286,17 @@
         </ion-button>
         <ion-icon [name]="getInnerSectionIcon(section)" slot="start"></ion-icon>
         <!---->
-        <ion-label *ngIf="section.type === ST.INNER_SECTION" [title]="t._('IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_I')">
+        <ion-label
+          *ngIf="section.type === ST.INNER_SECTION"
+          [title]="'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_I' | translate"
+        >
           {{ section.description }}
           <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION' | translate }}</p>
         </ion-label>
         <!---->
         <ion-label
           *ngIf="section.type === ST.REPEATED_INNER_SECTION"
-          [title]="t._('IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION_I')"
+          [title]="'IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION_I' | translate"
         >
           {{ section.description }}
           <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION' | translate }}</p>
@@ -296,7 +307,7 @@
           fill="clear"
           color="danger"
           *ngIf="editSections"
-          [title]="t._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION')"
+          [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
           (click)="deleteSection(section)"
         >
           <ion-icon name="trash" slot="icon-only"></ion-icon>
