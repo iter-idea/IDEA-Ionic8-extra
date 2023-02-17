@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
-import { Label, LabelVariable, StringVariable } from 'idea-toolbox';
+import { Label, LabelVariable, Languages, StringVariable } from 'idea-toolbox';
 
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -17,106 +17,84 @@ export class IDEALabelerComponent {
   /**
    * The detail to highlight.
    */
-  @Input() public label: Label;
+  @Input() label: Label;
+  /**
+   * The languages preferences; if not set, it fallbacks to IDEATranslationsService's ones.
+   */
+  @Input() languages: Languages;
   /**
    * The optional title for the component.
    */
-  @Input() public title: string;
+  @Input() title: string;
   /**
    * Whether to display the label in textareas instead of text fields.
    */
-  @Input() public textarea: boolean;
+  @Input() textarea: boolean;
   /**
    * Whether the label supports markdown.
    */
-  @Input() public markdown: boolean;
+  @Input() markdown: boolean;
   /**
    * The variables the user can use for the label content.
    */
-  @Input() public variables: (StringVariable | LabelVariable)[];
+  @Input() variables: (StringVariable | LabelVariable)[];
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * If true, the label is validated on save.
    */
-  @Input() public obligatory: boolean;
-  /**
-   * Working helper to manage the label, to avoid changing the original label until it's time.
-   */
-  public _label: Label;
-  /**
-   * The list of variables codes to use for substitutions.
-   */
-  public _variables: string[];
-  /**
-   * The errors to show in the UI.
-   */
-  public errors: Set<string>;
+  @Input() obligatory: boolean;
+
+  _label: Label;
+  errors = new Set<string>();
 
   constructor(
-    public platform: Platform,
-    public modalCtrl: ModalController,
-    public message: IDEAMessageService,
-    public t: IDEATranslationsService
-  ) {
-    this.errors = new Set<string>();
-  }
-  public ionViewDidEnter() {
-    this.title = this.title || this.t._('IDEA_COMMON.LABELER.MANAGE_LABEL');
-    // work on a copy
-    this._label = new Label(this.label, this.t.languages());
-    // create a plain list of variable codes
-    this._variables = (this.variables || []).map(x => x.code);
+    private platform: Platform,
+    private modalCtrl: ModalController,
+    private message: IDEAMessageService,
+    private t: IDEATranslationsService
+  ) {}
+  ionViewDidEnter(): void {
+    this.title = this.title ?? this.t._('IDEA_COMMON.LABELER.MANAGE_LABEL');
+    this.languages = this.languages ?? this.t.languages();
+    this._label = new Label(this.label, this.languages);
   }
 
-  /**
-   * Set the support array to display errors in the UI.
-   */
-  public hasFieldAnError(field: string): boolean {
+  hasFieldAnError(field: string): boolean {
     return this.errors.has(field);
   }
 
-  /**
-   * Get the URL to the flag of the current language.
-   */
-  public getFlagURL(lang: string): string {
+  getFlagURL(lang: string): string {
     return `assets/flags/${lang}.png`;
   }
 
-  /**
-   * Get the description of the variable, based on its type.
-   */
-  public getVariableDescription(v: StringVariable | LabelVariable): string {
+  getVariableDescription(v: StringVariable | LabelVariable): string {
     const isLabel = Boolean((v as any).label);
     if (isLabel) {
       v = v as LabelVariable;
-      return v.label.translate(this.t.getCurrentLang(), this.t.languages());
+      return v.label.translate(this.languages.default, this.languages);
     } else {
       v = v as StringVariable;
       return v.description;
     }
   }
 
-  /**
-   * Save the changes and close.
-   */
-  public save() {
-    // check for errors
+  save(): Promise<void> {
     if (this.obligatory) {
-      this.errors = new Set(this._label.validate(this.t.languages()));
+      this.errors = new Set(this._label.validate(this.languages));
       if (this.errors.size) return this.message.error('IDEA_COMMON.LABELER.FILL_IN_DEFAULT_LANGUAGE');
     }
-    // save changes and close
-    this.label.load(this._label, this.t.languages());
+    this.label.load(this._label, this.languages);
     this.modalCtrl.dismiss(true);
   }
 
-  /**
-   * Close without saving changes.
-   */
-  public close() {
+  close(): void {
     this.modalCtrl.dismiss();
+  }
+
+  isLargeScreen(): boolean {
+    return this.platform.width() > 500;
   }
 }

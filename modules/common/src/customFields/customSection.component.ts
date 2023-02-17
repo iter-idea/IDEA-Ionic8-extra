@@ -13,68 +13,47 @@ export class IDEACustomSectionComponent {
   /**
    * The custom fields to manage.
    */
-  @Input() public fields: any;
+  @Input() fields: any;
   /**
    * The CustomSectionMeta that describe the custom fields.
    */
-  @Input() public sectionMeta: CustomSectionMeta;
+  @Input() sectionMeta: CustomSectionMeta;
   /**
    * Whether the component is enabled or not.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled = false;
   /**
    * Lines preferences for the component.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
   /**
    * Whether to hide the descriptions (buttons).
    */
-  @Input() public hideDescriptions: boolean;
+  @Input() hideDescriptions = false;
   /**
    * Show errors as reported from the parent component.
    */
-  @Input() public errors: Set<string> = new Set();
+  @Input() errors = new Set();
   /**
    * Add a custom prefix to the error string identifier.
    */
-  @Input() public errorPrefix = '';
-  /**
-   * A shortcut to custom fields types.
-   */
-  public CFT = CustomFieldTypes;
+  @Input() errorPrefix = '';
 
-  constructor(public alertCtrl: AlertController, public t: IDEATranslationsService) {}
+  CFT = CustomFieldTypes;
 
-  /**
-   * Set the support array to display errors in the UI.
-   */
-  public hasFieldAnError(field: string): boolean {
+  constructor(private alertCtrl: AlertController, public t: IDEATranslationsService) {}
+
+  hasFieldAnError(field: string): boolean {
     return this.errors.has(field);
   }
 
-  /**
-   * Get a label's value.
-   */
-  public getLabelValue(label: Label): string {
-    if (!label) return null;
-    return label.translate(this.t.getCurrentLang(), this.t.languages());
-  }
-
-  /**
-   * Open the description of the chosen field.
-   */
-  public openDescription(fieldKey: string, event: any) {
+  async openDescription(fieldKey: string, event: any): Promise<void> {
     if (event) event.stopPropagation();
-    const description = this.getLabelValue(this.sectionMeta.fields[fieldKey].description);
-    if (description) {
-      this.alertCtrl
-        .create({
-          header: this.getLabelValue(this.sectionMeta.fields[fieldKey].name),
-          message: description,
-          buttons: ['OK'],
-          cssClass: 'alertLongOptions'
-        })
-        .then(alert => alert.present());
-    }
+    const message = this.t._label(this.sectionMeta.fields[fieldKey].description);
+    if (!message) return;
+
+    const header = this.t._label(this.sectionMeta.fields[fieldKey].name);
+    const alert = await this.alertCtrl.create({ header, message, buttons: ['OK'], cssClass: 'alertLongOptions' });
+    await alert.present();
   }
 }

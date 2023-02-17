@@ -1,8 +1,8 @@
 <ion-list class="aList customBlockList" *ngFor="let s of blockMeta.sectionsLegend">
   <ion-list-header>
     <ion-label>
-      <h2 [attr.toc]="getLabelValue(blockMeta.sections[s].name)">{{ getLabelValue(blockMeta.sections[s].name) }}</h2>
-      <p>{{ getLabelValue(blockMeta.sections[s].description) }}</p>
+      <h2 [attr.toc]="blockMeta.sections[s].name | label">{{ blockMeta.sections[s].name | label }}</h2>
+      <p>{{ blockMeta.sections[s].description | label }}</p>
     </ion-label>
   </ion-list-header>
   <div *ngFor="let f of blockMeta.sections[s].fieldsLegend">
@@ -11,11 +11,11 @@
       [data]="blockMeta.sections[s].fields[f].getEnumAsSuggestion(t.getCurrentLang(), t.languages())"
       [lines]="lines"
       [description]="blockMeta.sections[s].fields[f].getEnumElement(sections[s][f], t.getCurrentLang(), t.languages())"
-      [label]="getLabelValue(blockMeta.sections[s].fields[f].name)"
+      [label]="blockMeta.sections[s].fields[f].name | label"
       [icon]="!hideDescriptions && !disabled ? 'help-circle-outline' : null"
-      [iconColor]="getLabelValue(blockMeta.sections[s].fields[f].description) ? 'primary' : 'medium'"
-      [placeholder]="t._('COMMON.TAP_TO_SELECT')"
-      [searchPlaceholder]="getLabelValue(blockMeta.sections[s].fields[f].name)"
+      [iconColor]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
+      [placeholder]="'COMMON.TAP_TO_SELECT' | translate"
+      [searchPlaceholder]="blockMeta.sections[s].fields[f].name | label"
       [hideIdFromUI]="true"
       [disabled]="disabled"
       [obligatory]="blockMeta.sections[s].fields[f].obligatory"
@@ -33,7 +33,7 @@
       [class.fieldHasError]="hasFieldAnError(errorPrefix + 'sections.' + s + '.' + f)"
     >
       <ion-label position="stacked" class="ion-text-wrap">
-        {{ getLabelValue(blockMeta.sections[s].fields[f].name) }}
+        {{ blockMeta.sections[s].fields[f].name | label }}
         <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled"></ion-text>
       </ion-label>
       <ion-button
@@ -41,7 +41,7 @@
         slot="start"
         class="marginTop"
         *ngIf="!hideDescriptions && !disabled"
-        [color]="getLabelValue(blockMeta.sections[s].fields[f].description) ? 'primary' : 'medium'"
+        [color]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
         (click)="openDescription(s, f, $event)"
       >
         <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
@@ -79,13 +79,13 @@
         fill="clear"
         slot="start"
         *ngIf="!hideDescriptions && !disabled"
-        [color]="getLabelValue(blockMeta.sections[s].fields[f].description) ? 'primary' : 'medium'"
+        [color]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
         (click)="openDescription(s, f, $event)"
       >
         <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-label class="ion-text-wrap">
-        {{ getLabelValue(blockMeta.sections[s].fields[f].name) }}
+        {{ blockMeta.sections[s].fields[f].name | label }}
         <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled"></ion-text>
       </ion-label>
       <ion-checkbox slot="end" [disabled]="disabled" [checked]="sections[s][f]"></ion-checkbox>

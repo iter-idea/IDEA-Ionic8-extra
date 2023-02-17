@@ -1,19 +1,19 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('COMMON.CANCEL')" (click)="close()">
+      <ion-button [title]="'COMMON.CANCEL' | translate" (click)="close()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>{{ title }}</ion-title>
     <ion-buttons slot="end" *ngIf="!disabled">
-      <ion-button [title]="t._('COMMON.SAVE')" (click)="save()">
+      <ion-button [title]="'COMMON.SAVE' | translate" (click)="save()">
         <ion-icon slot="icon-only" name="checkmark"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content [class.ion-padding]="platform.width() > 500">
+<ion-content [class.ion-padding]="isLargeScreen()">
   <ion-list class="aList" *ngIf="variables?.length && !disabled">
     <ion-list-header>
       <ion-label>
@@ -33,11 +33,11 @@
   </p>
   <idea-mde-toolbar *ngIf="markdown && !disabled"></idea-mde-toolbar>
   <ion-list class="aList" [class.viewMode]="disabled" *ngIf="_label">
-    <ion-item lines="inset" *ngFor="let l of t.getLangs()" [class.fieldHasError]="hasFieldAnError(l)">
+    <ion-item lines="inset" *ngFor="let l of languages.available" [class.fieldHasError]="hasFieldAnError(l)">
       <ion-thumbnail slot="start"><img [src]="getFlagURL(l)" /></ion-thumbnail>
       <ion-label position="stacked">
         {{ l }}
-        <ion-text *ngIf="l === t.getDefaultLang()">- {{ 'COMMON.DEFAULT' | translate }}</ion-text>
+        <ion-text *ngIf="l === languages.default">- {{ 'COMMON.DEFAULT' | translate }}</ion-text>
       </ion-label>
       <ion-input type="text" *ngIf="!textarea" [(ngModel)]="_label[l]" [disabled]="disabled"></ion-input>
       <ion-textarea

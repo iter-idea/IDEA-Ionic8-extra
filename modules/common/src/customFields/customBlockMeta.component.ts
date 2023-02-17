@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { CustomBlockMeta, CustomSectionMeta, Label } from 'idea-toolbox';
 
-import { IDEATranslationsService } from '../translations/translations.service';
-
 import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
+
+import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAMessageService } from '../message.service';
 
 @Component({
@@ -16,120 +16,93 @@ export class IDEACustomBlockMetaComponent {
   /**
    * The CustomBlockMeta to manage.
    */
-  @Input() public block: CustomBlockMeta;
+  @Input() block: CustomBlockMeta;
   /**
    * Whether the custom sections should manage the display template or it should be hidden.
    */
-  @Input() public useDisplayTemplate: boolean;
+  @Input() useDisplayTemplate = false;
   /**
    * Whether the component is enabled or not.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled = false;
   /**
    * Lines preferences for the component.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
 
   constructor(
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-    public message: IDEAMessageService,
-    public t: IDEATranslationsService
-  ) {
-    // mandatory initialization (to make the reorder component working)
-    this.disabled = false;
-  }
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private message: IDEAMessageService,
+    private t: IDEATranslationsService
+  ) {}
 
-  /**
-   * Get a label's value.
-   */
-  public getLabelValue(label: Label): string {
-    if (!label) return null;
-    return label.translate(this.t.getCurrentLang(), this.t.languages());
-  }
-
-  /**
-   * Reorder the sections legend.
-   */
-  public reorderSectionsLegend(ev: any) {
+  reorderSectionsLegend(ev: any): void {
     this.block.sectionsLegend = ev.detail.complete(this.block.sectionsLegend);
   }
 
-  /**
-   * Open a custom section meta component.
-   */
-  public openSection(s: string) {
-    this.modalCtrl
-      .create({
-        component: IDEACustomSectionMetaComponent,
-        componentProps: {
-          section: this.block.sections[s],
-          useDisplayTemplate: this.useDisplayTemplate,
-          disabled: this.disabled,
-          lines: this.lines
-        }
-      })
-      .then(modal => modal.present());
+  async openSection(s: string): Promise<void> {
+    const componentProps = {
+      section: this.block.sections[s],
+      useDisplayTemplate: this.useDisplayTemplate,
+      disabled: this.disabled,
+      lines: this.lines
+    };
+    const modal = await this.modalCtrl.create({ component: IDEACustomSectionMetaComponent, componentProps });
+    await modal.present();
   }
 
-  /**
-   * Remove a section.
-   */
-  public removeSection(s: string, ev: any) {
+  async removeSection(s: string, ev: any): Promise<void> {
     if (ev) ev.stopPropagation();
+
+    const doRemoveSection = (): void => {
+      this.block.sectionsLegend.splice(this.block.sectionsLegend.indexOf(s), 1);
+      delete this.block.sections[s];
+    };
     const buttons = [
       { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-      {
-        text: this.t._('COMMON.CONFIRM'),
-        handler: () => {
-          this.block.sectionsLegend.splice(this.block.sectionsLegend.indexOf(s), 1);
-          delete this.block.sections[s];
-        }
-      }
+      { text: this.t._('COMMON.CONFIRM'), handler: doRemoveSection }
     ];
-    this.alertCtrl.create({ header: this.t._('COMMON.ARE_YOU_SURE'), buttons }).then(alert => alert.present());
+    const header = this.t._('COMMON.ARE_YOU_SURE');
+    const alert = await this.alertCtrl.create({ header, buttons });
+    await alert.present();
   }
 
-  /**
-   * Add a new section to the custom block.
-   */
-  public addNewSection() {
+  async addNewSection(): Promise<void> {
+    const doAddNewSection = (data: any): Promise<void> => {
+      if (!data.name) return;
+      const name = data ? data.name.trim() : null;
+      if (!name) return;
+      // clean the key to avoid weird chars in the JSON
+      const key = name.replace(/[^\w]/g, '');
+      if (!key.trim()) return;
+      // check wheter the key is unique
+      if (this.block.sectionsLegend.some(x => x === key))
+        return this.message.error('IDEA_COMMON.CUSTOM_FIELDS.DUPLICATED_KEY');
+      // initialize a new section
+      const section = new CustomSectionMeta(null, this.t.languages());
+      // initialize the name of the section
+      section.name = new Label(null, this.t.languages());
+      section.name[this.t.getDefaultLang()] = name;
+      // add the section to the block
+      this.block.sections[key] = section;
+      this.block.sectionsLegend.push(key);
+      // open the section to configure it
+      this.openSection(key);
+    };
+
     const header = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION');
     const message = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION_HINT');
     const inputs: any = [{ name: 'name', type: 'text' }];
     const buttons = [
       { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-      {
-        text: this.t._('COMMON.CONFIRM'),
-        handler: (data: any) => {
-          if (!data.name) return;
-          const name = data ? data.name.trim() : null;
-          if (!name) return;
-          // clean the key to avoid weird chars in the JSON
-          const key = name.replace(/[^\w]/g, '');
-          if (!key.trim()) return;
-          // check wheter the key is unique
-          if (this.block.sectionsLegend.some(x => x === key))
-            return this.message.error('IDEA_COMMON.CUSTOM_FIELDS.DUPLICATED_KEY');
-          // initialize a new section
-          const section = new CustomSectionMeta(null, this.t.languages());
-          // initialize the name of the section
-          section.name = new Label(null, this.t.languages());
-          section.name[this.t.getDefaultLang()] = name;
-          // add the section to the block
-          this.block.sections[key] = section;
-          this.block.sectionsLegend.push(key);
-          // open the section to configure it
-          this.openSection(key);
-        }
-      }
+      { text: this.t._('COMMON.CONFIRM'), handler: doAddNewSection }
     ];
-    this.alertCtrl.create({ header, message, inputs, buttons }).then(alert =>
-      alert.present().then(() => {
-        const firstInput: any = document.querySelector('ion-alert input');
-        firstInput.focus();
-        return;
-      })
-    );
+
+    const alert = await this.alertCtrl.create({ header, message, inputs, buttons });
+    await alert.present();
+
+    const firstInput: any = document.querySelector('ion-alert input');
+    firstInput.focus();
   }
 }

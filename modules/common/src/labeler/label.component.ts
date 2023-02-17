@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Label, mdToHtml, StringVariable } from 'idea-toolbox';
-
-import { IDEATranslationsService } from '../translations/translations.service';
+import { Label, Languages, mdToHtml, StringVariable } from 'idea-toolbox';
 
 import { IDEALabelerComponent } from './labeler.component';
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 /**
  * Manage the content of a Label.
@@ -16,115 +16,95 @@ import { IDEALabelerComponent } from './labeler.component';
 })
 export class IDEALabelComponent implements OnInit {
   /**
-   * The label to manage. The name is set to not overlap with IDEA's components typical use of the attribute `label`.
+   * The label to manage.
+   * Note: the name is set to not overlap with IDEA's components typical use of the attribute `label`.
    */
-  @Input() public content: Label;
+  @Input() content: Label;
+  /**
+   * The languages preferences; if not set, it fallbacks to IDEATranslationsService's ones.
+   */
+  @Input() languages: Languages;
   /**
    * Whether to display the label in textareas instead of text fields.
    */
-  @Input() public textarea: boolean;
+  @Input() textarea: boolean;
   /**
    * Whether the label supports markdown.
    */
-  @Input() public markdown: boolean;
+  @Input() markdown: boolean;
   /**
    * The variables the user can use in the label.
    */
-  @Input() public variables: StringVariable[];
+  @Input() variables: StringVariable[];
   /**
    * The title (label) for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * The icon for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() public iconColor: string;
+  @Input() iconColor: string;
   /**
    * A placeholder for the field.
    */
-  @Input() public placeholder: string;
+  @Input() placeholder: string;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * If true, the label is validated on save.
    */
-  @Input() public obligatory: boolean;
-  /**
-   * On change event.
-   */
-  @Output() public change = new EventEmitter<void>();
-  /**
-   * Icon select.
-   */
-  @Output() public iconSelect = new EventEmitter<void>();
-  /**
-   * The list of variables codes to use for substitutions.
-   */
-  public _variables: string[];
-  /**
-   * The label's HTML content to display.
-   */
-  public htmlContent: string;
+  @Input() obligatory: boolean;
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
-  public ngOnInit() {
-    // create a plain list of variable codes
-    this._variables = (this.variables || []).map(x => x.code);
-    // init the HTML content of the label
-    this.calcContent();
+  @Output() change = new EventEmitter<void>();
+  @Output() iconSelect = new EventEmitter<void>();
+
+  variableCodes: string[];
+  htmlContent: string;
+
+  constructor(private modalCtrl: ModalController, private t: IDEATranslationsService) {}
+  ngOnInit(): void {
+    this.languages = this.languages ?? this.t.languages();
+    this.variableCodes = (this.variables ?? []).map(x => x.code);
+    this.calcHTMLContent();
   }
 
-  /**
-   * Open the modal to edit the label.
-   */
-  public edit() {
-    this.modalCtrl
-      .create({
-        component: IDEALabelerComponent,
-        componentProps: {
-          label: this.content,
-          textarea: this.textarea,
-          markdown: this.markdown,
-          variables: this.variables,
-          title: this.label,
-          obligatory: this.obligatory,
-          disabled: this.disabled,
-          lines: this.lines
-        }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then(res => {
-          if (res?.data) {
-            this.calcContent();
-            this.change.emit();
-          }
-        });
-        modal.present();
-      });
+  async edit(): Promise<void> {
+    const componentProps = {
+      label: this.content,
+      languages: this.languages,
+      textarea: this.textarea,
+      markdown: this.markdown,
+      variables: this.variables,
+      title: this.label,
+      obligatory: this.obligatory,
+      disabled: this.disabled,
+      lines: this.lines
+    };
+    const modal = await this.modalCtrl.create({ component: IDEALabelerComponent, componentProps });
+    modal.onDidDismiss().then(({ data }): void => {
+      if (!data) return;
+      this.calcHTMLContent();
+      this.change.emit();
+    });
+    modal.present();
   }
 
-  /**
-   * Calculate the HTML content of the label.
-   */
-  private calcContent() {
-    const str = this.content.translate(this.t.getCurrentLang(), this.t.languages());
+  private calcHTMLContent(): void {
+    const str = this.content.translate(this.languages.default, this.languages);
     this.htmlContent = str && this.markdown ? mdToHtml(str) : str;
   }
 
-  /**
-   * The icon was selected.
-   */
-  public doIconSelect(event: any) {
+  doIconSelect(event: any): void {
     if (event) event.stopPropagation();
     this.iconSelect.emit(event);
   }

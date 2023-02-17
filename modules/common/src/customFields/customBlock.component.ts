@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { CustomBlockMeta, CustomFieldTypes, Label } from 'idea-toolbox';
+import { AlertController } from '@ionic/angular';
+import { CustomBlockMeta, CustomFieldTypes } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
-import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'idea-custom-block',
@@ -13,68 +13,47 @@ export class IDEACustomBlockComponent {
   /**
    * The custom sections to manage.
    */
-  @Input() public sections: any;
+  @Input() sections: any;
   /**
    * The CustomBlockMeta that describe the custom sections.
    */
-  @Input() public blockMeta: CustomBlockMeta;
+  @Input() blockMeta: CustomBlockMeta;
   /**
    * Whether the component is enabled or not.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled = false;
   /**
    * Lines preferences for the component.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
   /**
    * Whether to hide the descriptions (buttons).
    */
-  @Input() public hideDescriptions: boolean;
+  @Input() hideDescriptions = false;
   /**
    * Show errors as reported from the parent component.
    */
-  @Input() public errors: Set<string> = new Set();
+  @Input() errors = new Set();
   /**
    * Add a custom prefix to the error string identifier.
    */
-  @Input() public errorPrefix = '';
-  /**
-   * A shortcut to custom fields types.
-   */
-  public CFT = CustomFieldTypes;
+  @Input() errorPrefix = '';
 
-  constructor(public alertCtrl: AlertController, public t: IDEATranslationsService) {}
+  CFT = CustomFieldTypes;
 
-  /**
-   * Set the support array to display errors in the UI.
-   */
-  public hasFieldAnError(field: string): boolean {
+  constructor(private alertCtrl: AlertController, public t: IDEATranslationsService) {}
+
+  hasFieldAnError(field: string): boolean {
     return this.errors.has(field);
   }
 
-  /**
-   * Get a label's value.
-   */
-  public getLabelValue(label: Label): string {
-    if (!label) return null;
-    return label.translate(this.t.getCurrentLang(), this.t.languages());
-  }
-
-  /**
-   * Open the description of the chosen field.
-   */
-  public openDescription(sectionKey: string, fieldKey: string, event: any) {
+  async openDescription(sectionKey: string, fieldKey: string, event: any): Promise<void> {
     if (event) event.stopPropagation();
-    const description = this.getLabelValue(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
-    if (description) {
-      this.alertCtrl
-        .create({
-          header: this.getLabelValue(this.blockMeta.sections[sectionKey].fields[fieldKey].name),
-          message: description,
-          buttons: ['OK'],
-          cssClass: 'alertLongOptions'
-        })
-        .then(alert => alert.present());
-    }
+    const message = this.t._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+    if (!message) return;
+
+    const header = this.t._label(this.blockMeta.sections[sectionKey].fields[fieldKey].name);
+    const alert = await this.alertCtrl.create({ header, message, buttons: ['OK'], cssClass: 'alertLongOptions' });
+    await alert.present();
   }
 }

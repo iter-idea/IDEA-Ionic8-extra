@@ -1,8 +1,8 @@
 <ion-item
   class="labelItem"
+  button
   [lines]="lines"
-  [button]="true"
-  [title]="placeholder || ''"
+  [title]="placeholder ?? ''"
   [class.withLabel]="label"
   (click)="edit()"
 >
@@ -14,7 +14,7 @@
     [class.marginTop]="label"
     (click)="doIconSelect($event)"
   >
-    <ion-icon [name]="icon" slot="icon-only"></ion-icon>
+    <ion-icon [icon]="icon" slot="icon-only"></ion-icon>
   </ion-button>
   <ion-label position="stacked" *ngIf="label">
     {{ label }} <ion-text class="obligatoryDot" *ngIf="!disabled && obligatory"></ion-text>
@@ -25,8 +25,8 @@
       class="innerContent"
       *ngIf="htmlContent"
       [class.md]="markdown"
-      [innerHTML]="htmlContent | highlight: _variables"
+      [innerHTML]="htmlContent | highlight : variableCodes"
     ></div>
   </div>
-  <ion-icon slot="end" name="chevron-forward" class="selectIcon"></ion-icon>
+  <ion-icon slot="end" icon="chevron-forward" class="selectIcon"></ion-icon>
 </ion-item>

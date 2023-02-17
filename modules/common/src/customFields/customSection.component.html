@@ -4,11 +4,11 @@
     [data]="sectionMeta.fields[f].getEnumAsSuggestion(t.getCurrentLang(), t.languages())"
     [lines]="lines"
     [description]="sectionMeta.fields[f].getEnumElement(fields[f], t.getCurrentLang(), t.languages())"
-    [label]="getLabelValue(sectionMeta.fields[f].name)"
+    [label]="sectionMeta.fields[f].name | label"
     [icon]="!hideDescriptions && !disabled ? 'help-circle-outline' : null"
-    [iconColor]="getLabelValue(sectionMeta.fields[f].description) ? 'primary' : 'medium'"
-    [placeholder]="t._('COMMON.TAP_TO_SELECT')"
-    [searchPlaceholder]="getLabelValue(sectionMeta.fields[f].name)"
+    [iconColor]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
+    [placeholder]="'COMMON.TAP_TO_SELECT' | translate"
+    [searchPlaceholder]="sectionMeta.fields[f].name | label"
     [hideIdFromUI]="true"
     [disabled]="disabled"
     [obligatory]="sectionMeta.fields[f].obligatory"
@@ -26,7 +26,7 @@
     [class.fieldHasError]="hasFieldAnError(errorPrefix + f)"
   >
     <ion-label position="stacked" class="ion-text-wrap">
-      {{ getLabelValue(sectionMeta.fields[f].name) }}
+      {{ sectionMeta.fields[f].name | label }}
       <ion-text class="obligatoryDot" *ngIf="sectionMeta.fields[f].obligatory && !disabled"></ion-text>
     </ion-label>
     <ion-button
@@ -34,10 +34,10 @@
       slot="start"
       class="marginTop"
       *ngIf="!hideDescriptions && !disabled"
-      [color]="getLabelValue(sectionMeta.fields[f].description) ? 'primary' : 'medium'"
+      [color]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
       (click)="openDescription(f, $event)"
     >
-      <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+      <ion-icon icon="help-circle-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-input
       type="text"
@@ -72,13 +72,13 @@
       fill="clear"
       slot="start"
       *ngIf="!hideDescriptions && !disabled"
-      [color]="getLabelValue(sectionMeta.fields[f].description) ? 'primary' : 'medium'"
+      [color]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
       (click)="openDescription(f, $event)"
     >
-      <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+      <ion-icon icon="help-circle-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-label class="ion-text-wrap">
-      {{ getLabelValue(sectionMeta.fields[f].name) }}
+      {{ sectionMeta.fields[f].name | label }}
       <ion-text class="obligatoryDot" *ngIf="sectionMeta.fields[f].obligatory && !disabled"></ion-text>
     </ion-label>
     <ion-checkbox slot="end" [disabled]="disabled" [checked]="fields[f]"></ion-checkbox>

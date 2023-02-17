@@ -28,14 +28,14 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
 
   constructor(private translate: IDEATranslationsService, private _ref: ChangeDetectorRef) {}
 
-  public updateValue(key: string, interpolateParams?: any) {
+  updateValue(key: string, interpolateParams?: any): void {
     const res = this.translate.instant(key, interpolateParams);
     this.value = res !== undefined ? res : key;
     this.lastKey = key;
     this._ref.markForCheck();
   }
 
-  public transform(query: string, ...args: any[]): any {
+  transform(query: string, ...args: any[]): any {
     if (!query || !query.length) return query;
     // if we ask another time for the same key, return the last value
     if (equals(query, this.lastKey) && equals(args, this.lastParams)) return this.value;
@@ -66,27 +66,24 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
     this._dispose();
     // subscribe to onLangChange event, in case the language changes
     if (!this.onLangChange) {
-      this.onLangChange = (this.translate.onLangChange.subscribe(() => {
+      this.onLangChange = this.translate.onLangChange.subscribe((): void => {
         if (this.lastKey) {
           this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
           this.updateValue(query, interpolateParams);
         }
-      }) as any) as Subscription;
+      }) as any as Subscription;
     }
     return this.value;
   }
 
-  /**
-   * Clean any existing subscription to change events
-   */
-  private _dispose() {
+  private _dispose(): void {
     if (this.onLangChange !== undefined) {
       this.onLangChange.unsubscribe();
       this.onLangChange = undefined;
     }
   }
 
-  public ngOnDestroy() {
+  ngOnDestroy(): void {
     this._dispose();
   }
 }

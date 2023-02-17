@@ -1,7 +1,7 @@
 <ion-button
   class="languagePicker"
   [fill]="fill"
-  [title]="t._('IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE')"
+  [title]="'IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE' | translate"
   (click)="pickLanguage()"
 >
   <img [src]="getFlagURL()" />

@@ -84,6 +84,7 @@ export * from './src/timeInterval/timeInterval.component';
 export * from './src/timeInterval/timeInterval.module';
 
 export * from './src/translations/dateLocale.pipe';
+export * from './src/translations/label.pipe';
 export * from './src/translations/languagePicker.component';
 export * from './src/translations/translations.module';
 export * from './src/translations/translations.pipe';
