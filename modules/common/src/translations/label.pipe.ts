@@ -10,6 +10,7 @@ export class IDEALocalizedLabelPipe implements PipeTransform {
   constructor(private t: IDEATranslationsService) {}
 
   transform(label: any): any {
+    if (!label) return null;
     return this.t._label(label);
   }
 }
