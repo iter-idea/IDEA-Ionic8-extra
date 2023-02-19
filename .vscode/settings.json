@@ -15,7 +15,8 @@
     "npm-debug.log": true,
     "www": true,
     ".vs": true,
-    ".angular": true
+    ".angular": true,
+    "generateDocs/*.js": true
   },
   "files.trimTrailingWhitespace": true,
   "git.confirmSync": false,
