@@ -1,63 +1,119 @@
 import { TypeFormatFlags } from 'typescript';
-import { Project } from 'ts-morph';
-import { writeFileSync } from 'fs';
+import { ClassDeclaration, Project } from 'ts-morph';
+import { readdirSync, writeFileSync } from 'fs';
+import { basename, parse, resolve, sep } from 'path';
 
-const folderPath = '../modules/common/src';
+const MODULES_FOLDER = 'modules';
 
-const project = new Project();
-const files = project.addSourceFilesAtPaths(`${folderPath}/**/*component.ts`);
+//
+// MAIN
+//
 
-const mdFiles: string[] = [];
+// @todo add services (as of today we only have components)
+console.log('Generating docs...');
+main();
+console.log('Docs generated');
 
-// process each TypeScript file
-files.forEach(file => {
-  const className = file.getClasses()[0]?.getName();
-  if (className) {
-    // find the selector
-    const componentDecorator = file.getClasses()[0].getDecorator('Component');
-    const pattern = /@Component\s*\(\s*{[^}]*selector\s*:\s*'([^']*)'[^}]*}/;
-    const [_, selector] = pattern.exec(componentDecorator.getText());
-    const componentComments = file.getClasses()[0].getJsDocs()[0]?.getComment();
+function main(): void {
+  const workingFolder = resolve(__dirname, '..').concat('/', MODULES_FOLDER, '/');
+  const outputFolder = resolve(__dirname, '..').concat('/');
 
-    // find all properties that are decorated with @Input
-    const inputProps = file
-      .getClasses()[0]
-      .getProperties()
-      .filter(prop => prop.getDecorators().some(decorator => decorator.getName() === 'Input'));
+  const modules = readdirSync(workingFolder).filter(x => !x.startsWith('.'));
 
-    // find all properties that are decorated with @Input
-    const outputProps = file
-      .getClasses()[0]
-      .getProperties()
-      .filter(prop => prop.getDecorators().some(decorator => decorator.getName() === 'Output'));
+  let readmeContent = `# Modules\n\n`;
+  modules.forEach(module => {
+    const componentsInfo = createModuleDocsAndGetComponentsInfo(workingFolder.concat(module));
+    if (!componentsInfo.length) return;
+    readmeContent += `## ${module}\n\n`;
+    componentsInfo.forEach(
+      x => (readmeContent += `- [${x.selector ?? x.name}](${x.readmePath})${x.comment ? '. '.concat(x.comment) : ''}\n`)
+    );
+    readmeContent += `\n`;
+  });
 
-    // extract the names, types, and JSDoc comments of the @Input properties
-    const inputPropsInfo = inputProps.map(prop => ({
+  const readmePath = outputFolder.concat(sep, MODULES_FOLDER, '.md');
+  writeFileSync(readmePath, readmeContent);
+}
+
+//
+// HELPERS
+//
+
+function createModuleDocsAndGetComponentsInfo(modulePath: string): ComponentInfo[] {
+  const componentsInfoForReadme: ComponentInfo[] = [];
+
+  const moduleName = basename(modulePath);
+  const componentsFiles = new Project().addSourceFilesAtPaths(`${modulePath}/**/*component.ts`);
+
+  componentsFiles.forEach(file => {
+    const mainClass = file.getClasses()[0];
+    if (!mainClass) return;
+
+    const name = mainClass.getName();
+    const comment = mainClass.getJsDocs()[0]?.getComment()?.toString();
+    const selector = getSelectorOfComponentClass(mainClass);
+    const inputAttributes = getAttributesInfoOfComponentClassForDecoratorType(mainClass, 'Input');
+    const outputAttributes = getAttributesInfoOfComponentClassForDecoratorType(mainClass, 'Output');
+
+    const inputAttributesMD = getMDListOfComponentAttributeInfo(inputAttributes);
+    const outputAttributesMD = getMDListOfComponentAttributeInfo(outputAttributes);
+
+    let readmeContent = `# ${name}\n\n`;
+    if (comment) readmeContent += `${comment}\n\n`;
+    if (selector) readmeContent += `## Selector\n\n${selector}\n\n`;
+    if (inputAttributesMD) readmeContent += `## Inputs\n\n${inputAttributesMD}\n\n`;
+    if (outputAttributesMD) readmeContent += `## Outputs\n\n${outputAttributesMD}\n`;
+
+    const { name: readmeName, dir: readmeDir } = parse(file.getFilePath());
+    writeFileSync(readmeDir.concat(sep, readmeName, '.md'), readmeContent);
+
+    const readmeFolder = MODULES_FOLDER.concat(sep, moduleName, readmeDir.slice(modulePath.length));
+    const readmePath = readmeFolder.concat(sep, readmeName, '.md');
+    componentsInfoForReadme.push({ name, comment, selector, readmePath });
+  });
+
+  return componentsInfoForReadme;
+}
+
+function getSelectorOfComponentClass(mainClass: ClassDeclaration): string {
+  const componentDecorator = mainClass.getDecorator('Component');
+  const pattern = /@Component\s*\(\s*{[^}]*selector\s*:\s*'([^']*)'[^}]*}/;
+  const [_, selector] = pattern.exec(componentDecorator.getText());
+  return selector;
+}
+
+function getAttributesInfoOfComponentClassForDecoratorType(
+  mainClass: ClassDeclaration,
+  decoratorType: 'Input' | 'Output'
+): ComponentAttributeInfo[] {
+  return mainClass
+    .getProperties()
+    .filter(prop => prop.getDecorators().some(decorator => decorator.getName() === decoratorType))
+    .map(prop => ({
       name: prop.getName(),
       type: prop.getType().getText(null, TypeFormatFlags.InTypeAlias),
-      comment: prop.getJsDocs()[0]?.getComment()
+      comment: prop.getJsDocs()[0]?.getComment()?.toString()
     }));
+}
+function getMDListOfComponentAttributeInfo(attributes: ComponentAttributeInfo[]): string {
+  return attributes
+    .map(prop => `- \`${prop.name}\` (*${prop.type}*) ${prop.comment ? '- '.concat(prop.comment) : ''}`)
+    .join('\n');
+}
 
-    // extract the names, types, and JSDoc comments of the @Input properties
-    const outputPropsInfo = outputProps.map(prop => ({
-      name: prop.getName(),
-      type: prop.getType().getText(null, TypeFormatFlags.InTypeAlias),
-      comment: prop.getJsDocs()[0]?.getComment()
-    }));
-    // write the results to a Markdown file in the folder
+//
+// INTERFACES
+//
 
-    const readmePath = `${file.getFilePath().slice(0, -3)}.md`;
-    const inputPropsMarkdown = inputPropsInfo
-      .map(prop => `* \`${prop.name}\` (*${prop.type}*) - ${prop.comment || 'No description'}`)
-      .join('\n');
-    const outPutsPropsMarkdown = outputPropsInfo
-      .map(prop => `* \`${prop.name}\` (*${prop.type}*) - ${prop.comment || 'No description'}`)
-      .join('\n');
-    const readmeContent = `# ${className}\n\n${componentComments}\n\n## Selector\n\n\`${selector}\` \n\n## Inputs\n\n${inputPropsMarkdown}\n\n## Outputs\n\n${outPutsPropsMarkdown}\n`;
-    writeFileSync(readmePath, readmeContent);
+interface ComponentInfo {
+  name: string;
+  comment?: string;
+  selector?: string;
+  readmePath: string;
+}
 
-    mdFiles.push(`- [${selector}](./${readmePath})`);
-  }
-});
-
-console.log(mdFiles); // Output: ["./components/component1.md", "./components/subdirectory/component2.md"]
+interface ComponentAttributeInfo {
+  name: string;
+  type: string;
+  comment: string;
+}

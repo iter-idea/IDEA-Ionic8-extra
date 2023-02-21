@@ -13,6 +13,11 @@ then
   exit -1
 fi
 
+# generate docs
+cd generateDocs
+node index
+cd ..
+
 # lint the modules
 for MODULE in ${MODULES_DIR}/*/;
 do
