@@ -6,6 +6,8 @@ _The last version fully compatible with **Ionic 5** is [v5.29.4](https://github.
 
 ## Modules
 
+**[Documentation](modules.md)**.
+
 - [common](modules/common)
 - [agenda](modules/agenda)
 - [auth](modules/auth)

@@ -10,29 +10,12 @@
     "strictPropertyInitialization": false,
     "sourceMap": true,
     "paths": {
-      "agenda": [
-        "dist/agenda",
-        "dist/agenda/agenda"
-      ],
-      "auth": [
-        "dist/auth",
-        "dist/auth/auth"
-      ],
-      "common": [
-        "dist/common/common",
-        "dist/common"
-      ],
-      "map": [
-        "dist/map",
-        "dist/map/map"
-      ],
-      "teams": [
-        "dist/teams",
-        "dist/teams/teams"
-      ],
-      "@env": [
-        "environment.ts"
-      ]
+      "agenda": ["dist/agenda", "dist/agenda/agenda"],
+      "auth": ["dist/auth", "dist/auth/auth"],
+      "common": ["dist/common/common", "dist/common"],
+      "map": ["dist/map", "dist/map/map"],
+      "teams": ["dist/teams", "dist/teams/teams"],
+      "@env": ["environment.ts"]
     },
     "declaration": false,
     "downlevelIteration": true,
@@ -41,10 +24,7 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
