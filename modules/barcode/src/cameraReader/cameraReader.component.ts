@@ -72,7 +72,7 @@ export class IDEABarcodeCameraReaderComponent {
     else BarcodeScanner.hideBackground();
 
     document.body.style.background = visible ? '' : 'transparent';
-    document.querySelectorAll('ion-header, ion-content').forEach((element: HTMLElement | any): void => {
+    document.querySelectorAll('ion-header, ion-content, ion-footer').forEach((element: HTMLElement | any): void => {
       element.style.opacity = visible ? '1' : '0';
       element.style.background = visible ? '' : 'transparent';
     });
