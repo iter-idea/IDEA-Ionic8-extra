@@ -137,7 +137,9 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
     hours = this.contextualizeHour(hours, minutes);
     // check whether the selected time is inside the given boundaries
     return (
-      (!this.notEarlierThan || this.timeToMs(hours, minutes) >= this.notEarlierThan) &&
+      (!this.notEarlierThan ||
+        this.timeToMs(hours, minutes) >= this.notEarlierThan ||
+        this.timeToMs(hours, minutes) === 0) &&
       (!this.notLaterThan || this.timeToMs(hours, minutes) <= this.notLaterThan)
     );
   }
