@@ -11,6 +11,17 @@ ion-toolbar.secondary {
     --padding-bottom: 6px;
     --padding-start: 8px;
   }
+  .additionalToolbar {
+    padding: 0px 5px 5px 15px;
+    text-align: left;
+    ion-button {
+      text-transform: none;
+      font-weight: normal;
+    }
+    ion-button.strong {
+      font-weight: bold;
+    }
+  }
 }
 .checksList {
   .check {

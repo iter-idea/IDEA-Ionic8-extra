@@ -19,9 +19,9 @@
   </ion-toolbar>
   <ion-toolbar color="ideaToolbar" class="secondary">
     <ion-title>
-      {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}
+      {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate : { num: getNumChecked() } }}
       <span *ngIf="limitSelectionToNum">
-        {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
+        {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate : { num: limitSelectionToNum } }}
       </span>
     </ion-title>
     <ion-buttons slot="end" *ngIf="!limitSelectionToNum && allowSelectDeselectAll">
@@ -37,6 +37,30 @@
         {{ 'IDEA_COMMON.CHECKER.RESET' | translate }}
       </ion-button>
     </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar color="ideaToolbar" class="secondary" *ngIf="showCategoriesFilters">
+    <div class="additionalToolbar">
+      <ion-button
+        color="light"
+        size="small"
+        *ngIf="activeCategories1?.size"
+        [class.strong]="category1"
+        (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
+      >
+        <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start"></ion-icon>
+        {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+      </ion-button>
+      <ion-button
+        color="light"
+        size="small"
+        *ngIf="activeCategories2?.size"
+        [class.strong]="category2"
+        (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
+      >
+        <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start"></ion-icon>
+        {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 <ion-content>

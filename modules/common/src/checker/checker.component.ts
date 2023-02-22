@@ -94,6 +94,18 @@ export class IDEACheckerComponent {
    */
   @Input() allowSelectDeselectAll: boolean;
   /**
+   * A pre-filter for the category1.
+   */
+  @Input() category1: string;
+  /**
+   * A pre-filter for the category2.
+   */
+  @Input() category2: string;
+  /**
+   * Whether tho show the categories filters.
+   */
+  @Input() showCategoriesFilters: boolean;
+  /**
    * On change event.
    */
   @Output() change = new EventEmitter<void>();
@@ -125,7 +137,10 @@ export class IDEACheckerComponent {
         noElementsFoundText: this.noElementsFoundText,
         showAvatars: this.showAvatars,
         allowSelectDeselectAll: this.allowSelectDeselectAll,
-        limitSelectionToNum: this.limitSelectionToNum
+        limitSelectionToNum: this.limitSelectionToNum,
+        category1: this.category1,
+        category2: this.category2,
+        showCategoriesFilters: this.showCategoriesFilters
       }
     });
     modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
