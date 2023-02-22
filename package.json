@@ -1,6 +1,6 @@
 {
   "name": "idea-ionic-extra",
-  "version": "6.9.7",
+  "version": "6.10.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
