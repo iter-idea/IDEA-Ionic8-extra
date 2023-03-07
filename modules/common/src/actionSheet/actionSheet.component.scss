@@ -25,7 +25,14 @@ ion-grid.actionSheetGrid {
         ion-icon {
           font-size: 1.8em;
         }
+        br {
+          content: '';
+          margin-bottom: 10px;
+        }
       }
     }
   }
+}
+.action-sheet-cancel ion-icon {
+  opacity: 0.8;
 }
