@@ -6,6 +6,7 @@ ion-grid.actionSheetGrid {
     font-weight: 500;
   }
   ion-row.buttonsRow {
+    margin-bottom: 8px;
     ion-button {
       text-transform: none;
       --ion-color-base: var(--ion-color-step-750) !important;
