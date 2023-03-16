@@ -13,6 +13,7 @@ idea-duration
 - `disabled` (*boolean*) - If true, the component is disabled.
 - `obligatory` (*boolean*) - If true, the obligatory dot is shown.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 - `hideSeconds` (*boolean*) - Whether to show or hide the seconds input.
 - `shortLabels` (*boolean*) - Whether to show a shortened version of the labels.
 

@@ -14,6 +14,7 @@ idea-address
 - `editMode` (*boolean*) - Whether the fields are editable or disabled.
 - `obligatory` (*boolean*) - If true, show obligatory dots.
 - `lines` (*string*) - The lines attribute of the item.
+- `color` (*string*) - The color for the component.
 - `label` (*string*) - The label to show for the field; if not set, it has a default value.
 - `placeholder` (*string*) - The placeholder to show for the field.
 - `openByDefault` (*boolean*) - To toggle the detailed view.

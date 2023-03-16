@@ -18,6 +18,7 @@ idea-checker
 - `noneText` (*string*) - If no element is selected, set this custom text.
 - `allText` (*string*) - If all the elements are selected, set this custom text.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 - `disabled` (*boolean*) - If true, the component is disabled.
 - `tappableWhenDisabled` (*boolean*) - If true, the field has a tappable effect when disabled.
 - `obligatory` (*boolean*) - If true, the obligatory dot is shown.

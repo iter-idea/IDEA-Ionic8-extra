@@ -13,6 +13,7 @@ idea-date-time
 - `icon` (*string*) - The icon for the field.
 - `iconColor` (*string*) - The color of the icon.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 - `placeholder` (*string*) - A placeholder for the field.
 - `disabled` (*boolean*) - If true, the component is disabled.
 - `obligatory` (*boolean*) - If true, the obligatory dot is shown.

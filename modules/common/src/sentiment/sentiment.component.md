@@ -8,6 +8,7 @@ idea-sentiment
 
 - `text` (*string*) - The input text.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 
 ## Outputs
 

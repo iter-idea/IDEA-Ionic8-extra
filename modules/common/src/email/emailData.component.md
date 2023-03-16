@@ -15,6 +15,7 @@ idea-email-data
 - `iconColor` (*string*) - The color of the icon.
 - `placeholder` (*string*) - A placeholder for the field.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 - `disabled` (*boolean*) - If true, the component is disabled.
 
 ## Outputs

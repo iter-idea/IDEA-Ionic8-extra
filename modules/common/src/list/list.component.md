@@ -16,6 +16,7 @@ idea-list
 - `noPreviewText` (*string*) - If true, show the string instead of the preview text.
 - `placeholder` (*string*) - A placeholder for the field.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 - `disabled` (*boolean*) - If true, the component is disabled.
 - `obligatory` (*boolean*) - If true, the obligatory dot is shown.
 - `numMaxElementsInPreview` (*number*) - How many elements to show in the preview before to generalize on the number.

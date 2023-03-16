@@ -19,6 +19,7 @@ Note: the name is set to not overlap with IDEA's components typical use of the a
 - `iconColor` (*string*) - The color of the icon.
 - `placeholder` (*string*) - A placeholder for the field.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 - `disabled` (*boolean*) - If true, the component is disabled.
 - `obligatory` (*boolean*) - If true, the label is validated on save.
 

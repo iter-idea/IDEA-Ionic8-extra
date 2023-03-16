@@ -18,6 +18,7 @@ idea-time-interval
 - `tappableWhenDisabled` (*boolean*) - If true, the field has a tappable effect when disabled.
 - `obligatory` (*boolean*) - If true, the obligatory dot is shown.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 
 ## Outputs
 

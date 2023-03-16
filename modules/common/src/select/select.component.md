@@ -18,6 +18,7 @@ idea-select
 - `tappableWhenDisabled` (*boolean*) - If true, the field has a tappable effect when disabled.
 - `obligatory` (*boolean*) - If true, the obligatory dot is shown.
 - `lines` (*string*) - Lines preferences for the item.
+- `color` (*string*) - The color for the component.
 - `allowUnlistedValues` (*boolean*) - If true, allows to select a new custom value (outside the suggestions).
 - `allowUnlistedValuesPrefix` (*string*) - If `allowUnlistedValues` is set, show this to help users understanding what happens by selecting the unlisted val.
 - `sortData` (*boolean*) - If true, sort the suggestions alphabetically.
