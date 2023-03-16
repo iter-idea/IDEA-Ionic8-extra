@@ -4,9 +4,9 @@ import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TimeInterval } from 'idea-toolbox';
 
-import { IDEATranslationsService } from '../translations/translations.service';
-
 import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component';
+
+import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-time-interval',
@@ -17,91 +17,95 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The time interval to set.
    */
-  @Input() public timeInterval: TimeInterval;
+  @Input() timeInterval: TimeInterval;
   /**
    * Whether we should start picking the time displaying the afternoon (PM) or the morning (AM, default).
    */
-  @Input() public period: Periods = Periods.AM;
+  @Input() period: Periods = Periods.AM;
   /**
    * A time to use as lower limit for the possible choices.
    */
-  @Input() public notEarlierThan: number;
+  @Input() notEarlierThan: number;
   /**
    * A time to use as upper limit for the possible choices.
    */
-  @Input() public notLaterThan: number;
+  @Input() notLaterThan: number;
   /**
    * The label for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * The icon for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() public iconColor: string;
+  @Input() iconColor: string;
   /**
    * A placeholder for the field.
    */
-  @Input() public placeholder: string;
+  @Input() placeholder: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.
    */
-  @Input() public tappableWhenDisabled: boolean;
+  @Input() tappableWhenDisabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() public obligatory: boolean;
+  @Input() obligatory: boolean;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
+  /**
+   * The color for the component.
+   */
+  @Input() color: string;
   /**
    * On select event.
    */
-  @Output() public select = new EventEmitter<void>();
+  @Output() select = new EventEmitter<void>();
   /**
    * Icon select.
    */
-  @Output() public iconSelect = new EventEmitter<void>();
+  @Output() iconSelect = new EventEmitter<void>();
   /**
    * On select (with the field disabled) event.
    */
-  @Output() public selectWhenDisabled = new EventEmitter<void>();
+  @Output() selectWhenDisabled = new EventEmitter<void>();
   /**
    * The value to display in the field preview.
    */
-  public valueToDisplay: string;
+  valueToDisplay: string;
   /**
    * Language change subscription.
    */
-  protected langChangeSubscription: Subscription;
+  private langChangeSubscription: Subscription;
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
 
-  public ngOnInit() {
+  ngOnInit(): void {
     // when the language changes, set the locale
     this.langChangeSubscription = this.t.onLangChange.subscribe(() => {
       this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
     });
   }
-  public ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.langChangeSubscription) this.langChangeSubscription.unsubscribe();
   }
-  public ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.timeInterval) this.valueToDisplay = this.getValueToDisplay(changes.timeInterval.currentValue);
   }
 
   /**
    * Get the value to show for the interval.
    */
-  protected getValueToDisplay(timeInterval: TimeInterval): string {
+  private getValueToDisplay(timeInterval: TimeInterval): string {
     if (!timeInterval || !timeInterval.isSet()) return '';
     // note: the time must be always considered without any timezone (UTC)
     const dateOpts = { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' } as const;
@@ -119,7 +123,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * Pick the time interval.
    */
-  public pickTimeInterval() {
+  pickTimeInterval(): void {
     this.modalCtrl
       .create({
         component: IDEAFromTimeToTimeComponent,
@@ -132,7 +136,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
         }
       })
       .then(modal => {
-        modal.onDidDismiss().then((res: OverlayEventDetail) => {
+        modal.onDidDismiss().then((res: OverlayEventDetail): void => {
           // if the content changed, update the internal values and notify the parent component
           if (res.data === true || res.data === false) {
             this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
@@ -146,14 +150,14 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * Emit the selection while the component is in viewMode.
    */
-  public doSelectWhenDisabled() {
+  doSelectWhenDisabled(): void {
     if (this.disabled) this.selectWhenDisabled.emit();
   }
 
   /**
    * Emit the selection of the icon.
    */
-  public doIconSelect(event: any) {
+  doIconSelect(event: any): void {
     if (event) event.stopPropagation();
     this.iconSelect.emit(event);
   }

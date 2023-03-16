@@ -1,5 +1,7 @@
 div.container {
   text-align: center;
+  padding: var(--avatar-container-padding, 0);
+  margin: var(--avatar-container-margin, 0);
 }
 
 ion-avatar,

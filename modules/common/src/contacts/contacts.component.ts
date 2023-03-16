@@ -13,42 +13,38 @@ export class IDEAContactsComponent {
   /**
    * The contacts to manage.
    */
-  @Input() public contacts: Contacts = new Contacts();
+  @Input() contacts: Contacts = new Contacts();
   /**
    * If true, show the field `name`.
    */
-  @Input() public showName = false;
+  @Input() showName = false;
   /**
    * Whether the fields are editable or disabled.
    */
-  @Input() public editMode = true;
+  @Input() editMode = true;
   /**
    * The lines attribute of the item.
    */
-  @Input() public lines = 'inset';
-
-  constructor(public alertCtrl: AlertController, public t: IDEATranslationsService) {}
-
+  @Input() lines: string;
   /**
-   * Send an email to the contact, after a confirmation by the user.
+   * The color for the component.
    */
-  public sendEmail() {
+  @Input() color: string;
+
+  constructor(private alertCtrl: AlertController, private t: IDEATranslationsService) {}
+
+  sendEmail(): void {
     if (!this.contacts.email) return;
     const url = `mailto:${this.contacts.email}`;
-    this.preExternalAction(this.contacts.email, () => window.open(url, '_system'));
+    this.preExternalAction(this.contacts.email, (): Window => window.open(url, '_system'));
   }
-  /**
-   * Call the contact, after a confirmation by the user.
-   */
-  public call() {
+  call(): void {
     if (!this.contacts.phone) return;
     const url = `tel:${this.contacts.phone}`;
-    this.preExternalAction(this.contacts.phone, () => window.open(url, '_system'));
+    this.preExternalAction(this.contacts.phone, (): Window => window.open(url, '_system'));
   }
-  /**
-   * Request a confirmation before performing an external action.
-   */
-  private preExternalAction(message: string, cb: () => void) {
+
+  private preExternalAction(message: string, cb: () => void): void {
     const header = this.t._('COMMON.DO_YOU_WANT_TO_PROCEED');
     const buttons = [{ text: this.t._('COMMON.CANCEL') }, { text: this.t._('COMMON.CONFIRM'), handler: () => cb() }];
     const cssClass = 'selectableAlertMessage';

@@ -61,6 +61,10 @@ export class IDEACheckerComponent {
    */
   @Input() lines: string;
   /**
+   * The color for the component.
+   */
+  @Input() color: string;
+  /**
    * If true, the component is disabled.
    */
   @Input() disabled: boolean;

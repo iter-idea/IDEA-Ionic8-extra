@@ -9,62 +9,65 @@ export class IDEADurationComponent implements OnChanges {
   /**
    * The default number of seconds, to build the duration.
    */
-  @Input() public default: number;
+  @Input() default: number;
   /**
    * The label for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * The icon (alternative to the label) for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The title (hint) for the field.
    */
-  @Input() public title: string;
+  @Input() title: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() public obligatory: boolean;
+  @Input() obligatory: boolean;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
+  /**
+   * The color for the component.
+   */
+  @Input() color: string;
   /**
    * Whether to show or hide the seconds input.
    */
-  @Input() public hideSeconds: boolean;
+  @Input() hideSeconds: boolean;
   /**
    * Whether to show a shortened version of the labels.
    */
-  @Input() public shortLabels: boolean;
+  @Input() shortLabels: boolean;
   /**
    * On change event. It emits a number of seconds representing the duration.
    */
-  @Output() public set = new EventEmitter<number>();
+  @Output() set = new EventEmitter<number>();
 
   /**
    * The hour part of the duration.
    */
-  public hours: number;
+  hours: number;
   /**
    * The minutes part of the duration.
    */
-  public minutes: number;
+  minutes: number;
   /**
    * The seconds part of the duration.
    */
-  public seconds: number;
+  seconds: number;
 
   constructor() {
     this.default = this.hours = this.minutes = this.seconds = 0;
   }
-
-  public ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     // assign a default value to the duration
     if (changes['default'] && changes['default'].isFirstChange()) {
       const refDate = new Date(0);
@@ -79,7 +82,7 @@ export class IDEADurationComponent implements OnChanges {
   /**
    * When one of the parts changes, emit the new duration.
    */
-  public setDuration(type: string) {
+  setDuration(type: string): void {
     switch (type) {
       case 'hours':
         const hh = Number(this.hours) || 0;

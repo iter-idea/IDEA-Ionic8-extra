@@ -41,6 +41,10 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
    */
   @Input() lines: string;
   /**
+   * The color for the component.
+   */
+  @Input() color: string;
+  /**
    * A placeholder for the field.
    */
   @Input() placeholder: string;

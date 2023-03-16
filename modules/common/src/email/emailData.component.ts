@@ -17,58 +17,59 @@ export class IDEAEmailDataComponent implements OnInit {
   /**
    * The email data to manage.
    */
-  @Input() public emailData: EmailData;
+  @Input() emailData: EmailData;
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() public variables: StringVariable[];
+  @Input() variables: StringVariable[];
   /**
    * The label for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * The icon for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() public iconColor: string;
+  @Input() iconColor: string;
   /**
    * A placeholder for the field.
    */
-  @Input() public placeholder: string;
+  @Input() placeholder: string;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
+  /**
+   * The color for the component.
+   */
+  @Input() color: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * On change event.
    */
-  @Output() public change = new EventEmitter<void>();
+  @Output() change = new EventEmitter<void>();
   /**
    * Icon select.
    */
-  @Output() public iconSelect = new EventEmitter<void>();
+  @Output() iconSelect = new EventEmitter<void>();
   /**
    * The list of variables codes to use for substitutions.
    */
-  public _variables: string[];
+  _variables: string[];
 
   constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
-  public ngOnInit() {
+  ngOnInit(): void {
     // create a plain list of variable codes
     this._variables = (this.variables || []).map(x => x.code);
   }
 
-  /**
-   * Open the modal to configure the email data.
-   */
-  public openEmailDataConfiguration() {
+  openEmailDataConfiguration(): void {
     this.modalCtrl
       .create({
         component: IDEAEmailDataConfigurationComponent,
@@ -86,10 +87,7 @@ export class IDEAEmailDataComponent implements OnInit {
       });
   }
 
-  /**
-   * The icon was selected.
-   */
-  public doIconSelect(event: any) {
+  doIconSelect(event: any): void {
     if (event) event.stopPropagation();
     this.iconSelect.emit(event);
   }

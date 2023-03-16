@@ -42,6 +42,10 @@ export class IDEAAddressComponent implements OnInit {
    */
   @Input() lines: string;
   /**
+   * The color for the component.
+   */
+  @Input() color: string;
+  /**
    * The label to show for the field; if not set, it has a default value.
    */
   @Input() label: string;

@@ -1,4 +1,4 @@
-<ion-item *ngIf="text && offline.isOnline()" [lines]="lines">
+<ion-item *ngIf="text && offline.isOnline()" [lines]="lines" [color]="color">
   <ion-spinner slot="end" size="small" *ngIf="!sentiment"></ion-spinner>
   <ion-badge
     slot="end"

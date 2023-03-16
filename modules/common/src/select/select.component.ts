@@ -71,6 +71,10 @@ export class IDEASelectComponent implements OnChanges {
    */
   @Input() lines: string;
   /**
+   * The color for the component.
+   */
+  @Input() color: string;
+  /**
    * If true, allows to select a new custom value (outside the suggestions).
    */
   @Input() allowUnlistedValues: boolean;

@@ -15,73 +15,66 @@ export class IDEAColorPickerComponent {
   /**
    * The pickable colors.
    */
-  @Input() public colors: Color[] = COLORS;
+  @Input() colors: Color[] = COLORS;
   /**
    * The current color.
    */
-  @Input() public current: string;
+  @Input() current: string;
   /**
    * The label for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * A placeholder for the field.
    */
-  @Input() public placeholder: string;
+  @Input() placeholder: string;
   /**
    * The icon for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() public iconColor: string;
+  @Input() iconColor: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() public obligatory: boolean;
+  @Input() obligatory: boolean;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
+  /**
+   * The color for the component.
+   */
+  @Input() color: string;
   /**
    * On select event.
    */
-  @Output() public select = new EventEmitter<string>();
+  @Output() select = new EventEmitter<string>();
   /**
    * Icon select.
    */
-  @Output() public iconSelect = new EventEmitter<void>();
+  @Output() iconSelect = new EventEmitter<void>();
 
-  constructor(public popoverCtrl: PopoverController) {}
+  constructor(private popoverCtrl: PopoverController) {}
 
-  /**
-   * Open the popover to pick a color.
-   */
-  public openPalette(event: any) {
+  async openPalette(event: any): Promise<void> {
     if (this.disabled) return;
-    this.popoverCtrl
-      .create({
-        component: ColorsPaletteComponent,
-        componentProps: { colors: this.colors, current: this.current },
-        event
-      })
-      .then(popover => {
-        popover.onDidDismiss().then(res => {
-          if (res && res.data) this.select.emit(res.data);
-        });
-        popover.present();
-      });
+
+    const componentProps = { colors: this.colors, current: this.current };
+    const popover = await this.popoverCtrl.create({ component: ColorsPaletteComponent, componentProps, event });
+    popover.onDidDismiss().then(res => {
+      if (res && res.data) this.select.emit(res.data);
+    });
+    popover.present();
   }
 
-  /**
-   * The icon was selected.
-   */
-  public doIconSelect(event: any) {
+  doIconSelect(event: any): void {
     if (event) event.stopPropagation();
     this.iconSelect.emit(event);
   }
@@ -133,18 +126,15 @@ export class ColorsPaletteComponent {
   /**
    * The pickable colors.
    */
-  @Input() public colors: Color[];
+  @Input() colors: Color[];
   /**
    * The current color.
    */
-  @Input() public current: string;
+  @Input() current: string;
 
-  constructor(public popoverCtrl: PopoverController) {}
+  constructor(private popoverCtrl: PopoverController) {}
 
-  /**
-   * Pick a color.
-   */
-  public pick(color: string) {
+  pick(color: string): void {
     this.popoverCtrl.dismiss(color);
   }
 }

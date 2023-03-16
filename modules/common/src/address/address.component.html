@@ -1,6 +1,6 @@
 <ion-accordion-group #accordion *ngIf="address">
   <ion-accordion value="open">
-    <ion-item slot="header" button [lines]="lines">
+    <ion-item slot="header" button [color]="color" [lines]="lines">
       <ion-label [position]="isCollapsed() ? 'stacked' : ''">
         {{ label ?? ('IDEA_COMMON.ADDRESS.COMPLETE_ADDRESS' | translate) }}
       </ion-label>
@@ -14,7 +14,7 @@
       ></ion-input>
     </ion-item>
     <ion-list slot="content">
-      <ion-item *ngIf="showContact">
+      <ion-item *ngIf="showContact" [color]="color">
         <ion-label position="stacked">{{ 'IDEA_COMMON.ADDRESS.CONTACT' | translate }}</ion-label>
         <ion-input
           autocomplete="new"
@@ -25,7 +25,7 @@
           (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
-      <ion-item *ngIf="showEmail">
+      <ion-item *ngIf="showEmail" [color]="color">
         <ion-label position="stacked">{{ 'IDEA_COMMON.ADDRESS.EMAIL' | translate }}</ion-label>
         <ion-input
           autocomplete="new"
@@ -36,7 +36,7 @@
           (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
-      <ion-item *ngIf="showPhone">
+      <ion-item *ngIf="showPhone" [color]="color">
         <ion-label position="stacked">{{ 'IDEA_COMMON.ADDRESS.PHONE' | translate }}</ion-label>
         <ion-input
           autocomplete="new"
@@ -47,7 +47,7 @@
           (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item [color]="color">
         <ion-label position="stacked">
           {{ 'IDEA_COMMON.ADDRESS.ADDRESS' | translate }}
           <ion-text class="obligatoryDot" *ngIf="editMode && obligatory"></ion-text>
@@ -61,7 +61,7 @@
           (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
-      <ion-item *ngIf="showAddress2">
+      <ion-item *ngIf="showAddress2" [color]="color">
         <ion-label position="stacked">{{ 'IDEA_COMMON.ADDRESS.ADDRESS2' | translate }}</ion-label>
         <ion-input
           autocomplete="new"
@@ -72,7 +72,7 @@
           (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item [color]="color">
         <ion-label position="stacked">{{ 'IDEA_COMMON.ADDRESS.POSTCODE' | translate }}</ion-label>
         <ion-input
           autocomplete="new"
@@ -83,7 +83,7 @@
           (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item [color]="color">
         <ion-label position="stacked">
           {{ 'IDEA_COMMON.ADDRESS.CITY' | translate }}
           <ion-text class="obligatoryDot" *ngIf="editMode && obligatory"></ion-text>
@@ -97,7 +97,7 @@
           (ionChange)="addressChange.emit(address)"
         ></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item [color]="color">
         <ion-label position="stacked">{{ 'IDEA_COMMON.ADDRESS.PROVINCE' | translate }}</ion-label>
         <ion-input
           autocomplete="new"
@@ -109,6 +109,7 @@
         ></ion-input>
       </ion-item>
       <idea-select
+        [color]="color"
         [data]="countriesSuggestions"
         [label]="'IDEA_COMMON.ADDRESS.COUNTRY' | translate"
         [lines]="editMode ? lines : null"

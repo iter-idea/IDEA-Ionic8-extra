@@ -1,7 +1,8 @@
 <ion-item
   class="emailDataItem"
+  button
+  [color]="color"
   [lines]="lines"
-  [button]="true"
   [title]="placeholder || ''"
   [class.withLabel]="label"
   (click)="openEmailDataConfiguration()"
@@ -19,7 +20,7 @@
   <ion-label position="stacked" *ngIf="label">{{ label }}</ion-label>
   <div class="description">
     <div class="placeholder" *ngIf="!emailData.subject">{{ placeholder }}</div>
-    <div *ngIf="emailData.subject" [innerHTML]="emailData.subject | highlight: _variables"></div>
+    <div *ngIf="emailData.subject" [innerHTML]="emailData.subject | highlight : _variables"></div>
     <p *ngIf="emailData.to.length">
       <ion-text>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}:</ion-text> {{ emailData.to.join(', ') }}
     </p>

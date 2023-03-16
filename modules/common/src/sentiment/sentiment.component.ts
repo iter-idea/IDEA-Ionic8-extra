@@ -16,28 +16,32 @@ export class IDEASentimentComponent implements OnChanges {
   /**
    * The sentiment detected from the input text.
    */
-  public sentiment: Sentiment;
+  sentiment: Sentiment;
   /**
    * The input text.
    */
-  @Input() public text: string;
+  @Input() text: string;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines = 'none';
+  @Input() lines: string;
+  /**
+   * The color for the component.
+   */
+  @Input() color: string;
   /**
    * Triggers when the sentiment change.
    */
-  @Output() public change = new EventEmitter<Sentiment>();
+  @Output() change = new EventEmitter<Sentiment>();
 
   constructor(public offline: IDEAOfflineService, public API: IDEAAWSAPIService, public t: IDEATranslationsService) {}
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.text.previousValue !== changes.text.currentValue) this.detectSentiment(changes.text.currentValue);
   }
   /**
    * Detect the sentiment of the input string, by running a request to the IDEA's online utility.
    */
-  protected detectSentiment(text: string) {
+  private detectSentiment(text: string): void {
     if (!text || this.offline.isOffline()) this.sentiment = null;
     else {
       this.API.postResource('sentiment', {
@@ -55,7 +59,7 @@ export class IDEASentimentComponent implements OnChanges {
   /**
    * Get the color based on the subject sentiment notes.
    */
-  public getColorBySentiment(sentiment?: Sentiment | string): string {
+  getColorBySentiment(sentiment?: Sentiment | string): string {
     sentiment = sentiment || this.sentiment;
     switch (sentiment) {
       case Sentiment.POSITIVE:
