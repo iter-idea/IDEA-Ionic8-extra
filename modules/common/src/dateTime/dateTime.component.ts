@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { epochDateTime, epochISOString } from 'idea-toolbox';
 
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
+
 import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
@@ -20,6 +21,10 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
    * Whether to show the time picker (datetime) or not (date).
    */
   @Input() timePicker = false;
+  /**
+   * Whether to show the MANUAL time picker (datetime) or not (date).
+   */
+  @Input() manualTimePicker = false;
   /**
    * Whether to use the `epochISOString` format instead of `epochDateTime`.
    */
@@ -89,6 +94,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
         inputDate: this.date,
         title: this.label,
         timePicker: this.timePicker,
+        manualTimePicker: this.manualTimePicker,
         hideClearButton: this.hideClearButton
       }
     });
@@ -102,7 +108,9 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getValueToDisplay(date: epochDateTime | epochISOString): string {
-    return !date ? '' : this.t.formatDate(date, this.timePicker ? 'd MMM yyyy, HH:mm' : 'mediumDate');
+    return !date
+      ? ''
+      : this.t.formatDate(date, this.timePicker || this.manualTimePicker ? 'd MMM yyyy, HH:mm' : 'mediumDate');
   }
 
   doSelect(date: Date): void {

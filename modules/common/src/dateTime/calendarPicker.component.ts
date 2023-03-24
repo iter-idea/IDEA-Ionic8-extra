@@ -3,7 +3,6 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { epochDateTime } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
-
 /**
  * A random sunday, used as reference to calculate the week days.
  */
@@ -16,7 +15,8 @@ const SUNDAY = 259200000;
 })
 export class IDEACalendarPickerComponent implements OnInit {
   @Input() inputDate: epochDateTime;
-  @Input() timePicker: boolean;
+  @Input() timePicker = false;
+  @Input() manualTimePicker = false;
   @Input() title: string;
   @Input() hideClearButton = false;
 
@@ -37,11 +37,14 @@ export class IDEACalendarPickerComponent implements OnInit {
     this.selectedDate = new Date(this.refDate);
     this.hour = 12; // to endure timezones
     this.minute = 0;
-    if (this.timePicker) {
+    if (this.timePicker || this.manualTimePicker) {
       this.hour = this.selectedDate.getHours();
-      // round the minutes a multiple of 5
-      this.minute = Math.ceil(this.selectedDate.getMinutes() / 5) * 5;
-      this.selectedDate.setMinutes(this.minute);
+      if (this.manualTimePicker) this.minute = this.selectedDate.getMinutes();
+      else {
+        // round the minutes a multiple of 5
+        this.minute = Math.ceil(this.selectedDate.getMinutes() / 5) * 5;
+        this.selectedDate.setMinutes(this.minute);
+      }
     }
     this.buildCalendarGrid(this.refDate);
     this.hours = Array.from(Array(24).keys()).map(i => '0'.concat(i.toString()).slice(-2));
@@ -131,7 +134,7 @@ export class IDEACalendarPickerComponent implements OnInit {
     buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel' });
     buttons.push({
       text: this.t._('COMMON.SELECT'),
-      handler: (m: string) => {
+      handler: (m: string): void => {
         this.refDate.setMonth(parseInt(m, 10) - 1);
         this.buildCalendarGrid(this.refDate);
       }

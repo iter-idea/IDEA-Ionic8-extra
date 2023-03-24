@@ -49,7 +49,7 @@
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6" (click)="showMonths()">
-            {{ refDate | dateLocale: 'MMMM' }}
+            {{ refDate | dateLocale : 'MMMM' }}
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(+1)">
@@ -85,12 +85,12 @@
           "
           (click)="selectDate(calendarGrid[i][j])"
         >
-          {{ calendarGrid[i][j] | date: 'd' }}
+          {{ calendarGrid[i][j] | date : 'd' }}
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="timePicker">
-      <h1 class="headerLabel" *ngIf="timePicker">
+    <ion-row *ngIf="timePicker || manualTimePicker">
+      <h1 class="headerLabel">
         {{ 'IDEA_COMMON.CALENDAR.SET_TIME' | translate }}
       </h1>
     </ion-row>
@@ -125,6 +125,13 @@
             </ion-button>
           </ion-col>
         </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center manualTimePicker" *ngIf="manualTimePicker">
+      <ion-col class="ion-text-center" [size]="12">
+        <input type="number" min="0" max="23" [value]="hour" (change)="selectHour($event.target.value)" />
+        <span>:</span>
+        <input type="number" min="0" max="59" [value]="minute" (change)="selectMinute($event.target.value)" />
       </ion-col>
     </ion-row>
   </ion-grid>

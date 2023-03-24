@@ -24,3 +24,20 @@ ion-footer {
 .tappable {
   cursor: pointer;
 }
+
+.manualTimePicker {
+  padding: 20px;
+  input[type='number'],
+  span {
+    font-size: 2.5em;
+  }
+  input[type='number'] {
+    border: none;
+    border-bottom: 2px solid var(--ion-color-dark);
+    text-align: center;
+  }
+  span {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
