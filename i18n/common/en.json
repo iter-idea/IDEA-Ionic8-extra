@@ -22,6 +22,14 @@
       "PROVINCE": "Province",
       "PROVINCE_HINT": "Province, district, area"
     },
+    "APP_STATUS": {
+      "UPDATE": "Update",
+      "NEW_VERSION": "New version available: {{newVersion}}",
+      "MUST_UPDATE": "Update required",
+      "MAINTENANCE": "The app is in maintenance mode",
+      "GOT_IT": "Got it",
+      "EVERYTHING_IS_OK": "It's all good!"
+    },
     "CALENDAR": {
       "CLOSE_WITHOUT_SAVING": "Close without saving",
       "MONTH": "Month",

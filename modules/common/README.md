@@ -30,7 +30,8 @@ Finally, add in the environments desired the variables you find in the `environm
 
 - Action Sheet
 - Address
-- Announcements
+- Announcements (replaced by AppStatus)
+- AppStatus
 - Checker
 - Colors picker
 - Contacts

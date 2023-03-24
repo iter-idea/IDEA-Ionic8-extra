@@ -19,7 +19,7 @@
     "@capacitor/network": "^4.x.x",
     "@ionic/angular": ">=6.4.1",
     "@ionic/storage-angular": ">=3.0.6",
-    "idea-toolbox": ">=6.6.x",
+    "idea-toolbox": ">=6.7.x",
     "rxjs": ">=7.8.0",
     "zone.js": ">=0.12.0"
   },
@@ -37,7 +37,7 @@
     "@ionic/angular": ">=6.4.1",
     "@ionic/storage-angular": ">=3.0.6",
     "@types/google.maps": "^3.51.0",
-    "idea-toolbox": ">=6.6.x",
+    "idea-toolbox": ">=6.7.x",
     "rxjs": ">=7.8.0",
     "zone.js": ">=0.12.0"
   },

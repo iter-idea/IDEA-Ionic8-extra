@@ -6,7 +6,9 @@ export const environment = {
     project: '',
     ionicExtraModules: ['common'],
     app: {
-      version: ''
+      version: '',
+      appleStoreURL: '',
+      googleStoreURL: ''
     },
     api: {
       url: '',

@@ -8,6 +8,9 @@ export * from './src/address/address.module';
 export * from './src/announcement/announcement.component';
 export * from './src/announcement/announcement.module';
 
+export * from './src/appStatus/appStatus.module';
+export * from './src/appStatus/appStatus.service';
+
 export * from './src/checker/checks.component';
 export * from './src/checker/checker.component';
 export * from './src/checker/checker.module';
