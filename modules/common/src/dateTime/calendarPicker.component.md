@@ -8,6 +8,7 @@ idea-calendar-picker
 
 - `inputDate` (*number*) 
 - `timePicker` (*boolean*) 
+- `manualTimePicker` (*boolean*) 
 - `title` (*string*) 
 - `hideClearButton` (*boolean*) 
 

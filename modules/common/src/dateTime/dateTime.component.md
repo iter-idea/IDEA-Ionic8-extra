@@ -8,6 +8,7 @@ idea-date-time
 
 - `date` (*string | number*) - The date to show/pick.
 - `timePicker` (*boolean*) - Whether to show the time picker (datetime) or not (date).
+- `manualTimePicker` (*boolean*) - Whether to show the MANUAL time picker (datetime) or not (date).
 - `useISOFormat` (*boolean*) - Whether to use the `epochISOString` format instead of `epochDateTime`.
 - `label` (*string*) - The label for the field.
 - `icon` (*string*) - The icon for the field.
