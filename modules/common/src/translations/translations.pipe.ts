@@ -14,7 +14,7 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
    */
   private value = '';
   /**
-   * The lst key requested.
+   * The last key requested.
    */
   private lastKey: string;
   /**
