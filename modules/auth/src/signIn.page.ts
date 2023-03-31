@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
-import { IDEAMessageService, IDEALoadingService, IDEATinCanService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
 
-import { IDEAAuthService } from './auth.service';
+import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
 
 import { environment as env } from '@env';
 
@@ -13,117 +13,71 @@ import { environment as env } from '@env';
   styleUrls: ['auth.scss']
 })
 export class IDEASignInPage {
-  /**
-   * The title of the project.
-   */
-  public title: string;
-  /**
-   * Whether the public registration is allowed for the project.
-   */
-  public registrationPossible: boolean;
-  /**
-   * Whether the project has an intro (explanatory) page.
-   */
-  public hasIntroPage: boolean;
-  /**
-   * The URL to IDEA's website.
-   */
-  public website: string;
-  /**
-   * The email address to identify a user.
-   */
-  public email: string;
-  /**
-   * The password to login for the email selected.
-   */
-  public password: string;
-  /**
-   * Whether the agreements have been accepted.
-   */
-  public agreementsCheck: boolean;
-  /**
-   * Whether a new account was just created through the SignUp page.
-   */
-  public newAccountRegistered: boolean;
-  /**
-   * The error message to display in the UI, if any.
-   */
-  public errorMsg: string;
+  title = env.idea.app.title;
+  registrationPossible = env.idea.auth.registrationIsPossible;
+  hasIntroPage = env.idea.app.hasIntroPage;
+  website = env.idea.website;
 
+  email: string;
+  password: string;
+  agreementsCheck = true;
+  newAccountRegistered = false;
+  errorMsg: string;
   darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   constructor(
-    public navCtrl: NavController,
-    public tc: IDEATinCanService,
-    public message: IDEAMessageService,
-    public loading: IDEALoadingService,
-    public auth: IDEAAuthService,
-    public t: IDEATranslationsService
-  ) {
-    this.title = env.idea.app.title;
-    this.registrationPossible = env.idea.auth.registrationIsPossible;
-    this.hasIntroPage = env.idea.app.hasIntroPage;
-    this.website = env.idea.website;
-    this.agreementsCheck = true;
-  }
-  public ionViewDidEnter() {
+    private navCtrl: NavController,
+    private message: IDEAMessageService,
+    private loading: IDEALoadingService,
+    private auth: IDEAAuthService,
+    private t: IDEATranslationsService
+  ) {}
+  ionViewDidEnter(): void {
     // manage the scenario in which we just created a new account (show a explanatory message: email must be confirmed)
-    if (this.tc.get('newAccountRegistered')) {
-      this.newAccountRegistered = true;
-      this.email = this.tc.get('newAccountRegistered', true);
+    this.newAccountRegistered = !!this.auth.getNewAccountJustRegistered();
+    if (this.newAccountRegistered) this.email = this.auth.getNewAccountJustRegistered();
+  }
+
+  async login(): Promise<void> {
+    if (!this.agreementsCheck) return;
+    try {
+      this.errorMsg = null;
+      await this.loading.show();
+      const loginAction = await this.auth.login(this.email, this.password);
+      if (loginAction === LoginOutcomeActions.NEW_PASSWORD) this.navCtrl.navigateForward(['auth', 'new-password']);
+      else if (loginAction === LoginOutcomeActions.MFA_CHALLENGE)
+        this.navCtrl.navigateForward(['auth', 'mfa-challenge']);
+      else if (loginAction === LoginOutcomeActions.MFA_SETUP) this.navCtrl.navigateForward(['auth', 'setup-mfa']);
+      else window.location.assign('');
+    } catch (err) {
+      if ((err as any).name === 'UserNotConfirmedException')
+        this.errorMsg = this.t._('IDEA_AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
+      else if (
+        (err as any).name === 'UserLambdaValidationException' &&
+        (err as any).message?.includes('@IDEA_COGNITO_TRANSITION')
+      )
+        this.errorMsg = this.t._('IDEA_AUTH.CHANGE_YOUR_PASSWORD_TO_LOGIN');
+      this.message.error('IDEA_AUTH.AUTHENTICATION_FAILED');
+    } finally {
+      this.loading.hide();
     }
   }
 
-  /**
-   * Sign-in with the auth details provided.
-   */
-  public async login() {
-    if (!this.agreementsCheck) return;
-    this.errorMsg = null;
-    await this.loading.show();
-    this.auth
-      .login(this.email, this.password)
-      .then(needNewPassword => {
-        if (needNewPassword) {
-          this.tc.set('email', this.email);
-          this.tc.set('password', this.password);
-          this.navCtrl.navigateForward(['auth/new-password']);
-        } else window.location.assign(''); // hard reload
-      })
-      .catch(err => {
-        if (err.name === 'UserNotConfirmedException') this.errorMsg = this.t._('IDEA_AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
-        else if (err.name === 'UserLambdaValidationException' && err.message?.includes('@IDEA_COGNITO_TRANSITION'))
-          this.errorMsg = this.t._('IDEA_AUTH.CHANGE_YOUR_PASSWORD_TO_LOGIN');
-        this.message.error('IDEA_AUTH.AUTHENTICATION_FAILED');
-      })
-      .finally(() => this.loading.hide());
-  }
-
-  /**
-   * Go to the homepage.
-   */
-  public goToIntro() {
+  goToIntro(): void {
     this.navCtrl.navigateBack(['intro']);
   }
-  /**
-   * Go to the forgot password page.
-   */
-  public goToForgotPassword() {
+  goToForgotPassword(): void {
     this.navCtrl.navigateForward(['auth/forgot-password']);
   }
-  /**
-   * Go to registration page.
-   */
-  public goToRegistration() {
-    this.tc.set('email', this.email);
-    this.tc.set('password', this.password);
+  goToRegistration(): void {
     this.navCtrl.navigateForward(['auth', 'sign-up']);
   }
 
-  /**
-   * Open a URL in the browser.
-   */
-  public openLink(url: string) {
-    Browser.open({ url });
+  translationExists(key: string): boolean {
+    return !!this.t._(key);
+  }
+
+  async openLink(url: string): Promise<void> {
+    await Browser.open({ url });
   }
 }

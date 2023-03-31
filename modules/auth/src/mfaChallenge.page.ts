@@ -5,12 +5,12 @@ import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from 
 import { IDEAAuthService } from './auth.service';
 
 @Component({
-  selector: 'idea-new-password',
-  templateUrl: 'newPassword.page.html',
+  selector: 'idea-mfa-challenge',
+  templateUrl: 'mfaChallenge.page.html',
   styleUrls: ['auth.scss']
 })
-export class IDEANewPasswordPage implements OnInit {
-  newPassword: string;
+export class IDEAMFAChallengePage implements OnInit {
+  otpCode: string;
   errorMsg: string;
 
   constructor(
@@ -24,14 +24,14 @@ export class IDEANewPasswordPage implements OnInit {
     if (!this.auth.challengeUsername) this.goToAuth();
   }
 
-  async confirmNewPassword(): Promise<void> {
+  async completeMFAChallenge(): Promise<void> {
     try {
       this.errorMsg = null;
       await this.loading.show();
-      await this.auth.confirmNewPassword(this.newPassword);
+      await this.auth.completeMFAChallenge(this.otpCode);
       window.location.assign('');
     } catch (error) {
-      this.errorMsg = this.t._('IDEA_AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
+      this.errorMsg = this.t._('IDEA_AUTH.INVALID_OTP_CODE');
       this.message.error(this.errorMsg, true);
     } finally {
       this.loading.hide();

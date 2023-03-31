@@ -1,0 +1,3 @@
+<ion-button *ngIf="isMFAEnabled !== undefined" [color]="color" [fill]="fill" (click)="openMFAModal()">
+  {{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.SETUP_MFA') | translate }}
+</ion-button>

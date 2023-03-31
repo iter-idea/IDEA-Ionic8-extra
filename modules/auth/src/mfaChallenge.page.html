@@ -2,12 +2,12 @@
   <form class="flexBox">
     <ion-card class="authCard">
       <ion-card-header>
-        <ion-card-title color="primary">{{ 'IDEA_AUTH.CHOOSE_A_PASSWORD' | translate }}</ion-card-title>
-        <ion-card-subtitle>{{ 'IDEA_AUTH.YOU_NEED_TO_CHOOSE_A_NEW_PASSWORD' | translate }}</ion-card-subtitle>
+        <ion-card-title color="primary">{{ 'IDEA_AUTH.ENTER_OTP_CODE' | translate }}</ion-card-title>
+        <ion-card-subtitle>{{ 'IDEA_AUTH.ENTER_OTP_CODE_I' | translate }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
         <p class="errorBox" *ngIf="errorMsg">
-          <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
+          <b>{{ 'IDEA_AUTH.ERROR' | translate }}.</b>
           {{ errorMsg }}
         </p>
         <ion-item>
@@ -15,26 +15,20 @@
             <ion-icon name="key" color="primary"></ion-icon>
           </ion-label>
           <ion-input
-            type="password"
-            pattern=".{8,}"
-            spellcheck="false"
-            autocorrect="off"
-            autocapitalize="off"
-            autocomplete="new-password"
-            [clearOnEdit]="false"
-            [placeholder]="'IDEA_AUTH.PASSWORD' | translate"
-            [title]="'IDEA_AUTH.CHOOSE_A_PASSWORD' | translate"
+            inputmode="numeric"
+            [placeholder]="'IDEA_AUTH.OTP_CODE' | translate"
+            [title]="'IDEA_AUTH.ENTER_OTP_CODE' | translate"
             [ngModelOptions]="{ standalone: true }"
-            [(ngModel)]="newPassword"
-            (keyup.enter)="confirmNewPassword()"
+            [(ngModel)]="otpCode"
+            (keyup.enter)="completeMFAChallenge()"
           ></ion-input>
         </ion-item>
         <ion-button
           expand="block"
-          [title]="'IDEA_AUTH.CONFIRM_NEW_PASSWORD_HINT' | translate"
-          (click)="confirmNewPassword()"
+          [title]="'IDEA_AUTH.CONFIRM_OTP_CODE_HINT' | translate"
+          (click)="completeMFAChallenge()"
         >
-          {{ 'IDEA_AUTH.CONFIRM_NEW_PASSWORD' | translate }}
+          {{ 'IDEA_AUTH.CONFIRM_OTP_CODE' | translate }}
         </ion-button>
         <ion-button
           fill="clear"

@@ -22,21 +22,25 @@
             autocorrect="off"
             autocapitalize="off"
             autocomplete="email"
-            [placeholder]="t._('IDEA_AUTH.EMAIL')"
-            [title]="t._('IDEA_AUTH.EMAIL_HINT')"
+            [placeholder]="'IDEA_AUTH.EMAIL' | translate"
+            [title]="'IDEA_AUTH.EMAIL_HINT' | translate"
             [ngModelOptions]="{ standalone: true }"
             [(ngModel)]="email"
             (keyup.enter)="resendConfirmationLink()"
           ></ion-input>
         </ion-item>
-        <ion-button expand="block" [title]="t._('IDEA_AUTH.RESEND_LINK_HINT')" (click)="resendConfirmationLink()">
+        <ion-button
+          expand="block"
+          [title]="'IDEA_AUTH.RESEND_LINK_HINT' | translate"
+          (click)="resendConfirmationLink()"
+        >
           {{ 'IDEA_AUTH.RESEND_LINK' | translate }}
         </ion-button>
         <ion-button
           fill="clear"
           expand="block"
           class="smallCaseButton"
-          [title]="t._('IDEA_AUTH.BACK_TO_SIGN_IN_HINT')"
+          [title]="'IDEA_AUTH.BACK_TO_SIGN_IN_HINT' | translate"
           (click)="goToAuth()"
         >
           {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}

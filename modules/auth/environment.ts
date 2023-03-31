@@ -12,7 +12,8 @@ export const environment = {
     },
     auth: {
       registrationIsPossible: false,
-      singleSimultaneousSession: false
+      singleSimultaneousSession: false,
+      forceLoginWithMFA: false
     }
   },
   aws: {

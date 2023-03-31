@@ -17,6 +17,7 @@
     "@ionic/storage-angular": ">=3.0.6",
     "amazon-cognito-identity-js": ">=6.1.1",
     "idea-toolbox": ">=6.7.x",
+    "qrcode": ">=1.5.x",
     "rxjs": ">=7.8.0",
     "zone.js": ">=0.12.0"
   },
@@ -31,8 +32,10 @@
     "@idea-ionic/common": "^6.x.x",
     "@ionic/angular": ">=6.4.1",
     "@ionic/storage-angular": ">=3.0.6",
+    "@types/qrcode": ">=11.5.x",
     "amazon-cognito-identity-js": ">=6.1.1",
     "idea-toolbox": ">=6.7.x",
+    "qrcode": ">=1.5.x",
     "rxjs": ">=7.8.0",
     "zone.js": ">=0.12.0"
   },

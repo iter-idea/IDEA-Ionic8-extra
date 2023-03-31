@@ -71,6 +71,20 @@
     "TERMS_AND_CONDITIONS_HINT": "Read our Terms and Conditions",
     "USER_NOT_FOUND": "User not found",
     "VALID_EMAIL_OBLIGATORY": "A valid email address is obligatory",
-    "YOU_NEED_TO_CHOOSE_A_NEW_PASSWORD": "Choose a new password for your account"
+    "YOU_NEED_TO_CHOOSE_A_NEW_PASSWORD": "Choose a new password for your account",
+    "ENTER_OTP_CODE": "Enter OTP Code",
+    "ENTER_OTP_CODE_I": "Enter the code from your authenticator app",
+    "OTP_CODE": "OTP Code",
+    "CONFIRM_OTP_CODE": "Confirm code",
+    "CONFIRM_OTP_CODE_HINT": "Confirm the code you have selected and proceed",
+    "INVALID_OTP_CODE": "Invalid code",
+    "SETUP_MFA": "Setup MFA",
+    "SETUP_MFA_I": "Scan the QR code with your authenticator app",
+    "SETUP_MFA_II": "If you set up multi-factor authentication (MFA), whenever you sign in, you'll be prompted to type a dynamically generated One-Time Password (OTP) provided by your authenticator app.",
+    "MFA_IS_MANDATORY": "It is mandatory to enable multi-factor authentication in this app. Press the button to proceed.",
+    "ENABLE_MFA": "Enable MFA",
+    "DISABLE_MFA": "Disable MFA",
+    "DISABLE_MFA_I": "Disable MFA or change your authenticator app",
+    "DISABLE_MFA_II": "Insert the One-Time Password (OTP) provided by your authenticator app to disable the multi-factor authentication (MFA) in your account."
   }
 }

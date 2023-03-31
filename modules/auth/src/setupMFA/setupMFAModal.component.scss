@@ -1,0 +1,11 @@
+ion-list.aList {
+  padding-top: 0;
+  ion-card {
+    margin: 10px auto;
+    max-width: 300px;
+  }
+  #qrCodeContainer {
+    width: 180px;
+    margin: 10px auto;
+  }
+}
