@@ -7,6 +7,11 @@
 - [idea-calendar-creation](modules/agenda/src/calendarCreation.component.md)
 - [idea-calendar-item](modules/agenda/src/calendarItem.component.md)
 
+## auth
+
+- [idea-setup-mfa-button](modules/auth/src/setupMFA/setupMFAButton.component.md)
+- [idea-setup-mfa-modal](modules/auth/src/setupMFA/setupMFAModal.component.md)
+
 ## barcode
 
 - [idea-barcode-camera-reader](modules/barcode/src/cameraReader/cameraReader.component.md)
