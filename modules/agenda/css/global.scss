@@ -36,6 +36,11 @@ idea-agenda .agenda {
     height: 3px;
     background-color: var(--idea-agenda-marker-color);
   }
+  // column headers in week view
+  .cal-week-view .cal-day-headers span {
+    font-size: 14px;
+    white-space: break-spaces;
+  }
   // general border color
   .cal-day-headers,
   .cal-header,
