@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/common",
-  "version": "6.12.0",
+  "version": "6.12.1",
   "description": "IDEA Ionic common components",
   "dependencies": {
     "signature_pad": "^3.0.0-beta.4",
