@@ -169,8 +169,8 @@ export class IDEAOfflineDataService {
   /**
    * Whether the offline mode is allowed. You can customize this function, if needed.
    */
-  public isAllowed() {
-    return this.resources.length;
+  public isAllowed(): boolean {
+    return !!this.resources.length;
   }
   /**
    * Set up the service to use and sync offline data.
@@ -413,17 +413,18 @@ export class IDEAOfflineDataService {
   /**
    * Run a sync, but only if needed, i.e. the cached content expired or we have pending API requests in the queue.
    */
-  public synchronizeIfNeeded(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (!this.isAllowed()) return reject();
-      this.loadLastSyncAt().then(() =>
-        this.loadQueueAPIRequest()
-          .then(() => {
-            if (this.queueAPIRequests.length || Date.now() > this.lastSyncAt + SYNC_EXPIRATION_INTERVAL)
-              this.synchronize();
-            resolve();
-          })
-          .catch(err => reject(err))
+  synchronizeIfNeeded(): Promise<void> {
+    return new Promise((resolve, reject): void => {
+      if (!this.isAllowed()) return;
+      this.loadLastSyncAt().then(
+        (): Promise<void> =>
+          this.loadQueueAPIRequest()
+            .then((): void => {
+              if (this.queueAPIRequests.length || Date.now() > this.lastSyncAt + SYNC_EXPIRATION_INTERVAL)
+                this.synchronize();
+              resolve();
+            })
+            .catch(err => reject(err))
       );
     });
   }
