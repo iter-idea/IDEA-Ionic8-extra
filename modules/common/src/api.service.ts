@@ -17,6 +17,11 @@ export class IDEAApiService {
    * A reference to the current's app version.
    */
   appVersion = env.idea.app?.version || '?';
+  /**
+   * A reference to the current's app package (bundle).
+   * It can be `undefined` in case the app doesn't have a (mobile) app bundle.
+   */
+  appBundle = env.idea.app?.bundle;
 
   /**
    * Passed as `Authorization` header.
@@ -35,7 +40,7 @@ export class IDEAApiService {
    * @param method HTTP method
    * @param options the request options
    */
-  private async request(
+  protected async request(
     path: string[] | string,
     method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
     options: ApiRequestOptions = {}
@@ -49,6 +54,7 @@ export class IDEAApiService {
     const searchParams = new URLSearchParams();
     searchParams.append('_v', this.appVersion);
     searchParams.append('_p', this.platform.platforms().join(' '));
+    searchParams.append('_b', this.appBundle);
     if (options.params) {
       for (const paramName in options.params) {
         const param = options.params[paramName];
