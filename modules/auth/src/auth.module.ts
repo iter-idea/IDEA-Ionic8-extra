@@ -14,6 +14,7 @@ import { IDEAForgotPasswordPage } from './forgotPassword.page';
 import { IDEAConfirmPasswordPage } from './confirmPassword.page';
 import { IDEAMFAChallengePage } from './mfaChallenge.page';
 import { IDEASetupMFAPage } from './setupMFA.page';
+import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
 
 import { IDEASetupMFAModule } from './setupMFA/setupMFA.module';
 
@@ -44,7 +45,8 @@ import { IDEASetupMFAModule } from './setupMFA/setupMFA.module';
     IDEAForgotPasswordPage,
     IDEAConfirmPasswordPage,
     IDEAMFAChallengePage,
-    IDEASetupMFAPage
+    IDEASetupMFAPage,
+    IDEAPasswordPolicyComponent
   ]
 })
 export class IDEAAuthModule {}

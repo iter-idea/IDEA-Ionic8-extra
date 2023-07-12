@@ -34,6 +34,8 @@ export class IDEAAuthService {
 
   private mfaProjectName = env.idea.app.title ?? env.idea.project;
 
+  private passwordPolicy = env.idea.auth.passwordPolicy;
+
   constructor(private storage: IDEAStorageService) {
     this.userPool = new CognitoUserPool({
       UserPoolId: env.aws.cognito.userPoolId,
@@ -452,6 +454,34 @@ export class IDEAAuthService {
         else user.updateAttributes(attrs, (e: Error): void => (e ? reject(e) : resolve()));
       });
     });
+  }
+
+  /**
+   * Validate the password against the policy set in the environments configuration.
+   * In case there are errors, they are returned as an array of strings.
+   */
+  validatePasswordAgainstPolicy(password: string): string[] {
+    const errors = [];
+    if (password?.trim().length < this.passwordPolicy.minLength) errors.push('MIN_LENGTH');
+    if (this.passwordPolicy.requireDigits && !/\d/.test(password)) errors.push('REQUIRE_DIGITS');
+    if (this.passwordPolicy.requireLowercase && !/[a-z]/.test(password)) errors.push('REQUIRE_LOWERCASE');
+    if (this.passwordPolicy.requireSymbols && !/[\^\$\*\.\_\~\`\+\=@\!\?\>\<\:\;\\\,\#\%\&]/.test(password))
+      errors.push('REQUIRE_SYMBOLS');
+    if (this.passwordPolicy.requireUppercase && !/[A-Z]/.test(password)) errors.push('REQUIRE_UPPERCASE');
+    return errors;
+  }
+  /**
+   * Get a complete password policy pattern, based on the environments configuration, to use on password input fields.
+   * Note: some of the symbols couldn't be included because unsupported by the input[pattern] attribute.
+   */
+  getPasswordPolicyPatternForInput(): string {
+    let pattern = '';
+    if (this.passwordPolicy.requireDigits) pattern += `(?=.*[0-9])`;
+    if (this.passwordPolicy.requireLowercase) pattern += `(?=.*[a-z])`;
+    if (this.passwordPolicy.requireSymbols) pattern += `(?=.*[\^\$\*\.\_\~\`\+\=@\!\?\>\<\:\;\\\,\#\%\&])`;
+    if (this.passwordPolicy.requireUppercase) pattern += `(?=.*[A-Z])`;
+    pattern += `.{${this.passwordPolicy.minLength},}`;
+    return pattern;
   }
 }
 

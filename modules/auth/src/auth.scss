@@ -38,7 +38,7 @@
       --ion-item-background: var(--idea-auth-card-background-color, var(--ion-color-white));
       --border-color: var(--idea-auth-card-border-color, var(--ion-color-light));
     }
-    ion-icon {
+    ion-label[position='inline'] ion-icon {
       padding-top: 4px;
       padding-right: 5px;
       font-size: 1.3em;
@@ -51,7 +51,7 @@
         margin-right: 3px;
       }
     }
-    ion-button {
+    ion-button:not([slot='end']) {
       margin-top: 15px;
     }
     .smallCaseButton {
@@ -70,4 +70,7 @@
   margin: 0 auto;
   margin-top: 40px;
   cursor: pointer;
+}
+.passwordPolicyPopover {
+  --width: 350px;
 }

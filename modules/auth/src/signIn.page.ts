@@ -29,8 +29,8 @@ export class IDEASignInPage {
     private navCtrl: NavController,
     private message: IDEAMessageService,
     private loading: IDEALoadingService,
-    private auth: IDEAAuthService,
-    private t: IDEATranslationsService
+    private t: IDEATranslationsService,
+    private auth: IDEAAuthService
   ) {}
   ionViewDidEnter(): void {
     // manage the scenario in which we just created a new account (show a explanatory message: email must be confirmed)

@@ -13,7 +13,15 @@ export const environment = {
     auth: {
       registrationIsPossible: false,
       singleSimultaneousSession: false,
-      forceLoginWithMFA: false
+      forceLoginWithMFA: false,
+      // note: the passwordPolicy should be set matching the configuration of the Cognito User Pool
+      passwordPolicy: {
+        minLength: 8,
+        requireLowercase: false,
+        requireDigits: false,
+        requireSymbols: false,
+        requireUppercase: false
+      }
     }
   },
   aws: {

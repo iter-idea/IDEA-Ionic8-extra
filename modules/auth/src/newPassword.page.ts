@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, PopoverController } from '@ionic/angular';
 import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
 
+import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
+
 import { IDEAAuthService } from './auth.service';
+
+import { environment as env } from '@env';
 
 @Component({
   selector: 'idea-new-password',
@@ -11,14 +15,16 @@ import { IDEAAuthService } from './auth.service';
 })
 export class IDEANewPasswordPage implements OnInit {
   newPassword: string;
+  passwordPolicy = env.idea.auth.passwordPolicy;
   errorMsg: string;
 
   constructor(
     private navCtrl: NavController,
+    private popoverCtrl: PopoverController,
     private message: IDEAMessageService,
     private loading: IDEALoadingService,
-    private auth: IDEAAuthService,
-    private t: IDEATranslationsService
+    private t: IDEATranslationsService,
+    public auth: IDEAAuthService
   ) {}
   ngOnInit(): void {
     if (!this.auth.challengeUsername) this.goToAuth();
@@ -27,15 +33,31 @@ export class IDEANewPasswordPage implements OnInit {
   async confirmNewPassword(): Promise<void> {
     try {
       this.errorMsg = null;
+      const errors = this.auth.validatePasswordAgainstPolicy(this.newPassword);
+      if (errors.length)
+        this.errorMsg = [
+          this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
+          ...errors.map(x =>
+            this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
+          )
+        ].join(' ');
+      if (this.errorMsg) return this.message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
+
       await this.loading.show();
       await this.auth.confirmNewPassword(this.newPassword);
       window.location.assign('');
     } catch (error) {
-      this.errorMsg = this.t._('IDEA_AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
-      this.message.error(this.errorMsg, true);
+      this.errorMsg = (error as any).message;
+      this.message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
     } finally {
       this.loading.hide();
     }
+  }
+
+  async openPasswordPolicy(event: Event): Promise<void> {
+    const cssClass = 'passwordPolicyPopover';
+    const popover = await this.popoverCtrl.create({ component: IDEAPasswordPolicyComponent, event, cssClass });
+    await popover.present();
   }
 
   goToAuth(): void {

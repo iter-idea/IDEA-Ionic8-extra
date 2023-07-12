@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, PopoverController } from '@ionic/angular';
 import { isEmpty } from 'idea-toolbox';
-
 import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+
+import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
+
 import { IDEAAuthService } from './auth.service';
 
 import { environment as env } from '@env';
@@ -16,14 +18,16 @@ export class IDEASignUpPage implements OnInit {
   email: string;
   password: string;
   agreementsCheck = false;
+  passwordPolicy = env.idea.auth.passwordPolicy;
   errorMsg: string;
 
   constructor(
     private navCtrl: NavController,
+    private popoverCtrl: PopoverController,
     private message: IDEAMessageService,
     private loading: IDEALoadingService,
-    private auth: IDEAAuthService,
-    private t: IDEATranslationsService
+    private t: IDEATranslationsService,
+    public auth: IDEAAuthService
   ) {}
   ngOnInit(): void {
     if (!env.idea.auth.registrationIsPossible) return this.goToAuth();
@@ -36,8 +40,16 @@ export class IDEASignUpPage implements OnInit {
   async register(): Promise<void> {
     this.errorMsg = null;
     if (isEmpty(this.email, 'email')) this.errorMsg = this.t._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
-    else if (!this.password || this.password.length < 8)
-      this.errorMsg = this.t._('IDEA_AUTH.PASSWORD_POLICY_VIOLATION', { n: 8 });
+    else {
+      const errors = this.auth.validatePasswordAgainstPolicy(this.password);
+      if (errors.length)
+        this.errorMsg = [
+          this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
+          ...errors.map(x =>
+            this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
+          )
+        ].join(' ');
+    }
     if (this.errorMsg) return this.message.error('IDEA_AUTH.REGISTRATION_FAILED');
 
     try {
@@ -55,6 +67,12 @@ export class IDEASignUpPage implements OnInit {
 
   translationExists(key: string): boolean {
     return !!this.t._(key);
+  }
+
+  async openPasswordPolicy(event: Event): Promise<void> {
+    const cssClass = 'passwordPolicyPopover';
+    const popover = await this.popoverCtrl.create({ component: IDEAPasswordPolicyComponent, event, cssClass });
+    await popover.present();
   }
 
   goToResendLink(): void {
