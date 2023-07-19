@@ -26,8 +26,3 @@
     margin-top: 16px;
   }
 }
-
-ion-text.obligatoryDot::after {
-  content: '*';
-  color: var(--ion-color-danger);
-}

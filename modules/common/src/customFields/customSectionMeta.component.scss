@@ -1,8 +1,3 @@
-ion-text.obligatoryDot::after {
-  content: '*';
-  color: var(--ion-color-danger);
-  -webkit-text-fill-color: var(--ion-color-danger); // needed for viewMode
-}
 .displayTemplateRow {
   ion-item ion-label {
     max-width: 80%;

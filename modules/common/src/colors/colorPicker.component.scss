@@ -24,10 +24,6 @@
 .selectable {
   cursor: pointer;
 }
-ion-text.obligatoryDot::after {
-  content: '*';
-  color: var(--ion-color-danger);
-}
 ion-avatar.colorCircle {
   width: 20px;
   height: 20px;

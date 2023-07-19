@@ -90,6 +90,8 @@ ion-text.obligatoryDot::after {
   content: '*';
   font-size: 1.1em;
   color: var(--ion-color-danger);
+  -webkit-text-fill-color: var(--ion-color-danger); // needed for viewMode
+  vertical-align: text-top;
 }
 
 /* Better readability in view-mode */
