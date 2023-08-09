@@ -47,8 +47,10 @@ export class IDEAAuth0Service {
   }
   private loginWithMobile(afterRedirectTo?: string): void {
     this.auth0
-      .buildAuthorizeUrl({ redirect_uri: env.auth0.callbackUri, appState: { target: afterRedirectTo } })
-      .pipe(mergeMap(url => Browser.open({ url })))
+      .loginWithRedirect({
+        appState: { target: afterRedirectTo },
+        openUrl: url => Browser.open({ url })
+      })
       .subscribe();
   }
 
@@ -59,18 +61,10 @@ export class IDEAAuth0Service {
     this.isMobileDevice() ? this.logoutWithMobile() : this.logoutWithSPA();
   }
   private logoutWithSPA(): void {
-    this.auth0.logout({ returnTo: document.location.origin });
+    this.auth0.logout({ logoutParams: { returnTo: document.location.origin } });
   }
   private logoutWithMobile(): void {
-    this.auth0
-      .buildLogoutUrl({ returnTo: env.auth0.callbackUri })
-      .pipe(
-        tap(url => {
-          this.auth0.logout({ localOnly: true });
-          Browser.open({ url });
-        })
-      )
-      .subscribe();
+    this.auth0.logout({ logoutParams: { localOnly: true }, openUrl: url => Browser.open({ url }) }).subscribe();
   }
 
   /**

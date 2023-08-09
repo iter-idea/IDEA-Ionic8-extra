@@ -1,8 +1,9 @@
 # IDEA Ionic extra
 
-IDEA's extra components and services built on **Ionic 6**, and distributed with different NPM packages.
+IDEA's extra components and services built on **Ionic 7**, and distributed with different NPM packages.
 
-_The last version fully compatible with **Ionic 5** is [v5.29.4](https://github.com/iter-idea/IDEA-Ionic5-extra/releases/tag/v5.29.4)._
+_The last version fully compatible with **Ionic 6** is [v6.13.0](https://github.com/iter-idea/IDEA-Ionic7-extra/releases/tag/v6.13.0)._
+_The last version fully compatible with **Ionic 5** is [v5.29.4](https://github.com/iter-idea/IDEA-Ionic7-extra/releases/tag/v5.29.4)._
 
 ## Modules
 

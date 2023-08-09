@@ -373,7 +373,6 @@ export class IDEAOfflineDataService {
           // skip first cycle (oldListURL === null)
           if (oldListURL) {
             // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
-            // eslint-disable-next-line @typescript-eslint/unbound-method
             list = list.sort(cr.sort);
             // save the updated list
             await this.API.putInCache(oldListURL, list);
@@ -393,7 +392,6 @@ export class IDEAOfflineDataService {
       // in case there were elements, save the last element's list
       if (oldListURL) {
         // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
-        // eslint-disable-next-line @typescript-eslint/unbound-method
         list = list.sort(cr.sort);
         // save the updated list
         await this.API.putInCache(oldListURL, list);

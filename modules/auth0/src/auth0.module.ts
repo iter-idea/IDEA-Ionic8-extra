@@ -11,7 +11,10 @@ import { environment as env } from '@env';
       domain: env.auth0.domain,
       clientId: env.auth0.clientId,
       useRefreshTokens: env.auth0.storeRefreshToken,
-      cacheLocation: env.auth0.storeRefreshToken ? 'localstorage' : 'memory'
+      cacheLocation: env.auth0.storeRefreshToken ? 'localstorage' : 'memory',
+      authorizationParams: {
+        redirectUri: env.auth0.callbackUri
+      }
     })
   ],
   providers: [IDEAAuth0Service]
