@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/agenda",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "IDEA Ionic agenda (calendar)",
   "dependencies": {
     "color-parse": "^1.4.2",
@@ -19,7 +19,7 @@
     "@ionic/storage-angular": "^4.0.0",
     "angular-calendar": "^0.29.0",
     "date-fns": "^2.30.0",
-    "idea-toolbox": "^6.7.x",
+    "idea-toolbox": "^7.x.x",
     "rxjs": "^7.8.0",
     "zone.js": "^0.13.0"
   },
@@ -37,7 +37,7 @@
     "@ionic/storage-angular": "^4.0.0",
     "angular-calendar": "^0.29.0",
     "date-fns": "^2.30.0",
-    "idea-toolbox": "^6.7.x",
+    "idea-toolbox": "^7.x.x",
     "rxjs": "^7.8.0",
     "zone.js": "^0.13.0"
   },

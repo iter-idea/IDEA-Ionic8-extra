@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/common",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "IDEA Ionic common components",
   "dependencies": {
     "signature_pad": "^4.1.6",
@@ -19,7 +19,7 @@
     "@capacitor/push-notifications": "^5.0.6",
     "@ionic/angular": "^7.0.0",
     "@ionic/storage-angular": "^4.0.0",
-    "idea-toolbox": "^6.7.x",
+    "idea-toolbox": "^7.x.x",
     "rxjs": "^7.8.0",
     "zone.js": "^0.13.0"
   },
@@ -36,7 +36,7 @@
     "@capacitor/push-notifications": "^5.0.6",
     "@ionic/angular": "^7.0.0",
     "@ionic/storage-angular": "^4.0.0",
-    "idea-toolbox": "^6.7.x",
+    "idea-toolbox": "^7.x.x",
     "rxjs": "^7.8.0",
     "zone.js": "^0.13.0"
   },

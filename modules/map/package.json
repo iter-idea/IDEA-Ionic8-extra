@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/map",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "IDEA Ionic map component",
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.2",
@@ -19,7 +19,7 @@
     "@capacitor/network": "^5.0.6",
     "@ionic/angular": "^7.0.0",
     "@ionic/storage-angular": "^4.0.0",
-    "idea-toolbox": "^6.7.x",
+    "idea-toolbox": "^7.x.x",
     "rxjs": "^7.8.0",
     "zone.js": "^0.13.0"
   },
@@ -37,7 +37,7 @@
     "@ionic/angular": "^7.0.0",
     "@ionic/storage-angular": "^4.0.0",
     "@types/google.maps": "^3.53.6",
-    "idea-toolbox": "^6.7.x",
+    "idea-toolbox": "^7.x.x",
     "rxjs": "^7.8.0",
     "zone.js": "^0.13.0"
   },

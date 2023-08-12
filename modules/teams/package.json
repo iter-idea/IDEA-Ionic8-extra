@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/teams",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "IDEA Ionic teams components",
   "dependencies": {
     "tslib": "^2.4.1"
@@ -16,7 +16,7 @@
     "@capacitor/core": "^5.2.2",
     "@ionic/angular": "^7.0.0",
     "@ionic/storage-angular": "^4.0.0",
-    "idea-toolbox": "^6.7.x",
+    "idea-toolbox": "^7.x.x",
     "rxjs": "^7.8.0",
     "zone.js": "^0.13.0"
   },
@@ -32,7 +32,7 @@
     "@idea-ionic/common": "^7.x.x",
     "@ionic/angular": "^7.0.0",
     "@ionic/storage-angular": "^4.0.0",
-    "idea-toolbox": "^6.7.x",
+    "idea-toolbox": "^7.x.x",
     "rxjs": "^7.8.0",
     "zone.js": "^0.13.0"
   },
