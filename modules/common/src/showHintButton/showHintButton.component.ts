@@ -14,7 +14,7 @@ export class IDEAShowHintButtonComponent {
   @Input() hint: string;
   /**
    * The string to show as content of the alert.
-   * If not specified, it's equal to `hint.concat('_MESSAGE')`.
+   * If not specified, it's equal to `hint.concat('_I')`.
    */
   @Input() message?: string;
   /**
