@@ -92,8 +92,11 @@
         </ion-button>
       </ion-item>
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('type')">
-        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.TYPE' | translate }}</ion-label>
-        <ion-select [(ngModel)]="_field.type">
+        <ion-select
+          labelPlacement="stacked"
+          [label]="'IDEA_COMMON.CUSTOM_FIELDS.TYPE' | translate"
+          [(ngModel)]="_field.type"
+        >
           <ion-select-option *ngFor="let t of FIELD_TYPES" [value]="t">
             {{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + t | translate }}
           </ion-select-option>
@@ -112,11 +115,14 @@
         ></ion-input>
       </ion-item>
       <ion-item *ngIf="_field.type === CFT.ENUM" [lines]="lines" [class.fieldHasError]="hasFieldAnError('default')">
-        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT_CHOICE' | translate }}</ion-label>
-        <ion-select [(ngModel)]="_field.default">
-          <ion-select-option value="">{{
-            'IDEA_COMMON.CUSTOM_FIELDS.NO_DEFAULT_CHOICE' | translate
-          }}</ion-select-option>
+        <ion-select
+          labelPlacement="stacked"
+          [label]="'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT_CHOICE' | translate"
+          [(ngModel)]="_field.default"
+        >
+          <ion-select-option [value]="null">
+            {{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_DEFAULT_CHOICE' | translate }}
+          </ion-select-option>
           <ion-select-option *ngFor="let e of _field.enum" [value]="e">
             {{ _field.getEnumElement(e, t.getCurrentLang(), t.languages()) }}
           </ion-select-option>

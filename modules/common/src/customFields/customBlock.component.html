@@ -73,7 +73,6 @@
       [lines]="lines"
       [button]="!disabled"
       [class.fieldHasError]="hasFieldAnError(errorPrefix + 'sections.' + s + '.' + f)"
-      (click)="disabled ? null : (sections[s][f] = !sections[s][f])"
     >
       <ion-button
         fill="clear"
@@ -84,11 +83,12 @@
       >
         <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-label class="ion-text-wrap">
-        {{ blockMeta.sections[s].fields[f].name | label }}
-        <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled"></ion-text>
-      </ion-label>
-      <ion-checkbox slot="end" [disabled]="disabled" [checked]="sections[s][f]"></ion-checkbox>
+      <ion-checkbox [disabled]="disabled" [(ngModel)]="sections[s][f]">
+        <ion-label class="ion-text-wrap">
+          {{ blockMeta.sections[s].fields[f].name | label }}
+          <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled"></ion-text>
+        </ion-label>
+      </ion-checkbox>
     </ion-item>
   </div>
 </ion-list>
