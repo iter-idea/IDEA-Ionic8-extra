@@ -13,7 +13,7 @@ import { environment as env } from '@env';
       useRefreshTokens: env.auth0.storeRefreshToken,
       cacheLocation: env.auth0.storeRefreshToken ? 'localstorage' : 'memory',
       authorizationParams: {
-        redirectUri: env.auth0.callbackUri
+        redirect_uri: env.auth0.callbackUri
       }
     })
   ],

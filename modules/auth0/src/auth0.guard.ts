@@ -1,30 +1,38 @@
-import { Injectable } from '@angular/core';
-import { RouterStateSnapshot, CanActivate, CanLoad, CanActivateChild, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { IDEAApiService } from '@idea-ionic/common';
+import { inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
+import { Platform } from '@ionic/angular';
+import { IDEAApiService, IDEAStorageService } from '@idea-ionic/common';
 
 import { IDEAAuth0Service } from './auth0.service';
 
-@Injectable({ providedIn: 'root' })
-export class IDEAAuth0Guard implements CanActivate, CanLoad, CanActivateChild {
-  constructor(private auth0: IDEAAuth0Service, private api: IDEAApiService) {}
-  private setApiAuthToken(): void {
-    this.auth0.__raw.idTokenClaims$.subscribe(claims => (this.api.authToken = claims ? claims.__raw : null));
-  }
+import { environment as env } from '@env';
 
-  canLoad(): Observable<boolean> {
-    this.setApiAuthToken();
-    return this.auth0.__raw.isAuthenticated$.pipe(take(1));
-  }
+export const auth0Guard: CanActivateFn = async () => {
+  const platform = inject(Platform);
+  const storage = inject(IDEAStorageService);
+  const api = inject(IDEAApiService);
+  const auth = inject(IDEAAuth0Service);
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    this.setApiAuthToken();
-    return this.auth0.redirectIfUnauthenticated(state.url);
-  }
+  //
+  // HELPERS
+  //
 
-  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    this.setApiAuthToken();
-    return this.auth0.redirectIfUnauthenticated(state.url);
-  }
-}
+  const doAuth = async (): Promise<void> => {
+    auth.redirectIfUnauthenticated(env.auth0.callbackUri);
+    auth.goToLogin();
+    setApiAuthToken();
+  };
+
+  const setApiAuthToken = (): void => {
+    auth.__raw.idTokenClaims$.subscribe(claims => (api.authToken = claims ? claims.__raw : null));
+    if (!api.authToken) api.authToken = auth.getIdToken();
+  };
+
+  setApiAuthToken();
+  if (auth.isUserAuthenticated()) return true;
+
+  await platform.ready();
+  await storage.ready();
+
+  await doAuth();
+};
