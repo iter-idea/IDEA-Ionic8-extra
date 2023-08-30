@@ -68,23 +68,6 @@ export class IDEAAuth0Service {
   }
 
   /**
-   * Redirect to login if not authenticated.
-   * Meant to be used in a Guard; example:
-   * ```
-    canActivate(_, state: RouterStateSnapshot): Observable<boolean> {
-      return this.auth.redirectIfUnauthenticated(state.url);
-    }
-   * ```
-   */
-  redirectIfUnauthenticated(afterRedirectUrl: string): Observable<boolean> {
-    return this.auth0.isAuthenticated$.pipe(
-      tap(loggedIn => {
-        if (!loggedIn) this.goToLogin(afterRedirectUrl);
-      })
-    );
-  }
-
-  /**
    * Handle the callback after a login or logout in Auth0 Universal Login page.
    * In order to work, it has to be used in `app.component.ts`, as explained in the following snippet:
    * ```

@@ -1,13 +1,11 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { IDEAApiService, IDEAStorageService } from '@idea-ionic/common';
 
 import { IDEAAuth0Service } from './auth0.service';
 
-import { environment as env } from '@env';
-
-export const auth0Guard: CanActivateFn = async () => {
+export const auth0Guard: CanActivateFn = async (next: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   const platform = inject(Platform);
   const storage = inject(IDEAStorageService);
   const api = inject(IDEAApiService);
@@ -18,9 +16,8 @@ export const auth0Guard: CanActivateFn = async () => {
   //
 
   const doAuth = async (): Promise<void> => {
-    auth.redirectIfUnauthenticated(env.auth0.callbackUri);
-    auth.goToLogin();
     setApiAuthToken();
+    auth.goToLogin(state.url);
   };
 
   const setApiAuthToken = (): void => {
@@ -35,4 +32,6 @@ export const auth0Guard: CanActivateFn = async () => {
   await storage.ready();
 
   await doAuth();
+
+  return auth.isUserAuthenticated();
 };
