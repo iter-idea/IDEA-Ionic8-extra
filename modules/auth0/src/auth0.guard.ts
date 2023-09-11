@@ -14,8 +14,13 @@ export const auth0Guard: CanActivateFn = async (
 
   if (!api.authToken)
     api.authToken = async (): Promise<string> => {
-      const { id_token } = await firstValueFrom(auth.__raw.getAccessTokenSilently({ detailedResponse: true }));
-      return id_token;
+      try {
+        const { id_token } = await firstValueFrom(auth.__raw.getAccessTokenSilently({ detailedResponse: true }));
+        return id_token;
+      } catch (error) {
+        auth.goToLogin(state.url);
+        return null;
+      }
     };
 
   const isAuthenticated = await firstValueFrom(auth.__raw.isAuthenticated$);
