@@ -26,7 +26,7 @@ export class IDEAApiService {
   /**
    * Passed as `Authorization` header.
    */
-  authToken: string;
+  authToken: string | (() => Promise<string>);
   /**
    * Passed as `X-API-Key` header.
    */
@@ -48,7 +48,10 @@ export class IDEAApiService {
     const url = this.baseURL.concat('/', Array.isArray(path) ? path.join('/') : path);
 
     const headers: any = { ...options.headers };
-    if (this.authToken) headers.Authorization = this.authToken;
+    if (this.authToken) {
+      if (typeof this.authToken === 'function') headers.Authorization = await this.authToken();
+      else headers.Authorization = this.authToken;
+    }
     if (this.apiKey) headers['X-API-Key'] = this.apiKey;
 
     const searchParams = new URLSearchParams();
