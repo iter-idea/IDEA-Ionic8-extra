@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/agenda",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "description": "IDEA Ionic agenda (calendar)",
   "dependencies": {
     "color-parse": "^1.4.2",
