@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/internal/Observable';
-import { mergeMap, tap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Platform } from '@ionic/angular';
@@ -8,7 +7,7 @@ import { Auth0User } from 'idea-toolbox';
 
 import { environment as env } from '@env';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAAuth0Service {
   private isAuthenticated: boolean;
   private idToken: string;
