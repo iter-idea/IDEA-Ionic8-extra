@@ -5,7 +5,7 @@ import { IDEAApiService } from '@idea-ionic/common';
 
 import { IDEAAuth0Service } from './auth0.service';
 
-export const authGuard: CanActivateFn = async (
+export const auth0Guard: CanActivateFn = async (
   _: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): Promise<boolean> => {
