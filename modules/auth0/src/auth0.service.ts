@@ -1,5 +1,5 @@
-import { mergeMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
 import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
@@ -9,19 +9,7 @@ import { environment as env } from '@env';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAAuth0Service {
-  private isAuthenticated: boolean;
-  private idToken: string;
-
-  /**
-   * The data about the user currently authenticated, if any.
-   */
-  user: Auth0User;
-
-  constructor(private platform: Platform, private auth0: AuthService) {
-    this.auth0.isAuthenticated$.subscribe(isAuthenticated => (this.isAuthenticated = isAuthenticated));
-    this.auth0.idTokenClaims$.subscribe(claims => (this.idToken = claims ? claims.__raw : null));
-    this.auth0.user$.subscribe(user => (this.user = user ? new Auth0User(user) : null));
-  }
+  constructor(private platform: Platform, private auth0: AuthService) {}
 
   /**
    * The internal Auth0's service.
@@ -41,16 +29,13 @@ export class IDEAAuth0Service {
   goToLogin(afterRedirectTo?: string): void {
     this.isMobileDevice() ? this.loginWithMobile(afterRedirectTo) : this.loginWithSPA(afterRedirectTo);
   }
-  private loginWithSPA(afterRedirectTo?: string): void {
-    this.auth0.loginWithRedirect({ appState: { target: afterRedirectTo } });
+  private async loginWithSPA(afterRedirectTo?: string): Promise<void> {
+    await firstValueFrom(this.auth0.loginWithRedirect({ appState: { target: afterRedirectTo } }));
   }
-  private loginWithMobile(afterRedirectTo?: string): void {
-    this.auth0
-      .loginWithRedirect({
-        appState: { target: afterRedirectTo },
-        openUrl: url => Browser.open({ url })
-      })
-      .subscribe();
+  private async loginWithMobile(afterRedirectTo?: string): Promise<void> {
+    await firstValueFrom(
+      this.auth0.loginWithRedirect({ appState: { target: afterRedirectTo }, openUrl: url => Browser.open({ url }) })
+    );
   }
 
   /**
@@ -59,11 +44,13 @@ export class IDEAAuth0Service {
   goToLogout(): void {
     this.isMobileDevice() ? this.logoutWithMobile() : this.logoutWithSPA();
   }
-  private logoutWithSPA(): void {
-    this.auth0.logout({ logoutParams: { returnTo: document.location.origin } });
+  private async logoutWithSPA(): Promise<void> {
+    await firstValueFrom(this.auth0.logout({ logoutParams: { returnTo: document.location.origin } }));
   }
-  private logoutWithMobile(): void {
-    this.auth0.logout({ logoutParams: { localOnly: true }, openUrl: url => Browser.open({ url }) }).subscribe();
+  private async logoutWithMobile(): Promise<void> {
+    await firstValueFrom(
+      this.auth0.logout({ logoutParams: { localOnly: true }, openUrl: url => Browser.open({ url }) })
+    );
   }
 
   /**
@@ -79,27 +66,33 @@ export class IDEAAuth0Service {
       }
    * ```
    */
-  handleCallbackOnMobileDevices(url: string): void {
+  async handleCallbackOnMobileDevices(url: string): Promise<void> {
     if (url?.startsWith(env.auth0.callbackUri)) {
-      if (url.includes('state=') && (url.includes('error=') || url.includes('code='))) {
-        this.auth0
-          .handleRedirectCallback(url)
-          .pipe(mergeMap((): Promise<void> => Browser.close()))
-          .subscribe();
-      } else Browser.close();
+      if (url.includes('state=') && (url.includes('error=') || url.includes('code=')))
+        await firstValueFrom(this.auth0.handleRedirectCallback(url));
+      await Browser.close();
     }
   }
 
   /**
    * Get the ID token, to use for authenticating API requests to the back-end.
    */
-  getIdToken(): string {
-    return this.idToken;
+  async getIdToken(): Promise<string> {
+    const { __raw } = await firstValueFrom(this.auth0.idTokenClaims$);
+    return __raw;
   }
   /**
    * Whether the user is currently authenticated.
    */
-  isUserAuthenticated(): boolean {
-    return this.isAuthenticated;
+  async isUserAuthenticated(): Promise<boolean> {
+    return await firstValueFrom(this.auth0.isAuthenticated$);
+  }
+  /**
+   * Get the current user and its data.
+   */
+  async getUser(): Promise<Auth0User> {
+    const user = await firstValueFrom(this.auth0.user$);
+    if (user) return new Auth0User(user);
+    else return null;
   }
 }
