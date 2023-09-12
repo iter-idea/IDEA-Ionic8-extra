@@ -84,10 +84,10 @@
         <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-checkbox [disabled]="disabled" [(ngModel)]="sections[s][f]">
-        <ion-label class="ion-text-wrap">
+        <span class="ion-text-wrap">
           {{ blockMeta.sections[s].fields[f].name | label }}
           <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled"></ion-text>
-        </ion-label>
+        </span>
       </ion-checkbox>
     </ion-item>
   </div>
