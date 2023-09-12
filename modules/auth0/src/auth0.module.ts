@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '@auth0/auth0-angular';
 
-import { IDEAAuth0Service } from './auth0.service';
-
 import { environment as env } from '@env';
 
 @NgModule({
@@ -16,7 +14,6 @@ import { environment as env } from '@env';
         redirect_uri: env.auth0.callbackUri || window.location.origin
       }
     })
-  ],
-  providers: [IDEAAuth0Service]
+  ]
 })
 export class IDEAAuth0Module {}
