@@ -22,8 +22,7 @@ export const auth0Guard: CanActivateFn = async (
       }
     };
 
-  const isAuthenticated = await firstValueFrom(auth.__raw.isAuthenticated$);
-  if (isAuthenticated) return true;
+  if (await auth.isUserAuthenticated()) return true;
   else {
     auth.goToLogin(state.url);
     return false;
