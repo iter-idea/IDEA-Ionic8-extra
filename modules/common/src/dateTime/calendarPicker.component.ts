@@ -30,7 +30,11 @@ export class IDEACalendarPickerComponent implements OnInit {
   minutes: string[];
   weekDays: string[];
 
-  constructor(private modal: ModalController, private alertCtrl: AlertController, public t: IDEATranslationsService) {}
+  constructor(
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    public t: IDEATranslationsService
+  ) {}
   ngOnInit(): void {
     this.today = new Date();
     this.refDate = this.inputDate ? new Date(this.inputDate) : new Date(this.today);
@@ -172,6 +176,6 @@ export class IDEACalendarPickerComponent implements OnInit {
   }
 
   save(reset?: boolean): void {
-    this.modal.dismiss(reset ? '' : this.selectedDate);
+    this.modalCtrl.dismiss(reset ? '' : this.selectedDate);
   }
 }
