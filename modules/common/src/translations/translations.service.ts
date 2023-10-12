@@ -39,6 +39,10 @@ export class IDEATranslationsService {
    */
   private translations: any = {};
   /**
+   * Some default interpolation parameters to add to istant translations.
+   */
+  private defaultInterpolations: Record<string, string> = {};
+  /**
    * To subscribe to language changes.
    */
   onLangChange = new EventEmitter<string>();
@@ -133,6 +137,13 @@ export class IDEATranslationsService {
   }
 
   /**
+   * Set some parameters to automatically provide to translation actions.
+   */
+  setDefaultInterpolations(defaultParams: Record<string, string>): void {
+    this.defaultInterpolations = defaultParams ?? {};
+  }
+
+  /**
    * Get a translated term by key in the current language, optionally interpolating variables (e.g. `{{user}}`).
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
@@ -144,10 +155,11 @@ export class IDEATranslationsService {
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
   instantInLanguage(language: string, key: string, interpolateParams?: any): string {
+    const params = { ...this.defaultInterpolations, ...(interpolateParams ?? {}) };
     if (!this.isDefined(key) || !key.length) return;
-    let res = this.interpolate(this.getValue(this.translations[language], key), interpolateParams);
+    let res = this.interpolate(this.getValue(this.translations[language], key), params);
     if (res === undefined && this.defaultLang !== null && this.defaultLang !== language)
-      res = this.interpolate(this.getValue(this.translations[this.defaultLang], key), interpolateParams);
+      res = this.interpolate(this.getValue(this.translations[this.defaultLang], key), params);
     return res;
   }
   /**
