@@ -11,7 +11,7 @@ import { IDEAOfflineService } from './offline/offline.service';
 import { environment as env } from '@env';
 
 const API_STAGE = env.idea.api?.stage || (env.idea.api as any)?.version;
-export const API_URL_PROJECT = `https://${String(env.idea.api.url)}/${String(API_STAGE)}`;
+export const API_URL_PROJECT = `https://${String(env.idea.api?.url)}/${String(API_STAGE)}`;
 const IDEA_API_STAGE = env.idea.ideaApi?.stage || (env.idea.ideaApi as any)?.version;
 export const API_URL_IDEA = `https://${String(env.idea.ideaApi?.url)}/${String(IDEA_API_STAGE)}`;
 
