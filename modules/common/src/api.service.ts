@@ -47,12 +47,14 @@ export class IDEAApiService {
   ): Promise<any> {
     const url = this.baseURL.concat('/', Array.isArray(path) ? path.join('/') : path);
 
-    const headers: any = { ...options.headers };
+    const builtInHeaders: any = {};
     if (this.authToken) {
-      if (typeof this.authToken === 'function') headers.Authorization = await this.authToken();
-      else headers.Authorization = this.authToken;
+      if (typeof this.authToken === 'function') builtInHeaders.Authorization = await this.authToken();
+      else builtInHeaders.Authorization = this.authToken;
     }
-    if (this.apiKey) headers['X-API-Key'] = this.apiKey;
+    if (this.apiKey) builtInHeaders['X-API-Key'] = this.apiKey;
+
+    const headers: any = { ...builtInHeaders, ...options.headers };
 
     const searchParams = new URLSearchParams();
     searchParams.append('_v', this.appVersion);
