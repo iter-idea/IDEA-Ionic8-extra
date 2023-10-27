@@ -56,6 +56,8 @@ Finally, add in the environments desired the variables you find in the `environm
 
 ## Services
 
+- Api service
+- Web Socket Api service
 - AWSAPI service
 - AWSAPI socket service
 - (browser's) Cached resources service
