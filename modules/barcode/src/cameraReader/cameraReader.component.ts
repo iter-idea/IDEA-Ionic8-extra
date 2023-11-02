@@ -32,7 +32,11 @@ export class IDEABarcodeCameraReaderComponent {
   constructor(public platform: Platform) {}
 
   private async canDeviceScanBarcode(): Promise<boolean> {
-    return this.platform.is('capacitor') && (await BarcodeScanner.checkPermission({ force: true })).granted;
+    return (
+      this.platform.is('capacitor') &&
+      !!BarcodeScanner &&
+      (await BarcodeScanner.checkPermission({ force: true })).granted
+    );
   }
 
   async startScanWithCamera(): Promise<void> {

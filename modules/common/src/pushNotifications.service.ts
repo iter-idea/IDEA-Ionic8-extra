@@ -17,6 +17,7 @@ export class IDEAPushNotificationsService {
 
   constructor(public platform: Platform, public errorReporting: IDEAErrorReportingService) {
     if (!this.isAvailable()) return;
+
     this.registrations = new Observable(observer => {
       PushNotifications.addListener('registration', token =>
         observer.next(new PushNotificationsDevice({ token: token.value, platform: PushNotificationsPlatforms.FCM }))
@@ -38,7 +39,7 @@ export class IDEAPushNotificationsService {
    * Return true if the device is supported.
    */
   isAvailable(): boolean {
-    return Boolean(this.platform.is('mobile'));
+    return this.platform.is('capacitor') && !!PushNotifications;
   }
 
   /**
@@ -46,6 +47,8 @@ export class IDEAPushNotificationsService {
    * On iOS will prompt the request, on Android it's automatic.
    */
   async registerDevice(): Promise<void> {
+    if (!this.isAvailable()) return;
+
     let permStatus = await PushNotifications.checkPermissions();
 
     if (permStatus.receive === 'prompt') permStatus = await PushNotifications.requestPermissions();

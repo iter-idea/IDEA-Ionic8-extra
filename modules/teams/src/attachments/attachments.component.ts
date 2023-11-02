@@ -114,7 +114,7 @@ export class IDEAttachmentsComponent implements OnInit {
   public takePictureAndAttach(ev: Event) {
     if (ev) ev.stopPropagation();
     // go on only if the platform supports the camera
-    if (!this.platform.is('capacitor')) return;
+    if (!this.platform.is('capacitor') || !Camera) return;
     // take a picture
     Camera.getPhoto({
       quality: 90,

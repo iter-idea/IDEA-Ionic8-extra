@@ -176,6 +176,7 @@ export class IDEAMapComponent implements OnInit {
    */
   private getLocationSafely(highAccuracy?: boolean): Promise<GeolocationPosition> {
     return new Promise(resolve => {
+      if (!Geolocation) return resolve(null);
       if (!this.centerOnCurrentPosition) return resolve(null);
       Geolocation.getCurrentPosition({ enableHighAccuracy: highAccuracy })
         .then(position => resolve(position))
@@ -219,6 +220,7 @@ export class IDEAMapComponent implements OnInit {
    */
   public setCenterToCurrentLocation(highAccuracy?: boolean): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
+      if (!Geolocation) return resolve(null);
       Geolocation.getCurrentPosition({ enableHighAccuracy: highAccuracy })
         .then(location => {
           this.setCenter(location.coords.latitude, location.coords.longitude);

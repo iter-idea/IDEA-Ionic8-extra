@@ -24,42 +24,49 @@ export class IDEAOfflineService {
   constructor() {
     // get an instant status
     this._isOffline = !navigator.onLine;
-    // set the basic listener for changes
-    this.listenerHandler = Network.addListener('networkStatusChange', status => (this._isOffline = !status.connected));
-    // create the observable to subscribe to the network changes; note: it won't run until subscribed
-    this.observable = new Observable(observer => {
-      // remove the basic listener add add one that supports a subscription
-      Network.removeAllListeners();
-      this.listenerHandler = Network.addListener('networkStatusChange', status => {
-        this._isOffline = !status.connected;
-        if (observer) observer.next(status.connected);
+    if (Network) {
+      // set the basic listener for changes
+      this.listenerHandler = Network.addListener(
+        'networkStatusChange',
+        status => (this._isOffline = !status.connected)
+      );
+      // create the observable to subscribe to the network changes; note: it won't run until subscribed
+      this.observable = new Observable(observer => {
+        // remove the basic listener add add one that supports a subscription
+        Network.removeAllListeners();
+        this.listenerHandler = Network.addListener('networkStatusChange', status => {
+          this._isOffline = !status.connected;
+          if (observer) observer.next(status.connected);
+        });
       });
-    });
+    }
   }
   /**
    * Subscribe to be notified when the connection status changes.
    */
-  public subscribe(callback: (isOnline: boolean) => void): Subscription {
+  subscribe(callback: (isOnline: boolean) => void): Subscription {
     return this.observable.subscribe(callback);
   }
 
   /**
    * Quickly check the connection status.
    */
-  public isOnline(): boolean {
+  isOnline(): boolean {
     return !this._isOffline;
   }
   /**
    * Quickly check the connection status.
    */
-  public isOffline(): boolean {
+  isOffline(): boolean {
     return this._isOffline;
   }
 
   /**
    * Quickly check for online connection.
    */
-  public async check(): Promise<boolean> {
+  async check(): Promise<boolean> {
+    if (!Network) return false;
+
     const status = await Network.getStatus();
     this._isOffline = !status.connected;
     return status.connected;
