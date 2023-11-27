@@ -6,9 +6,11 @@ idea-calendar-picker
 
 ## Inputs
 
-- `inputDate` (*number*) 
+- `inputDate` (*string | number*) 
 - `timePicker` (*boolean*) 
 - `manualTimePicker` (*boolean*) 
 - `title` (*string*) 
 - `hideClearButton` (*boolean*) 
+- `min` (*string | number*) 
+- `max` (*string | number*) 
 

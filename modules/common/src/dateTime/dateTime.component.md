@@ -19,6 +19,8 @@ idea-date-time
 - `disabled` (*boolean*) - If true, the component is disabled.
 - `obligatory` (*boolean*) - If true, the obligatory dot is shown.
 - `hideClearButton` (*boolean*) - If true, hidew the clear button in the header.
+- `min` (*string | number*) - If set, is the minimum date selectable.
+- `max` (*string | number*) - If set, is the maximum date selectable.
 
 ## Outputs
 
