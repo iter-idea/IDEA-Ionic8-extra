@@ -65,6 +65,14 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
    * If true, hidew the clear button in the header.
    */
   @Input() hideClearButton = false;
+  /**
+   * If set, is the minimum date selectable.
+   */
+  @Input() min: epochDateTime | epochISOString;
+  /**
+   * If set, is the maximum date selectable.
+   */
+  @Input() max: epochDateTime | epochISOString;
 
   @Output() dateChange = new EventEmitter<epochDateTime | epochISOString | null | any>();
   @Output() iconSelect = new EventEmitter<void>();
@@ -74,7 +82,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(private modalCtrl: ModalController, public t: IDEATranslationsService) {}
   ngOnInit(): void {
-    this.langChangeSubscription = this.t.onLangChange.subscribe(() => {
+    this.langChangeSubscription = this.t.onLangChange.subscribe((): void => {
       this.valueToDisplay = this.getValueToDisplay(this.date);
     });
   }
@@ -95,10 +103,12 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
         title: this.label,
         timePicker: this.timePicker,
         manualTimePicker: this.manualTimePicker,
-        hideClearButton: this.hideClearButton
+        hideClearButton: this.hideClearButton,
+        min: this.min,
+        max: this.max
       }
     });
-    modal.onDidDismiss().then(({ data }) => {
+    modal.onDidDismiss().then(({ data }): void => {
       if (data !== undefined && data !== null) {
         if (data === '') this.doSelect(null);
         else this.doSelect(data as Date);

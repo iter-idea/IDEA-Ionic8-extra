@@ -5,7 +5,7 @@
       <ion-button *ngIf="!hideClearButton" [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
         <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
       </ion-button>
-      <ion-button [title]="t._('IDEA_COMMON.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="save()">
+      <ion-button [title]="t._('IDEA_COMMON.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="close()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -83,6 +83,7 @@
               ? 'outline'
               : 'clear'
           "
+          [disabled]="!isDateSelectable(calendarGrid[i][j])"
           (click)="selectDate(calendarGrid[i][j])"
         >
           {{ calendarGrid[i][j] | date : 'd' }}

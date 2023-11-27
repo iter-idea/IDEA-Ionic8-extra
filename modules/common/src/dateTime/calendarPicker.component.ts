@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { epochDateTime } from 'idea-toolbox';
+import { epochDateTime, epochISOString } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
+
 /**
  * A random sunday, used as reference to calculate the week days.
  */
@@ -14,11 +15,13 @@ const SUNDAY = 259200000;
   styleUrls: ['calendarPicker.component.scss']
 })
 export class IDEACalendarPickerComponent implements OnInit {
-  @Input() inputDate: epochDateTime;
+  @Input() inputDate: epochDateTime | epochISOString;
   @Input() timePicker = false;
   @Input() manualTimePicker = false;
   @Input() title: string;
   @Input() hideClearButton = false;
+  @Input() min: epochDateTime | epochISOString;
+  @Input() max: epochDateTime | epochISOString;
 
   refDate: Date;
   selectedDate: Date;
@@ -29,6 +32,8 @@ export class IDEACalendarPickerComponent implements OnInit {
   hours: string[];
   minutes: string[];
   weekDays: string[];
+  dateMin: Date;
+  dateMax: Date;
 
   constructor(
     private modalCtrl: ModalController,
@@ -61,6 +66,8 @@ export class IDEACalendarPickerComponent implements OnInit {
       this.weekDays.push(refDateForWeekDays.toLocaleDateString(this.t.getCurrentLang(), { weekday: 'short' }));
       refDateForWeekDays.setDate(refDateForWeekDays.getDate() + 1);
     }
+    if (this.min) this.dateMin = new Date(this.min);
+    if (this.max) this.dateMax = new Date(this.max);
   }
 
   getLocalisedDay(date: Date): number {
@@ -148,6 +155,12 @@ export class IDEACalendarPickerComponent implements OnInit {
     alert.present();
   }
 
+  isDateSelectable(date: Date): boolean {
+    if (this.dateMin && date < this.dateMin) return false;
+    if (this.dateMax && date > this.dateMax) return false;
+    return true;
+  }
+
   selectDate(date: Date): void {
     this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), this.hour, this.minute);
   }
@@ -177,5 +190,8 @@ export class IDEACalendarPickerComponent implements OnInit {
 
   save(reset?: boolean): void {
     this.modalCtrl.dismiss(reset ? '' : this.selectedDate);
+  }
+  close(): void {
+    this.modalCtrl.dismiss();
   }
 }
