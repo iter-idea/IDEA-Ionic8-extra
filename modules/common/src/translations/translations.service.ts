@@ -215,7 +215,10 @@ export class IDEATranslationsService {
    * Load a file into the translations.
    */
   private async loadTranslationFileHelper(path: string, lang: string): Promise<void> {
-    const res = await fetch(`${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`, { method: 'GET' });
+    const res = await fetch(`${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`, {
+      method: 'GET',
+      cache: 'no-cache' // to avoid issues upon releases
+    });
     if (res.status !== 200) return;
 
     const obj = await res.json();
