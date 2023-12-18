@@ -10,7 +10,7 @@ import { environment as env } from '@env';
 /**
  * The storage key to save th last announcement read on this device.
  */
-export const ANNOUNCEMENT_STORAGE_KEY = env.idea.project.concat('_LAST_ANNOUNCEMENT');
+export const ANNOUNCEMENT_STORAGE_KEY = (env.idea.project ?? 'app').concat('_LAST_ANNOUNCEMENT');
 
 /**
  * Announcement card that can be set in any interface to show the alert for this project.

@@ -8,7 +8,7 @@ import { IDEAStorageService } from '../storage.service';
 
 import { environment as env } from '@env';
 
-const APP_STATUS_STORAGE_KEY = env.idea.project.concat('_LAST_MESSAGE');
+const APP_STATUS_STORAGE_KEY = (env.idea.project ?? 'app').concat('_LAST_MESSAGE');
 
 /**
  * Check whether the app has some status message or update to handle.
