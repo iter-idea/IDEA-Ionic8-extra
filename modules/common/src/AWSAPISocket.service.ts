@@ -19,7 +19,7 @@ export class IDEAAWSAPISocketService {
   /**
    * The URL to connect for socket communication.
    */
-  public WEBSOCKET_API_URL = `wss://${String(env.idea.socket.url)}/${String(API_STAGE)}`;
+  public WEBSOCKET_API_URL = `wss://${String(env.idea.socket?.url)}/${String(API_STAGE)}`;
   /**
    * The current websocket connection.
    */

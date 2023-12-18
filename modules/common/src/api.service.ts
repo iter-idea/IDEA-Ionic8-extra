@@ -59,7 +59,7 @@ export class IDEAApiService {
     const searchParams = new URLSearchParams();
     searchParams.append('_v', this.appVersion);
     searchParams.append('_p', this.platform.platforms().join(' '));
-    searchParams.append('_b', this.appBundle);
+    if (this.appBundle) searchParams.append('_b', this.appBundle);
     if (options.params) {
       for (const paramName in options.params) {
         const param = options.params[paramName];
