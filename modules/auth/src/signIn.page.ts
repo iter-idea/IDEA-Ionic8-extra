@@ -24,6 +24,8 @@ export class IDEASignInPage {
   newAccountRegistered = false;
   errorMsg: string;
   darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  canShowPassword = false;
+  revealPassword = false;
 
   constructor(
     private navCtrl: NavController,

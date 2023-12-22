@@ -1,6 +1,14 @@
 .flexBox {
   background: var(--idea-auth-background-color, var(--ion-color-white-shade));
 }
+ion-img.serviceLogo {
+  position: relative;
+  top: 80px;
+  z-index: 1;
+  width: 180px;
+  display: block;
+  margin: 0 auto;
+}
 .authCard {
   min-width: 400px;
   max-width: 550px;
@@ -13,14 +21,11 @@
   border-radius: 10px;
   box-shadow: none;
   text-align: center;
-  ion-img {
-    width: 150px;
-    display: block;
-    margin: 0 auto;
-  }
   ion-card-title {
     font-family: 'auth-title';
     font-size: 3em;
+    padding: 40px 0 10px 0;
+    letter-spacing: 1px;
   }
   ion-card-subtitle {
     font-family: 'auth-title';
@@ -35,13 +40,28 @@
       border-left: 2px solid var(--ion-color-danger);
     }
     ion-item {
-      --ion-item-background: var(--idea-auth-card-background-color, var(--ion-color-white));
       --border-color: var(--idea-auth-card-border-color, var(--ion-color-light));
-    }
-    ion-label[position='inline'] ion-icon {
-      padding-top: 4px;
-      padding-right: 5px;
-      font-size: 1.3em;
+      --background: none;
+      --inner-padding-end: 0;
+      --padding-start: 0;
+      margin: 15px;
+      ion-input {
+        @media only screen and (max-width: 500px) {
+          background-color: var(--idea-auth-card-border-color, var(--ion-color-white));
+        }
+        @media only screen and (min-width: 501px) {
+          background-color: var(--idea-auth-card-border-color, var(--ion-color-light));
+        }
+        border-radius: 10px;
+        min-height: 50px;
+        --padding-start: 10px;
+        --padding-end: 10px;
+      }
+      ion-button.itemEnd {
+        position: absolute;
+        z-index: 2;
+        right: 5px;
+      }
     }
     .agreementsAcceptanceRow {
       margin-top: 15px;
@@ -51,8 +71,9 @@
         margin-right: 3px;
       }
     }
-    ion-button:not([slot='end']) {
-      margin-top: 15px;
+    ion-button.signIn,
+    ion-button.signUp {
+      --border-radius: 10px;
     }
     .smallCaseButton {
       text-transform: none;
@@ -67,7 +88,7 @@
 }
 .ideaLogo {
   width: 65px;
-  margin: 0 auto;
+  margin: 0 auto 80px auto;
   margin-top: 40px;
   cursor: pointer;
 }
