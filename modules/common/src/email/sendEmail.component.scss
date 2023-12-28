@@ -1,5 +1,14 @@
-.aList.sendEmailList {
-  ion-list-header ion-label {
-    margin: 25px 0 10px 0;
+ion-col {
+  background-color: var(--ion-color-dark);
+  color: var(--ion-color-dark);
+}
+ion-chip {
+  --ripple-color: transparent;
+  --background-hover: transparent;
+}
+
+ion-card {
+  ion-item {
+    --inner-padding-end: 0;
   }
 }
