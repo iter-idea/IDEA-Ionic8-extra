@@ -5,7 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": [],
+    "types": ["amazon-cognito-identity-js"],
     "paths": {
       "@env": ["modules/auth/environment.ts"]
     }
