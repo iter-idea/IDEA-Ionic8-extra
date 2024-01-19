@@ -3,5 +3,6 @@
   "dest": "../../dist/auth",
   "lib": {
     "entryFile": "public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["amazon-cognito-identity-js"]
 }
