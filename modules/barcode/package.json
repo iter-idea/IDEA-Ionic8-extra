@@ -1,29 +1,31 @@
 {
   "name": "@idea-ionic/barcode",
-  "version": "7.1.4",
+  "version": "7.1.5",
   "description": "IDEA Ionic barcode components",
   "dependencies": {
     "tslib": "^2.4.1"
   },
   "peerDependencies": {
-    "@angular/common": "^16.1.8",
-    "@angular/core": "^16.1.8",
-    "@angular/forms": "^16.1.8",
+    "@angular/common": "^17.0.2",
+    "@angular/core": "^17.0.2",
+    "@angular/forms": "^17.0.2",
     "@capacitor-community/barcode-scanner": "^4.0.1",
-    "@ionic/angular": "^7.0.0",
+    "@capacitor/core": "^5.6.0",
+    "@ionic/angular": "^7.5.0",
     "com-darryncampbell-cordova-plugin-intent": "~2.2.0",
-    "rxjs": "^7.8.0",
-    "zone.js": "^0.13.0"
+    "rxjs": "~7.8.0",
+    "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular/common": "^16.1.8",
-    "@angular/core": "^16.1.8",
-    "@angular/forms": "^16.1.8",
+    "@angular/common": "^17.0.2",
+    "@angular/core": "^17.0.2",
+    "@angular/forms": "^17.0.2",
     "@capacitor-community/barcode-scanner": "^4.0.1",
-    "@ionic/angular": "^7.0.0",
+    "@capacitor/core": "^5.6.0",
+    "@ionic/angular": "^7.5.0",
     "com-darryncampbell-cordova-plugin-intent": "~2.2.0",
-    "rxjs": "^7.8.0",
-    "zone.js": "^0.13.0"
+    "rxjs": "~7.8.0",
+    "zone.js": "~0.14.2"
   },
   "repository": {
     "type": "git",

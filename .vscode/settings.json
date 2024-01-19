@@ -23,5 +23,6 @@
   "editor.renderLineHighlight": "all",
   "workbench.iconTheme": "vs-seti",
   "window.zoomLevel": 0,
-  "extensions.ignoreRecommendations": false
+  "extensions.ignoreRecommendations": false,
+  "angular.enable-strict-mode-prompt": false
 }

@@ -7,6 +7,12 @@
       "projectType": "library",
       "root": "modules/common",
       "sourceRoot": "modules/common/src",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -35,6 +41,12 @@
       "projectType": "library",
       "root": "modules/auth",
       "sourceRoot": "modules/auth/src",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -63,6 +75,12 @@
       "projectType": "library",
       "root": "modules/agenda",
       "sourceRoot": "modules/agenda/src",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -91,6 +109,12 @@
       "projectType": "library",
       "root": "modules/map",
       "sourceRoot": "modules/map/src",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -119,6 +143,12 @@
       "projectType": "library",
       "root": "modules/teams",
       "sourceRoot": "modules/teams/src",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -147,6 +177,12 @@
       "projectType": "library",
       "root": "modules/barcode",
       "sourceRoot": "modules/barcode/src",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -175,6 +211,12 @@
       "projectType": "library",
       "root": "modules/auth0",
       "sourceRoot": "modules/auth0/src",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -198,6 +240,20 @@
           }
         }
       }
+    }
+  },
+  "schematics": {
+    "@ionic/angular-toolkit:component": {
+      "styleext": "scss"
+    },
+    "@ionic/angular-toolkit:page": {
+      "styleext": "scss"
+    },
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
     }
   }
 }
