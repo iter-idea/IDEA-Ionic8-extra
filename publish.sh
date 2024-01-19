@@ -41,6 +41,7 @@ do
   # dist
   cd dist/$(basename ${MODULE})
   npm version ${TYPE} --git-tag-version=false
+  rm -rf src
   cd ../../
 done
 
