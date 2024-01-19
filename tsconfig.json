@@ -16,7 +16,8 @@
       "common": ["dist/common/common", "dist/common"],
       "map": ["dist/map", "dist/map/map"],
       "teams": ["dist/teams", "dist/teams/teams"],
-      "@env": ["environment.ts"]
+      "@env/*": ["./*"],
+      "@idea-ionic/common/*": ["../common/*"]
     },
     "declaration": false,
     "downlevelIteration": true,

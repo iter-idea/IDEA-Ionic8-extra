@@ -3,14 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { ClientInfo, ErrorReport } from 'idea-toolbox';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 const API_STAGE = env.idea.ideaApi?.stage || (env.idea.ideaApi as any)?.version;
 const API_URL = `https://${String(env.idea.ideaApi?.url)}/${String(API_STAGE)}`;
 
 @Injectable()
 export class IDEAErrorReportingService {
-  constructor(protected http: HttpClient, protected platform: Platform) {}
+  constructor(
+    protected http: HttpClient,
+    protected platform: Platform
+  ) {}
 
   /**
    * Send the error report to the back-end.

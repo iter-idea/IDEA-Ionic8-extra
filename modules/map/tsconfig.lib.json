@@ -7,7 +7,7 @@
     "inlineSources": true,
     "types": [],
     "paths": {
-      "@env": ["modules/map/environment.ts"]
+      "@env/*": ["modules/map/*"]
     }
   }
 }

@@ -5,7 +5,7 @@ import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEAOfflineService } from './offline/offline.service';
 import { IDEATinCanService } from './tinCan.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 const API_STAGE = env.idea.socket?.stage || (env.idea.socket as any)?.version;
 

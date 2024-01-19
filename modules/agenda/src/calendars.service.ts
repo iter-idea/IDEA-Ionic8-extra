@@ -9,7 +9,7 @@ import {
   IDEATranslationsService,
   IDEASuggestionsComponent
 } from '@idea-ionic/common';
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 /**
  * Note: to test locally, you need to temporarily change the redirect URI:
@@ -160,14 +160,14 @@ export class IDEACalendarsService {
               this.API.rawRequest()
                 .get('https://www.googleapis.com/calendar/v3/users/me/calendarList', { headers })
                 .toPromise()
-                .then((res: any) => resolve(res.items.map((c: any) => ({ name: c.summary, id: c.id } as ExtCalendar))))
+                .then((res: any) => resolve(res.items.map((c: any) => ({ name: c.summary, id: c.id }) as ExtCalendar)))
                 .catch(err => reject(err));
               break;
             case ExternalCalendarSources.MICROSOFT:
               this.API.rawRequest()
                 .get('https://graph.microsoft.com/v1.0/me/calendars', { headers })
                 .toPromise()
-                .then((res: any) => resolve(res.value.map((c: any) => ({ name: c.name, id: c.id } as ExtCalendar))))
+                .then((res: any) => resolve(res.value.map((c: any) => ({ name: c.name, id: c.id }) as ExtCalendar)))
                 .catch(err => reject(err));
               break;
           }

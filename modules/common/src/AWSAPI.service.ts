@@ -8,7 +8,7 @@ import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEATinCanService } from './tinCan.service';
 import { IDEAOfflineService } from './offline/offline.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 const API_STAGE = env.idea.api?.stage || (env.idea.api as any)?.version;
 export const API_URL_PROJECT = `https://${String(env.idea.api?.url)}/${String(API_STAGE)}`;

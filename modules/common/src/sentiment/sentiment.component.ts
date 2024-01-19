@@ -5,7 +5,7 @@ import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAOfflineService } from '../offline/offline.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-sentiment',
@@ -34,7 +34,11 @@ export class IDEASentimentComponent implements OnChanges {
    */
   @Output() change = new EventEmitter<Sentiment>();
 
-  constructor(public offline: IDEAOfflineService, public API: IDEAAWSAPIService, public t: IDEATranslationsService) {}
+  constructor(
+    public offline: IDEAOfflineService,
+    public API: IDEAAWSAPIService,
+    public t: IDEATranslationsService
+  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.text.previousValue !== changes.text.currentValue) this.detectSentiment(changes.text.currentValue);
   }

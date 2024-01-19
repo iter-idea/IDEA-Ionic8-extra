@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { epochDateTime } from 'idea-toolbox';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 /**
  * To communicate with an AWS API Gateway websocket istance.

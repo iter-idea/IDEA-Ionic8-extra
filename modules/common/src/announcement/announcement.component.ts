@@ -5,7 +5,7 @@ import { IDEAStorageService } from '../storage.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 /**
  * The storage key to save th last announcement read on this device.
@@ -35,7 +35,11 @@ export class IDEAAnnouncementComponent implements OnInit {
    */
   public htmlContent: string;
 
-  constructor(public t: IDEATranslationsService, public tc: IDEATinCanService, public storage: IDEAStorageService) {
+  constructor(
+    public t: IDEATranslationsService,
+    public tc: IDEATinCanService,
+    public storage: IDEAStorageService
+  ) {
     this.color = 'dark';
   }
   public ngOnInit() {

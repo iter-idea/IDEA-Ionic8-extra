@@ -5,7 +5,7 @@ import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from 
 
 import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-sign-in',

@@ -8,7 +8,7 @@ import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-echo',

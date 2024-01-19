@@ -7,7 +7,7 @@
     "inlineSources": true,
     "types": ["amazon-cognito-identity-js"],
     "paths": {
-      "@env": ["modules/auth/environment.ts"]
+      "@env/*": ["modules/auth/*"]
     }
   }
 }

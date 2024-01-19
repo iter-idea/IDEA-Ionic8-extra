@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '@auth0/auth0-angular';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 @NgModule({
   imports: [

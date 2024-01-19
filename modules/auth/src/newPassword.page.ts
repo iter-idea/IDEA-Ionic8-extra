@@ -6,7 +6,7 @@ import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
 
 import { IDEAAuthService } from './auth.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-new-password',

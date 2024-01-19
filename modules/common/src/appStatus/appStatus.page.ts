@@ -6,7 +6,7 @@ import { mdToHtml, AppStatus } from 'idea-toolbox';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAAppStatusService } from './appStatus.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 /**
  * Handle blocking status messaging for the app.

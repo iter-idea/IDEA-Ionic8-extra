@@ -8,7 +8,7 @@ import { IDEATinCanService } from '@idea-ionic/common';
 
 import { MAP_DARK_MODE_STYLE } from './darkMode.style';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 /**
  * Default geolocation: ITER IDEA's office.

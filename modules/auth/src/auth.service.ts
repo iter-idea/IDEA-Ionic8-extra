@@ -11,7 +11,7 @@ import {
 } from 'amazon-cognito-identity-js';
 import { IDEAStorageService } from '@idea-ionic/common';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 /**
  * The name of the Cognito's user attribute which contains the key of the last device to login in this project.

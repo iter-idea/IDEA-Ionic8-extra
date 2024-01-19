@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-password-policy',
@@ -11,7 +11,7 @@ import { environment as env } from '@env';
       </ion-card-header>
       <ion-card-content>
         <ul>
-          <li>{{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.MIN_LENGTH' | translate : { n: passwordPolicy.minLength } }}</li>
+          <li>{{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.MIN_LENGTH' | translate: { n: passwordPolicy.minLength } }}</li>
           <li *ngIf="passwordPolicy.requireDigits">
             {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_DIGITS' | translate }}
           </li>

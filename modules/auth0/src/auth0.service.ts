@@ -5,11 +5,14 @@ import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { Auth0User } from 'idea-toolbox';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAAuth0Service {
-  constructor(private platform: Platform, private auth0: AuthService) {}
+  constructor(
+    private platform: Platform,
+    private auth0: AuthService
+  ) {}
 
   /**
    * The internal Auth0's service.

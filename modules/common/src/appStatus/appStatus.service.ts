@@ -6,7 +6,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAApiService } from '../api.service';
 import { IDEAStorageService } from '../storage.service';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 const APP_STATUS_STORAGE_KEY = (env.idea.project ?? 'app').concat('_LAST_MESSAGE');
 

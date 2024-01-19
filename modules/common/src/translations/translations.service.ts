@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml } from 'idea-toolbox';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 /**
  * Base folder containing the translations.

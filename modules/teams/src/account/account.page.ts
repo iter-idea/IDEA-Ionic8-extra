@@ -9,7 +9,7 @@ import {
   IDEATranslationsService
 } from '@idea-ionic/common';
 
-import { environment as env } from '@env';
+import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'account',
