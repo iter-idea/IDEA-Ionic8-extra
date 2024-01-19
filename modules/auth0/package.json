@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/auth0",
-  "version": "7.2.5",
+  "version": "7.2.7",
   "description": "IDEA Ionic Auth0 flow",
   "dependencies": {
     "tslib": "^2.4.1"
