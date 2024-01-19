@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { mdToHtml, AppStatus } from 'idea-toolbox';
+import { IDEAEnvironmentConfig } from 'environment';
 
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAAppStatusService } from './appStatus.service';
-
-import { environment as env } from '@env/environment';
 
 /**
  * Handle blocking status messaging for the app.
@@ -17,11 +16,13 @@ import { environment as env } from '@env/environment';
   styleUrls: ['appStatus.page.scss']
 })
 export class IDEAAppStatusPage {
+  protected env = inject(IDEAEnvironmentConfig);
+
   status: AppStatus;
   htmlContent: string;
 
-  appleStoreURL = (env.idea.app as any)?.appleStoreURL;
-  googleStoreURL = (env.idea.app as any)?.googleStoreURL;
+  appleStoreURL: string;
+  googleStoreURL: string;
 
   appIconURI = '/assets/icons/icon.svg';
 
@@ -29,7 +30,10 @@ export class IDEAAppStatusPage {
     private platform: Platform,
     private t: IDEATranslationsService,
     private appStatus: IDEAAppStatusService
-  ) {}
+  ) {
+    this.appleStoreURL = (this.env.idea.app as any)?.appleStoreURL;
+    this.googleStoreURL = (this.env.idea.app as any)?.googleStoreURL;
+  }
 
   async ionViewWillEnter(): Promise<void> {
     this.status = await this.appStatus.check();

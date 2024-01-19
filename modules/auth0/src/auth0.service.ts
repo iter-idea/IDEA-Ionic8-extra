@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
 import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { Auth0User } from 'idea-toolbox';
-
-import { environment as env } from '@env/environment';
+import { IDEAEnvironmentConfig } from 'environment';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAAuth0Service {
+  protected env = inject(IDEAEnvironmentConfig);
+
   constructor(
     private platform: Platform,
     private auth0: AuthService
@@ -70,7 +71,7 @@ export class IDEAAuth0Service {
    * ```
    */
   async handleCallbackOnMobileDevices(url: string): Promise<void> {
-    if (url?.startsWith(env.auth0.callbackUri)) {
+    if (url?.startsWith(this.env.auth0.callbackUri)) {
       if (url.includes('state=') && (url.includes('error=') || url.includes('code=')))
         await firstValueFrom(this.auth0.handleRedirectCallback(url));
       await Browser.close();

@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-
-import { environment as env } from '@env/environment';
+import { Component, inject } from '@angular/core';
+import { IDEAEnvironmentConfig } from 'environment';
 
 @Component({
   selector: 'idea-password-policy',
@@ -45,7 +44,11 @@ import { environment as env } from '@env/environment';
   ]
 })
 export class IDEAPasswordPolicyComponent {
-  passwordPolicy = env.idea.auth.passwordPolicy;
+  protected env = inject(IDEAEnvironmentConfig);
 
-  constructor() {}
+  passwordPolicy: any;
+
+  constructor() {
+    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
+  }
 }

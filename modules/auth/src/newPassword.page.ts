@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavController, PopoverController } from '@ionic/angular';
 import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAEnvironmentConfig } from 'environment';
 
 import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
 
 import { IDEAAuthService } from './auth.service';
-
-import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-new-password',
@@ -14,8 +13,10 @@ import { environment as env } from '@env/environment';
   styleUrls: ['auth.scss']
 })
 export class IDEANewPasswordPage implements OnInit {
+  protected env = inject(IDEAEnvironmentConfig);
+
   newPassword: string;
-  passwordPolicy = env.idea.auth.passwordPolicy;
+  passwordPolicy: any;
   errorMsg: string;
 
   constructor(
@@ -25,7 +26,9 @@ export class IDEANewPasswordPage implements OnInit {
     private loading: IDEALoadingService,
     private t: IDEATranslationsService,
     public auth: IDEAAuthService
-  ) {}
+  ) {
+    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
+  }
   ngOnInit(): void {
     if (!this.auth.challengeUsername) this.goToAuth();
   }

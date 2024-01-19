@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -10,13 +10,7 @@ import {
   ChallengeName
 } from 'amazon-cognito-identity-js';
 import { IDEAStorageService } from '@idea-ionic/common';
-
-import { environment as env } from '@env/environment';
-
-/**
- * The name of the Cognito's user attribute which contains the key of the last device to login in this project.
- */
-const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(env.idea.project);
+import { IDEAEnvironmentConfig } from 'environment';
 
 /**
  * Cognito wrapper to manage the authentication flow.
@@ -25,6 +19,13 @@ const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(env.idea.project);
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAAuthService {
+  protected env = inject(IDEAEnvironmentConfig);
+
+  /**
+   * The name of the Cognito's user attribute which contains the key of the last device to login in this project.
+   */
+  protected deviceKeyAttribute: string;
+
   private userPool: CognitoUserPool;
 
   challengeUsername: string;
@@ -32,15 +33,18 @@ export class IDEAAuthService {
 
   private newAccountJustRegistered: string;
 
-  private mfaProjectName = env.idea.app.title ?? env.idea.project;
+  private mfaProjectName: string;
 
-  private passwordPolicy = env.idea.auth.passwordPolicy;
+  private passwordPolicy: any;
 
   constructor(private storage: IDEAStorageService) {
+    this.deviceKeyAttribute = 'custom:'.concat(this.env.idea.project);
     this.userPool = new CognitoUserPool({
-      UserPoolId: env.aws.cognito.userPoolId,
-      ClientId: env.aws.cognito.userPoolClientId
+      UserPoolId: this.env.aws.cognito.userPoolId,
+      ClientId: this.env.aws.cognito.userPoolClientId
     });
+    this.mfaProjectName = this.env.idea.auth.title ?? this.env.idea.project;
+    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
   }
 
   /**
@@ -70,7 +74,7 @@ export class IDEAAuthService {
       const user = this.prepareCognitoUser(username);
       user.authenticateUser(this.prepareAuthDetails(username, password), {
         onSuccess: (): void =>
-          resolve(env.idea.auth.forceLoginWithMFA ? LoginOutcomeActions.MFA_SETUP : LoginOutcomeActions.NONE),
+          resolve(this.env.idea.auth.forceLoginWithMFA ? LoginOutcomeActions.MFA_SETUP : LoginOutcomeActions.NONE),
         onFailure: (err: Error): void => reject(err),
         newPasswordRequired: (): void => {
           this.challengeUsername = username;
@@ -196,7 +200,7 @@ export class IDEAAuthService {
               // if the session is active, run the online sign-out; otherwise, only the local data has been deleted
               if (err) return resolve();
               // if a reference to the device was saved, forget it
-              if (env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
+              if (this.env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
               // sign-out from the pool (terminate the current session or all the sessions)
               if (options.global)
                 user.globalSignOut({ onSuccess: (): void => resolve(), onFailure: err => reject(err) });
@@ -327,7 +331,7 @@ export class IDEAAuthService {
               const isMFAEnabled = !!(
                 data.UserMFASettingList && data.UserMFASettingList.includes('SOFTWARE_TOKEN_MFA')
               );
-              if (!isMFAEnabled && env.idea.auth.forceLoginWithMFA)
+              if (!isMFAEnabled && this.env.idea.auth.forceLoginWithMFA)
                 return reject(new Error(LoginOutcomeActions.MFA_SETUP));
               user.getUserAttributes((e: Error, attributes: CognitoUserAttribute[]): void => {
                 if (e) return reject(e);
@@ -401,7 +405,7 @@ export class IDEAAuthService {
     const isRobot = groups.some(x => x === 'robots');
     if (isRobot) return callback(new Error('ROBOT_USER'));
     // in case the project limits each account to only one simultaneous session, run a check
-    if (env.idea.auth.singleSimultaneousSession) return this.checkForSimultaneousSessions(userDetails, callback);
+    if (this.env.idea.auth.singleSimultaneousSession) return this.checkForSimultaneousSessions(userDetails, callback);
     // otherwise, we're done
     callback();
   }
@@ -417,7 +421,7 @@ export class IDEAAuthService {
       await this.storage.set('AuthDeviceKey', currentDeviceKey);
     }
     // check whether the last device to sign-into this project (if any) is the current one
-    const lastDeviceToSignIntoThisProject = userDetails[DEVICE_KEY_ATTRIBUTE];
+    const lastDeviceToSignIntoThisProject = userDetails[this.deviceKeyAttribute];
     // if it's the first user's device to sign-in, save the reference in Cognito and resolve
     if (!lastDeviceToSignIntoThisProject) {
       this.setCurrentDeviceForProject(currentDeviceKey)
@@ -434,7 +438,7 @@ export class IDEAAuthService {
   private setCurrentDeviceForProject(deviceKey?: string): Promise<void> {
     const attributes: any = {};
     // note: an empty string will remove the attribute from Cognito
-    attributes[DEVICE_KEY_ATTRIBUTE] = deviceKey || '';
+    attributes[this.deviceKeyAttribute] = deviceKey || '';
     return this.updateUserAttributes(attributes);
   }
   /**

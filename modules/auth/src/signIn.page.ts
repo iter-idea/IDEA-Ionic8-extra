@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAEnvironmentConfig } from 'environment';
 
 import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
-
-import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-sign-in',
@@ -13,10 +12,12 @@ import { environment as env } from '@env/environment';
   styleUrls: ['auth.scss']
 })
 export class IDEASignInPage {
-  title = env.idea.app.title;
-  registrationPossible = env.idea.auth.registrationIsPossible;
-  hasIntroPage = env.idea.app.hasIntroPage;
-  website = env.idea.website;
+  protected env = inject(IDEAEnvironmentConfig);
+
+  title: string;
+  registrationPossible: boolean;
+  hasIntroPage: boolean;
+  website: string;
 
   email: string;
   password: string;
@@ -31,7 +32,12 @@ export class IDEASignInPage {
     private loading: IDEALoadingService,
     private t: IDEATranslationsService,
     private auth: IDEAAuthService
-  ) {}
+  ) {
+    this.title = this.env.idea.auth.title;
+    this.registrationPossible = this.env.idea.auth.registrationIsPossible;
+    this.hasIntroPage = this.env.idea.auth.hasIntroPage;
+    this.website = this.env.idea.auth.website;
+  }
   ionViewDidEnter(): void {
     // manage the scenario in which we just created a new account (show a explanatory message: email must be confirmed)
     this.newAccountRegistered = !!this.auth.getNewAccountJustRegistered();

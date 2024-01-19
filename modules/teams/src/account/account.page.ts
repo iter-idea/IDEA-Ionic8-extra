@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { User } from 'idea-toolbox';
 import {
@@ -8,8 +8,7 @@ import {
   IDEAMessageService,
   IDEATranslationsService
 } from '@idea-ionic/common';
-
-import { environment as env } from '@env/environment';
+import { IDEAEnvironmentConfig } from 'environment';
 
 @Component({
   selector: 'account',
@@ -17,6 +16,8 @@ import { environment as env } from '@env/environment';
   styleUrls: ['account.page.scss']
 })
 export class IDEAAccountPage implements OnInit {
+  protected env = inject(IDEAEnvironmentConfig);
+
   public user: User;
   public newEmail: string;
   public newPassword: string;
@@ -60,7 +61,7 @@ export class IDEAAccountPage implements OnInit {
               await this.loading.show();
               this.API.postResource('emailChangeRequests', {
                 idea: true,
-                body: { password: data.pwd, newEmail: data.email, project: env.idea.project }
+                body: { password: data.pwd, newEmail: data.email, project: this.env.idea.project }
               })
                 .then(() => {
                   this.alertCtrl

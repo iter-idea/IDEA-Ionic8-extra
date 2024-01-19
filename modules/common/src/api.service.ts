@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
-import { environment as env } from '@env/environment';
+import { IDEAEnvironmentConfig } from 'environment';
 
 /**
  * To communicate with an AWS API Gateway istance.
@@ -9,19 +9,21 @@ import { environment as env } from '@env/environment';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAApiService {
+  protected env = inject(IDEAEnvironmentConfig);
+
   /**
    * The base URL to which to make requests.
    */
-  baseURL = `https://${String(env.idea.api?.url)}/${String(env.idea.api?.stage)}`;
+  baseURL: string;
   /**
    * A reference to the current's app version.
    */
-  appVersion = env.idea.app?.version || '?';
+  appVersion: string;
   /**
    * A reference to the current's app package (bundle).
    * It can be `undefined` in case the app doesn't have a (mobile) app bundle.
    */
-  appBundle = env.idea.app?.bundle;
+  appBundle: string;
 
   /**
    * Passed as `Authorization` header.
@@ -32,7 +34,11 @@ export class IDEAApiService {
    */
   apiKey: string;
 
-  constructor(private platform: Platform) {}
+  constructor(private platform: Platform) {
+    this.baseURL = `https://${this.env.idea.api?.url}/${this.env.idea.api?.stage}`;
+    this.appVersion = this.env.idea.app?.version || '?';
+    this.appBundle = this.env.idea.app?.bundle;
+  }
 
   /**
    * Execute an online API request.

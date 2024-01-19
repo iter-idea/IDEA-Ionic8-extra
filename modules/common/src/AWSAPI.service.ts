@@ -1,19 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Platform } from '@ionic/angular';
+import { IDEAEnvironmentConfig } from 'environment';
 
 import { IDEAStorageService } from './storage.service';
 import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEATinCanService } from './tinCan.service';
 import { IDEAOfflineService } from './offline/offline.service';
-
-import { environment as env } from '@env/environment';
-
-const API_STAGE = env.idea.api?.stage || (env.idea.api as any)?.version;
-export const API_URL_PROJECT = `https://${String(env.idea.api?.url)}/${String(API_STAGE)}`;
-const IDEA_API_STAGE = env.idea.ideaApi?.stage || (env.idea.ideaApi as any)?.version;
-export const API_URL_IDEA = `https://${String(env.idea.ideaApi?.url)}/${String(IDEA_API_STAGE)}`;
 
 /**
  * To communicate with an AWS's API Gateway istance.
@@ -24,6 +18,13 @@ export const API_URL_IDEA = `https://${String(env.idea.ideaApi?.url)}/${String(I
  */
 @Injectable()
 export class IDEAAWSAPIService {
+  protected env = inject(IDEAEnvironmentConfig);
+
+  apiStage: string;
+  apiUrlProject: string;
+  ideaApiStage: string;
+  apiUrlIDEA: string;
+
   constructor(
     protected http: HttpClient,
     protected platform: Platform,
@@ -31,7 +32,12 @@ export class IDEAAWSAPIService {
     protected storage: IDEAStorageService,
     protected errorReporting: IDEAErrorReportingService,
     protected offline: IDEAOfflineService
-  ) {}
+  ) {
+    this.apiStage = this.env.idea.api?.stage || (this.env.idea.api as any)?.version;
+    this.apiUrlProject = `https://${this.env.idea.api?.url}/${this.apiStage}`;
+    this.ideaApiStage = this.env.idea.ideaApi?.stage || (this.env.idea.ideaApi as any)?.version;
+    this.apiUrlIDEA = `https://${this.env.idea.ideaApi?.url}/${this.ideaApiStage}`;
+  }
 
   /**
    * Execute an online API request.
@@ -89,7 +95,7 @@ export class IDEAAWSAPIService {
    */
   protected prepareURL(resource: string, opt: APIRequestOption): string {
     // decide whether to use IDEA's API or the project's API (or an alternative API)
-    let url = opt.idea ? API_URL_IDEA : opt.alternativeAPI || API_URL_PROJECT;
+    let url = opt.idea ? this.apiUrlIDEA : opt.alternativeAPI || this.apiUrlProject;
     // prepare a single-resource request (by id) or a normal one
     url = `${url}/${resource}`;
     if (opt.resourceId) url = `${url}/${encodeURIComponent(opt.resourceId)}`;
@@ -120,7 +126,7 @@ export class IDEAAWSAPIService {
     else if (qp) for (const prop in qp) if (qp[prop]) searchParams = searchParams.set(prop, qp[prop]);
     // if requested, add app version and client platform to the info we send to the back-end
     if (addClientInfo) {
-      searchParams = searchParams.set('_v', env.idea.app.version);
+      searchParams = searchParams.set('_v', this.env.idea.app.version);
       searchParams = searchParams.set('_p', this.platform.platforms().join(' '));
     }
     return searchParams;

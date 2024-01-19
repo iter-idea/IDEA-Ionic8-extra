@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavController, PopoverController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAEnvironmentConfig } from 'environment';
 
 import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
 
 import { IDEAAuthService } from './auth.service';
-
-import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-confirm-password',
@@ -15,10 +14,12 @@ import { environment as env } from '@env/environment';
   styleUrls: ['auth.scss']
 })
 export class IDEAConfirmPasswordPage implements OnInit {
+  protected env = inject(IDEAEnvironmentConfig);
+
   email: string;
   newPassword: string;
   code: string;
-  passwordPolicy = env.idea.auth.passwordPolicy;
+  passwordPolicy: any;
   errorMsg: string;
 
   constructor(
@@ -29,7 +30,9 @@ export class IDEAConfirmPasswordPage implements OnInit {
     private loading: IDEALoadingService,
     private t: IDEATranslationsService,
     public auth: IDEAAuthService
-  ) {}
+  ) {
+    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
+  }
   ngOnInit(): void {
     this.email = this.route.snapshot.queryParamMap.get('email') ?? null;
     if (!this.email && this.route.snapshot.queryParams.user)

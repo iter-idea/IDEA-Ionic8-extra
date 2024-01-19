@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Team, User } from 'idea-toolbox';
 import {
@@ -8,8 +8,7 @@ import {
   IDEAMessageService,
   IDEATranslationsService
 } from '@idea-ionic/common';
-
-import { environment as env } from '@env/environment';
+import { IDEAEnvironmentConfig } from 'environment';
 
 @Component({
   selector: 'teams',
@@ -17,6 +16,8 @@ import { environment as env } from '@env/environment';
   styleUrls: ['teams.page.scss']
 })
 export class IDEATeamsPage implements OnInit {
+  protected env = inject(IDEAEnvironmentConfig);
+
   /**
    * The current user.
    */
@@ -28,7 +29,7 @@ export class IDEATeamsPage implements OnInit {
   /**
    * The current project.
    */
-  public project = env.idea.project;
+  public project: string;
 
   constructor(
     public tc: IDEATinCanService,
@@ -39,6 +40,7 @@ export class IDEATeamsPage implements OnInit {
     public t: IDEATranslationsService
   ) {}
   public ngOnInit() {
+    this.project = this.env.idea.project;
     this.user = this.tc.get('user');
     this.loadTeams();
   }

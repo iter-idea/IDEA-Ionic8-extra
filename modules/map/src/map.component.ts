@@ -1,14 +1,13 @@
-import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Loader } from '@googlemaps/js-api-loader';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
 import { Geolocation } from '@capacitor/geolocation';
 import { Network } from '@capacitor/network';
 import { IDEATinCanService } from '@idea-ionic/common';
+import { IDEAEnvironmentConfig } from 'environment';
 
 import { MAP_DARK_MODE_STYLE } from './darkMode.style';
-
-import { environment as env } from '@env/environment';
 
 /**
  * Default geolocation: ITER IDEA's office.
@@ -42,6 +41,8 @@ const DEFAULT_ZOOM = 8;
   template: ''
 })
 export class IDEAMapComponent implements OnInit {
+  protected env = inject(IDEAEnvironmentConfig);
+
   /**
    * The Google Maps' map object.
    */
@@ -165,7 +166,7 @@ export class IDEAMapComponent implements OnInit {
   private injectSDK(resolve: any) {
     if (this.tc.get('ideaMapLibsLoaded')) return resolve();
     // load the library using the correct API key and set the service as "ready" when the loading ends
-    new Loader({ apiKey: env.google.mapsApiKey }).load().then(() => {
+    new Loader({ apiKey: this.env.google?.mapsApiKey }).load().then(() => {
       this.tc.set('ideaMapLibsLoaded', true);
       resolve();
     });

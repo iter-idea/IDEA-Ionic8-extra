@@ -16,7 +16,6 @@
       "common": ["dist/common/common", "dist/common"],
       "map": ["dist/map", "dist/map/map"],
       "teams": ["dist/teams", "dist/teams/teams"],
-      "@env/*": ["./*"],
       "@idea-ionic/common/*": ["../common/*"]
     },
     "declaration": false,

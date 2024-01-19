@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAOfflineService } from '../offline/offline.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
-import { environment as env } from '@env/environment';
+import { IDEAEnvironmentConfig } from 'environment';
 
 @Component({
   selector: 'idea-sentiment',
@@ -13,6 +13,8 @@ import { environment as env } from '@env/environment';
   styleUrls: ['sentiment.component.scss']
 })
 export class IDEASentimentComponent implements OnChanges {
+  protected env = inject(IDEAEnvironmentConfig);
+
   /**
    * The sentiment detected from the input text.
    */
@@ -50,7 +52,7 @@ export class IDEASentimentComponent implements OnChanges {
     else {
       this.API.postResource('sentiment', {
         idea: true,
-        body: { project: env.idea.project, language: this.t.getCurrentLang(), text: this.text }
+        body: { project: this.env.idea.project, language: this.t.getCurrentLang(), text: this.text }
       })
         .then(res => {
           this.sentiment = res.sentiment as Sentiment;

@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavController, PopoverController } from '@ionic/angular';
 import { isEmpty } from 'idea-toolbox';
 import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAEnvironmentConfig } from 'environment';
 
 import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
 
 import { IDEAAuthService } from './auth.service';
-
-import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-sign-up',
@@ -15,10 +14,12 @@ import { environment as env } from '@env/environment';
   styleUrls: ['auth.scss']
 })
 export class IDEASignUpPage implements OnInit {
+  protected env = inject(IDEAEnvironmentConfig);
+
   email: string;
   password: string;
   agreementsCheck = false;
-  passwordPolicy = env.idea.auth.passwordPolicy;
+  passwordPolicy: any;
   errorMsg: string;
 
   constructor(
@@ -28,9 +29,11 @@ export class IDEASignUpPage implements OnInit {
     private loading: IDEALoadingService,
     private t: IDEATranslationsService,
     public auth: IDEAAuthService
-  ) {}
+  ) {
+    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
+  }
   ngOnInit(): void {
-    if (!env.idea.auth.registrationIsPossible) return this.goToAuth();
+    if (!this.env.idea.auth.registrationIsPossible) return this.goToAuth();
     this.agreementsCheck =
       this.t._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || this.t._('IDEA_VARIABLES.PRIVACY_POLICY_URL')
         ? this.agreementsCheck

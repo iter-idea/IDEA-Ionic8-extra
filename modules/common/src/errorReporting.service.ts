@@ -1,19 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { ClientInfo, ErrorReport } from 'idea-toolbox';
-
-import { environment as env } from '@env/environment';
-
-const API_STAGE = env.idea.ideaApi?.stage || (env.idea.ideaApi as any)?.version;
-const API_URL = `https://${String(env.idea.ideaApi?.url)}/${String(API_STAGE)}`;
+import { IDEAEnvironmentConfig } from 'environment';
 
 @Injectable()
 export class IDEAErrorReportingService {
+  protected env = inject(IDEAEnvironmentConfig);
+
+  apiStage: string;
+  apiUrl: string;
+
   constructor(
     protected http: HttpClient,
     protected platform: Platform
-  ) {}
+  ) {
+    this.apiStage = this.env.idea.ideaApi?.stage || (this.env.idea.ideaApi as any)?.version;
+    this.apiUrl = `https://${this.env.idea.ideaApi?.url}/${this.apiStage}`;
+  }
 
   /**
    * Send the error report to the back-end.
@@ -24,15 +28,15 @@ export class IDEAErrorReportingService {
       if ((!this.shouldSend() && !forceSend) || !error?.name) return resolve();
       // prepare and send the report
       const report = new ErrorReport({
-        version: env.idea.app.version,
-        stage: API_STAGE,
+        version: this.env.idea.app.version,
+        stage: this.apiStage,
         client: this.getClientInfo(),
         type: error.name,
         error: error.message,
         stack: error.stack
       });
       this.http
-        .post(API_URL.concat(`/projects/${String(env.idea.project)}/errorReporting`), report)
+        .post(this.apiUrl.concat(`/projects/${this.env.idea.project}/errorReporting`), report)
         .toPromise()
         .catch(() => {}) // note: never throw an error when reporting an error
         .finally(() => resolve());
@@ -43,7 +47,7 @@ export class IDEAErrorReportingService {
    * Whether we should send the reporting or we are in a scenario in which we should skip it.
    */
   public shouldSend(): boolean {
-    return API_STAGE === 'prod';
+    return this.apiStage === 'prod';
   }
 
   /**

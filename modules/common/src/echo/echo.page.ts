@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ExternalCalendarSources, mdToHtml } from 'idea-toolbox';
+import { IDEAEnvironmentConfig } from 'environment';
 
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
-
-import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'idea-echo',
@@ -16,6 +15,8 @@ import { environment as env } from '@env/environment';
   styleUrls: ['echo.page.scss']
 })
 export class IDEAEchoPage implements OnInit {
+  protected env = inject(IDEAEnvironmentConfig);
+
   /**
    * The message/content to show.
    */
@@ -95,7 +96,7 @@ export class IDEAEchoPage implements OnInit {
         action: 'CONFIRM_SIGN_UP',
         username: user,
         confirmationCode: code,
-        cognitoUserPoolClientId: env.aws.cognito.userPoolClientId
+        cognitoUserPoolClientId: this.env.aws.cognito.userPoolClientId
       }
     })
       .then(() => {
@@ -129,7 +130,11 @@ export class IDEAEchoPage implements OnInit {
    */
   public async followEmailChangeConfirmationLink(code: string) {
     await this.loading.show();
-    this.API.getResource('emailChangeRequests', { idea: true, resourceId: code, params: { project: env.idea.project } })
+    this.API.getResource('emailChangeRequests', {
+      idea: true,
+      resourceId: code,
+      params: { project: this.env.idea.project }
+    })
       .then(() => {
         this.success = true;
         this.content = this.t._('IDEA_COMMON.ECHO.EMAIL_CHANGED');
@@ -165,7 +170,7 @@ export class IDEAEchoPage implements OnInit {
     await this.loading.show();
     this.API.patchResource('calendars', {
       idea: true,
-      body: { action: 'SET_EXTERNAL_INTEGRATION', service, code, calendarId, project: env.idea.project }
+      body: { action: 'SET_EXTERNAL_INTEGRATION', service, code, calendarId, project: this.env.idea.project }
     })
       .then(() => {
         this.success = true;

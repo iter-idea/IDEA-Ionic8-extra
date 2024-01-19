@@ -1,6 +1,71 @@
-// This export is needed to trick the compiler while developing the modules:
-//   - while developing, `environment.ts` is searched in the root folder (we need an any type to avoid conflicts);
-//   - when publishing, `environment.ts` is searched in the module's root (because of the modules' `tsconfig.lib.json`).
-// Without the current configuration, when publishing multiple modules, the first environment loaded doesn't change,
-// and it could happen that the compiler can't find some of the environment variables needed.
-export const environment = {} as any;
+import { InjectionToken } from '@angular/core';
+
+/**
+ * The token to inject the app configurations in the module.
+ */
+export const IDEAEnvironmentConfig = new InjectionToken<IDEAEnvironmentConfiguration>('IDEA environment configuration');
+
+/**
+ * The environment variables used by this module.
+ */
+export interface IDEAEnvironmentConfiguration {
+  idea: {
+    project: string;
+    ionicExtraModules: string[];
+    app?: {
+      version: string;
+      bundle: string;
+      appleStoreURL?: string;
+      googleStoreURL?: string;
+    };
+    api?: {
+      url: string;
+      stage: string;
+    };
+    ideaApi?: {
+      url: string;
+      stage: string;
+    };
+    socket?: {
+      url: string;
+      stage: string;
+    };
+    auth?: {
+      title?: string;
+      website?: string;
+      hasIntroPage?: boolean;
+      registrationIsPossible: boolean;
+      singleSimultaneousSession: boolean;
+      forceLoginWithMFA: boolean;
+      // note: the passwordPolicy should be set matching the configuration of the Cognito User Pool
+      passwordPolicy?: {
+        minLength: number;
+        requireLowercase: boolean;
+        requireDigits: boolean;
+        requireSymbols: boolean;
+        requireUppercase: boolean;
+      };
+    };
+  };
+  aws?: {
+    cognito?: {
+      userPoolId: string;
+      userPoolClientId: string;
+    };
+  };
+  google?: {
+    apiClientId: string;
+    apiScope: string;
+    mapsApiKey: string;
+  };
+  microsoft?: {
+    apiClientId: string;
+    apiScope: string;
+  };
+  auth0?: {
+    domain: string;
+    clientId: string;
+    callbackUri: string;
+    storeRefreshToken: boolean;
+  };
+}

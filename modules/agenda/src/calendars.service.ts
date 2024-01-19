@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { Calendar, ExternalCalendarSources, Suggestion } from 'idea-toolbox';
@@ -9,7 +9,7 @@ import {
   IDEATranslationsService,
   IDEASuggestionsComponent
 } from '@idea-ionic/common';
-import { environment as env } from '@env/environment';
+import { IDEAEnvironmentConfig } from 'environment';
 
 /**
  * Note: to test locally, you need to temporarily change the redirect URI:
@@ -19,6 +19,8 @@ import { environment as env } from '@env/environment';
  */
 @Injectable()
 export class IDEACalendarsService {
+  protected env = inject(IDEAEnvironmentConfig);
+
   constructor(
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
@@ -99,27 +101,28 @@ export class IDEACalendarsService {
   public linkExtService(cal: Calendar): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!cal.external) return reject(new Error('NOT_EXTERNAL'));
+      const baseURL = window.location.protocol.concat('//', window.location.hostname);
       let url: string;
       switch (cal.external.service) {
         case ExternalCalendarSources.GOOGLE:
           url =
             'https://accounts.google.com/o/oauth2/v2/auth?' +
-            `client_id=${encodeURIComponent(env.google.apiClientId)}` +
+            `client_id=${encodeURIComponent(this.env.google.apiClientId)}` +
             '&response_type=code' +
-            `&redirect_uri=${encodeURIComponent(env.idea.app.url.concat('/echo/google-calendars-integration'))}` +
+            `&redirect_uri=${encodeURIComponent(baseURL.concat('/echo/google-calendars-integration'))}` +
             '&include_granted_scopes=true' +
             '&access_type=offline&prompt=consent' +
-            `&scope=${encodeURIComponent(env.google.apiScope)}` +
+            `&scope=${encodeURIComponent(this.env.google.apiScope)}` +
             `&state=${encodeURIComponent(cal.calendarId)}`;
           break;
         case ExternalCalendarSources.MICROSOFT:
           url =
             'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?' +
-            `client_id=${encodeURIComponent(env.microsoft.apiClientId)}` +
+            `client_id=${encodeURIComponent(this.env.microsoft.apiClientId)}` +
             '&response_type=code' +
-            `&redirect_uri=${encodeURIComponent(env.idea.app.url.concat('/echo/microsoft-calendars-integration'))}` +
+            `&redirect_uri=${encodeURIComponent(baseURL.concat('/echo/microsoft-calendars-integration'))}` +
             '&response_mode=query' +
-            `&scope=${encodeURIComponent(env.microsoft.apiScope)}` +
+            `&scope=${encodeURIComponent(this.env.microsoft.apiScope)}` +
             `&state=${encodeURIComponent(cal.calendarId)}`;
           break;
       }

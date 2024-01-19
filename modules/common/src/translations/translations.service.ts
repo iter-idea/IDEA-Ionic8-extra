@@ -1,23 +1,24 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml } from 'idea-toolbox';
-
-import { environment as env } from '@env/environment';
-
-/**
- * Base folder containing the translations.
- */
-const BASE_PATH = 'assets/i18n/';
-/**
- * The modules for which to load the translations.
- */
-const MODULES_PATH = [''].concat(env.idea.ionicExtraModules ?? []);
+import { IDEAEnvironmentConfig } from 'environment';
 
 /**
  * Translations service.
  */
 @Injectable({ providedIn: 'root' })
 export class IDEATranslationsService {
+  protected env = inject(IDEAEnvironmentConfig);
+
+  /**
+   * Base folder containing the translations.
+   */
+  protected basePath = 'assets/i18n/';
+  /**
+   * The modules for which to load the translations.
+   */
+  protected modulesPath: string[];
+
   /**
    * Template matcher to interpolate complex strings (e.g. `{{user}}`).
    */
@@ -46,6 +47,10 @@ export class IDEATranslationsService {
    * To subscribe to language changes.
    */
   onLangChange = new EventEmitter<string>();
+
+  constructor() {
+    this.modulesPath = [''].concat(this.env.idea.ionicExtraModules ?? []);
+  }
 
   /**
    * Initialize the service.
@@ -203,10 +208,14 @@ export class IDEATranslationsService {
     return new Promise(resolve => {
       this.translations = {};
       this.translations[this.defaultLang] = {};
-      let promises = MODULES_PATH.map(m => this.loadTranslationFileHelper(BASE_PATH.concat(m), this.defaultLang));
+      let promises = this.modulesPath.map(m =>
+        this.loadTranslationFileHelper(this.basePath.concat(m), this.defaultLang)
+      );
       if (lang !== this.defaultLang) {
         this.translations[lang] = {};
-        promises = promises.concat(MODULES_PATH.map(m => this.loadTranslationFileHelper(BASE_PATH.concat(m), lang)));
+        promises = promises.concat(
+          this.modulesPath.map(m => this.loadTranslationFileHelper(this.basePath.concat(m), lang))
+        );
       }
       Promise.all(promises).then(() => resolve());
     });

@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { AuthModule } from '@auth0/auth0-angular';
 
-import { environment as env } from '@env/environment';
+import { IDEAEnvironmentConfig } from 'environment';
+const env = inject(IDEAEnvironmentConfig); // @todo to check
 
 @NgModule({
   imports: [
