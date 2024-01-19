@@ -4,11 +4,11 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { Auth0User } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
+import { IDEAEnvironment } from '@idea-ionic/common';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAAuth0Service {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   constructor(
     private platform: Platform,

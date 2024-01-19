@@ -2,13 +2,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Team, User } from 'idea-toolbox';
 import {
+  IDEAEnvironment,
   IDEALoadingService,
   IDEAAWSAPIService,
   IDEATinCanService,
   IDEAMessageService,
   IDEATranslationsService
 } from '@idea-ionic/common';
-import { IDEAEnvironmentConfig } from 'environment';
 
 @Component({
   selector: 'teams',
@@ -16,7 +16,7 @@ import { IDEAEnvironmentConfig } from 'environment';
   styleUrls: ['teams.page.scss']
 })
 export class IDEATeamsPage implements OnInit {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * The current user.

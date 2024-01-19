@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { AppStatus } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
 
+import { IDEAEnvironment } from '../../environment';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAApiService } from '../api.service';
 import { IDEAStorageService } from '../storage.service';
@@ -12,7 +12,7 @@ import { IDEAStorageService } from '../storage.service';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAAppStatusService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   storageKey: string;
 

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { Announcement, mdToHtml } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
 
+import { IDEAEnvironment } from '../../environment';
 import { IDEAStorageService } from '../storage.service';
 import { IDEATinCanService } from '../tinCan.service';
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -15,7 +15,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['announcement.component.scss']
 })
 export class IDEAAnnouncementComponent implements OnInit {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * The storage key to save th last announcement read on this device.

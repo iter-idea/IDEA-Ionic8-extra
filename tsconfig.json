@@ -15,8 +15,7 @@
       "auth": ["dist/auth", "dist/auth/auth"],
       "common": ["dist/common/common", "dist/common"],
       "map": ["dist/map", "dist/map/map"],
-      "teams": ["dist/teams", "dist/teams/teams"],
-      "@idea-ionic/common/*": ["../common/*"]
+      "teams": ["dist/teams", "dist/teams/teams"]
     },
     "declaration": false,
     "downlevelIteration": true,

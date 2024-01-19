@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
-import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
-import { IDEAEnvironmentConfig } from 'environment';
+import { IDEAEnvironment, IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
 
@@ -12,7 +11,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
   styleUrls: ['auth.scss']
 })
 export class IDEASignInPage {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   title: string;
   registrationPossible: boolean;

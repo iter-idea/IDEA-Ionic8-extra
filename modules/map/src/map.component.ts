@@ -4,8 +4,7 @@ import { Loader } from '@googlemaps/js-api-loader';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
 import { Geolocation } from '@capacitor/geolocation';
 import { Network } from '@capacitor/network';
-import { IDEATinCanService } from '@idea-ionic/common';
-import { IDEAEnvironmentConfig } from 'environment';
+import { IDEAEnvironment, IDEATinCanService } from '@idea-ionic/common';
 
 import { MAP_DARK_MODE_STYLE } from './darkMode.style';
 
@@ -41,7 +40,7 @@ const DEFAULT_ZOOM = 8;
   template: ''
 })
 export class IDEAMapComponent implements OnInit {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * The Google Maps' map object.

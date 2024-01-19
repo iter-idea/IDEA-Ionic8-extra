@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { epochDateTime } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
+
+import { IDEAEnvironment } from '../environment';
 
 /**
  * To communicate with an AWS API Gateway websocket istance.
@@ -8,7 +9,7 @@ import { IDEAEnvironmentConfig } from 'environment';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAWebSocketApiService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * The URL to connect for socket communication.

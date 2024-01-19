@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Platform } from '@ionic/angular';
-import { IDEAEnvironmentConfig } from 'environment';
 
+import { IDEAEnvironment } from '../environment';
 import { IDEAStorageService } from './storage.service';
 import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEATinCanService } from './tinCan.service';
@@ -18,7 +18,7 @@ import { IDEAOfflineService } from './offline/offline.service';
  */
 @Injectable()
 export class IDEAAWSAPIService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   apiStage: string;
   apiUrlProject: string;

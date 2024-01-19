@@ -111,3 +111,5 @@ export * from './src/pushNotifications.service';
 export * from './src/storage.service';
 export * from './src/tinCan.service';
 export * from './src/webSocketApi.service';
+
+export * from './environment';

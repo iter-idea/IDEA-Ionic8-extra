@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { mdToHtml, AppStatus } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
 
+import { IDEAEnvironment } from '../../environment';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAAppStatusService } from './appStatus.service';
 
@@ -16,7 +16,7 @@ import { IDEAAppStatusService } from './appStatus.service';
   styleUrls: ['appStatus.page.scss']
 })
 export class IDEAAppStatusPage {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   status: AppStatus;
   htmlContent: string;

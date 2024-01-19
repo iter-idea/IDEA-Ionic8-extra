@@ -9,8 +9,7 @@ import {
   ISignUpResult,
   ChallengeName
 } from 'amazon-cognito-identity-js';
-import { IDEAStorageService } from '@idea-ionic/common';
-import { IDEAEnvironmentConfig } from 'environment';
+import { IDEAEnvironment, IDEAStorageService } from '@idea-ionic/common';
 
 /**
  * Cognito wrapper to manage the authentication flow.
@@ -19,7 +18,7 @@ import { IDEAEnvironmentConfig } from 'environment';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAAuthService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * The name of the Cognito's user attribute which contains the key of the last device to login in this project.

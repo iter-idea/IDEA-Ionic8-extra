@@ -3,13 +3,13 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { Calendar, ExternalCalendarSources, Suggestion } from 'idea-toolbox';
 import {
+  IDEAEnvironment,
   IDEALoadingService,
   IDEAAWSAPIService,
   IDEAMessageService,
   IDEATranslationsService,
   IDEASuggestionsComponent
 } from '@idea-ionic/common';
-import { IDEAEnvironmentConfig } from 'environment';
 
 /**
  * Note: to test locally, you need to temporarily change the redirect URI:
@@ -19,7 +19,7 @@ import { IDEAEnvironmentConfig } from 'environment';
  */
 @Injectable()
 export class IDEACalendarsService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   constructor(
     public modalCtrl: ModalController,

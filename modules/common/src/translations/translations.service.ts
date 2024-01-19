@@ -1,14 +1,15 @@
 import { Injectable, EventEmitter, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
+
+import { IDEAEnvironment } from '../../environment';
 
 /**
  * Translations service.
  */
 @Injectable({ providedIn: 'root' })
 export class IDEATranslationsService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * Base folder containing the translations.

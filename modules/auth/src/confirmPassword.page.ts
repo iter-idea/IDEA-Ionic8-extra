@@ -1,8 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { NavController, PopoverController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
-import { IDEAEnvironmentConfig } from 'environment';
+import { IDEAEnvironment, IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
 
@@ -14,7 +13,7 @@ import { IDEAAuthService } from './auth.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAConfirmPasswordPage implements OnInit {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   email: string;
   newPassword: string;

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
-import { IDEAEnvironmentConfig } from 'environment';
+import { IDEAEnvironment } from '../environment';
 
 /**
  * To communicate with an AWS API Gateway istance.
@@ -9,7 +9,7 @@ import { IDEAEnvironmentConfig } from 'environment';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAApiService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * The base URL to which to make requests.

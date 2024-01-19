@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
 
+import { IDEAEnvironment } from '../../environment';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAOfflineService } from '../offline/offline.service';
 import { IDEATranslationsService } from '../translations/translations.service';
-
-import { IDEAEnvironmentConfig } from 'environment';
 
 @Component({
   selector: 'idea-sentiment',
@@ -13,7 +12,7 @@ import { IDEAEnvironmentConfig } from 'environment';
   styleUrls: ['sentiment.component.scss']
 })
 export class IDEASentimentComponent implements OnChanges {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * The sentiment detected from the input text.

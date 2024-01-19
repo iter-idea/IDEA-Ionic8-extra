@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { epochDateTime } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
 
+import { IDEAEnvironment } from '../environment';
 import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEAOfflineService } from './offline/offline.service';
 import { IDEATinCanService } from './tinCan.service';
@@ -13,7 +13,7 @@ import { IDEATinCanService } from './tinCan.service';
  */
 @Injectable()
 export class IDEAAWSAPISocketService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   apiStage: string;
   /**

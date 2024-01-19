@@ -1,8 +1,7 @@
 import { NgModule, inject } from '@angular/core';
 import { AuthModule } from '@auth0/auth0-angular';
-
-import { IDEAEnvironmentConfig } from 'environment';
-const env = inject(IDEAEnvironmentConfig); // @todo to check
+import { IDEAEnvironment } from '@idea-ionic/common';
+const env = inject(IDEAEnvironment); // @todo to check
 
 @NgModule({
   imports: [

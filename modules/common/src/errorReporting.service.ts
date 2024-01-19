@@ -2,11 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { ClientInfo, ErrorReport } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
+
+import { IDEAEnvironment } from '../environment';
 
 @Injectable()
 export class IDEAErrorReportingService {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   apiStage: string;
   apiUrl: string;

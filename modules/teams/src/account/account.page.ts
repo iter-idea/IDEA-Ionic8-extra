@@ -2,13 +2,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { User } from 'idea-toolbox';
 import {
+  IDEAEnvironment,
   IDEALoadingService,
   IDEAAWSAPIService,
   IDEATinCanService,
   IDEAMessageService,
   IDEATranslationsService
 } from '@idea-ionic/common';
-import { IDEAEnvironmentConfig } from 'environment';
 
 @Component({
   selector: 'account',
@@ -16,7 +16,7 @@ import { IDEAEnvironmentConfig } from 'environment';
   styleUrls: ['account.page.scss']
 })
 export class IDEAAccountPage implements OnInit {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   public user: User;
   public newEmail: string;

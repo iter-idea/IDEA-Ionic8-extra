@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { IDEAEnvironmentConfig } from 'environment';
+import { IDEAEnvironment } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-password-policy',
@@ -44,7 +44,7 @@ import { IDEAEnvironmentConfig } from 'environment';
   ]
 })
 export class IDEAPasswordPolicyComponent {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   passwordPolicy: any;
 

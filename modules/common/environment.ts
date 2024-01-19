@@ -3,10 +3,10 @@ import { InjectionToken } from '@angular/core';
 /**
  * The token to inject the app configurations in the module.
  */
-export const IDEAEnvironmentConfig = new InjectionToken<IDEAEnvironmentConfiguration>('IDEA environment configuration');
+export const IDEAEnvironment = new InjectionToken<IDEAEnvironmentConfiguration | any>('IDEA environment configuration');
 
 /**
- * The environment variables used by this module.
+ * The environment variables used by IDEA Ionic Extra's modules.
  */
 export interface IDEAEnvironmentConfiguration {
   idea: {

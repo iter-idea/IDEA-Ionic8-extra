@@ -2,8 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ExternalCalendarSources, mdToHtml } from 'idea-toolbox';
-import { IDEAEnvironmentConfig } from 'environment';
 
+import { IDEAEnvironment } from '../../environment';
 import { IDEALoadingService } from '../loading.service';
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
@@ -15,7 +15,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['echo.page.scss']
 })
 export class IDEAEchoPage implements OnInit {
-  protected env = inject(IDEAEnvironmentConfig);
+  protected env = inject(IDEAEnvironment);
 
   /**
    * The message/content to show.
