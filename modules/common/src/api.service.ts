@@ -35,8 +35,8 @@ export class IDEAApiService {
   apiKey: string;
 
   constructor(private platform: Platform) {
-    this.baseURL = `https://${this.env.idea.api?.url}/${this.env.idea.api?.stage}`;
-    this.appVersion = this.env.idea.app?.version || '?';
+    this.baseURL = 'https://'.concat([this.env.idea.api?.url, this.env.idea.api?.stage].join('/'));
+    this.appVersion = this.env.idea.app?.version ?? '?';
     this.appBundle = this.env.idea.app?.bundle;
   }
 

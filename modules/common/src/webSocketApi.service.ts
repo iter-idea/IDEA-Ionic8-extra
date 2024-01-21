@@ -58,7 +58,7 @@ export class IDEAWebSocketApiService {
   protected wasOpenAtLeastOnce: boolean;
 
   constructor() {
-    this.apiURL = `wss://${this.env.idea.socket?.url}/${this.env.idea.socket?.stage}`;
+    this.apiURL = 'wss://'.concat([this.env.idea.socket?.url, this.env.idea.socket?.stage].join('/'));
   }
 
   /**

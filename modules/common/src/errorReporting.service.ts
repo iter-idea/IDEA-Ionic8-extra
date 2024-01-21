@@ -16,8 +16,8 @@ export class IDEAErrorReportingService {
     protected http: HttpClient,
     protected platform: Platform
   ) {
-    this.apiStage = this.env.idea.ideaApi?.stage || (this.env.idea.ideaApi as any)?.version;
-    this.apiUrl = `https://${this.env.idea.ideaApi?.url}/${this.apiStage}`;
+    this.apiStage = this.env.idea.ideaApi?.stage ?? (this.env.idea.ideaApi as any)?.version;
+    this.apiUrl = 'https://'.concat([this.env.idea.ideaApi?.url, this.apiStage].join('/'));
   }
 
   /**

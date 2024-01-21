@@ -33,10 +33,10 @@ export class IDEAAWSAPIService {
     protected errorReporting: IDEAErrorReportingService,
     protected offline: IDEAOfflineService
   ) {
-    this.apiStage = this.env.idea.api?.stage || (this.env.idea.api as any)?.version;
-    this.apiUrlProject = `https://${this.env.idea.api?.url}/${this.apiStage}`;
-    this.ideaApiStage = this.env.idea.ideaApi?.stage || (this.env.idea.ideaApi as any)?.version;
-    this.apiUrlIDEA = `https://${this.env.idea.ideaApi?.url}/${this.ideaApiStage}`;
+    this.apiStage = this.env.idea.api?.stage ?? (this.env.idea.api as any)?.version;
+    this.apiUrlProject = 'https://'.concat([this.env.idea.api?.url, this.apiStage].join('/'));
+    this.ideaApiStage = this.env.idea.ideaApi?.stage ?? (this.env.idea.ideaApi as any)?.version;
+    this.apiUrlIDEA = 'https://'.concat([this.env.idea.ideaApi?.url, this.ideaApiStage].join('/'));
   }
 
   /**

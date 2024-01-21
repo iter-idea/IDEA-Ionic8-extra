@@ -20,15 +20,15 @@ export interface IDEAEnvironmentConfiguration {
     };
     api?: {
       url: string;
-      stage: string;
+      stage?: string;
     };
     ideaApi?: {
       url: string;
-      stage: string;
+      stage?: string;
     };
     socket?: {
       url: string;
-      stage: string;
+      stage?: string;
     };
     auth?: {
       title?: string;
