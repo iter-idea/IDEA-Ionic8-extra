@@ -17,7 +17,7 @@ export class IDEAErrorReportingService {
     protected platform: Platform
   ) {
     this.apiStage = this.env.idea.ideaApi?.stage ?? (this.env.idea.ideaApi as any)?.version;
-    this.apiUrl = 'https://'.concat([this.env.idea.ideaApi?.url, this.apiStage].join('/'));
+    this.apiUrl = 'https://'.concat([this.env.idea.ideaApi?.url, this.apiStage].filter(x => x).join('/'));
   }
 
   /**

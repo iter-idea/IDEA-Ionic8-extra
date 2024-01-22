@@ -34,9 +34,9 @@ export class IDEAAWSAPIService {
     protected offline: IDEAOfflineService
   ) {
     this.apiStage = this.env.idea.api?.stage ?? (this.env.idea.api as any)?.version;
-    this.apiUrlProject = 'https://'.concat([this.env.idea.api?.url, this.apiStage].join('/'));
+    this.apiUrlProject = 'https://'.concat([this.env.idea.api?.url, this.apiStage].filter(x => x).join('/'));
     this.ideaApiStage = this.env.idea.ideaApi?.stage ?? (this.env.idea.ideaApi as any)?.version;
-    this.apiUrlIDEA = 'https://'.concat([this.env.idea.ideaApi?.url, this.ideaApiStage].join('/'));
+    this.apiUrlIDEA = 'https://'.concat([this.env.idea.ideaApi?.url, this.ideaApiStage].filter(x => x).join('/'));
   }
 
   /**

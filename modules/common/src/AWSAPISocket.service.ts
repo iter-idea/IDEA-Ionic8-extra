@@ -65,7 +65,7 @@ export class IDEAAWSAPISocketService {
     protected offline: IDEAOfflineService
   ) {
     this.apiStage = this.env.idea.socket?.stage ?? (this.env.idea.socket as any)?.version;
-    this.WEBSOCKET_API_URL = 'wss://'.concat([this.env.idea.socket?.url, this.apiStage].join('/'));
+    this.WEBSOCKET_API_URL = 'wss://'.concat([this.env.idea.socket?.url, this.apiStage].filter(x => x).join('/'));
   }
 
   /**
