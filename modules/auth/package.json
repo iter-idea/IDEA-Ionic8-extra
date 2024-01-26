@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/auth",
-  "version": "7.2.10",
+  "version": "7.2.11",
   "description": "IDEA Ionic auth flow",
   "dependencies": {
     "amazon-cognito-identity-js": "^6.3.7",
