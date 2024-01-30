@@ -61,7 +61,6 @@ export class IDEATeamsPage implements OnInit {
    * Change the currently selected team.
    */
   public async selectTeam(team: Team) {
-    if (this.isCurrentTeam(team)) return this.navCtrl.navigateBack(['teams', team.teamId]);
     // request a team change (so that the current teamId of the user is updated)
     await this.loading.show();
     this.API.patchResource('users', {
