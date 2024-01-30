@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/barcode",
-  "version": "7.2.11",
+  "version": "7.2.12",
   "description": "IDEA Ionic barcode components",
   "dependencies": {
     "tslib": "^2.4.1"
