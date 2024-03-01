@@ -3,6 +3,7 @@
   "version": "7.2.12",
   "description": "IDEA Ionic teams components",
   "dependencies": {
+    "heic2any": "^0.0.4",
     "tslib": "^2.4.1"
   },
   "peerDependencies": {

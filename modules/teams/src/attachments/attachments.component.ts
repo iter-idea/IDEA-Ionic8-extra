@@ -1,8 +1,9 @@
+import heic2any from 'heic2any';
 import { Component, Input, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
-import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
-import { Attachment, SignedURL } from 'idea-toolbox';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Attachment } from 'idea-toolbox';
 import {
   IDEALoadingService,
   IDEAAWSAPIService,
@@ -21,186 +22,156 @@ export class IDEAttachmentsComponent implements OnInit {
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
-  @Input() public team: string;
+  @Input() team: string | null = null;
   /**
    * The path to the online API resource, as an array. Don't include the team. E.g. `['entities', entityId]`.
    */
-  @Input() public pathResource: string[];
+  @Input() pathResource: string[] = [];
   /**
    * The array in which we want to add/remove attachments.
    */
-  @Input() public attachments: Attachment[];
+  @Input() attachments: Attachment[] | null = null;
   /**
    * Regulate the mode (view/edit).
    */
-  @Input() public editMode: boolean;
+  @Input() editMode = false;
   /**
    * Show errors as reported from the parent component.
    */
-  @Input() public errors: Set<string>;
+  @Input() errors = new Set<string>();
   /**
    * The lines attribute of the item.
    */
-  @Input() public lines: string;
+  @Input() lines = 'none';
 
   /**
    * URL towards to make API requests, based on the path of the resource.
    */
-  public requestURL: string;
+  requestURL: string;
   /**
    * Stack of errors from the last upload.
    */
-  public uploadErrors: string[];
+  uploadErrors: string[] = [];
 
   constructor(
-    public platform: Platform,
-    public t: IDEATranslationsService,
-    public loading: IDEALoadingService,
-    public message: IDEAMessageService,
+    private platform: Platform,
+    private loading: IDEALoadingService,
+    private message: IDEAMessageService,
+    private tc: IDEATinCanService,
+    private api: IDEAAWSAPIService,
     public offline: IDEAOfflineService,
-    public tc: IDEATinCanService,
-    public API: IDEAAWSAPIService
-  ) {
-    this.team = null;
-    this.pathResource = new Array<string>();
-    this.attachments = null;
-    this.editMode = false;
-    this.lines = 'none';
-    this.errors = new Set<string>();
-    this.uploadErrors = new Array<string>();
-  }
-  public ngOnInit() {
+    public t: IDEATranslationsService
+  ) {}
+  ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
     this.team = this.team || this.tc.get('membership').teamId || this.tc.get('teamId');
-    // Build the URL target of the requests
+    // build the URL target of the requests
     this.requestURL = `teams/${this.team}/`;
     if (this.pathResource && this.pathResource.length)
       this.requestURL = this.requestURL.concat(this.pathResource.filter(x => x).join('/'));
   }
 
-  /**
-   * Browse the local files to select an attachment.
-   */
-  public browseFiles() {
-    document.getElementById('attachmentPicker').click();
+  isCapacitor(): boolean {
+    return this.platform.is('capacitor');
   }
 
-  /**
-   * Set the support array to display errors in the UI.
-   */
-  public hasFieldAnError(field: string): boolean {
+  hasFieldAnError(field: string): boolean {
     return this.errors.has(field);
   }
 
-  /**
-   * Add an attachment from a file picked.
-   */
-  public addAttachmentFromFile(ev: any) {
+  browseFiles(): void {
+    document.getElementById('attachmentPicker').click();
+  }
+  addAttachmentFromFile(ev: any): void {
     this.uploadErrors = new Array<string>();
     const files: FileList = ev.target ? ev.target.files : {};
     for (let i = 0; i < files.length; i++) {
-      // prepare the attachment metadata
       const file = files.item(i);
       const fullName = file.name.split('.');
       const format = fullName.pop();
       const name = fullName.join('.');
-      // add the attachment
       this.addAttachment(name, format, file);
     }
   }
-  /**
-   * Open the camera and take a picture to then add it to the attachments.
-   */
-  public takePictureAndAttach(ev: Event) {
+  async takePictureAndAttach(ev: Event): Promise<void> {
     if (ev) ev.stopPropagation();
-    // go on only if the platform supports the camera
     if (!this.platform.is('capacitor') || !Camera) return;
-    // take a picture
-    Camera.getPhoto({
+    const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       source: CameraSource.Camera,
       resultType: CameraResultType.Base64
-    }).then((image: Photo) => {
-      const filename = new Date().toISOString();
-      const content = this.base64toBlob(image.base64String, 'image/jpeg');
-      this.addAttachment(filename, image.format, content);
     });
+    const filename = new Date().toISOString();
+    const content = this.base64toBlob(image.base64String, 'image/jpeg');
+    this.addAttachment(filename, image.format, content);
   }
-  /**
-   * Convert a base64 string to Blob.
-   */
-  protected base64toBlob(base64str: string, type: string): Blob {
+  private base64toBlob(base64str: string, type: string): Blob {
     const binary = atob(base64str);
     const array = [];
     for (let i = 0; i < binary.length; i++) array.push(binary.charCodeAt(i));
     return new Blob([new Uint8Array(array)], { type });
   }
-  /**
-   * Add an attachment to the array, request the signed URL and upload the file.
-   * Finally, set the attachment as complete (by assigning the id).
-   */
-  protected addAttachment(name: string, format: string, content: any) {
-    // prepare the attachment metadata
+  private async addAttachment(name: string, format: string, content: any): Promise<void> {
+    if (format === FileFormatTypes.HEIC) {
+      format = FileFormatTypes.JPEG;
+      content = await heic2any({ blob: content, toType: 'image/jpeg' });
+    }
     const attachment = new Attachment({ name, format });
-    // add the attachment to the list
     this.attachments.push(attachment);
-    // request a URL to upload the file
-    this.API.patchResource(this.requestURL, {
-      body: { action: 'ATTACHMENTS_PUT', attachmentId: attachment.attachmentId }
-    })
-      .then((signedURL: SignedURL) => {
-        // upload the file
-        this.API.rawRequest()
-          .put(signedURL.url, content)
-          .toPromise()
-          .then(() => (attachment.attachmentId = signedURL.id))
-          .catch(() => {
-            this.uploadErrors.push(name);
-            this.removeAttachment(attachment);
-            this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
-          });
-      })
-      .catch(() => {
-        this.uploadErrors.push(name);
-        this.removeAttachment(attachment);
-        this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+    try {
+      const signedURL = await this.api.patchResource(this.requestURL, {
+        body: { action: 'ATTACHMENTS_PUT', attachmentId: attachment.attachmentId }
       });
+      await this.api.rawRequest().put(signedURL.url, content).toPromise();
+      attachment.attachmentId = signedURL.id;
+    } catch (error) {
+      this.uploadErrors.push(name);
+      this.removeAttachment(attachment);
+      this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+    }
   }
 
-  /**
-   * Remove an attachment from the ones previously added.
-   */
-  public removeAttachment(attachment: Attachment) {
-    this.attachments.splice(this.attachments.indexOf(attachment), 1);
+  removeAttachment(attachment: Attachment): void {
+    const index = this.attachments.indexOf(attachment);
+    if (index !== -1) this.attachments.splice(index, 1);
   }
 
-  /**
-   * Request the attachment and open it.
-   */
-  public async openAttachment(attachment: Attachment) {
-    await this.loading.show();
-    this.API.patchResource(this.requestURL, {
-      body: { action: 'ATTACHMENTS_GET', attachmentId: attachment.attachmentId }
-    })
-      .then((res: SignedURL) => Browser.open({ url: res.url }))
-      .catch(() => this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT'))
-      .finally(() => this.loading.hide());
+  async openAttachment(attachment: Attachment): Promise<void> {
+    try {
+      await this.loading.show();
+      const { url } = await this.api.patchResource(this.requestURL, {
+        body: { action: 'ATTACHMENTS_GET', attachmentId: attachment.attachmentId }
+      });
+      await Browser.open({ url });
+    } catch (error) {
+      this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT');
+    } finally {
+      this.loading.hide();
+    }
   }
 
-  /**
-   * Return the name of an icon representing the format.
-   */
-  public getFormatIcon(format: string): string {
+  getFormatIcon(format: string): string {
     switch (format) {
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
+      case FileFormatTypes.JPG:
+      case FileFormatTypes.JPEG:
+      case FileFormatTypes.PNG:
         return 'image';
-      case 'pdf':
+      case FileFormatTypes.PDF:
         return 'document';
       default:
         return 'help';
     }
   }
+}
+
+/**
+ * The possibile file types (formats).
+ */
+enum FileFormatTypes {
+  JPG = 'jpg',
+  JPEG = 'jpeg',
+  PNG = 'png',
+  PDF = 'pdf',
+  HEIC = 'heic'
 }
