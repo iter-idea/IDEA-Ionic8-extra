@@ -10,6 +10,9 @@
   .placeholder {
     color: var(--ion-color-medium);
   }
+  .value {
+    white-space: nowrap;
+  }
   .selectIcon {
     margin: 0;
     padding-left: 4px;
