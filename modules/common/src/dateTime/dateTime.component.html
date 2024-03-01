@@ -21,11 +21,11 @@
     {{ label }}
     <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
   </ion-label>
-  <ion-input [readonly]="disabled" class="value" [class.selectable]="!disabled">
+  <ion-label class="value" [class.selectable]="!disabled">
     <ion-text class="placeholder" *ngIf="!valueToDisplay && !disabled" [class.selectable]="!disabled">
       {{ placeholder }}
     </ion-text>
     {{ valueToDisplay }}
-  </ion-input>
+  </ion-label>
   <ion-icon slot="end" icon="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
 </ion-item>
