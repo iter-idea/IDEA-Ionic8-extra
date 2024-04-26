@@ -2,6 +2,21 @@
   "name": "@idea-ionic/map",
   "version": "7.2.15",
   "description": "IDEA Ionic map component",
+  "license": "MPL-2.0",
+  "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iter-idea/IDEA-Ionic7-extra"
+  },
+  "homepage": "https://github.com/iter-idea/IDEA-Ionic7-extra/tree/main/modules/map",
+  "keywords": [
+    "idea",
+    "ionic",
+    "angular"
+  ],
+  "bugs": {
+    "url": "https://github.com/iter-idea/IDEA-Ionic7-extra/issues"
+  },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.2",
     "@googlemaps/markerclustererplus": "^1.2.10",
@@ -42,20 +57,5 @@
     "idea-toolbox": "^7.x.x",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iter-idea/IDEA-Ionic-extra.git"
-  },
-  "keywords": [
-    "idea",
-    "ionic",
-    "angular"
-  ],
-  "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/iter-idea/IDEA-Ionic-extra/issues"
-  },
-  "homepage": "https://github.com/iter-idea/IDEA-Ionic-extra/tree/master/map"
+  }
 }

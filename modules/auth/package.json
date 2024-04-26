@@ -2,6 +2,21 @@
   "name": "@idea-ionic/auth",
   "version": "7.2.15",
   "description": "IDEA Ionic auth flow",
+  "license": "MPL-2.0",
+  "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iter-idea/IDEA-Ionic7-extra"
+  },
+  "homepage": "https://github.com/iter-idea/IDEA-Ionic7-extra/tree/main/modules/auth",
+  "keywords": [
+    "idea",
+    "ionic",
+    "angular"
+  ],
+  "bugs": {
+    "url": "https://github.com/iter-idea/IDEA-Ionic7-extra/issues"
+  },
   "dependencies": {
     "amazon-cognito-identity-js": "^6.3.7",
     "tslib": "^2.4.1"
@@ -39,20 +54,5 @@
     "qrcode": "^1.5.3",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iter-idea/IDEA-Ionic-extra.git"
-  },
-  "keywords": [
-    "idea",
-    "ionic",
-    "angular"
-  ],
-  "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/iter-idea/IDEA-Ionic-extra/issues"
-  },
-  "homepage": "https://github.com/iter-idea/IDEA-Ionic-extra/tree/master/auth"
+  }
 }
