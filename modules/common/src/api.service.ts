@@ -34,6 +34,11 @@ export class IDEAApiService {
    */
   apiKey: string;
 
+  /**
+   * Some custom headers to set so that they are used in any API request.
+   */
+  defaultHeaders: Record<string, string | number> = {};
+
   constructor(private platform: Platform) {
     this.baseURL = 'https://'.concat([this.env.idea.api?.url, this.env.idea.api?.stage].filter(x => x).join('/'));
     this.appVersion = this.env.idea.app?.version ?? '?';
@@ -60,7 +65,7 @@ export class IDEAApiService {
     }
     if (this.apiKey) builtInHeaders['X-API-Key'] = this.apiKey;
 
-    const headers: any = { ...builtInHeaders, ...options.headers };
+    const headers: any = { ...builtInHeaders, ...this.defaultHeaders, ...options.headers };
 
     const searchParams = new URLSearchParams();
     searchParams.append('_v', this.appVersion);
@@ -130,7 +135,9 @@ export class IDEAApiService {
  */
 interface ApiRequestOptions {
   /**
-   * The additional headers of the request; `Authorization` and `X-API-Key` are included by default, if set.
+   * The additional headers of the request.
+   * The headers "Authorization" and "X-API-Key" are included by default, if set.
+   * The headers set in `defaultHeaders` are always added to any API request.
    */
   headers?: { [key: string]: string | number | boolean };
   /**
