@@ -41,12 +41,18 @@ export class IDEACustomBlockComponent {
 
   CFT = CustomFieldTypes;
 
-  constructor(private alertCtrl: AlertController, public t: IDEATranslationsService) {}
+  constructor(
+    private alertCtrl: AlertController,
+    public t: IDEATranslationsService
+  ) {}
 
   hasFieldAnError(field: string): boolean {
     return this.errors.has(field);
   }
 
+  hasDescription(sectionKey: string, fieldKey: string): boolean {
+    return !!this.t._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+  }
   async openDescription(sectionKey: string, fieldKey: string, event: any): Promise<void> {
     if (event) event.stopPropagation();
     const message = this.t._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);

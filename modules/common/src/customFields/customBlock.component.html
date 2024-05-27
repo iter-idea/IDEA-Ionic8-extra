@@ -41,6 +41,7 @@
         slot="start"
         class="marginTop"
         *ngIf="!hideDescriptions && !disabled"
+        [disabled]="!hasDescription(s, f)"
         [color]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
         (click)="openDescription(s, f, $event)"
       >
@@ -78,6 +79,7 @@
         fill="clear"
         slot="start"
         *ngIf="!hideDescriptions && !disabled"
+        [disabled]="!hasDescription(s, f)"
         [color]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
         (click)="openDescription(s, f, $event)"
       >
