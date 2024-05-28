@@ -41,8 +41,13 @@ export class IDEAConfirmPasswordPage implements OnInit {
 
   async confirmPassword(): Promise<void> {
     try {
+      await this.loading.show();
       this.errorMsg = null;
       const errors = this.auth.validatePasswordAgainstPolicy(this.newPassword);
+      if (errors.length === 0 && this.passwordPolicy.advancedPasswordCheck) {
+        const emailParts = [...this.email?.split('@')[0].split(/\W/g)];
+        errors.push(...(await this.auth.validatePasswordAgainstDatabases(this.newPassword, emailParts)));
+      }
       if (errors.length)
         this.errorMsg = [
           this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
@@ -51,8 +56,6 @@ export class IDEAConfirmPasswordPage implements OnInit {
           )
         ].join(' ');
       if (this.errorMsg) return this.message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
-
-      await this.loading.show();
       await this.auth.confirmPassword(this.email, this.code, this.newPassword);
       this.message.success('IDEA_AUTH.PASSWORD_CHANGED');
       this.goToAuth();

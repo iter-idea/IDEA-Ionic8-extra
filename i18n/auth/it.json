@@ -20,7 +20,11 @@
       "REQUIRE_DIGITS": "Contiene almeno 1 numero.",
       "REQUIRE_LOWERCASE": "Contiene almeno 1 lettera minuscola.",
       "REQUIRE_SYMBOLS": "Contiene almeno 1 carattere speciale.",
-      "REQUIRE_UPPERCASE": "Contiene almeno 1 lettera maiuscola."
+      "REQUIRE_UPPERCASE": "Contiene almeno 1 lettera maiuscola.",
+      "COMMON_PASSWORD_PROJECT": "Evita caratteri da liste di password non sicure (progetto).",
+      "COMMON_PASSWORD_CUSTOM": "Evita caratteri da liste di password non sicure (utente).",
+      "COMMON_PASSWORD_INTERNAL": "Evita caratteri da liste di password non sicure (database interno).",
+      "COMMON_PASSWORD_EXTERNAL": "Evita caratteri da liste di password non sicure (database esterno)."
     },
     "PASSWORD_POLICY_TITLE": "Regole password",
     "PASSWORD_POLICY_DEFAULT": "La password deve contenere almeno 8 caratteri.",

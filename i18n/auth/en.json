@@ -20,7 +20,11 @@
       "REQUIRE_DIGITS": "Contains at least 1 number.",
       "REQUIRE_LOWERCASE": "Contains at least 1 lowercase letter.",
       "REQUIRE_SYMBOLS": "Contains at least 1 special character.",
-      "REQUIRE_UPPERCASE": "Contains at least 1 uppercase letter."
+      "REQUIRE_UPPERCASE": "Contains at least 1 uppercase letter.",
+      "COMMON_PASSWORD_PROJECT": "Avoid characters from unsecure password block lists (project).",
+      "COMMON_PASSWORD_CUSTOM": "Avoid characters from unsecure password block lists (user).",
+      "COMMON_PASSWORD_INTERNAL": "Avoid characters from unsecure password block lists (internal database).",
+      "COMMON_PASSWORD_EXTERNAL": "Avoid characters from unsecure password block lists (external database)."
     },
     "CHOOSE_A_PASSWORD": "Choose a password",
     "CONFIRMATION_LINK_SENT": "Confirmation link sent",

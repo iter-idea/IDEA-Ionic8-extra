@@ -44,6 +44,7 @@ export interface IDEAEnvironmentConfiguration {
         requireDigits: boolean;
         requireSymbols: boolean;
         requireUppercase: boolean;
+        advancedPasswordCheck?: boolean;
       };
     };
   };

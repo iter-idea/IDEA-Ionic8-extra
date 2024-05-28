@@ -9,7 +9,9 @@ import {
   ISignUpResult,
   ChallengeName
 } from 'amazon-cognito-identity-js';
-import { IDEAEnvironment, IDEAStorageService } from '@idea-ionic/common';
+import { IDEAEnvironment, IDEAStorageService, IDEATranslationsService } from '@idea-ionic/common';
+
+import { COMMON_PASSWORDS_TOP_1000 } from './commonPasswords.model';
 
 /**
  * Cognito wrapper to manage the authentication flow.
@@ -19,6 +21,7 @@ import { IDEAEnvironment, IDEAStorageService } from '@idea-ionic/common';
 @Injectable({ providedIn: 'root' })
 export class IDEAAuthService {
   protected env = inject(IDEAEnvironment);
+  protected t = inject(IDEATranslationsService);
 
   /**
    * The name of the Cognito's user attribute which contains the key of the last device to login in this project.
@@ -464,13 +467,36 @@ export class IDEAAuthService {
    * In case there are errors, they are returned as an array of strings.
    */
   validatePasswordAgainstPolicy(password: string): string[] {
-    const errors = [];
+    const errors: string[] = [];
     if (password?.trim().length < this.passwordPolicy.minLength) errors.push('MIN_LENGTH');
     if (this.passwordPolicy.requireDigits && !/\d/.test(password)) errors.push('REQUIRE_DIGITS');
     if (this.passwordPolicy.requireLowercase && !/[a-z]/.test(password)) errors.push('REQUIRE_LOWERCASE');
     if (this.passwordPolicy.requireSymbols && !/[\^\$\*\.\_\~\`\+\=@\!\?\>\<\:\;\\\,\#\%\&]/.test(password))
       errors.push('REQUIRE_SYMBOLS');
     if (this.passwordPolicy.requireUppercase && !/[A-Z]/.test(password)) errors.push('REQUIRE_UPPERCASE');
+    return errors;
+  }
+  /**
+   * Validate the password against offline and online databases, to avoid common and exploited passwords.
+   */
+  async validatePasswordAgainstDatabases(password: string, customStringsToAvoid?: string[]): Promise<string[]> {
+    const errors: string[] = [];
+    let pwd = (password || '').trim().toLowerCase();
+    const pwdContains = (str: string): boolean => pwd.includes((str || '').trim().toLowerCase());
+    const projectReferencesToAvoid = [this.env.idea.project, this.env.idea.auth.title, this.t._('COMMON.APP_NAME')];
+    if (projectReferencesToAvoid.some(x => pwdContains(x))) errors.push('COMMON_PASSWORD_PROJECT');
+    if (customStringsToAvoid && customStringsToAvoid.some(x => pwdContains(x))) errors.push('COMMON_PASSWORD_CUSTOM');
+    if (COMMON_PASSWORDS_TOP_1000.some(x => pwdContains(x))) errors.push('COMMON_PASSWORD_INTERNAL');
+    if (errors.length === 0) {
+      const pwdSHA1 = await SHA1(password);
+      if (pwdSHA1) {
+        const res = await fetch('https://api.pwnedpasswords.com/range/'.concat(pwdSHA1.slice(0, 5)));
+        if (res.status === 200) {
+          const pwnedPasswordsRawSuffixes = await res.text();
+          if (pwnedPasswordsRawSuffixes.includes(pwdSHA1.slice(5))) errors.push('COMMON_PASSWORD_EXTERNAL');
+        }
+      }
+    }
     return errors;
   }
   /**
@@ -497,3 +523,15 @@ export enum LoginOutcomeActions {
   MFA_CHALLENGE = 'mfaChallenge',
   MFA_SETUP = 'mfaSetup'
 }
+
+/**
+ * Get the SHA1 hex uppercase hash of a string, using web crypto.
+ */
+const SHA1 = async (str: string): Promise<string | null> => {
+  if (!window.crypto) return null;
+  const msgUint8 = new TextEncoder().encode(str);
+  const hashBuffer = await window.crypto.subtle.digest('SHA-1', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex.toUpperCase();
+};

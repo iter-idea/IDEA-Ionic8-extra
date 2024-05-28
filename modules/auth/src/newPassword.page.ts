@@ -34,8 +34,11 @@ export class IDEANewPasswordPage implements OnInit {
 
   async confirmNewPassword(): Promise<void> {
     try {
+      await this.loading.show();
       this.errorMsg = null;
       const errors = this.auth.validatePasswordAgainstPolicy(this.newPassword);
+      if (errors.length === 0 && this.passwordPolicy.advancedPasswordCheck)
+        errors.push(...(await this.auth.validatePasswordAgainstDatabases(this.newPassword)));
       if (errors.length)
         this.errorMsg = [
           this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
@@ -44,8 +47,6 @@ export class IDEANewPasswordPage implements OnInit {
           )
         ].join(' ');
       if (this.errorMsg) return this.message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
-
-      await this.loading.show();
       await this.auth.confirmNewPassword(this.newPassword);
       window.location.assign('');
     } catch (error) {

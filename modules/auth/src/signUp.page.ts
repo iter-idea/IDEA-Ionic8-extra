@@ -40,22 +40,25 @@ export class IDEASignUpPage implements OnInit {
   }
 
   async register(): Promise<void> {
-    this.errorMsg = null;
-    if (isEmpty(this.email, 'email')) this.errorMsg = this.t._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
-    else {
-      const errors = this.auth.validatePasswordAgainstPolicy(this.password);
-      if (errors.length)
-        this.errorMsg = [
-          this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
-          ...errors.map(x =>
-            this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
-          )
-        ].join(' ');
-    }
-    if (this.errorMsg) return this.message.error('IDEA_AUTH.REGISTRATION_FAILED');
-
     try {
       await this.loading.show();
+      this.errorMsg = null;
+      if (isEmpty(this.email, 'email')) this.errorMsg = this.t._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
+      else {
+        const errors = this.auth.validatePasswordAgainstPolicy(this.password);
+        if (errors.length === 0 && this.passwordPolicy.advancedPasswordCheck) {
+          const emailParts = [...this.email?.split('@')[0].split(/\W/g)];
+          errors.push(...(await this.auth.validatePasswordAgainstDatabases(this.password, emailParts)));
+        }
+        if (errors.length)
+          this.errorMsg = [
+            this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
+            ...errors.map(x =>
+              this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
+            )
+          ].join(' ');
+      }
+      if (this.errorMsg) return this.message.error('IDEA_AUTH.REGISTRATION_FAILED');
       await this.auth.register(this.email, this.password);
       this.message.success('IDEA_AUTH.REGISTRATION_COMPLETED');
       this.goToAuth();
