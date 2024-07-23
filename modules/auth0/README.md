@@ -14,7 +14,3 @@ _Be sure to install all the requested peer dependencies._
 
 Make sure that there is a path (tsconfig file) pointing to `@env` which contains the environment files (Angular standard).
 Finally, add in the environments desired the variables you find in the `environment.ts` file of this module.
-
-## Services
-
-- Auth0

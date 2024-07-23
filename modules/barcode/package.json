@@ -1,45 +1,35 @@
 {
   "name": "@idea-ionic/barcode",
-  "version": "7.3.0",
+  "version": "8.0.1",
   "description": "IDEA Ionic barcode components",
   "license": "MPL-2.0",
   "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iter-idea/IDEA-Ionic7-extra"
+    "url": "git+https://github.com/iter-idea/IDEA-Ionic8-extra"
   },
-  "homepage": "https://github.com/iter-idea/IDEA-Ionic7-extra/tree/main/modules/barcode",
+  "homepage": "https://github.com/iter-idea/IDEA-Ionic8-extra/tree/main/modules/barcode",
   "keywords": [
     "idea",
     "ionic",
     "angular"
   ],
   "bugs": {
-    "url": "https://github.com/iter-idea/IDEA-Ionic7-extra/issues"
+    "url": "https://github.com/iter-idea/IDEA-Ionic8-extra/issues"
+  },
+  "peerDependencies": {
+    "@angular/common": "^18.1.1",
+    "@angular/core": "^18.1.1",
+    "@angular/forms": "^18.1.1",
+    "@capacitor-mlkit/barcode-scanning": "^6.1.0",
+    "@capacitor/core": "6.1.1",
+    "@ionic/angular": "^8.0.0",
+    "com-darryncampbell-cordova-plugin-intent": "^2.2.0",
+    "rxjs": "~7.8.0",
+    "zone.js": "~0.14.3"
   },
   "dependencies": {
     "tslib": "^2.4.1"
   },
-  "peerDependencies": {
-    "@angular/common": "^17.0.2",
-    "@angular/core": "^17.0.2",
-    "@angular/forms": "^17.0.2",
-    "@capacitor-community/barcode-scanner": "^4.0.1",
-    "@capacitor/core": "^5.6.0",
-    "@ionic/angular": "^7.4.0",
-    "com-darryncampbell-cordova-plugin-intent": "~2.2.0",
-    "rxjs": "~7.8.0",
-    "zone.js": "~0.14.2"
-  },
-  "devDependencies": {
-    "@angular/common": "^17.0.2",
-    "@angular/core": "^17.0.2",
-    "@angular/forms": "^17.0.2",
-    "@capacitor-community/barcode-scanner": "^4.0.1",
-    "@capacitor/core": "^5.6.0",
-    "@ionic/angular": "^7.4.0",
-    "com-darryncampbell-cordova-plugin-intent": "~2.2.0",
-    "rxjs": "~7.8.0",
-    "zone.js": "~0.14.2"
-  }
+  "sideEffects": false
 }

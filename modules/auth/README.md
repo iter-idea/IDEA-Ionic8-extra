@@ -20,12 +20,4 @@ To make sure the translations are loaded into the project:
 Make sure that there is a path (tsconfig file) pointing to `@env` which contains the environment files (Angular standard).
 Finally, add in the environments desired the variables you find in the `environment.ts` file of this module.
 
-Additionaly, if you want to allow only one simultaneous session per account, [implement what is suggested in this document](https://iterinformatica.atlassian.net/wiki/spaces/idea/pages/2739798099/Allow+only+simultaneous+session+per+account+idea-ionic+auth).
-
-## Components
-
-- Auth flow (sign in, sign up, etc.).
-
-## Services
-
-- Auth
+Additionaly, if you want to allow only one simultaneous session per account, [implement what is suggested in this document](https://www.notion.so/iter-idea/Allow-only-simultaneous-session-per-account-894fbfce395f4bdeb0a85b3a217bc86b?pvs=4).

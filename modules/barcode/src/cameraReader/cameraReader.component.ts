@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
 @Component({
   selector: 'idea-barcode-camera-reader',
@@ -35,7 +35,8 @@ export class IDEABarcodeCameraReaderComponent {
     return (
       this.platform.is('capacitor') &&
       !!BarcodeScanner &&
-      (await BarcodeScanner.checkPermission({ force: true })).granted
+      // @todo to fix
+      (await (BarcodeScanner as any).checkPermission({ force: true })).granted
     );
   }
 
@@ -44,7 +45,8 @@ export class IDEABarcodeCameraReaderComponent {
     if (this.isScanning) return await this.stopScanWithCamera();
 
     await this.showCameraScannerUI();
-    const result = await BarcodeScanner.startScan();
+    // @todo to fix
+    const result = (await BarcodeScanner.startScan()) as any;
     await this.hideCameraScannerUI();
 
     this.scan.emit(result.content ?? '');
@@ -72,8 +74,10 @@ export class IDEABarcodeCameraReaderComponent {
   }
 
   private setBackgroundVisibility(visible: boolean): void {
-    if (visible) BarcodeScanner.showBackground();
-    else BarcodeScanner.hideBackground();
+    // @todo to fix
+    if (visible) (BarcodeScanner as any).showBackground();
+    // @todo to fix
+    else (BarcodeScanner as any).hideBackground();
 
     document.body.style.background = visible ? '' : 'transparent';
     document.querySelectorAll('ion-app').forEach((element: HTMLElement | any): void => {

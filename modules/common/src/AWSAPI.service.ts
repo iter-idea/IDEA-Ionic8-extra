@@ -171,7 +171,7 @@ export class IDEAAWSAPIService {
     return new Promise((resolve, reject) => {
       const opt = options || {};
       // if offline and with a cache mode set, force the request to the cache
-      if (!navigator.onLine && options.useCache) opt.useCache = CacheModes.CACHE_ONLY;
+      if (!navigator.onLine && opt.useCache) opt.useCache = CacheModes.CACHE_ONLY;
       // execute the GET request online or through the cache, depending on the chosen mode
       switch (opt.useCache) {
         case CacheModes.CACHE_ONLY:
@@ -244,7 +244,7 @@ export class IDEAAWSAPIService {
     return new Observable(observer => {
       const opt = options || {};
       // if offline and with a cache mode set, force the request to the cache
-      if (!navigator.onLine && options.useCache) opt.useCache = CacheModes.CACHE_ONLY;
+      if (!navigator.onLine && opt.useCache) opt.useCache = CacheModes.CACHE_ONLY;
       // execute the GET request online or through the cache, depending on the chosen mode
       switch (opt.useCache) {
         case CacheModes.CACHE_ONLY:

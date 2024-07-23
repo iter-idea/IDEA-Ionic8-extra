@@ -1,35 +1,35 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "useDefineForClassFields": false,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictNullChecks": false,
     "noFallthroughCasesInSwitch": true,
     "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
     "sourceMap": true,
-    "paths": {
-      "agenda": ["dist/agenda", "dist/agenda/agenda"],
-      "auth": ["dist/auth", "dist/auth/auth"],
-      "common": ["dist/common/common", "dist/common"],
-      "map": ["dist/map", "dist/map/map"],
-      "teams": ["dist/teams", "dist/teams/teams"]
-    },
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
-    "target": "es2022",
-    "module": "es2020",
-    "lib": ["es2018", "dom", "es2020.Intl"],
-    "useDefineForClassFields": false
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "dom"],
+    "paths": {
+      "agenda": ["./dist/agenda"],
+      "auth": ["./dist/auth"],
+      "common": ["./dist/common"],
+      "map": ["./dist/map"],
+      "teams": ["./dist/teams"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
-    // @idea the parameters below should be turned on (and the warning should be fixed)
     "strictInjectionParameters": false,
     "strictInputAccessModifiers": false,
     "strictTemplates": false

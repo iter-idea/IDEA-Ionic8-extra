@@ -22,11 +22,3 @@ To use DataWedge on a supported Android device (e.g. Zebra), you have to add to 
 ```
 
 Finally, in case of DataWedge devices (e.g. Zebra), you need to [configure a scan profile](https://www.notion.so/iter-idea/236a88f61c4045fca017f3a035c3c89b).
-
-## Components
-
-- Barcode reader via device camera
-
-## Services
-
-- DataWedge-compatible devices' barcode reader service

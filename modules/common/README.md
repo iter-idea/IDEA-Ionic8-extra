@@ -15,7 +15,7 @@ _Be sure to install all the requested peer dependencies._
 Then, add this imports into the `global.scss` file, after the import on the top of the page:
 
 ```
-@import '~@idea-ionic/common/css/global.scss';
+@import '@idea-ionic/common/css/global.scss';
 ```
 
 To make sure the translations are loaded into the project:
@@ -25,47 +25,3 @@ To make sure the translations are loaded into the project:
 
 Make sure that there is a path (tsconfig file) pointing to `@env` which contains the environment files (Angular standard).
 Finally, add in the environments desired the variables you find in the `environment.ts` file of this module.
-
-## Components
-
-- Action Sheet
-- Address
-- Announcements (replaced by AppStatus)
-- AppStatus
-- Checker
-- Colors picker
-- Contacts
-- Custom fields (block, sections, fields)
-- DateTime picker
-- Duration
-- Echo
-- Email (configure & send)
-- Icons (Ionicons)
-- Labeler
-- List
-- Markdown Editor (MDE)
-- Offline (delta)
-- PDF Template
-- Select
-- Sentiment analysis
-- Show hint button
-- Signature
-- Time interval
-- Translations
-- User avatar
-
-## Services
-
-- Api service
-- Web Socket Api service
-- AWSAPI service
-- AWSAPI socket service
-- (browser's) Cached resources service
-- Error reporting service
-- Loading service
-- Message service
-- Push notifications service
-- Storage service
-- Tin can service
-- Translation service
-- Variables highlight (pipe)
