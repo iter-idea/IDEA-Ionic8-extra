@@ -1,26 +1,20 @@
 <ion-item class="resources" *ngFor="let r of attachedResources; let odd = odd" [lines]="lines" [class.odd]="odd">
-  <ion-button fill="clear" size="small" slot="start" *ngIf="offline.isOnline()" (click)="openResource(r, true)">
-    <ion-icon name="open-outline" slot="icon-only" size="small"></ion-icon>
+  <ion-button fill="clear" size="small" slot="start" *ngIf="_offline.isOnline()" (click)="openResource(r, true)">
+    <ion-icon name="open-outline" slot="icon-only" size="small" />
   </ion-button>
-  <ion-icon
-    slot="start"
-    color="medium"
-    *ngIf="!editMode"
-    [name]="getFormatIcon(r.format)"
-    [title]="r.format"
-  ></ion-icon>
+  <ion-icon slot="start" color="medium" *ngIf="!editMode" [name]="getFormatIcon(r.format)" [title]="r.format" />
   <ion-input
     *ngIf="editMode"
     [(ngModel)]="r.name"
     [placeholder]="r.originalName"
-    (ionBlur)="$event.target.value = $event.target.value || t._('IDEA_TEAMS.RESOURCE_CENTER.NO_NAME')"
-  ></ion-input>
+    (ionBlur)="$event.target.value = $event.target.value || _translate._('IDEA_TEAMS.RESOURCE_CENTER.NO_NAME')"
+  />
   <ion-label *ngIf="!editMode">
     {{ r.name }}
     <p>{{ r.originalName }}.{{ r.format }}</p>
     <p class="ion-text-wrap oldVersionAlert" *ngIf="resources && isResourceNewerVersionAvailable(r)">
       {{ 'IDEA_TEAMS.RESOURCE_CENTER.VERSION_ATTACHED_IS_OLDER' | translate }}.
-      <ion-text class="tappable" *ngIf="offline.isOnline()" (click)="openResource(r)">
+      <ion-text class="tappable" *ngIf="_offline.isOnline()" (click)="openResource(r)">
         {{ 'IDEA_TEAMS.RESOURCE_CENTER.OPEN_OLD_VERSION' | translate }}
       </ion-text>
     </p>
@@ -30,10 +24,10 @@
     slot="end"
     color="danger"
     fill="clear"
-    [title]="t._('IDEA_TEAMS.RESOURCE_CENTER.REMOVE_RESOURCE')"
+    [title]="'IDEA_TEAMS.RESOURCE_CENTER.REMOVE_RESOURCE' | translate"
     (click)="removeResource(r)"
   >
-    <ion-icon name="remove" slot="icon-only"></ion-icon>
+    <ion-icon name="remove" slot="icon-only" />
   </ion-button>
 </ion-item>
 <!----->
@@ -46,12 +40,12 @@
 <idea-select
   *ngIf="editMode && resourcesSuggestions"
   [data]="resourcesSuggestions"
-  [placeholder]="t._('IDEA_TEAMS.RESOURCE_CENTER.TAP_TO_ADD_A_RESOURCE')"
-  [searchPlaceholder]="t._('IDEA_TEAMS.RESOURCE_CENTER.RESOURCES_AVAILABLE')"
+  [placeholder]="'IDEA_TEAMS.RESOURCE_CENTER.TAP_TO_ADD_A_RESOURCE' | translate"
+  [searchPlaceholder]="'IDEA_TEAMS.RESOURCE_CENTER.RESOURCES_AVAILABLE' | translate"
   [lines]="'none'"
   [clearValueAfterSelection]="true"
   [hideClearButton]="true"
   [avoidAutoSelection]="true"
   [hideIdFromUI]="true"
   (select)="$event ? addResource($event.value) : null"
-></idea-select>
+/>

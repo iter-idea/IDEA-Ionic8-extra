@@ -1,14 +1,14 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button *ngIf="aTeamIsSelected()" [title]="t._('COMMON.CLOSE')" (click)="close()">
-        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      <ion-button *ngIf="aTeamIsSelected()" [title]="'COMMON.CLOSE' | translate" (click)="close()">
+        <ion-icon name="arrow-back" slot="icon-only" />
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA_TEAMS.TEAMS.SELECT_A_TEAM' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA_TEAMS.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT')" (click)="openAccount()">
-        <ion-icon name="person" slot="icon-only"></ion-icon>
+      <ion-button [title]="'IDEA_TEAMS.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT' | translate" (click)="openAccount()">
+        <ion-icon name="person" slot="icon-only" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -22,7 +22,7 @@
     </ion-list-header>
     <ion-item
       *ngFor="let team of teams"
-      [title]="t._('IDEA_TEAMS.TEAMS.SELECT_TEAM_', { team: team.name })"
+      [title]="'IDEA_TEAMS.TEAMS.SELECT_TEAM_' | translate: { team: team.name }"
       [button]="true"
       [disabled]="!teamIsActiveOnProject(team)"
       (click)="selectTeam(team)"
@@ -41,7 +41,7 @@
         slot="end"
         color="primary"
         *ngIf="isCurrentTeam(team)"
-        [title]="t._('IDEA_TEAMS.TEAMS.CURRENT_TEAM_EXPLANATION')"
+        [title]="'IDEA_TEAMS.TEAMS.CURRENT_TEAM_EXPLANATION' | translate"
       >
         {{ 'IDEA_TEAMS.TEAMS.CURRENT' | translate }}
       </ion-badge>

@@ -2,13 +2,13 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button [title]="'IDEA_COMMON.CUSTOM_FIELDS.CLOSE_WITHOUT_SAVING' | translate" (click)="close()">
-        <ion-icon slot="icon-only" icon="close"></ion-icon>
+        <ion-icon slot="icon-only" icon="close" />
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA_COMMON.CUSTOM_FIELDS.MANAGE_SECTION' | translate }}</ion-title>
     <ion-buttons slot="end" *ngIf="!disabled">
       <ion-button [title]="'IDEA_COMMON.CUSTOM_FIELDS.SAVE_CHANGES' | translate" (click)="save()">
-        <ion-icon slot="icon-only" icon="checkmark-circle"></ion-icon>
+        <ion-icon slot="icon-only" icon="checkmark-circle" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -24,16 +24,18 @@
           </ion-label>
         </ion-list-header>
         <ion-item *ngIf="!disabled" [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
-          <ion-label position="stacked">
-            {{ 'IDEA_COMMON.CUSTOM_FIELDS.NAME' | translate }}
-            <ion-text class="obligatoryDot" *ngIf="!disabled"></ion-text>
-          </ion-label>
           <ion-input
             type="text"
             readonly="true"
+            labelPlacement="stacked"
             [value]="_section.name | label"
             [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.SECTION_NAME_HINT' | translate"
-          ></ion-input>
+          >
+            <div slot="label">
+              {{ 'IDEA_COMMON.CUSTOM_FIELDS.NAME' | translate }}
+              <ion-text class="obligatoryDot" *ngIf="!disabled" />
+            </div>
+          </ion-input>
           <ion-button
             slot="end"
             fill="clear"
@@ -41,17 +43,18 @@
             [title]="'COMMON.EDIT' | translate"
             (click)="editName()"
           >
-            <ion-icon slot="icon-only" icon="pencil"></ion-icon>
+            <ion-icon slot="icon-only" icon="pencil" />
           </ion-button>
         </ion-item>
         <ion-item *ngIf="!disabled" [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
-          <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate }}</ion-label>
           <ion-input
             type="text"
             readonly="true"
+            labelPlacement="stacked"
+            [label]="'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate"
             [value]="_section.description | label"
             [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.SECTION_DESCRIPTION_HINT' | translate"
-          ></ion-input>
+          />
           <ion-button
             slot="end"
             fill="clear"
@@ -59,7 +62,7 @@
             [title]="'COMMON.EDIT' | translate"
             (click)="editDescription()"
           >
-            <ion-icon slot="icon-only" icon="pencil"></ion-icon>
+            <ion-icon slot="icon-only" icon="pencil" />
           </ion-button>
         </ion-item>
         <ion-list-header>
@@ -75,17 +78,17 @@
       </ion-item>
       <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderFieldsLegend($event)">
         <ion-item *ngFor="let f of _section.fieldsLegend" [button]="true" [lines]="lines" (click)="openField(f)">
-          <ion-reorder slot="start" *ngIf="!disabled"></ion-reorder>
+          <ion-reorder slot="start" *ngIf="!disabled" />
           <ion-label>
             {{ _section.fields[f].name | label }}
-            <ion-text class="obligatoryDot" *ngIf="_section.fields[f].obligatory"></ion-text>
+            <ion-text class="obligatoryDot" *ngIf="_section.fields[f].obligatory" />
             <p>{{ _section.fields[f].description | label }}</p>
           </ion-label>
           <ion-badge slot="end" color="medium">
             {{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _section.fields[f].type | translate }}
           </ion-badge>
           <ion-button slot="end" fill="clear" color="danger" *ngIf="!disabled" (click)="removeField(f, $event)">
-            <ion-icon icon="trash-outline" slot="icon-only"></ion-icon>
+            <ion-icon icon="trash-outline" slot="icon-only" />
           </ion-button>
         </ion-item>
       </ion-reorder-group>
@@ -113,7 +116,7 @@
         <div class="displayTemplateRow" *ngFor="let row of _section.displayTemplate; let rowIndex = index">
           <ion-item-divider>{{ 'IDEA_COMMON.CUSTOM_FIELDS.ROW' | translate }} {{ rowIndex + 1 }} </ion-item-divider>
           <ion-item [lines]="lines">
-            <ion-reorder slot="start" *ngIf="!disabled"></ion-reorder>
+            <ion-reorder slot="start" *ngIf="!disabled" />
             <ion-label class="ion-text-wrap">
               <div *ngFor="let field of row">
                 <ion-button
@@ -123,7 +126,7 @@
                   [disabled]="disabled"
                   (click)="removeFieldToDisplayTemplateRow(rowIndex, field)"
                 >
-                  <ion-icon icon="close" slot="start" *ngIf="!disabled"></ion-icon>
+                  <ion-icon icon="close" slot="start" *ngIf="!disabled" />
                   {{ _section.fields[field].name | label }}
                 </ion-button>
               </div>
@@ -136,7 +139,7 @@
               [title]="'IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD' | translate"
               (click)="addFieldToDisplayTemplateRow(rowIndex)"
             >
-              <ion-icon icon="add-circle-outline"></ion-icon>
+              <ion-icon icon="add-circle-outline" />
             </ion-button>
           </ion-item>
         </div>

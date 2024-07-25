@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Calendar } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
 
-import { IDEACalendarsService } from './calendars.service';
 import { IDEACalendarComponent } from './calendar.component';
+import { IDEACalendarsService } from './calendars.service';
 
 @Component({
   selector: 'idea-calendar-item',
@@ -15,124 +15,97 @@ export class IDEACalendarItemComponent {
   /**
    * The calendar to show.
    */
-  @Input() public calendar: Calendar;
+  @Input() calendar: Calendar;
   /**
    * Whether the component is disabled.
    */
-  @Input() public disabled: boolean;
+  @Input() disabled: boolean;
   /**
    * Whether we want to enable advanced permissions (based on the memberships) on the calendar.
    */
-  @Input() public advancedPermissions: boolean;
+  @Input() advancedPermissions: boolean;
   /**
    * Whether the calendar color is an important detail or it shouldn't be shown.
    */
-  @Input() public hideColor: boolean;
+  @Input() hideColor: boolean;
   /**
    * Report to parent components a change.
    */
-  @Output() public somethingChanged = new EventEmitter<Calendar>();
+  @Output() somethingChanged = new EventEmitter<Calendar>();
 
-  constructor(
-    public calendars: IDEACalendarsService,
-    public alertCtrl: AlertController,
-    public modalCtrl: ModalController,
-    public message: IDEAMessageService,
-    public loading: IDEALoadingService,
-    public t: IDEATranslationsService
-  ) {}
+  private _alert = inject(AlertController);
+  private _modal = inject(ModalController);
+  private _message = inject(IDEAMessageService);
+  private _loading = inject(IDEALoadingService);
+  private _translate = inject(IDEATranslationsService);
+  private _calendars = inject(IDEACalendarsService);
 
-  /**
-   * Open the modal to manage the calendar.
-   */
-  public manageCalendar() {
+  async manageCalendar(): Promise<void> {
     if (this.disabled) return;
-    this.modalCtrl
-      .create({
-        component: IDEACalendarComponent,
-        componentProps: {
-          calendar: this.calendar,
-          advancedPermissions: this.advancedPermissions,
-          hideColor: this.hideColor
-        }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then(res => {
-          const cal = res.data;
-          // nothing changed
-          if (cal === undefined) return;
-          // the calendar was deleted
-          else if (cal === null) this.calendar = null;
-          // the calendar was updated
-          else this.calendar.load(cal);
-          // report changes to parent components
-          this.somethingChanged.emit();
-        });
-        modal.present();
-      });
+    const modal = await this._modal.create({
+      component: IDEACalendarComponent,
+      componentProps: {
+        calendar: this.calendar,
+        advancedPermissions: this.advancedPermissions,
+        hideColor: this.hideColor
+      }
+    });
+    modal.onDidDismiss().then(res => {
+      const cal = res.data;
+      if (cal === undefined) return;
+      else if (cal === null) this.calendar = null;
+      else this.calendar.load(cal);
+      this.somethingChanged.emit();
+    });
+    modal.present();
   }
 
-  /**
-   * Continue the auth flow to link an external service and set an external calendar;
-   * otherwise, the calendar can be deleted.
-   */
-  public linkExtCalendarOrDelete() {
+  private async linkExtCalendarOrDelete(): Promise<void> {
     if (this.disabled) return;
-    // let the user pick an external calendar, in case the external service is linked
-    this.calendars
-      .chooseAndSetExternalCalendar(this.calendar)
-      .then(async cal => {
-        if (!cal) return new Error('NO_EXTERNAL_CALENDAR_CHOSEN');
-        this.calendar.load(cal);
-        this.message.success('IDEA_AGENDA.CALENDARS.CALENDAR_LINKED');
-        // run a first sync for the linked external calendar
-        await this.loading.show(this.t._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
-        this.calendars
-          .syncCalendar(this.calendar)
-          .then(() => this.message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED'))
-          .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-          .finally(() => {
-            this.loading.hide();
-            // report changes to parent components
-            this.somethingChanged.emit();
-          });
-      })
-      .catch(() => {
-        // the external service isn't linked yet (we don't have a token): link or delete
-        this.alertCtrl
-          .create({
-            header: this.t._('IDEA_AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED'),
-            message: this.t._('IDEA_AGENDA.CALENDARS.DO_YOU_WANT_PROCEED_LINKING_OR_DELETE'),
-            buttons: [
-              {
-                text: this.t._('COMMON.DELETE'),
-                handler: async () => {
-                  // request the calendar deletion
-                  await this.loading.show();
-                  this.calendars
-                    .deleteCalendar(this.calendar)
-                    .then(() => {
-                      this.message.success('COMMON.OPERATION_COMPLETED');
-                      // report changes to parent components
-                      this.somethingChanged.emit();
-                    })
-                    .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-                    .finally(() => this.loading.hide());
-                }
-              },
-              {
-                text: this.t._('IDEA_AGENDA.CALENDARS.LINK'),
-                handler: () =>
-                  // try again to link the service
-                  this.calendars
-                    .linkExtService(this.calendar)
-                    // if the service was successfully linked, go recursive to choose and set the external calendar
-                    .then(() => this.linkExtCalendarOrDelete())
-                    .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-              }
-            ]
-          })
-          .then(alert => alert.present());
-      });
+    try {
+      const cal = await this._calendars.chooseAndSetExternalCalendar(this.calendar);
+      if (!cal) throw new Error('NO_EXTERNAL_CALENDAR_CHOSEN');
+      this.calendar.load(cal);
+      this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_LINKED');
+      try {
+        await this._loading.show(this._translate._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
+        await this._calendars.syncCalendar(this.calendar);
+        this._message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED');
+      } catch (error) {
+        this._message.error('COMMON.OPERATION_FAILED');
+      } finally {
+        this._loading.hide();
+        this.somethingChanged.emit();
+      }
+    } catch (error) {
+      const doDelete = async (): Promise<void> => {
+        try {
+          await this._loading.show();
+          await this._calendars.deleteCalendar(this.calendar);
+          this._message.success('COMMON.OPERATION_COMPLETED');
+          this.somethingChanged.emit();
+        } catch (error) {
+          this._message.error('COMMON.OPERATION_FAILED');
+        } finally {
+          this._loading.hide();
+        }
+      };
+      const doLink = async (): Promise<void> => {
+        try {
+          await this._calendars.linkExtService(this.calendar);
+          this.linkExtCalendarOrDelete();
+        } catch (error) {
+          this._message.error('COMMON.OPERATION_FAILED');
+        }
+      };
+      const header = this._translate._('IDEA_AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED');
+      const message = this._translate._('IDEA_AGENDA.CALENDARS.DO_YOU_WANT_PROCEED_LINKING_OR_DELETE');
+      const buttons = [
+        { text: this._translate._('COMMON.DELETE'), handler: doDelete },
+        { text: this._translate._('IDEA_AGENDA.CALENDARS.LINK'), handler: doLink }
+      ];
+      const alert = await this._alert.create({ header, message, buttons });
+      alert.present();
+    }
   }
 }

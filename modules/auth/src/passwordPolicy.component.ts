@@ -10,7 +10,7 @@ import { IDEAEnvironment } from '@idea-ionic/common';
       </ion-card-header>
       <ion-card-content>
         <ul>
-          <li>{{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.MIN_LENGTH' | translate: { n: passwordPolicy.minLength } }}</li>
+          <li>{{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.MIN_LENGTH' | translate : { n: passwordPolicy.minLength } }}</li>
           <li *ngIf="passwordPolicy.requireDigits">
             {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_DIGITS' | translate }}
           </li>
@@ -44,11 +44,11 @@ import { IDEAEnvironment } from '@idea-ionic/common';
   ]
 })
 export class IDEAPasswordPolicyComponent {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
 
   passwordPolicy: any;
 
   constructor() {
-    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
+    this.passwordPolicy = this._env.idea.auth.passwordPolicy;
   }
 }

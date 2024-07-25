@@ -8,22 +8,19 @@ import { IDEAEnvironment } from '@idea-ionic/common';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAAuth0Service {
-  protected env = inject(IDEAEnvironment);
-
-  constructor(
-    private platform: Platform,
-    private auth0: AuthService
-  ) {}
+  protected _env = inject(IDEAEnvironment);
+  private _platform = inject(Platform);
+  private _auth0 = inject(AuthService);
 
   /**
    * The internal Auth0's service.
    */
   get __raw(): AuthService {
-    return this.auth0;
+    return this._auth0;
   }
 
   private isMobileDevice(): boolean {
-    return this.platform.is('capacitor');
+    return this._platform.is('capacitor');
   }
 
   /**
@@ -34,11 +31,11 @@ export class IDEAAuth0Service {
     this.isMobileDevice() ? this.loginWithMobile(afterRedirectTo) : this.loginWithSPA(afterRedirectTo);
   }
   private async loginWithSPA(afterRedirectTo?: string): Promise<void> {
-    await firstValueFrom(this.auth0.loginWithRedirect({ appState: { target: afterRedirectTo } }));
+    await firstValueFrom(this._auth0.loginWithRedirect({ appState: { target: afterRedirectTo } }));
   }
   private async loginWithMobile(afterRedirectTo?: string): Promise<void> {
     await firstValueFrom(
-      this.auth0.loginWithRedirect({ appState: { target: afterRedirectTo }, openUrl: url => Browser.open({ url }) })
+      this._auth0.loginWithRedirect({ appState: { target: afterRedirectTo }, openUrl: url => Browser.open({ url }) })
     );
   }
 
@@ -49,11 +46,11 @@ export class IDEAAuth0Service {
     this.isMobileDevice() ? this.logoutWithMobile() : this.logoutWithSPA();
   }
   private async logoutWithSPA(): Promise<void> {
-    await firstValueFrom(this.auth0.logout({ logoutParams: { returnTo: document.location.origin } }));
+    await firstValueFrom(this._auth0.logout({ logoutParams: { returnTo: document.location.origin } }));
   }
   private async logoutWithMobile(): Promise<void> {
     await firstValueFrom(
-      this.auth0.logout({ logoutParams: { localOnly: true }, openUrl: url => Browser.open({ url }) })
+      this._auth0.logout({ logoutParams: { localOnly: true }, openUrl: url => Browser.open({ url }) })
     );
   }
 
@@ -71,9 +68,9 @@ export class IDEAAuth0Service {
    * ```
    */
   async handleCallbackOnMobileDevices(url: string): Promise<void> {
-    if (url?.startsWith(this.env.auth0.callbackUri)) {
+    if (url?.startsWith(this._env.auth0.callbackUri)) {
       if (url.includes('state=') && (url.includes('error=') || url.includes('code=')))
-        await firstValueFrom(this.auth0.handleRedirectCallback(url));
+        await firstValueFrom(this._auth0.handleRedirectCallback(url));
       await Browser.close();
     }
   }
@@ -82,20 +79,20 @@ export class IDEAAuth0Service {
    * Get the ID token, to use for authenticating API requests to the back-end.
    */
   async getIdToken(): Promise<string> {
-    const { __raw } = await firstValueFrom(this.auth0.idTokenClaims$);
+    const { __raw } = await firstValueFrom(this._auth0.idTokenClaims$);
     return __raw;
   }
   /**
    * Whether the user is currently authenticated.
    */
   async isUserAuthenticated(): Promise<boolean> {
-    return await firstValueFrom(this.auth0.isAuthenticated$);
+    return await firstValueFrom(this._auth0.isAuthenticated$);
   }
   /**
    * Get the current user and its data.
    */
   async getUser(): Promise<Auth0User> {
-    const user = await firstValueFrom(this.auth0.user$);
+    const user = await firstValueFrom(this._auth0.user$);
     if (user) return new Auth0User(user);
     else return null;
   }

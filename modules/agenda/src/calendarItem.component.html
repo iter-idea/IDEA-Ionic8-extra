@@ -2,15 +2,10 @@
   class="calendarItem"
   *ngIf="calendar"
   [button]="!disabled"
-  [title]="t._('IDEA_AGENDA.CALENDARS.EDIT_CALENDAR')"
+  [title]="'IDEA_AGENDA.CALENDARS.EDIT_CALENDAR' | translate"
   (click)="calendar.external && !calendar.external.calendarId ? linkExtCalendarOrDelete() : manageCalendar()"
 >
-  <ion-avatar
-    slot="start"
-    class="colorCircle"
-    *ngIf="!hideColor"
-    [style.background-color]="calendar.color"
-  ></ion-avatar>
+  <ion-avatar slot="start" class="colorCircle" *ngIf="!hideColor" [style.background-color]="calendar.color" />
   <ion-label>
     {{ calendar.name }}
     <p>
@@ -25,14 +20,16 @@
     color="danger"
     name="flash-off"
     *ngIf="calendar.external && !calendar.external.calendarId"
-    [title]="t._('IDEA_AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED_HINT')"
-  ></ion-icon>
+    [title]="'IDEA_AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED_HINT' | translate"
+  />
   <ion-icon
     slot="end"
     *ngIf="calendar.external?.service"
     [name]="calendars.getServiceIcon(calendar.external.service)"
     [title]="
-      t._('IDEA_AGENDA.CALENDARS.LINKED_TO') + ' ' + t._('IDEA_AGENDA.CALENDARS.SERVICES.' + calendar.external.service)
+      ('IDEA_AGENDA.CALENDARS.LINKED_TO' | translate) +
+      ' ' +
+      ('IDEA_AGENDA.CALENDARS.SERVICES.' + calendar.external.service | translate)
     "
-  ></ion-icon>
+  />
 </ion-item>

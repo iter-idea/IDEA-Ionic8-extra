@@ -1,5 +1,5 @@
 import heic2any from 'heic2any';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -53,26 +53,24 @@ export class IDEAttachmentsComponent implements OnInit {
    */
   uploadErrors: string[] = [];
 
-  constructor(
-    private platform: Platform,
-    private loading: IDEALoadingService,
-    private message: IDEAMessageService,
-    private tc: IDEATinCanService,
-    private api: IDEAAWSAPIService,
-    public offline: IDEAOfflineService,
-    public t: IDEATranslationsService
-  ) {}
+  private _platform = inject(Platform);
+  private _loading = inject(IDEALoadingService);
+  private _message = inject(IDEAMessageService);
+  private _tc = inject(IDEATinCanService);
+  private _api = inject(IDEAAWSAPIService);
+  _offline = inject(IDEAOfflineService);
+  _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
-    this.team = this.team || this.tc.get('membership').teamId || this.tc.get('teamId');
-    // build the URL target of the requests
+    this.team = this.team || this._tc.get('membership').teamId || this._tc.get('teamId');
     this.requestURL = `teams/${this.team}/`;
     if (this.pathResource && this.pathResource.length)
       this.requestURL = this.requestURL.concat(this.pathResource.filter(x => x).join('/'));
   }
 
   isCapacitor(): boolean {
-    return this.platform.is('capacitor');
+    return this._platform.is('capacitor');
   }
 
   hasFieldAnError(field: string): boolean {
@@ -95,7 +93,7 @@ export class IDEAttachmentsComponent implements OnInit {
   }
   async takePictureAndAttach(ev: Event): Promise<void> {
     if (ev) ev.stopPropagation();
-    if (!this.platform.is('capacitor') || !Camera) return;
+    if (!this._platform.is('capacitor') || !Camera) return;
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -120,15 +118,15 @@ export class IDEAttachmentsComponent implements OnInit {
     const attachment = new Attachment({ name, format });
     this.attachments.push(attachment);
     try {
-      const signedURL = await this.api.patchResource(this.requestURL, {
+      const signedURL = await this._api.patchResource(this.requestURL, {
         body: { action: 'ATTACHMENTS_PUT', attachmentId: attachment.attachmentId }
       });
-      await this.api.rawRequest().put(signedURL.url, content).toPromise();
+      await this._api.rawRequest().put(signedURL.url, content).toPromise();
       attachment.attachmentId = signedURL.id;
     } catch (error) {
       this.uploadErrors.push(name);
       this.removeAttachment(attachment);
-      this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
     }
   }
 
@@ -139,15 +137,15 @@ export class IDEAttachmentsComponent implements OnInit {
 
   async openAttachment(attachment: Attachment): Promise<void> {
     try {
-      await this.loading.show();
-      const { url } = await this.api.patchResource(this.requestURL, {
+      await this._loading.show();
+      const { url } = await this._api.patchResource(this.requestURL, {
         body: { action: 'ATTACHMENTS_GET', attachmentId: attachment.attachmentId }
       });
       await Browser.open({ url });
     } catch (error) {
-      this.message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT');
+      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT');
     } finally {
-      this.loading.hide();
+      this._loading.hide();
     }
   }
 

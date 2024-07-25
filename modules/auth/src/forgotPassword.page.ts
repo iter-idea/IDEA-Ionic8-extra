@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { IDEAMessageService, IDEALoadingService } from '@idea-ionic/common';
 
@@ -12,30 +12,28 @@ import { IDEAAuthService } from './auth.service';
 export class IDEAForgotPasswordPage {
   email: string;
 
-  constructor(
-    private navCtrl: NavController,
-    private message: IDEAMessageService,
-    private loading: IDEALoadingService,
-    private auth: IDEAAuthService
-  ) {}
+  private _nav = inject(NavController);
+  private _message = inject(IDEAMessageService);
+  private _loading = inject(IDEALoadingService);
+  private _auth = inject(IDEAAuthService);
 
   async forgotPassword(): Promise<void> {
     try {
-      await this.loading.show();
-      await this.auth.forgotPassword(this.email);
-      this.message.success('IDEA_AUTH.PASSWORD_RESET_CODE_SENT');
+      await this._loading.show();
+      await this._auth.forgotPassword(this.email);
+      this._message.success('IDEA_AUTH.PASSWORD_RESET_CODE_SENT');
       this.goToConfirmPassword();
     } catch (error) {
-      this.message.error('IDEA_AUTH.USER_NOT_FOUND');
+      this._message.error('IDEA_AUTH.USER_NOT_FOUND');
     } finally {
-      this.loading.hide();
+      this._loading.hide();
     }
   }
 
   goToConfirmPassword(): void {
-    this.navCtrl.navigateForward(['auth/confirm-password'], { queryParams: { email: this.email ?? null } });
+    this._nav.navigateForward(['auth', 'confirm-password'], { queryParams: { email: this.email ?? null } });
   }
   goToAuth(): void {
-    this.navCtrl.navigateBack(['auth']);
+    this._nav.navigateBack(['auth']);
   }
 }

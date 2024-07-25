@@ -9,7 +9,7 @@
     fill="clear"
     size="small"
     slot="start"
-    *ngIf="att.attachmentId && offline.isOnline()"
+    *ngIf="att.attachmentId && _offline.isOnline()"
     (click)="openAttachment(att)"
   >
     <ion-icon name="open-outline" slot="icon-only" size="small" />
@@ -24,7 +24,7 @@
   <ion-input
     *ngIf="editMode && att.attachmentId"
     [(ngModel)]="att.name"
-    (ionBlur)="$event.target.value = $event.target.value || t._('IDEA_TEAMS.ATTACHMENTS.NO_NAME')"
+    (ionBlur)="$event.target.value = $event.target.value || _translate._('IDEA_TEAMS.ATTACHMENTS.NO_NAME')"
   />
   <ion-label class="loadingWarning" *ngIf="editMode && !att.attachmentId">
     {{ 'IDEA_TEAMS.ATTACHMENTS.UPLOADING_ATTACHMENT_WARNING' | translate }}

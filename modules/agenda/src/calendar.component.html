@@ -1,60 +1,65 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
-        <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+      <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
+        <ion-icon name="close-circle" slot="icon-only" />
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA_AGENDA.CALENDARS.EDIT_CALENDAR' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('COMMON.SAVE')" (click)="save()">
-        <ion-icon name="checkmark-circle" slot="icon-only"></ion-icon>
+      <ion-button [title]="'COMMON.SAVE' | translate" (click)="save()">
+        <ion-icon name="checkmark-circle" slot="icon-only" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div class="maxWidthContainer" *ngIf="_calendar">
+  <div class="maxWidthContainer" *ngIf="calendarWC">
     <ion-list class="aList">
       <ion-item
         lines="inset"
         [class.fieldHasError]="hasFieldAnError('name')"
-        [title]="t._('IDEA_AGENDA.CALENDARS.NAME_HINT')"
+        [title]="'IDEA_AGENDA.CALENDARS.NAME_HINT' | translate"
       >
-        <ion-label position="stacked">{{ 'IDEA_AGENDA.CALENDARS.NAME' | translate }} </ion-label>
-        <ion-input [placeholder]="t._('IDEA_AGENDA.CALENDARS.NAME_HINT')" [(ngModel)]="_calendar.name"></ion-input>
+        <ion-input
+          labelPlacement="stacked"
+          [label]="'IDEA_AGENDA.CALENDARS.NAME' | translate"
+          [placeholder]="'IDEA_AGENDA.CALENDARS.NAME_HINT' | translate"
+          [(ngModel)]="calendarWC.name"
+        />
       </ion-item>
       <ion-item
         lines="inset"
         [class.fieldHasError]="hasFieldAnError('description')"
-        [title]="t._('IDEA_AGENDA.CALENDARS.DESCRIPTION_HINT')"
+        [title]="'IDEA_AGENDA.CALENDARS.DESCRIPTION_HINT' | translate"
       >
-        <ion-label position="stacked">{{ 'IDEA_AGENDA.CALENDARS.DESCRIPTION' | translate }} </ion-label>
         <ion-input
-          [placeholder]="t._('IDEA_AGENDA.CALENDARS.DESCRIPTION_HINT')"
-          [(ngModel)]="_calendar.description"
-        ></ion-input>
+          labelPlacement="stacked"
+          [label]="'IDEA_AGENDA.CALENDARS.DESCRIPTION' | translate"
+          [placeholder]="'IDEA_AGENDA.CALENDARS.DESCRIPTION_HINT' | translate"
+          [(ngModel)]="calendarWC.description"
+        />
       </ion-item>
       <idea-color-picker
         *ngIf="!hideColor"
         [lines]="'inset'"
-        [current]="_calendar.color"
-        [label]="t._('IDEA_AGENDA.CALENDARS.COLOR')"
+        [current]="calendarWC.color"
+        [label]="'IDEA_AGENDA.CALENDARS.COLOR' | translate"
         [class.fieldHasError]="hasFieldAnError('color')"
-        (select)="$event ? (_calendar.color = $event) : null"
-      ></idea-color-picker>
+        (select)="$event ? (calendarWC.color = $event) : null"
+      />
       <idea-checker
-        *ngIf="membershipsChecks && _calendar.isShared() && advancedPermissions"
+        *ngIf="membershipsChecks && calendarWC.isShared() && advancedPermissions"
         [data]="membershipsChecks"
-        [label]="t._('IDEA_AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS')"
-        [searchPlaceholder]="t._('IDEA_AGENDA.CALENDARS.WHO_CAN_MANAGE_APPOINTMENTS')"
-        [noneText]="t._('IDEA_AGENDA.CALENDARS.NOBODY')"
-        [allText]="t._('IDEA_AGENDA.CALENDARS.EVERYONE')"
+        [label]="'IDEA_AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS' | translate"
+        [searchPlaceholder]="'IDEA_AGENDA.CALENDARS.WHO_CAN_MANAGE_APPOINTMENTS' | translate"
+        [noneText]="'IDEA_AGENDA.CALENDARS.NOBODY' | translate"
+        [allText]="'IDEA_AGENDA.CALENDARS.EVERYONE' | translate"
         [allowSelectDeselectAll]="true"
         [lines]="'inset'"
-      ></idea-checker>
+      />
     </ion-list>
-    <ion-list class="aList" *ngIf="_calendar.external?.service">
+    <ion-list class="aList" *ngIf="calendarWC.external?.service">
       <ion-list-header>
         <ion-label>
           <h2>{{ 'IDEA_AGENDA.CALENDARS.INFO_ON_CALENDAR' | translate }}</h2>
@@ -65,29 +70,29 @@
           {{ 'IDEA_AGENDA.CALENDARS.PRIVATE_CALENDAR' | translate }}
           <p>{{ 'IDEA_AGENDA.CALENDARS.PRIVATE_CALENDAR_HINT' | translate }}</p>
         </ion-label>
-        <ion-icon slot="end" name="person"></ion-icon>
+        <ion-icon slot="end" name="person" />
       </ion-item>
       <ion-item lines="inset" *ngIf="calendar.teamId">
         <ion-label>
           {{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate }}
           <p>{{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR_HINT' | translate }}</p>
         </ion-label>
-        <ion-icon slot="end" name="people"></ion-icon>
+        <ion-icon slot="end" name="people" />
       </ion-item>
       <ion-item lines="inset">
         <ion-label>
           {{ 'IDEA_AGENDA.CALENDARS.LINKED_TO' | translate }}
-          {{ 'IDEA_AGENDA.CALENDARS.SERVICES.' + _calendar.external.service | translate }}
-          <p>{{ _calendar.external.name }} ({{ _calendar.external.email }})</p>
+          {{ 'IDEA_AGENDA.CALENDARS.SERVICES.' + calendarWC.external.service | translate }}
+          <p>{{ calendarWC.external.name }} ({{ calendarWC.external.email }})</p>
         </ion-label>
-        <ion-icon slot="end" [name]="calendars.getServiceIcon(_calendar.external.service)"></ion-icon>
+        <ion-icon slot="end" [name]="calendars.getServiceIcon(calendarWC.external.service)" />
       </ion-item>
       <ion-item lines="inset">
         <ion-label>
-          {{ 'IDEA_AGENDA.CALENDARS.ACCESS_LEVELS.' + _calendar.external.userAccess | translate }}
+          {{ 'IDEA_AGENDA.CALENDARS.ACCESS_LEVELS.' + calendarWC.external.userAccess | translate }}
           <p>{{ 'IDEA_AGENDA.CALENDARS.BASED_ON_EXTERNAL_SERVICE_SHARING_PERMISSION' | translate }}</p>
         </ion-label>
-        <ion-icon slot="end" name="shield"></ion-icon>
+        <ion-icon slot="end" name="shield" />
       </ion-item>
     </ion-list>
     <ion-list class="aList">
@@ -101,7 +106,11 @@
           {{ 'IDEA_AGENDA.CALENDARS.DELETE_CALENDAR' | translate }}
           <p>{{ 'IDEA_AGENDA.CALENDARS.DELETE_CALENDAR_HINT' | translate }}</p>
         </ion-label>
-        <ion-button color="danger" [title]="t._('IDEA_AGENDA.CALENDARS.DELETE_CALENDAR_HINT')" (click)="delete()">
+        <ion-button
+          color="danger"
+          [title]="'IDEA_AGENDA.CALENDARS.DELETE_CALENDAR_HINT' | translate"
+          (click)="delete()"
+        >
           {{ 'COMMON.DELETE' | translate }}
         </ion-button>
       </ion-item>

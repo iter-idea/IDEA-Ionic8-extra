@@ -8,7 +8,7 @@
         <ion-img
           [title]="'IDEA_AUTH.SERVICE_LOGO' | translate"
           [src]="darkMode ? 'assets/icons/icon-auth-alt.svg' : 'assets/icons/icon-auth.svg'"
-        ></ion-img>
+        />
         <ion-card-header>
           <ion-card-title color="primary" *ngIf="title">{{ title }}</ion-card-title>
           <ion-card-subtitle *ngIf="translationExists('IDEA_VARIABLES.TAGLINE')">
@@ -19,7 +19,7 @@
           <p class="errorBox" *ngIf="errorMsg"><b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg }}</p>
           <ion-item>
             <ion-label position="inline">
-              <ion-icon name="person-circle" color="primary"></ion-icon>
+              <ion-icon name="person-circle" color="primary" />
             </ion-label>
             <ion-input
               type="email"
@@ -27,25 +27,23 @@
               pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
               spellcheck="false"
               autocorrect="off"
-              autocapitalize="off"
               autocomplete="email"
               [placeholder]="'IDEA_AUTH.EMAIL' | translate"
               [title]="'IDEA_AUTH.EMAIL_HINT' | translate"
               [ngModelOptions]="{ standalone: true }"
               [(ngModel)]="email"
               (keyup.enter)="login()"
-            ></ion-input>
+            />
           </ion-item>
           <ion-item>
             <ion-label position="inline">
-              <ion-icon name="key" color="primary"></ion-icon>
+              <ion-icon name="key" color="primary" />
             </ion-label>
             <ion-input
               id="current-password"
               type="password"
               spellcheck="false"
               autocorrect="off"
-              autocapitalize="off"
               autocomplete="current-password"
               [clearOnEdit]="false"
               [placeholder]="'IDEA_AUTH.PASSWORD' | translate"
@@ -53,7 +51,7 @@
               [ngModelOptions]="{ standalone: true }"
               [(ngModel)]="password"
               (keyup.enter)="login()"
-            ></ion-input>
+            />
           </ion-item>
           <ion-row
             class="agreementsAcceptanceRow"
@@ -63,11 +61,7 @@
             "
           >
             <ion-col>
-              <ion-checkbox
-                size="small"
-                [ngModelOptions]="{ standalone: true }"
-                [(ngModel)]="agreementsCheck"
-              ></ion-checkbox>
+              <ion-checkbox size="small" [ngModelOptions]="{ standalone: true }" [(ngModel)]="agreementsCheck" />
               {{ 'IDEA_AUTH.AGREEMENTS_CHECK_LOGIN' | translate }}:
               <a
                 ion-text
@@ -144,7 +138,7 @@
         [src]="darkMode ? './assets/icons/idea-alt.png' : './assets/icons/idea.png'"
         [title]="'IDEA_AUTH.IDEA_TAGLINE' | translate"
         (click)="openLink(website)"
-      ></ion-img>
+      />
     </div>
   </form>
 </ion-content>

@@ -22,7 +22,7 @@
       [class.fieldHasError]="hasFieldAnError(errorPrefix + 'sections.' + s + '.' + f)"
       (select)="$event ? (sections[s][f] = $event?.value) : null"
       (iconSelect)="openDescription(s, f, $event)"
-    ></idea-select>
+    />
     <ion-item
       *ngIf="
         blockMeta.sections[s].fields[f].type === CFT.STRING ||
@@ -34,7 +34,7 @@
     >
       <ion-label position="stacked" class="ion-text-wrap">
         {{ blockMeta.sections[s].fields[f].name | label }}
-        <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled"></ion-text>
+        <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled" />
       </ion-label>
       <ion-button
         fill="clear"
@@ -45,14 +45,14 @@
         [color]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
         (click)="openDescription(s, f, $event)"
       >
-        <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+        <ion-icon name="help-circle-outline" slot="icon-only" />
       </ion-button>
       <ion-input
         type="text"
         *ngIf="blockMeta.sections[s].fields[f].type === CFT.STRING"
         [disabled]="disabled"
         [(ngModel)]="sections[s][f]"
-      ></ion-input>
+      />
       <ion-input
         type="number"
         *ngIf="blockMeta.sections[s].fields[f].type === CFT.NUMBER"
@@ -60,14 +60,14 @@
         [max]="blockMeta.sections[s].fields[f].max"
         [disabled]="disabled"
         [(ngModel)]="sections[s][f]"
-      ></ion-input>
+      />
       <ion-textarea
         *ngIf="blockMeta.sections[s].fields[f].type === CFT.TEXT"
         [rows]="3"
         [autoGrow]="true"
         [disabled]="disabled"
         [(ngModel)]="sections[s][f]"
-      ></ion-textarea>
+      />
     </ion-item>
     <ion-item
       *ngIf="blockMeta.sections[s].fields[f].type === CFT.BOOLEAN"
@@ -83,12 +83,12 @@
         [color]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
         (click)="openDescription(s, f, $event)"
       >
-        <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+        <ion-icon name="help-circle-outline" slot="icon-only" />
       </ion-button>
       <ion-checkbox [disabled]="disabled" [(ngModel)]="sections[s][f]">
         <span class="ion-text-wrap">
           {{ blockMeta.sections[s].fields[f].name | label }}
-          <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled"></ion-text>
+          <ion-text class="obligatoryDot" *ngIf="blockMeta.sections[s].fields[f].obligatory && !disabled" />
         </span>
       </ion-checkbox>
     </ion-item>

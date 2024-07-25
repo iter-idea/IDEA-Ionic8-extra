@@ -2,7 +2,7 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button (click)="close()">
-        <ion-icon name="close" slot="icon-only"></ion-icon>
+        <ion-icon name="close" slot="icon-only" />
       </ion-button>
     </ion-buttons>
     <ion-title>
@@ -10,7 +10,7 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA_COMMON.OFFLINE.ADVANCED_ACTIONS')" (click)="actions()">
-        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+        <ion-icon slot="icon-only" name="ellipsis-vertical" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -29,7 +29,7 @@
           <ion-text>
             {{
               offline.lastSyncAt
-                ? (offline.lastSyncAt | dateLocale: 'medium')
+                ? (offline.lastSyncAt | dateLocale : 'medium')
                 : ('IDEA_COMMON.OFFLINE.NEVER' | translate)
             }}
           </ion-text>
@@ -47,14 +47,14 @@
         [disabled]="offline.isOffline()"
         (click)="sync()"
       >
-        <ion-icon slot="start" name="sync"></ion-icon> {{ 'IDEA_COMMON.OFFLINE.SYNC_NOW' | translate }}
+        <ion-icon slot="start" name="sync" /> {{ 'IDEA_COMMON.OFFLINE.SYNC_NOW' | translate }}
       </ion-button>
     </ion-list-header>
   </ion-list>
   <ion-list class="aList" *ngIf="offline.synchronizing">
     <ion-item>
       <ion-label class="ion-text-center">
-        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <ion-spinner name="crescent" color="primary" />
       </ion-label>
     </ion-item>
   </ion-list>
@@ -67,7 +67,7 @@
     </ion-list-header>
     <ion-item *ngIf="!offline.queueAPIRequests.length">
       <i>{{ 'IDEA_COMMON.OFFLINE.NO_ELEMENTS_TO_UPLOAD' | translate }}</i>
-      <ion-icon slot="end" size="small" name="checkmark" color="success"></ion-icon>
+      <ion-icon slot="end" size="small" name="checkmark" color="success" />
     </ion-item>
     <ion-item *ngFor="let r of offline.queueAPIRequests; let odd = odd" [class.oddItem]="odd">
       <ion-label class="ion-text-wrap">
@@ -90,7 +90,7 @@
         [title]="t._('IDEA_COMMON.OFFLINE.CANCEL_REQUEST')"
         (click)="deleteRequest(r)"
       >
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
+        <ion-icon slot="icon-only" name="trash" />
       </ion-button>
       <ion-button
         fill="clear"
@@ -100,9 +100,9 @@
         [title]="t._('IDEA_COMMON.OFFLINE.DOWNLOAD_LOG')"
         (click)="downloadRequestLog(r)"
       >
-        <ion-icon slot="icon-only" name="download"></ion-icon>
+        <ion-icon slot="icon-only" name="download" />
       </ion-button>
-      <ion-spinner slot="end" name="dots" *ngIf="offline.synchronizing"></ion-spinner>
+      <ion-spinner slot="end" name="dots" *ngIf="offline.synchronizing" />
     </ion-item>
   </ion-list>
   <ion-list class="aList" *ngIf="offline.getResources().length">
@@ -112,9 +112,6 @@
         <p>{{ 'IDEA_COMMON.OFFLINE.DOWNLOAD_RESOURCES_EXPLANATION' | translate }}</p>
       </ion-label>
     </ion-list-header>
-    <idea-cacheable-resource
-      *ngFor="let r of offline.getResources()"
-      [resource]="offline.getCacheableResource(r)"
-    ></idea-cacheable-resource>
+    <idea-cacheable-resource *ngFor="let r of offline.getResources()" [resource]="offline.getCacheableResource(r)" />
   </ion-list>
 </ion-content>

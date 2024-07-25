@@ -2,20 +2,20 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button [title]="t._('IDEA_COMMON.LIST.CANCEL_AND_CLOSE')" (click)="close()">
-        <ion-icon slot="icon-only" icon="chevron-down"></ion-icon>
+        <ion-icon slot="icon-only" icon="chevron-down" />
       </ion-button>
     </ion-buttons>
     <ion-searchbar
       #searchbar
       [placeholder]="searchPlaceholder ?? t._('COMMON.SEARCH')"
       (ionInput)="search($event.target.value)"
-    ></ion-searchbar>
+    />
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA_COMMON.LIST.NEW_ELEMENT')" (click)="addElement()">
-        <ion-icon icon="add" slot="icon-only"></ion-icon>
+        <ion-icon icon="add" slot="icon-only" />
       </ion-button>
       <ion-button [title]="t._('IDEA_COMMON.LIST.SAVE_AND_CLOSE')" (click)="close(true)">
-        <ion-icon icon="checkmark-circle" slot="icon-only"></ion-icon>
+        <ion-icon icon="checkmark-circle" slot="icon-only" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -30,7 +30,7 @@
     <ion-item class="listElement" *ngFor="let element of filteredList">
       <ion-label>{{ getElementName(element) }}</ion-label>
       <ion-button slot="end" fill="clear" *ngIf="labelElements" (click)="editElement(element)">
-        <ion-icon icon="pencil-sharp" slot="icon-only"></ion-icon>
+        <ion-icon icon="pencil-sharp" slot="icon-only" />
       </ion-button>
       <ion-button
         slot="end"
@@ -39,11 +39,11 @@
         [title]="t._('IDEA_COMMON.LIST.DELETE_ELEMENT')"
         (click)="removeElement(element)"
       >
-        <ion-icon icon="trash-outline" slot="icon-only"></ion-icon>
+        <ion-icon icon="trash-outline" slot="icon-only" />
       </ion-button>
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
-    <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+    <ion-infinite-scroll-content />
   </ion-infinite-scroll>
 </ion-content>

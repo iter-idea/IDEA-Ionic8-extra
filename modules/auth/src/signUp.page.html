@@ -12,7 +12,7 @@
         </p>
         <ion-item>
           <ion-label position="inline">
-            <ion-icon name="person-circle" color="primary"></ion-icon>
+            <ion-icon name="person-circle" color="primary" />
           </ion-label>
           <ion-input
             type="email"
@@ -20,35 +20,33 @@
             pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
             spellcheck="false"
             autocorrect="off"
-            autocapitalize="off"
             autocomplete="off"
             [placeholder]="'IDEA_AUTH.EMAIL' | translate"
             [title]="'IDEA_AUTH.REGISTRATION_EMAIL_HINT' | translate"
             [ngModelOptions]="{ standalone: true }"
             [(ngModel)]="email"
             (keyup.enter)="register()"
-          ></ion-input>
+          />
         </ion-item>
         <ion-item>
           <ion-label position="inline">
-            <ion-icon name="key" color="primary"></ion-icon>
+            <ion-icon name="key" color="primary" />
           </ion-label>
           <ion-input
             type="password"
             spellcheck="false"
             autocorrect="off"
-            autocapitalize="off"
             autocomplete="off"
-            [pattern]="auth.getPasswordPolicyPatternForInput()"
+            [pattern]="_auth.getPasswordPolicyPatternForInput()"
             [clearOnEdit]="false"
             [placeholder]="'IDEA_AUTH.PASSWORD' | translate"
             [title]="'IDEA_AUTH.CHOOSE_A_PASSWORD' | translate"
             [ngModelOptions]="{ standalone: true }"
             [(ngModel)]="password"
             (keyup.enter)="register()"
-          ></ion-input>
+          />
           <ion-button slot="end" fill="clear" color="dark" (click)="openPasswordPolicy($event)">
-            <ion-icon icon="help-circle-outline" slot="icon-only"></ion-icon>
+            <ion-icon icon="help-circle-outline" slot="icon-only" />
           </ion-button>
         </ion-item>
         <ion-row
@@ -56,11 +54,7 @@
           *ngIf="translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
         >
           <ion-col>
-            <ion-checkbox
-              size="small"
-              [ngModelOptions]="{ standalone: true }"
-              [(ngModel)]="agreementsCheck"
-            ></ion-checkbox>
+            <ion-checkbox size="small" [ngModelOptions]="{ standalone: true }" [(ngModel)]="agreementsCheck" />
             {{ 'IDEA_AUTH.AGREEMENTS_CHECK_REGISTRATION' | translate }}:
             <a
               ion-text

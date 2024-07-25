@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 import { IDEASetupMFAModalComponent } from './setupMFAModal.component';
@@ -26,13 +26,15 @@ export class IDEASetupMFAButtonComponent implements OnInit {
 
   isMFAEnabled: boolean;
 
-  constructor(private modalCtrl: ModalController, private auth: IDEAAuthService) {}
+  private _modal = inject(ModalController);
+  private _auth = inject(IDEAAuthService);
+
   async ngOnInit(): Promise<void> {
-    this.isMFAEnabled = await this.auth.checkIfUserHasMFAEnabled(true);
+    this.isMFAEnabled = await this._auth.checkIfUserHasMFAEnabled(true);
   }
 
   async openMFAModal(): Promise<void> {
-    const modal = await this.modalCtrl.create({ component: IDEASetupMFAModalComponent, backdropDismiss: false });
+    const modal = await this._modal.create({ component: IDEASetupMFAModalComponent, backdropDismiss: false });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) {
         this.isMFAEnabled = data.enabled;

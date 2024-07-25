@@ -9,13 +9,13 @@ ion-grid.actionSheetGrid {
     margin-bottom: 8px;
     ion-button {
       text-transform: none;
-      --ion-color-base: var(--ion-color-step-750) !important;
+      --ion-color-base: var(--ion-text-color-step-750) !important;
     }
     ion-button.destructive {
       --ion-color-base: var(--ion-color-danger) !important;
     }
     ion-button.cancel {
-      --ion-color-base: var(--ion-color-step-550) !important;
+      --ion-color-base: var(--ion-text-color-step-550) !important;
     }
     ion-button.withIcon {
       height: 100%;

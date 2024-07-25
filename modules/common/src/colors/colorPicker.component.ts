@@ -96,7 +96,7 @@ export class IDEAColorPickerComponent {
               [title]="c.name || c.hex"
               (click)="pick(c.hex)"
             >
-              <ion-icon name="checkmark" *ngIf="c.hex === current"></ion-icon>
+              <ion-icon name="checkmark" *ngIf="c.hex === current" />
             </ion-avatar>
           </ion-col>
         </ion-row>

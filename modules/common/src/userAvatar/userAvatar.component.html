@@ -1,6 +1,6 @@
 <div class="container">
   <ion-avatar style="height: var(--avatar-size); width: var(--avatar-size)" *ngIf="src" [ngClass]="size" [title]="name">
-    <ion-img [src]="src" (ionError)="fallbackToInitials()"></ion-img>
+    <ion-img [src]="src" (ionError)="fallbackToInitials()" />
   </ion-avatar>
   <div
     class="circle"

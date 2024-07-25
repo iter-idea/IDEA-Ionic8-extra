@@ -38,7 +38,7 @@
         [(viewDate)]="viewDate"
         (viewDateChange)="viewDateChanged($event)"
       >
-        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+        <ion-icon name="chevron-back-outline" slot="icon-only" />
       </ion-button>
       <ion-button
         fill="clear"
@@ -48,7 +48,7 @@
         [(viewDate)]="viewDate"
         (viewDateChange)="viewDateChanged($event)"
       >
-        <ion-icon name="today-outline" slot="icon-only"></ion-icon>
+        <ion-icon name="today-outline" slot="icon-only" />
       </ion-button>
       <ion-button
         fill="clear"
@@ -59,7 +59,7 @@
         [(viewDate)]="viewDate"
         (viewDateChange)="viewDateChanged($event)"
       >
-        <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
+        <ion-icon name="chevron-forward-outline" slot="icon-only" />
       </ion-button>
     </ion-col>
     <ion-col class="ion-align-self-center titleCol" [size]="12" [sizeSm]="5" [pullSm]="7" [sizeLg]="8" [pullLg]="4">
@@ -113,7 +113,7 @@
         { event: weekEvent.tempEvent || weekEvent.event, locale: locale } | calendarA11y : 'eventDescription'
       "
     >
-      <mwl-calendar-event-actions [event]="weekEvent.tempEvent || weekEvent.event"></mwl-calendar-event-actions>
+      <mwl-calendar-event-actions [event]="weekEvent.tempEvent || weekEvent.event" />
       &ngsp;
       <mwl-calendar-event-title
         [event]="weekEvent.tempEvent || weekEvent.event"
@@ -122,13 +122,13 @@
       >
       </mwl-calendar-event-title>
       <div class="eventGadgets" *ngIf="!weekEvent.event.allDay">
-        <ion-icon *ngFor="let icon of weekEvent.event.icons" [name]="icon.name" [title]="icon.title"></ion-icon>
+        <ion-icon *ngFor="let icon of weekEvent.event.icons" [name]="icon.name" [title]="icon.title" />
         <idea-user-avatar
           size="mini"
           *ngFor="let avatar of weekEvent.event.avatars"
           [src]="avatar.url"
           [name]="avatar.title"
-        ></idea-user-avatar>
+        />
       </div>
     </div>
   </ng-template>

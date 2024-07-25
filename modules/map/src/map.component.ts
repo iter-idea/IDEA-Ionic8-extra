@@ -40,7 +40,11 @@ const DEFAULT_ZOOM = 8;
   template: ''
 })
 export class IDEAMapComponent implements OnInit {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
+  private _platform = inject(Platform);
+  private _element = inject(ElementRef);
+  private _renderer = inject(Renderer2);
+  private _tc = inject(IDEATinCanService);
 
   /**
    * The Google Maps' map object.
@@ -86,15 +90,9 @@ export class IDEAMapComponent implements OnInit {
   /// Initialization.
   ///
 
-  constructor(
-    private platform: Platform,
-    private element: ElementRef,
-    private renderer: Renderer2,
-    private tc: IDEATinCanService
-  ) {}
-  public ngOnInit() {
+  ngOnInit(): void {
     // wait for the SDK to be available
-    this.init().then(() => {
+    this.init().then((): void => {
       // if needed, acquire the current geolocation position; note: it won't work on localhost (resolves `null`)
       this.getLocationSafely().then(location => {
         // initialize the map's options
@@ -107,7 +105,7 @@ export class IDEAMapComponent implements OnInit {
         // optionally set the dark mode
         if (this.darkMode) mapOptions.styles = MAP_DARK_MODE_STYLE;
         // initialize the map
-        this.map = new google.maps.Map(this.element.nativeElement, mapOptions);
+        this.map = new google.maps.Map(this._element.nativeElement, mapOptions);
         // initialise the markers list and the cluster
         this.markers = new Array<google.maps.Marker>();
         this.markerCluster = new MarkerClusterer(this.map, this.markers, {
@@ -118,7 +116,7 @@ export class IDEAMapComponent implements OnInit {
         // initialise the info window (popup) to open when a marker is clicked (default behaviour)
         this.infoWindow = new google.maps.InfoWindow();
         // mark the component as ready
-        this.renderer.addClass(this.element.nativeElement, 'mapReady');
+        this._renderer.addClass(this._element.nativeElement, 'mapReady');
         this.isReady = true;
       });
     });
@@ -129,7 +127,7 @@ export class IDEAMapComponent implements OnInit {
    */
   private init(): Promise<void> {
     return new Promise(resolve => {
-      this.platform.ready().then(() => {
+      this._platform.ready().then((): void => {
         // if the SKD is ready, skip the import
         if (this.isReady) resolve();
         // otherwise, try to load it; in case we are offline, delegates to a network-status-changes handler
@@ -140,7 +138,7 @@ export class IDEAMapComponent implements OnInit {
   /**
    * Load the SDK and resolve the chosen promise when it's fully loaded.
    */
-  private loadSKD(resolve: any) {
+  private loadSKD(resolve: any): void {
     // check whether we are online (and so we can download the SDK)
     Network.getStatus().then(status => {
       // if we have connection, inject the script and load the SDK
@@ -162,11 +160,11 @@ export class IDEAMapComponent implements OnInit {
    * Inject the SDK scripts, using the right API key, based on the current configuration.
    * Resolve the chosen promise when the SDK is fully loaded.
    */
-  private injectSDK(resolve: any) {
-    if (this.tc.get('ideaMapLibsLoaded')) return resolve();
+  private injectSDK(resolve: any): void {
+    if (this._tc.get('ideaMapLibsLoaded')) return resolve();
     // load the library using the correct API key and set the service as "ready" when the loading ends
-    new Loader({ apiKey: this.env.google?.mapsApiKey }).load().then(() => {
-      this.tc.set('ideaMapLibsLoaded', true);
+    new Loader({ apiKey: this._env.google?.mapsApiKey }).load().then((): void => {
+      this._tc.set('ideaMapLibsLoaded', true);
       resolve();
     });
   }
@@ -180,22 +178,22 @@ export class IDEAMapComponent implements OnInit {
       if (!this.centerOnCurrentPosition) return resolve(null);
       Geolocation.getCurrentPosition({ enableHighAccuracy: highAccuracy })
         .then(position => resolve(position))
-        .catch(() => resolve(null));
+        .catch((): void => resolve(null));
     });
   }
 
   /**
    * Resolves when the component is ready.
    */
-  public ready(): Promise<void> {
+  ready(): Promise<void> {
     return new Promise(resolve => this.readyHelper(resolve));
   }
   /**
    * Retry checking whether the component is ready until it is.
    */
-  private readyHelper(resolve: any) {
+  private readyHelper(resolve: any): void {
     if (this.isReady) resolve();
-    else setTimeout(() => this.readyHelper(resolve), 1000);
+    else setTimeout((): void => this.readyHelper(resolve), 1000);
   }
 
   ///
@@ -205,21 +203,21 @@ export class IDEAMapComponent implements OnInit {
   /**
    * Return the geolocation of the current center of the map.
    */
-  public getCenter(): google.maps.LatLng {
+  getCenter(): google.maps.LatLng {
     return this.map.getCenter();
   }
   /**
    * Set the map's center in a geolocation position.
    */
-  public setCenter(lat: number, lng: number, zoom?: number) {
+  setCenter(lat: number, lng: number, zoom?: number): void {
     this.map.setCenter(new google.maps.LatLng(lat, lng));
     if (zoom) this.map.setZoom(zoom);
   }
   /**
    * Set the map's center to the current position.
    */
-  public setCenterToCurrentLocation(highAccuracy?: boolean): Promise<GeolocationPosition> {
-    return new Promise((resolve, reject) => {
+  setCenterToCurrentLocation(highAccuracy?: boolean): Promise<GeolocationPosition> {
+    return new Promise((resolve, reject): void => {
       if (!Geolocation) return resolve(null);
       Geolocation.getCurrentPosition({ enableHighAccuracy: highAccuracy })
         .then(location => {
@@ -235,7 +233,7 @@ export class IDEAMapComponent implements OnInit {
   /**
    * Add a marker to the map, by latitude and longitude and build its info window.
    */
-  public addMarker(lat: number, lng: number, options: { title?: string; attributes?: any; animate?: boolean }) {
+  addMarker(lat: number, lng: number, options: { title?: string; attributes?: any; animate?: boolean }): void {
     // create the marker, that will be added to the map later on
     const marker = new google.maps.Marker({ position: new google.maps.LatLng(lat, lng) });
     // set the title if required
@@ -247,7 +245,7 @@ export class IDEAMapComponent implements OnInit {
     if (options.animate) marker.setAnimation(google.maps.Animation.DROP);
     // add the click handler to the marker (default or custom function)
     if (options.title || this.markerClickFn)
-      google.maps.event.addListener(marker, 'click', (event: any) =>
+      google.maps.event.addListener(marker, 'click', (event: any): void =>
         this.markerClickFn ? this.markerClickFn(event, marker) : this.defaultMarkerClickFn(event, marker)
       );
     // add the marker to the list
@@ -256,7 +254,7 @@ export class IDEAMapComponent implements OnInit {
   /**
    * The defailt click handler function for the marker: display a popup with containing the title.
    */
-  private defaultMarkerClickFn(e: any, marker: google.maps.Marker) {
+  private defaultMarkerClickFn(e: any, marker: google.maps.Marker): void {
     e.cancelBubble = true;
     e.returnValue = false;
     if (e.stopPropagation) {
@@ -271,7 +269,7 @@ export class IDEAMapComponent implements OnInit {
   /**
    * Open a popup in the map, to display some HTML content.
    */
-  public openInfoWindow(htmlContent: string, position?: google.maps.LatLng) {
+  openInfoWindow(htmlContent: string, position?: google.maps.LatLng): void {
     this.infoWindow.setContent(htmlContent);
     if (position) this.infoWindow.setPosition(position);
     this.infoWindow.open(this.map);
@@ -280,14 +278,14 @@ export class IDEAMapComponent implements OnInit {
   /**
    * Clear the current markers on the map.
    */
-  public clearMarkers() {
+  clearMarkers(): void {
     this.markers = this.markers.slice(0, 0);
     this.markerCluster.clearMarkers();
   }
   /**
    * Create/update the markers cluster based on the defined markers.
    */
-  public setMarkersClusters(fitToMarkersBounds = false) {
+  setMarkersClusters(fitToMarkersBounds = false): void {
     this.markerCluster.addMarkers(this.markers);
     if (fitToMarkersBounds) this.fitMarkersBounds();
   }
@@ -295,7 +293,7 @@ export class IDEAMapComponent implements OnInit {
   /**
    * Zoom and center to fit all the current markers.
    */
-  public fitMarkersBounds() {
+  fitMarkersBounds(): void {
     if (!this.markers.length) return;
     const bounds = new google.maps.LatLngBounds();
     this.markers.forEach(m => bounds.extend(m.getPosition()));

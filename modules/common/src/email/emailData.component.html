@@ -15,7 +15,7 @@
     [class.marginTop]="label"
     (click)="doIconSelect($event)"
   >
-    <ion-icon [name]="icon" slot="icon-only"></ion-icon>
+    <ion-icon [name]="icon" slot="icon-only" />
   </ion-button>
   <ion-label position="stacked" *ngIf="label">{{ label }}</ion-label>
   <div class="description">
@@ -31,5 +31,5 @@
       <ion-text>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}:</ion-text> {{ emailData.bcc.join(', ') }}
     </p>
   </div>
-  <ion-icon slot="end" name="chevron-forward" class="selectIcon"></ion-icon>
+  <ion-icon slot="end" name="chevron-forward" class="selectIcon" />
 </ion-item>

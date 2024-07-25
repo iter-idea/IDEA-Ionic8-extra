@@ -2,20 +2,20 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start" *ngIf="!isViewLocked()">
       <ion-button *ngIf="!isInnerLayer()" [title]="'COMMON.CANCEL' | translate" (click)="close()">
-        <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+        <ion-icon name="close-circle" slot="icon-only" />
       </ion-button>
       <ion-button
         *ngIf="isInnerLayer()"
         [title]="'IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK' | translate"
         (click)="prevLayer()"
       >
-        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+        <ion-icon name="arrow-back" slot="icon-only" />
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA_COMMON.PDF_TEMPLATE.EDIT_TEMPLATE' | translate }}</ion-title>
     <ion-buttons slot="end" *ngIf="!isViewLocked()">
       <ion-button *ngIf="!isInnerLayer() && !disabled" [title]="'COMMON.SAVE' | translate" (click)="save()">
-        <ion-icon name="checkmark-circle" slot="icon-only"></ion-icon>
+        <ion-icon name="checkmark-circle" slot="icon-only" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -32,7 +32,7 @@
             [title]="'IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK' | translate"
             (click)="prevLayer(len - index - 1)"
           >
-            {{ c }} <ion-icon *ngIf="!last" name="chevron-forward"></ion-icon>
+            {{ c }} <ion-icon *ngIf="!last" name="chevron-forward" />
           </span>
         </h2>
         <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.BREADCRUMB_I' | translate }}</p>
@@ -48,7 +48,7 @@
           (click)="editSections = true"
         >
           {{ 'IDEA_COMMON.PDF_TEMPLATE.SECTIONS' | translate }}
-          <ion-icon name="pencil" slot="end"></ion-icon>
+          <ion-icon name="pencil" slot="end" />
         </ion-button>
         <ion-button
           *ngIf="editSections"
@@ -56,7 +56,7 @@
           (click)="addSection()"
         >
           {{ 'COMMON.ADD' | translate }}
-          <ion-icon name="add" slot="end"></ion-icon>
+          <ion-icon name="add" slot="end" />
         </ion-button>
         <ion-button color="dark" *ngIf="editSections" (click)="editSections = false">
           {{ 'COMMON.DONE' | translate }}
@@ -70,7 +70,7 @@
         [button]="!isViewLocked()"
         (click)="editSectionTitleLabel(getCurrentLayer().title)"
       >
-        <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+        <ion-icon name="bookmark-outline" slot="start" />
         <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_I' | translate">
           <b *ngIf="getCurrentLayer().title | label">{{ getCurrentLayer().title | label }}</b>
           <i *ngIf="!(getCurrentLayer().title | label)">
@@ -97,7 +97,7 @@
           [disabled]="first"
           (click)="moveSectionUpInTemplate(section)"
         >
-          <ion-icon name="arrow-up" slot="icon-only"></ion-icon>
+          <ion-icon name="arrow-up" slot="icon-only" />
         </ion-button>
         <ion-button
           slot="start"
@@ -107,25 +107,25 @@
           [disabled]="last"
           (click)="moveSectionDownInTemplate(section)"
         >
-          <ion-icon name="arrow-down" slot="icon-only"></ion-icon>
+          <ion-icon name="arrow-down" slot="icon-only" />
         </ion-button>
         <!---->
         <ng-container *ngIf="section.type === ST.PAGE_BREAK">
-          <ion-icon name="code-slash" slot="start"></ion-icon>
+          <ion-icon name="code-slash" slot="start" />
           <ion-label class="specialRow" [title]="'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK_I' | translate">
             <b>{{ 'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK' | translate }}</b>
           </ion-label>
         </ng-container>
         <!---->
         <ng-container *ngIf="section.type === ST.BLANK_ROW">
-          <ion-icon name="code" slot="start"></ion-icon>
+          <ion-icon name="code" slot="start" />
           <ion-label class="specialRow" [title]="'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW_I' | translate">
             <i>{{ 'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW' | translate }}</i>
           </ion-label>
         </ng-container>
         <!---->
         <ng-container *ngIf="section.type === ST.ROW">
-          <ion-icon name="apps" slot="start"></ion-icon>
+          <ion-icon name="apps" slot="start" />
           <ion-label class="ion-text-wrap normalRow">
             <ion-row class="ion-align-items-center">
               <ng-container *ngFor="let _ of section.columns; let i = index">
@@ -143,7 +143,7 @@
                     [class.notTappable]="isViewLocked()"
                     (click)="manageField(section, i, $event)"
                   >
-                    <ion-icon name="at"></ion-icon>
+                    <ion-icon name="at" />
                     <ion-label>
                       <small>{{ section.getColumnFieldSize(i) }}</small>
                       {{ displayField(section, i) }}
@@ -157,7 +157,7 @@
                     [class.notTappable]="isViewLocked()"
                     (click)="manageField(section, i, $event)"
                   >
-                    <ion-icon name="shapes"></ion-icon>
+                    <ion-icon name="shapes" />
                     <ion-label>
                       <small>{{ section.getColumnFieldSize(i) }}</small>
                       <span
@@ -176,7 +176,7 @@
                     *ngIf="!disabled && !isViewLocked()"
                     (click)="addField(section, i)"
                   >
-                    <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+                    <ion-icon name="add-circle" slot="icon-only" />
                   </ion-button>
                   <ion-button
                     fill="clear"
@@ -185,7 +185,7 @@
                     *ngIf="moveMode"
                     (click)="completeMove(section, i)"
                   >
-                    <ion-icon name="golf" slot="icon-only"></ion-icon>
+                    <ion-icon name="golf" slot="icon-only" />
                   </ion-button>
                 </ion-col>
               </ng-container>
@@ -201,7 +201,7 @@
           [title]="'COMMON.CANCEL' | translate"
           (click)="completeMove(moveMode.section, moveMode.colIndex)"
         >
-          <ion-icon name="arrow-undo" slot="icon-only"></ion-icon>
+          <ion-icon name="arrow-undo" slot="icon-only" />
         </ion-button>
         <ion-button
           slot="end"
@@ -211,7 +211,7 @@
           [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
           (click)="deleteSection(section)"
         >
-          <ion-icon name="trash" slot="icon-only"></ion-icon>
+          <ion-icon name="trash" slot="icon-only" />
         </ion-button>
       </ion-item>
 
@@ -229,7 +229,7 @@
           [disabled]="first"
           (click)="moveSectionUpInTemplate(section)"
         >
-          <ion-icon name="arrow-up" slot="icon-only"></ion-icon>
+          <ion-icon name="arrow-up" slot="icon-only" />
         </ion-button>
         <ion-button
           slot="start"
@@ -239,9 +239,9 @@
           [disabled]="last"
           (click)="moveSectionDownInTemplate(section)"
         >
-          <ion-icon name="arrow-down" slot="icon-only"></ion-icon>
+          <ion-icon name="arrow-down" slot="icon-only" />
         </ion-button>
-        <ion-icon name="bookmark" slot="start"></ion-icon>
+        <ion-icon name="bookmark" slot="start" />
         <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.HEADER_I' | translate">
           <b class="hasHTMLContent" [innerHtml]="section.title | label | highlight : getCurrentVariables()"></b>
           <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.HEADER' | translate }}</p>
@@ -254,7 +254,7 @@
           [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
           (click)="deleteSection(section)"
         >
-          <ion-icon name="trash" slot="icon-only"></ion-icon>
+          <ion-icon name="trash" slot="icon-only" />
         </ion-button>
       </ion-item>
 
@@ -272,7 +272,7 @@
           [disabled]="first"
           (click)="moveSectionUpInTemplate(section)"
         >
-          <ion-icon name="arrow-up" slot="icon-only"></ion-icon>
+          <ion-icon name="arrow-up" slot="icon-only" />
         </ion-button>
         <ion-button
           slot="start"
@@ -282,9 +282,9 @@
           [disabled]="last"
           (click)="moveSectionDownInTemplate(section)"
         >
-          <ion-icon name="arrow-down" slot="icon-only"></ion-icon>
+          <ion-icon name="arrow-down" slot="icon-only" />
         </ion-button>
-        <ion-icon [name]="getInnerSectionIcon(section)" slot="start"></ion-icon>
+        <ion-icon [name]="getInnerSectionIcon(section)" slot="start" />
         <!---->
         <ion-label
           *ngIf="section.type === ST.INNER_SECTION"
@@ -310,7 +310,7 @@
           [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
           (click)="deleteSection(section)"
         >
-          <ion-icon name="trash" slot="icon-only"></ion-icon>
+          <ion-icon name="trash" slot="icon-only" />
         </ion-button>
       </ion-item>
     </div>

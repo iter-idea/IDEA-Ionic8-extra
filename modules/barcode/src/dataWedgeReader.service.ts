@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
 
@@ -21,8 +21,10 @@ export class IDEADataWedgeReaderService {
    */
   protected observable: Observable<ScanData>;
 
-  constructor(private platform: Platform) {
-    this.platform.ready().then(() => {
+  private _platform = inject(Platform);
+
+  constructor() {
+    this._platform.ready().then((): void => {
       // load the intent manager
       this.intent = (window as any).plugins ? (window as any).plugins.intentShim : null;
       if (!this.intent) return;
@@ -39,7 +41,7 @@ export class IDEADataWedgeReaderService {
             ],
             filterCategories: ['android.intent.category.DEFAULT']
           },
-          (intent: any) => {
+          (intent: any): void => {
             // extract the reading from the info returned by the device
             const ret = {
               data: intent.extras['com.symbol.datawedge.data_string'],
@@ -57,34 +59,34 @@ export class IDEADataWedgeReaderService {
   /**
    * Return true if the DataWedge-compatible device can be used.
    */
-  public isAvailable(): boolean {
+  isAvailable(): boolean {
     return Boolean(this.intent);
   }
 
   /**
    * Subscribe to the service to be notified when a reading happens.
    */
-  public subscribe(callback: (scan: ScanData) => void): Subscription {
+  subscribe(callback: (scan: ScanData) => void): Subscription {
     return this.observable.subscribe(callback);
   }
 
   /**
    * Trigger the start of a soft scan.
    */
-  public startScan() {
+  startScan(): void {
     this.sendCommandToDevice('com.symbol.datawedge.api.SOFT_SCAN_TRIGGER', 'START_SCANNING');
   }
   /**
    * Trigger the end of a soft scan.
    */
-  public stopScan() {
+  stopScan(): void {
     this.sendCommandToDevice('com.symbol.datawedge.api.SOFT_SCAN_TRIGGER', 'STOP_SCANNING');
   }
   /**
    * Send a broadcast intent to the DataWedge service.
    * This requires DW6.3+ as that is the version where the `com.symbol.datawedge.api.ACTION` was introduced.
    */
-  protected sendCommandToDevice(name: string, value: string) {
+  protected sendCommandToDevice(name: string, value: string): void {
     if (!this.intent) return;
     this.intent.sendBroadcast(
       {
@@ -92,8 +94,8 @@ export class IDEADataWedgeReaderService {
         extras: { [name]: value, SEND_RESULT: true }
       },
       // success and failure in sending the intent, not of DW to process the intent
-      () => {},
-      () => {}
+      (): void => {},
+      (): void => {}
     );
   }
 }

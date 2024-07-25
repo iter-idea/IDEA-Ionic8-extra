@@ -3,10 +3,10 @@
     <ion-title>{{ title }}</ion-title>
     <ion-buttons slot="end">
       <ion-button *ngIf="!hideClearButton" [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
-        <ion-icon slot="icon-only" name="arrow-undo"></ion-icon>
+        <ion-icon slot="icon-only" name="arrow-undo" />
       </ion-button>
       <ion-button [title]="t._('IDEA_COMMON.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="close()">
-        <ion-icon slot="icon-only" name="close"></ion-icon>
+        <ion-icon slot="icon-only" name="close" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -21,7 +21,7 @@
         <ion-row class="ion-align-items-center ion-justify-content-center">
           <ion-col class="ion-text-right ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addYears(-1)">
-              <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+              <ion-icon slot="icon-only" name="chevron-back" />
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6">
@@ -36,7 +36,7 @@
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addYears(+1)">
-              <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+              <ion-icon slot="icon-only" name="chevron-forward" />
             </ion-button>
           </ion-col>
         </ion-row>
@@ -45,7 +45,7 @@
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-right ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(-1)">
-              <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+              <ion-icon slot="icon-only" name="chevron-back" />
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6" (click)="showMonths()">
@@ -53,7 +53,7 @@
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(+1)">
-              <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+              <ion-icon slot="icon-only" name="chevron-forward" />
             </ion-button>
           </ion-col>
         </ion-row>
@@ -140,7 +140,7 @@
 <ion-footer>
   <ion-toolbar color="ideaToolbar" class="tappable" (click)="save()">
     <ion-title class="ion-text-center">
-      <ion-icon name="checkmark"></ion-icon>
+      <ion-icon name="checkmark" />
     </ion-title>
   </ion-toolbar>
 </ion-footer>

@@ -15,11 +15,11 @@
     [class.marginTop]="label"
     (click)="doIconSelect($event)"
   >
-    <ion-icon [name]="icon" slot="icon-only"></ion-icon>
+    <ion-icon [name]="icon" slot="icon-only" />
   </ion-button>
   <ion-label position="stacked" *ngIf="label" [class.selectable]="!disabled || tappableWhenDisabled">
     {{ label }}
-    <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
+    <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled" />
   </ion-label>
   <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled">
     <ion-text class="placeholder" *ngIf="!valueToDisplay && !disabled" [class.selectable]="!disabled">
@@ -27,5 +27,5 @@
     </ion-text>
     {{ valueToDisplay }}
   </ion-label>
-  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled" />
 </ion-item>

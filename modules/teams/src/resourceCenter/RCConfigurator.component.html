@@ -1,9 +1,9 @@
 <idea-select
   [data]="foldersSuggestions"
-  [description]="folder?.name || t._('IDEA_TEAMS.RESOURCE_CENTER.NO_FOLDER_SELECTED')"
+  [description]="folder?.name || 'IDEA_TEAMS.RESOURCE_CENTER.NO_FOLDER_SELECTED' | translate"
   [label]="label"
-  [placeholder]="t._('IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER')"
-  [searchPlaceholder]="t._('IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER')"
+  [placeholder]="'IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER' | translate"
+  [searchPlaceholder]="'IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER' | translate"
   [lines]="lines"
   [hideIdFromUI]="true"
   [disabled]="!editMode"
@@ -12,4 +12,4 @@
   [iconColor]="iconColor"
   (select)="$event ? setFolder($event?.value) : null"
   (iconSelect)="iconSelect.emit()"
-></idea-select>
+/>

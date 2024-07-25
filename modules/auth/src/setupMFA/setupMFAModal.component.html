@@ -2,7 +2,7 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
-        <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
+        <ion-icon name="close-circle-outline" slot="icon-only" />
       </ion-button>
     </ion-buttons>
     <ion-title>{{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.SETUP_MFA') | translate }}</ion-title>
@@ -20,8 +20,13 @@
       <ion-card-content>
         <div id="qrCodeContainer" *ngIf="!isMFAEnabled"></div>
         <ion-item color="light">
-          <ion-label position="floating">{{ 'IDEA_AUTH.OTP_CODE' | translate }}</ion-label>
-          <ion-input type="text" inputmode="numeric" [(ngModel)]="otpCode"></ion-input>
+          <ion-input
+            type="text"
+            inputmode="numeric"
+            labelPlacement="floating"
+            [label]="'IDEA_AUTH.OTP_CODE' | translate"
+            [(ngModel)]="otpCode"
+          />
         </ion-item>
         <ion-button expand="block" class="ion-margin-top" [disabled]="!otpCode" (click)="setMFA(!isMFAEnabled)">
           {{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.ENABLE_MFA') | translate }}

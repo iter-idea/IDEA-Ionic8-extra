@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
 
@@ -13,32 +13,31 @@ export class IDEAMFAChallengePage implements OnInit {
   otpCode: string;
   errorMsg: string;
 
-  constructor(
-    private navCtrl: NavController,
-    private message: IDEAMessageService,
-    private loading: IDEALoadingService,
-    private auth: IDEAAuthService,
-    private t: IDEATranslationsService
-  ) {}
+  private _nav = inject(NavController);
+  private _message = inject(IDEAMessageService);
+  private _loading = inject(IDEALoadingService);
+  private _auth = inject(IDEAAuthService);
+  private _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
-    if (!this.auth.challengeUsername) this.goToAuth();
+    if (!this._auth.challengeUsername) this.goToAuth();
   }
 
   async completeMFAChallenge(): Promise<void> {
     try {
       this.errorMsg = null;
-      await this.loading.show();
-      await this.auth.completeMFAChallenge(this.otpCode);
+      await this._loading.show();
+      await this._auth.completeMFAChallenge(this.otpCode);
       window.location.assign('');
     } catch (error) {
-      this.errorMsg = this.t._('IDEA_AUTH.INVALID_OTP_CODE');
-      this.message.error(this.errorMsg, true);
+      this.errorMsg = this._translate._('IDEA_AUTH.INVALID_OTP_CODE');
+      this._message.error(this.errorMsg, true);
     } finally {
-      this.loading.hide();
+      this._loading.hide();
     }
   }
 
   goToAuth(): void {
-    this.navCtrl.navigateBack(['auth']);
+    this._nav.navigateBack(['auth']);
   }
 }

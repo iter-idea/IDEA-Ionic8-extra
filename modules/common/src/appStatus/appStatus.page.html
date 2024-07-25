@@ -7,18 +7,16 @@
         </ion-card-title>
       </ion-card-header>
       <ion-card-content class="ion-align-items-center">
-        <ion-img class="logo" [src]="appIconURI" (ionError)="$event.target.style.display = 'none'"></ion-img>
+        <ion-img class="logo" [src]="appIconURI" (ionError)="$event.target.style.display = 'none'" />
         <p class="htmlContent" *ngIf="htmlContent" [innerHTML]="htmlContent"></p>
         <ion-grid *ngIf="status.mustUpdate">
           <ion-row>
             <ion-col class="ion-text-center">
               <ion-button (click)="opeAppleStoreLink()" *ngIf="isIOS() && appleStoreURL">
-                <ion-icon slot="start" name="logo-apple-appstore"></ion-icon>
-                <ion-label>{{ 'IDEA_COMMON.APP_STATUS.UPDATE' | translate }}</ion-label>
+                <ion-icon slot="start" name="logo-apple-appstore" /> {{ 'IDEA_COMMON.APP_STATUS.UPDATE' | translate }}
               </ion-button>
               <ion-button (click)="openGoogleStoreLink()" *ngIf="isAndroid() && googleStoreURL">
-                <ion-icon slot="start" name="logo-google-playstore"></ion-icon>
-                <ion-label>{{ 'IDEA_COMMON.APP_STATUS.UPDATE' | translate }}</ion-label>
+                <ion-icon slot="start" name="logo-google-playstore" /> {{ 'IDEA_COMMON.APP_STATUS.UPDATE' | translate }}
               </ion-button>
             </ion-col>
           </ion-row>

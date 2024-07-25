@@ -5,7 +5,8 @@ import {
   Output,
   EventEmitter,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  inject
 } from '@angular/core';
 import { IonContent, Platform } from '@ionic/angular';
 import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
@@ -113,41 +114,33 @@ export class IDEAAgendaComponent implements OnInit {
    * Trigger before the rendering of the month view.
    */
   @Output() beforeMonthViewRenderEmitter = new EventEmitter<CalendarMonthViewBeforeRenderEvent>();
-  /**
-   * Helper to use the enum in the UX.
-   */
+
   CalendarView = CalendarView;
+  Attendance = EventAttendance;
+  viewDate = new Date();
+  refresh = new Subject();
   /**
-   * The currently selected date.
-   */
-  viewDate: Date = new Date();
-  /**
-   * A controller to refresh the current view.
-   */
-  refresh: Subject<void> = new Subject();
-  /**
-   * The locale used to format dates.
    * @hide
    */
   locale: string;
   /**
-   * The starting day for the week, according to the locale (0 = sunday).
    * @hide
    */
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-  Attendance = EventAttendance;
-
   darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  constructor(private cdr: ChangeDetectorRef, private platform: Platform, public t: IDEATranslationsService) {}
+  private _cdr = inject(ChangeDetectorRef);
+  private _platform = inject(Platform);
+  _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
-    this.locale = this.t.getCurrentLang();
+    this.locale = this._translate.getCurrentLang();
     // in case of Italian locale the starting day for the week is monday (1), otherwise sunday (0)
     this.weekStartsOn = this.locale === 'it' ? 1 : 0;
   }
   isMobile(): boolean {
-    return this.platform.is('mobile');
+    return this._platform.is('mobile');
   }
 
   /**
@@ -178,59 +171,35 @@ export class IDEAAgendaComponent implements OnInit {
     });
   }
 
-  /**
-   * Check whether a date is valid based on the configured parameters.
-   */
   dateIsValid(date: any, sameDayIsValid?: boolean): boolean {
     if (!this.onlyFuture) return true;
     return isFuture(date) || (sameDayIsValid ? isToday(date) : false);
   }
 
-  /**
-   * Change the current view for the agenda.
-   */
   setView(view: CalendarView): void {
     this.view = view;
   }
 
-  /**
-   * Emit the change of the view date and close the detail component of the month view, if needed.
-   */
   viewDateChanged(newDate: Date): void {
     if (this.view === CalendarView.Month) this.activeDayIsOpen = false;
     this.changeDate.emit(newDate);
   }
 
-  /**
-   * A day was selected: manage the detailed view.
-   */
   changeDay({ date, events }: { date: Date; events: AgendaEvent[] }): void {
-    // skip if the date isn't valid
     if (!this.dateIsValid(date, true)) return;
-    // if the selected day changed, if the new day has events, open the details in month view (otherwise close them)
     if ((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || !events || events.length === 0)
       this.activeDayIsOpen = false;
     else this.activeDayIsOpen = true;
-    // update the current date in the agenda
     this.viewDate = date;
   }
 
-  /**
-   * The time of an event was changed.
-   */
   eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
-    // update the event
     event.start = newStart;
     event.end = newEnd;
-    // re-map the array to trigger the UI refresh
     this.events = this.events.slice();
-    // trigger the event to the parent component
     this.changeEvent.emit(event);
   }
 
-  /**
-   * Given a color, it returns an opaque version of it.
-   */
   getAlternateColor(color: string, amount: number, opacity?: number): string | undefined {
     if (!color?.trim()) return undefined;
     const alt = ColorParse(color.trim());
@@ -240,9 +209,6 @@ export class IDEAAgendaComponent implements OnInit {
     return `rgba(${r}, ${g}, ${b}, ${opacity || 1})`;
   }
 
-  /**
-   * Get the content of the tooltip based on the event.
-   */
   getTooltipContent(event: AgendaEvent): string {
     if (!event) return '';
     let str = event.title ? '<b>' + event.title + '</b>' : '';
@@ -255,16 +221,10 @@ export class IDEAAgendaComponent implements OnInit {
     return str;
   }
 
-  /**
-   * Get a shortened version of the description as preview.
-   */
   getPreviewDescription(description: string): string {
     return description && description.length > 100 ? description.slice(0, 100).concat('...') : description;
   }
 
-  /**
-   * Handle the drag&drop to create a new event.
-   */
   startDragToCreate(event: Event, segmentDate: Date, segmentElement: HTMLElement): void {
     if (!this.allowDragToCreate) return;
 
@@ -300,7 +260,7 @@ export class IDEAAgendaComponent implements OnInit {
 
     const refreshView = (): void => {
       this.events = [...this.events];
-      this.cdr.detectChanges();
+      this._cdr.detectChanges();
     };
 
     if (event.type === 'touchstart') {

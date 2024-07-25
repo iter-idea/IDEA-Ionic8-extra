@@ -2,7 +2,7 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button [title]="t._('IDEA_COMMON.MDE.CLOSE_WITHOUT_SAVING')" (click)="close()">
-        <ion-icon name="close" slot="icon-only"></ion-icon>
+        <ion-icon name="close" slot="icon-only" />
       </ion-button>
     </ion-buttons>
     <ion-title>
@@ -10,7 +10,7 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA_COMMON.MDE.SAVE_AND_CLOSE')" (click)="confirm()">
-        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+        <ion-icon name="checkmark" slot="icon-only" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -28,6 +28,6 @@
       {{ v.concat(' ') }}
     </ion-text>
   </p>
-  <ion-textarea rows="12" [id]="id" [placeholder]="placeholder" [(ngModel)]="value"></ion-textarea>
-  <idea-mde-toolbar></idea-mde-toolbar>
+  <ion-textarea rows="12" [id]="id" [placeholder]="placeholder" [(ngModel)]="value" />
+  <idea-mde-toolbar />
 </ion-content>

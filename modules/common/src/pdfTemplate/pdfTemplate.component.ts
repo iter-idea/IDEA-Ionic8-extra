@@ -513,7 +513,7 @@ export interface MoveModeData {
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
             <ion-button size="small" [disabled]="size === 1" (click)="shrink()">
-              <ion-icon name="remove" slot="icon-only"></ion-icon>
+              <ion-icon name="remove" slot="icon-only" />
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center">
@@ -523,19 +523,19 @@ export interface MoveModeData {
           </ion-col>
           <ion-col class="ion-text-center">
             <ion-button size="small" [disabled]="size === max" (click)="grow()">
-              <ion-icon name="add" slot="icon-only"></ion-icon>
+              <ion-icon name="add" slot="icon-only" />
             </ion-button>
           </ion-col>
         </ion-row>
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
             <ion-button size="small" color="secondary" [disabled]="size === 1" (click)="shrinkToMin()">
-              <ion-icon name="contract" slot="icon-only"></ion-icon>
+              <ion-icon name="contract" slot="icon-only" />
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center">
             <ion-button size="small" color="secondary" [disabled]="size === max" (click)="growToMax()">
-              <ion-icon name="expand" slot="icon-only"></ion-icon>
+              <ion-icon name="expand" slot="icon-only" />
             </ion-button>
           </ion-col>
         </ion-row>

@@ -20,8 +20,9 @@ import { COMMON_PASSWORDS_TOP_1000 } from './commonPasswords.model';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAAuthService {
-  protected env = inject(IDEAEnvironment);
-  protected t = inject(IDEATranslationsService);
+  protected _env = inject(IDEAEnvironment);
+  protected _translate = inject(IDEATranslationsService);
+  protected _storage = inject(IDEAStorageService);
 
   /**
    * The name of the Cognito's user attribute which contains the key of the last device to login in this project.
@@ -39,14 +40,14 @@ export class IDEAAuthService {
 
   private passwordPolicy: any;
 
-  constructor(private storage: IDEAStorageService) {
-    this.deviceKeyAttribute = 'custom:'.concat(this.env.idea.project);
+  constructor() {
+    this.deviceKeyAttribute = 'custom:'.concat(this._env.idea.project);
     this.userPool = new CognitoUserPool({
-      UserPoolId: this.env.aws.cognito.userPoolId,
-      ClientId: this.env.aws.cognito.userPoolClientId
+      UserPoolId: this._env.aws.cognito.userPoolId,
+      ClientId: this._env.aws.cognito.userPoolClientId
     });
-    this.mfaProjectName = this.env.idea.auth.title ?? this.env.idea.project;
-    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
+    this.mfaProjectName = this._env.idea.auth.title ?? this._env.idea.project;
+    this.passwordPolicy = this._env.idea.auth.passwordPolicy;
   }
 
   /**
@@ -76,7 +77,7 @@ export class IDEAAuthService {
       const user = this.prepareCognitoUser(username);
       user.authenticateUser(this.prepareAuthDetails(username, password), {
         onSuccess: (): void =>
-          resolve(this.env.idea.auth.forceLoginWithMFA ? LoginOutcomeActions.MFA_SETUP : LoginOutcomeActions.NONE),
+          resolve(this._env.idea.auth.forceLoginWithMFA ? LoginOutcomeActions.MFA_SETUP : LoginOutcomeActions.NONE),
         onFailure: (err: Error): void => reject(err),
         newPasswordRequired: (): void => {
           this.challengeUsername = username;
@@ -162,7 +163,7 @@ export class IDEAAuthService {
     });
   }
   /**
-   * In case  new account has just been registered, return the username.
+   * In case a new account has just been registered, return the username.
    */
   getNewAccountJustRegistered(): string {
     return this.newAccountJustRegistered;
@@ -192,17 +193,17 @@ export class IDEAAuthService {
     options = Object.assign({ global: false }, options);
     return new Promise((resolve, reject): void => {
       // remove the refresh token previosly saved
-      this.storage.remove('AuthRefreshToken').then(
+      this._storage.remove('AuthRefreshToken').then(
         (): Promise<void> =>
           // remove the optional auth details
-          this.storage.remove('AuthUserDetails').then((): void => {
+          this._storage.remove('AuthUserDetails').then((): void => {
             // get the user and the session
             const user = this.userPool.getCurrentUser();
             user.getSession(async (err: Error): Promise<void> => {
               // if the session is active, run the online sign-out; otherwise, only the local data has been deleted
               if (err) return resolve();
               // if a reference to the device was saved, forget it
-              if (this.env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
+              if (this._env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
               // sign-out from the pool (terminate the current session or all the sessions)
               if (options.global)
                 user.globalSignOut({ onSuccess: (): void => resolve(), onFailure: err => reject(err) });
@@ -313,7 +314,7 @@ export class IDEAAuthService {
   isAuthenticated(offlineAllowed: boolean, getFreshIdTokenOnExp?: (freshIdToken: string) => void): Promise<any> {
     return new Promise((resolve, reject): void => {
       if (offlineAllowed && !navigator.onLine) {
-        this.storage.get('AuthUserDetails').then(userDetails => resolve({ idToken: null, userDetails }));
+        this._storage.get('AuthUserDetails').then(userDetails => resolve({ idToken: null, userDetails }));
         // re-execute the method when back online, so that you can retrieve a token to make requests
         window.addEventListener(
           'online',
@@ -333,7 +334,7 @@ export class IDEAAuthService {
               const isMFAEnabled = !!(
                 data.UserMFASettingList && data.UserMFASettingList.includes('SOFTWARE_TOKEN_MFA')
               );
-              if (!isMFAEnabled && this.env.idea.auth.forceLoginWithMFA)
+              if (!isMFAEnabled && this._env.idea.auth.forceLoginWithMFA)
                 return reject(new Error(LoginOutcomeActions.MFA_SETUP));
               user.getUserAttributes((e: Error, attributes: CognitoUserAttribute[]): void => {
                 if (e) return reject(e);
@@ -349,14 +350,14 @@ export class IDEAAuthService {
                   // in case some check failed, reject the authorisation flow
                   if (err) return reject(err);
                   // (async) save the refresh token so it can be accessed by other procedures
-                  this.storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
+                  this._storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
                   // set a timer to manage the autorefresh of the idToken (through the refreshToken)
                   setTimeout(
                     (): void => this.refreshSession(user, session.getRefreshToken().getToken(), getFreshIdTokenOnExp),
                     15 * 60 * 1000
                   ); // every 15 minutes
                   // (async) if offlineAllowed, save data locally, to use it next time we'll be offline
-                  if (offlineAllowed) this.storage.set('AuthUserDetails', userDetails);
+                  if (offlineAllowed) this._storage.set('AuthUserDetails', userDetails);
                   // return the idToken (to use with API)
                   resolve({ idToken: session.getIdToken().getJwtToken(), userDetails });
                 });
@@ -380,7 +381,7 @@ export class IDEAAuthService {
           setTimeout((): void => this.refreshSession(user, refreshToken, callback), 1 * 60 * 1000);
         } else {
           // (async) save the refresh token so it can be accessed by other procedures
-          this.storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
+          this._storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
           // repeat every 15 minutes
           setTimeout(
             (): void => this.refreshSession(user, session.getRefreshToken().getToken(), callback),
@@ -407,7 +408,7 @@ export class IDEAAuthService {
     const isRobot = groups.some(x => x === 'robots');
     if (isRobot) return callback(new Error('ROBOT_USER'));
     // in case the project limits each account to only one simultaneous session, run a check
-    if (this.env.idea.auth.singleSimultaneousSession) return this.checkForSimultaneousSessions(userDetails, callback);
+    if (this._env.idea.auth.singleSimultaneousSession) return this.checkForSimultaneousSessions(userDetails, callback);
     // otherwise, we're done
     callback();
   }
@@ -416,11 +417,11 @@ export class IDEAAuthService {
    */
   private async checkForSimultaneousSessions(userDetails: any, callback: (err?: Error) => void): Promise<void> {
     // get or create a key for the current device (~random)
-    let currentDeviceKey = await this.storage.get('AuthDeviceKey');
+    let currentDeviceKey = await this._storage.get('AuthDeviceKey');
     if (!currentDeviceKey) {
       const randomKey = Math.random().toString(36).substring(10);
       currentDeviceKey = randomKey.concat(String(Date.now()));
-      await this.storage.set('AuthDeviceKey', currentDeviceKey);
+      await this._storage.set('AuthDeviceKey', currentDeviceKey);
     }
     // check whether the last device to sign-into this project (if any) is the current one
     const lastDeviceToSignIntoThisProject = userDetails[this.deviceKeyAttribute];
@@ -483,7 +484,11 @@ export class IDEAAuthService {
     const errors: string[] = [];
     let pwd = (password || '').trim().toLowerCase();
     const pwdContains = (str: string): boolean => pwd.includes((str || '').trim().toLowerCase());
-    const projectReferencesToAvoid = [this.env.idea.project, this.env.idea.auth.title, this.t._('COMMON.APP_NAME')];
+    const projectReferencesToAvoid = [
+      this._env.idea.project,
+      this._env.idea.auth.title,
+      this._translate._('COMMON.APP_NAME')
+    ];
     if (projectReferencesToAvoid.some(x => pwdContains(x))) errors.push('COMMON_PASSWORD_PROJECT');
     if (customStringsToAvoid && customStringsToAvoid.some(x => pwdContains(x))) errors.push('COMMON_PASSWORD_CUSTOM');
     if (COMMON_PASSWORDS_TOP_1000.some(x => pwdContains(x))) errors.push('COMMON_PASSWORD_INTERNAL');

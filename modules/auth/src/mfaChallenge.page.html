@@ -12,7 +12,7 @@
         </p>
         <ion-item>
           <ion-label position="inline">
-            <ion-icon name="key" color="primary"></ion-icon>
+            <ion-icon name="key" color="primary" />
           </ion-label>
           <ion-input
             inputmode="numeric"
@@ -21,7 +21,7 @@
             [ngModelOptions]="{ standalone: true }"
             [(ngModel)]="otpCode"
             (keyup.enter)="completeMFAChallenge()"
-          ></ion-input>
+          />
         </ion-item>
         <ion-button
           expand="block"

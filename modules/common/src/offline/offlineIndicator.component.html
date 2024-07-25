@@ -6,10 +6,10 @@
 >
   <ion-fab-button color="dark" size="small" (click)="showStatus()">
     <!-- OFFLINE -->
-    <ion-icon name="airplane" *ngIf="offline.isOffline()"></ion-icon>
+    <ion-icon name="airplane" *ngIf="offline.isOffline()" />
     <!-- SYNCHRONISING -->
-    <ion-icon name="sync" *ngIf="offline.isOnline() && offline.synchronizing"></ion-icon>
+    <ion-icon name="sync" *ngIf="offline.isOnline() && offline.synchronizing" />
     <!-- NEED MANAL SYNCHRONISATION -->
-    <ion-icon name="pause" *ngIf="offline.isOnline() && offline.requiresManualConfirmation"></ion-icon>
+    <ion-icon name="pause" *ngIf="offline.isOnline() && offline.requiresManualConfirmation" />
   </ion-fab-button>
 </ion-fab>

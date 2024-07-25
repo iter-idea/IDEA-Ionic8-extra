@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { toCanvas } from 'qrcode';
+import { IDEALoadingService, IDEAMessageService } from '@idea-ionic/common';
 
 import { IDEAAuthService } from '../auth.service';
-import { IDEALoadingService, IDEAMessageService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-setup-mfa-modal',
@@ -14,24 +14,23 @@ export class IDEASetupMFAModalComponent implements OnInit {
   otpCode: string;
   isMFAEnabled: boolean;
 
-  constructor(
-    private modalCtrl: ModalController,
-    private loading: IDEALoadingService,
-    private message: IDEAMessageService,
-    private auth: IDEAAuthService
-  ) {}
+  private _modal = inject(ModalController);
+  private _loading = inject(IDEALoadingService);
+  private _message = inject(IDEAMessageService);
+  private _auth = inject(IDEAAuthService);
+
   async ngOnInit(): Promise<void> {
     try {
-      await this.loading.show();
-      this.isMFAEnabled = await this.auth.checkIfUserHasMFAEnabled(true);
+      await this._loading.show();
+      this.isMFAEnabled = await this._auth.checkIfUserHasMFAEnabled(true);
       if (!this.isMFAEnabled) {
-        const url = await this.auth.getURLForEnablingMFA();
+        const url = await this._auth.getURLForEnablingMFA();
         await this.generateQRCodeCanvasByURL(url);
       }
     } catch (error) {
-      this.message.error('COMMON.OPERATION_FAILED');
+      this._message.error('COMMON.OPERATION_FAILED');
     } finally {
-      this.loading.hide();
+      this._loading.hide();
     }
   }
   private generateQRCodeCanvasByURL(url: string): Promise<void> {
@@ -52,20 +51,20 @@ export class IDEASetupMFAModalComponent implements OnInit {
   async setMFA(enable: boolean): Promise<void> {
     if (!this.otpCode) return;
     try {
-      await this.loading.show();
-      if (enable) await this.auth.enableMFA(this.otpCode);
-      else await this.auth.disableMFA(this.otpCode);
+      await this._loading.show();
+      if (enable) await this._auth.enableMFA(this.otpCode);
+      else await this._auth.disableMFA(this.otpCode);
       this.isMFAEnabled = enable;
-      this.message.success('COMMON.OPERATION_COMPLETED');
-      this.modalCtrl.dismiss({ enabled: enable });
+      this._message.success('COMMON.OPERATION_COMPLETED');
+      this._modal.dismiss({ enabled: enable });
     } catch (error) {
-      this.message.error('COMMON.OPERATION_FAILED');
+      this._message.error('COMMON.OPERATION_FAILED');
     } finally {
-      this.loading.hide();
+      this._loading.hide();
     }
   }
 
   close(): void {
-    this.modalCtrl.dismiss();
+    this._modal.dismiss();
   }
 }

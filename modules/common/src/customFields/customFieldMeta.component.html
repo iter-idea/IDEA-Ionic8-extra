@@ -2,13 +2,13 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button [title]="'IDEA_COMMON.CUSTOM_FIELDS.CLOSE_WITHOUT_SAVING' | translate" (click)="close()">
-        <ion-icon slot="icon-only" icon="close"></ion-icon>
+        <ion-icon slot="icon-only" icon="close" />
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA_COMMON.CUSTOM_FIELDS.MANAGE_FIELD' | translate }}</ion-title>
     <ion-buttons slot="end" *ngIf="!disabled">
       <ion-button [title]="'IDEA_COMMON.CUSTOM_FIELDS.SAVE_CHANGES' | translate" (click)="save()">
-        <ion-icon slot="icon-only" icon="checkmark-circle"></ion-icon>
+        <ion-icon slot="icon-only" icon="checkmark-circle" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -17,7 +17,7 @@
   <ion-list class="aList ion-padding" [class.viewMode]="disabled" [class.editMode]="!disabled">
     <ion-list-header *ngIf="disabled">
       <ion-label>
-        <h2>{{ _field.name | label }} <ion-text class="obligatoryDot" *ngIf="_field.obligatory"></ion-text></h2>
+        <h2>{{ _field.name | label }} <ion-text class="obligatoryDot" *ngIf="_field.obligatory" /></h2>
         <ion-badge color="dark">{{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _field.type | translate }}</ion-badge>
         <ion-badge
           color="medium"
@@ -35,19 +35,19 @@
         </ion-badge>
         <p>{{ _field.description | label }}</p>
       </ion-label>
-      <ion-icon *ngIf="_field.icon" [name]="_field.icon"></ion-icon>
+      <ion-icon *ngIf="_field.icon" [name]="_field.icon" />
     </ion-list-header>
     <div *ngIf="!disabled">
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
-        <ion-label position="stacked">
-          {{ 'IDEA_COMMON.CUSTOM_FIELDS.NAME' | translate }} <ion-text class="obligatoryDot"></ion-text>
-        </ion-label>
         <ion-input
           type="text"
           readonly="true"
+          labelPlacement="stacked"
           [value]="_field.name | label"
           [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.NAME_HINT' | translate"
-        ></ion-input>
+        >
+          <div slot="label">{{ 'IDEA_COMMON.CUSTOM_FIELDS.NAME' | translate }} <ion-text class="obligatoryDot" /></div>
+        </ion-input>
         <ion-button
           slot="end"
           fill="clear"
@@ -55,17 +55,18 @@
           [title]="'COMMON.EDIT' | translate"
           (click)="editLabel(t._('IDEA_COMMON.CUSTOM_FIELDS.NAME'), _field.name)"
         >
-          <ion-icon slot="icon-only" icon="pencil"></ion-icon>
+          <ion-icon slot="icon-only" icon="pencil" />
         </ion-button>
       </ion-item>
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
-        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate }}</ion-label>
         <ion-input
           type="text"
           readonly="true"
+          labelPlacement="stacked"
+          [label]="'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate"
           [value]="_field.description | label"
           [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION_HINT' | translate"
-        ></ion-input>
+        />
         <ion-button
           slot="end"
           fill="clear"
@@ -73,22 +74,23 @@
           [title]="'COMMON.EDIT' | translate"
           (click)="editLabel(t._('IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION'), _field.description)"
         >
-          <ion-icon slot="icon-only" icon="pencil"></ion-icon>
+          <ion-icon slot="icon-only" icon="pencil" />
         </ion-button>
       </ion-item>
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('icon')">
-        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.ICON' | translate }}</ion-label>
         <ion-input
           type="text"
           readonly="true"
+          labelPlacement="stacked"
+          [label]="'IDEA_COMMON.CUSTOM_FIELDS.ICON' | translate"
           [value]="_field.icon"
           [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.ICON_HINT' | translate"
-        ></ion-input>
+        />
         <ion-badge slot="end" color="dark" class="marginTop" *ngIf="_field.icon">
-          <ion-icon [name]="_field.icon"></ion-icon>
+          <ion-icon [name]="_field.icon" />
         </ion-badge>
         <ion-button fill="clear" slot="end" class="marginTop" [title]="'COMMON.EDIT' | translate" (click)="editIcon()">
-          <ion-icon icon="pencil" slot="icon-only"></ion-icon>
+          <ion-icon icon="pencil" slot="icon-only" />
         </ion-button>
       </ion-item>
       <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('type')">
@@ -107,12 +109,13 @@
         [lines]="lines"
         [class.fieldHasError]="hasFieldAnError('default')"
       >
-        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT' | translate }}</ion-label>
         <ion-input
           type="text"
+          labelPlacement="stacked"
+          [label]="'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT' | translate"
           [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT_HINT' | translate"
           [(ngModel)]="_field.default"
-        ></ion-input>
+        />
       </ion-item>
       <ion-item *ngIf="_field.type === CFT.ENUM" [lines]="lines" [class.fieldHasError]="hasFieldAnError('default')">
         <ion-select
@@ -129,27 +132,28 @@
         </ion-select>
       </ion-item>
       <ion-item *ngIf="_field.type === CFT.NUMBER" [lines]="lines" [class.fieldHasError]="hasFieldAnError('min')">
-        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.MIN' | translate }}</ion-label>
         <ion-input
           type="number"
+          labelPlacement="stacked"
+          [label]="'IDEA_COMMON.CUSTOM_FIELDS.MIN' | translate"
           [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.MIN_HINT' | translate"
           [(ngModel)]="_field.min"
-        ></ion-input>
+        />
       </ion-item>
       <ion-item *ngIf="_field.type === CFT.NUMBER" [lines]="lines" [class.fieldHasError]="hasFieldAnError('max')">
-        <ion-label position="stacked">{{ 'IDEA_COMMON.CUSTOM_FIELDS.MAX' | translate }} </ion-label>
         <ion-input
           type="number"
+          labelPlacement="stacked"
+          [label]="'IDEA_COMMON.CUSTOM_FIELDS.MAX' | translate"
           [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.MAX_HINT' | translate"
           [(ngModel)]="_field.max"
-        ></ion-input>
+        />
       </ion-item>
     </div>
   </ion-list>
   <ion-list class="obligatoryToggleList" *ngIf="!disabled">
-    <ion-item lines="none" class="ion-text-right">
-      <ion-label>{{ 'IDEA_COMMON.CUSTOM_FIELDS.OBLIGATORY' | translate }}</ion-label>
-      <ion-toggle [(ngModel)]="_field.obligatory"></ion-toggle>
+    <ion-item lines="none">
+      <ion-toggle label="'IDEA_COMMON.CUSTOM_FIELDS.OBLIGATORY' | translate" [(ngModel)]="_field.obligatory" />
     </ion-item>
   </ion-list>
   <ion-list class="aList ion-padding" *ngIf="_field.type === CFT.ENUM">
@@ -169,7 +173,7 @@
         [lines]="lines"
         [class.fieldHasError]="hasFieldAnError('enum.' + index)"
       >
-        <ion-reorder slot="start" *ngIf="!disabled"></ion-reorder>
+        <ion-reorder slot="start" *ngIf="!disabled" />
         <ion-label>{{ _field.getEnumElement(e, t.getCurrentLang(), t.languages()) }}</ion-label>
         <ion-button
           slot="end"
@@ -178,7 +182,7 @@
           [title]="'COMMON.EDIT' | translate"
           (click)="editEnumLabel(e)"
         >
-          <ion-icon icon="pencil" slot="icon-only"></ion-icon>
+          <ion-icon icon="pencil" slot="icon-only" />
         </ion-button>
         <ion-button
           slot="end"
@@ -188,7 +192,7 @@
           [title]="'IDEA_COMMON.CUSTOM_FIELDS.REMOVE_OPTION' | translate"
           (click)="removeOptionByIndex(index)"
         >
-          <ion-icon icon="trash-outline" slot="icon-only"></ion-icon>
+          <ion-icon icon="trash-outline" slot="icon-only" />
         </ion-button>
       </ion-item>
     </ion-reorder-group>

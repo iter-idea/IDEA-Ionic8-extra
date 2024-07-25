@@ -15,10 +15,10 @@
     [class.marginTop]="label"
     (click)="doIconSelect($event)"
   >
-    <ion-icon [icon]="icon" slot="icon-only"></ion-icon>
+    <ion-icon [icon]="icon" slot="icon-only" />
   </ion-button>
   <ion-label position="stacked" *ngIf="label">
-    {{ label }} <ion-text class="obligatoryDot" *ngIf="!disabled && obligatory"></ion-text>
+    {{ label }} <ion-text class="obligatoryDot" *ngIf="!disabled && obligatory" />
   </ion-label>
   <div class="description">
     <div class="placeholder" *ngIf="!htmlContent">{{ placeholder }}</div>
@@ -29,5 +29,5 @@
       [innerHTML]="htmlContent | highlight : variableCodes"
     ></div>
   </div>
-  <ion-icon slot="end" icon="chevron-forward" class="selectIcon"></ion-icon>
+  <ion-icon slot="end" icon="chevron-forward" class="selectIcon" />
 </ion-item>

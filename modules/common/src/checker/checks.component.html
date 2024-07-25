@@ -2,7 +2,7 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button [title]="t._('IDEA_COMMON.CHECKER.CLOSE_WITHOUT_SELECTING')" (click)="cancel()">
-        <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
+        <ion-icon slot="icon-only" name="chevron-down" />
       </ion-button>
     </ion-buttons>
     <ion-searchbar
@@ -10,7 +10,7 @@
       [debounce]="100"
       [placeholder]="searchPlaceholder ?? t._('IDEA_COMMON.CHECKER.SEARCH')"
       (ionInput)="search($event.target.value)"
-    ></ion-searchbar>
+    />
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA_COMMON.CHECKER.CONFIRM_SELECTION')" (click)="confirm()">
         {{ 'IDEA_COMMON.CHECKER.DONE' | translate }}
@@ -26,10 +26,10 @@
     </ion-title>
     <ion-buttons slot="end" *ngIf="!limitSelectionToNum && allowSelectDeselectAll">
       <ion-button [title]="t._('IDEA_COMMON.CHECKER.DESELECT_ALL')" (click)="checkAll(false)">
-        <ion-icon slot="icon-only" name="square-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="square-outline" />
       </ion-button>
       <ion-button [title]="t._('IDEA_COMMON.CHECKER.SELECT_ALL')" (click)="checkAll(true)">
-        <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="checkbox-outline" />
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end" *ngIf="limitSelectionToNum || !allowSelectDeselectAll">
@@ -47,7 +47,7 @@
         [class.strong]="category1"
         (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
       >
-        <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start"></ion-icon>
+        <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
         {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
       </ion-button>
       <ion-button
@@ -57,7 +57,7 @@
         [class.strong]="category2"
         (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
       >
-        <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start"></ion-icon>
+        <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
         {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
       </ion-button>
     </div>
@@ -75,10 +75,10 @@
         slot="start"
         [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
         [(ngModel)]="check.checked"
-      ></ion-checkbox>
+      />
       <ion-avatar slot="start" *ngIf="showAvatars">
         <div class="circle" *ngIf="check.color" [style.background-color]="check.color"></div>
-        <idea-user-avatar *ngIf="!check.color" [src]="check.avatar" [name]="check.name"></idea-user-avatar>
+        <idea-user-avatar *ngIf="!check.color" [src]="check.avatar" [name]="check.name" />
       </ion-avatar>
       <ion-label>
         {{ check.name }}
@@ -87,6 +87,6 @@
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
-    <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+    <ion-infinite-scroll-content />
   </ion-infinite-scroll>
 </ion-content>

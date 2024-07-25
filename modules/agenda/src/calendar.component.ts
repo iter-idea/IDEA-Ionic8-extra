@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { Calendar, Check, Membership } from 'idea-toolbox';
 import {
@@ -20,136 +20,103 @@ export class IDEACalendarComponent implements OnInit {
   /**
    * The calendar to manage.
    */
-  @Input() public calendar: Calendar;
+  @Input() calendar: Calendar;
   /**
    * Whether we want to enable advanced permissions (based on the memberships) on the calendar.
    */
-  @Input() public advancedPermissions: boolean;
+  @Input() advancedPermissions: boolean;
   /**
    * Whether the calendar color is an important detail or it shouldn't be shown.
    */
-  @Input() public hideColor: boolean;
+  @Input() hideColor: boolean;
 
-  /**
-   * Working copy of the calendar, to update only when confirmed.
-   */
-  public _calendar: Calendar;
-  /**
-   * Helper to allow selecting memberships.
-   */
-  public membershipsChecks: Check[];
-  /**
-   * The current membership.
-   */
-  public membership: Membership;
-  /**
-   * Errors while validating the entity.
-   */
-  public errors: Set<string> = new Set<string>();
-  /**
-   * The default color for a calendar.
-   */
-  public DEFAULT_COLOR = '#555';
+  calendarWC: Calendar;
+  membershipsChecks: Check[];
+  membership: Membership;
+  errors = new Set<string>();
+  DEFAULT_COLOR = '#555';
 
-  constructor(
-    public calendars: IDEACalendarsService,
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-    public tc: IDEATinCanService,
-    public loading: IDEALoadingService,
-    public message: IDEAMessageService,
-    public API: IDEAAWSAPIService,
-    public t: IDEATranslationsService
-  ) {}
-  public ngOnInit() {
-    this.membership = this.tc.get('membership');
-    // work on a copy
-    this._calendar = new Calendar(this.calendar);
-    // load the teammates to use for shared calendars permissions
-    this.API.getResource(`teams/${this.membership.teamId}/memberships`)
-      .then(
-        (memberships: Membership[]) =>
-          (this.membershipsChecks = memberships.map(
-            m =>
-              new Check({
-                value: m.userId,
-                name: m.name,
-                checked: (this._calendar.usersCanManageAppointments || []).some(x => x === m.userId)
-              })
-          ))
-      )
-      .catch(() => {});
+  private _calendars = inject(IDEACalendarsService);
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _tc = inject(IDEATinCanService);
+  private _loading = inject(IDEALoadingService);
+  private _message = inject(IDEAMessageService);
+  private _API = inject(IDEAAWSAPIService);
+  private _translate = inject(IDEATranslationsService);
+
+  async ngOnInit(): Promise<void> {
+    this.membership = this._tc.get('membership');
+    this.calendarWC = new Calendar(this.calendar);
+    try {
+      const memberships: Membership[] = await this._API.getResource(`teams/${this.membership.teamId}/memberships`);
+      this.membershipsChecks = memberships.map(
+        m =>
+          new Check({
+            value: m.userId,
+            name: m.name,
+            checked: (this.calendarWC.usersCanManageAppointments || []).some(x => x === m.userId)
+          })
+      );
+    } catch (error) {
+      this._message.error('COMMON.COULDNT_LOAD_LIST');
+    }
   }
 
-  /**
-   * Set the support array to display errors in the UI.
-   */
-  public hasFieldAnError(field: string): boolean {
+  hasFieldAnError(field: string): boolean {
     return this.errors.has(field);
   }
 
-  /**
-   * Save a calendar with the new info.
-   */
-  public async save() {
-    // set the default color, in case none was selected
-    if (!this._calendar.color) this._calendar.color = this.DEFAULT_COLOR;
-    // map the memberships able to manage appointments
-    if (this._calendar.isShared() && this.advancedPermissions)
-      this._calendar.usersCanManageAppointments = this.membershipsChecks
+  async save(): Promise<void> {
+    if (!this.calendarWC.color) this.calendarWC.color = this.DEFAULT_COLOR;
+    if (this.calendarWC.isShared() && this.advancedPermissions)
+      this.calendarWC.usersCanManageAppointments = this.membershipsChecks
         .filter(x => x.checked)
         .map(x => String(x.value));
-    else delete this._calendar.usersCanManageAppointments;
-    // checkings
-    this.errors = new Set(this._calendar.validate());
-    if (this.errors.size) return this.message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
-    // send a put request
-    await this.loading.show();
-    this.calendars
-      .putCalendar(this._calendar)
-      .then((res: Calendar) => {
-        this.calendar.load(res);
-        this.message.success('IDEA_AGENDA.CALENDARS.CALENDAR_SAVED');
-        this.modalCtrl.dismiss(this.calendar);
-      })
-      .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-      .finally(() => this.loading.hide());
+    else delete this.calendarWC.usersCanManageAppointments;
+
+    this.errors = new Set(this.calendarWC.validate());
+    if (this.errors.size) return this._message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
+
+    try {
+      await this._loading.show();
+      const res = await this._calendars.putCalendar(this.calendarWC);
+      this.calendar.load(res);
+      this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_SAVED');
+      this._modal.dismiss(this.calendar);
+    } catch (error) {
+      this._message.error('COMMON.OPERATION_FAILED');
+    } finally {
+      this._loading.hide();
+    }
   }
 
-  /**
-   * Delete the calendar.
-   */
-  public delete() {
-    this.alertCtrl
-      .create({
-        header: this.t._('COMMON.ARE_YOU_SURE'),
-        subHeader: this.t._('IDEA_AGENDA.CALENDARS.DELETE_CALENDAR'),
-        message: this.t._('IDEA_AGENDA.CALENDARS.DELETE_CALENDAR_HINT'),
-        buttons: [
-          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-          {
-            text: this.t._('COMMON.DELETE'),
-            handler: async () => {
-              await this.loading.show();
-              this.calendars
-                .deleteCalendar(this._calendar)
-                .then(() => {
-                  this.message.success('IDEA_AGENDA.CALENDARS.CALENDAR_DELETED');
-                  this.modalCtrl.dismiss(true);
-                })
-                .catch(() => this.message.error('COMMON.OPERATION_FAILED'))
-                .finally(() => this.loading.hide());
-            }
-          }
-        ]
-      })
-      .then(alert => alert.present());
+  async delete(): Promise<void> {
+    const doDelete = async (): Promise<void> => {
+      try {
+        await this._loading.show();
+        await this._calendars.deleteCalendar(this.calendarWC);
+        this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_DELETED');
+        this._modal.dismiss(true);
+      } catch (error) {
+        this._message.error('COMMON.OPERATION_FAILED');
+      } finally {
+        this._loading.hide();
+      }
+    };
+
+    const header = this._translate._('COMMON.ARE_YOU_SURE');
+    const subHeader = this._translate._('IDEA_AGENDA.CALENDARS.DELETE_CALENDAR');
+    const message = this._translate._('IDEA_AGENDA.CALENDARS.DELETE_CALENDAR_HINT');
+    const buttons = [
+      { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
+      { text: this._translate._('COMMON.DELETE'), handler: doDelete }
+    ];
+    const alert = await this._alert.create({ header, subHeader, message, buttons });
+    alert.present();
   }
 
-  /**
-   * Close the component.
-   */
-  public close() {
-    this.modalCtrl.dismiss();
+  close(): void {
+    this._modal.dismiss();
   }
 }

@@ -18,9 +18,9 @@
     "url": "https://github.com/iter-idea/IDEA-Ionic8-extra/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^18.1.1",
-    "@angular/core": "^18.1.1",
-    "@angular/forms": "^18.1.1",
+    "@angular/common": "^18.1.0",
+    "@angular/core": "^18.1.0",
+    "@angular/forms": "^18.1.0",
     "@capacitor-mlkit/barcode-scanning": "^6.1.0",
     "@capacitor/core": "6.1.1",
     "@ionic/angular": "^8.0.0",

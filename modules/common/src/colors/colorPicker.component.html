@@ -8,11 +8,11 @@
   (click)="openPalette($event)"
 >
   <ion-button fill="clear" slot="start" *ngIf="icon" [color]="iconColor" (click)="doIconSelect($event)">
-    <ion-icon [name]="icon" slot="icon-only"></ion-icon>
+    <ion-icon [name]="icon" slot="icon-only" />
   </ion-button>
   <ion-label *ngIf="label" [class.selectable]="!disabled">
-    {{ label }} <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled"></ion-text>
+    {{ label }} <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled" />
   </ion-label>
-  <ion-avatar slot="end" class="colorCircle" [style.background-color]="current"></ion-avatar>
-  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled"></ion-icon>
+  <ion-avatar slot="end" class="colorCircle" [style.background-color]="current" />
+  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled" />
 </ion-item>

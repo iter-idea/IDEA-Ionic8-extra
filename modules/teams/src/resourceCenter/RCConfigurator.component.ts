@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { RCConfiguredFolder, RCFolder, Suggestion } from 'idea-toolbox';
-import { IDEAAWSAPIService, IDEATinCanService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAAWSAPIService, IDEATinCanService, IDEAMessageService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-rc-configurator',
@@ -11,65 +11,56 @@ export class IDEARCConfiguratorComponent implements OnInit {
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
-  @Input() public team: string;
+  @Input() team: string;
   /**
    * The folder we want to configure with the Resource Center folder.
    */
-  @Input() public folder: RCConfiguredFolder;
+  @Input() folder: RCConfiguredFolder;
   /**
    * The label for the field.
    */
-  @Input() public label: string;
+  @Input() label: string;
   /**
    * Regulate the mode (view/edit).
    */
-  @Input() public editMode: boolean;
+  @Input() editMode: boolean;
   /**
    * The lines attribute of the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
   /**
    * The icon for the field.
    */
-  @Input() public icon: string;
+  @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() public iconColor: string;
+  @Input() iconColor: string;
   /**
    * Icon select.
    */
-  @Output() public iconSelect = new EventEmitter<void>();
-  /**
-   * The folders loaded from the resource center.
-   */
-  public folders: RCFolder[];
-  /**
-   * The folders mapped into suggestions.
-   */
-  public foldersSuggestions: Suggestion[];
+  @Output() iconSelect = new EventEmitter<void>();
 
-  constructor(public t: IDEATranslationsService, public tc: IDEATinCanService, public API: IDEAAWSAPIService) {}
+  folders: RCFolder[];
+  foldersSuggestions: Suggestion[];
 
-  /**
-   * Load the resources from the resource center.
-   */
-  public ngOnInit() {
+  private _message = inject(IDEAMessageService);
+  private _tc = inject(IDEATinCanService);
+  private _API = inject(IDEAAWSAPIService);
+
+  async ngOnInit(): Promise<void> {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
-    this.team = this.team || this.tc.get('membership').teamId || this.tc.get('teamId');
-    // load the Resource Center folders
-    this.API.getResource(`teams/${this.team}/folders`)
-      .then((folders: RCFolder[]) => {
-        this.folders = folders;
-        this.foldersSuggestions = folders.map(x => new Suggestion({ value: x.folderId, name: x.name }));
-      })
-      .catch(() => {});
+    this.team = this.team || this._tc.get('membership').teamId || this._tc.get('teamId');
+    try {
+      const folders: RCFolder[] = await this._API.getResource(`teams/${this.team}/folders`);
+      this.folders = folders;
+      this.foldersSuggestions = folders.map(x => new Suggestion({ value: x.folderId, name: x.name }));
+    } catch (error) {
+      this._message.error('COMMON.COULDNT_LOAD_LIST');
+    }
   }
 
-  /**
-   * Set/unset the folder.
-   */
-  public setFolder(folderId?: string) {
+  setFolder(folderId?: string): void {
     const folder = this.folders.find(f => f.folderId === folderId);
     if (folder) {
       this.folder.folderId = folderId;

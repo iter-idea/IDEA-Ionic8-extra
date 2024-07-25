@@ -20,7 +20,7 @@
           (click)="buttonClicked(b)"
         >
           <div>
-            <ion-icon *ngIf="withIcons" [name]="b.icon || 'flash'"></ion-icon>
+            <ion-icon *ngIf="withIcons" [name]="b.icon || 'flash'" />
             <br *ngIf="withIcons" />
             <ion-label class="ion-text-wrap">{{ b.text }}</ion-label>
           </div>

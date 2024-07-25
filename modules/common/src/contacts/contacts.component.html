@@ -1,27 +1,25 @@
 <div class="contacts">
   <ion-item *ngIf="showName" [lines]="lines" [color]="color">
-    <ion-label position="stacked">
-      {{ 'IDEA_COMMON.CONTACTS.NAME' | translate }}
-    </ion-label>
     <ion-input
       autocomplete="new"
+      labelPlacement="stacked"
+      [label]="'IDEA_COMMON.CONTACTS.NAME' | translate"
       [disabled]="!editMode"
       [placeholder]="'IDEA_COMMON.CONTACTS.NAME_HINT' | translate"
       [title]="'IDEA_COMMON.CONTACTS.NAME_HINT' | translate"
       [(ngModel)]="contacts.name"
-    ></ion-input>
+    />
   </ion-item>
   <ion-item [lines]="lines" [color]="color">
-    <ion-label position="stacked">
-      {{ 'IDEA_COMMON.CONTACTS.PHONE' | translate }}
-    </ion-label>
     <ion-input
       autocomplete="new"
+      labelPlacement="stacked"
+      [label]="'IDEA_COMMON.CONTACTS.PHONE' | translate"
       [disabled]="!editMode"
       [placeholder]="'IDEA_COMMON.CONTACTS.PHONE_HINT' | translate"
       [title]="'IDEA_COMMON.CONTACTS.PHONE_HINT' | translate"
       [(ngModel)]="contacts.phone"
-    ></ion-input>
+    />
     <ion-button
       slot="end"
       fill="clear"
@@ -31,20 +29,19 @@
       [title]="'IDEA_COMMON.CONTACTS.CALL' | translate"
       (click)="call()"
     >
-      <ion-icon name="call" slot="icon-only"></ion-icon>
+      <ion-icon name="call" slot="icon-only" />
     </ion-button>
   </ion-item>
   <ion-item [lines]="lines" [color]="color">
-    <ion-label position="stacked">
-      {{ 'IDEA_COMMON.CONTACTS.EMAIL' | translate }}
-    </ion-label>
     <ion-input
       autocomplete="new"
+      labelPlacement="stacked"
+      [label]="'IDEA_COMMON.CONTACTS.EMAIL' | translate"
       [disabled]="!editMode"
       [placeholder]="'IDEA_COMMON.CONTACTS.EMAIL_HINT' | translate"
       [title]="'IDEA_COMMON.CONTACTS.EMAIL_HINT' | translate"
       [(ngModel)]="contacts.email"
-    ></ion-input>
+    />
     <ion-button
       slot="end"
       fill="clear"
@@ -54,7 +51,7 @@
       [title]="'IDEA_COMMON.CONTACTS.SEND_EMAIL' | translate"
       (click)="sendEmail()"
     >
-      <ion-icon name="mail" slot="icon-only"></ion-icon>
+      <ion-icon name="mail" slot="icon-only" />
     </ion-button>
   </ion-item>
 </div>

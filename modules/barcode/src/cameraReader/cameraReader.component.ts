@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
@@ -29,11 +29,11 @@ export class IDEABarcodeCameraReaderComponent {
 
   barcodeReaderUIHtml: HTMLDivElement = null;
 
-  constructor(public platform: Platform) {}
+  _platform = inject(Platform);
 
   private async canDeviceScanBarcode(): Promise<boolean> {
     return (
-      this.platform.is('capacitor') &&
+      this._platform.is('capacitor') &&
       !!BarcodeScanner &&
       // @todo to fix
       (await (BarcodeScanner as any).checkPermission({ force: true })).granted

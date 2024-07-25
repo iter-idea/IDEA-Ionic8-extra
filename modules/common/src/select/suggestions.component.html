@@ -2,7 +2,7 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button *ngIf="!mustChoose" [title]="t._('IDEA_COMMON.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
-        <ion-icon slot="icon-only" icon="chevron-down"></ion-icon>
+        <ion-icon slot="icon-only" icon="chevron-down" />
       </ion-button>
     </ion-buttons>
     <ion-searchbar
@@ -11,15 +11,15 @@
       [debounce]="100"
       [class.withAdditionalToolbar]="showCategoriesFilters || detailsAreAvailable"
       (ionInput)="search($event.target.value)"
-    ></ion-searchbar>
+    />
     <ion-buttons slot="end" *ngIf="!hideClearButton">
       <ion-button [title]="t._('IDEA_COMMON.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
-        <ion-icon slot="icon-only" icon="backspace"></ion-icon>
+        <ion-icon slot="icon-only" icon="backspace" />
       </ion-button>
     </ion-buttons>
     <div class="additionalToolbar" *ngIf="showCategoriesFilters || detailsAreAvailable">
       <ion-button color="light" size="small" *ngIf="detailsAreAvailable" (click)="toggleDetailsVisibilityPreference()">
-        <ion-icon [icon]="shouldShowDetails ? 'eye-off' : 'eye'" slot="start"></ion-icon>
+        <ion-icon [icon]="shouldShowDetails ? 'eye-off' : 'eye'" slot="start" />
         {{ (shouldShowDetails ? 'IDEA_COMMON.SELECT.HIDE_DETAILS' : 'IDEA_COMMON.SELECT.SHOW_DETAILS') | translate }}
       </ion-button>
       <ion-button
@@ -29,7 +29,7 @@
         [class.strong]="category1"
         (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
       >
-        <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start"></ion-icon>
+        <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
         {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
       </ion-button>
       <ion-button
@@ -39,7 +39,7 @@
         [class.strong]="category2"
         (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
       >
-        <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start"></ion-icon>
+        <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
         {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
       </ion-button>
     </div>
@@ -82,30 +82,24 @@
     >
       <ion-label>
         <p class="categories" *ngIf="shouldShowDetails && (suggestion.category1 ?? suggestion.category2)">
-          <ion-text
-            *ngIf="suggestion.category1"
-            [innerHTML]="suggestion.category1 | boldprefix: searchbar.value"
-          ></ion-text>
+          <ion-text *ngIf="suggestion.category1" [innerHTML]="suggestion.category1 | boldprefix : searchbar.value" />
           <ion-text *ngIf="suggestion.category1 && suggestion.category2" class="categoriesDivider"> | </ion-text>
-          <ion-text
-            *ngIf="suggestion.category2"
-            [innerHTML]="suggestion.category2 | boldprefix: searchbar.value"
-          ></ion-text>
+          <ion-text *ngIf="suggestion.category2" [innerHTML]="suggestion.category2 | boldprefix : searchbar.value" />
         </p>
         <!-- the "key" div is used for keyboard controls -->
         <div class="key" style="display: none">
           {{ suggestion.value }}
         </div>
-        <ion-text [innerHTML]="suggestion.name ?? suggestion.value | boldprefix: searchbar.value"></ion-text>
+        <ion-text [innerHTML]="suggestion.name ?? suggestion.value | boldprefix : searchbar.value" />
         <ion-text color="medium" class="ion-text-wrap">
           <p
             *ngIf="suggestion.name && !hideIdFromUI && shouldShowDetails"
-            [innerHTML]="suggestion.value | boldprefix: searchbar.value"
+            [innerHTML]="suggestion.value | boldprefix : searchbar.value"
           ></p>
           <p
             class="description"
             *ngIf="suggestion.description && shouldShowDetails"
-            [innerHTML]="suggestion.description | boldprefix: searchbar.value"
+            [innerHTML]="suggestion.description | boldprefix : searchbar.value"
             [class.marginTop]="suggestion.name && !hideIdFromUI && shouldShowDetails"
           ></p>
         </ion-text>
@@ -113,6 +107,6 @@
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
-    <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+    <ion-infinite-scroll-content />
   </ion-infinite-scroll>
 </ion-content>

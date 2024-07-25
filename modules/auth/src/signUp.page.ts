@@ -13,7 +13,13 @@ import { IDEAAuthService } from './auth.service';
   styleUrls: ['auth.scss']
 })
 export class IDEASignUpPage implements OnInit {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
+  private _nav = inject(NavController);
+  private _popover = inject(PopoverController);
+  private _message = inject(IDEAMessageService);
+  private _loading = inject(IDEALoadingService);
+  private _translate = inject(IDEATranslationsService);
+  public _auth = inject(IDEAAuthService);
 
   email: string;
   password: string;
@@ -21,69 +27,63 @@ export class IDEASignUpPage implements OnInit {
   passwordPolicy: any;
   errorMsg: string;
 
-  constructor(
-    private navCtrl: NavController,
-    private popoverCtrl: PopoverController,
-    private message: IDEAMessageService,
-    private loading: IDEALoadingService,
-    private t: IDEATranslationsService,
-    public auth: IDEAAuthService
-  ) {
-    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
+  constructor() {
+    this.passwordPolicy = this._env.idea.auth.passwordPolicy;
   }
   ngOnInit(): void {
-    if (!this.env.idea.auth.registrationIsPossible) return this.goToAuth();
+    if (!this._env.idea.auth.registrationIsPossible) return this.goToAuth();
     this.agreementsCheck =
-      this.t._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || this.t._('IDEA_VARIABLES.PRIVACY_POLICY_URL')
+      this._translate._('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') ||
+      this._translate._('IDEA_VARIABLES.PRIVACY_POLICY_URL')
         ? this.agreementsCheck
         : true;
   }
 
   async register(): Promise<void> {
     try {
-      await this.loading.show();
+      await this._loading.show();
       this.errorMsg = null;
-      if (isEmpty(this.email, 'email')) this.errorMsg = this.t._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
+      if (isEmpty(this.email, 'email')) this.errorMsg = this._translate._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
       else {
-        const errors = this.auth.validatePasswordAgainstPolicy(this.password);
+        const errors = this._auth.validatePasswordAgainstPolicy(this.password);
         if (errors.length === 0 && this.passwordPolicy.advancedPasswordCheck) {
           const emailParts = [...this.email?.split('@')[0].split(/\W/g)];
-          errors.push(...(await this.auth.validatePasswordAgainstDatabases(this.password, emailParts)));
+          errors.push(...(await this._auth.validatePasswordAgainstDatabases(this.password, emailParts)));
         }
         if (errors.length)
           this.errorMsg = [
-            this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
+            this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
             ...errors.map(x =>
-              this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
+              this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
             )
           ].join(' ');
       }
-      if (this.errorMsg) return this.message.error('IDEA_AUTH.REGISTRATION_FAILED');
-      await this.auth.register(this.email, this.password);
-      this.message.success('IDEA_AUTH.REGISTRATION_COMPLETED');
+      if (this.errorMsg) return this._message.error('IDEA_AUTH.REGISTRATION_FAILED');
+      await this._auth.register(this.email, this.password);
+      this._message.success('IDEA_AUTH.REGISTRATION_COMPLETED');
       this.goToAuth();
     } catch (err) {
       this.errorMsg = (err as any).message;
-      this.message.error('IDEA_AUTH.REGISTRATION_FAILED');
+      this._message.error('IDEA_AUTH.REGISTRATION_FAILED');
     } finally {
-      this.loading.hide();
+      this._loading.hide();
     }
   }
 
   translationExists(key: string): boolean {
-    return !!this.t._(key);
+    return !!this._translate._(key);
   }
 
   async openPasswordPolicy(event: Event): Promise<void> {
     const cssClass = 'passwordPolicyPopover';
-    const popover = await this.popoverCtrl.create({ component: IDEAPasswordPolicyComponent, event, cssClass });
+    const popover = await this._popover.create({ component: IDEAPasswordPolicyComponent, event, cssClass });
     await popover.present();
   }
 
   goToResendLink(): void {
-    this.navCtrl.navigateForward(['auth/resend-link']);
+    this._nav.navigateForward(['auth', 'resend-link']);
   }
   goToAuth(): void {
-    this.navCtrl.navigateBack(['auth']);
+    this._nav.navigateBack(['auth']);
   }
 }

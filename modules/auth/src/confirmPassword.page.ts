@@ -13,7 +13,14 @@ import { IDEAAuthService } from './auth.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAConfirmPasswordPage implements OnInit {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
+  private _nav = inject(NavController);
+  private _route = inject(ActivatedRoute);
+  private _popover = inject(PopoverController);
+  private _message = inject(IDEAMessageService);
+  private _loading = inject(IDEALoadingService);
+  private _translate = inject(IDEATranslationsService);
+  _auth = inject(IDEAAuthService);
 
   email: string;
   newPassword: string;
@@ -21,62 +28,54 @@ export class IDEAConfirmPasswordPage implements OnInit {
   passwordPolicy: any;
   errorMsg: string;
 
-  constructor(
-    private navCtrl: NavController,
-    private route: ActivatedRoute,
-    private popoverCtrl: PopoverController,
-    private message: IDEAMessageService,
-    private loading: IDEALoadingService,
-    private t: IDEATranslationsService,
-    public auth: IDEAAuthService
-  ) {
-    this.passwordPolicy = this.env.idea.auth.passwordPolicy;
+  constructor() {
+    this.passwordPolicy = this._env.idea.auth.passwordPolicy;
   }
   ngOnInit(): void {
-    this.email = this.route.snapshot.queryParamMap.get('email') ?? null;
-    if (!this.email && this.route.snapshot.queryParams.user)
-      this.email = decodeURIComponent(this.route.snapshot.queryParams.user);
-    this.code = this.route.snapshot.queryParams.code;
+    this.email = this._route.snapshot.queryParamMap.get('email') ?? null;
+    if (!this.email && this._route.snapshot.queryParams.user)
+      this.email = decodeURIComponent(this._route.snapshot.queryParams.user);
+    this.code = this._route.snapshot.queryParams.code;
   }
 
   async confirmPassword(): Promise<void> {
     try {
-      await this.loading.show();
+      await this._loading.show();
       this.errorMsg = null;
-      const errors = this.auth.validatePasswordAgainstPolicy(this.newPassword);
+      const errors = this._auth.validatePasswordAgainstPolicy(this.newPassword);
       if (errors.length === 0 && this.passwordPolicy.advancedPasswordCheck) {
         const emailParts = [...this.email?.split('@')[0].split(/\W/g)];
-        errors.push(...(await this.auth.validatePasswordAgainstDatabases(this.newPassword, emailParts)));
+        errors.push(...(await this._auth.validatePasswordAgainstDatabases(this.newPassword, emailParts)));
       }
       if (errors.length)
         this.errorMsg = [
-          this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
+          this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
           ...errors.map(x =>
-            this.t._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
+            this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
           )
         ].join(' ');
-      if (this.errorMsg) return this.message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
-      await this.auth.confirmPassword(this.email, this.code, this.newPassword);
-      this.message.success('IDEA_AUTH.PASSWORD_CHANGED');
+      if (this.errorMsg) return this._message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
+      await this._auth.confirmPassword(this.email, this.code, this.newPassword);
+      this._message.success('IDEA_AUTH.PASSWORD_CHANGED');
       this.goToAuth();
     } catch (error) {
       this.errorMsg = (error as any).message;
-      this.message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
+      this._message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
     } finally {
-      this.loading.hide();
+      this._loading.hide();
     }
   }
 
   async openPasswordPolicy(event: Event): Promise<void> {
     const cssClass = 'passwordPolicyPopover';
-    const popover = await this.popoverCtrl.create({ component: IDEAPasswordPolicyComponent, event, cssClass });
+    const popover = await this._popover.create({ component: IDEAPasswordPolicyComponent, event, cssClass });
     await popover.present();
   }
 
   goToForgotPassword(): void {
-    this.navCtrl.navigateBack(['auth/forgot-password']);
+    this._nav.navigateBack(['auth', 'forgot-password']);
   }
   goToAuth(): void {
-    this.navCtrl.navigateBack(['auth']);
+    this._nav.navigateBack(['auth']);
   }
 }

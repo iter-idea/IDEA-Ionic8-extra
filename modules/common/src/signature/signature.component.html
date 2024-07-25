@@ -2,7 +2,7 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.CANCEL')" (click)="close()">
-        <ion-icon name="close" slot="icon-only"></ion-icon>
+        <ion-icon name="close" slot="icon-only" />
       </ion-button>
     </ion-buttons>
     <ion-title>
@@ -10,10 +10,10 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" *ngIf="existingSignature" (click)="undo()">
-        <ion-icon name="arrow-undo" slot="icon-only"></ion-icon>
+        <ion-icon name="arrow-undo" slot="icon-only" />
       </ion-button>
       <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.SAVE_SIGNATURE')" *ngIf="canEdit()" (click)="save()">
-        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+        <ion-icon name="checkmark" slot="icon-only" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -30,7 +30,7 @@
         [disabled]="!canEdit()"
         [class.fieldHasError]="signatoryError"
         [(ngModel)]="signature.signatory"
-      ></ion-input>
+      />
       <ion-button
         fill="clear"
         color="dark"
@@ -39,7 +39,7 @@
         [title]="t._('IDEA_COMMON.SIGNATURE.CHOOSE_FROM_CONTACTS')"
         (click)="pickSignatory()"
       >
-        <ion-icon name="person-circle" slot="icon-only"></ion-icon>
+        <ion-icon name="person-circle" slot="icon-only" />
       </ion-button>
     </ion-item>
   </ion-list>
@@ -53,7 +53,7 @@
     <ion-row *ngIf="canEdit()">
       <ion-col class="ion-text-right">
         <ion-button fill="clear" [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" (click)="clear()">
-          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+          <ion-icon name="trash-outline" slot="icon-only" />
         </ion-button>
       </ion-col>
     </ion-row>
