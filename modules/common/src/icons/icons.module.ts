@@ -7,8 +7,8 @@ import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAIconsComponent } from './icons.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
-    declarations: [IDEAIconsComponent],
-    exports: [IDEAIconsComponent]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+  declarations: [IDEAIconsComponent],
+  exports: [IDEAIconsComponent]
 })
 export class IDEAIconsModule {}

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { IDEATranslationsService } from '../translations/translations.service';
 
@@ -52,21 +52,24 @@ export class IDEAShowHintButtonComponent {
    */
   @Input() icon = 'help-circle-outline';
 
-  constructor(private alertCtrl: AlertController, private t: IDEATranslationsService) {}
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
 
   async showHint(event?: any): Promise<void> {
     if (event) event.stopPropagation();
 
     if (!this.hint) return;
 
-    const header = this._shouldTranslate ? this.t._(this.hint) : this.hint;
-    const message = this._shouldTranslate ? this.t._(this.message ?? this.hint.concat('_I')) : this.message;
+    const header = this._shouldTranslate ? this._translate._(this.hint) : this.hint;
+    const message = this._shouldTranslate ? this._translate._(this.message ?? this.hint.concat('_I')) : this.message;
     const buttonText =
-      this._shouldTranslate && this.confirmationText !== 'OK' ? this.t._(this.confirmationText) : this.confirmationText;
+      this._shouldTranslate && this.confirmationText !== 'OK'
+        ? this._translate._(this.confirmationText)
+        : this.confirmationText;
     const buttons = [{ text: buttonText }];
     const cssClass = this.cssClass;
 
-    const alert = await this.alertCtrl.create({ header, message, buttons, cssClass });
+    const alert = await this._alert.create({ header, message, buttons, cssClass });
     alert.present();
   }
 }

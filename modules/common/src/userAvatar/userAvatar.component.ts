@@ -29,7 +29,6 @@ export class IDEAUserAvatarComponent implements OnInit {
   fontColor: string;
   borderColor: string;
 
-  constructor() {}
   ngOnInit(): void {
     this.setInitialsFromName();
     if (!this.color) this.color = getHexColorFromString(this.name);

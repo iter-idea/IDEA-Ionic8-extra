@@ -1,4 +1,14 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnInit, OnDestroy, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  OnInit,
+  OnDestroy,
+  OnChanges,
+  inject
+} from '@angular/core';
 import { OverlayEventDetail } from '@ionic/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -78,20 +88,16 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
    * On select (with the field disabled) event.
    */
   @Output() selectWhenDisabled = new EventEmitter<void>();
-  /**
-   * The value to display in the field preview.
-   */
+
   valueToDisplay: string;
-  /**
-   * Language change subscription.
-   */
   private langChangeSubscription: Subscription;
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     // when the language changes, set the locale
-    this.langChangeSubscription = this.t.onLangChange.subscribe(() => {
+    this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
       this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
     });
   }
@@ -102,61 +108,46 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
     if (changes.timeInterval) this.valueToDisplay = this.getValueToDisplay(changes.timeInterval.currentValue);
   }
 
-  /**
-   * Get the value to show for the interval.
-   */
   private getValueToDisplay(timeInterval: TimeInterval): string {
     if (!timeInterval || !timeInterval.isSet()) return '';
     // note: the time must be always considered without any timezone (UTC)
     const dateOpts = { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' } as const;
     return ''.concat(
-      this.t._('IDEA_COMMON.FTTT.FROM'),
+      this._translate._('IDEA_COMMON.FTTT.FROM'),
       ' ',
-      new Date(timeInterval.from).toLocaleTimeString(this.t.getCurrentLang(), dateOpts),
+      new Date(timeInterval.from).toLocaleTimeString(this._translate.getCurrentLang(), dateOpts),
       ' ',
-      this.t._('IDEA_COMMON.FTTT.TO').toLowerCase(),
+      this._translate._('IDEA_COMMON.FTTT.TO').toLowerCase(),
       ' ',
-      new Date(timeInterval.to).toLocaleTimeString(this.t.getCurrentLang(), dateOpts)
+      new Date(timeInterval.to).toLocaleTimeString(this._translate.getCurrentLang(), dateOpts)
     );
   }
 
-  /**
-   * Pick the time interval.
-   */
-  pickTimeInterval(): void {
-    this.modalCtrl
-      .create({
-        component: IDEAFromTimeToTimeComponent,
-        componentProps: {
-          timeInterval: this.timeInterval,
-          period: this.period,
-          notEarlierThan: this.notEarlierThan,
-          notLaterThan: this.notLaterThan,
-          title: this.label
-        }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then((res: OverlayEventDetail): void => {
-          // if the content changed, update the internal values and notify the parent component
-          if (res.data === true || res.data === false) {
-            this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
-            this.select.emit();
-          }
-        });
-        modal.present();
-      });
+  async pickTimeInterval(): Promise<void> {
+    const modal = await this._modal.create({
+      component: IDEAFromTimeToTimeComponent,
+      componentProps: {
+        timeInterval: this.timeInterval,
+        period: this.period,
+        notEarlierThan: this.notEarlierThan,
+        notLaterThan: this.notLaterThan,
+        title: this.label
+      }
+    });
+    modal.onDidDismiss().then((res: OverlayEventDetail): void => {
+      // if the content changed, update the internal values and notify the parent component
+      if (res.data === true || res.data === false) {
+        this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
+        this.select.emit();
+      }
+    });
+    modal.present();
   }
 
-  /**
-   * Emit the selection while the component is in viewMode.
-   */
   doSelectWhenDisabled(): void {
     if (this.disabled) this.selectWhenDisabled.emit();
   }
 
-  /**
-   * Emit the selection of the icon.
-   */
   doIconSelect(event: any): void {
     if (event) event.stopPropagation();
     this.iconSelect.emit(event);

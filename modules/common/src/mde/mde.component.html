@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('IDEA_COMMON.MDE.CLOSE_WITHOUT_SAVING')" (click)="close()">
+      <ion-button [title]="'IDEA_COMMON.MDE.CLOSE_WITHOUT_SAVING' | translate" (click)="close()">
         <ion-icon name="close" slot="icon-only" />
       </ion-button>
     </ion-buttons>
@@ -9,7 +9,7 @@
       {{ title || ('IDEA_COMMON.MDE.TITLE' | translate) }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA_COMMON.MDE.SAVE_AND_CLOSE')" (click)="confirm()">
+      <ion-button [title]="'IDEA_COMMON.MDE.SAVE_AND_CLOSE' | translate" (click)="confirm()">
         <ion-icon name="checkmark" slot="icon-only" />
       </ion-button>
     </ion-buttons>

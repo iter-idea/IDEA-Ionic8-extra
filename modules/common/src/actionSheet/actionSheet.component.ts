@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import { PopoverController } from '@ionic/angular';
 
@@ -31,7 +31,8 @@ export class IDEAActionSheetComponent implements OnInit {
 
   withIcons: boolean;
 
-  constructor(private popoverCtrl: PopoverController) {}
+  private _popover = inject(PopoverController);
+
   ngOnInit(): void {
     // based on the input, changes the way the UI behaves
     this.withIcons = this.buttons.some(b => b.icon);
@@ -39,6 +40,6 @@ export class IDEAActionSheetComponent implements OnInit {
 
   buttonClicked(b: ActionSheetButton): void {
     if (b.handler) b.handler();
-    this.popoverCtrl.dismiss();
+    this._popover.dismiss();
   }
 }

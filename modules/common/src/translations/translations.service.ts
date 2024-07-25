@@ -9,7 +9,7 @@ import { IDEAEnvironment } from '../../environment';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEATranslationsService {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
 
   /**
    * Base folder containing the translations.
@@ -50,7 +50,7 @@ export class IDEATranslationsService {
   onLangChange = new EventEmitter<string>();
 
   constructor() {
-    this.modulesPath = [''].concat(this.env.idea.ionicExtraModules ?? []);
+    this.modulesPath = [''].concat(this._env.idea.ionicExtraModules ?? []);
   }
 
   /**

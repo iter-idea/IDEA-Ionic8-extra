@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { CustomBlockMeta, CustomSectionMeta, Label } from 'idea-toolbox';
 
@@ -30,12 +30,10 @@ export class IDEACustomBlockMetaComponent {
    */
   @Input() lines: string;
 
-  constructor(
-    private modalCtrl: ModalController,
-    private alertCtrl: AlertController,
-    private message: IDEAMessageService,
-    private t: IDEATranslationsService
-  ) {}
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
 
   reorderSectionsLegend(ev: any): void {
     this.block.sectionsLegend = ev.detail.complete(this.block.sectionsLegend);
@@ -48,7 +46,7 @@ export class IDEACustomBlockMetaComponent {
       disabled: this.disabled,
       lines: this.lines
     };
-    const modal = await this.modalCtrl.create({ component: IDEACustomSectionMetaComponent, componentProps });
+    const modal = await this._modal.create({ component: IDEACustomSectionMetaComponent, componentProps });
     await modal.present();
   }
 
@@ -60,11 +58,11 @@ export class IDEACustomBlockMetaComponent {
       delete this.block.sections[s];
     };
     const buttons = [
-      { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-      { text: this.t._('COMMON.CONFIRM'), handler: doRemoveSection }
+      { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
+      { text: this._translate._('COMMON.CONFIRM'), handler: doRemoveSection }
     ];
-    const header = this.t._('COMMON.ARE_YOU_SURE');
-    const alert = await this.alertCtrl.create({ header, buttons });
+    const header = this._translate._('COMMON.ARE_YOU_SURE');
+    const alert = await this._alert.create({ header, buttons });
     await alert.present();
   }
 
@@ -78,12 +76,12 @@ export class IDEACustomBlockMetaComponent {
       if (!key.trim()) return;
       // check wheter the key is unique
       if (this.block.sectionsLegend.some(x => x === key))
-        return this.message.error('IDEA_COMMON.CUSTOM_FIELDS.DUPLICATED_KEY');
+        return this._message.error('IDEA_COMMON.CUSTOM_FIELDS.DUPLICATED_KEY');
       // initialize a new section
-      const section = new CustomSectionMeta(null, this.t.languages());
+      const section = new CustomSectionMeta(null, this._translate.languages());
       // initialize the name of the section
-      section.name = new Label(null, this.t.languages());
-      section.name[this.t.getDefaultLang()] = name;
+      section.name = new Label(null, this._translate.languages());
+      section.name[this._translate.getDefaultLang()] = name;
       // add the section to the block
       this.block.sections[key] = section;
       this.block.sectionsLegend.push(key);
@@ -91,15 +89,15 @@ export class IDEACustomBlockMetaComponent {
       this.openSection(key);
     };
 
-    const header = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION');
-    const message = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION_HINT');
+    const header = this._translate._('IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION');
+    const message = this._translate._('IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION_HINT');
     const inputs: any = [{ name: 'name', type: 'text' }];
     const buttons = [
-      { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-      { text: this.t._('COMMON.CONFIRM'), handler: doAddNewSection }
+      { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
+      { text: this._translate._('COMMON.CONFIRM'), handler: doAddNewSection }
     ];
 
-    const alert = await this.alertCtrl.create({ header, message, inputs, buttons });
+    const alert = await this._alert.create({ header, message, inputs, buttons });
     await alert.present();
 
     const firstInput: any = document.querySelector('ion-alert input');

@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
+      <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
         <ion-icon name="close" slot="icon-only" />
       </ion-button>
     </ion-buttons>
     <ion-title>{{ title }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('COMMON.RESET')" (click)="reset()">
+      <ion-button [title]="'COMMON.RESET' | translate" (click)="reset()">
         <ion-icon name="arrow-undo" slot="icon-only" />
       </ion-button>
     </ion-buttons>

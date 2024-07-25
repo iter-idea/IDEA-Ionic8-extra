@@ -7,8 +7,8 @@ import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEADurationComponent } from './duration.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
-    declarations: [IDEADurationComponent],
-    exports: [IDEADurationComponent]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+  declarations: [IDEADurationComponent],
+  exports: [IDEADurationComponent]
 })
 export class IDEADurationModule {}

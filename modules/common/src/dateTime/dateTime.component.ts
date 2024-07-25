@@ -1,4 +1,14 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnInit, OnDestroy, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  OnInit,
+  OnDestroy,
+  OnChanges,
+  inject
+} from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { epochDateTime, epochISOString } from 'idea-toolbox';
@@ -80,9 +90,11 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   valueToDisplay: string;
   private langChangeSubscription: Subscription;
 
-  constructor(private modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
-    this.langChangeSubscription = this.t.onLangChange.subscribe((): void => {
+    this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
       this.valueToDisplay = this.getValueToDisplay(this.date);
     });
   }
@@ -96,7 +108,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   async openCalendarPicker(): Promise<void> {
     if (this.disabled) return;
 
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEACalendarPickerComponent,
       componentProps: {
         inputDate: this.date,
@@ -120,7 +132,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   private getValueToDisplay(date: epochDateTime | epochISOString): string {
     return !date
       ? ''
-      : this.t.formatDate(date, this.timePicker || this.manualTimePicker ? 'd MMM yyyy, HH:mm' : 'mediumDate');
+      : this._translate.formatDate(date, this.timePicker || this.manualTimePicker ? 'd MMM yyyy, HH:mm' : 'mediumDate');
   }
 
   doSelect(date: Date): void {

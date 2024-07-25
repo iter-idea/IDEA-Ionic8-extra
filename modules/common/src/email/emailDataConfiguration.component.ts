@@ -1,8 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EmailData, mdToHtml, StringVariable } from 'idea-toolbox';
-
-import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-email-data-configuration',
@@ -13,59 +11,43 @@ export class IDEAEmailDataConfigurationComponent implements OnInit {
   /**
    * The emailData to configure.
    */
-  @Input() public emailData: EmailData;
+  @Input() emailData: EmailData;
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() public variables: StringVariable[];
+  @Input() variables: StringVariable[];
   /**
    * The title for the component.
    */
-  @Input() public title: string;
+  @Input() title: string;
   /**
    * Lines preferences for the item.
    */
-  @Input() public lines: string;
+  @Input() lines: string;
   /**
    * If true, the component is disabled.
    */
-  @Input() public disabled: boolean;
-  /**
-   * A copy of data, to use until the changes are confirmed.
-   */
-  public _emailData: EmailData;
-  /**
-   * The list of variables codes to use for substitutions.
-   */
-  public _variables: string[];
+  @Input() disabled: boolean;
+  emailDataWC: EmailData;
+  variablesPlain: string[];
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
-  public ngOnInit() {
-    // use a copy, to confirm it only when saving
-    this._emailData = new EmailData(this.emailData);
-    // create a plain list of variable codes
-    this._variables = (this.variables || []).map(x => x.code);
+  private _modal = inject(ModalController);
+
+  ngOnInit(): void {
+    this.emailDataWC = new EmailData(this.emailData);
+    this.variablesPlain = (this.variables || []).map(x => x.code);
   }
 
-  /**
-   * Shortcut to convert md to html;
-   */
-  public mdToHtml(content: string): string {
+  mdToHtml(content: string): string {
     return mdToHtml(content);
   }
 
-  /**
-   * Confirm changes and close.
-   */
-  public save() {
-    this.emailData.load(this._emailData);
+  save(): void {
+    this.emailData.load(this.emailDataWC);
     this.close();
   }
 
-  /**
-   * Close the modal.
-   */
-  public close() {
-    this.modalCtrl.dismiss();
+  close(): void {
+    this._modal.dismiss();
   }
 }

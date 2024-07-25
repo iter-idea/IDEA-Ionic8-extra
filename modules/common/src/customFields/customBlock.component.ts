@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { CustomBlockMeta, CustomFieldTypes } from 'idea-toolbox';
 
@@ -41,25 +41,23 @@ export class IDEACustomBlockComponent {
 
   CFT = CustomFieldTypes;
 
-  constructor(
-    private alertCtrl: AlertController,
-    public t: IDEATranslationsService
-  ) {}
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
 
   hasFieldAnError(field: string): boolean {
     return this.errors.has(field);
   }
 
   hasDescription(sectionKey: string, fieldKey: string): boolean {
-    return !!this.t._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+    return !!this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
   }
   async openDescription(sectionKey: string, fieldKey: string, event: any): Promise<void> {
     if (event) event.stopPropagation();
-    const message = this.t._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+    const message = this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
     if (!message) return;
 
-    const header = this.t._label(this.blockMeta.sections[sectionKey].fields[fieldKey].name);
-    const alert = await this.alertCtrl.create({ header, message, buttons: ['OK'], cssClass: 'alertLongOptions' });
+    const header = this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].name);
+    const alert = await this._alert.create({ header, message, buttons: ['OK'], cssClass: 'alertLongOptions' });
     await alert.present();
   }
 }

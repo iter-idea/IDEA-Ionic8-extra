@@ -12,7 +12,10 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['sentiment.component.scss']
 })
 export class IDEASentimentComponent implements OnChanges {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
+  private _API = inject(IDEAAWSAPIService);
+  private _translate = inject(IDEATranslationsService);
+  _offline = inject(IDEAOfflineService);
 
   /**
    * The sentiment detected from the input text.
@@ -35,35 +38,25 @@ export class IDEASentimentComponent implements OnChanges {
    */
   @Output() change = new EventEmitter<Sentiment>();
 
-  constructor(
-    public offline: IDEAOfflineService,
-    public API: IDEAAWSAPIService,
-    public t: IDEATranslationsService
-  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.text.previousValue !== changes.text.currentValue) this.detectSentiment(changes.text.currentValue);
   }
-  /**
-   * Detect the sentiment of the input string, by running a request to the IDEA's online utility.
-   */
-  private detectSentiment(text: string): void {
-    if (!text || this.offline.isOffline()) this.sentiment = null;
+  private async detectSentiment(text: string): Promise<void> {
+    if (!text || this._offline.isOffline()) this.sentiment = null;
     else {
-      this.API.postResource('sentiment', {
-        idea: true,
-        body: { project: this.env.idea.project, language: this.t.getCurrentLang(), text: this.text }
-      })
-        .then(res => {
-          this.sentiment = res.sentiment as Sentiment;
-          this.change.emit(this.sentiment);
-        })
-        .catch(() => (this.sentiment = null));
+      try {
+        const { sentiment } = await this._API.postResource('sentiment', {
+          idea: true,
+          body: { project: this._env.idea.project, language: this._translate.getCurrentLang(), text: this.text }
+        });
+        this.sentiment = sentiment;
+        this.change.emit(this.sentiment);
+      } catch (error) {
+        this.sentiment = null;
+      }
     }
   }
 
-  /**
-   * Get the color based on the subject sentiment notes.
-   */
   getColorBySentiment(sentiment?: Sentiment | string): string {
     sentiment = sentiment || this.sentiment;
     switch (sentiment) {

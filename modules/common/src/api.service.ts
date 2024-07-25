@@ -9,7 +9,8 @@ import { IDEAEnvironment } from '../environment';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAApiService {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
+  private _platform = inject(Platform);
 
   /**
    * The base URL to which to make requests.
@@ -39,10 +40,10 @@ export class IDEAApiService {
    */
   defaultHeaders: Record<string, string | number> = {};
 
-  constructor(private platform: Platform) {
-    this.baseURL = 'https://'.concat([this.env.idea.api?.url, this.env.idea.api?.stage].filter(x => x).join('/'));
-    this.appVersion = this.env.idea.app?.version ?? '?';
-    this.appBundle = this.env.idea.app?.bundle;
+  constructor() {
+    this.baseURL = 'https://'.concat([this._env.idea.api?.url, this._env.idea.api?.stage].filter(x => x).join('/'));
+    this.appVersion = this._env.idea.app?.version ?? '?';
+    this.appBundle = this._env.idea.app?.bundle;
   }
 
   /**
@@ -69,7 +70,7 @@ export class IDEAApiService {
 
     const searchParams = new URLSearchParams();
     searchParams.append('_v', this.appVersion);
-    searchParams.append('_p', this.platform.platforms().join(' '));
+    searchParams.append('_p', this._platform.platforms().join(' '));
     if (this.appBundle) searchParams.append('_b', this.appBundle);
     if (options.params) {
       for (const paramName in options.params) {

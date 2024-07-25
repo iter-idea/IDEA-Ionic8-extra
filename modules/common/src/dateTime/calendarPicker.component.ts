@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { epochDateTime, epochISOString } from 'idea-toolbox';
 
@@ -35,11 +35,10 @@ export class IDEACalendarPickerComponent implements OnInit {
   dateMin: Date;
   dateMax: Date;
 
-  constructor(
-    private modalCtrl: ModalController,
-    private alertCtrl: AlertController,
-    public t: IDEATranslationsService
-  ) {}
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
     this.today = new Date();
     this.refDate = this.inputDate ? new Date(this.inputDate) : new Date(this.today);
@@ -63,7 +62,7 @@ export class IDEACalendarPickerComponent implements OnInit {
     const refDateForWeekDays = new Date(SUNDAY);
     refDateForWeekDays.setDate(refDateForWeekDays.getDate() - this.getLocalisedDay(refDateForWeekDays));
     for (let i = 0; i < 7; i++) {
-      this.weekDays.push(refDateForWeekDays.toLocaleDateString(this.t.getCurrentLang(), { weekday: 'short' }));
+      this.weekDays.push(refDateForWeekDays.toLocaleDateString(this._translate.getCurrentLang(), { weekday: 'short' }));
       refDateForWeekDays.setDate(refDateForWeekDays.getDate() + 1);
     }
     if (this.min) this.dateMin = new Date(this.min);
@@ -72,7 +71,7 @@ export class IDEACalendarPickerComponent implements OnInit {
 
   getLocalisedDay(date: Date): number {
     let n = date.getDay();
-    switch (this.t.getCurrentLang()) {
+    switch (this._translate.getCurrentLang()) {
       case 'it':
         n = --n < 0 ? 6 : n;
         break;
@@ -136,22 +135,26 @@ export class IDEACalendarPickerComponent implements OnInit {
     for (let i = 1; i <= 12; i++) {
       inputs.push({
         type: 'radio',
-        label: month.toLocaleDateString(this.t.getCurrentLang(), { month: 'long' }),
+        label: month.toLocaleDateString(this._translate.getCurrentLang(), { month: 'long' }),
         value: i.toString(),
         checked: i === this.refDate.getMonth() + 1
       });
       month.setMonth(month.getMonth() + 1);
     }
-    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel' });
+    buttons.push({ text: this._translate._('COMMON.CANCEL'), role: 'cancel' });
     buttons.push({
-      text: this.t._('COMMON.SELECT'),
+      text: this._translate._('COMMON.SELECT'),
       handler: (m: string): void => {
         this.refDate.setMonth(parseInt(m, 10) - 1);
         this.buildCalendarGrid(this.refDate);
       }
     });
 
-    const alert = await this.alertCtrl.create({ header: this.t._('IDEA_COMMON.CALENDAR.MONTH'), buttons, inputs });
+    const alert = await this._alert.create({
+      header: this._translate._('IDEA_COMMON.CALENDAR.MONTH'),
+      buttons,
+      inputs
+    });
     alert.present();
   }
 
@@ -189,9 +192,9 @@ export class IDEACalendarPickerComponent implements OnInit {
   }
 
   save(reset?: boolean): void {
-    this.modalCtrl.dismiss(reset ? '' : this.selectedDate);
+    this._modal.dismiss(reset ? '' : this.selectedDate);
   }
   close(): void {
-    this.modalCtrl.dismiss();
+    this._modal.dismiss();
   }
 }

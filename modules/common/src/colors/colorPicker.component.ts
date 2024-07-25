@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 import { Color, COLORS } from '../colors.model';
@@ -61,13 +61,13 @@ export class IDEAColorPickerComponent {
    */
   @Output() iconSelect = new EventEmitter<void>();
 
-  constructor(private popoverCtrl: PopoverController) {}
+  private _popover = inject(PopoverController);
 
   async openPalette(event: any): Promise<void> {
     if (this.disabled) return;
 
     const componentProps = { colors: this.colors, current: this.current };
-    const popover = await this.popoverCtrl.create({ component: ColorsPaletteComponent, componentProps, event });
+    const popover = await this._popover.create({ component: ColorsPaletteComponent, componentProps, event });
     popover.onDidDismiss().then(res => {
       if (res && res.data) this.select.emit(res.data);
     });
@@ -132,9 +132,9 @@ export class ColorsPaletteComponent {
    */
   @Input() current: string;
 
-  constructor(private popoverCtrl: PopoverController) {}
+  private _popover = inject(PopoverController);
 
   pick(color: string): void {
-    this.popoverCtrl.dismiss(color);
+    this._popover.dismiss(color);
   }
 }

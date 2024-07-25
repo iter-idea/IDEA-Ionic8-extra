@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { ModalController, AlertController, Platform } from '@ionic/angular';
 
 import { IDEAOfflineManagerComponent } from './offlineManager.component';
@@ -14,44 +14,36 @@ export class IDEAOfflineIndicatorComponent {
   /**
    * Vertical position.
    */
-  @Input() public vertical: string;
+  @Input() vertical = 'bottom';
   /**
    * Horizontal position.
    */
-  @Input() public horizontal: string;
+  @Input() horizontal = 'start';
   /**
    * Whether it is positionated on an edge.
    */
-  @Input() public edge: boolean;
+  @Input() edge = false;
 
-  constructor(
-    public platform: Platform,
-    public alertCtrl: AlertController,
-    public modalCtrl: ModalController,
-    public offline: IDEAOfflineDataService,
-    public t: IDEATranslationsService
-  ) {
-    this.vertical = 'bottom';
-    this.horizontal = 'start';
-    this.edge = false;
-  }
+  private _alert = inject(AlertController);
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+  _platform = inject(Platform);
+  _offline = inject(IDEAOfflineDataService);
 
-  /**
-   * Open the offline manager component.
-   */
-  public showStatus() {
-    if (this.offline.isOffline()) {
-      this.offline.check().then(isOnline => {
-        if (!isOnline)
-          this.alertCtrl
-            .create({
-              header: this.t._('IDEA_COMMON.OFFLINE.YOU_ARE_OFFLINE'),
-              message: this.t._('IDEA_COMMON.OFFLINE.FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE'),
-              buttons: [this.t._('COMMON.GOT_IT')]
-            })
-            .then(alert => alert.present());
-      });
-    } else if (this.offline.isAllowed())
-      this.modalCtrl.create({ component: IDEAOfflineManagerComponent }).then(modal => modal.present());
+  async showStatus(): Promise<void> {
+    if (this._offline.isOffline()) {
+      const isOnline = await this._offline.check();
+      if (!isOnline) {
+        const alert = await this._alert.create({
+          header: this._translate._('IDEA_COMMON.OFFLINE.YOU_ARE_OFFLINE'),
+          message: this._translate._('IDEA_COMMON.OFFLINE.FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE'),
+          buttons: [this._translate._('COMMON.GOT_IT')]
+        });
+        alert.present();
+      }
+    } else if (this._offline.isAllowed()) {
+      const modal = await this._modal.create({ component: IDEAOfflineManagerComponent });
+      modal.present();
+    }
   }
 }

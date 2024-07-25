@@ -18,25 +18,24 @@ import { IDEAOfflineService } from './offline/offline.service';
  */
 @Injectable()
 export class IDEAAWSAPIService {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
+  protected _http = inject(HttpClient);
+  protected _platform = inject(Platform);
+  protected _tc = inject(IDEATinCanService);
+  protected _storage = inject(IDEAStorageService);
+  protected _errorReporting = inject(IDEAErrorReportingService);
+  protected _offline = inject(IDEAOfflineService);
 
   apiStage: string;
   apiUrlProject: string;
   ideaApiStage: string;
   apiUrlIDEA: string;
 
-  constructor(
-    protected http: HttpClient,
-    protected platform: Platform,
-    protected tc: IDEATinCanService,
-    protected storage: IDEAStorageService,
-    protected errorReporting: IDEAErrorReportingService,
-    protected offline: IDEAOfflineService
-  ) {
-    this.apiStage = this.env.idea.api?.stage ?? (this.env.idea.api as any)?.version;
-    this.apiUrlProject = 'https://'.concat([this.env.idea.api?.url, this.apiStage].filter(x => x).join('/'));
-    this.ideaApiStage = this.env.idea.ideaApi?.stage ?? (this.env.idea.ideaApi as any)?.version;
-    this.apiUrlIDEA = 'https://'.concat([this.env.idea.ideaApi?.url, this.ideaApiStage].filter(x => x).join('/'));
+  constructor() {
+    this.apiStage = this._env.idea.api?.stage ?? (this._env.idea.api as any)?.version;
+    this.apiUrlProject = 'https://'.concat([this._env.idea.api?.url, this.apiStage].filter(x => x).join('/'));
+    this.ideaApiStage = this._env.idea.ideaApi?.stage ?? (this._env.idea.ideaApi as any)?.version;
+    this.apiUrlIDEA = 'https://'.concat([this._env.idea.ideaApi?.url, this.ideaApiStage].filter(x => x).join('/'));
   }
 
   /**
@@ -58,32 +57,32 @@ export class IDEAAWSAPIService {
       let req: any;
       switch (method) {
         case 'HEAD':
-          req = this.http.head(url, { headers, params });
+          req = this._http.head(url, { headers, params });
           break;
         case 'POST':
-          req = this.http.post(url, opt.body, { headers, params });
+          req = this._http.post(url, opt.body, { headers, params });
           break;
         case 'PUT':
-          req = this.http.put(url, opt.body, { headers, params });
+          req = this._http.put(url, opt.body, { headers, params });
           break;
         case 'PATCH':
-          req = this.http.patch(url, opt.body, { headers, params });
+          req = this._http.patch(url, opt.body, { headers, params });
           break;
         case 'DELETE':
-          req = this.http.delete(url, { headers, params });
+          req = this._http.delete(url, { headers, params });
           break;
         case 'GET':
         default:
-          req = this.http.get(url, { headers, params });
+          req = this._http.get(url, { headers, params });
       }
       // handle the request response
       req.subscribe(
         (res: any) => resolve(res),
         async (err: HttpErrorResponse) => {
           // check if the request failed for network reasons (to trigger offline mode if needed)
-          await this.offline.check();
+          await this._offline.check();
           // (async) send a report, if wanted
-          if (opt.reportError) this.errorReporting.sendReport(err);
+          if (opt.reportError) this._errorReporting.sendReport(err);
           // fix and return the error
           this.fixErrMessageBeforeReject(err, reject);
         }
@@ -109,11 +108,11 @@ export class IDEAAWSAPIService {
     // preare the headers; note: HttpHeaders is immutable!
     let headers = new HttpHeaders(h || null);
     // set the Authorization token
-    if (!headers.get('Authorization') && this.tc.get('AWSAPIAuthToken'))
-      headers = headers.set('Authorization', this.tc.get('AWSAPIAuthToken'));
+    if (!headers.get('Authorization') && this._tc.get('AWSAPIAuthToken'))
+      headers = headers.set('Authorization', this._tc.get('AWSAPIAuthToken'));
     // set the API key
-    if (!headers.get('X-API-Key') && this.tc.get('AWSAPIKey'))
-      headers = headers.set('X-API-Key', this.tc.get('AWSAPIKey'));
+    if (!headers.get('X-API-Key') && this._tc.get('AWSAPIKey'))
+      headers = headers.set('X-API-Key', this._tc.get('AWSAPIKey'));
     return headers;
   }
   /**
@@ -126,8 +125,8 @@ export class IDEAAWSAPIService {
     else if (qp) for (const prop in qp) if (qp[prop]) searchParams = searchParams.set(prop, qp[prop]);
     // if requested, add app version and client platform to the info we send to the back-end
     if (addClientInfo) {
-      searchParams = searchParams.set('_v', this.env.idea.app.version);
-      searchParams = searchParams.set('_p', this.platform.platforms().join(' '));
+      searchParams = searchParams.set('_v', this._env.idea.app.version);
+      searchParams = searchParams.set('_p', this._platform.platforms().join(' '));
     }
     return searchParams;
   }
@@ -149,8 +148,8 @@ export class IDEAAWSAPIService {
   /**
    * Use the HttpClient to execute a raw request.
    */
-  public rawRequest(): HttpClient {
-    return this.http;
+  rawRequest(): HttpClient {
+    return this._http;
   }
 
   /**
@@ -158,7 +157,7 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public headResource(resource: string, options?: APIRequestOption): Promise<any> {
+  headResource(resource: string, options?: APIRequestOption): Promise<any> {
     return this.request(resource, 'HEAD', options);
   }
 
@@ -167,7 +166,7 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public getResource(resource: string, options?: APIRequestOption): Promise<any> {
+  getResource(resource: string, options?: APIRequestOption): Promise<any> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
       // if offline and with a cache mode set, force the request to the cache
@@ -240,7 +239,7 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public getResourceObserver(resource: string, options?: APIRequestOption): Observable<any> {
+  getResourceObserver(resource: string, options?: APIRequestOption): Observable<any> {
     return new Observable(observer => {
       const opt = options || {};
       // if offline and with a cache mode set, force the request to the cache
@@ -310,14 +309,14 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public getFromCache(resource: string, options?: APIRequestOption): Promise<any> {
+  getFromCache(resource: string, options?: APIRequestOption): Promise<any> {
     return new Promise(resolve => {
       const opt = options || {};
       // prepare the url and the query params
       const url = this.prepareURL(resource, opt);
       const queryParams = this.prepareQueryParams(opt.params);
       // get from storage, by the complete url
-      this.storage
+      this._storage
         .get(url.concat(queryParams.toString()))
         .then((res: any) => (res ? resolve(res) : opt.resourceId ? resolve(null) : resolve([])));
     });
@@ -328,14 +327,14 @@ export class IDEAAWSAPIService {
    * @param data resource data
    * @param options the request options
    */
-  public putInCache(resource: string, data: any, options?: APIRequestOption): Promise<void> {
+  putInCache(resource: string, data: any, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
       // prepare the url and the query params
       const url = this.prepareURL(resource, opt);
       const queryParams = this.prepareQueryParams(opt.params);
       // put in the storage, by the complete url
-      this.storage
+      this._storage
         .set(url.concat(queryParams.toString()), data)
         .then(() => resolve())
         .catch((err: Error) => reject(err));
@@ -346,14 +345,14 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public deleteFromCache(resource: string, options?: APIRequestOption): Promise<void> {
+  deleteFromCache(resource: string, options?: APIRequestOption): Promise<void> {
     return new Promise((resolve, reject) => {
       const opt = options || {};
       // prepare the url and the query params
       const url = this.prepareURL(resource, opt);
       const queryParams = this.prepareQueryParams(opt.params);
       // delete from storage, by the complete url
-      this.storage
+      this._storage
         .remove(url.concat(queryParams.toString()))
         .then(() => resolve())
         .catch((err: Error) => reject(err));
@@ -365,7 +364,7 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public postResource(resource: string, options?: APIRequestOption): Promise<any> {
+  postResource(resource: string, options?: APIRequestOption): Promise<any> {
     return this.request(resource, 'POST', options);
   }
 
@@ -374,7 +373,7 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public putResource(resource: string, options?: APIRequestOption): Promise<any> {
+  putResource(resource: string, options?: APIRequestOption): Promise<any> {
     return this.request(resource, 'PUT', options);
   }
 
@@ -383,7 +382,7 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public patchResource(resource: string, options?: APIRequestOption): Promise<any> {
+  patchResource(resource: string, options?: APIRequestOption): Promise<any> {
     return this.request(resource, 'PATCH', options);
   }
 
@@ -392,7 +391,7 @@ export class IDEAAWSAPIService {
    * @param resource resource name (e.g. `users`)
    * @param options the request options
    */
-  public deleteResource(resource: string, options?: APIRequestOption): Promise<any> {
+  deleteResource(resource: string, options?: APIRequestOption): Promise<any> {
     return this.request(resource, 'DELETE', options);
   }
 }
@@ -404,35 +403,35 @@ export class APIRequestOption {
   /**
    * To identify a specific resource by id.
    */
-  public resourceId?: string;
+  resourceId?: string;
   /**
    * The query parameters of the request.
    */
-  public params?: any;
+  params?: any;
   /**
    * The body of the request.
    */
-  public body?: any;
+  body?: any;
   /**
    * The additional headers of the request; `Authorization` is included by default.
    */
-  public headers?: any;
+  headers?: any;
   /**
    * Which mode to use to take advance of the requests caching mechanism.
    */
-  public useCache?: CacheModes;
+  useCache?: CacheModes;
   /**
    * If true, report the errors that occurs during the request.
    */
-  public reportError?: boolean;
+  reportError?: boolean;
   /**
    * If true, use IDEA's API instead of the project's API).
    */
-  public idea?: boolean;
+  idea?: boolean;
   /**
    * If `idea` is not set, set this to use an alternative API URL for the request.
    */
-  public alternativeAPI?: string;
+  alternativeAPI?: string;
 }
 
 /**

@@ -1,8 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EmailData, StringVariable } from 'idea-toolbox';
 
-import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.component';
 
 /**
@@ -61,30 +60,28 @@ export class IDEAEmailDataComponent implements OnInit {
   /**
    * The list of variables codes to use for substitutions.
    */
-  _variables: string[];
+  variablesPlain: string[];
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  private _modal = inject(ModalController);
+
   ngOnInit(): void {
     // create a plain list of variable codes
-    this._variables = (this.variables || []).map(x => x.code);
+    this.variablesPlain = (this.variables || []).map(x => x.code);
   }
 
-  openEmailDataConfiguration(): void {
-    this.modalCtrl
-      .create({
-        component: IDEAEmailDataConfigurationComponent,
-        componentProps: {
-          emailData: this.emailData,
-          variables: this.variables,
-          title: this.label,
-          disabled: this.disabled,
-          lines: this.lines
-        }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
-        modal.present();
-      });
+  async openEmailDataConfiguration(): Promise<void> {
+    const modal = await this._modal.create({
+      component: IDEAEmailDataConfigurationComponent,
+      componentProps: {
+        emailData: this.emailData,
+        variables: this.variables,
+        title: this.label,
+        disabled: this.disabled,
+        lines: this.lines
+      }
+    });
+    modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
+    modal.present();
   }
 
   doIconSelect(event: any): void {

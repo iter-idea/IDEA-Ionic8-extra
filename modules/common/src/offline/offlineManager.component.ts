@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ModalController, AlertController, Platform } from '@ionic/angular';
+import { Component, inject } from '@angular/core';
+import { ModalController, AlertController } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 
 import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
@@ -12,88 +12,73 @@ import { IDEAActionSheetController } from '../actionSheet/actionSheetController.
   styleUrls: ['offlineManager.component.scss']
 })
 export class IDEAOfflineManagerComponent {
-  constructor(
-    private platform: Platform,
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-    public actionSheetCtrl: IDEAActionSheetController,
-    public offline: IDEAOfflineDataService,
-    public t: IDEATranslationsService
-  ) {}
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _actions = inject(IDEAActionSheetController);
+  private _translate = inject(IDEATranslationsService);
+  _offline = inject(IDEAOfflineDataService);
 
-  /**
-   * Run a synchronization (with manual confirmation), to acquire what's changed since the last one.
-   */
-  public sync() {
-    this.alertCtrl
-      .create({
-        header: this.t._('IDEA_COMMON.OFFLINE.SYNC_NOW'),
-        message: this.t._('IDEA_COMMON.OFFLINE.DONT_EXIT_APP_DISCLAIMER'),
-        buttons: [
-          { text: this.t._('COMMON.CANCEL') },
-          { text: this.t._('COMMON.GOT_IT'), handler: () => this.offline.synchronize(true) }
-        ]
-      })
-      .then(alert => alert.present());
+  async sync(): Promise<void> {
+    const alert = await this._alert.create({
+      header: this._translate._('IDEA_COMMON.OFFLINE.SYNC_NOW'),
+      message: this._translate._('IDEA_COMMON.OFFLINE.DONT_EXIT_APP_DISCLAIMER'),
+      buttons: [
+        { text: this._translate._('COMMON.CANCEL') },
+        { text: this._translate._('COMMON.GOT_IT'), handler: (): Promise<void> => this._offline.synchronize(true) }
+      ]
+    });
+    alert.present();
   }
 
-  /**
-   * Prompt for deletion of a erroneous request (stuck).
-   */
-  public deleteRequest(request: APIRequest) {
-    this.alertCtrl
-      .create({
-        header: this.t._('COMMON.ARE_YOU_SURE'),
-        message: this.t._('IDEA_COMMON.OFFLINE.DELETION_IS_IRREVERSIBLE'),
-        buttons: [
-          { text: this.t._('COMMON.CANCEL') },
-          { text: this.t._('COMMON.CONFIRM'), handler: () => this.offline.deleteRequest(request) }
-        ]
-      })
-      .then(alert => alert.present());
+  async deleteRequest(request: APIRequest): Promise<void> {
+    const alert = await this._alert.create({
+      header: this._translate._('COMMON.ARE_YOU_SURE'),
+      message: this._translate._('IDEA_COMMON.OFFLINE.DELETION_IS_IRREVERSIBLE'),
+      buttons: [
+        { text: this._translate._('COMMON.CANCEL') },
+        {
+          text: this._translate._('COMMON.CONFIRM'),
+          handler: (): Promise<void> => this._offline.deleteRequest(request)
+        }
+      ]
+    });
+    alert.present();
   }
-  /**
-   * Download a log of the request (JSON file).
-   */
-  public downloadRequestLog(request: APIRequest) {
+  downloadRequestLog(request: APIRequest): void {
     const dataURL = window.URL.createObjectURL(new Blob([JSON.stringify(request)], { type: 'text/json' }));
     Browser.open({ url: dataURL });
   }
 
-  /**
-   * Advanced actions.
-   */
-  public actions() {
+  async actions(): Promise<void> {
     const buttons = [
-      { text: this.t._('IDEA_COMMON.OFFLINE.FORCE_FULL_SYNC'), icon: 'sync', handler: () => this.forceFullSync() },
-      { text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' }
+      {
+        text: this._translate._('IDEA_COMMON.OFFLINE.FORCE_FULL_SYNC'),
+        icon: 'sync',
+        handler: (): Promise<void> => this.forceFullSync()
+      },
+      { text: this._translate._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' }
     ];
-    this.actionSheetCtrl
-      .create({ header: this.t._('IDEA_COMMON.OFFLINE.ADVANCED_ACTIONS'), buttons })
-      .then(actions => actions.present());
+    const actions = await this._actions.create({
+      header: this._translate._('IDEA_COMMON.OFFLINE.ADVANCED_ACTIONS'),
+      buttons
+    });
+    actions.present();
   }
 
-  /**
-   * Force a full synchronisation, ignoring the local resources.
-   */
-  public forceFullSync() {
-    this.alertCtrl
-      .create({
-        header: this.t._('IDEA_COMMON.OFFLINE.FORCE_FULL_SYNC'),
-        subHeader: this.t._('COMMON.ARE_YOU_SURE'),
-        message: this.t._('IDEA_COMMON.OFFLINE.FULL_SYNC_DISCLAIMER'),
-        buttons: [
-          { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-          { text: this.t._('COMMON.CONFIRM'), handler: () => this.offline.forceFullSync() }
-        ]
-      })
-      .then(alert => alert.present());
+  async forceFullSync(): Promise<void> {
+    const alert = await this._alert.create({
+      header: this._translate._('IDEA_COMMON.OFFLINE.FORCE_FULL_SYNC'),
+      subHeader: this._translate._('COMMON.ARE_YOU_SURE'),
+      message: this._translate._('IDEA_COMMON.OFFLINE.FULL_SYNC_DISCLAIMER'),
+      buttons: [
+        { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
+        { text: this._translate._('COMMON.CONFIRM'), handler: (): void => this._offline.forceFullSync() }
+      ]
+    });
+    alert.present();
   }
 
-  /**
-   * Close the component.
-   */
-  public close() {
-    this.modalCtrl.dismiss();
+  close(): void {
+    this._modal.dismiss();
   }
 }

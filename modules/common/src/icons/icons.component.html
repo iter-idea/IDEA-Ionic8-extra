@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
+      <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
         <ion-icon slot="icon-only" name="close" />
       </ion-button>
     </ion-buttons>
     <ion-searchbar
-      [placeholder]="searchPlaceholder || t._('COMMON.SEARCH')"
+      [placeholder]="searchPlaceholder || ('COMMON.SEARCH' | translate)"
       [debounce]="100"
       (ionInput)="search($event.target ? $event.target.value : '')"
     />

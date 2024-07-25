@@ -9,8 +9,8 @@ import { IDEAListELementsComponent } from './listElements.component';
 import { IDEALabelerModule } from '../labeler/labeler.module';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEALabelerModule],
-    declarations: [IDEAListComponent, IDEAListELementsComponent],
-    exports: [IDEAListComponent, IDEAListELementsComponent]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEALabelerModule],
+  declarations: [IDEAListComponent, IDEAListELementsComponent],
+  exports: [IDEAListComponent, IDEAListELementsComponent]
 })
 export class IDEAListModule {}

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Injectable, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, Injectable, OnDestroy, Pipe, PipeTransform, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -26,10 +26,11 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
    */
   private onLangChange: Subscription;
 
-  constructor(private translate: IDEATranslationsService, private _ref: ChangeDetectorRef) {}
+  private _translate = inject(IDEATranslationsService);
+  private _ref = inject(ChangeDetectorRef);
 
   updateValue(key: string, interpolateParams?: any): void {
-    const res = this.translate.instant(key, interpolateParams);
+    const res = this._translate.instant(key, interpolateParams);
     this.value = res !== undefined ? res : key;
     this.lastKey = key;
     this._ref.markForCheck();
@@ -66,7 +67,7 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
     this._dispose();
     // subscribe to onLangChange event, in case the language changes
     if (!this.onLangChange) {
-      this.onLangChange = this.translate.onLangChange.subscribe((): void => {
+      this.onLangChange = this._translate.onLangChange.subscribe((): void => {
         if (this.lastKey) {
           this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
           this.updateValue(query, interpolateParams);

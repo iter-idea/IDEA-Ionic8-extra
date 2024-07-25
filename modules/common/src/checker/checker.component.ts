@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Check } from 'idea-toolbox';
 
@@ -118,7 +118,9 @@ export class IDEACheckerComponent {
    */
   @Output() iconSelect = new EventEmitter<void>();
 
-  constructor(private modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   async fetchDataAndOpenModal(): Promise<void> {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
@@ -132,7 +134,7 @@ export class IDEACheckerComponent {
   }
   private async openChecker(): Promise<void> {
     if (this.disabled) return;
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEAChecksComponent,
       componentProps: {
         data: this.data,
@@ -165,7 +167,7 @@ export class IDEACheckerComponent {
           .slice(0, this.numMaxElementsInPreview)
           .map(x => x.name)
           .join(', ');
-      else return this.t._('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
+      else return this._translate._('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
     }
   }
 

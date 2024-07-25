@@ -1,7 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-
-import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-mde',
@@ -12,55 +10,46 @@ export class IDEAMDEComponent implements OnInit {
   /**
    * Id to identify this specific Markdown Editor (default: 'mde').
    */
-  @Input() public id: string;
+  @Input() id: string;
   /**
    * The title of the modal.
    */
-  @Input() public title: string;
+  @Input() title: string;
   /**
    * The header text content.
    */
-  @Input() public header: string;
+  @Input() header: string;
   /**
    * The sub-header description.
    */
-  @Input() public description: string;
+  @Input() description: string;
   /**
    * A series of text variables to substitute with values.
    */
-  @Input() public variables: string[];
+  @Input() variables: string[];
   /**
    * If set, will customize the initial value of the editor.
    */
-  @Input() public initialValue: string;
+  @Input() initialValue: string;
   /**
    * Custom placeholder that should be displayed.
    */
-  @Input() public placeholder: string;
+  @Input() placeholder: string;
 
-  /**
-   * The value of the editor (textarea).
-   */
-  public value: string;
+  value: string;
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  private modalCtrl = inject(ModalController);
 
-  public ngOnInit() {
+  ngOnInit(): void {
     this.id = this.id || 'mde';
     this.variables = this.variables || new Array<string>();
     this.value = this.initialValue;
   }
 
-  /**
-   * Close without saving.
-   */
-  public close() {
+  close(): void {
     this.modalCtrl.dismiss();
   }
-  /**
-   * Save and close.
-   */
-  public confirm() {
+  confirm(): void {
     this.modalCtrl.dismiss(this.value);
   }
 }

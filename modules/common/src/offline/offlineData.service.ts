@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Delta, DeltaRecord, DeltaResources, epochDateTime } from 'idea-toolbox';
 
@@ -70,27 +70,27 @@ export class IDEAOfflineDataService {
   /**
    * True when running a synchronization.
    */
-  public synchronizing: boolean;
+  synchronizing: boolean;
   /**
    * The timestamp of the last synchronization.
    */
-  public lastSyncAt: epochDateTime;
+  lastSyncAt: epochDateTime;
   /**
    * True if an error happened in the last synchronization.
    */
-  public errorInLastSync: boolean;
+  errorInLastSync: boolean;
   /**
    * True if the synchronisation is too vast and so require a manual action of the user.
    */
-  public requiresManualConfirmation: boolean;
+  requiresManualConfirmation: boolean;
   /**
    * If false, ignore the entire upload scenario.
    */
-  public useQueueAPIRequests: boolean;
+  useQueueAPIRequests: boolean;
   /**
    * The array of the requests not executed because we are/were offline; they need to run once online.
    */
-  public queueAPIRequests: APIRequest[];
+  queueAPIRequests: APIRequest[];
 
   /**
    * The id of the team of which to manage data offline.
@@ -114,17 +114,17 @@ export class IDEAOfflineDataService {
    */
   protected queueAPIRequestKey: string;
 
-  constructor(
-    protected storage: IDEAStorageService,
-    protected t: IDEATranslationsService,
-    protected offline: IDEAOfflineService,
-    protected API: IDEAAWSAPIService
-  ) {
+  protected _storage = inject(IDEAStorageService);
+  protected _translate = inject(IDEATranslationsService);
+  protected _offline = inject(IDEAOfflineService);
+  protected _API = inject(IDEAAWSAPIService);
+
+  constructor() {
     this.queueAPIRequests = new Array<APIRequest>();
     this.resources = new Array<string>();
     this.cacheableResources = {};
     // subscribe to network changes
-    this.offline.subscribe(isOnline => {
+    this._offline.subscribe(isOnline => {
       if (isOnline) {
         // try a synchronization if needed or if the last one failed
         if (this.errorInLastSync) this.synchronize();
@@ -140,26 +140,26 @@ export class IDEAOfflineDataService {
   /**
    * Quickly check the connection status.
    */
-  public isOnline(): boolean {
-    return this.offline.isOnline();
+  isOnline(): boolean {
+    return this._offline.isOnline();
   }
   /**
    * Quickly check the connection status.
    */
-  public isOffline(): boolean {
-    return this.offline.isOffline();
+  isOffline(): boolean {
+    return this._offline.isOffline();
   }
   /**
    * Subscribe to the service to be notified when the connection status changes.
    */
-  public subscribe(callback: (isOnline: boolean) => void): Subscription {
-    return this.offline.subscribe(callback);
+  subscribe(callback: (isOnline: boolean) => void): Subscription {
+    return this._offline.subscribe(callback);
   }
   /**
    * Quickly check for online connection.
    */
   public check(): Promise<boolean> {
-    return this.offline.check();
+    return this._offline.check();
   }
 
   //
@@ -169,13 +169,13 @@ export class IDEAOfflineDataService {
   /**
    * Whether the offline mode is allowed. You can customize this function, if needed.
    */
-  public isAllowed(): boolean {
+  isAllowed(): boolean {
     return !!this.resources.length;
   }
   /**
    * Set up the service to use and sync offline data.
    */
-  public setUpOfflineData(teamId: string, useQueueAPIRequests: boolean, cacheableResources: CacheableResource[]) {
+  setUpOfflineData(teamId: string, useQueueAPIRequests: boolean, cacheableResources: CacheableResource[]): void {
     // set the team
     this.teamId = teamId;
     // decide if to allow certain API request while offline
@@ -196,7 +196,7 @@ export class IDEAOfflineDataService {
    */
   protected loadLastSyncAt(): Promise<number> {
     return new Promise(resolve => {
-      this.storage.get(this.lastSyncKey).then((lastSyncAt: number) => {
+      this._storage.get(this.lastSyncKey).then((lastSyncAt: number): void => {
         this.lastSyncAt = lastSyncAt ? Number(lastSyncAt) : null;
         resolve(this.lastSyncAt);
       });
@@ -207,12 +207,12 @@ export class IDEAOfflineDataService {
    */
   protected saveLastSyncAt(lastSyncAt: number): Promise<void> {
     this.lastSyncAt = lastSyncAt;
-    return this.storage.set(this.lastSyncKey, lastSyncAt);
+    return this._storage.set(this.lastSyncKey, lastSyncAt);
   }
   /**
    * Add a CacheableResource.
    */
-  protected addCacheableResource(cacheableResource: CacheableResource) {
+  protected addCacheableResource(cacheableResource: CacheableResource): void {
     if (this.teamId) cacheableResource.teamId = this.teamId;
     this.cacheableResources[cacheableResource.resource] = cacheableResource;
     this.resources.push(cacheableResource.resource);
@@ -220,20 +220,20 @@ export class IDEAOfflineDataService {
   /**
    * Remove a CacheableResource by its DeltaResource.
    */
-  protected removeCacheableResource(resource: DeltaResources | string) {
+  protected removeCacheableResource(resource: DeltaResources | string): void {
     delete this.cacheableResources[resource];
     this.resources.splice(this.resources.indexOf(resource), 1);
   }
   /**
    * Get the the DeltaResourced configured.
    */
-  public getResources(): (DeltaResources | string)[] {
+  getResources(): (DeltaResources | string)[] {
     return this.resources;
   }
   /**
    * Get a CacheableResource by its DeltaResource.
    */
-  public getCacheableResource(resource: DeltaResources | string): CacheableResource {
+  getCacheableResource(resource: DeltaResources | string): CacheableResource {
     return this.cacheableResources[resource];
   }
 
@@ -245,7 +245,7 @@ export class IDEAOfflineDataService {
    * Execute all the API requests in the queue; the requests terminated with an error will remain in the queue.
    */
   protected runQueueAPIRequests(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
       if (!this.useQueueAPIRequests || this.isOffline() || !this.queueAPIRequests.length) return resolve();
       this.queueAPIRequests.forEach(async request => {
         const options: APIRequestOption = {};
@@ -255,13 +255,13 @@ export class IDEAOfflineDataService {
         try {
           switch (request.method.toUpperCase()) {
             case 'POST':
-              promise = await this.API.postResource(request.resource, options);
+              promise = await this._API.postResource(request.resource, options);
               break;
             case 'PUT':
-              promise = await this.API.putResource(request.resource, options);
+              promise = await this._API.putResource(request.resource, options);
               break;
             case 'PATCH':
-              promise = await this.API.patchResource(request.resource, options);
+              promise = await this._API.patchResource(request.resource, options);
               break;
           }
           if (!promise) request.error = 'INVALID_METHOD';
@@ -271,7 +271,7 @@ export class IDEAOfflineDataService {
         }
       });
       // keep the requests NOT successfully executed
-      this.saveQueueAPIRequest(this.queueAPIRequests.filter(x => x.error)).then(() => {
+      this.saveQueueAPIRequest(this.queueAPIRequests.filter(x => x.error)).then((): void => {
         // if the queue is empty, the entire operation was successful
         if (this.queueAPIRequests.length) reject();
         else resolve();
@@ -284,7 +284,7 @@ export class IDEAOfflineDataService {
   protected loadQueueAPIRequest(): Promise<APIRequest[]> {
     return new Promise(resolve => {
       if (!this.useQueueAPIRequests) return resolve([]);
-      this.storage.get(this.queueAPIRequestKey).then((queue: APIRequest[]) => {
+      this._storage.get(this.queueAPIRequestKey).then((queue: APIRequest[]): void => {
         this.queueAPIRequests = queue || [];
         resolve(this.queueAPIRequests);
       });
@@ -293,15 +293,15 @@ export class IDEAOfflineDataService {
   /**
    * Update the queue in memory and also save the copy in the local storage.
    */
-  public saveQueueAPIRequest(queue?: APIRequest[]): Promise<void> {
+  saveQueueAPIRequest(queue?: APIRequest[]): Promise<void> {
     if (!this.isAllowed()) return Promise.reject();
     this.queueAPIRequests = queue || this.queueAPIRequests;
-    return this.storage.set(this.queueAPIRequestKey, this.queueAPIRequests);
+    return this._storage.set(this.queueAPIRequestKey, this.queueAPIRequests);
   }
   /**
    * Delete a request stuck in an error.
    */
-  public deleteRequest(request: APIRequest) {
+  deleteRequest(request: APIRequest) {
     if (!this.isAllowed()) return Promise.reject();
     if (request) {
       this.queueAPIRequests.splice(this.queueAPIRequests.indexOf(request), 1);
@@ -316,7 +316,7 @@ export class IDEAOfflineDataService {
   /**
    * Save the records of a delta and, if the latter has more pages, go recursive.
    */
-  protected async syncDeltaRecords(delta: Delta, done?: any) {
+  protected async syncDeltaRecords(delta: Delta, done?: any): Promise<any> {
     // for each resource, we reset the status; if a resource still need to be synchronized, it will be flagged below
     this.resources.forEach(resource => {
       this.cacheableResources[resource].error = false;
@@ -340,7 +340,7 @@ export class IDEAOfflineDataService {
       // otherwise, get the next page of the delta and go recursive until we are done
       const params: any = { next: delta.next, limit: NUM_ELEMENTS_WITH_MANUAL_SYNC };
       if (this.lastSyncAt) params.since = this.lastSyncAt;
-      const newDelta = await this.API.getResource(this.teamId ? `teams/${this.teamId}/delta` : 'delta', { params });
+      const newDelta = await this._API.getResource(this.teamId ? `teams/${this.teamId}/delta` : 'delta', { params });
       this.syncDeltaRecords(newDelta, done);
     } catch (err) {
       // if something went wrong, stops the operation, since we need to make sure the entire flow is consistent
@@ -363,9 +363,9 @@ export class IDEAOfflineDataService {
         // calculate the URL to access the API request key for this element
         const elementURL = cr.elementURL(r.element);
         // if the element was deleted (based on delta), delete its corresponding API GET request
-        if (r.deleted) await this.API.deleteFromCache(elementURL);
+        if (r.deleted) await this._API.deleteFromCache(elementURL);
         // otherwise, update it
-        else await this.API.putInCache(elementURL, r.element);
+        else await this._API.putInCache(elementURL, r.element);
         // calculate the URLs to access the API request key for this element's list
         const listURL = cr.listURL(r.element);
         // to improve the performance, get/sort/save the list only when it changes from the previous element's one.
@@ -375,10 +375,10 @@ export class IDEAOfflineDataService {
             // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
             list = list.sort(cr.sort);
             // save the updated list
-            await this.API.putInCache(oldListURL, list);
+            await this._API.putInCache(oldListURL, list);
           }
           // get the list of elements from the local storage by the calculated URL
-          list = await this.API.getFromCache(listURL);
+          list = await this._API.getFromCache(listURL);
           // save the reference to the list for the next cycle
           oldListURL = listURL;
         }
@@ -394,7 +394,7 @@ export class IDEAOfflineDataService {
         // re-sort the list; note: it should be sorted from the last time, so we only manage the new element
         list = list.sort(cr.sort);
         // save the updated list
-        await this.API.putInCache(oldListURL, list);
+        await this._API.putInCache(oldListURL, list);
       }
       return Promise.resolve(true);
     } catch (err) {
@@ -430,74 +430,76 @@ export class IDEAOfflineDataService {
    * Synchronization of the whole set of resources (upload+download).
    * @param manualConfirmation if true, the request comes directly from a user action (not automatic procedures).
    */
-  public synchronize(manualConfirmation?: boolean): Promise<void> {
-    return new Promise((resolve, reject) => {
+  synchronize(manualConfirmation?: boolean): Promise<void> {
+    return new Promise((resolve, reject): void => {
       if (!this.isAllowed() || this.synchronizing) return resolve();
       this.synchronizing = true;
       this.errorInLastSync = false;
       this.requiresManualConfirmation = false;
       // load the lastSyncAt information
-      this.loadLastSyncAt().then(() =>
-        // try to run all the pending API requests in the queue, i.e. uploading the offline resources changed
-        this.runQueueAPIRequests()
-          .then(() => {
-            // set this moment in time: if anything happened before the end of the sync, we don't lose fresh data
-            const now = Date.now();
-            // prepare a first "short" Delta request, to see if there is a lot of data to process
-            const params: any = { limit: NUM_ELEMENTS_WITHOUT_MANUAL_SYNC };
-            if (this.lastSyncAt) params.since = this.lastSyncAt;
-            this.API.getResource(this.teamId ? `teams/${this.teamId}/delta` : 'delta', { params })
-              .then((delta: Delta) => {
-                // decide if to proceed with the sync: in case there is another page, it requires a manual confirmation
-                if (delta.next && !manualConfirmation) {
-                  this.requiresManualConfirmation = true;
-                  this.synchronizing = false;
-                  return resolve();
-                }
-                // save the records in the delta and request possible new pages
-                this.syncDeltaRecords(delta, () => {
-                  if (this.errorInLastSync) {
+      this.loadLastSyncAt().then(
+        (): Promise<void> =>
+          // try to run all the pending API requests in the queue, i.e. uploading the offline resources changed
+          this.runQueueAPIRequests()
+            .then((): void => {
+              // set this moment in time: if anything happened before the end of the sync, we don't lose fresh data
+              const now = Date.now();
+              // prepare a first "short" Delta request, to see if there is a lot of data to process
+              const params: any = { limit: NUM_ELEMENTS_WITHOUT_MANUAL_SYNC };
+              if (this.lastSyncAt) params.since = this.lastSyncAt;
+              this._API
+                .getResource(this.teamId ? `teams/${this.teamId}/delta` : 'delta', { params })
+                .then((delta: Delta): void => {
+                  // decide if to proceed with the sync: in case there is another page, it requires a manual confirmation
+                  if (delta.next && !manualConfirmation) {
+                    this.requiresManualConfirmation = true;
                     this.synchronizing = false;
-                    resolve();
-                  } else {
-                    // all the resources are succesfully in sync
-                    this.resources.forEach(resource => (this.cacheableResources[resource].synchronizing = false));
-                    // update the timestamp of last sync
-                    this.saveLastSyncAt(now)
-                      .then(() => {
-                        this.synchronizing = false;
-                        resolve();
-                      })
-                      .catch(() => {
-                        // we couldn't save the last sync info
-                        this.errorInLastSync = true;
-                        this.synchronizing = false;
-                        reject();
-                      });
+                    return resolve();
                   }
+                  // save the records in the delta and request possible new pages
+                  this.syncDeltaRecords(delta, (): void => {
+                    if (this.errorInLastSync) {
+                      this.synchronizing = false;
+                      resolve();
+                    } else {
+                      // all the resources are succesfully in sync
+                      this.resources.forEach(resource => (this.cacheableResources[resource].synchronizing = false));
+                      // update the timestamp of last sync
+                      this.saveLastSyncAt(now)
+                        .then((): void => {
+                          this.synchronizing = false;
+                          resolve();
+                        })
+                        .catch((): void => {
+                          // we couldn't save the last sync info
+                          this.errorInLastSync = true;
+                          this.synchronizing = false;
+                          reject();
+                        });
+                    }
+                  });
+                })
+                .catch((): void => {
+                  // we couldn't acquire new information (Delta)
+                  this.errorInLastSync = true;
+                  this.synchronizing = false;
+                  reject();
                 });
-              })
-              .catch(() => {
-                // we couldn't acquire new information (Delta)
-                this.errorInLastSync = true;
-                this.synchronizing = false;
-                reject();
-              });
-          })
-          .catch(() => {
-            // we stop, since we don't want backend data to override local info not yet uploaded
-            this.errorInLastSync = true;
-            this.synchronizing = false;
-            reject();
-          })
+            })
+            .catch((): void => {
+              // we stop, since we don't want backend data to override local info not yet uploaded
+              this.errorInLastSync = true;
+              this.synchronizing = false;
+              reject();
+            })
       );
     });
   }
   /**
    * Force a full synchronisation.
    */
-  public forceFullSync() {
-    this.storage.clear().then(() => this.synchronize(true));
+  forceFullSync(): void {
+    this._storage.clear().then((): Promise<void> => this.synchronize(true));
   }
 }
 
@@ -540,23 +542,23 @@ export abstract class CacheableResource {
    * The team owning the resource.
    * If null, the project isn't teams-based.
    */
-  public teamId: string;
+  teamId: string;
   /**
    * The identifier of the resource.
    */
-  public resource: DeltaResources | string;
+  resource: DeltaResources | string;
   /**
    * The resource description (translated) for the UI.
    */
-  public description: string;
+  description: string;
   /**
    * Runtime attribute to know if the resource is synchronizing.
    */
-  public synchronizing: boolean;
+  synchronizing: boolean;
   /**
    * True if one of the elements failed the execution.
    */
-  public error: boolean;
+  error: boolean;
 
   constructor(resource: string, description: string) {
     this.resource = resource;
@@ -571,20 +573,20 @@ export abstract class CacheableResource {
    * How to build the relative URL to the resource (list).
    * E.g. `teams/${element.teamId}/customers` or `customers`.
    */
-  public abstract listURL(element: any): string;
+  abstract listURL(element: any): string;
   /**
    * How to build the relative URL to the resource element (detail).
    * E.g. `teams/${element.teamId}/customers/${element.customerId}` or `customers/${element.customerId}`.
    */
-  public abstract elementURL(element: any): string;
+  abstract elementURL(element: any): string;
   /**
    * How to uniquely identify an element in the list (by its ids).
    * E.g. `return list.findIndex(x => x.customerId === element.customerId);`
    */
-  public abstract findIndexInList(list: any[], element: any): number;
+  abstract findIndexInList(list: any[], element: any): number;
   /**
    * How to keep the list sorted.
    * E.g. `return a.name.localeCompare(b.name);`
    */
-  public abstract sort(a: any, b: any): number;
+  abstract sort(a: any, b: any): number;
 }

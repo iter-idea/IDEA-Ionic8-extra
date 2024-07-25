@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 
 import { IDEATranslationsService } from './translations.service';
 
@@ -7,10 +7,10 @@ import { IDEATranslationsService } from './translations.service';
  */
 @Pipe({ name: 'label', pure: false })
 export class IDEALocalizedLabelPipe implements PipeTransform {
-  constructor(private t: IDEATranslationsService) {}
+  private _translate = inject(IDEATranslationsService);
 
   transform(label: any): any {
     if (!label) return null;
-    return this.t._label(label);
+    return this._translate._label(label);
   }
 }

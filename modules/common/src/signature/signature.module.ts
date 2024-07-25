@@ -8,8 +8,8 @@ import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEASelectModule } from '../select/select.module';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule],
-    declarations: [IDEASignatureComponent],
-    exports: [IDEASignatureComponent]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule],
+  declarations: [IDEASignatureComponent],
+  exports: [IDEASignatureComponent]
 })
 export class IDEASignatureModule {}

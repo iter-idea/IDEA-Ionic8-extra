@@ -1,15 +1,17 @@
 <ion-fab
-  *ngIf="platform.is('mobile') && (offline.isOffline() || offline.synchronizing || offline.requiresManualConfirmation)"
+  *ngIf="
+    _platform.is('mobile') && (_offline.isOffline() || _offline.synchronizing || _offline.requiresManualConfirmation)
+  "
   [vertical]="vertical"
   [horizontal]="horizontal"
   [edge]="edge"
 >
   <ion-fab-button color="dark" size="small" (click)="showStatus()">
     <!-- OFFLINE -->
-    <ion-icon name="airplane" *ngIf="offline.isOffline()" />
+    <ion-icon name="airplane" *ngIf="_offline.isOffline()" />
     <!-- SYNCHRONISING -->
-    <ion-icon name="sync" *ngIf="offline.isOnline() && offline.synchronizing" />
+    <ion-icon name="sync" *ngIf="_offline.isOnline() && _offline.synchronizing" />
     <!-- NEED MANAL SYNCHRONISATION -->
-    <ion-icon name="pause" *ngIf="offline.isOnline() && offline.requiresManualConfirmation" />
+    <ion-icon name="pause" *ngIf="_offline.isOnline() && _offline.requiresManualConfirmation" />
   </ion-fab-button>
 </ion-fab>

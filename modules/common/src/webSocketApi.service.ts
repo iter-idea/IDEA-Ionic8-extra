@@ -9,7 +9,7 @@ import { IDEAEnvironment } from '../environment';
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAWebSocketApiService {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
 
   /**
    * The URL to connect for socket communication.
@@ -58,7 +58,7 @@ export class IDEAWebSocketApiService {
   protected wasOpenAtLeastOnce: boolean;
 
   constructor() {
-    this.apiURL = 'wss://'.concat([this.env.idea.socket?.url, this.env.idea.socket?.stage].filter(x => x).join('/'));
+    this.apiURL = 'wss://'.concat([this._env.idea.socket?.url, this._env.idea.socket?.stage].filter(x => x).join('/'));
   }
 
   /**

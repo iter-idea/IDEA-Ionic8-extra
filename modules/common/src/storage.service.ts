@@ -1,43 +1,45 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Storage } from '@ionic/storage-angular';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAStorageService {
-  private _storage: Storage | null = null;
+  private theStorage: Storage | null = null;
 
-  constructor(private storage: Storage) {
+  private _storage = inject(Storage);
+
+  constructor() {
     this.init();
   }
 
-  async init() {
-    const storage = await this.storage.create();
-    this._storage = storage;
+  async init(): Promise<void> {
+    const storage = await this._storage.create();
+    this.theStorage = storage;
   }
   async ready(): Promise<void> {
     return new Promise(resolve => this.readyHelper(resolve));
   }
-  private readyHelper(resolve: any) {
-    if (this._storage) resolve();
-    else setTimeout(() => this.readyHelper(resolve), 100);
+  private readyHelper(resolve: any): void {
+    if (this.theStorage) resolve();
+    else setTimeout((): void => this.readyHelper(resolve), 100);
   }
 
   async set(key: string, value: any): Promise<void> {
-    return await this._storage?.set(key, value);
+    return await this.theStorage?.set(key, value);
   }
   async get(key: string): Promise<any> {
-    return await this._storage?.get(key);
+    return await this.theStorage?.get(key);
   }
   async remove(key: string): Promise<void> {
-    return await this._storage?.remove(key);
+    return await this.theStorage?.remove(key);
   }
   async clear(): Promise<void> {
-    return await this._storage?.clear();
+    return await this.theStorage?.clear();
   }
   async keys(): Promise<string[]> {
-    return await this._storage?.keys();
+    return await this.theStorage?.keys();
   }
   async length(): Promise<number> {
-    return await this._storage?.length();
+    return await this.theStorage?.length();
   }
 }

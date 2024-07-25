@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Contacts } from 'idea-toolbox';
 
@@ -31,7 +31,8 @@ export class IDEAContactsComponent {
    */
   @Input() color: string;
 
-  constructor(private alertCtrl: AlertController, private t: IDEATranslationsService) {}
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
 
   sendEmail(): void {
     if (!this.contacts.email) return;
@@ -45,9 +46,12 @@ export class IDEAContactsComponent {
   }
 
   private preExternalAction(message: string, cb: () => void): void {
-    const header = this.t._('COMMON.DO_YOU_WANT_TO_PROCEED');
-    const buttons = [{ text: this.t._('COMMON.CANCEL') }, { text: this.t._('COMMON.CONFIRM'), handler: () => cb() }];
+    const header = this._translate._('COMMON.DO_YOU_WANT_TO_PROCEED');
+    const buttons = [
+      { text: this._translate._('COMMON.CANCEL') },
+      { text: this._translate._('COMMON.CONFIRM'), handler: (): void => cb() }
+    ];
     const cssClass = 'selectableAlertMessage';
-    this.alertCtrl.create({ header, message, buttons, cssClass }).then(alert => alert.present());
+    this._alert.create({ header, message, buttons, cssClass }).then(alert => alert.present());
   }
 }

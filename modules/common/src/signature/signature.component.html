@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.CANCEL')" (click)="close()">
+      <ion-button [title]="'IDEA_COMMON.SIGNATURE.CANCEL' | translate" (click)="close()">
         <ion-icon name="close" slot="icon-only" />
       </ion-button>
     </ion-buttons>
@@ -12,7 +12,7 @@
       <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" *ngIf="existingSignature" (click)="undo()">
         <ion-icon name="arrow-undo" slot="icon-only" />
       </ion-button>
-      <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.SAVE_SIGNATURE')" *ngIf="canEdit()" (click)="save()">
+      <ion-button [title]="'IDEA_COMMON.SIGNATURE.SAVE_SIGNATURE' | translate" *ngIf="canEdit()" (click)="save()">
         <ion-icon name="checkmark" slot="icon-only" />
       </ion-button>
     </ion-buttons>
@@ -26,7 +26,7 @@
     <ion-item lines="none">
       <ion-input
         type="text"
-        [placeholder]="t._('IDEA_COMMON.SIGNATURE.NAME_AND_SURNAME')"
+        [placeholder]="'IDEA_COMMON.SIGNATURE.NAME_AND_SURNAME' | translate"
         [disabled]="!canEdit()"
         [class.fieldHasError]="signatoryError"
         [(ngModel)]="signature.signatory"

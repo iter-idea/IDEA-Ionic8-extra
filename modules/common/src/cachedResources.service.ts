@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { IDEAStorageService } from './storage.service';
 
@@ -20,13 +20,15 @@ export class IDEACachedResourcesService {
 
   private cacheKey: string;
 
-  constructor(private storage: IDEAStorageService) {
+  private storage = inject(IDEAStorageService);
+
+  constructor() {
     this.loadKeyFromStorage();
   }
   /**
    * Load the cache key from the local storage.
    */
-  private loadKeyFromStorage() {
+  private loadKeyFromStorage(): void {
     this.storage.get(this.cacheKeyIndex).then(key => {
       if (key) this.cacheKey = key;
       else this.updateCacheKey(Date.now());

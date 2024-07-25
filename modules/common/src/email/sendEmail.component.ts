@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EmailData, StringVariable, Suggestion } from 'idea-toolbox';
 
@@ -14,97 +14,77 @@ export class IDEASendEmailComponent implements OnInit {
   /**
    * The content and receivers of the email.
    */
-  @Input() public email: EmailData;
+  @Input() email: EmailData;
   /**
    * Visual indicators of the attachments that will be sent.
    */
-  @Input() public attachments: string[];
+  @Input() attachments: string[];
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() public variables: StringVariable[];
+  @Input() variables: StringVariable[];
   /**
    * A map of the values to substitute to the variables.
    */
-  @Input() public values: { [variable: string]: string | number };
+  @Input() values: { [variable: string]: string | number };
   /**
    * The suggested contacts for the email composer.
    */
-  @Input() public contacts: Suggestion[];
+  @Input() contacts: Suggestion[];
   /**
    * Lines preferences for the items.
    */
-  @Input() public lines: string;
-  /**
-   * A copy of the email data, to use until the changes are confirmed.
-   */
-  public _email: EmailData;
+  @Input() lines: string;
 
-  constructor(public modalCtrl: ModalController, public t: IDEATranslationsService) {}
-  public ngOnInit() {
-    // use a copy, to confirm it only when saving
-    this._email = new EmailData(this.email);
-    // substitute the variables in subject and content
+  emailWC: EmailData;
+
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
+  ngOnInit(): void {
+    this.emailWC = new EmailData(this.email);
     if (!this.variables) this.variables = new Array<StringVariable>();
     if (!this.values) this.values = {};
     this.variables.forEach(v => {
       if (this.values[v.code]) {
-        if (this._email.subject)
-          this._email.subject = this._email.subject.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
-        if (this._email.content)
-          this._email.content = this._email.content.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
+        if (this.emailWC.subject)
+          this.emailWC.subject = this.emailWC.subject.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
+        if (this.emailWC.content)
+          this.emailWC.content = this.emailWC.content.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
       }
     });
   }
 
-  /**
-   * Add an email address to the list.
-   */
-  public addAddressToList(list: string[]) {
-    this.modalCtrl
-      .create({
-        component: IDEASuggestionsComponent,
-        componentProps: {
-          data: this.contacts || [],
-          sortData: true,
-          searchPlaceholder: this.t._('IDEA_COMMON.EMAIL.CHOOSE_OR_ADD_AN_ADDRESS'),
-          noElementsFoundText: this.t._('IDEA_COMMON.EMAIL.NO_ADDRESS_FOUND_YOU_CAN_ADD_ONE'),
-          allowUnlistedValues: true,
-          lines: this.lines
-        }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then(res => {
-          if (res && res.data && res.data.value && !list.includes(res.data.value)) list.push(res.data.value);
-        });
-        modal.present();
-      });
+  async addAddressToList(list: string[]): Promise<void> {
+    const modal = await this._modal.create({
+      component: IDEASuggestionsComponent,
+      componentProps: {
+        data: this.contacts || [],
+        sortData: true,
+        searchPlaceholder: this._translate._('IDEA_COMMON.EMAIL.CHOOSE_OR_ADD_AN_ADDRESS'),
+        noElementsFoundText: this._translate._('IDEA_COMMON.EMAIL.NO_ADDRESS_FOUND_YOU_CAN_ADD_ONE'),
+        allowUnlistedValues: true,
+        lines: this.lines
+      }
+    });
+    modal.onDidDismiss().then(res => {
+      if (res && res.data && res.data.value && !list.includes(res.data.value)) list.push(res.data.value);
+    });
+    modal.present();
   }
-  /**
-   * Remove the address from the list.
-   */
-  public removeAddressFromList(list: string[], address: string) {
+  removeAddressFromList(list: string[], address: string): void {
     list.splice(list.indexOf(address), 1);
   }
 
-  /**
-   * Check if the obligatory fields are set.
-   */
-  public canSend(): boolean {
-    return Boolean(this._email.to.length && this._email.subject && this._email.content);
+  canSend(): boolean {
+    return Boolean(this.emailWC.to.length && this.emailWC.subject && this.emailWC.content);
   }
-  /**
-   * Confirm the email sending.
-   */
-  public send() {
-    this.email.load(this._email);
-    this.modalCtrl.dismiss(this.email);
+  send(): void {
+    this.email.load(this.emailWC);
+    this._modal.dismiss(this.email);
   }
 
-  /**
-   * Close the modal.
-   */
-  public close() {
-    this.modalCtrl.dismiss();
+  close(): void {
+    this._modal.dismiss();
   }
 }

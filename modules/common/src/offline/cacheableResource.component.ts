@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 
 import { IDEAOfflineDataService, CacheableResource } from './offlineData.service';
-import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-cacheable-resource',
@@ -12,7 +11,7 @@ export class IDEACacheableResourceComponent {
   /**
    * The resouece to manage.
    */
-  @Input() public resource: CacheableResource;
+  @Input() resource: CacheableResource;
 
-  constructor(public offline: IDEAOfflineDataService, public t: IDEATranslationsService) {}
+  _offline = inject(IDEAOfflineDataService);
 }

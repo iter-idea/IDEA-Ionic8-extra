@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Label, Languages, mdToHtml, StringVariable } from 'idea-toolbox';
 
@@ -75,9 +75,11 @@ export class IDEALabelComponent implements OnInit {
   variableCodes: string[];
   htmlContent: string;
 
-  constructor(private modalCtrl: ModalController, private t: IDEATranslationsService) {}
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
-    this.languages = this.languages ?? this.t.languages();
+    this.languages = this.languages ?? this._translate.languages();
     this.variableCodes = (this.variables ?? []).map(x => x.code);
     this.calcHTMLContent();
   }
@@ -94,7 +96,7 @@ export class IDEALabelComponent implements OnInit {
       disabled: this.disabled,
       lines: this.lines
     };
-    const modal = await this.modalCtrl.create({ component: IDEALabelerComponent, componentProps });
+    const modal = await this._modal.create({ component: IDEALabelerComponent, componentProps });
     modal.onDidDismiss().then(({ data }): void => {
       if (!data) return;
       this.calcHTMLContent();

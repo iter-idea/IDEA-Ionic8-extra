@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import SignaturePad from 'signature_pad';
 import { Signature, Suggestion } from 'idea-toolbox';
@@ -19,46 +19,27 @@ export class IDEASignatureComponent {
   /**
    * An existing signature to use.
    */
-  @Input() public existingSignature: Signature;
+  @Input() existingSignature: Signature;
   /**
    * Whether it is possible or not to edit an existing signature.
    */
-  @Input() public preventEditing: boolean;
+  @Input() preventEditing: boolean;
   /**
    * A list of contacts that could be the signatory of this signature.
    */
-  @Input() public contacts: string[];
-  /**
-   * The signature to manage.
-   */
-  public signature: Signature;
-  /**
-   * The canvas where the signature is painted.
-   */
-  public canvas: HTMLCanvasElement;
-  /**
-   * The signature pad.
-   */
-  public pad: SignaturePad;
-  /**
-   * Helper to report an error in the signatory field.
-   */
-  public signatoryError: boolean;
-  /**
-   * Helper to report an error in the signature canvas.
-   */
-  public signatureError: boolean;
+  @Input() contacts: string[];
 
-  constructor(
-    public modalCtrl: ModalController,
-    public message: IDEAMessageService,
-    public t: IDEATranslationsService
-  ) {
-    this.signature = new Signature();
-    this.canvas = null;
-    this.pad = null;
-  }
-  public ionViewDidEnter() {
+  signature = new Signature();
+  canvas: HTMLCanvasElement | null = null;
+  pad: SignaturePad | null = null;
+  signatoryError: boolean;
+  signatureError: boolean;
+
+  private _modal = inject(ModalController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
+  ionViewDidEnter(): void {
     // prepare the canvas area for the signature
     this.canvas = document.getElementById('signatureCanvas') as HTMLCanvasElement;
     this.pad = new SignaturePad(this.canvas);
@@ -74,81 +55,57 @@ export class IDEASignatureComponent {
     if (this.contacts.length && !this.signature.signatory) this.signature.signatory = this.contacts[0];
   }
 
-  /**
-   * Whether an existing signature can be edited.
-   */
-  public canEdit(): boolean {
+  canEdit(): boolean {
     return !this.existingSignature || !this.preventEditing;
   }
 
-  /**
-   * Pick a signatory from the contacts.
-   */
-  public pickSignatory() {
-    this.modalCtrl
-      .create({
-        component: IDEASuggestionsComponent,
-        componentProps: {
-          data: (this.contacts || []).map(c => new Suggestion({ value: c })),
-          searchPlaceholder: this.t._('IDEA_COMMON.SIGNATURE.CHOOSE_A_SIGNATORY'),
-          hideClearButton: true
-        }
-      })
-      .then(modal => {
-        modal.onDidDismiss().then((res: any) => {
-          if (res && res.data && res.data.value) this.signature.signatory = res.data.value;
-        });
-        modal.present();
-      });
+  async pickSignatory(): Promise<void> {
+    const modal = await this._modal.create({
+      component: IDEASuggestionsComponent,
+      componentProps: {
+        data: (this.contacts || []).map(c => new Suggestion({ value: c })),
+        searchPlaceholder: this._translate._('IDEA_COMMON.SIGNATURE.CHOOSE_A_SIGNATORY'),
+        hideClearButton: true
+      }
+    });
+    modal.onDidDismiss().then(res => {
+      if (res && res.data && res.data.value) this.signature.signatory = res.data.value;
+    });
+    modal.present();
   }
 
-  /**
-   * Clear the canvas.
-   */
-  public clear() {
+  clear(): void {
     this.pad.clear();
   }
 
-  /**
-   * Check Close the window and return the signature.
-   */
-  public save() {
+  save(): Promise<void> {
     // check whether the fields are empty
     this.signatoryError = !this.signature.signatory?.trim();
     this.signatureError = this.pad.isEmpty();
     if (this.signatoryError || this.signatureError)
-      return this.message.warning('IDEA_COMMON.SIGNATURE.VERIFY_SIGNATORY_AND_SIGNATURE');
+      return this._message.warning('IDEA_COMMON.SIGNATURE.VERIFY_SIGNATORY_AND_SIGNATURE');
     // load the signature URL
     this.signature.pngURL = this.pad.toDataURL('image/png');
     // check whether the signature size is acceptable
     this.signatureError = this.signature.pngURL.length > SIGNATURE_SIZE_LIMIT;
-    if (this.signatureError) return this.message.warning('IDEA_COMMON.SIGNATURE.SIGNATURE_IS_TOO_COMPLEX');
+    if (this.signatureError) return this._message.warning('IDEA_COMMON.SIGNATURE.SIGNATURE_IS_TOO_COMPLEX');
     // clean the signatory string
     this.signature.signatory = this.signature.signatory.trim();
     // update the timestamp
     this.signature.timestamp = Date.now();
     // close the modal
-    this.modalCtrl.dismiss(this.signature);
+    this._modal.dismiss(this.signature);
   }
 
-  /**
-   * Close and undo the signature.
-   */
-  public undo() {
-    this.modalCtrl.dismiss(true);
+  undo(): void {
+    this._modal.dismiss(true);
   }
 
-  /**
-   * Close without saving.
-   */
-  public close() {
-    this.modalCtrl.dismiss();
+  close(): void {
+    this._modal.dismiss();
   }
 
-  /**
-   * Handling high DPI screens.
-   */
-  public resizeCanvas() {
+  resizeCanvas(): void {
     const ratio = Math.max(window.devicePixelRatio || 1, 1);
     this.canvas.width = this.canvas.offsetWidth * ratio;
     this.canvas.height = this.canvas.offsetHeight * ratio;

@@ -13,7 +13,10 @@ import { IDEATinCanService } from './tinCan.service';
  */
 @Injectable()
 export class IDEAAWSAPISocketService {
-  protected env = inject(IDEAEnvironment);
+  protected _env = inject(IDEAEnvironment);
+  protected _tc = inject(IDEATinCanService);
+  protected _errorReporting = inject(IDEAErrorReportingService);
+  protected _offline = inject(IDEAOfflineService);
 
   apiStage: string;
   /**
@@ -49,40 +52,36 @@ export class IDEAAWSAPISocketService {
   /**
    * The maximum amount of minutes of inactivity after which we ping the connection to keep it alive.
    */
-  public MAX_INACTIVITY_MINUTES = 7;
+  MAX_INACTIVITY_MINUTES = 7;
   /**
    * The amount of minutes after which we check if the connection needs to be pinged to be kept alive.
    */
-  public KEEP_ALIVE_MINUTES_INTERVAL = 2;
+  KEEP_ALIVE_MINUTES_INTERVAL = 2;
   /**
    * In case we are offline, the amount of minutes after which we check if we are online, so we can re-connect.
    */
-  public TRY_AGAIN_OFFLINE_MINUTES = 3;
+  TRY_AGAIN_OFFLINE_MINUTES = 3;
 
-  constructor(
-    protected tc: IDEATinCanService,
-    protected errorReporting: IDEAErrorReportingService,
-    protected offline: IDEAOfflineService
-  ) {
-    this.apiStage = this.env.idea.socket?.stage ?? (this.env.idea.socket as any)?.version;
-    this.WEBSOCKET_API_URL = 'wss://'.concat([this.env.idea.socket?.url, this.apiStage].filter(x => x).join('/'));
+  constructor() {
+    this.apiStage = this._env.idea.socket?.stage ?? (this._env.idea.socket as any)?.version;
+    this.WEBSOCKET_API_URL = 'wss://'.concat([this._env.idea.socket?.url, this.apiStage].filter(x => x).join('/'));
   }
 
   /**
    * Open a connection to the websocket API.
    */
-  public open(options?: IDEAAWSAPISocketServiceOpenOptions) {
+  open(options?: IDEAAWSAPISocketServiceOpenOptions): void {
     this.options = options || this.options || {};
     // skip in case we have an open and valid connection
     if (this.connection && this.isOpen()) return;
     // prepare optional query params for the connection/authorization request
     let qp = '';
-    Object.entries(this.options.openParams || {}).forEach(([key, value]) => (qp += `&${key}=${String(value)}`));
+    Object.entries(this.options.openParams || {}).forEach(([key, value]): string => (qp += `&${key}=${String(value)}`));
     // open a connection (with IDEA authentication or not)
-    const auth = this.options.noAuth ? '?noAuth=' : '?Authorization='.concat(this.tc.get('AWSAPIAuthToken'));
+    const auth = this.options.noAuth ? '?noAuth=' : '?Authorization='.concat(this._tc.get('AWSAPIAuthToken'));
     this.connection = new WebSocket(this.WEBSOCKET_API_URL.concat(auth, qp));
     // set the event listeners
-    this.connection.onopen = (event: any) => {
+    this.connection.onopen = (event: any): void => {
       if (this.options.debug) console.log('WEBSOCKET IS OPEN', event);
       // reset the try-again-when-offline mechanism, since we are online and connected
       if (this.offlineTimeout) clearTimeout(this.offlineTimeout);
@@ -96,24 +95,24 @@ export class IDEAAWSAPISocketService {
       // run the user-defined onOpen actions
       if (this.options.onOpen) this.options.onOpen(event);
     };
-    this.connection.onclose = (event: any) => {
+    this.connection.onclose = (event: any): void => {
       if (this.options.debug) console.log('WEBSOCKET WAS CLOSED BY EXTERNAL EVENTS', event);
       // run the user-defined onClose actions
       if (this.options.onClose) this.options.onClose(event);
       // in case the connection was closed by other events (e.g. offline) reset the data and try to re-open the socket
       this.close(this.wasOpenAtLeastOnce);
     };
-    this.connection.onerror = (event: any) => {
+    this.connection.onerror = (event: any): void => {
       if (this.options.debug) console.log('WEBSOCKET HAD AN ERROR', event);
       // send an error report, if requested
       if (this.options.reportError) {
-        const errMsg = ''.concat(event?.target?.url, ' @@@ ', this.tc.get('user')?.userId || this.tc.get('userId'));
-        this.errorReporting.sendReport(new Error(errMsg));
+        const errMsg = ''.concat(event?.target?.url, ' @@@ ', this._tc.get('user')?.userId || this._tc.get('userId'));
+        this._errorReporting.sendReport(new Error(errMsg));
       }
       // run the user-defined onError actions
       if (this.options.onError) this.options.onError(event);
     };
-    this.connection.onmessage = (event: any) => {
+    this.connection.onmessage = (event: any): void => {
       if (this.options.debug) console.log('WEBSOCKET INCOMING MESSAGE', event);
       try {
         const data = JSON.parse(event.data || {});
@@ -129,7 +128,7 @@ export class IDEAAWSAPISocketService {
    * Close the current connection to the websocket API.
    * @param itShouldReopen in case the connection was forcibly closed, try to re-open it (with offline mechanism).
    */
-  public close(itShouldReopen?: boolean) {
+  close(itShouldReopen?: boolean): void {
     // skip in case there isn't an active connection
     if (!this.connection) return;
     // reset the events listener
@@ -158,9 +157,9 @@ export class IDEAAWSAPISocketService {
   /**
    * Try to-reopen a closed connection, if we are online.
    */
-  protected async reOpen() {
+  protected async reOpen(): Promise<void> {
     // in case we are online, reopen the connection right away
-    const isOnline = await this.offline.check();
+    const isOnline = await this._offline.check();
     if (this.options.debug) console.log('WEBSOCKET WILL TRY TO RE-OPEN', isOnline, new Date());
     if (isOnline) return this.open();
     // if we are offline, set a timer to try to re-open the connection later on
@@ -170,14 +169,14 @@ export class IDEAAWSAPISocketService {
   /**
    * Whether the socket connection is currently open.
    */
-  public isOpen(): boolean {
+  isOpen(): boolean {
     return this.connection && this.connection.readyState === WebSocket.OPEN;
   }
 
   /**
    * A simple message delivered to the server to keep the connection alive.
    */
-  protected ping() {
+  protected ping(): void {
     if (this.options.debug) console.log('WEBSOCKET IS PINGING THE SERVER', new Date());
     this.connection.send('ping');
   }
@@ -185,7 +184,7 @@ export class IDEAAWSAPISocketService {
   /**
    * Helper to keep the connection alive, if needed.
    */
-  protected keepItAlive() {
+  protected keepItAlive(): void {
     if (this.options.debug) console.log('WEBSOCKET KEEP-IT-ALIVE', new Date());
     // if there wasn't an acivity in the last MAX_INACTIVITY_MINUTES, ping the connection
     if (!this.lastActivityAt || this.lastActivityAt + this.minutesToMS(this.MAX_INACTIVITY_MINUTES) < Date.now())

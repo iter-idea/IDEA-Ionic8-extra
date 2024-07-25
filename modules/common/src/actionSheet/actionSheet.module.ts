@@ -8,9 +8,9 @@ import { IDEAActionSheetComponent } from './actionSheet.component';
 import { IDEAActionSheetController } from './actionSheetController.service';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
-    declarations: [IDEAActionSheetComponent],
-    exports: [IDEAActionSheetComponent],
-    providers: [IDEAActionSheetController]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+  declarations: [IDEAActionSheetComponent],
+  exports: [IDEAActionSheetComponent],
+  providers: [IDEAActionSheetController]
 })
 export class IDEAActionSheetModule {}

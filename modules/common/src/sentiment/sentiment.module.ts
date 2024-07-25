@@ -8,8 +8,8 @@ import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEASentimentComponent } from './sentiment.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
-    declarations: [IDEASentimentComponent],
-    exports: [IDEASentimentComponent]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+  declarations: [IDEASentimentComponent],
+  exports: [IDEASentimentComponent]
 })
 export class IDEASentimentModule {}

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Label } from 'idea-toolbox';
 
@@ -76,11 +76,12 @@ export class IDEAListComponent {
    */
   @Output() iconSelect = new EventEmitter<void>();
 
-  constructor(private modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
 
   async openList(): Promise<void> {
     if (this.disabled) return;
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEAListELementsComponent,
       componentProps: {
         data: this.data,
@@ -101,10 +102,12 @@ export class IDEAListComponent {
         .slice(0, this.numMaxElementsInPreview)
         .map(x => this.getElementName(x))
         .join(', ');
-    else return this.t._('IDEA_COMMON.LIST.NUM_ELEMENTS_', { num: this.data.length });
+    else return this._translate._('IDEA_COMMON.LIST.NUM_ELEMENTS_', { num: this.data.length });
   }
   getElementName(x: Label | string): any {
-    return this.labelElements ? (x as Label).translate(this.t.getCurrentLang(), this.t.languages()) : x;
+    return this.labelElements
+      ? (x as Label).translate(this._translate.getCurrentLang(), this._translate.languages())
+      : x;
   }
 
   doIconSelect(event: any): void {

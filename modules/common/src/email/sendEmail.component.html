@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button [title]="t._('COMMON.CLOSE')" (click)="close()">
+      <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
         <ion-icon slot="icon-only" name="close" />
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA_COMMON.EMAIL.SEND_EMAIL' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA_COMMON.EMAIL.SEND_EMAIL')" [disabled]="!canSend()" (click)="send()">
+      <ion-button [title]="'IDEA_COMMON.EMAIL.SEND_EMAIL' | translate" [disabled]="!canSend()" (click)="send()">
         <ion-icon slot="icon-only" name="send" />
       </ion-button>
     </ion-buttons>
@@ -19,15 +19,15 @@
       <ion-label>
         <h2>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}</h2>
       </ion-label>
-      <ion-button color="dark" (click)="addAddressToList(_email.to)">
+      <ion-button color="dark" (click)="addAddressToList(emailWC.to)">
         <ion-icon slot="icon-only" name="add-circle" />
       </ion-button>
     </ion-list-header>
-    <ion-item *ngIf="!_email.to.length">
+    <ion-item *ngIf="!emailWC.to.length">
       <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
     </ion-item>
-    <ion-item *ngFor="let x of _email.to">
-      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.to, x)">
+    <ion-item *ngFor="let x of emailWC.to">
+      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.to, x)">
         <ion-icon slot="icon-only" name="remove" />
       </ion-button>
       <ion-label>{{ x }}</ion-label>
@@ -36,15 +36,15 @@
       <ion-label>
         <h2>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}</h2>
       </ion-label>
-      <ion-button color="dark" (click)="addAddressToList(_email.cc)">
+      <ion-button color="dark" (click)="addAddressToList(emailWC.cc)">
         <ion-icon slot="icon-only" name="add-circle" />
       </ion-button>
     </ion-list-header>
-    <ion-item *ngIf="!_email.cc.length">
+    <ion-item *ngIf="!emailWC.cc.length">
       <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
     </ion-item>
-    <ion-item *ngFor="let x of _email.cc">
-      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.cc, x)">
+    <ion-item *ngFor="let x of emailWC.cc">
+      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.cc, x)">
         <ion-icon slot="icon-only" name="remove" />
       </ion-button>
       <ion-label>{{ x }}</ion-label>
@@ -53,15 +53,15 @@
       <ion-label>
         <h2>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}</h2>
       </ion-label>
-      <ion-button color="dark" (click)="addAddressToList(_email.bcc)">
+      <ion-button color="dark" (click)="addAddressToList(emailWC.bcc)">
         <ion-icon slot="icon-only" name="add-circle" />
       </ion-button>
     </ion-list-header>
-    <ion-item *ngIf="!_email.bcc.length">
+    <ion-item *ngIf="!emailWC.bcc.length">
       <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
     </ion-item>
-    <ion-item *ngFor="let x of _email.bcc">
-      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(_email.bcc, x)">
+    <ion-item *ngFor="let x of emailWC.bcc">
+      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.bcc, x)">
         <ion-icon slot="icon-only" name="remove" />
       </ion-button>
       <ion-label>{{ x }}</ion-label>
@@ -72,7 +72,7 @@
       </ion-label>
     </ion-list-header>
     <ion-item [lines]="lines">
-      <ion-input type="text" [(ngModel)]="_email.subject" />
+      <ion-input type="text" [(ngModel)]="emailWC.subject" />
     </ion-item>
     <ion-list-header>
       <ion-label>
@@ -80,7 +80,7 @@
       </ion-label>
     </ion-list-header>
     <ion-item [lines]="lines">
-      <ion-textarea [rows]="13" [(ngModel)]="_email.content" />
+      <ion-textarea [rows]="13" [(ngModel)]="emailWC.content" />
     </ion-item>
     <idea-mde-toolbar />
     <ion-list-header>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import { ActionSheetController, Platform, PopoverController } from '@ionic/angular';
 
@@ -10,20 +10,18 @@ import { IDEAActionSheetComponent } from './actionSheet.component';
  */
 @Injectable()
 export class IDEAActionSheetController {
-  constructor(
-    private platform: Platform,
-    private actionSheetCtrl: ActionSheetController,
-    private popoverCtrl: PopoverController
-  ) {}
+  private _platform = inject(Platform);
+  private _actions = inject(ActionSheetController);
+  private _popover = inject(PopoverController);
 
   /**
    * Based on the platform, open the traditional or the customised ActionSheet.
    */
   create(options: IDEAActionSheetOptions, forceCustom?: boolean): Promise<HTMLIonActionSheetElement> {
-    if ((this.platform.is('mobile') || this.platform.width() < 576) && !forceCustom)
-      return this.actionSheetCtrl.create(options);
+    if ((this._platform.is('mobile') || this._platform.width() < 576) && !forceCustom)
+      return this._actions.create(options);
     else
-      return (this.popoverCtrl as any).create({
+      return (this._popover as any).create({
         backdropDismiss: options.backdropDismiss,
         component: IDEAActionSheetComponent,
         componentProps: options,

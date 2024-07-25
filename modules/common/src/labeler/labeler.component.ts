@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { Label, LabelVariable, Languages, StringVariable } from 'idea-toolbox';
 
@@ -50,15 +50,14 @@ export class IDEALabelerComponent {
   _label: Label;
   errors = new Set<string>();
 
-  constructor(
-    private platform: Platform,
-    private modalCtrl: ModalController,
-    private message: IDEAMessageService,
-    private t: IDEATranslationsService
-  ) {}
+  private _platform = inject(Platform);
+  private _modal = inject(ModalController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
   ionViewDidEnter(): void {
-    this.title = this.title ?? this.t._('IDEA_COMMON.LABELER.MANAGE_LABEL');
-    this.languages = this.languages ?? this.t.languages();
+    this.title = this.title ?? this._translate._('IDEA_COMMON.LABELER.MANAGE_LABEL');
+    this.languages = this.languages ?? this._translate.languages();
     this._label = new Label(this.label, this.languages);
   }
 
@@ -84,17 +83,17 @@ export class IDEALabelerComponent {
   save(): Promise<void> {
     if (this.obligatory) {
       this.errors = new Set(this._label.validate(this.languages));
-      if (this.errors.size) return this.message.error('IDEA_COMMON.LABELER.FILL_IN_DEFAULT_LANGUAGE');
+      if (this.errors.size) return this._message.error('IDEA_COMMON.LABELER.FILL_IN_DEFAULT_LANGUAGE');
     }
     this.label.load(this._label, this.languages);
-    this.modalCtrl.dismiss(true);
+    this._modal.dismiss(true);
   }
 
   close(): void {
-    this.modalCtrl.dismiss();
+    this._modal.dismiss();
   }
 
   isLargeScreen(): boolean {
-    return this.platform.width() > 500;
+    return this._platform.width() > 500;
   }
 }

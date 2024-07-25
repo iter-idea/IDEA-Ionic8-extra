@@ -8,8 +8,8 @@ import { IDEAMDEComponent } from './mde.component';
 import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
-    declarations: [IDEAMDEComponent, IDEAMDEToolbarComponent],
-    exports: [IDEAMDEComponent, IDEAMDEToolbarComponent]
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule],
+  declarations: [IDEAMDEComponent, IDEAMDEToolbarComponent],
+  exports: [IDEAMDEComponent, IDEAMDEToolbarComponent]
 })
 export class IDEAMDEModule {}

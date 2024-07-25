@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Suggestion } from 'idea-toolbox';
 
@@ -21,23 +21,26 @@ export class IDEALanguagePickerComponent {
    */
   @Input() fill: string;
 
-  constructor(private modalCtrl: ModalController, private t: IDEATranslationsService) {}
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
 
   getFlagURL(): string {
-    return `assets/flags/${this.t.getCurrentLang()}.png`;
+    return `assets/flags/${this._translate.getCurrentLang()}.png`;
   }
 
   async pickLanguage(): Promise<void> {
     const componentProps = {
-      data: this.t.getLangs().map(l => new Suggestion({ value: l, name: this.t.getLanguageNameByKey(l) })),
-      searchPlaceholder: this.t._('IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE'),
+      data: this._translate
+        .getLangs()
+        .map(l => new Suggestion({ value: l, name: this._translate.getLanguageNameByKey(l) })),
+      searchPlaceholder: this._translate._('IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE'),
       sortData: true,
       hideIdFromUI: true,
       hideClearButton: true
     };
-    const modal = await this.modalCtrl.create({ component: IDEASuggestionsComponent, componentProps });
+    const modal = await this._modal.create({ component: IDEASuggestionsComponent, componentProps });
     modal.onDidDismiss().then(({ data }): void => {
-      if (data && data.value) this.t.use(data.value);
+      if (data && data.value) this._translate.use(data.value);
     });
     await modal.present();
   }

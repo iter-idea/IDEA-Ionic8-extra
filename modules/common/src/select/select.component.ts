@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Suggestion } from 'idea-toolbox';
 
@@ -131,7 +131,7 @@ export class IDEASelectComponent implements OnChanges {
    */
   @Output() selectWhenDisabled = new EventEmitter<void>();
 
-  constructor(private modalCtrl: ModalController) {}
+  private _modal = inject(ModalController);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.avoidAutoSelection && (changes['data'] || changes['category1'] || changes['category2'])) {
@@ -165,7 +165,7 @@ export class IDEASelectComponent implements OnChanges {
   private async openSuggestions(): Promise<void> {
     if (this.disabled) return;
     this.convertDataInSuggestions();
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
       componentProps: {
         data: this.data,

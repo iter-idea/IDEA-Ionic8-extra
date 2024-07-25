@@ -1,10 +1,8 @@
-import { Component, ViewChild, Input, OnInit } from '@angular/core';
+import { Component, ViewChild, Input, OnInit, inject } from '@angular/core';
 import { IonInfiniteScroll, IonSearchbar, ModalController } from '@ionic/angular';
 import { Check, Suggestion } from 'idea-toolbox';
 
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
-
-import { IDEATranslationsService } from '../translations/translations.service';
 
 const MAX_PAGE_SIZE = 24;
 
@@ -64,7 +62,8 @@ export class IDEAChecksComponent implements OnInit {
 
   @ViewChild('searchbar') searchbar: IonSearchbar;
 
-  constructor(private modalCtrl: ModalController, public t: IDEATranslationsService) {}
+  private _modal = inject(ModalController);
+
   ngOnInit(): void {
     this.workingData = JSON.parse(JSON.stringify(this.data ?? new Array<Check>()));
     this.filteredChecks = new Array<Check>();
@@ -118,7 +117,7 @@ export class IDEAChecksComponent implements OnInit {
 
   async setFilterCategoryN(whichCategory: number): Promise<void> {
     const categories = whichCategory === 2 ? this.activeCategories2 : this.activeCategories1;
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
       componentProps: { data: this.mapIntoSuggestions(categories) }
     });
@@ -145,10 +144,10 @@ export class IDEAChecksComponent implements OnInit {
   }
 
   cancel(): void {
-    this.modalCtrl.dismiss(false);
+    this._modal.dismiss(false);
   }
   confirm(): void {
     this.workingData.forEach(x => (this.data.find(y => x.value === y.value).checked = x.checked));
-    this.modalCtrl.dismiss(true);
+    this._modal.dismiss(true);
   }
 }

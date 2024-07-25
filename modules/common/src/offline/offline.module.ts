@@ -8,8 +8,8 @@ import { IDEAOfflineIndicatorComponent } from './offlineIndicator.component';
 import { IDEACacheableResourceComponent } from './cacheableResource.component';
 
 @NgModule({
-    imports: [CommonModule, IonicModule, IDEATranslationsModule],
-    declarations: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent, IDEACacheableResourceComponent],
-    exports: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent, IDEACacheableResourceComponent]
+  imports: [CommonModule, IonicModule, IDEATranslationsModule],
+  declarations: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent, IDEACacheableResourceComponent],
+  exports: [IDEAOfflineManagerComponent, IDEAOfflineIndicatorComponent, IDEACacheableResourceComponent]
 })
 export class IDEAOfflineModule {}

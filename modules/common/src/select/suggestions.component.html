@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-searchbar
       #searchbar
-      [placeholder]="searchPlaceholder ?? t._('IDEA_COMMON.SELECT.SEARCH')"
+      [placeholder]="searchPlaceholder ?? ('IDEA_COMMON.SELECT.SEARCH' | translate)"
       [debounce]="100"
       [class.withAdditionalToolbar]="showCategoriesFilters || detailsAreAvailable"
       (ionInput)="search($event.target.value)"

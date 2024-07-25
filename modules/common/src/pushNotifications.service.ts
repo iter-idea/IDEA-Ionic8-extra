@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { PushNotifications, PushNotificationSchema } from '@capacitor/push-notifications';
 import { Observable } from 'rxjs';
@@ -15,7 +15,10 @@ export class IDEAPushNotificationsService {
   notifications: Observable<PushNotificationSchema>;
   errors: Observable<Error>;
 
-  constructor(public platform: Platform, public errorReporting: IDEAErrorReportingService) {
+  private _platform = inject(Platform);
+  private _errorReporting = inject(IDEAErrorReportingService);
+
+  constructor() {
     if (!this.isAvailable()) return;
 
     this.registrations = new Observable(observer => {
@@ -25,8 +28,8 @@ export class IDEAPushNotificationsService {
     });
     this.errors = new Observable(observer => {
       // rif. https://forum.ionicframework.com/t/226376
-      (PushNotifications as any).addListener('registrationError', (err: Error) => {
-        this.errorReporting.sendReport(err);
+      (PushNotifications as any).addListener('registrationError', (err: Error): void => {
+        this._errorReporting.sendReport(err);
         observer.next(err);
       });
     });
@@ -39,7 +42,7 @@ export class IDEAPushNotificationsService {
    * Return true if the device is supported.
    */
   isAvailable(): boolean {
-    return this.platform.is('capacitor') && !!PushNotifications;
+    return this._platform.is('capacitor') && !!PushNotifications;
   }
 
   /**

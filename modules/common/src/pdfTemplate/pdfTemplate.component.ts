@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import {
   Label,
@@ -57,14 +57,13 @@ export class IDEAPDFTemplateComponent implements OnInit {
   moveMode: MoveModeData = null;
   errors = new Set<string>();
 
-  constructor(
-    private popoverCtrl: PopoverController,
-    private modalCtrl: ModalController,
-    private alertCtrl: AlertController,
-    private actionSheetCtrl: IDEAActionSheetController,
-    private message: IDEAMessageService,
-    private t: IDEATranslationsService
-  ) {}
+  private _popover = inject(PopoverController);
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _actions = inject(IDEAActionSheetController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
     // work on a copy
     this._template = (this.template || []).map(section => new PDFTemplateSection(section, this.languages));
@@ -110,22 +109,22 @@ export class IDEAPDFTemplateComponent implements OnInit {
   async addSection(): Promise<void> {
     const buttons = [];
     buttons.push({
-      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.NORMAL_ROW'),
+      text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.NORMAL_ROW'),
       icon: 'apps',
       handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.ROW }, this.languages))
     });
     buttons.push({
-      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.HEADER'),
+      text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.HEADER'),
       icon: 'bookmark',
       handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.HEADER }, this.languages))
     });
     buttons.push({
-      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW'),
+      text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW'),
       icon: 'code',
       handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.BLANK_ROW }, this.languages))
     });
     buttons.push({
-      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK'),
+      text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK'),
       icon: 'code-slash',
       handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.PAGE_BREAK }, this.languages))
     });
@@ -147,35 +146,35 @@ export class IDEAPDFTemplateComponent implements OnInit {
         });
       });
 
-    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
+    buttons.push({ text: this._translate._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
 
-    const header = this.t._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_INSERT');
-    const actions = await this.actionSheetCtrl.create({ header, buttons });
+    const header = this._translate._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_INSERT');
+    const actions = await this._actions.create({ header, buttons });
     actions.present();
   }
   private addSectionHelper(section: PDFTemplateSection): void {
     // complete the section, based on its type
     switch (section.type) {
       case this.ST.HEADER:
-        section.title[this.languages.default] = this.t._('IDEA_COMMON.PDF_TEMPLATE.NEW_HEADER');
+        section.title[this.languages.default] = this._translate._('IDEA_COMMON.PDF_TEMPLATE.NEW_HEADER');
         break;
     }
     // add the new section to the current template
     this.getCurrentTemplate().push(section);
   }
   async deleteSection(section: PDFTemplateSection): Promise<void> {
-    const header = this.t._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION');
-    const subHeader = this.t._('COMMON.ARE_YOU_SURE');
+    const header = this._translate._('IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION');
+    const subHeader = this._translate._('COMMON.ARE_YOU_SURE');
     const buttons = [
-      { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
+      { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
       {
-        text: this.t._('COMMON.CONFIRM'),
+        text: this._translate._('COMMON.CONFIRM'),
         handler: (): PDFTemplateSection[] =>
           this.getCurrentTemplate().splice(this.getCurrentTemplate().indexOf(section), 1)
       }
     ];
 
-    const alert = await this.alertCtrl.create({ header, subHeader, buttons });
+    const alert = await this._alert.create({ header, subHeader, buttons });
     await alert.present();
   }
   moveSectionUpInTemplate(section: PDFTemplateSection): void {
@@ -201,12 +200,12 @@ export class IDEAPDFTemplateComponent implements OnInit {
 
     const componentProps = {
       label,
-      title: this.t._('IDEA_COMMON.PDF_TEMPLATE.HEADER'),
+      title: this._translate._('IDEA_COMMON.PDF_TEMPLATE.HEADER'),
       obligatory: true,
       variables: this.getCurrentLayer().blueprint.variables,
       disabled: this.disabled
     };
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEALabelerComponent,
       componentProps,
       cssClass: 'forceBackdrop' // needed, since this component is also fullscreen
@@ -220,11 +219,11 @@ export class IDEAPDFTemplateComponent implements OnInit {
 
     const componentProps = {
       label,
-      title: this.t._('IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE'),
+      title: this._translate._('IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE'),
       obligatory: false,
       disabled: this.disabled
     };
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEALabelerComponent,
       componentProps,
       cssClass: 'forceBackdrop' // needed, since this component is also fullscreen
@@ -240,20 +239,20 @@ export class IDEAPDFTemplateComponent implements OnInit {
     // let the user choose between simple and complex field
     const buttons = [];
     buttons.push({
-      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.SIMPLE_FIELD'),
+      text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.SIMPLE_FIELD'),
       icon: 'at',
       handler: (): void => this.addSimpleField(section, indexCol)
     });
     buttons.push({
-      text: this.t._('IDEA_COMMON.PDF_TEMPLATE.COMPLEX_FIELD'),
+      text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.COMPLEX_FIELD'),
       icon: 'shapes',
       handler: (): void => this.addComplexField(section, indexCol)
     });
 
-    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
+    buttons.push({ text: this._translate._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
 
-    const header = this.t._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_INSERT');
-    const actions = await this.actionSheetCtrl.create({ header, buttons });
+    const header = this._translate._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_INSERT');
+    const actions = await this._actions.create({ header, buttons });
     await actions.present();
   }
   private addSimpleField(section: PDFTemplateSection, colIndex: number): void {
@@ -273,9 +272,9 @@ export class IDEAPDFTemplateComponent implements OnInit {
   }
   private async pickVariableFromList(callback: (variable: LabelVariable) => void): Promise<void> {
     const suggestions = this.getCurrentLayer().blueprint.variables.map(
-      v => new Suggestion({ value: v.code, name: this.t._label(v.label) })
+      v => new Suggestion({ value: v.code, name: this._translate._label(v.label) })
     );
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
       componentProps: { data: suggestions, hideClearButton: true },
       cssClass: 'forceBackdrop' // needed, since this component is also fullscreen
@@ -294,10 +293,10 @@ export class IDEAPDFTemplateComponent implements OnInit {
     if (!section.doesColumnContainAField(colIndex)) return;
     const field = section.columns[colIndex] as PDFTemplateComplexField | PDFTemplateSimpleField;
     // recognize whether we are dealing with a complex or a simple field
-    if (field.isComplex()) return this.t._label((field as PDFTemplateComplexField).content);
+    if (field.isComplex()) return this._translate._label((field as PDFTemplateComplexField).content);
     else
       return forceLabel
-        ? this.t._label((field as PDFTemplateSimpleField).label)
+        ? this._translate._label((field as PDFTemplateSimpleField).label)
         : (field as PDFTemplateSimpleField).code.slice(1);
   }
 
@@ -311,44 +310,44 @@ export class IDEAPDFTemplateComponent implements OnInit {
 
     const buttons = [];
     buttons.push({
-      text: this.t._('COMMON.EDIT'),
+      text: this._translate._('COMMON.EDIT'),
       icon: 'pencil',
       handler: (): Promise<void> => this.openField(section, colIndex)
     });
     buttons.push({
-      text: this.t._('COMMON.MOVE'),
+      text: this._translate._('COMMON.MOVE'),
       icon: 'move',
       handler: (): Promise<void> => this.moveField(section, colIndex)
     });
     buttons.push({
-      text: this.t._('COMMON.RESIZE'),
+      text: this._translate._('COMMON.RESIZE'),
       icon: 'resize',
       handler: (): Promise<void> => this.resizeField(section, colIndex, event)
     });
     buttons.push({
-      text: this.t._('COMMON.DELETE'),
+      text: this._translate._('COMMON.DELETE'),
       icon: 'trash',
       role: 'destructive',
       handler: (): Promise<void> => this.deleteField(section, colIndex)
     });
 
-    buttons.push({ text: this.t._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
+    buttons.push({ text: this._translate._('COMMON.CANCEL'), role: 'cancel', icon: 'arrow-undo' });
 
-    const header = this.t._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_DO_WITH_FIELD');
-    const actions = await this.actionSheetCtrl.create({ header, buttons });
+    const header = this._translate._('IDEA_COMMON.PDF_TEMPLATE.WHAT_DO_YOU_WANT_TO_DO_WITH_FIELD');
+    const actions = await this._actions.create({ header, buttons });
     await actions.present();
   }
   private async openField(section: PDFTemplateSection, colIndex: number): Promise<void> {
     // identify the field
     const field = section.columns[colIndex] as PDFTemplateComplexField | PDFTemplateSimpleField;
     // open the labeler with different parameters, based on the type of field
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEALabelerComponent,
       componentProps: {
         label: field.isComplex() ? (field as PDFTemplateComplexField).content : (field as PDFTemplateSimpleField).label,
         title: field.isComplex()
-          ? this.t._('IDEA_COMMON.PDF_TEMPLATE.COMPLEX_FIELD')
-          : this.t._('IDEA_COMMON.PDF_TEMPLATE.SIMPLE_FIELD'),
+          ? this._translate._('IDEA_COMMON.PDF_TEMPLATE.COMPLEX_FIELD')
+          : this._translate._('IDEA_COMMON.PDF_TEMPLATE.SIMPLE_FIELD'),
         obligatory: field.isComplex(),
         markdown: field.isComplex(),
         textarea: field.isComplex(),
@@ -362,9 +361,9 @@ export class IDEAPDFTemplateComponent implements OnInit {
   private moveField(section: PDFTemplateSection, colIndex: number): Promise<void> {
     // check whether the field has an empty column which it could move on this layer
     if (!this.canFieldMoveAnywhere())
-      return this.message.error('IDEA_COMMON.PDF_TEMPLATE.NO_EMPTY_SLOT_WHERE_TO_MOVE_FIELD');
+      return this._message.error('IDEA_COMMON.PDF_TEMPLATE.NO_EMPTY_SLOT_WHERE_TO_MOVE_FIELD');
     // hint the user that the field can now be moved and save the original position; the UI enter in "move mode"
-    this.message.info('IDEA_COMMON.PDF_TEMPLATE.CHOOSE_WHERE_TO_MOVE_FIELD');
+    this._message.info('IDEA_COMMON.PDF_TEMPLATE.CHOOSE_WHERE_TO_MOVE_FIELD');
     this.disabled = true;
     this.moveMode = { section, colIndex } as MoveModeData;
   }
@@ -411,7 +410,7 @@ export class IDEAPDFTemplateComponent implements OnInit {
       } else return true;
     });
     // open the popover to let the user grow or shrink the field
-    const popover = await this.popoverCtrl.create({
+    const popover = await this._popover.create({
       component: IDEAPDFTemplateFieldResizeComponent,
       componentProps: {
         columns: section.columns,
@@ -424,12 +423,12 @@ export class IDEAPDFTemplateComponent implements OnInit {
     popover.present();
   }
   private async deleteField(section: PDFTemplateSection, colIndex: number): Promise<void> {
-    const alert = await this.alertCtrl.create({
-      header: this.t._('COMMON.ARE_YOU_SURE'),
+    const alert = await this._alert.create({
+      header: this._translate._('COMMON.ARE_YOU_SURE'),
       buttons: [
-        { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
+        { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
         {
-          text: this.t._('COMMON.DELETE'),
+          text: this._translate._('COMMON.DELETE'),
           handler: (): void => section.removeFieldFromOccupiedColumns(colIndex)
         }
       ]
@@ -459,14 +458,14 @@ export class IDEAPDFTemplateComponent implements OnInit {
   save(): Promise<void> {
     // check for errors (on top layer, but recursively on inner layers as well)
     this.checkErrorsOnCurrentLayer();
-    if (this.errors.size) return this.message.error('IDEA_COMMON.PDF_TEMPLATE.ONE_OR_MORE_SECTIONS_HAVE_ERRORS');
+    if (this.errors.size) return this._message.error('IDEA_COMMON.PDF_TEMPLATE.ONE_OR_MORE_SECTIONS_HAVE_ERRORS');
     // save changes (without losing reference of the original array) and close
     this.template.splice(0, this.template.length);
     this._template.forEach(section => this.template.push(new PDFTemplateSection(section, this.languages)));
     this.close();
   }
   close(): void {
-    this.modalCtrl.dismiss();
+    this._modal.dismiss();
   }
 }
 
@@ -567,8 +566,6 @@ export class IDEAPDFTemplateFieldResizeComponent {
    * The max size to which the field can grow.
    */
   @Input() max: number;
-
-  constructor() {}
 
   grow(): void {
     if (this.size < this.max && !this.columns[this.colIndex + this.size]) {

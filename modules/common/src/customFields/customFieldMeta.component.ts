@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { CustomFieldMeta, CustomFieldTypes, Label } from 'idea-toolbox';
 
@@ -32,14 +32,13 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   FIELD_TYPES: string[] = Object.keys(CustomFieldTypes);
   CFT = CustomFieldTypes;
 
-  constructor(
-    private alertCtrl: AlertController,
-    private modalCtrl: ModalController,
-    private message: IDEAMessageService,
-    public t: IDEATranslationsService
-  ) {}
+  private _alert = inject(AlertController);
+  private _modal = inject(ModalController);
+  private _message = inject(IDEAMessageService);
+  _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
-    this._field = new CustomFieldMeta(this.field, this.t.languages());
+    this._field = new CustomFieldMeta(this.field, this._translate.languages());
   }
 
   hasFieldAnError(field: string): boolean {
@@ -48,12 +47,12 @@ export class IDEACustomFieldMetaComponent implements OnInit {
 
   async editLabel(title: string, label: Label): Promise<void> {
     const componentProps = { title, label, obligatory: true };
-    const modal = await this.modalCtrl.create({ component: IDEALabelerComponent, componentProps });
+    const modal = await this._modal.create({ component: IDEALabelerComponent, componentProps });
     await modal.present();
   }
 
   async editIcon(): Promise<void> {
-    const modal = await this.modalCtrl.create({ component: IDEAIconsComponent });
+    const modal = await this._modal.create({ component: IDEAIconsComponent });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) this._field.icon = data;
     });
@@ -70,20 +69,20 @@ export class IDEACustomFieldMetaComponent implements OnInit {
       this._field.enum.splice(index, 1);
     };
     const buttons = [
-      { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-      { text: this.t._('COMMON.CONFIRM'), handler: doRemoveByIndex }
+      { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
+      { text: this._translate._('COMMON.CONFIRM'), handler: doRemoveByIndex }
     ];
-    const header = this.t._('COMMON.ARE_YOU_SURE');
-    const alert = await this.alertCtrl.create({ header, buttons });
+    const header = this._translate._('COMMON.ARE_YOU_SURE');
+    const alert = await this._alert.create({ header, buttons });
     await alert.present();
   }
   async addOption(): Promise<void> {
     const doAddOption = (data: any): void => {
       if (!data.enum) return;
       // initialize the label
-      const label = new Label(null, this.t.languages());
+      const label = new Label(null, this._translate.languages());
       // set the translation in the default (obligatory) language
-      label[this.t.getDefaultLang()] = data.enum;
+      label[this._translate.getDefaultLang()] = data.enum;
       // ensure backwards compatibility
       if (!this._field.enumLabels) this._field.enumLabels = {};
       this._field.enumLabels[data.enum] = label;
@@ -93,15 +92,15 @@ export class IDEACustomFieldMetaComponent implements OnInit {
       this.editEnumLabel(data.enum);
     };
 
-    const header = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_OPTION');
-    const message = this.t._('IDEA_COMMON.CUSTOM_FIELDS.ADD_OPTION_HINT');
+    const header = this._translate._('IDEA_COMMON.CUSTOM_FIELDS.ADD_OPTION');
+    const message = this._translate._('IDEA_COMMON.CUSTOM_FIELDS.ADD_OPTION_HINT');
     const inputs: any = [{ name: 'enum', type: 'text' }];
     const buttons = [
-      { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
-      { text: this.t._('COMMON.CONFIRM'), handler: doAddOption }
+      { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
+      { text: this._translate._('COMMON.CONFIRM'), handler: doAddOption }
     ];
 
-    const alert = await this.alertCtrl.create({ header, message, inputs, buttons });
+    const alert = await this._alert.create({ header, message, inputs, buttons });
     await alert.present();
 
     const firstInput: any = document.querySelector('ion-alert input');
@@ -111,22 +110,23 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   editEnumLabel(theEnum: string): void {
     // ensere backwards compatibility
     if (!this._field.enumLabels) this._field.enumLabels = {};
-    if (!this._field.enumLabels[theEnum]) this._field.enumLabels[theEnum] = new Label(null, this.t.languages());
+    if (!this._field.enumLabels[theEnum])
+      this._field.enumLabels[theEnum] = new Label(null, this._translate.languages());
     // set the translation in the default (obligatory) language
     const label = this._field.enumLabels[theEnum];
-    if (!label[this.t.getDefaultLang()]) label[this.t.getDefaultLang()] = theEnum;
+    if (!label[this._translate.getDefaultLang()]) label[this._translate.getDefaultLang()] = theEnum;
 
     this.editLabel(theEnum, label);
   }
 
   save(): Promise<void> {
-    this.errors = new Set(this._field.validate(this.t.languages()));
-    if (this.errors.size) return this.message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
-    this.field.load(this._field, this.t.languages());
+    this.errors = new Set(this._field.validate(this._translate.languages()));
+    if (this.errors.size) return this._message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
+    this.field.load(this._field, this._translate.languages());
     this.close(true);
   }
 
   close(somethingChanged?: boolean): void {
-    this.modalCtrl.dismiss(somethingChanged);
+    this._modal.dismiss(somethingChanged);
   }
 }

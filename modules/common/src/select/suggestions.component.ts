@@ -1,9 +1,8 @@
-import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { IonInfiniteScroll, ModalController, IonSearchbar, Platform } from '@ionic/angular';
 import { Suggestion } from 'idea-toolbox';
 
 import { IDEAStorageService } from '../storage.service';
-import { IDEATranslationsService } from '../translations/translations.service';
 
 const SHOULD_SHOW_DETAILS_STORAGE_KEY = 'ideaSelectShouldShowDetails';
 
@@ -76,12 +75,10 @@ export class IDEASuggestionsComponent implements OnInit {
   shouldShowDetails: boolean;
   detailsAreAvailable: boolean;
 
-  constructor(
-    private platform: Platform,
-    private modalCtrl: ModalController,
-    private storage: IDEAStorageService,
-    public t: IDEATranslationsService
-  ) {}
+  private _platform = inject(Platform);
+  private _modal = inject(ModalController);
+  private _storage = inject(IDEAStorageService);
+
   async ngOnInit(): Promise<void> {
     if (this.sortData)
       this.data = this.data.sort((a, b): number =>
@@ -96,7 +93,7 @@ export class IDEASuggestionsComponent implements OnInit {
     if (!this.detailsAreAvailable) this.shouldShowDetails = false;
     else {
       try {
-        this.shouldShowDetails = Boolean(await this.storage.get(SHOULD_SHOW_DETAILS_STORAGE_KEY));
+        this.shouldShowDetails = Boolean(await this._storage.get(SHOULD_SHOW_DETAILS_STORAGE_KEY));
       } catch (error) {
         this.shouldShowDetails = false;
       }
@@ -104,7 +101,7 @@ export class IDEASuggestionsComponent implements OnInit {
     this.search();
   }
   ionViewDidEnter(): void {
-    if (this.platform.is('desktop')) this.searchbar.setFocus();
+    if (this._platform.is('desktop')) this.searchbar.setFocus();
   }
 
   private loadActiveCategories(): void {
@@ -145,7 +142,7 @@ export class IDEASuggestionsComponent implements OnInit {
 
   async setFilterCategoryN(whichCategory: number): Promise<void> {
     const categories = whichCategory === 2 ? this.activeCategories2 : this.activeCategories1;
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
       componentProps: { data: this.mapIntoSuggestions(categories) }
     });
@@ -171,7 +168,7 @@ export class IDEASuggestionsComponent implements OnInit {
    *    - otherwise, a suggestion was selected
    */
   select(selection?: Suggestion | any): void {
-    this.modalCtrl.dismiss(selection);
+    this._modal.dismiss(selection);
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -228,6 +225,6 @@ export class IDEASuggestionsComponent implements OnInit {
   toggleDetailsVisibilityPreference(): void {
     if (!this.detailsAreAvailable) return;
     this.shouldShowDetails = !this.shouldShowDetails;
-    this.storage.set(SHOULD_SHOW_DETAILS_STORAGE_KEY, this.shouldShowDetails);
+    this._storage.set(SHOULD_SHOW_DETAILS_STORAGE_KEY, this.shouldShowDetails);
   }
 }

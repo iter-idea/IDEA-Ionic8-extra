@@ -5,7 +5,7 @@
       <ion-button *ngIf="!hideClearButton" [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
         <ion-icon slot="icon-only" name="arrow-undo" />
       </ion-button>
-      <ion-button [title]="t._('IDEA_COMMON.CALENDAR.CLOSE_WITHOUT_SAVING')" (click)="close()">
+      <ion-button [title]="'IDEA_COMMON.CALENDAR.CLOSE_WITHOUT_SAVING' | translate" (click)="close()">
         <ion-icon slot="icon-only" name="close" />
       </ion-button>
     </ion-buttons>
@@ -27,7 +27,7 @@
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6">
             <ion-input
               type="text"
-              [placeholder]="t._('IDEA_COMMON.CALENDAR.YEAR')"
+              [placeholder]="'IDEA_COMMON.CALENDAR.YEAR' | translate"
               [value]="refDate.getFullYear()"
               (ionFocus)="$event.target.value = ''"
               (ionChange)="setYear($event?.target?.value)"

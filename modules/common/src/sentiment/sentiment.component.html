@@ -1,11 +1,11 @@
-<ion-item *ngIf="text && offline.isOnline()" [lines]="lines" [color]="color">
+<ion-item *ngIf="text && _offline.isOnline()" [lines]="lines" [color]="color">
   <ion-spinner slot="end" size="small" *ngIf="!sentiment" />
   <ion-badge
     slot="end"
     size="small"
     *ngIf="sentiment"
     [color]="getColorBySentiment()"
-    [title]="t._('IDEA_COMMON.SENTIMENT.RESULT_HINT', { sentiment: sentiment })"
+    [title]="'IDEA_COMMON.SENTIMENT.RESULT_HINT' | translate : { sentiment: sentiment }"
   >
     {{ 'IDEA_COMMON.SENTIMENT.RESULT.' + sentiment | translate }}
   </ion-badge>

@@ -1,17 +1,17 @@
 <ion-item class="cacheableResourceItem">
   <ion-label>{{ resource.description }}</ion-label>
   <ion-icon slot="end" name="alert-circle" color="danger" *ngIf="resource.error" />
-  <ion-spinner slot="end" name="dots" *ngIf="!resource.error && offline.synchronizing && resource.synchronizing" />
+  <ion-spinner slot="end" name="dots" *ngIf="!resource.error && _offline.synchronizing && resource.synchronizing" />
   <ion-icon
     slot="end"
     name="checkmark"
     color="success"
-    *ngIf="!resource.error && !resource.synchronizing && !offline.requiresManualConfirmation"
+    *ngIf="!resource.error && !resource.synchronizing && !_offline.requiresManualConfirmation"
   />
   <ion-icon
     slot="end"
     name="pause"
     color="dark"
-    *ngIf="!resource.error && !resource.synchronizing && offline.requiresManualConfirmation"
+    *ngIf="!resource.error && !resource.synchronizing && _offline.requiresManualConfirmation"
   />
 </ion-item>

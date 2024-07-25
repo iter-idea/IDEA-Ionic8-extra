@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { IonInfiniteScroll, AlertController, ModalController, IonSearchbar } from '@ionic/angular';
 import { Label } from 'idea-toolbox';
 
@@ -36,18 +36,19 @@ export class IDEAListELementsComponent implements OnInit {
 
   @ViewChild('searchbar') searchbar: IonSearchbar;
 
-  constructor(
-    private modalCtrl: ModalController,
-    private alertCtrl: AlertController,
-    public t: IDEATranslationsService
-  ) {}
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
+
   ngOnInit(): void {
     this.workingData = Array.from(this.data || (this.labelElements ? new Array<Label>() : new Array<string>()));
     this.search();
   }
 
   getElementName(x: Label | string): any {
-    return this.labelElements ? (x as Label).translate(this.t.getCurrentLang(), this.t.languages()) : x;
+    return this.labelElements
+      ? (x as Label).translate(this._translate.getCurrentLang(), this._translate.languages())
+      : x;
   }
 
   search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
@@ -70,8 +71,8 @@ export class IDEAListELementsComponent implements OnInit {
 
   addElement(): void {
     if (this.labelElements) {
-      const l = new Label(null, this.t.languages());
-      l[this.t.getDefaultLang()] = '-';
+      const l = new Label(null, this._translate.languages());
+      l[this._translate.getDefaultLang()] = '-';
       this.workingData.push(l);
       this.editLabel(l);
     } else this.addStrElement();
@@ -85,13 +86,13 @@ export class IDEAListELementsComponent implements OnInit {
   }
 
   async addStrElement(): Promise<void> {
-    const alert = await this.alertCtrl.create({
-      header: this.t._('IDEA_COMMON.LIST.NEW_ELEMENT'),
-      inputs: [{ type: 'text', name: 'element', placeholder: this.t._('IDEA_COMMON.LIST.ELEMENT') }],
+    const alert = await this._alert.create({
+      header: this._translate._('IDEA_COMMON.LIST.NEW_ELEMENT'),
+      inputs: [{ type: 'text', name: 'element', placeholder: this._translate._('IDEA_COMMON.LIST.ELEMENT') }],
       buttons: [
-        { text: this.t._('COMMON.CANCEL'), role: 'cancel' },
+        { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
         {
-          text: this.t._('COMMON.SAVE'),
+          text: this._translate._('COMMON.SAVE'),
           handler: ({ element }): void => {
             if (element && element.trim()) {
               this.workingData.push(element);
@@ -106,7 +107,7 @@ export class IDEAListELementsComponent implements OnInit {
     if (firstInput) firstInput.focus();
   }
   async editLabel(label: Label): Promise<void> {
-    const modal = await this.modalCtrl.create({
+    const modal = await this._modal.create({
       component: IDEALabelerComponent,
       componentProps: { label, obligatory: true }
     });
@@ -120,6 +121,6 @@ export class IDEAListELementsComponent implements OnInit {
       this.data.length = 0;
       this.workingData.sort().forEach(x => this.data.push(x));
     }
-    this.modalCtrl.dismiss(save ? this.data : null);
+    this._modal.dismiss(save ? this.data : null);
   }
 }

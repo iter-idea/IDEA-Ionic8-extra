@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 
 import { IDEATranslationsService } from './translations/translations.service';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAMessageService {
-  constructor(private toastCtrl: ToastController, private t: IDEATranslationsService) {}
+  private _toast = inject(ToastController);
+  private _translate = inject(IDEATranslationsService);
 
   /**
    * Show a generic message toast.
@@ -13,13 +14,13 @@ export class IDEAMessageService {
    * @param color Ionic colors defined in the theme
    */
   private async show(message: string, color: string, dontTranslate: boolean): Promise<void> {
-    message = dontTranslate ? message : this.t._(message);
+    message = dontTranslate ? message : this._translate._(message);
 
     const duration = 3000;
     const position = 'bottom';
     const buttons = [{ text: 'X', role: 'cancel' }];
 
-    const toast = await this.toastCtrl.create({ message, duration, position, color, buttons });
+    const toast = await this._toast.create({ message, duration, position, color, buttons });
     return await toast.present();
   }
 
