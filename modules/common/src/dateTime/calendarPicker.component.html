@@ -2,9 +2,11 @@
   <ion-toolbar color="ideaToolbar">
     <ion-title>{{ title }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button *ngIf="!hideClearButton" [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
-        <ion-icon slot="icon-only" name="arrow-undo" />
-      </ion-button>
+      @if (!hideClearButton) {
+        <ion-button [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
+          <ion-icon slot="icon-only" name="arrow-undo" />
+        </ion-button>
+      }
       <ion-button [title]="'IDEA_COMMON.CALENDAR.CLOSE_WITHOUT_SAVING' | translate" (click)="close()">
         <ion-icon slot="icon-only" name="close" />
       </ion-button>
@@ -49,7 +51,7 @@
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6" (click)="showMonths()">
-            {{ refDate | dateLocale : 'MMMM' }}
+            {{ refDate | dateLocale: 'MMMM' }}
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(+1)">
@@ -60,81 +62,97 @@
       </ion-col>
     </ion-row>
     <ion-row style="margin-bottom: 8px" class="headerLabel">
-      <ion-col class="ion-text-center ion-no-padding" *ngFor="let ddd of weekDays">
-        {{ ddd }}
-      </ion-col>
+      @for (ddd of weekDays; track ddd) {
+        <ion-col class="ion-text-center ion-no-padding">
+          {{ ddd }}
+        </ion-col>
+      }
     </ion-row>
-    <ion-row class="ion-align-items-center" *ngFor="let row of calendarGrid; let i = index">
-      <ion-col class="ion-text-center ion-no-padding" *ngFor="let col of row; let j = index">
-        <ion-button
-          size="small"
-          shape="round"
-          [color]="
-            isSameDay(calendarGrid[i][j], today) || isSameDay(calendarGrid[i][j], selectedDate)
-              ? 'primary'
-              : isSameMonth(calendarGrid[i][j], refDate)
-              ? 'dark'
-              : 'medium'
-          "
-          [fill]="
-            isSameDay(calendarGrid[i][j], selectedDate)
-              ? 'solid'
-              : isSameDay(calendarGrid[i][j], today)
-              ? 'outline'
-              : 'clear'
-          "
-          [disabled]="!isDateSelectable(calendarGrid[i][j])"
-          (click)="selectDate(calendarGrid[i][j])"
-        >
-          {{ calendarGrid[i][j] | date : 'd' }}
-        </ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="timePicker || manualTimePicker">
-      <h1 class="headerLabel">
-        {{ 'IDEA_COMMON.CALENDAR.SET_TIME' | translate }}
-      </h1>
-    </ion-row>
-    <ion-row class="ion-align-items-center" *ngIf="timePicker">
-      <ion-col class="ion-no-padding" [size]="7">
-        <ion-row>
-          <ion-col class="ion-text-center ion-no-padding" [size]="2" *ngFor="let hour of hours">
+    @for (row of calendarGrid; track row; let i = $index) {
+      <ion-row class="ion-align-items-center">
+        @for (col of row; track col; let j = $index) {
+          <ion-col class="ion-text-center ion-no-padding">
             <ion-button
               size="small"
               shape="round"
-              [color]="isSameHour(hour) ? 'primary' : 'dark'"
-              [fill]="isSameHour(hour) ? 'solid' : 'clear'"
-              (click)="selectHour(hour)"
+              [color]="
+                isSameDay(calendarGrid[i][j], today) || isSameDay(calendarGrid[i][j], selectedDate)
+                  ? 'primary'
+                  : isSameMonth(calendarGrid[i][j], refDate)
+                    ? 'dark'
+                    : 'medium'
+              "
+              [fill]="
+                isSameDay(calendarGrid[i][j], selectedDate)
+                  ? 'solid'
+                  : isSameDay(calendarGrid[i][j], today)
+                    ? 'outline'
+                    : 'clear'
+              "
+              [disabled]="!isDateSelectable(calendarGrid[i][j])"
+              (click)="selectDate(calendarGrid[i][j])"
             >
-              {{ hour }}
+              {{ calendarGrid[i][j] | date: 'd' }}
             </ion-button>
           </ion-col>
-        </ion-row>
-      </ion-col>
-      <ion-col class="ion-text-center ion-no-padding" [size]="1"> : </ion-col>
-      <ion-col class="ion-no-padding" [size]="4">
-        <ion-row>
-          <ion-col class="ion-text-center ion-no-padding" [size]="4" *ngFor="let minute of minutes">
-            <ion-button
-              size="small"
-              shape="round"
-              [color]="isSameMinute(minute) ? 'primary' : 'dark'"
-              [fill]="isSameMinute(minute) ? 'solid' : 'clear'"
-              (click)="selectMinute(minute)"
-            >
-              {{ minute }}
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-    <ion-row class="ion-align-items-center manualTimePicker" *ngIf="manualTimePicker">
-      <ion-col class="ion-text-center" [size]="12">
-        <input type="number" min="0" max="23" [value]="hour" (change)="selectHour($event.target.value)" />
-        <span>:</span>
-        <input type="number" min="0" max="59" [value]="minute" (change)="selectMinute($event.target.value)" />
-      </ion-col>
-    </ion-row>
+        }
+      </ion-row>
+    }
+    @if (timePicker || manualTimePicker) {
+      <ion-row>
+        <h1 class="headerLabel">
+          {{ 'IDEA_COMMON.CALENDAR.SET_TIME' | translate }}
+        </h1>
+      </ion-row>
+    }
+    @if (timePicker) {
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-no-padding" [size]="7">
+          <ion-row>
+            @for (hour of hours; track hour) {
+              <ion-col class="ion-text-center ion-no-padding" [size]="2">
+                <ion-button
+                  size="small"
+                  shape="round"
+                  [color]="isSameHour(hour) ? 'primary' : 'dark'"
+                  [fill]="isSameHour(hour) ? 'solid' : 'clear'"
+                  (click)="selectHour(hour)"
+                >
+                  {{ hour }}
+                </ion-button>
+              </ion-col>
+            }
+          </ion-row>
+        </ion-col>
+        <ion-col class="ion-text-center ion-no-padding" [size]="1"> : </ion-col>
+        <ion-col class="ion-no-padding" [size]="4">
+          <ion-row>
+            @for (minute of minutes; track minute) {
+              <ion-col class="ion-text-center ion-no-padding" [size]="4">
+                <ion-button
+                  size="small"
+                  shape="round"
+                  [color]="isSameMinute(minute) ? 'primary' : 'dark'"
+                  [fill]="isSameMinute(minute) ? 'solid' : 'clear'"
+                  (click)="selectMinute(minute)"
+                >
+                  {{ minute }}
+                </ion-button>
+              </ion-col>
+            }
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    }
+    @if (manualTimePicker) {
+      <ion-row class="ion-align-items-center manualTimePicker">
+        <ion-col class="ion-text-center" [size]="12">
+          <input type="number" min="0" max="23" [value]="hour" (change)="selectHour($event.target.value)" />
+          <span>:</span>
+          <input type="number" min="0" max="59" [value]="minute" (change)="selectMinute($event.target.value)" />
+        </ion-col>
+      </ion-row>
+    }
   </ion-grid>
 </ion-content>
 <ion-footer>

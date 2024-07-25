@@ -6,151 +6,188 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'IDEA_COMMON.CUSTOM_FIELDS.MANAGE_SECTION' | translate }}</ion-title>
-    <ion-buttons slot="end" *ngIf="!disabled">
-      <ion-button [title]="'IDEA_COMMON.CUSTOM_FIELDS.SAVE_CHANGES' | translate" (click)="save()">
-        <ion-icon slot="icon-only" icon="checkmark-circle" />
-      </ion-button>
-    </ion-buttons>
+    @if (!disabled) {
+      <ion-buttons slot="end">
+        <ion-button [title]="'IDEA_COMMON.CUSTOM_FIELDS.SAVE_CHANGES' | translate" (click)="save()">
+          <ion-icon slot="icon-only" icon="checkmark-circle" />
+        </ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div [class.viewMode]="disabled" [class.editMode]="!disabled">
     <ion-list class="aList ion-padding">
-      <ng-container *ngIf="!hideHeaders">
-        <ion-list-header *ngIf="disabled">
-          <ion-label>
-            <h2>{{ _section.name | label }}</h2>
-            <p>{{ _section.description | label }}</p>
-          </ion-label>
-        </ion-list-header>
-        <ion-item *ngIf="!disabled" [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
-          <ion-input
-            type="text"
-            readonly="true"
-            labelPlacement="stacked"
-            [value]="_section.name | label"
-            [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.SECTION_NAME_HINT' | translate"
-          >
-            <div slot="label">
-              {{ 'IDEA_COMMON.CUSTOM_FIELDS.NAME' | translate }}
-              <ion-text class="obligatoryDot" *ngIf="!disabled" />
-            </div>
-          </ion-input>
-          <ion-button
-            slot="end"
-            fill="clear"
-            class="marginTop"
-            [title]="'COMMON.EDIT' | translate"
-            (click)="editName()"
-          >
-            <ion-icon slot="icon-only" icon="pencil" />
-          </ion-button>
-        </ion-item>
-        <ion-item *ngIf="!disabled" [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
-          <ion-input
-            type="text"
-            readonly="true"
-            labelPlacement="stacked"
-            [label]="'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate"
-            [value]="_section.description | label"
-            [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.SECTION_DESCRIPTION_HINT' | translate"
-          />
-          <ion-button
-            slot="end"
-            fill="clear"
-            class="marginTop"
-            [title]="'COMMON.EDIT' | translate"
-            (click)="editDescription()"
-          >
-            <ion-icon slot="icon-only" icon="pencil" />
-          </ion-button>
-        </ion-item>
+      @if (!hideHeaders) {
+        @if (disabled) {
+          <ion-list-header>
+            <ion-label>
+              <h2>{{ _section.name | label }}</h2>
+              <p>{{ _section.description | label }}</p>
+            </ion-label>
+          </ion-list-header>
+        }
+        @if (!disabled) {
+          <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
+            <ion-input
+              type="text"
+              readonly="true"
+              labelPlacement="stacked"
+              [value]="_section.name | label"
+              [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.SECTION_NAME_HINT' | translate"
+            >
+              <div slot="label">
+                {{ 'IDEA_COMMON.CUSTOM_FIELDS.NAME' | translate }}
+                @if (!disabled) {
+                  <ion-text class="obligatoryDot" />
+                }
+              </div>
+            </ion-input>
+            <ion-button
+              slot="end"
+              fill="clear"
+              class="marginTop"
+              [title]="'COMMON.EDIT' | translate"
+              (click)="editName()"
+            >
+              <ion-icon slot="icon-only" icon="pencil" />
+            </ion-button>
+          </ion-item>
+        }
+        @if (!disabled) {
+          <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
+            <ion-input
+              type="text"
+              readonly="true"
+              labelPlacement="stacked"
+              [label]="'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate"
+              [value]="_section.description | label"
+              [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.SECTION_DESCRIPTION_HINT' | translate"
+            />
+            <ion-button
+              slot="end"
+              fill="clear"
+              class="marginTop"
+              [title]="'COMMON.EDIT' | translate"
+              (click)="editDescription()"
+            >
+              <ion-icon slot="icon-only" icon="pencil" />
+            </ion-button>
+          </ion-item>
+        }
         <ion-list-header>
           <ion-label>
             <h3>{{ 'IDEA_COMMON.CUSTOM_FIELDS.SECTION_FIELDS' | translate }}</h3>
           </ion-label>
         </ion-list-header>
-      </ng-container>
-      <ion-item lines="none" *ngIf="!_section.fieldsLegend.length">
-        <ion-label>
-          <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
-        </ion-label>
-      </ion-item>
-      <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderFieldsLegend($event)">
-        <ion-item *ngFor="let f of _section.fieldsLegend" [button]="true" [lines]="lines" (click)="openField(f)">
-          <ion-reorder slot="start" *ngIf="!disabled" />
+      }
+      @if (!_section.fieldsLegend.length) {
+        <ion-item lines="none">
           <ion-label>
-            {{ _section.fields[f].name | label }}
-            <ion-text class="obligatoryDot" *ngIf="_section.fields[f].obligatory" />
-            <p>{{ _section.fields[f].description | label }}</p>
+            <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
           </ion-label>
-          <ion-badge slot="end" color="medium">
-            {{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _section.fields[f].type | translate }}
-          </ion-badge>
-          <ion-button slot="end" fill="clear" color="danger" *ngIf="!disabled" (click)="removeField(f, $event)">
-            <ion-icon icon="trash-outline" slot="icon-only" />
-          </ion-button>
         </ion-item>
-      </ion-reorder-group>
-      <ion-row *ngIf="!disabled">
-        <ion-col class="ion-padding ion-text-center">
-          <ion-button size="small" color="primary" (click)="addNewField()">
-            {{ 'IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD' | translate }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-list>
-    <ion-list class="aList ion-padding" *ngIf="useDisplayTemplate">
-      <ion-list-header>
-        <ion-label>
-          <h3>{{ 'IDEA_COMMON.CUSTOM_FIELDS.DISPLAY_TEMPLATE' | translate }}</h3>
-          <p>{{ 'IDEA_COMMON.CUSTOM_FIELDS.DISPLAY_TEMPLATE_I' | translate }}</p>
-        </ion-label>
-      </ion-list-header>
-      <ion-item lines="none" *ngIf="!_section.displayTemplate.length">
-        <ion-label>
-          <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
-        </ion-label>
-      </ion-item>
-      <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderDisplayTemplateRows($event)">
-        <div class="displayTemplateRow" *ngFor="let row of _section.displayTemplate; let rowIndex = index">
-          <ion-item-divider>{{ 'IDEA_COMMON.CUSTOM_FIELDS.ROW' | translate }} {{ rowIndex + 1 }} </ion-item-divider>
-          <ion-item [lines]="lines">
-            <ion-reorder slot="start" *ngIf="!disabled" />
-            <ion-label class="ion-text-wrap">
-              <div *ngFor="let field of row">
-                <ion-button
-                  size="small"
-                  fill="outline"
-                  color="medium"
-                  [disabled]="disabled"
-                  (click)="removeFieldToDisplayTemplateRow(rowIndex, field)"
-                >
-                  <ion-icon icon="close" slot="start" *ngIf="!disabled" />
-                  {{ _section.fields[field].name | label }}
-                </ion-button>
-              </div>
+      }
+      <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderFieldsLegend($event)">
+        @for (f of _section.fieldsLegend; track f) {
+          <ion-item [button]="true" [lines]="lines" (click)="openField(f)">
+            @if (!disabled) {
+              <ion-reorder slot="start" />
+            }
+            <ion-label>
+              {{ _section.fields[f].name | label }}
+              @if (_section.fields[f].obligatory) {
+                <ion-text class="obligatoryDot" />
+              }
+              <p>{{ _section.fields[f].description | label }}</p>
             </ion-label>
-            <ion-button
-              slot="end"
-              fill="clear"
-              color="primary"
-              *ngIf="!disabled && !isDisplayTemplateRowFull(rowIndex)"
-              [title]="'IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD' | translate"
-              (click)="addFieldToDisplayTemplateRow(rowIndex)"
-            >
-              <ion-icon icon="add-circle-outline" />
-            </ion-button>
+            <ion-badge slot="end" color="medium">
+              {{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _section.fields[f].type | translate }}
+            </ion-badge>
+            @if (!disabled) {
+              <ion-button slot="end" fill="clear" color="danger" (click)="removeField(f, $event)">
+                <ion-icon icon="trash-outline" slot="icon-only" />
+              </ion-button>
+            }
           </ion-item>
-        </div>
+        }
       </ion-reorder-group>
-      <ion-row *ngIf="!disabled">
-        <ion-col class="ion-padding ion-text-center">
-          <ion-button size="small" color="medium" (click)="addNewDisplayTemplateRow()">
-            {{ 'IDEA_COMMON.CUSTOM_FIELDS.ADD_ROW' | translate }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
+      @if (!disabled) {
+        <ion-row>
+          <ion-col class="ion-padding ion-text-center">
+            <ion-button size="small" color="primary" (click)="addNewField()">
+              {{ 'IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD' | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      }
     </ion-list>
+    @if (useDisplayTemplate) {
+      <ion-list class="aList ion-padding">
+        <ion-list-header>
+          <ion-label>
+            <h3>{{ 'IDEA_COMMON.CUSTOM_FIELDS.DISPLAY_TEMPLATE' | translate }}</h3>
+            <p>{{ 'IDEA_COMMON.CUSTOM_FIELDS.DISPLAY_TEMPLATE_I' | translate }}</p>
+          </ion-label>
+        </ion-list-header>
+        @if (!_section.displayTemplate.length) {
+          <ion-item lines="none">
+            <ion-label>
+              <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
+            </ion-label>
+          </ion-item>
+        }
+        <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderDisplayTemplateRows($event)">
+          @for (row of _section.displayTemplate; track row; let rowIndex = $index) {
+            <div class="displayTemplateRow">
+              <ion-item-divider>{{ 'IDEA_COMMON.CUSTOM_FIELDS.ROW' | translate }} {{ rowIndex + 1 }} </ion-item-divider>
+              <ion-item [lines]="lines">
+                @if (!disabled) {
+                  <ion-reorder slot="start" />
+                }
+                <ion-label class="ion-text-wrap">
+                  @for (field of row; track field) {
+                    <div>
+                      <ion-button
+                        size="small"
+                        fill="outline"
+                        color="medium"
+                        [disabled]="disabled"
+                        (click)="removeFieldToDisplayTemplateRow(rowIndex, field)"
+                      >
+                        @if (!disabled) {
+                          <ion-icon icon="close" slot="start" />
+                        }
+                        {{ _section.fields[field].name | label }}
+                      </ion-button>
+                    </div>
+                  }
+                </ion-label>
+                @if (!disabled && !isDisplayTemplateRowFull(rowIndex)) {
+                  <ion-button
+                    slot="end"
+                    fill="clear"
+                    color="primary"
+                    [title]="'IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD' | translate"
+                    (click)="addFieldToDisplayTemplateRow(rowIndex)"
+                  >
+                    <ion-icon icon="add-circle-outline" />
+                  </ion-button>
+                }
+              </ion-item>
+            </div>
+          }
+        </ion-reorder-group>
+        @if (!disabled) {
+          <ion-row>
+            <ion-col class="ion-padding ion-text-center">
+              <ion-button size="small" color="medium" (click)="addNewDisplayTemplateRow()">
+                {{ 'IDEA_COMMON.CUSTOM_FIELDS.ADD_ROW' | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        }
+      </ion-list>
+    }
   </div>
 </ion-content>

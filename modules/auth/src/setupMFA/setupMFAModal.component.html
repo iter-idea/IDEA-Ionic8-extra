@@ -18,7 +18,9 @@
     </ion-list-header>
     <ion-card color="white">
       <ion-card-content>
-        <div id="qrCodeContainer" *ngIf="!isMFAEnabled"></div>
+        @if (!isMFAEnabled) {
+          <div id="qrCodeContainer"></div>
+        }
         <ion-item color="light">
           <ion-input
             type="text"

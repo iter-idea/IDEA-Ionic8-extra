@@ -7,25 +7,28 @@
   [class.withLabel]="label"
   (click)="disabled ? doSelectWhenDisabled() : pickTimeInterval()"
 >
-  <ion-button
-    fill="clear"
-    slot="start"
-    *ngIf="icon"
-    [color]="iconColor"
-    [class.marginTop]="label"
-    (click)="doIconSelect($event)"
-  >
-    <ion-icon [name]="icon" slot="icon-only" />
-  </ion-button>
-  <ion-label position="stacked" *ngIf="label" [class.selectable]="!disabled || tappableWhenDisabled">
-    {{ label }}
-    <ion-text class="obligatoryDot" *ngIf="obligatory && !disabled" />
-  </ion-label>
+  @if (icon) {
+    <ion-button fill="clear" slot="start" [color]="iconColor" [class.marginTop]="label" (click)="doIconSelect($event)">
+      <ion-icon [name]="icon" slot="icon-only" />
+    </ion-button>
+  }
+  @if (label) {
+    <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled">
+      {{ label }}
+      @if (obligatory && !disabled) {
+        <ion-text class="obligatoryDot" />
+      }
+    </ion-label>
+  }
   <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled">
-    <ion-text class="placeholder" *ngIf="!valueToDisplay && !disabled" [class.selectable]="!disabled">
-      {{ placeholder }}
-    </ion-text>
+    @if (!valueToDisplay && !disabled) {
+      <ion-text class="placeholder" [class.selectable]="!disabled">
+        {{ placeholder }}
+      </ion-text>
+    }
     {{ valueToDisplay }}
   </ion-label>
-  <ion-icon slot="end" name="caret-down" class="selectIcon" *ngIf="!disabled" [class.selectable]="!disabled" />
+  @if (!disabled) {
+    <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+  }
 </ion-item>

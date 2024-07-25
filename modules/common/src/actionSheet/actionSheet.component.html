@@ -1,31 +1,41 @@
 <ion-content [class]="cssClass">
   <ion-grid class="ion-padding actionSheetGrid">
-    <ion-row class="headerRow" *ngIf="header">
-      <ion-col class="ion-text-center">
-        <ion-label class="ion-text-wrap">
-          {{ header }}
-          <p *ngIf="subHeader">{{ subHeader }}</p>
-        </ion-label>
-      </ion-col>
-    </ion-row>
+    @if (header) {
+      <ion-row class="headerRow">
+        <ion-col class="ion-text-center">
+          <ion-label class="ion-text-wrap">
+            {{ header }}
+            @if (subHeader) {
+              <p>{{ subHeader }}</p>
+            }
+          </ion-label>
+        </ion-col>
+      </ion-row>
+    }
     <ion-row class="ion-justify-content-center buttonsRow">
-      <ion-col *ngFor="let b of buttons" [size]="withIcons ? 6 : 12">
-        <ion-button
-          fill="clear"
-          expand="full"
-          color="medium"
-          [class.withIcon]="withIcons"
-          [class.destructive]="b.role === 'destructive'"
-          [class.cancel]="b.role === 'cancel'"
-          (click)="buttonClicked(b)"
-        >
-          <div>
-            <ion-icon *ngIf="withIcons" [name]="b.icon || 'flash'" />
-            <br *ngIf="withIcons" />
-            <ion-label class="ion-text-wrap">{{ b.text }}</ion-label>
-          </div>
-        </ion-button>
-      </ion-col>
+      @for (b of buttons; track b) {
+        <ion-col [size]="withIcons ? 6 : 12">
+          <ion-button
+            fill="clear"
+            expand="full"
+            color="medium"
+            [class.withIcon]="withIcons"
+            [class.destructive]="b.role === 'destructive'"
+            [class.cancel]="b.role === 'cancel'"
+            (click)="buttonClicked(b)"
+          >
+            <div>
+              @if (withIcons) {
+                <ion-icon [name]="b.icon || 'flash'" />
+              }
+              @if (withIcons) {
+                <br />
+              }
+              <ion-label class="ion-text-wrap">{{ b.text }}</ion-label>
+            </div>
+          </ion-button>
+        </ion-col>
+      }
     </ion-row>
   </ion-grid>
 </ion-content>

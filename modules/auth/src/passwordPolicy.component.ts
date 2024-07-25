@@ -10,19 +10,27 @@ import { IDEAEnvironment } from '@idea-ionic/common';
       </ion-card-header>
       <ion-card-content>
         <ul>
-          <li>{{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.MIN_LENGTH' | translate : { n: passwordPolicy.minLength } }}</li>
-          <li *ngIf="passwordPolicy.requireDigits">
-            {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_DIGITS' | translate }}
-          </li>
-          <li *ngIf="passwordPolicy.requireSymbols">
-            {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_SYMBOLS' | translate }}
-          </li>
-          <li *ngIf="passwordPolicy.requireUppercase">
-            {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_UPPERCASE' | translate }}
-          </li>
-          <li *ngIf="passwordPolicy.requireLowercase">
-            {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_LOWERCASE' | translate }}
-          </li>
+          <li>{{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.MIN_LENGTH' | translate: { n: passwordPolicy.minLength } }}</li>
+          @if (passwordPolicy.requireDigits) {
+            <li>
+              {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_DIGITS' | translate }}
+            </li>
+          }
+          @if (passwordPolicy.requireSymbols) {
+            <li>
+              {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_SYMBOLS' | translate }}
+            </li>
+          }
+          @if (passwordPolicy.requireUppercase) {
+            <li>
+              {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_UPPERCASE' | translate }}
+            </li>
+          }
+          @if (passwordPolicy.requireLowercase) {
+            <li>
+              {{ 'IDEA_AUTH.PASSWORD_REQUIREMENTS.REQUIRE_LOWERCASE' | translate }}
+            </li>
+          }
         </ul>
       </ion-card-content>
     </ion-card>

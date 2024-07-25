@@ -1,97 +1,115 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button *ngIf="!canChangeScope()" [title]="'COMMON.CLOSE' | translate" (click)="close()">
-        <ion-icon name="close" slot="icon-only" />
-      </ion-button>
-      <ion-button *ngIf="canChangeScope()" (click)="resetScope()">
-        <ion-icon name="arrow-back" slot="icon-only" />
-      </ion-button>
+      @if (!canChangeScope()) {
+        <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
+          <ion-icon name="close" slot="icon-only" />
+        </ion-button>
+      }
+      @if (canChangeScope()) {
+        <ion-button (click)="resetScope()">
+          <ion-icon name="arrow-back" slot="icon-only" />
+        </ion-button>
+      }
     </ion-buttons>
     <ion-title>
-      <span *ngIf="!scopeIsSet()">{{ 'IDEA_AGENDA.CALENDARS.ADD_A_CALENDAR' | translate }}</span>
-      <span *ngIf="calendar.userId">{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR' | translate }}</span>
-      <span *ngIf="calendar.teamId">
-        {{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate : { team: tc.get('team').name } }}
-      </span>
+      @if (!scopeIsSet()) {
+        <span>{{ 'IDEA_AGENDA.CALENDARS.ADD_A_CALENDAR' | translate }}</span>
+      }
+      @if (calendar.userId) {
+        <span>{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR' | translate }}</span>
+      }
+      @if (calendar.teamId) {
+        <span>
+          {{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate: { team: tc.get('team').name } }}
+        </span>
+      }
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <!-- 1st STEP -->
-  <ion-grid class="ion-padding choiceGrid" *ngIf="!scopeIsSet()">
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h1>{{ 'IDEA_AGENDA.CALENDARS.CREATE_PRIVATE_OR_TEAM' | translate }}</h1>
-      </ion-col>
-    </ion-row>
-    <ion-row class="ion-align-items-center">
-      <ion-col class="ion-text-center" [size]="12" [sizeSm]="6">
-        <ion-card [button]="true" (click)="calendar.userId = membership.userId">
-          <ion-card-header>
-            <ion-card-title>
-              <ion-icon name="person" />
-            </ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <h1>{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR' | translate }}</h1>
-            <p>{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR_HINT' | translate }}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-      <ion-col class="ion-text-center" [size]="12" [sizeSm]="6">
-        <ion-card [button]="true" (click)="calendar.teamId = membership.teamId">
-          <ion-card-header>
-            <ion-card-title>
-              <ion-icon name="people" />
-            </ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <h1>{{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate }}</h1>
-            <p>{{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR_HINT' | translate }}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  @if (!scopeIsSet()) {
+    <ion-grid class="ion-padding choiceGrid">
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h1>{{ 'IDEA_AGENDA.CALENDARS.CREATE_PRIVATE_OR_TEAM' | translate }}</h1>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-text-center" [size]="12" [sizeSm]="6">
+          <ion-card [button]="true" (click)="calendar.userId = membership.userId">
+            <ion-card-header>
+              <ion-card-title>
+                <ion-icon name="person" />
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1>{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR' | translate }}</h1>
+              <p>{{ 'IDEA_AGENDA.CALENDARS.PERSONAL_CALENDAR_HINT' | translate }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col class="ion-text-center" [size]="12" [sizeSm]="6">
+          <ion-card [button]="true" (click)="calendar.teamId = membership.teamId">
+            <ion-card-header>
+              <ion-card-title>
+                <ion-icon name="people" />
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1>{{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate }}</h1>
+              <p>{{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR_HINT' | translate }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  }
   <!-- 2nd STEP -->
-  <ion-grid class="ion-padding choiceGrid" *ngIf="scopeIsSet()">
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h1>{{ 'IDEA_AGENDA.CALENDARS.WHICH_EXTERNAL_SERVICE_TO_LINK' | translate }}</h1>
-        <p>{{ 'IDEA_AGENDA.CALENDARS.WHICH_EXTERNAL_SERVICE_TO_LINK_HINT' | translate }}</p>
-      </ion-col>
-    </ion-row>
-    <ion-row class="ion-align-items-center">
-      <ion-col class="ion-text-center" [size]="12" *ngIf="!onlyExternalCalendars">
-        <ion-card class="step2" [button]="true" (click)="saveNewCalendar()">
-          <ion-card-header>
-            <ion-card-title>
-              <ion-icon name="remove" />
-            </ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <h1>{{ 'IDEA_AGENDA.CALENDARS.DONT_LINK' | translate }}</h1>
-            <p>{{ 'IDEA_AGENDA.CALENDARS.DONT_LINK_HINT' | translate }}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-      <ion-col class="ion-text-center" *ngFor="let s of SOURCES" [size]="12">
-        <ion-card class="step2" [button]="true" (click)="saveNewCalendar(s)">
-          <ion-card-header>
-            <ion-card-title>
-              <ion-icon [name]="calendars.getServiceIcon(s)" />
-            </ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <h1>
-              {{ 'IDEA_AGENDA.CALENDARS.LINK_TO' | translate }}
-              {{ 'IDEA_AGENDA.CALENDARS.SERVICES.' + s | translate }}
-            </h1>
-            <p>{{ 'IDEA_AGENDA.CALENDARS.LINK_TO_HINT' | translate }}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  @if (scopeIsSet()) {
+    <ion-grid class="ion-padding choiceGrid">
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h1>{{ 'IDEA_AGENDA.CALENDARS.WHICH_EXTERNAL_SERVICE_TO_LINK' | translate }}</h1>
+          <p>{{ 'IDEA_AGENDA.CALENDARS.WHICH_EXTERNAL_SERVICE_TO_LINK_HINT' | translate }}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-align-items-center">
+        @if (!onlyExternalCalendars) {
+          <ion-col class="ion-text-center" [size]="12">
+            <ion-card class="step2" [button]="true" (click)="saveNewCalendar()">
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-icon name="remove" />
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <h1>{{ 'IDEA_AGENDA.CALENDARS.DONT_LINK' | translate }}</h1>
+                <p>{{ 'IDEA_AGENDA.CALENDARS.DONT_LINK_HINT' | translate }}</p>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        }
+        @for (s of SOURCES; track s) {
+          <ion-col class="ion-text-center" [size]="12">
+            <ion-card class="step2" [button]="true" (click)="saveNewCalendar(s)">
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-icon [name]="calendars.getServiceIcon(s)" />
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <h1>
+                  {{ 'IDEA_AGENDA.CALENDARS.LINK_TO' | translate }}
+                  {{ 'IDEA_AGENDA.CALENDARS.SERVICES.' + s | translate }}
+                </h1>
+                <p>{{ 'IDEA_AGENDA.CALENDARS.LINK_TO_HINT' | translate }}</p>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  }
 </ion-content>

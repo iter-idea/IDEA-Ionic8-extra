@@ -9,17 +9,21 @@
       [sizeLg]="2"
       [pushLg]="8"
     >
-      <ion-item lines="none" class="calendarViewSelector" *ngIf="allowedViews.length > 1">
-        <ion-select
-          interface="popover"
-          [value]="view"
-          (ionChange)="$event?.detail ? setView($event.detail.value) : null"
-        >
-          <ion-select-option *ngFor="let view of allowedViews" [value]="view">
-            {{ 'IDEA_AGENDA.' + view | uppercase | translate }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
+      @if (allowedViews.length > 1) {
+        <ion-item lines="none" class="calendarViewSelector">
+          <ion-select
+            interface="popover"
+            [value]="view"
+            (ionChange)="$event?.detail ? setView($event.detail.value) : null"
+          >
+            @for (view of allowedViews; track view) {
+              <ion-select-option [value]="view">
+                {{ 'IDEA_AGENDA.' + view | uppercase | translate }}
+              </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      }
     </ion-col>
     <ion-col
       class="ion-align-self-center ion-text-right"
@@ -63,8 +67,10 @@
       </ion-button>
     </ion-col>
     <ion-col class="ion-align-self-center titleCol" [size]="12" [sizeSm]="5" [pullSm]="7" [sizeLg]="8" [pullLg]="4">
-      <h2>{{ viewDate | calendarDate : view + 'ViewTitle' : locale }}</h2>
-      <p *ngIf="titleNotes">{{ titleNotes }}</p>
+      <h2>{{ viewDate | calendarDate: view + 'ViewTitle' : locale }}</h2>
+      @if (titleNotes) {
+        <p>{{ titleNotes }}</p>
+      }
     </ion-col>
   </ion-row>
   <!-- TEMPLATES (touch only what's necessary and leave everything else as it is) -->
@@ -72,10 +78,12 @@
     <span
       class="cal-event-title"
       [class.noWrap]="event.allDay"
-      [attr.aria-hidden]="{} | calendarA11y : 'hideEventTitle'"
+      [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'"
     >
-      {{ event.title | calendarEventTitle : view : event }}
-      <p *ngIf="!event.allDay">{{ getPreviewDescription(event.description) }}</p>
+      {{ event.title | calendarEventTitle: view : event }}
+      @if (!event.allDay) {
+        <p>{{ getPreviewDescription(event.description) }}</p>
+      }
     </span>
   </ng-template>
   <ng-template
@@ -110,7 +118,7 @@
       tabindex="0"
       role="application"
       [attr.aria-label]="
-        { event: weekEvent.tempEvent || weekEvent.event, locale: locale } | calendarA11y : 'eventDescription'
+        { event: weekEvent.tempEvent || weekEvent.event, locale: locale } | calendarA11y: 'eventDescription'
       "
     >
       <mwl-calendar-event-actions [event]="weekEvent.tempEvent || weekEvent.event" />
@@ -121,15 +129,16 @@
         [view]="daysInWeek === 1 ? 'day' : 'week'"
       >
       </mwl-calendar-event-title>
-      <div class="eventGadgets" *ngIf="!weekEvent.event.allDay">
-        <ion-icon *ngFor="let icon of weekEvent.event.icons" [name]="icon.name" [title]="icon.title" />
-        <idea-user-avatar
-          size="mini"
-          *ngFor="let avatar of weekEvent.event.avatars"
-          [src]="avatar.url"
-          [name]="avatar.title"
-        />
-      </div>
+      @if (!weekEvent.event.allDay) {
+        <div class="eventGadgets">
+          @for (icon of weekEvent.event.icons; track icon) {
+            <ion-icon [name]="icon.name" [title]="icon.title" />
+          }
+          @for (avatar of weekEvent.event.avatars; track avatar) {
+            <idea-user-avatar size="mini" [src]="avatar.url" [name]="avatar.title" />
+          }
+        </div>
+      }
     </div>
   </ng-template>
   <ng-template
@@ -149,65 +158,72 @@
       (mousedown)="allowDragToCreate ? startDragToCreate($event, segment.date, segmentElement) : null"
       (touchstart)="allowDragToCreate ? startDragToCreate($event, segment.date, segmentElement) : null"
     >
-      <div class="cal-time" *ngIf="isTimeLabel">
-        {{ segment.date | calendarDate : 'weekViewHour' : locale }}
-      </div>
+      @if (isTimeLabel) {
+        <div class="cal-time">
+          {{ segment.date | calendarDate: 'weekViewHour' : locale }}
+        </div>
+      }
     </div>
   </ng-template>
   <!-- VIEWS -->
-  <div [ngSwitch]="view">
-    <mwl-calendar-month-view
-      *ngSwitchCase="CalendarView.Month"
-      [viewDate]="viewDate"
-      [events]="events"
-      [refresh]="refresh"
-      [activeDayIsOpen]="activeDayIsOpen"
-      [locale]="locale"
-      [excludeDays]="excludeDays"
-      [weekStartsOn]="weekStartsOn"
-      [eventTitleTemplate]="eventTitleTemplate"
-      (eventClicked)="selectEvent.emit($event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)"
-      (dayClicked)="changeDay($event.day)"
-      (beforeViewRender)="beforeMonthViewRender($event)"
-    >
-    </mwl-calendar-month-view>
-    <mwl-calendar-week-view
-      *ngSwitchCase="CalendarView.Week"
-      [viewDate]="viewDate"
-      [events]="events"
-      [refresh]="refresh"
-      [locale]="locale"
-      [excludeDays]="excludeDays"
-      [weekStartsOn]="weekStartsOn"
-      [dayStartHour]="dayStartHour"
-      [dayEndHour]="dayEndHour"
-      [hourSegments]="hourSegments"
-      [eventTemplate]="eventTemplate"
-      [hourSegmentTemplate]="hourSegmentTemplate"
-      (eventClicked)="selectEvent.emit($event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)"
-      (dayHeaderClicked)="dateIsValid($event.day.date) ? selectDay.emit($event.day.date) : null"
-      (hourSegmentClicked)="dateIsValid($event.date) ? selectSlot.emit($event.date) : null"
-      (beforeViewRender)="beforeWeekOrDayViewRender($event)"
-    >
-    </mwl-calendar-week-view>
-    <mwl-calendar-day-view
-      *ngSwitchCase="CalendarView.Day"
-      [viewDate]="viewDate"
-      [events]="events"
-      [refresh]="refresh"
-      [locale]="locale"
-      [dayStartHour]="dayStartHour"
-      [dayEndHour]="dayEndHour"
-      [hourSegments]="hourSegments"
-      [eventTemplate]="eventTemplate"
-      [hourSegmentTemplate]="hourSegmentTemplate"
-      (eventClicked)="selectEvent.emit($event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)"
-      (hourSegmentClicked)="dateIsValid($event.date) ? selectSlot.emit($event.date) : null"
-      (beforeViewRender)="beforeWeekOrDayViewRender($event)"
-    >
-    </mwl-calendar-day-view>
+  <div>
+    @switch (view) {
+      @case (CalendarView.Month) {
+        <mwl-calendar-month-view
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          [activeDayIsOpen]="activeDayIsOpen"
+          [locale]="locale"
+          [excludeDays]="excludeDays"
+          [weekStartsOn]="weekStartsOn"
+          [eventTitleTemplate]="eventTitleTemplate"
+          (eventClicked)="selectEvent.emit($event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+          (dayClicked)="changeDay($event.day)"
+          (beforeViewRender)="beforeMonthViewRender($event)"
+        >
+        </mwl-calendar-month-view>
+      }
+      @case (CalendarView.Week) {
+        <mwl-calendar-week-view
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          [locale]="locale"
+          [excludeDays]="excludeDays"
+          [weekStartsOn]="weekStartsOn"
+          [dayStartHour]="dayStartHour"
+          [dayEndHour]="dayEndHour"
+          [hourSegments]="hourSegments"
+          [eventTemplate]="eventTemplate"
+          [hourSegmentTemplate]="hourSegmentTemplate"
+          (eventClicked)="selectEvent.emit($event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+          (dayHeaderClicked)="dateIsValid($event.day.date) ? selectDay.emit($event.day.date) : null"
+          (hourSegmentClicked)="dateIsValid($event.date) ? selectSlot.emit($event.date) : null"
+          (beforeViewRender)="beforeWeekOrDayViewRender($event)"
+        >
+        </mwl-calendar-week-view>
+      }
+      @case (CalendarView.Day) {
+        <mwl-calendar-day-view
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          [locale]="locale"
+          [dayStartHour]="dayStartHour"
+          [dayEndHour]="dayEndHour"
+          [hourSegments]="hourSegments"
+          [eventTemplate]="eventTemplate"
+          [hourSegmentTemplate]="hourSegmentTemplate"
+          (eventClicked)="selectEvent.emit($event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+          (hourSegmentClicked)="dateIsValid($event.date) ? selectSlot.emit($event.date) : null"
+          (beforeViewRender)="beforeWeekOrDayViewRender($event)"
+        >
+        </mwl-calendar-day-view>
+      }
+    }
   </div>
 </div>

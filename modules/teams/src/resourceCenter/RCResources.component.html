@@ -7,18 +7,19 @@
     </ion-buttons>
     <ion-searchbar
       #searchbar
-      [placeholder]="'IDEA_TEAMS.RESOURCE_CENTER.SEARCH_FOR_RESOURCES_OF_FOLDER_' | translate : { folder: folder.name }"
+      [placeholder]="'IDEA_TEAMS.RESOURCE_CENTER.SEARCH_FOR_RESOURCES_OF_FOLDER_' | translate: { folder: folder.name }"
       (ionInput)="search($event.target ? $event.target.value : '')"
     />
     <ion-buttons slot="end">
-      <ion-button
-        *ngIf="admin"
-        [disabled]="_offline.isOffline()"
-        [title]="'IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_NEW_RESOURCES' | translate"
-        (click)="browseUploadNewResource()"
-      >
-        <ion-icon slot="icon-only" name="cloud-upload" />
-      </ion-button>
+      @if (admin) {
+        <ion-button
+          [disabled]="_offline.isOffline()"
+          [title]="'IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_NEW_RESOURCES' | translate"
+          (click)="browseUploadNewResource()"
+        >
+          <ion-icon slot="icon-only" name="cloud-upload" />
+        </ion-button>
+      }
       <input
         id="newResourcePicker"
         type="file"
@@ -35,62 +36,73 @@
     <ion-refresher-content />
   </ion-refresher>
   <ion-list class="aList">
-    <ion-card color="danger" *ngIf="uploadErrors?.length">
-      <ion-card-content>
-        <b>{{ 'IDEA_TEAMS.RESOURCE_CENTER.THE_FOLLOWING_FILES_FAILED_UPLOAD' | translate }}:</b>
-        <ul>
-          <li *ngFor="let err of uploadErrors">{{ err }}</li>
-        </ul>
-      </ion-card-content>
-    </ion-card>
+    @if (uploadErrors?.length) {
+      <ion-card color="danger">
+        <ion-card-content>
+          <b>{{ 'IDEA_TEAMS.RESOURCE_CENTER.THE_FOLLOWING_FILES_FAILED_UPLOAD' | translate }}:</b>
+          <ul>
+            @for (err of uploadErrors; track err) {
+              <li>{{ err }}</li>
+            }
+          </ul>
+        </ion-card-content>
+      </ion-card>
+    }
     <ion-list-header>
       <ion-label>
         <h2>{{ folder.name }}</h2>
       </ion-label>
     </ion-list-header>
-    <ion-item *ngIf="!filteredResources">
-      <ion-label>
-        <ion-skeleton-text animated style="width: 50%" />
-      </ion-label>
-    </ion-item>
-    <ion-item class="noElements" *ngIf="filteredResources && !filteredResources.length">
-      <ion-label>{{ 'COMMON.NO_ELEMENT_FOUND' | translate }}</ion-label>
-    </ion-item>
-    <ion-item *ngFor="let r of filteredResources">
-      <ion-button
-        slot="start"
-        fill="clear"
-        [title]="'IDEA_TEAMS.RESOURCE_CENTER.OPEN_RESOURCE' | translate"
-        [disabled]="_offline.isOffline()"
-        (click)="openResource(r)"
-      >
-        <ion-icon name="open-outline" slot="icon-only" />
-      </ion-button>
-      <ion-icon slot="start" color="medium" [name]="getFormatIcon(r.format)" [title]="r.format" />
-      <ion-label>
-        {{ r.name }}
-        <p>{{ 'IDEA_TEAMS.RESOURCE_CENTER.LASTLY_UPDATED_X_AGO' | translate : { time: (r.version | dateLocale) } }}</p>
-      </ion-label>
-      <ion-note slot="end">{{ r.format }}</ion-note>
-      <ion-button
-        color="medium"
-        fill="clear"
-        slot="end"
-        *ngIf="admin"
-        [title]="'IDEA_TEAMS.RESOURCE_CENTER.ACTIONS_ON_THE_RESOURCE' | translate"
-        [disabled]="_offline.isOffline()"
-        (click)="actionsOnResource(r)"
-      >
-        <ion-icon name="ellipsis-vertical" slot="icon-only" />
-      </ion-button>
-      <input
-        [id]="r.resourceId.concat('_picker')"
-        type="file"
-        accept=".jpg,.jpeg,.png,.pdf"
-        style="display: none"
-        (change)="updateResource(r, $event)"
-      />
-    </ion-item>
+    @if (!filteredResources) {
+      <ion-item>
+        <ion-label>
+          <ion-skeleton-text animated style="width: 50%" />
+        </ion-label>
+      </ion-item>
+    }
+    @if (filteredResources && !filteredResources.length) {
+      <ion-item class="noElements">
+        <ion-label>{{ 'COMMON.NO_ELEMENT_FOUND' | translate }}</ion-label>
+      </ion-item>
+    }
+    @for (r of filteredResources; track r) {
+      <ion-item>
+        <ion-button
+          slot="start"
+          fill="clear"
+          [title]="'IDEA_TEAMS.RESOURCE_CENTER.OPEN_RESOURCE' | translate"
+          [disabled]="_offline.isOffline()"
+          (click)="openResource(r)"
+        >
+          <ion-icon name="open-outline" slot="icon-only" />
+        </ion-button>
+        <ion-icon slot="start" color="medium" [name]="getFormatIcon(r.format)" [title]="r.format" />
+        <ion-label>
+          {{ r.name }}
+          <p>{{ 'IDEA_TEAMS.RESOURCE_CENTER.LASTLY_UPDATED_X_AGO' | translate: { time: (r.version | dateLocale) } }}</p>
+        </ion-label>
+        <ion-note slot="end">{{ r.format }}</ion-note>
+        @if (admin) {
+          <ion-button
+            color="medium"
+            fill="clear"
+            slot="end"
+            [title]="'IDEA_TEAMS.RESOURCE_CENTER.ACTIONS_ON_THE_RESOURCE' | translate"
+            [disabled]="_offline.isOffline()"
+            (click)="actionsOnResource(r)"
+          >
+            <ion-icon name="ellipsis-vertical" slot="icon-only" />
+          </ion-button>
+        }
+        <input
+          [id]="r.resourceId.concat('_picker')"
+          type="file"
+          accept=".jpg,.jpeg,.png,.pdf"
+          style="display: none"
+          (change)="updateResource(r, $event)"
+        />
+      </ion-item>
+    }
     <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
       <ion-infinite-scroll-content />
     </ion-infinite-scroll>

@@ -6,10 +6,12 @@
         <ion-card-subtitle>{{ 'IDEA_AUTH.RESEND_CONFIRMATION_LINK_HINT' | translate }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
-        <p class="errorBox" *ngIf="errorMsg">
+        @if (errorMsg) {
+        <p class="errorBox">
           <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
           {{ errorMsg }}
         </p>
+        }
         <ion-item>
           <ion-label position="inline">
             <ion-icon name="person-circle" color="primary" />

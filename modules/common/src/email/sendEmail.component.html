@@ -23,15 +23,19 @@
         <ion-icon slot="icon-only" name="add-circle" />
       </ion-button>
     </ion-list-header>
-    <ion-item *ngIf="!emailWC.to.length">
-      <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
-    </ion-item>
-    <ion-item *ngFor="let x of emailWC.to">
-      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.to, x)">
-        <ion-icon slot="icon-only" name="remove" />
-      </ion-button>
-      <ion-label>{{ x }}</ion-label>
-    </ion-item>
+    @if (!emailWC.to.length) {
+      <ion-item>
+        <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
+      </ion-item>
+    }
+    @for (x of emailWC.to; track x) {
+      <ion-item>
+        <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.to, x)">
+          <ion-icon slot="icon-only" name="remove" />
+        </ion-button>
+        <ion-label>{{ x }}</ion-label>
+      </ion-item>
+    }
     <ion-list-header>
       <ion-label>
         <h2>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}</h2>
@@ -40,15 +44,19 @@
         <ion-icon slot="icon-only" name="add-circle" />
       </ion-button>
     </ion-list-header>
-    <ion-item *ngIf="!emailWC.cc.length">
-      <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
-    </ion-item>
-    <ion-item *ngFor="let x of emailWC.cc">
-      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.cc, x)">
-        <ion-icon slot="icon-only" name="remove" />
-      </ion-button>
-      <ion-label>{{ x }}</ion-label>
-    </ion-item>
+    @if (!emailWC.cc.length) {
+      <ion-item>
+        <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
+      </ion-item>
+    }
+    @for (x of emailWC.cc; track x) {
+      <ion-item>
+        <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.cc, x)">
+          <ion-icon slot="icon-only" name="remove" />
+        </ion-button>
+        <ion-label>{{ x }}</ion-label>
+      </ion-item>
+    }
     <ion-list-header>
       <ion-label>
         <h2>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}</h2>
@@ -57,15 +65,19 @@
         <ion-icon slot="icon-only" name="add-circle" />
       </ion-button>
     </ion-list-header>
-    <ion-item *ngIf="!emailWC.bcc.length">
-      <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
-    </ion-item>
-    <ion-item *ngFor="let x of emailWC.bcc">
-      <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.bcc, x)">
-        <ion-icon slot="icon-only" name="remove" />
-      </ion-button>
-      <ion-label>{{ x }}</ion-label>
-    </ion-item>
+    @if (!emailWC.bcc.length) {
+      <ion-item>
+        <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
+      </ion-item>
+    }
+    @for (x of emailWC.bcc; track x) {
+      <ion-item>
+        <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.bcc, x)">
+          <ion-icon slot="icon-only" name="remove" />
+        </ion-button>
+        <ion-label>{{ x }}</ion-label>
+      </ion-item>
+    }
     <ion-list-header>
       <ion-label>
         <h2>{{ 'IDEA_COMMON.EMAIL.SUBJECT' | translate }}</h2>
@@ -88,9 +100,13 @@
         <h2>{{ 'IDEA_COMMON.EMAIL.ATTACHMENTS' | translate }}</h2>
       </ion-label>
     </ion-list-header>
-    <ion-item *ngIf="!attachments.length">
-      <i>{{ 'IDEA_COMMON.EMAIL.NO_ATTACHMENTS' | translate }}</i>
-    </ion-item>
-    <ion-item *ngFor="let a of attachments"><ion-icon slot="start" name="attach" />{{ a }}</ion-item>
+    @if (!attachments.length) {
+      <ion-item>
+        <i>{{ 'IDEA_COMMON.EMAIL.NO_ATTACHMENTS' | translate }}</i>
+      </ion-item>
+    }
+    @for (a of attachments; track a) {
+      <ion-item><ion-icon slot="start" name="attach" />{{ a }}</ion-item>
+    }
   </ion-list>
 </ion-content>

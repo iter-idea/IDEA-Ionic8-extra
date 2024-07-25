@@ -9,12 +9,16 @@
       {{ 'IDEA_COMMON.SIGNATURE.SIGNATURE' | translate }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" *ngIf="existingSignature" (click)="undo()">
-        <ion-icon name="arrow-undo" slot="icon-only" />
-      </ion-button>
-      <ion-button [title]="'IDEA_COMMON.SIGNATURE.SAVE_SIGNATURE' | translate" *ngIf="canEdit()" (click)="save()">
-        <ion-icon name="checkmark" slot="icon-only" />
-      </ion-button>
+      @if (existingSignature) {
+        <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" (click)="undo()">
+          <ion-icon name="arrow-undo" slot="icon-only" />
+        </ion-button>
+      }
+      @if (canEdit()) {
+        <ion-button [title]="'IDEA_COMMON.SIGNATURE.SAVE_SIGNATURE' | translate" (click)="save()">
+          <ion-icon name="checkmark" slot="icon-only" />
+        </ion-button>
+      }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -31,16 +35,17 @@
         [class.fieldHasError]="signatoryError"
         [(ngModel)]="signature.signatory"
       />
-      <ion-button
-        fill="clear"
-        color="dark"
-        slot="end"
-        *ngIf="contacts.length && canEdit()"
-        [title]="t._('IDEA_COMMON.SIGNATURE.CHOOSE_FROM_CONTACTS')"
-        (click)="pickSignatory()"
-      >
-        <ion-icon name="person-circle" slot="icon-only" />
-      </ion-button>
+      @if (contacts.length && canEdit()) {
+        <ion-button
+          fill="clear"
+          color="dark"
+          slot="end"
+          [title]="t._('IDEA_COMMON.SIGNATURE.CHOOSE_FROM_CONTACTS')"
+          (click)="pickSignatory()"
+        >
+          <ion-icon name="person-circle" slot="icon-only" />
+        </ion-button>
+      }
     </ion-item>
   </ion-list>
   <ion-list class="aList">
@@ -50,12 +55,14 @@
     <div class="canvasContainer" [class.fieldHasError]="signatureError">
       <canvas id="signatureCanvas"></canvas>
     </div>
-    <ion-row *ngIf="canEdit()">
-      <ion-col class="ion-text-right">
-        <ion-button fill="clear" [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" (click)="clear()">
-          <ion-icon name="trash-outline" slot="icon-only" />
-        </ion-button>
-      </ion-col>
-    </ion-row>
+    @if (canEdit()) {
+      <ion-row>
+        <ion-col class="ion-text-right">
+          <ion-button fill="clear" [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" (click)="clear()">
+            <ion-icon name="trash-outline" slot="icon-only" />
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    }
   </ion-list>
 </ion-content>

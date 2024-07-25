@@ -1,24 +1,34 @@
-<ion-item lines="none" *ngIf="!block.sectionsLegend.length">
-  <ion-label>
-    <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
-  </ion-label>
-</ion-item>
-<ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderSectionsLegend($event)">
-  <ion-item *ngFor="let s of block.sectionsLegend" button detail [lines]="lines" (click)="openSection(s)">
-    <ion-reorder slot="start" *ngIf="!disabled" />
+@if (!block.sectionsLegend.length) {
+  <ion-item lines="none">
     <ion-label>
-      {{ block.sections[s].name | label }}
-      <p>{{ block.sections[s].description | label }}</p>
+      <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
     </ion-label>
-    <ion-button slot="end" fill="clear" color="danger" *ngIf="!disabled" (click)="removeSection(s, $event)">
-      <ion-icon icon="trash-outline" slot="icon-only" />
-    </ion-button>
   </ion-item>
+}
+<ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderSectionsLegend($event)">
+  @for (s of block.sectionsLegend; track s) {
+    <ion-item button detail [lines]="lines" (click)="openSection(s)">
+      @if (!disabled) {
+        <ion-reorder slot="start" />
+      }
+      <ion-label>
+        {{ block.sections[s].name | label }}
+        <p>{{ block.sections[s].description | label }}</p>
+      </ion-label>
+      @if (!disabled) {
+        <ion-button slot="end" fill="clear" color="danger" (click)="removeSection(s, $event)">
+          <ion-icon icon="trash-outline" slot="icon-only" />
+        </ion-button>
+      }
+    </ion-item>
+  }
 </ion-reorder-group>
-<ion-row *ngIf="!disabled">
-  <ion-col class="ion-padding ion-text-center">
-    <ion-button size="small" color="primary" (click)="addNewSection()">
-      {{ 'IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION' | translate }}
-    </ion-button>
-  </ion-col>
-</ion-row>
+@if (!disabled) {
+  <ion-row>
+    <ion-col class="ion-padding ion-text-center">
+      <ion-button size="small" color="primary" (click)="addNewSection()">
+        {{ 'IDEA_COMMON.CUSTOM_FIELDS.ADD_SECTION' | translate }}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+}

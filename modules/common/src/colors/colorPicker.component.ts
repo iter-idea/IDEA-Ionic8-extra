@@ -89,16 +89,20 @@ export class IDEAColorPickerComponent {
     <ion-content>
       <ion-grid>
         <ion-row>
-          <ion-col *ngFor="let c of colors" [size]="2">
-            <ion-avatar
-              class="colorCircle tappable"
-              [style.background-color]="c.hex"
-              [title]="c.name || c.hex"
-              (click)="pick(c.hex)"
-            >
-              <ion-icon name="checkmark" *ngIf="c.hex === current" />
-            </ion-avatar>
-          </ion-col>
+          @for (c of colors; track c) {
+            <ion-col [size]="2">
+              <ion-avatar
+                class="colorCircle tappable"
+                [style.background-color]="c.hex"
+                [title]="c.name || c.hex"
+                (click)="pick(c.hex)"
+              >
+                @if (c.hex === current) {
+                  <ion-icon name="checkmark" />
+                }
+              </ion-avatar>
+            </ion-col>
+          }
         </ion-row>
       </ion-grid>
     </ion-content>

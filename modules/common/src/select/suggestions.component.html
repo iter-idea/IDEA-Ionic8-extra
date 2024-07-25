@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
-      <ion-button *ngIf="!mustChoose" [title]="t._('IDEA_COMMON.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
-        <ion-icon slot="icon-only" icon="chevron-down" />
-      </ion-button>
+      @if (!mustChoose) {
+        <ion-button [title]="t._('IDEA_COMMON.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
+          <ion-icon slot="icon-only" icon="chevron-down" />
+        </ion-button>
+      }
     </ion-buttons>
     <ion-searchbar
       #searchbar
@@ -12,99 +14,123 @@
       [class.withAdditionalToolbar]="showCategoriesFilters || detailsAreAvailable"
       (ionInput)="search($event.target.value)"
     />
-    <ion-buttons slot="end" *ngIf="!hideClearButton">
-      <ion-button [title]="t._('IDEA_COMMON.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
-        <ion-icon slot="icon-only" icon="backspace" />
-      </ion-button>
-    </ion-buttons>
-    <div class="additionalToolbar" *ngIf="showCategoriesFilters || detailsAreAvailable">
-      <ion-button color="light" size="small" *ngIf="detailsAreAvailable" (click)="toggleDetailsVisibilityPreference()">
-        <ion-icon [icon]="shouldShowDetails ? 'eye-off' : 'eye'" slot="start" />
-        {{ (shouldShowDetails ? 'IDEA_COMMON.SELECT.HIDE_DETAILS' : 'IDEA_COMMON.SELECT.SHOW_DETAILS') | translate }}
-      </ion-button>
-      <ion-button
-        color="light"
-        size="small"
-        *ngIf="activeCategories1?.size"
-        [class.strong]="category1"
-        (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
-      >
-        <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
-        {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
-      </ion-button>
-      <ion-button
-        color="light"
-        size="small"
-        *ngIf="activeCategories2?.size"
-        [class.strong]="category2"
-        (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
-      >
-        <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
-        {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
-      </ion-button>
-    </div>
+    @if (!hideClearButton) {
+      <ion-buttons slot="end">
+        <ion-button [title]="t._('IDEA_COMMON.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
+          <ion-icon slot="icon-only" icon="backspace" />
+        </ion-button>
+      </ion-buttons>
+    }
+    @if (showCategoriesFilters || detailsAreAvailable) {
+      <div class="additionalToolbar">
+        @if (detailsAreAvailable) {
+          <ion-button color="light" size="small" (click)="toggleDetailsVisibilityPreference()">
+            <ion-icon [icon]="shouldShowDetails ? 'eye-off' : 'eye'" slot="start" />
+            {{
+              (shouldShowDetails ? 'IDEA_COMMON.SELECT.HIDE_DETAILS' : 'IDEA_COMMON.SELECT.SHOW_DETAILS') | translate
+            }}
+          </ion-button>
+        }
+        @if (activeCategories1?.size) {
+          <ion-button
+            color="light"
+            size="small"
+            [class.strong]="category1"
+            (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
+          >
+            <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
+            {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+          </ion-button>
+        }
+        @if (activeCategories2?.size) {
+          <ion-button
+            color="light"
+            size="small"
+            [class.strong]="category2"
+            (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
+          >
+            <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
+            {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+          </ion-button>
+        }
+      </div>
+    }
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list class="suggestionsList">
-    <ion-item lines="none" *ngIf="!suggestions.length && !(allowUnlistedValues && searchbar.value)">
-      <ion-label>
-        <i>
-          {{
-            noElementsFoundText ??
-              ((allowUnlistedValues
-                ? 'IDEA_COMMON.SELECT.NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE'
-                : 'IDEA_COMMON.SELECT.NO_ELEMENTS_FOUND'
-              ) | translate)
-          }}
+    @if (!suggestions.length && !(allowUnlistedValues && searchbar.value)) {
+      <ion-item lines="none">
+        <ion-label>
+          <i>
+            {{
+              noElementsFoundText ??
+                ((allowUnlistedValues
+                  ? 'IDEA_COMMON.SELECT.NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE'
+                  : 'IDEA_COMMON.SELECT.NO_ELEMENTS_FOUND'
+                ) | translate)
+            }}
+          </i>
+        </ion-label>
+      </ion-item>
+    }
+    @if (allowUnlistedValues && searchbar.value) {
+      <ion-item
+        class="suggestion"
+        [button]="true"
+        [title]="t._('IDEA_COMMON.SELECT.SELECT_', { suggestion: searchbar.value })"
+        (click)="select({ value: searchbar.value })"
+      >
+        @if (allowUnlistedValuesPrefix) {
+          <ion-badge slot="start">{{ allowUnlistedValuesPrefix }}</ion-badge>
+        }
+        <!-- the "key" class is used for keyboard controls -->
+        <i class="key">
+          {{ searchbar.value }}
         </i>
-      </ion-label>
-    </ion-item>
-    <ion-item
-      class="suggestion"
-      *ngIf="allowUnlistedValues && searchbar.value"
-      [button]="true"
-      [title]="t._('IDEA_COMMON.SELECT.SELECT_', { suggestion: searchbar.value })"
-      (click)="select({ value: searchbar.value })"
-    >
-      <ion-badge slot="start" *ngIf="allowUnlistedValuesPrefix">{{ allowUnlistedValuesPrefix }}</ion-badge>
-      <!-- the "key" class is used for keyboard controls -->
-      <i class="key">
-        {{ searchbar.value }}
-      </i>
-    </ion-item>
-    <ion-item
-      class="suggestion"
-      *ngFor="let suggestion of suggestions"
-      button
-      [title]="t._('IDEA_COMMON.SELECT.SELECT_', { suggestion: suggestion.name ?? suggestion.value })"
-      (click)="select(suggestion)"
-    >
-      <ion-label>
-        <p class="categories" *ngIf="shouldShowDetails && (suggestion.category1 ?? suggestion.category2)">
-          <ion-text *ngIf="suggestion.category1" [innerHTML]="suggestion.category1 | boldprefix : searchbar.value" />
-          <ion-text *ngIf="suggestion.category1 && suggestion.category2" class="categoriesDivider"> | </ion-text>
-          <ion-text *ngIf="suggestion.category2" [innerHTML]="suggestion.category2 | boldprefix : searchbar.value" />
-        </p>
-        <!-- the "key" div is used for keyboard controls -->
-        <div class="key" style="display: none">
-          {{ suggestion.value }}
-        </div>
-        <ion-text [innerHTML]="suggestion.name ?? suggestion.value | boldprefix : searchbar.value" />
-        <ion-text color="medium" class="ion-text-wrap">
-          <p
-            *ngIf="suggestion.name && !hideIdFromUI && shouldShowDetails"
-            [innerHTML]="suggestion.value | boldprefix : searchbar.value"
-          ></p>
-          <p
-            class="description"
-            *ngIf="suggestion.description && shouldShowDetails"
-            [innerHTML]="suggestion.description | boldprefix : searchbar.value"
-            [class.marginTop]="suggestion.name && !hideIdFromUI && shouldShowDetails"
-          ></p>
-        </ion-text>
-      </ion-label>
-    </ion-item>
+      </ion-item>
+    }
+    @for (suggestion of suggestions; track suggestion) {
+      <ion-item
+        class="suggestion"
+        button
+        [title]="t._('IDEA_COMMON.SELECT.SELECT_', { suggestion: suggestion.name ?? suggestion.value })"
+        (click)="select(suggestion)"
+      >
+        <ion-label>
+          @if (shouldShowDetails && (suggestion.category1 ?? suggestion.category2)) {
+            <p class="categories">
+              @if (suggestion.category1) {
+                <ion-text [innerHTML]="suggestion.category1 | boldprefix: searchbar.value" />
+              }
+              @if (suggestion.category1 && suggestion.category2) {
+                <ion-text class="categoriesDivider"> | </ion-text>
+              }
+              @if (suggestion.category2) {
+                <ion-text [innerHTML]="suggestion.category2 | boldprefix: searchbar.value" />
+              }
+            </p>
+          }
+          <!-- the "key" div is used for keyboard controls -->
+          <div class="key" style="display: none">
+            {{ suggestion.value }}
+          </div>
+          <ion-text [innerHTML]="suggestion.name ?? suggestion.value | boldprefix: searchbar.value" />
+          <ion-text color="medium" class="ion-text-wrap">
+            @if (suggestion.name && !hideIdFromUI && shouldShowDetails) {
+              <p [innerHTML]="suggestion.value | boldprefix: searchbar.value"></p>
+            }
+            @if (suggestion.description && shouldShowDetails) {
+              <p
+                class="description"
+                [innerHTML]="suggestion.description | boldprefix: searchbar.value"
+                [class.marginTop]="suggestion.name && !hideIdFromUI && shouldShowDetails"
+              ></p>
+            }
+          </ion-text>
+        </ion-label>
+      </ion-item>
+    }
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
     <ion-infinite-scroll-content />

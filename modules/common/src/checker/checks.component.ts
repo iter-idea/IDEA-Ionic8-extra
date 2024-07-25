@@ -111,9 +111,6 @@ export class IDEAChecksComponent implements OnInit {
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
-  trackBy(_: number, check: Check): string | number {
-    return check.value;
-  }
 
   async setFilterCategoryN(whichCategory: number): Promise<void> {
     const categories = whichCategory === 2 ? this.activeCategories2 : this.activeCategories1;

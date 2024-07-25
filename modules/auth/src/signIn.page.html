@@ -1,7 +1,9 @@
 <ion-content>
-  <ion-card color="warning" *ngIf="newAccountRegistered">
+  @if (newAccountRegistered) {
+  <ion-card color="warning">
     <ion-card-content>{{ 'IDEA_AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN' | translate }}</ion-card-content>
   </ion-card>
+  }
   <form class="flexBox">
     <div>
       <ion-card class="authCard">
@@ -10,13 +12,16 @@
           [src]="darkMode ? 'assets/icons/icon-auth-alt.svg' : 'assets/icons/icon-auth.svg'"
         />
         <ion-card-header>
-          <ion-card-title color="primary" *ngIf="title">{{ title }}</ion-card-title>
-          <ion-card-subtitle *ngIf="translationExists('IDEA_VARIABLES.TAGLINE')">
-            {{ 'IDEA_VARIABLES.TAGLINE' | translate }}
-          </ion-card-subtitle>
+          @if (title) {
+          <ion-card-title color="primary">{{ title }}</ion-card-title>
+          } @if (translationExists('IDEA_VARIABLES.TAGLINE')) {
+          <ion-card-subtitle> {{ 'IDEA_VARIABLES.TAGLINE' | translate }} </ion-card-subtitle>
+          }
         </ion-card-header>
         <ion-card-content>
-          <p class="errorBox" *ngIf="errorMsg"><b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg }}</p>
+          @if (errorMsg) {
+          <p class="errorBox"><b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg }}</p>
+          }
           <ion-item>
             <ion-label position="inline">
               <ion-icon name="person-circle" color="primary" />
@@ -53,45 +58,39 @@
               (keyup.enter)="login()"
             />
           </ion-item>
-          <ion-row
-            class="agreementsAcceptanceRow"
-            *ngIf="
-              !registrationPossible &&
-              (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL'))
-            "
-          >
+          @if (!registrationPossible && (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') ||
+          translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL'))) {
+          <ion-row class="agreementsAcceptanceRow">
             <ion-col>
               <ion-checkbox size="small" [ngModelOptions]="{ standalone: true }" [(ngModel)]="agreementsCheck" />
-              {{ 'IDEA_AUTH.AGREEMENTS_CHECK_LOGIN' | translate }}:
+              {{ 'IDEA_AUTH.AGREEMENTS_CHECK_LOGIN' | translate }}: @if
+              (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
               <a
                 ion-text
                 color="primary"
                 target="_blank"
-                *ngIf="translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
                 [title]="'IDEA_AUTH.TERMS_AND_CONDITIONS_HINT' | translate"
                 [href]="'IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL' | translate"
               >
                 {{ 'IDEA_AUTH.TERMS_AND_CONDITIONS' | translate }}
               </a>
-              <ion-text
-                *ngIf="
-                translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL') && translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
-                "
-              >
-                &
-              </ion-text>
+              } @if ( translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL') &&
+              translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') ) {
+              <ion-text> & </ion-text>
+              } @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
               <a
                 ion-text
                 color="primary"
                 target="_blank"
-                *ngIf="translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
                 [title]="'IDEA_AUTH.PRIVACY_POLICY_HINT' | translate"
                 [href]="'IDEA_VARIABLES.PRIVACY_POLICY_URL' | translate"
               >
                 {{ 'IDEA_AUTH.PRIVACY_POLICY' | translate }}
               </a>
+              }
             </ion-col>
           </ion-row>
+          }
           <ion-button
             expand="block"
             [disabled]="!agreementsCheck"
@@ -100,16 +99,17 @@
           >
             {{ 'IDEA_AUTH.SIGN_IN' | translate }}
           </ion-button>
+          @if (registrationPossible) {
           <ion-button
             fill="clear"
             expand="block"
             class="smallCaseButton"
-            *ngIf="registrationPossible"
             [title]="'IDEA_AUTH.CREATE_AN_ACCOUNT_HINT' | translate"
             (click)="goToRegistration()"
           >
             {{ 'IDEA_AUTH.CREATE_AN_ACCOUNT' | translate }}
           </ion-button>
+          }
           <ion-button
             fill="clear"
             expand="block"
@@ -119,26 +119,28 @@
           >
             {{ 'IDEA_AUTH.I_FORGOT_MY_PASSWORD' | translate }}
           </ion-button>
+          @if (hasIntroPage) {
           <ion-button
             fill="clear"
             expand="block"
             color="medium"
             class="smallCaseButton"
-            *ngIf="hasIntroPage"
             [title]="'IDEA_AUTH.BACK_TO_INTRO_HINT' | translate"
             (click)="goToIntro()"
           >
             {{ 'IDEA_AUTH.BACK_TO_INTRO' | translate }}
           </ion-button>
+          }
         </ion-card-content>
       </ion-card>
+      @if (website) {
       <ion-img
         class="ideaLogo"
-        *ngIf="website"
         [src]="darkMode ? './assets/icons/idea-alt.png' : './assets/icons/idea.png'"
         [title]="'IDEA_AUTH.IDEA_TAGLINE' | translate"
         (click)="openLink(website)"
       />
+      }
     </div>
   </form>
 </ion-content>

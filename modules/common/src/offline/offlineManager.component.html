@@ -17,101 +17,125 @@
 </ion-header>
 <ion-content>
   <ion-list class="aList">
-    <ion-list-header *ngIf="!_offline.synchronizing && _offline.requiresManualConfirmation">
-      <ion-label>
-        <h2>{{ 'IDEA_COMMON.OFFLINE.HUGE_SYNC_NEED_MANUAL_CONFIRMATION' | translate }}</h2>
-      </ion-label>
-    </ion-list-header>
-    <ion-list-header *ngIf="!_offline.synchronizing">
-      <ion-label class="ion-text-wrap">
-        <h3 class="lastSyncAt">
-          {{ 'IDEA_COMMON.OFFLINE.LAST_SYNC' | translate }}:
-          <ion-text>
-            {{
-              _offline.lastSyncAt
-                ? (_offline.lastSyncAt | dateLocale : 'medium')
-                : ('IDEA_COMMON.OFFLINE.NEVER' | translate)
-            }}
-          </ion-text>
-        </h3>
-        <p *ngIf="_offline.errorInLastSync">
-          <ion-text color="danger">
-            <b>{{ 'IDEA_COMMON.OFFLINE.ERROR_DURING_LAST_SYNC' | translate }}</b>
-          </ion-text>
-        </p>
-      </ion-label>
-      <ion-button
-        size="small"
-        fill="solid"
-        [color]="_offline.errorInLastSync ? 'danger' : 'dark'"
-        [disabled]="_offline.isOffline()"
-        (click)="sync()"
-      >
-        <ion-icon slot="start" name="sync" /> {{ 'IDEA_COMMON.OFFLINE.SYNC_NOW' | translate }}
-      </ion-button>
-    </ion-list-header>
+    @if (!_offline.synchronizing && _offline.requiresManualConfirmation) {
+      <ion-list-header>
+        <ion-label>
+          <h2>{{ 'IDEA_COMMON.OFFLINE.HUGE_SYNC_NEED_MANUAL_CONFIRMATION' | translate }}</h2>
+        </ion-label>
+      </ion-list-header>
+    }
+    @if (!_offline.synchronizing) {
+      <ion-list-header>
+        <ion-label class="ion-text-wrap">
+          <h3 class="lastSyncAt">
+            {{ 'IDEA_COMMON.OFFLINE.LAST_SYNC' | translate }}:
+            <ion-text>
+              {{
+                _offline.lastSyncAt
+                  ? (_offline.lastSyncAt | dateLocale: 'medium')
+                  : ('IDEA_COMMON.OFFLINE.NEVER' | translate)
+              }}
+            </ion-text>
+          </h3>
+          @if (_offline.errorInLastSync) {
+            <p>
+              <ion-text color="danger">
+                <b>{{ 'IDEA_COMMON.OFFLINE.ERROR_DURING_LAST_SYNC' | translate }}</b>
+              </ion-text>
+            </p>
+          }
+        </ion-label>
+        <ion-button
+          size="small"
+          fill="solid"
+          [color]="_offline.errorInLastSync ? 'danger' : 'dark'"
+          [disabled]="_offline.isOffline()"
+          (click)="sync()"
+        >
+          <ion-icon slot="start" name="sync" /> {{ 'IDEA_COMMON.OFFLINE.SYNC_NOW' | translate }}
+        </ion-button>
+      </ion-list-header>
+    }
   </ion-list>
-  <ion-list class="aList" *ngIf="_offline.synchronizing">
-    <ion-item>
-      <ion-label class="ion-text-center">
-        <ion-spinner name="crescent" color="primary" />
-      </ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-list class="aList" *ngIf="_offline.useQueueAPIRequests">
-    <ion-list-header>
-      <ion-label>
-        <h2>{{ 'IDEA_COMMON.OFFLINE.UPLOAD' | translate }}</h2>
-        <p>{{ 'IDEA_COMMON.OFFLINE.UPLOAD_QUEUE_REQUESTS_EXPLANATION' | translate }}</p>
-      </ion-label>
-    </ion-list-header>
-    <ion-item *ngIf="!_offline.queueAPIRequests.length">
-      <i>{{ 'IDEA_COMMON.OFFLINE.NO_ELEMENTS_TO_UPLOAD' | translate }}</i>
-      <ion-icon slot="end" size="small" name="checkmark" color="success" />
-    </ion-item>
-    <ion-item *ngFor="let r of _offline.queueAPIRequests; let odd = odd" [class.oddItem]="odd">
-      <ion-label class="ion-text-wrap">
-        {{ r.description }}
-        <p *ngIf="r.error">
-          <ion-text color="danger">
-            <b>{{ 'IDEA_COMMON.OFFLINE.ERROR_CODE' | translate }}: {{ r.error }}</b>
-          </ion-text>
-          <br />
-          {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_I' | translate }}<br />
-          {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_II' | translate }}<br />
-          {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_III' | translate }}
-        </p>
-      </ion-label>
-      <ion-button
-        fill="clear"
-        slot="end"
-        color="danger"
-        *ngIf="r.error"
-        [title]="t._('IDEA_COMMON.OFFLINE.CANCEL_REQUEST')"
-        (click)="deleteRequest(r)"
-      >
-        <ion-icon slot="icon-only" name="trash" />
-      </ion-button>
-      <ion-button
-        fill="clear"
-        slot="end"
-        color="medium"
-        *ngIf="r.error"
-        [title]="t._('IDEA_COMMON.OFFLINE.DOWNLOAD_LOG')"
-        (click)="downloadRequestLog(r)"
-      >
-        <ion-icon slot="icon-only" name="download" />
-      </ion-button>
-      <ion-spinner slot="end" name="dots" *ngIf="_offline.synchronizing" />
-    </ion-item>
-  </ion-list>
-  <ion-list class="aList" *ngIf="_offline.getResources().length">
-    <ion-list-header>
-      <ion-label>
-        <h2>{{ 'IDEA_COMMON.OFFLINE.DOWNLOAD' | translate }}</h2>
-        <p>{{ 'IDEA_COMMON.OFFLINE.DOWNLOAD_RESOURCES_EXPLANATION' | translate }}</p>
-      </ion-label>
-    </ion-list-header>
-    <idea-cacheable-resource *ngFor="let r of _offline.getResources()" [resource]="_offline.getCacheableResource(r)" />
-  </ion-list>
+  @if (_offline.synchronizing) {
+    <ion-list class="aList">
+      <ion-item>
+        <ion-label class="ion-text-center">
+          <ion-spinner name="crescent" color="primary" />
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  }
+  @if (_offline.useQueueAPIRequests) {
+    <ion-list class="aList">
+      <ion-list-header>
+        <ion-label>
+          <h2>{{ 'IDEA_COMMON.OFFLINE.UPLOAD' | translate }}</h2>
+          <p>{{ 'IDEA_COMMON.OFFLINE.UPLOAD_QUEUE_REQUESTS_EXPLANATION' | translate }}</p>
+        </ion-label>
+      </ion-list-header>
+      @if (!_offline.queueAPIRequests.length) {
+        <ion-item>
+          <i>{{ 'IDEA_COMMON.OFFLINE.NO_ELEMENTS_TO_UPLOAD' | translate }}</i>
+          <ion-icon slot="end" size="small" name="checkmark" color="success" />
+        </ion-item>
+      }
+      @for (r of _offline.queueAPIRequests; track r; let odd = $odd) {
+        <ion-item [class.oddItem]="odd">
+          <ion-label class="ion-text-wrap">
+            {{ r.description }}
+            @if (r.error) {
+              <p>
+                <ion-text color="danger">
+                  <b>{{ 'IDEA_COMMON.OFFLINE.ERROR_CODE' | translate }}: {{ r.error }}</b>
+                </ion-text>
+                <br />
+                {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_I' | translate }}<br />
+                {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_II' | translate }}<br />
+                {{ 'IDEA_COMMON.OFFLINE.REQUEST_FAILED_EXPLANATION_III' | translate }}
+              </p>
+            }
+          </ion-label>
+          @if (r.error) {
+            <ion-button
+              fill="clear"
+              slot="end"
+              color="danger"
+              [title]="t._('IDEA_COMMON.OFFLINE.CANCEL_REQUEST')"
+              (click)="deleteRequest(r)"
+            >
+              <ion-icon slot="icon-only" name="trash" />
+            </ion-button>
+          }
+          @if (r.error) {
+            <ion-button
+              fill="clear"
+              slot="end"
+              color="medium"
+              [title]="t._('IDEA_COMMON.OFFLINE.DOWNLOAD_LOG')"
+              (click)="downloadRequestLog(r)"
+            >
+              <ion-icon slot="icon-only" name="download" />
+            </ion-button>
+          }
+          @if (_offline.synchronizing) {
+            <ion-spinner slot="end" name="dots" />
+          }
+        </ion-item>
+      }
+    </ion-list>
+  }
+  @if (_offline.getResources().length) {
+    <ion-list class="aList">
+      <ion-list-header>
+        <ion-label>
+          <h2>{{ 'IDEA_COMMON.OFFLINE.DOWNLOAD' | translate }}</h2>
+          <p>{{ 'IDEA_COMMON.OFFLINE.DOWNLOAD_RESOURCES_EXPLANATION' | translate }}</p>
+        </ion-label>
+      </ion-list-header>
+      @for (r of _offline.getResources(); track r) {
+        <idea-cacheable-resource [resource]="_offline.getCacheableResource(r)" />
+      }
+    </ion-list>
+  }
 </ion-content>

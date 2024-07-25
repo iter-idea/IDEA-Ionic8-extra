@@ -7,29 +7,36 @@
   [class.withLabel]="label"
   (click)="openEmailDataConfiguration()"
 >
-  <ion-button
-    fill="clear"
-    slot="start"
-    *ngIf="icon"
-    [color]="iconColor"
-    [class.marginTop]="label"
-    (click)="doIconSelect($event)"
-  >
-    <ion-icon [name]="icon" slot="icon-only" />
-  </ion-button>
-  <ion-label position="stacked" *ngIf="label">{{ label }}</ion-label>
+  @if (icon) {
+    <ion-button fill="clear" slot="start" [color]="iconColor" [class.marginTop]="label" (click)="doIconSelect($event)">
+      <ion-icon [name]="icon" slot="icon-only" />
+    </ion-button>
+  }
+  @if (label) {
+    <ion-label position="stacked">{{ label }}</ion-label>
+  }
   <div class="description">
-    <div class="placeholder" *ngIf="!emailData.subject">{{ placeholder }}</div>
-    <div *ngIf="emailData.subject" [innerHTML]="emailData.subject | highlight : variablesPlain"></div>
-    <p *ngIf="emailData.to.length">
-      <ion-text>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}:</ion-text> {{ emailData.to.join(', ') }}
-    </p>
-    <p *ngIf="emailData.cc.length">
-      <ion-text>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}:</ion-text> {{ emailData.cc.join(', ') }}
-    </p>
-    <p *ngIf="emailData.bcc.length">
-      <ion-text>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}:</ion-text> {{ emailData.bcc.join(', ') }}
-    </p>
+    @if (!emailData.subject) {
+      <div class="placeholder">{{ placeholder }}</div>
+    }
+    @if (emailData.subject) {
+      <div [innerHTML]="emailData.subject | highlight: variablesPlain"></div>
+    }
+    @if (emailData.to.length) {
+      <p>
+        <ion-text>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}:</ion-text> {{ emailData.to.join(', ') }}
+      </p>
+    }
+    @if (emailData.cc.length) {
+      <p>
+        <ion-text>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}:</ion-text> {{ emailData.cc.join(', ') }}
+      </p>
+    }
+    @if (emailData.bcc.length) {
+      <p>
+        <ion-text>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}:</ion-text> {{ emailData.bcc.join(', ') }}
+      </p>
+    }
   </div>
   <ion-icon slot="end" name="chevron-forward" class="selectIcon" />
 </ion-item>

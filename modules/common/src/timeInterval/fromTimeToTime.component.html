@@ -170,9 +170,13 @@
       <ion-col class="ion-text-center displayText" [size]="4">
         <ion-text [class.fromSelected]="segment === Segments.TO">
           {{ 'IDEA_COMMON.FTTT.FROM' | translate }}
-          <span *ngIf="segment === Segments.TO">{{ msToTimeString(_timeInterval.from) }}</span>
+          @if (segment === Segments.TO) {
+            <span>{{ msToTimeString(_timeInterval.from) }}</span>
+          }
         </ion-text>
-        <ion-text *ngIf="segment === Segments.TO">{{ 'IDEA_COMMON.FTTT.TO' | translate }}</ion-text>
+        @if (segment === Segments.TO) {
+          <ion-text>{{ 'IDEA_COMMON.FTTT.TO' | translate }}</ion-text>
+        }
       </ion-col>
       <ion-col class="ion-text-right" [size]="2">
         <ion-button

@@ -6,10 +6,12 @@
         <ion-card-subtitle>{{ 'IDEA_AUTH.REGISTER_A_NEW_ACCOUNT_TO_THE_SYSTEM' | translate }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
-        <p class="errorBox" *ngIf="errorMsg">
+        @if (errorMsg) {
+        <p class="errorBox">
           <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
           {{ errorMsg }}
         </p>
+        }
         <ion-item>
           <ion-label position="inline">
             <ion-icon name="person-circle" color="primary" />
@@ -49,42 +51,39 @@
             <ion-icon icon="help-circle-outline" slot="icon-only" />
           </ion-button>
         </ion-item>
-        <ion-row
-          class="agreementsAcceptanceRow"
-          *ngIf="translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') || translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
-        >
+        @if (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') ||
+        translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
+        <ion-row class="agreementsAcceptanceRow">
           <ion-col>
             <ion-checkbox size="small" [ngModelOptions]="{ standalone: true }" [(ngModel)]="agreementsCheck" />
-            {{ 'IDEA_AUTH.AGREEMENTS_CHECK_REGISTRATION' | translate }}:
+            {{ 'IDEA_AUTH.AGREEMENTS_CHECK_REGISTRATION' | translate }}: @if
+            (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
             <a
               ion-text
               color="primary"
               target="_blank"
-              *ngIf="translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')"
               [title]="'IDEA_AUTH.TERMS_AND_CONDITIONS_HINT' | translate"
               [href]="'IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL' | translate"
             >
               {{ 'IDEA_AUTH.TERMS_AND_CONDITIONS' | translate }}
             </a>
-            <ion-text
-              *ngIf="
-              translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL') && translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
-              "
-            >
-              &
-            </ion-text>
+            } @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL') &&
+            translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
+            <ion-text> & </ion-text>
+            } @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
             <a
               ion-text
               color="primary"
               target="_blank"
-              *ngIf="translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')"
               [title]="'IDEA_AUTH.PRIVACY_POLICY_HINT' | translate"
               [href]="'IDEA_VARIABLES.PRIVACY_POLICY_URL' | translate"
             >
               {{ 'IDEA_AUTH.PRIVACY_POLICY' | translate }}
             </a>
+            }
           </ion-col>
         </ion-row>
+        }
         <ion-button
           expand="block"
           [disabled]="!agreementsCheck"

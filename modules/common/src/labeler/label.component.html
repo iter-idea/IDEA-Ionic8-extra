@@ -7,27 +7,26 @@
   [class.withLabel]="label"
   (click)="edit()"
 >
-  <ion-button
-    fill="clear"
-    slot="start"
-    *ngIf="icon"
-    [color]="iconColor"
-    [class.marginTop]="label"
-    (click)="doIconSelect($event)"
-  >
-    <ion-icon [icon]="icon" slot="icon-only" />
-  </ion-button>
-  <ion-label position="stacked" *ngIf="label">
-    {{ label }} <ion-text class="obligatoryDot" *ngIf="!disabled && obligatory" />
-  </ion-label>
+  @if (icon) {
+    <ion-button fill="clear" slot="start" [color]="iconColor" [class.marginTop]="label" (click)="doIconSelect($event)">
+      <ion-icon [icon]="icon" slot="icon-only" />
+    </ion-button>
+  }
+  @if (label) {
+    <ion-label position="stacked">
+      {{ label }}
+      @if (!disabled && obligatory) {
+        <ion-text class="obligatoryDot" />
+      }
+    </ion-label>
+  }
   <div class="description">
-    <div class="placeholder" *ngIf="!htmlContent">{{ placeholder }}</div>
-    <div
-      class="innerContent"
-      *ngIf="htmlContent"
-      [class.md]="markdown"
-      [innerHTML]="htmlContent | highlight : variableCodes"
-    ></div>
+    @if (!htmlContent) {
+      <div class="placeholder">{{ placeholder }}</div>
+    }
+    @if (htmlContent) {
+      <div class="innerContent" [class.md]="markdown" [innerHTML]="htmlContent | highlight: variableCodes"></div>
+    }
   </div>
   <ion-icon slot="end" icon="chevron-forward" class="selectIcon" />
 </ion-item>

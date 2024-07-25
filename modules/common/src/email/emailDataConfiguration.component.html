@@ -6,11 +6,13 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ title || 'IDEA_COMMON.EMAIL.EMAIL_DATA' | translate }}</ion-title>
-    <ion-buttons slot="end" *ngIf="!disabled">
-      <ion-button [title]="'COMMON.SAVE' | translate" (click)="save()">
-        <ion-icon name="checkmark-circle" slot="icon-only" />
-      </ion-button>
-    </ion-buttons>
+    @if (!disabled) {
+      <ion-buttons slot="end">
+        <ion-button [title]="'COMMON.SAVE' | translate" (click)="save()">
+          <ion-icon name="checkmark-circle" slot="icon-only" />
+        </ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -35,31 +37,41 @@
     />
     <ion-item [lines]="lines">
       <ion-label position="stacked">{{ 'IDEA_COMMON.EMAIL.SUBJECT' | translate }}</ion-label>
-      <div class="innerContent" *ngIf="disabled" [innerHTML]="emailDataWC.subject | highlight : variablesPlain"></div>
-      <ion-input type="text" *ngIf="!disabled" [(ngModel)]="emailDataWC.subject" />
+      @if (disabled) {
+        <div class="innerContent" [innerHTML]="emailDataWC.subject | highlight: variablesPlain"></div>
+      }
+      @if (!disabled) {
+        <ion-input type="text" [(ngModel)]="emailDataWC.subject" />
+      }
     </ion-item>
     <ion-item [lines]="lines">
       <ion-label position="stacked">{{ 'IDEA_COMMON.EMAIL.CONTENT' | translate }}</ion-label>
-      <div
-        class="innerContent md"
-        *ngIf="disabled"
-        [innerHTML]="mdToHtml(emailDataWC.content) | highlight : variablesPlain"
-      ></div>
-      <ion-textarea maxlength="1000" *ngIf="!disabled" [rows]="8" [(ngModel)]="emailDataWC.content" />
+      @if (disabled) {
+        <div class="innerContent md" [innerHTML]="mdToHtml(emailDataWC.content) | highlight: variablesPlain"></div>
+      }
+      @if (!disabled) {
+        <ion-textarea maxlength="1000" [rows]="8" [(ngModel)]="emailDataWC.content" />
+      }
     </ion-item>
-    <idea-mde-toolbar *ngIf="!disabled" />
+    @if (!disabled) {
+      <idea-mde-toolbar />
+    }
   </ion-list>
-  <ion-list class="aList ion-padding" *ngIf="!disabled">
-    <ion-list-header>
-      <ion-label>
-        <h2>{{ 'IDEA_COMMON.EMAIL.VARIABLES_AVAILABLE' | translate }}</h2>
-        <p>{{ 'IDEA_COMMON.EMAIL.VARIABLES_AVAILABLE_I' | translate }}</p>
-      </ion-label>
-    </ion-list-header>
-    <ul class="variablesList">
-      <li *ngFor="let v of variables">
-        <small>{{ v.code }}</small> {{ v.description }}
-      </li>
-    </ul>
-  </ion-list>
+  @if (!disabled) {
+    <ion-list class="aList ion-padding">
+      <ion-list-header>
+        <ion-label>
+          <h2>{{ 'IDEA_COMMON.EMAIL.VARIABLES_AVAILABLE' | translate }}</h2>
+          <p>{{ 'IDEA_COMMON.EMAIL.VARIABLES_AVAILABLE_I' | translate }}</p>
+        </ion-label>
+      </ion-list-header>
+      <ul class="variablesList">
+        @for (v of variables; track v) {
+          <li>
+            <small>{{ v.code }}</small> {{ v.description }}
+          </li>
+        }
+      </ul>
+    </ion-list>
+  }
 </ion-content>

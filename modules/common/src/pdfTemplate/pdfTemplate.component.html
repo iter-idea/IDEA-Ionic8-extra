@@ -1,23 +1,29 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
-    <ion-buttons slot="start" *ngIf="!isViewLocked()">
-      <ion-button *ngIf="!isInnerLayer()" [title]="'COMMON.CANCEL' | translate" (click)="close()">
-        <ion-icon name="close-circle" slot="icon-only" />
-      </ion-button>
-      <ion-button
-        *ngIf="isInnerLayer()"
-        [title]="'IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK' | translate"
-        (click)="prevLayer()"
-      >
-        <ion-icon name="arrow-back" slot="icon-only" />
-      </ion-button>
-    </ion-buttons>
+    @if (!isViewLocked()) {
+      <ion-buttons slot="start">
+        @if (!isInnerLayer()) {
+          <ion-button [title]="'COMMON.CANCEL' | translate" (click)="close()">
+            <ion-icon name="close-circle" slot="icon-only" />
+          </ion-button>
+        }
+        @if (isInnerLayer()) {
+          <ion-button [title]="'IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK' | translate" (click)="prevLayer()">
+            <ion-icon name="arrow-back" slot="icon-only" />
+          </ion-button>
+        }
+      </ion-buttons>
+    }
     <ion-title>{{ 'IDEA_COMMON.PDF_TEMPLATE.EDIT_TEMPLATE' | translate }}</ion-title>
-    <ion-buttons slot="end" *ngIf="!isViewLocked()">
-      <ion-button *ngIf="!isInnerLayer() && !disabled" [title]="'COMMON.SAVE' | translate" (click)="save()">
-        <ion-icon name="checkmark-circle" slot="icon-only" />
-      </ion-button>
-    </ion-buttons>
+    @if (!isViewLocked()) {
+      <ion-buttons slot="end">
+        @if (!isInnerLayer() && !disabled) {
+          <ion-button [title]="'COMMON.SAVE' | translate" (click)="save()">
+            <ion-icon name="checkmark-circle" slot="icon-only" />
+          </ion-button>
+        }
+      </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -25,294 +31,304 @@
     <ion-list-header>
       <ion-label>
         <h2 class="breadcrumb">
-          <span
-            *ngFor="let c of getBreadcrumb(); let len = count; let index = index; let last = last"
-            [class.last]="last"
-            [class.tappable]="!last && !isViewLocked()"
-            [title]="'IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK' | translate"
-            (click)="prevLayer(len - index - 1)"
-          >
-            {{ c }} <ion-icon *ngIf="!last" name="chevron-forward" />
-          </span>
+          @for (c of getBreadcrumb(); track c; let len = $count; let index = $index; let last = $last) {
+            <span
+              [class.last]="last"
+              [class.tappable]="!last && !isViewLocked()"
+              [title]="'IDEA_COMMON.PDF_TEMPLATE.NAVIGATE_BACK' | translate"
+              (click)="prevLayer(len - index - 1)"
+            >
+              {{ c }}
+              @if (!last) {
+                <ion-icon name="chevron-forward" />
+              }
+            </span>
+          }
         </h2>
         <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.BREADCRUMB_I' | translate }}</p>
         <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.BREADCRUMB_II' | translate }}</p>
         <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INSERT_FIELDS_IN_NORMAL_SECTION' | translate }}</p>
         <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.YOU_CAN_INSERT_SPECIAL_SECTIONS' | translate }}</p>
       </ion-label>
-      <ng-container *ngIf="!disabled">
-        <ion-button
-          color="dark"
-          *ngIf="!editSections"
-          [title]="'IDEA_COMMON.PDF_TEMPLATE.EDIT_SECTIONS' | translate"
-          (click)="editSections = true"
-        >
-          {{ 'IDEA_COMMON.PDF_TEMPLATE.SECTIONS' | translate }}
-          <ion-icon name="pencil" slot="end" />
-        </ion-button>
-        <ion-button
-          *ngIf="editSections"
-          [title]="'IDEA_COMMON.PDF_TEMPLATE.ADD_A_SECTION' | translate"
-          (click)="addSection()"
-        >
-          {{ 'COMMON.ADD' | translate }}
-          <ion-icon name="add" slot="end" />
-        </ion-button>
-        <ion-button color="dark" *ngIf="editSections" (click)="editSections = false">
-          {{ 'COMMON.DONE' | translate }}
-        </ion-button>
-      </ng-container>
+      @if (!disabled) {
+        @if (!editSections) {
+          <ion-button
+            color="dark"
+            [title]="'IDEA_COMMON.PDF_TEMPLATE.EDIT_SECTIONS' | translate"
+            (click)="editSections = true"
+          >
+            {{ 'IDEA_COMMON.PDF_TEMPLATE.SECTIONS' | translate }}
+            <ion-icon name="pencil" slot="end" />
+          </ion-button>
+        }
+        @if (editSections) {
+          <ion-button [title]="'IDEA_COMMON.PDF_TEMPLATE.ADD_A_SECTION' | translate" (click)="addSection()">
+            {{ 'COMMON.ADD' | translate }}
+            <ion-icon name="add" slot="end" />
+          </ion-button>
+        }
+        @if (editSections) {
+          <ion-button color="dark" (click)="editSections = false">
+            {{ 'COMMON.DONE' | translate }}
+          </ion-button>
+        }
+      }
     </ion-list-header>
     <!-- (repeated) inner section header (title) -->
-    <div class="templateSection" *ngIf="getCurrentLayer().title">
-      <ion-item
-        [detail]="!isViewLocked()"
-        [button]="!isViewLocked()"
-        (click)="editSectionTitleLabel(getCurrentLayer().title)"
-      >
-        <ion-icon name="bookmark-outline" slot="start" />
-        <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_I' | translate">
-          <b *ngIf="getCurrentLayer().title | label">{{ getCurrentLayer().title | label }}</b>
-          <i *ngIf="!(getCurrentLayer().title | label)">
-            {{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_EMPTY_NOT_SHOWN' | translate }}
-          </i>
-          <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE' | translate }}</p>
-        </ion-label>
-      </ion-item>
-    </div>
-    <ion-item *ngIf="!getCurrentTemplate().length">
-      <i>{{ 'IDEA_COMMON.PDF_TEMPLATE.NO_SECTION_DEFINED_YET_HERE' | translate }}</i>
-    </ion-item>
-    <div
-      class="templateSection"
-      *ngFor="let section of getCurrentTemplate(); let index = index; let first = first; let last = last"
-      [class.hasFieldAnError]="hasFieldAnError('s[' + index + ']')"
-    >
-      <ion-item *ngIf="section.isEither(ST.PAGE_BREAK, ST.BLANK_ROW, ST.ROW)">
-        <ion-button
-          slot="start"
-          color="medium"
-          fill="clear"
-          *ngIf="editSections"
-          [disabled]="first"
-          (click)="moveSectionUpInTemplate(section)"
+    @if (getCurrentLayer().title) {
+      <div class="templateSection">
+        <ion-item
+          [detail]="!isViewLocked()"
+          [button]="!isViewLocked()"
+          (click)="editSectionTitleLabel(getCurrentLayer().title)"
         >
-          <ion-icon name="arrow-up" slot="icon-only" />
-        </ion-button>
-        <ion-button
-          slot="start"
-          color="medium"
-          fill="clear"
-          *ngIf="editSections"
-          [disabled]="last"
-          (click)="moveSectionDownInTemplate(section)"
-        >
-          <ion-icon name="arrow-down" slot="icon-only" />
-        </ion-button>
-        <!---->
-        <ng-container *ngIf="section.type === ST.PAGE_BREAK">
-          <ion-icon name="code-slash" slot="start" />
-          <ion-label class="specialRow" [title]="'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK_I' | translate">
-            <b>{{ 'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK' | translate }}</b>
+          <ion-icon name="bookmark-outline" slot="start" />
+          <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_I' | translate">
+            @if (getCurrentLayer().title | label) {
+              <b>{{ getCurrentLayer().title | label }}</b>
+            }
+            @if (!(getCurrentLayer().title | label)) {
+              <i>
+                {{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE_EMPTY_NOT_SHOWN' | translate }}
+              </i>
+            }
+            <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_TITLE' | translate }}</p>
           </ion-label>
-        </ng-container>
-        <!---->
-        <ng-container *ngIf="section.type === ST.BLANK_ROW">
-          <ion-icon name="code" slot="start" />
-          <ion-label class="specialRow" [title]="'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW_I' | translate">
-            <i>{{ 'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW' | translate }}</i>
-          </ion-label>
-        </ng-container>
-        <!---->
-        <ng-container *ngIf="section.type === ST.ROW">
-          <ion-icon name="apps" slot="start" />
-          <ion-label class="ion-text-wrap normalRow">
-            <ion-row class="ion-align-items-center">
-              <ng-container *ngFor="let _ of section.columns; let i = index">
-                <ion-col
-                  *ngIf="section.doesColumnContainAField(i)"
-                  [size]="12"
-                  [sizeMd]="section.getColumnFieldSize(i)"
-                  [class.hasFieldAnError]="hasFieldAnError('s[' + index + '].' + 'columns[' + i + ']')"
-                >
-                  <ion-chip
-                    color="primary"
-                    class="simpleField"
-                    *ngIf="!section.columns[i].isComplex()"
-                    [title]="displayField(section, i, true)"
-                    [class.notTappable]="isViewLocked()"
-                    (click)="manageField(section, i, $event)"
-                  >
-                    <ion-icon name="at" />
-                    <ion-label>
-                      <small>{{ section.getColumnFieldSize(i) }}</small>
-                      {{ displayField(section, i) }}
-                    </ion-label>
-                  </ion-chip>
-                  <!---->
-                  <ion-chip
-                    color="dark"
-                    *ngIf="section.columns[i].isComplex()"
-                    [title]="displayField(section, i, true)"
-                    [class.notTappable]="isViewLocked()"
-                    (click)="manageField(section, i, $event)"
-                  >
-                    <ion-icon name="shapes" />
-                    <ion-label>
-                      <small>{{ section.getColumnFieldSize(i) }}</small>
-                      <span
-                        class="hasHTMLContent"
-                        [innerHtml]="displayField(section, i) | highlight : getCurrentVariables()"
-                      ></span>
-                    </ion-label>
-                  </ion-chip>
-                </ion-col>
-                <ion-col *ngIf="section.isColumnEmpty(i)" [size]="12" [sizeMd]="1">
-                  <!-- empty column -->
-                  <ion-button
-                    fill="clear"
-                    expand="block"
-                    color="medium"
-                    *ngIf="!disabled && !isViewLocked()"
-                    (click)="addField(section, i)"
-                  >
-                    <ion-icon name="add-circle" slot="icon-only" />
-                  </ion-button>
-                  <ion-button
-                    fill="clear"
-                    expand="block"
-                    color="medium"
-                    *ngIf="moveMode"
-                    (click)="completeMove(section, i)"
-                  >
-                    <ion-icon name="golf" slot="icon-only" />
-                  </ion-button>
-                </ion-col>
-              </ng-container>
-            </ion-row>
-          </ion-label>
-        </ng-container>
-        <!---->
-        <ion-button
-          slot="end"
-          fill="clear"
-          color="medium"
-          *ngIf="moveMode && section.type === ST.ROW"
-          [title]="'COMMON.CANCEL' | translate"
-          (click)="completeMove(moveMode.section, moveMode.colIndex)"
-        >
-          <ion-icon name="arrow-undo" slot="icon-only" />
-        </ion-button>
-        <ion-button
-          slot="end"
-          fill="clear"
-          color="danger"
-          *ngIf="editSections"
-          [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
-          (click)="deleteSection(section)"
-        >
-          <ion-icon name="trash" slot="icon-only" />
-        </ion-button>
+        </ion-item>
+      </div>
+    }
+    @if (!getCurrentTemplate().length) {
+      <ion-item>
+        <i>{{ 'IDEA_COMMON.PDF_TEMPLATE.NO_SECTION_DEFINED_YET_HERE' | translate }}</i>
       </ion-item>
-
-      <ion-item
-        *ngIf="section.type === ST.HEADER"
-        [detail]="!isViewLocked()"
-        [button]="!isViewLocked()"
-        (click)="editHeaderLabel(section.title)"
-      >
-        <ion-button
-          slot="start"
-          color="medium"
-          fill="clear"
-          *ngIf="editSections"
-          [disabled]="first"
-          (click)="moveSectionUpInTemplate(section)"
-        >
-          <ion-icon name="arrow-up" slot="icon-only" />
-        </ion-button>
-        <ion-button
-          slot="start"
-          color="medium"
-          fill="clear"
-          *ngIf="editSections"
-          [disabled]="last"
-          (click)="moveSectionDownInTemplate(section)"
-        >
-          <ion-icon name="arrow-down" slot="icon-only" />
-        </ion-button>
-        <ion-icon name="bookmark" slot="start" />
-        <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.HEADER_I' | translate">
-          <b class="hasHTMLContent" [innerHtml]="section.title | label | highlight : getCurrentVariables()"></b>
-          <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.HEADER' | translate }}</p>
-        </ion-label>
-        <ion-button
-          slot="end"
-          fill="clear"
-          color="danger"
-          *ngIf="editSections"
-          [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
-          (click)="deleteSection(section)"
-        >
-          <ion-icon name="trash" slot="icon-only" />
-        </ion-button>
-      </ion-item>
-
-      <ion-item
-        *ngIf="section.isEither(ST.INNER_SECTION, ST.REPEATED_INNER_SECTION)"
-        [detail]="!isViewLocked()"
-        [button]="!isViewLocked()"
-        (click)="openInnerSection(section)"
-      >
-        <ion-button
-          slot="start"
-          color="medium"
-          fill="clear"
-          *ngIf="editSections"
-          [disabled]="first"
-          (click)="moveSectionUpInTemplate(section)"
-        >
-          <ion-icon name="arrow-up" slot="icon-only" />
-        </ion-button>
-        <ion-button
-          slot="start"
-          color="medium"
-          fill="clear"
-          *ngIf="editSections"
-          [disabled]="last"
-          (click)="moveSectionDownInTemplate(section)"
-        >
-          <ion-icon name="arrow-down" slot="icon-only" />
-        </ion-button>
-        <ion-icon [name]="getInnerSectionIcon(section)" slot="start" />
-        <!---->
-        <ion-label
-          *ngIf="section.type === ST.INNER_SECTION"
-          [title]="'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_I' | translate"
-        >
-          {{ section.description }}
-          <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION' | translate }}</p>
-        </ion-label>
-        <!---->
-        <ion-label
-          *ngIf="section.type === ST.REPEATED_INNER_SECTION"
-          [title]="'IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION_I' | translate"
-        >
-          {{ section.description }}
-          <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION' | translate }}</p>
-        </ion-label>
-        <!---->
-        <ion-button
-          slot="end"
-          fill="clear"
-          color="danger"
-          *ngIf="editSections"
-          [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
-          (click)="deleteSection(section)"
-        >
-          <ion-icon name="trash" slot="icon-only" />
-        </ion-button>
-      </ion-item>
-    </div>
+    }
+    @for (section of getCurrentTemplate(); track section; let index = $index; let first = $first; let last = $last) {
+      <div class="templateSection" [class.hasFieldAnError]="hasFieldAnError('s[' + index + ']')">
+        @if (section.isEither(ST.PAGE_BREAK, ST.BLANK_ROW, ST.ROW)) {
+          <ion-item>
+            @if (editSections) {
+              <ion-button
+                slot="start"
+                color="medium"
+                fill="clear"
+                [disabled]="first"
+                (click)="moveSectionUpInTemplate(section)"
+              >
+                <ion-icon name="arrow-up" slot="icon-only" />
+              </ion-button>
+            }
+            @if (editSections) {
+              <ion-button
+                slot="start"
+                color="medium"
+                fill="clear"
+                [disabled]="last"
+                (click)="moveSectionDownInTemplate(section)"
+              >
+                <ion-icon name="arrow-down" slot="icon-only" />
+              </ion-button>
+            }
+            <!---->
+            @if (section.type === ST.PAGE_BREAK) {
+              <ion-icon name="code-slash" slot="start" />
+              <ion-label class="specialRow" [title]="'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK_I' | translate">
+                <b>{{ 'IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK' | translate }}</b>
+              </ion-label>
+            }
+            <!---->
+            @if (section.type === ST.BLANK_ROW) {
+              <ion-icon name="code" slot="start" />
+              <ion-label class="specialRow" [title]="'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW_I' | translate">
+                <i>{{ 'IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW' | translate }}</i>
+              </ion-label>
+            }
+            <!---->
+            @if (section.type === ST.ROW) {
+              <ion-icon name="apps" slot="start" />
+              <ion-label class="ion-text-wrap normalRow">
+                <ion-row class="ion-align-items-center">
+                  @for (_ of section.columns; track _; let i = $index) {
+                    @if (section.doesColumnContainAField(i)) {
+                      <ion-col
+                        [size]="12"
+                        [sizeMd]="section.getColumnFieldSize(i)"
+                        [class.hasFieldAnError]="hasFieldAnError('s[' + index + '].' + 'columns[' + i + ']')"
+                      >
+                        @if (!section.columns[i].isComplex()) {
+                          <ion-chip
+                            color="primary"
+                            class="simpleField"
+                            [title]="displayField(section, i, true)"
+                            [class.notTappable]="isViewLocked()"
+                            (click)="manageField(section, i, $event)"
+                          >
+                            <ion-icon name="at" />
+                            <ion-label>
+                              <small>{{ section.getColumnFieldSize(i) }}</small>
+                              {{ displayField(section, i) }}
+                            </ion-label>
+                          </ion-chip>
+                        }
+                        <!---->
+                        @if (section.columns[i].isComplex()) {
+                          <ion-chip
+                            color="dark"
+                            [title]="displayField(section, i, true)"
+                            [class.notTappable]="isViewLocked()"
+                            (click)="manageField(section, i, $event)"
+                          >
+                            <ion-icon name="shapes" />
+                            <ion-label>
+                              <small>{{ section.getColumnFieldSize(i) }}</small>
+                              <span
+                                class="hasHTMLContent"
+                                [innerHtml]="displayField(section, i) | highlight: getCurrentVariables()"
+                              ></span>
+                            </ion-label>
+                          </ion-chip>
+                        }
+                      </ion-col>
+                    }
+                    @if (section.isColumnEmpty(i)) {
+                      <ion-col [size]="12" [sizeMd]="1">
+                        <!-- empty column -->
+                        @if (!disabled && !isViewLocked()) {
+                          <ion-button fill="clear" expand="block" color="medium" (click)="addField(section, i)">
+                            <ion-icon name="add-circle" slot="icon-only" />
+                          </ion-button>
+                        }
+                        @if (moveMode) {
+                          <ion-button fill="clear" expand="block" color="medium" (click)="completeMove(section, i)">
+                            <ion-icon name="golf" slot="icon-only" />
+                          </ion-button>
+                        }
+                      </ion-col>
+                    }
+                  }
+                </ion-row>
+              </ion-label>
+            }
+            <!---->
+            @if (moveMode && section.type === ST.ROW) {
+              <ion-button
+                slot="end"
+                fill="clear"
+                color="medium"
+                [title]="'COMMON.CANCEL' | translate"
+                (click)="completeMove(moveMode.section, moveMode.colIndex)"
+              >
+                <ion-icon name="arrow-undo" slot="icon-only" />
+              </ion-button>
+            }
+            @if (editSections) {
+              <ion-button
+                slot="end"
+                fill="clear"
+                color="danger"
+                [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
+                (click)="deleteSection(section)"
+              >
+                <ion-icon name="trash" slot="icon-only" />
+              </ion-button>
+            }
+          </ion-item>
+        }
+        @if (section.type === ST.HEADER) {
+          <ion-item [detail]="!isViewLocked()" [button]="!isViewLocked()" (click)="editHeaderLabel(section.title)">
+            @if (editSections) {
+              <ion-button
+                slot="start"
+                color="medium"
+                fill="clear"
+                [disabled]="first"
+                (click)="moveSectionUpInTemplate(section)"
+              >
+                <ion-icon name="arrow-up" slot="icon-only" />
+              </ion-button>
+            }
+            @if (editSections) {
+              <ion-button
+                slot="start"
+                color="medium"
+                fill="clear"
+                [disabled]="last"
+                (click)="moveSectionDownInTemplate(section)"
+              >
+                <ion-icon name="arrow-down" slot="icon-only" />
+              </ion-button>
+            }
+            <ion-icon name="bookmark" slot="start" />
+            <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.HEADER_I' | translate">
+              <b class="hasHTMLContent" [innerHtml]="section.title | label | highlight: getCurrentVariables()"></b>
+              <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.HEADER' | translate }}</p>
+            </ion-label>
+            @if (editSections) {
+              <ion-button
+                slot="end"
+                fill="clear"
+                color="danger"
+                [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
+                (click)="deleteSection(section)"
+              >
+                <ion-icon name="trash" slot="icon-only" />
+              </ion-button>
+            }
+          </ion-item>
+        }
+        @if (section.isEither(ST.INNER_SECTION, ST.REPEATED_INNER_SECTION)) {
+          <ion-item [detail]="!isViewLocked()" [button]="!isViewLocked()" (click)="openInnerSection(section)">
+            @if (editSections) {
+              <ion-button
+                slot="start"
+                color="medium"
+                fill="clear"
+                [disabled]="first"
+                (click)="moveSectionUpInTemplate(section)"
+              >
+                <ion-icon name="arrow-up" slot="icon-only" />
+              </ion-button>
+            }
+            @if (editSections) {
+              <ion-button
+                slot="start"
+                color="medium"
+                fill="clear"
+                [disabled]="last"
+                (click)="moveSectionDownInTemplate(section)"
+              >
+                <ion-icon name="arrow-down" slot="icon-only" />
+              </ion-button>
+            }
+            <ion-icon [name]="getInnerSectionIcon(section)" slot="start" />
+            <!---->
+            @if (section.type === ST.INNER_SECTION) {
+              <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION_I' | translate">
+                {{ section.description }}
+                <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.INNER_SECTION' | translate }}</p>
+              </ion-label>
+            }
+            <!---->
+            @if (section.type === ST.REPEATED_INNER_SECTION) {
+              <ion-label [title]="'IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION_I' | translate">
+                {{ section.description }}
+                <p>{{ 'IDEA_COMMON.PDF_TEMPLATE.REPEATED_INNER_SECTION' | translate }}</p>
+              </ion-label>
+            }
+            <!---->
+            @if (editSections) {
+              <ion-button
+                slot="end"
+                fill="clear"
+                color="danger"
+                [title]="'IDEA_COMMON.PDF_TEMPLATE.REMOVE_SECTION' | translate"
+                (click)="deleteSection(section)"
+              >
+                <ion-icon name="trash" slot="icon-only" />
+              </ion-button>
+            }
+          </ion-item>
+        }
+      </div>
+    }
   </ion-list>
 </ion-content>

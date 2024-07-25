@@ -16,18 +16,26 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <h2 class="header" *ngIf="header">
-    {{ header }}
-  </h2>
-  <p class="description" *ngIf="description">
-    {{ description }}
-  </p>
-  <p class="variables" *ngIf="variables?.length">
-    <b> {{ 'IDEA_COMMON.MDE.VARIABLES' | translate }}: </b>
-    <ion-text *ngFor="let v of variables">
-      {{ v.concat(' ') }}
-    </ion-text>
-  </p>
+  @if (header) {
+    <h2 class="header">
+      {{ header }}
+    </h2>
+  }
+  @if (description) {
+    <p class="description">
+      {{ description }}
+    </p>
+  }
+  @if (variables?.length) {
+    <p class="variables">
+      <b> {{ 'IDEA_COMMON.MDE.VARIABLES' | translate }}: </b>
+      @for (v of variables; track v) {
+        <ion-text>
+          {{ v.concat(' ') }}
+        </ion-text>
+      }
+    </p>
+  }
   <ion-textarea rows="12" [id]="id" [placeholder]="placeholder" [(ngModel)]="value" />
   <idea-mde-toolbar />
 </ion-content>

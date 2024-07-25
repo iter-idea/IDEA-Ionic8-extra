@@ -1,86 +1,84 @@
-<div *ngFor="let f of sectionMeta.fieldsLegend">
-  <idea-select
-    *ngIf="sectionMeta.fields[f].type === CFT.ENUM"
-    [data]="sectionMeta.fields[f].getEnumAsSuggestion(t.getCurrentLang(), t.languages())"
-    [lines]="lines"
-    [description]="sectionMeta.fields[f].getEnumElement(fields[f], t.getCurrentLang(), t.languages())"
-    [label]="sectionMeta.fields[f].name | label"
-    [icon]="!hideDescriptions && !disabled ? 'help-circle-outline' : null"
-    [iconColor]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
-    [placeholder]="'COMMON.TAP_TO_SELECT' | translate"
-    [searchPlaceholder]="sectionMeta.fields[f].name | label"
-    [hideIdFromUI]="true"
-    [disabled]="disabled"
-    [obligatory]="sectionMeta.fields[f].obligatory"
-    [class.fieldHasError]="hasFieldAnError(errorPrefix + f)"
-    (select)="$event ? (fields[f] = $event?.value) : null"
-    (iconSelect)="openDescription(f, $event)"
-  />
-  <ion-item
-    *ngIf="
+@for (f of sectionMeta.fieldsLegend; track f) {
+  <div>
+    @if (sectionMeta.fields[f].type === CFT.ENUM) {
+      <idea-select
+        [data]="sectionMeta.fields[f].getEnumAsSuggestion(t.getCurrentLang(), t.languages())"
+        [lines]="lines"
+        [description]="sectionMeta.fields[f].getEnumElement(fields[f], t.getCurrentLang(), t.languages())"
+        [label]="sectionMeta.fields[f].name | label"
+        [icon]="!hideDescriptions && !disabled ? 'help-circle-outline' : null"
+        [iconColor]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
+        [placeholder]="'COMMON.TAP_TO_SELECT' | translate"
+        [searchPlaceholder]="sectionMeta.fields[f].name | label"
+        [hideIdFromUI]="true"
+        [disabled]="disabled"
+        [obligatory]="sectionMeta.fields[f].obligatory"
+        [class.fieldHasError]="hasFieldAnError(errorPrefix + f)"
+        (select)="$event ? (fields[f] = $event?.value) : null"
+        (iconSelect)="openDescription(f, $event)"
+      />
+    }
+    @if (
       sectionMeta.fields[f].type === CFT.STRING ||
       sectionMeta.fields[f].type === CFT.NUMBER ||
       sectionMeta.fields[f].type === CFT.TEXT
-    "
-    [lines]="lines"
-    [class.fieldHasError]="hasFieldAnError(errorPrefix + f)"
-  >
-    <ion-label position="stacked" class="ion-text-wrap">
-      {{ sectionMeta.fields[f].name | label }}
-      <ion-text class="obligatoryDot" *ngIf="sectionMeta.fields[f].obligatory && !disabled" />
-    </ion-label>
-    <ion-button
-      fill="clear"
-      slot="start"
-      class="marginTop"
-      *ngIf="!hideDescriptions && !disabled"
-      [color]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
-      (click)="openDescription(f, $event)"
-    >
-      <ion-icon icon="help-circle-outline" slot="icon-only" />
-    </ion-button>
-    <ion-input
-      type="text"
-      *ngIf="sectionMeta.fields[f].type === CFT.STRING"
-      [disabled]="disabled"
-      [(ngModel)]="fields[f]"
-    />
-    <ion-input
-      type="number"
-      *ngIf="sectionMeta.fields[f].type === CFT.NUMBER"
-      [min]="sectionMeta.fields[f].min"
-      [max]="sectionMeta.fields[f].max"
-      [disabled]="disabled"
-      [(ngModel)]="fields[f]"
-    />
-    <ion-textarea
-      *ngIf="sectionMeta.fields[f].type === CFT.TEXT"
-      [rows]="3"
-      [autoGrow]="true"
-      [disabled]="disabled"
-      [(ngModel)]="fields[f]"
-    />
-  </ion-item>
-  <ion-item
-    *ngIf="sectionMeta.fields[f].type === CFT.BOOLEAN"
-    [lines]="lines"
-    [button]="!disabled"
-    [class.fieldHasError]="hasFieldAnError(errorPrefix + f)"
-  >
-    <ion-button
-      fill="clear"
-      slot="start"
-      *ngIf="!hideDescriptions && !disabled"
-      [color]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
-      (click)="openDescription(f, $event)"
-    >
-      <ion-icon icon="help-circle-outline" slot="icon-only" />
-    </ion-button>
-    <ion-checkbox [disabled]="disabled" [(ngModel)]="fields[f]">
-      <span class="ion-text-wrap">
-        {{ sectionMeta.fields[f].name | label }}
-        <ion-text class="obligatoryDot" *ngIf="sectionMeta.fields[f].obligatory && !disabled" />
-      </span>
-    </ion-checkbox>
-  </ion-item>
-</div>
+    ) {
+      <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError(errorPrefix + f)">
+        <ion-label position="stacked" class="ion-text-wrap">
+          {{ sectionMeta.fields[f].name | label }}
+          @if (sectionMeta.fields[f].obligatory && !disabled) {
+            <ion-text class="obligatoryDot" />
+          }
+        </ion-label>
+        @if (!hideDescriptions && !disabled) {
+          <ion-button
+            fill="clear"
+            slot="start"
+            class="marginTop"
+            [color]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
+            (click)="openDescription(f, $event)"
+          >
+            <ion-icon icon="help-circle-outline" slot="icon-only" />
+          </ion-button>
+        }
+        @if (sectionMeta.fields[f].type === CFT.STRING) {
+          <ion-input type="text" [disabled]="disabled" [(ngModel)]="fields[f]" />
+        }
+        @if (sectionMeta.fields[f].type === CFT.NUMBER) {
+          <ion-input
+            type="number"
+            [min]="sectionMeta.fields[f].min"
+            [max]="sectionMeta.fields[f].max"
+            [disabled]="disabled"
+            [(ngModel)]="fields[f]"
+          />
+        }
+        @if (sectionMeta.fields[f].type === CFT.TEXT) {
+          <ion-textarea [rows]="3" [autoGrow]="true" [disabled]="disabled" [(ngModel)]="fields[f]" />
+        }
+      </ion-item>
+    }
+    @if (sectionMeta.fields[f].type === CFT.BOOLEAN) {
+      <ion-item [lines]="lines" [button]="!disabled" [class.fieldHasError]="hasFieldAnError(errorPrefix + f)">
+        @if (!hideDescriptions && !disabled) {
+          <ion-button
+            fill="clear"
+            slot="start"
+            [color]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
+            (click)="openDescription(f, $event)"
+          >
+            <ion-icon icon="help-circle-outline" slot="icon-only" />
+          </ion-button>
+        }
+        <ion-checkbox [disabled]="disabled" [(ngModel)]="fields[f]">
+          <span class="ion-text-wrap">
+            {{ sectionMeta.fields[f].name | label }}
+            @if (sectionMeta.fields[f].obligatory && !disabled) {
+              <ion-text class="obligatoryDot" />
+            }
+          </span>
+        </ion-checkbox>
+      </ion-item>
+    }
+  </div>
+}

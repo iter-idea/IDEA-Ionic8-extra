@@ -1,4 +1,5 @@
-<ion-content class="ion-padding" *ngIf="status">
+@if (status) {
+<ion-content class="ion-padding">
   <div class="maxWidthContainer">
     <ion-card color="dark">
       <ion-card-header>
@@ -8,20 +9,27 @@
       </ion-card-header>
       <ion-card-content class="ion-align-items-center">
         <ion-img class="logo" [src]="appIconURI" (ionError)="$event.target.style.display = 'none'" />
-        <p class="htmlContent" *ngIf="htmlContent" [innerHTML]="htmlContent"></p>
-        <ion-grid *ngIf="status.mustUpdate">
+        @if (htmlContent) {
+        <p class="htmlContent" [innerHTML]="htmlContent"></p>
+        } @if (status.mustUpdate) {
+        <ion-grid>
           <ion-row>
             <ion-col class="ion-text-center">
-              <ion-button (click)="opeAppleStoreLink()" *ngIf="isIOS() && appleStoreURL">
+              @if (isIOS() && appleStoreURL) {
+              <ion-button (click)="opeAppleStoreLink()">
                 <ion-icon slot="start" name="logo-apple-appstore" /> {{ 'IDEA_COMMON.APP_STATUS.UPDATE' | translate }}
               </ion-button>
-              <ion-button (click)="openGoogleStoreLink()" *ngIf="isAndroid() && googleStoreURL">
+              } @if (isAndroid() && googleStoreURL) {
+              <ion-button (click)="openGoogleStoreLink()">
                 <ion-icon slot="start" name="logo-google-playstore" /> {{ 'IDEA_COMMON.APP_STATUS.UPDATE' | translate }}
               </ion-button>
+              }
             </ion-col>
           </ion-row>
         </ion-grid>
+        }
       </ion-card-content>
     </ion-card>
   </div>
 </ion-content>
+}

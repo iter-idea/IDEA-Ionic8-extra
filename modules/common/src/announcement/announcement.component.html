@@ -1,10 +1,12 @@
-<ion-card class="announcementCard" [color]="color" *ngIf="htmlContent">
-  <ion-card-content>
-    <p class="htmlContent" [innerHTML]="htmlContent"></p>
-    <p class="ion-text-right">
-      <ion-button color="primary" (click)="markAsRead()">
-        {{ 'COMMON.GOT_IT' | translate }}
-      </ion-button>
-    </p>
-  </ion-card-content>
-</ion-card>
+@if (htmlContent) {
+  <ion-card class="announcementCard" [color]="color">
+    <ion-card-content>
+      <p class="htmlContent" [innerHTML]="htmlContent"></p>
+      <p class="ion-text-right">
+        <ion-button color="primary" (click)="markAsRead()">
+          {{ 'COMMON.GOT_IT' | translate }}
+        </ion-button>
+      </p>
+    </ion-card-content>
+  </ion-card>
+}

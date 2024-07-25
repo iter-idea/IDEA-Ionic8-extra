@@ -1,15 +1,17 @@
 <div class="contacts">
-  <ion-item *ngIf="showName" [lines]="lines" [color]="color">
-    <ion-input
-      autocomplete="new"
-      labelPlacement="stacked"
-      [label]="'IDEA_COMMON.CONTACTS.NAME' | translate"
-      [disabled]="!editMode"
-      [placeholder]="'IDEA_COMMON.CONTACTS.NAME_HINT' | translate"
-      [title]="'IDEA_COMMON.CONTACTS.NAME_HINT' | translate"
-      [(ngModel)]="contacts.name"
-    />
-  </ion-item>
+  @if (showName) {
+    <ion-item [lines]="lines" [color]="color">
+      <ion-input
+        autocomplete="new"
+        labelPlacement="stacked"
+        [label]="'IDEA_COMMON.CONTACTS.NAME' | translate"
+        [disabled]="!editMode"
+        [placeholder]="'IDEA_COMMON.CONTACTS.NAME_HINT' | translate"
+        [title]="'IDEA_COMMON.CONTACTS.NAME_HINT' | translate"
+        [(ngModel)]="contacts.name"
+      />
+    </ion-item>
+  }
   <ion-item [lines]="lines" [color]="color">
     <ion-input
       autocomplete="new"
@@ -20,17 +22,18 @@
       [title]="'IDEA_COMMON.CONTACTS.PHONE_HINT' | translate"
       [(ngModel)]="contacts.phone"
     />
-    <ion-button
-      slot="end"
-      fill="clear"
-      color="dark"
-      class="marginTop"
-      *ngIf="!editMode"
-      [title]="'IDEA_COMMON.CONTACTS.CALL' | translate"
-      (click)="call()"
-    >
-      <ion-icon name="call" slot="icon-only" />
-    </ion-button>
+    @if (!editMode) {
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="dark"
+        class="marginTop"
+        [title]="'IDEA_COMMON.CONTACTS.CALL' | translate"
+        (click)="call()"
+      >
+        <ion-icon name="call" slot="icon-only" />
+      </ion-button>
+    }
   </ion-item>
   <ion-item [lines]="lines" [color]="color">
     <ion-input
@@ -42,16 +45,17 @@
       [title]="'IDEA_COMMON.CONTACTS.EMAIL_HINT' | translate"
       [(ngModel)]="contacts.email"
     />
-    <ion-button
-      slot="end"
-      fill="clear"
-      color="dark"
-      class="marginTop"
-      *ngIf="!editMode"
-      [title]="'IDEA_COMMON.CONTACTS.SEND_EMAIL' | translate"
-      (click)="sendEmail()"
-    >
-      <ion-icon name="mail" slot="icon-only" />
-    </ion-button>
+    @if (!editMode) {
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="dark"
+        class="marginTop"
+        [title]="'IDEA_COMMON.CONTACTS.SEND_EMAIL' | translate"
+        (click)="sendEmail()"
+      >
+        <ion-icon name="mail" slot="icon-only" />
+      </ion-button>
+    }
   </ion-item>
 </div>

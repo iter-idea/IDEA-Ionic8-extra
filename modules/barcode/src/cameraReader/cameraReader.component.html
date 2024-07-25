@@ -1,3 +1,5 @@
-<ion-button *ngIf="_platform.is('capacitor')" [fill]="fill" [color]="color" (click)="startScanWithCamera()">
-  <ng-content></ng-content>
-</ion-button>
+@if (_platform.is('capacitor')) {
+  <ion-button [fill]="fill" [color]="color" (click)="startScanWithCamera()">
+    <ng-content></ng-content>
+  </ion-button>
+}

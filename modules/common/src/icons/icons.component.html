@@ -15,11 +15,13 @@
 <ion-content>
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col class="ion-text-center" *ngFor="let i of icons" [style.display]="shouldShowIcon[i] ? 'block' : 'none'">
-        <ion-button size="large" fill="clear" color="dark" (click)="select(i)">
-          <ion-icon [name]="i" />
-        </ion-button>
-      </ion-col>
+      @for (i of icons; track i) {
+        <ion-col class="ion-text-center" [style.display]="shouldShowIcon[i] ? 'block' : 'none'">
+          <ion-button size="large" fill="clear" color="dark" (click)="select(i)">
+            <ion-icon [name]="i" />
+          </ion-button>
+        </ion-col>
+      }
     </ion-row>
   </ion-grid>
 </ion-content>

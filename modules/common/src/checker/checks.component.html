@@ -19,72 +19,94 @@
   </ion-toolbar>
   <ion-toolbar color="ideaToolbar" class="secondary">
     <ion-title>
-      {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate : { num: getNumChecked() } }}
-      <span *ngIf="limitSelectionToNum">
-        {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate : { num: limitSelectionToNum } }}
-      </span>
+      {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}
+      @if (limitSelectionToNum) {
+        <span>
+          {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
+        </span>
+      }
     </ion-title>
-    <ion-buttons slot="end" *ngIf="!limitSelectionToNum && allowSelectDeselectAll">
-      <ion-button [title]="'IDEA_COMMON.CHECKER.DESELECT_ALL' | translate" (click)="checkAll(false)">
-        <ion-icon slot="icon-only" name="square-outline" />
-      </ion-button>
-      <ion-button [title]="'IDEA_COMMON.CHECKER.SELECT_ALL' | translate" (click)="checkAll(true)">
-        <ion-icon slot="icon-only" name="checkbox-outline" />
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end" *ngIf="limitSelectionToNum || !allowSelectDeselectAll">
-      <ion-button [title]="t._('IDEA_COMMON.CHECKER.RESET')" (click)="checkAll(false)">
-        {{ 'IDEA_COMMON.CHECKER.RESET' | translate }}
-      </ion-button>
-    </ion-buttons>
+    @if (!limitSelectionToNum && allowSelectDeselectAll) {
+      <ion-buttons slot="end">
+        <ion-button [title]="'IDEA_COMMON.CHECKER.DESELECT_ALL' | translate" (click)="checkAll(false)">
+          <ion-icon slot="icon-only" name="square-outline" />
+        </ion-button>
+        <ion-button [title]="'IDEA_COMMON.CHECKER.SELECT_ALL' | translate" (click)="checkAll(true)">
+          <ion-icon slot="icon-only" name="checkbox-outline" />
+        </ion-button>
+      </ion-buttons>
+    }
+    @if (limitSelectionToNum || !allowSelectDeselectAll) {
+      <ion-buttons slot="end">
+        <ion-button [title]="t._('IDEA_COMMON.CHECKER.RESET')" (click)="checkAll(false)">
+          {{ 'IDEA_COMMON.CHECKER.RESET' | translate }}
+        </ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
-  <ion-toolbar color="ideaToolbar" class="secondary" *ngIf="showCategoriesFilters">
-    <div class="additionalToolbar">
-      <ion-button
-        color="light"
-        size="small"
-        *ngIf="activeCategories1?.size"
-        [class.strong]="category1"
-        (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
-      >
-        <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
-        {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
-      </ion-button>
-      <ion-button
-        color="light"
-        size="small"
-        *ngIf="activeCategories2?.size"
-        [class.strong]="category2"
-        (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
-      >
-        <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
-        {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
-      </ion-button>
-    </div>
-  </ion-toolbar>
+  @if (showCategoriesFilters) {
+    <ion-toolbar color="ideaToolbar" class="secondary">
+      <div class="additionalToolbar">
+        @if (activeCategories1?.size) {
+          <ion-button
+            color="light"
+            size="small"
+            [class.strong]="category1"
+            (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
+          >
+            <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
+            {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+          </ion-button>
+        }
+        @if (activeCategories2?.size) {
+          <ion-button
+            color="light"
+            size="small"
+            [class.strong]="category2"
+            (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
+          >
+            <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
+            {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+          </ion-button>
+        }
+      </div>
+    </ion-toolbar>
+  }
 </ion-header>
 <ion-content>
   <ion-list class="checksList">
-    <ion-item lines="none" *ngIf="!filteredChecks.length">
-      <ion-label>
-        <i>{{ noElementsFoundText || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
-      </ion-label>
-    </ion-item>
-    <ion-item class="check" *ngFor="let check of filteredChecks; trackBy: trackBy">
-      <ion-checkbox
-        slot="start"
-        [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
-        [(ngModel)]="check.checked"
-      />
-      <ion-avatar slot="start" *ngIf="showAvatars">
-        <div class="circle" *ngIf="check.color" [style.background-color]="check.color"></div>
-        <idea-user-avatar *ngIf="!check.color" [src]="check.avatar" [name]="check.name" />
-      </ion-avatar>
-      <ion-label>
-        {{ check.name }}
-        <p *ngIf="check.description">{{ check.description }}</p>
-      </ion-label>
-    </ion-item>
+    @if (!filteredChecks.length) {
+      <ion-item lines="none">
+        <ion-label>
+          <i>{{ noElementsFoundText || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
+        </ion-label>
+      </ion-item>
+    }
+    @for (check of filteredChecks; track check.value) {
+      <ion-item class="check">
+        <ion-checkbox
+          slot="start"
+          [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
+          [(ngModel)]="check.checked"
+        />
+        @if (showAvatars) {
+          <ion-avatar slot="start">
+            @if (check.color) {
+              <div class="circle" [style.background-color]="check.color"></div>
+            }
+            @if (!check.color) {
+              <idea-user-avatar [src]="check.avatar" [name]="check.name" />
+            }
+          </ion-avatar>
+        }
+        <ion-label>
+          {{ check.name }}
+          @if (check.description) {
+            <p>{{ check.description }}</p>
+          }
+        </ion-label>
+      </ion-item>
+    }
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
     <ion-infinite-scroll-content />
