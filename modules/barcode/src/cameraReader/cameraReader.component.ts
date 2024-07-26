@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
+const PERMISSION_GRANTED = 'granted';
+
 @Component({
   selector: 'idea-barcode-camera-reader',
   templateUrl: 'cameraReader.component.html',
@@ -27,32 +29,44 @@ export class IDEABarcodeCameraReaderComponent {
    */
   @Output() scan = new EventEmitter<string>();
 
+  isPermissionGranted = false;
   barcodeReaderUIHtml: HTMLDivElement = null;
 
   _platform = inject(Platform);
 
   private async canDeviceScanBarcode(): Promise<boolean> {
-    return (
-      this._platform.is('capacitor') &&
-      !!BarcodeScanner &&
-      // @todo to fix
-      (await (BarcodeScanner as any).checkPermission({ force: true })).granted
-    );
+    return this._platform.is('capacitor') && !!BarcodeScanner;
   }
 
   async startScanWithCamera(): Promise<void> {
     if (!(await this.canDeviceScanBarcode())) return;
+
+    BarcodeScanner.checkPermissions().then(result => {
+      this.isPermissionGranted = result.camera === PERMISSION_GRANTED;
+    });
+
+    if (!this.isPermissionGranted)
+      await BarcodeScanner.requestPermissions().then(result => {
+        this.isPermissionGranted = result.camera === PERMISSION_GRANTED;
+      });
+
+    if (!this.isPermissionGranted) return;
     if (this.isScanning) return await this.stopScanWithCamera();
 
     await this.showCameraScannerUI();
-    // @todo to fix
-    const result = (await BarcodeScanner.startScan()) as any;
-    await this.hideCameraScannerUI();
 
-    this.scan.emit(result.content ?? '');
+    const listener = await BarcodeScanner.addListener('barcodeScanned', async result => {
+      await listener.remove();
+      await this.hideCameraScannerUI();
+      await BarcodeScanner.stopScan();
+      this.scan.emit(result.barcode.displayValue ?? '');
+    });
+
+    await BarcodeScanner.startScan();
   }
   private async stopScanWithCamera(): Promise<void> {
     await this.hideCameraScannerUI();
+    await BarcodeScanner.removeAllListeners();
     await BarcodeScanner.stopScan();
   }
 
