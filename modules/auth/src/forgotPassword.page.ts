@@ -31,7 +31,7 @@ export class IDEAForgotPasswordPage {
   }
 
   goToConfirmPassword(): void {
-    this._nav.navigateForward(['auth', 'confirm-password'], { queryParams: { email: this.email ?? null } });
+    this._nav.navigateForward(['auth', 'confirm-password'], { queryParams: { email: this.email || null } });
   }
   goToAuth(): void {
     this._nav.navigateBack(['auth']);

@@ -2,21 +2,21 @@
   <ion-toolbar color="ideaToolbar">
     <ion-buttons slot="start">
       @if (!mustChoose) {
-        <ion-button [title]="t._('IDEA_COMMON.SELECT.CLOSE_WITHOUT_SELECTING')" (click)="select()">
+        <ion-button [title]="'IDEA_COMMON.SELECT.CLOSE_WITHOUT_SELECTING' | translate" (click)="select()">
           <ion-icon slot="icon-only" icon="chevron-down" />
         </ion-button>
       }
     </ion-buttons>
     <ion-searchbar
       #searchbar
-      [placeholder]="searchPlaceholder ?? ('IDEA_COMMON.SELECT.SEARCH' | translate)"
+      [placeholder]="searchPlaceholder || ('IDEA_COMMON.SELECT.SEARCH' | translate)"
       [debounce]="100"
       [class.withAdditionalToolbar]="showCategoriesFilters || detailsAreAvailable"
       (ionInput)="search($event.target.value)"
     />
     @if (!hideClearButton) {
       <ion-buttons slot="end">
-        <ion-button [title]="t._('IDEA_COMMON.SELECT.CLEAR_SELECTION')" (click)="select({ value: '' })">
+        <ion-button [title]="'IDEA_COMMON.SELECT.CLEAR_SELECTION' | translate" (click)="select({ value: '' })">
           <ion-icon slot="icon-only" icon="backspace" />
         </ion-button>
       </ion-buttons>
@@ -39,7 +39,7 @@
             (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
           >
             <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
-            {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+            {{ category1 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
           </ion-button>
         }
         @if (activeCategories2?.size) {
@@ -50,7 +50,7 @@
             (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
           >
             <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
-            {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+            {{ category2 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
           </ion-button>
         }
       </div>
@@ -64,7 +64,7 @@
         <ion-label>
           <i>
             {{
-              noElementsFoundText ??
+              noElementsFoundText ||
                 ((allowUnlistedValues
                   ? 'IDEA_COMMON.SELECT.NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE'
                   : 'IDEA_COMMON.SELECT.NO_ELEMENTS_FOUND'
@@ -78,7 +78,7 @@
       <ion-item
         class="suggestion"
         [button]="true"
-        [title]="t._('IDEA_COMMON.SELECT.SELECT_', { suggestion: searchbar.value })"
+        [title]="'IDEA_COMMON.SELECT.SELECT_' | translate: { suggestion: searchbar.value }"
         (click)="select({ value: searchbar.value })"
       >
         @if (allowUnlistedValuesPrefix) {
@@ -94,11 +94,11 @@
       <ion-item
         class="suggestion"
         button
-        [title]="t._('IDEA_COMMON.SELECT.SELECT_', { suggestion: suggestion.name ?? suggestion.value })"
+        [title]="'IDEA_COMMON.SELECT.SELECT_' | translate: { suggestion: suggestion.name || suggestion.value }"
         (click)="select(suggestion)"
       >
         <ion-label>
-          @if (shouldShowDetails && (suggestion.category1 ?? suggestion.category2)) {
+          @if (shouldShowDetails && (suggestion.category1 || suggestion.category2)) {
             <p class="categories">
               @if (suggestion.category1) {
                 <ion-text [innerHTML]="suggestion.category1 | boldprefix: searchbar.value" />
@@ -115,7 +115,7 @@
           <div class="key" style="display: none">
             {{ suggestion.value }}
           </div>
-          <ion-text [innerHTML]="suggestion.name ?? suggestion.value | boldprefix: searchbar.value" />
+          <ion-text [innerHTML]="suggestion.name || suggestion.value | boldprefix: searchbar.value" />
           <ion-text color="medium" class="ion-text-wrap">
             @if (suggestion.name && !hideIdFromUI && shouldShowDetails) {
               <p [innerHTML]="suggestion.value | boldprefix: searchbar.value"></p>

@@ -2,7 +2,7 @@
   class="checkerItem"
   [color]="color"
   [lines]="lines"
-  [title]="searchPlaceholder ?? null"
+  [title]="searchPlaceholder || null"
   [button]="!disabled"
   [class.withLabel]="label"
   (click)="fetchDataAndOpenModal()"

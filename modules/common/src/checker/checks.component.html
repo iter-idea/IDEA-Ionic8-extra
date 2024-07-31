@@ -8,7 +8,7 @@
     <ion-searchbar
       #searchbar
       [debounce]="100"
-      [placeholder]="searchPlaceholder ?? ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
+      [placeholder]="searchPlaceholder || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
       (ionInput)="search($event.target.value)"
     />
     <ion-buttons slot="end">
@@ -38,7 +38,7 @@
     }
     @if (limitSelectionToNum || !allowSelectDeselectAll) {
       <ion-buttons slot="end">
-        <ion-button [title]="t._('IDEA_COMMON.CHECKER.RESET')" (click)="checkAll(false)">
+        <ion-button [title]="'IDEA_COMMON.CHECKER.RESET' | translate" (click)="checkAll(false)">
           {{ 'IDEA_COMMON.CHECKER.RESET' | translate }}
         </ion-button>
       </ion-buttons>
@@ -55,7 +55,7 @@
             (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
           >
             <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
-            {{ category1 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+            {{ category1 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
           </ion-button>
         }
         @if (activeCategories2?.size) {
@@ -66,7 +66,7 @@
             (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
           >
             <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
-            {{ category2 ?? ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+            {{ category2 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
           </ion-button>
         }
       </div>

@@ -10,7 +10,7 @@
     </ion-title>
     <ion-buttons slot="end">
       @if (existingSignature) {
-        <ion-button [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" (click)="undo()">
+        <ion-button [title]="'IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE' | translate" (click)="undo()">
           <ion-icon name="arrow-undo" slot="icon-only" />
         </ion-button>
       }
@@ -40,7 +40,7 @@
           fill="clear"
           color="dark"
           slot="end"
-          [title]="t._('IDEA_COMMON.SIGNATURE.CHOOSE_FROM_CONTACTS')"
+          [title]="'IDEA_COMMON.SIGNATURE.CHOOSE_FROM_CONTACTS' | translate"
           (click)="pickSignatory()"
         >
           <ion-icon name="person-circle" slot="icon-only" />
@@ -58,7 +58,7 @@
     @if (canEdit()) {
       <ion-row>
         <ion-col class="ion-text-right">
-          <ion-button fill="clear" [title]="t._('IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE')" (click)="clear()">
+          <ion-button fill="clear" [title]="'IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE' | translate" (click)="clear()">
             <ion-icon name="trash-outline" slot="icon-only" />
           </ion-button>
         </ion-col>

@@ -101,7 +101,7 @@
               fill="clear"
               slot="end"
               color="danger"
-              [title]="t._('IDEA_COMMON.OFFLINE.CANCEL_REQUEST')"
+              [title]="'IDEA_COMMON.OFFLINE.CANCEL_REQUEST' | translate"
               (click)="deleteRequest(r)"
             >
               <ion-icon slot="icon-only" name="trash" />
@@ -112,7 +112,7 @@
               fill="clear"
               slot="end"
               color="medium"
-              [title]="t._('IDEA_COMMON.OFFLINE.DOWNLOAD_LOG')"
+              [title]="'IDEA_COMMON.OFFLINE.DOWNLOAD_LOG' | translate"
               (click)="downloadRequestLog(r)"
             >
               <ion-icon slot="icon-only" name="download" />

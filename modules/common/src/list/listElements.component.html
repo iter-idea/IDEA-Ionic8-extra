@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-searchbar
       #searchbar
-      [placeholder]="searchPlaceholder ?? ('COMMON.SEARCH' | translate)"
+      [placeholder]="searchPlaceholder || ('COMMON.SEARCH' | translate)"
       (ionInput)="search($event.target.value)"
     />
     <ion-buttons slot="end">
@@ -25,7 +25,7 @@
     @if (!filteredList.length) {
       <ion-item lines="none">
         <ion-label>
-          <i>{{ noElementsFoundText ?? ('IDEA_COMMON.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
+          <i>{{ noElementsFoundText || ('IDEA_COMMON.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
         </ion-label>
       </ion-item>
     }
@@ -41,7 +41,7 @@
           slot="end"
           fill="clear"
           color="danger"
-          [title]="t._('IDEA_COMMON.LIST.DELETE_ELEMENT')"
+          [title]="'IDEA_COMMON.LIST.DELETE_ELEMENT' | translate"
           (click)="removeElement(element)"
         >
           <ion-icon icon="trash-outline" slot="icon-only" />

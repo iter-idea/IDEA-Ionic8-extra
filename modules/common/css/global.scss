@@ -31,7 +31,14 @@
 .alert-wrapper {
   --max-width: 300px;
   --width: 300px;
+  .alert-button-role-cancel {
+    color: var(--ion-color-medium-shade);
+  }
+  .alert-button-role-destructive {
+    color: var(--ion-color-danger);
+  }
 }
+
 .alertLongOptions {
   .alert-wrapper {
     --max-width: 400px;
@@ -101,9 +108,11 @@ ion-text.obligatoryDot::after {
   .item-disabled,
   .native-textarea[disabled],
   ion-item ion-label[position='stacked'],
+  ion-item ion-label[position='fixed'],
   ion-input,
   ion-checkbox[slot] + ion-label,
-  ion-radio[slot] + ion-label {
+  ion-radio[slot] + ion-label,
+  ion-checkbox::part(label) {
     opacity: 1 !important;
     -webkit-text-fill-color: var(--ion-text-color);
     --placeholder-opacity: 0 !important;
@@ -176,4 +185,8 @@ idea-email-data-configuration,
   --ion-color-contrast-rgb: var(--ion-color-transparent-contrast-rgb) !important;
   --ion-color-shade: var(--ion-color-transparent-shade) !important;
   --ion-color-tint: var(--ion-color-transparent-tint) !important;
+}
+
+ion-label {
+  width: fit-content;
 }

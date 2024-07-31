@@ -28,7 +28,7 @@ export class IDEAAnnouncementComponent implements OnInit {
   storageKey: string;
 
   constructor() {
-    this.storageKey = (this._env.idea.project ?? 'app').concat('_LAST_ANNOUNCEMENT');
+    this.storageKey = (this._env.idea.project || 'app').concat('_LAST_ANNOUNCEMENT');
     this.color = 'dark';
   }
   async ngOnInit(): Promise<void> {

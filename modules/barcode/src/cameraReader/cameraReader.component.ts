@@ -59,7 +59,7 @@ export class IDEABarcodeCameraReaderComponent {
       await listener.remove();
       await this.hideCameraScannerUI();
       await BarcodeScanner.stopScan();
-      this.scan.emit(result.barcode.displayValue ?? '');
+      this.scan.emit(result.barcode.displayValue || '');
     });
 
     await BarcodeScanner.startScan();

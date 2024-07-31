@@ -6,7 +6,7 @@
           <ion-input
             readonly
             [labelPlacement]="isCollapsed() ? 'stacked' : ''"
-            [label]="label ?? ('IDEA_COMMON.ADDRESS.COMPLETE_ADDRESS' | translate)"
+            [label]="label || ('IDEA_COMMON.ADDRESS.COMPLETE_ADDRESS' | translate)"
             [title]="'IDEA_COMMON.ADDRESS.COMPLETE_ADDRESS_HINT' | translate"
             [placeholder]="placeholder"
             [value]="address.getFullAddress()"

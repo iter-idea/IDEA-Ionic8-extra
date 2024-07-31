@@ -32,9 +32,9 @@ export class IDEAAWSAPIService {
   apiUrlIDEA: string;
 
   constructor() {
-    this.apiStage = this._env.idea.api?.stage ?? (this._env.idea.api as any)?.version;
+    this.apiStage = this._env.idea.api?.stage || (this._env.idea.api as any)?.version;
     this.apiUrlProject = 'https://'.concat([this._env.idea.api?.url, this.apiStage].filter(x => x).join('/'));
-    this.ideaApiStage = this._env.idea.ideaApi?.stage ?? (this._env.idea.ideaApi as any)?.version;
+    this.ideaApiStage = this._env.idea.ideaApi?.stage || (this._env.idea.ideaApi as any)?.version;
     this.apiUrlIDEA = 'https://'.concat([this._env.idea.ideaApi?.url, this.ideaApiStage].filter(x => x).join('/'));
   }
 

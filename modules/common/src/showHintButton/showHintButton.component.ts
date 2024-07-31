@@ -61,7 +61,7 @@ export class IDEAShowHintButtonComponent {
     if (!this.hint) return;
 
     const header = this._shouldTranslate ? this._translate._(this.hint) : this.hint;
-    const message = this._shouldTranslate ? this._translate._(this.message ?? this.hint.concat('_I')) : this.message;
+    const message = this._shouldTranslate ? this._translate._(this.message || this.hint.concat('_I')) : this.message;
     const buttonText =
       this._shouldTranslate && this.confirmationText !== 'OK'
         ? this._translate._(this.confirmationText)

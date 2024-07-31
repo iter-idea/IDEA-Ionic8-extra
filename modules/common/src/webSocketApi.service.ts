@@ -65,12 +65,12 @@ export class IDEAWebSocketApiService {
    * Open a connection to the websocket API.
    */
   open(options?: IDEAWebSocketApiServiceOpenOptions): void {
-    this.options = options ?? this.options ?? {};
+    this.options = options || this.options || {};
 
     if (this.connection && this.isOpen()) return;
 
     let qp = '';
-    Object.entries(this.options.openParams ?? {}).forEach(([key, value]): string => (qp += `&${key}=${String(value)}`));
+    Object.entries(this.options.openParams || {}).forEach(([key, value]): string => (qp += `&${key}=${String(value)}`));
 
     const auth = this.authToken ? '?authorization='.concat(this.authToken) : '?noAuth=';
     this.connection = new WebSocket(this.apiURL.concat(auth, qp));
@@ -104,7 +104,7 @@ export class IDEAWebSocketApiService {
     this.connection.onmessage = (event: any): void => {
       if (this.options.debug) console.log('WEBSOCKET INCOMING MESSAGE', event);
       try {
-        const data = JSON.parse(event.data ?? {});
+        const data = JSON.parse(event.data || {});
         if (this.options.onMessage) this.options.onMessage(data);
       } catch (err) {
         // IGNORE: it probably comes from a keep-alive ping-pong message

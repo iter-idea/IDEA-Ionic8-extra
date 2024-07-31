@@ -3,7 +3,7 @@
     <ion-title>{{ title }}</ion-title>
     <ion-buttons slot="end">
       @if (!hideClearButton) {
-        <ion-button [title]="t._('IDEA_COMMON.CALENDAR.RESET')" (click)="save(true)">
+        <ion-button [title]="'IDEA_COMMON.CALENDAR.RESET' | translate" (click)="save(true)">
           <ion-icon slot="icon-only" name="arrow-undo" />
         </ion-button>
       }

@@ -42,7 +42,7 @@ export class IDEAApiService {
 
   constructor() {
     this.baseURL = 'https://'.concat([this._env.idea.api?.url, this._env.idea.api?.stage].filter(x => x).join('/'));
-    this.appVersion = this._env.idea.app?.version ?? '?';
+    this.appVersion = this._env.idea.app?.version || '?';
     this.appBundle = this._env.idea.app?.bundle;
   }
 

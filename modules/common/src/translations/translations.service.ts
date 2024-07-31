@@ -50,7 +50,7 @@ export class IDEATranslationsService {
   onLangChange = new EventEmitter<string>();
 
   constructor() {
-    this.modulesPath = [''].concat(this._env.idea.ionicExtraModules ?? []);
+    this.modulesPath = [''].concat(this._env.idea.ionicExtraModules || []);
   }
 
   /**
@@ -146,7 +146,7 @@ export class IDEATranslationsService {
    * Set some parameters to automatically provide to translation actions.
    */
   setDefaultInterpolations(defaultParams: Record<string, string>): void {
-    this.defaultInterpolations = defaultParams ?? {};
+    this.defaultInterpolations = defaultParams || {};
   }
 
   /**
@@ -161,7 +161,7 @@ export class IDEATranslationsService {
    * If the term doesn't exist in the current language, it is searched in the default language.
    */
   instantInLanguage(language: string, key: string, interpolateParams?: any): string {
-    const params = { ...this.defaultInterpolations, ...(interpolateParams ?? {}) };
+    const params = { ...this.defaultInterpolations, ...(interpolateParams || {}) };
     if (!this.isDefined(key) || !key.length) return;
     let res = this.interpolate(this.getValue(this.translations[language], key), params);
     if (res === undefined && this.defaultLang !== null && this.defaultLang !== language)

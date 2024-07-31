@@ -65,7 +65,7 @@ export class IDEAChecksComponent implements OnInit {
   private _modal = inject(ModalController);
 
   ngOnInit(): void {
-    this.workingData = JSON.parse(JSON.stringify(this.data ?? new Array<Check>()));
+    this.workingData = JSON.parse(JSON.stringify(this.data || new Array<Check>()));
     this.filteredChecks = new Array<Check>();
     if (this.sortData) this.workingData = this.workingData.sort((a, b): number => a.name.localeCompare(b.name));
     this.loadActiveCategories();

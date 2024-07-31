@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 
 @Component({
@@ -7,12 +7,12 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['auth.scss']
 })
 export class IDEASetupMFAPage {
-  constructor(private navCtrl: NavController) {}
+  private _nav = inject(NavController);
 
   reloadApp(): void {
     window.location.assign('');
   }
   goToAuth(): void {
-    this.navCtrl.navigateBack(['auth']);
+    this._nav.navigateBack(['auth']);
   }
 }

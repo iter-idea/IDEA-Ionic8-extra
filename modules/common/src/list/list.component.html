@@ -3,7 +3,7 @@
   [color]="color"
   [lines]="lines"
   [button]="!disabled"
-  [title]="placeholder ?? ''"
+  [title]="placeholder || ''"
   [class.withLabel]="label"
   (click)="openList()"
 >
@@ -21,7 +21,7 @@
     </ion-label>
   }
   <ion-label class="description" [class.selectable]="!disabled" [class.placeholder]="!getPreview() || noPreviewText">
-    {{ getPreview() ?? placeholder }}
+    {{ getPreview() || placeholder }}
   </ion-label>
   @if (!disabled) {
     <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled" />

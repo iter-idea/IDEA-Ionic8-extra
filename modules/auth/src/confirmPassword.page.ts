@@ -32,7 +32,7 @@ export class IDEAConfirmPasswordPage implements OnInit {
     this.passwordPolicy = this._env.idea.auth.passwordPolicy;
   }
   ngOnInit(): void {
-    this.email = this._route.snapshot.queryParamMap.get('email') ?? null;
+    this.email = this._route.snapshot.queryParamMap.get('email') || null;
     if (!this.email && this._route.snapshot.queryParams.user)
       this.email = decodeURIComponent(this._route.snapshot.queryParams.user);
     this.code = this._route.snapshot.queryParams.code;

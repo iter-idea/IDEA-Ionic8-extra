@@ -79,8 +79,8 @@ export class IDEALabelComponent implements OnInit {
   private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
-    this.languages = this.languages ?? this._translate.languages();
-    this.variableCodes = (this.variables ?? []).map(x => x.code);
+    this.languages = this.languages || this._translate.languages();
+    this.variableCodes = (this.variables || []).map(x => x.code);
     this.calcHTMLContent();
   }
 

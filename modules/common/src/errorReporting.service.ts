@@ -15,7 +15,7 @@ export class IDEAErrorReportingService {
   apiUrl: string;
 
   constructor() {
-    this.apiStage = this._env.idea.ideaApi?.stage ?? (this._env.idea.ideaApi as any)?.version;
+    this.apiStage = this._env.idea.ideaApi?.stage || (this._env.idea.ideaApi as any)?.version;
     this.apiUrl = 'https://'.concat([this._env.idea.ideaApi?.url, this.apiStage].filter(x => x).join('/'));
   }
 

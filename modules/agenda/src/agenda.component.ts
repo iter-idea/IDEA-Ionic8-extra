@@ -274,7 +274,7 @@ export class IDEAAgendaComponent implements OnInit {
     }
   }
   private getFixedEndDateWithMinimumSegmentDuration(agendaBooking: AgendaEvent): Date {
-    const fixedEnd = new Date(agendaBooking.end ?? agendaBooking.start);
+    const fixedEnd = new Date(agendaBooking.end || agendaBooking.start);
     const segmentSizeInMinutes = 60 / this.hourSegments;
     if (fixedEnd.getTime() <= agendaBooking.start.getTime() + segmentSizeInMinutes * 60 * 1000)
       fixedEnd.setMinutes(agendaBooking.start.getMinutes() + segmentSizeInMinutes);

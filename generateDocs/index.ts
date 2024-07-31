@@ -26,7 +26,7 @@ function main(): void {
     if (!componentsInfo.length) return;
     readmeContent += `## ${module}\n\n`;
     componentsInfo.forEach(
-      x => (readmeContent += `- [${x.selector ?? x.name}](${x.readmePath})${x.comment ? '. '.concat(x.comment) : ''}\n`)
+      x => (readmeContent += `- [${x.selector || x.name}](${x.readmePath})${x.comment ? '. '.concat(x.comment) : ''}\n`)
     );
     readmeContent += `\n`;
   });

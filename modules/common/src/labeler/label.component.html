@@ -3,7 +3,7 @@
   button
   [color]="color"
   [lines]="lines"
-  [title]="placeholder ?? ''"
+  [title]="placeholder || ''"
   [class.withLabel]="label"
   (click)="edit()"
 >

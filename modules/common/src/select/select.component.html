@@ -3,7 +3,7 @@
   [color]="color"
   [lines]="lines"
   [button]="!disabled"
-  [title]="placeholder ?? description ?? ''"
+  [title]="placeholder || description || ''"
   [class.withLabel]="label"
   (click)="disabled ? doSelectWhenDisabled() : fetchDataAndOpenModal()"
 >

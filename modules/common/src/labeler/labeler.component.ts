@@ -56,8 +56,8 @@ export class IDEALabelerComponent {
   private _translate = inject(IDEATranslationsService);
 
   ionViewDidEnter(): void {
-    this.title = this.title ?? this._translate._('IDEA_COMMON.LABELER.MANAGE_LABEL');
-    this.languages = this.languages ?? this._translate.languages();
+    this.title = this.title || this._translate._('IDEA_COMMON.LABELER.MANAGE_LABEL');
+    this.languages = this.languages || this._translate.languages();
     this._label = new Label(this.label, this.languages);
   }
 

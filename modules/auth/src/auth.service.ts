@@ -46,7 +46,7 @@ export class IDEAAuthService {
       UserPoolId: this._env.aws.cognito.userPoolId,
       ClientId: this._env.aws.cognito.userPoolClientId
     });
-    this.mfaProjectName = this._env.idea.auth.title ?? this._env.idea.project;
+    this.mfaProjectName = this._env.idea.auth.title || this._env.idea.project;
     this.passwordPolicy = this._env.idea.auth.passwordPolicy;
   }
 
