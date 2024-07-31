@@ -84,11 +84,6 @@
     }
     @for (check of filteredChecks; track check.value) {
       <ion-item class="check">
-        <ion-checkbox
-          slot="start"
-          [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
-          [(ngModel)]="check.checked"
-        />
         @if (showAvatars) {
           <ion-avatar slot="start">
             @if (check.color) {
@@ -99,12 +94,17 @@
             }
           </ion-avatar>
         }
-        <ion-label>
+        <ion-checkbox
+          labelPlacement="end"
+          justify="start"
+          [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
+          [(ngModel)]="check.checked"
+        >
           {{ check.name }}
           @if (check.description) {
             <p>{{ check.description }}</p>
           }
-        </ion-label>
+        </ion-checkbox>
       </ion-item>
     }
   </ion-list>
