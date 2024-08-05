@@ -2,9 +2,11 @@
   <div>
     @if (sectionMeta.fields[f].type === CFT.ENUM) {
       <idea-select
-        [data]="sectionMeta.fields[f].getEnumAsSuggestion(_translate.getCurrentLang(), t.languages())"
+        [data]="sectionMeta.fields[f].getEnumAsSuggestion(_translate.getCurrentLang(), _translate.languages())"
         [lines]="lines"
-        [description]="sectionMeta.fields[f].getEnumElement(fields[f], _translate.getCurrentLang(), t.languages())"
+        [description]="
+          sectionMeta.fields[f].getEnumElement(fields[f], _translate.getCurrentLang(), _translate.languages())
+        "
         [label]="sectionMeta.fields[f].name | label"
         [icon]="!hideDescriptions && !disabled ? 'help-circle-outline' : null"
         [iconColor]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"

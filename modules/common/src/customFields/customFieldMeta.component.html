@@ -150,7 +150,7 @@
               </ion-select-option>
               @for (e of _field.enum; track e) {
                 <ion-select-option [value]="e">
-                  {{ _field.getEnumElement(e, _translate.getCurrentLang(), t.languages()) }}
+                  {{ _field.getEnumElement(e, _translate.getCurrentLang(), _translate.languages()) }}
                 </ion-select-option>
               }
             </ion-select>
@@ -208,7 +208,7 @@
             @if (!disabled) {
               <ion-reorder slot="start" />
             }
-            <ion-label>{{ _field.getEnumElement(e, _translate.getCurrentLang(), t.languages()) }}</ion-label>
+            <ion-label>{{ _field.getEnumElement(e, _translate.getCurrentLang(), _translate.languages()) }}</ion-label>
             @if (!disabled) {
               <ion-button slot="end" fill="clear" [title]="'COMMON.EDIT' | translate" (click)="editEnumLabel(e)">
                 <ion-icon icon="pencil" slot="icon-only" />
