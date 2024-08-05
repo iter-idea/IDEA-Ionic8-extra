@@ -147,7 +147,7 @@
               <ion-icon name="apps" slot="start" />
               <ion-label class="ion-text-wrap normalRow">
                 <ion-row class="ion-align-items-center">
-                  @for (_ of section.columns; track _; let i = $index) {
+                  @for (_ of section.columns; track $index; let i = $index) {
                     @if (section.doesColumnContainAField(i)) {
                       <ion-col
                         [size]="12"
