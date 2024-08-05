@@ -10,10 +10,10 @@
       <div>
         @if (blockMeta.sections[s].fields[f].type === CFT.ENUM) {
           <idea-select
-            [data]="blockMeta.sections[s].fields[f].getEnumAsSuggestion(t.getCurrentLang(), t.languages())"
+            [data]="blockMeta.sections[s].fields[f].getEnumAsSuggestion(_translate.getCurrentLang(), t.languages())"
             [lines]="lines"
             [description]="
-              blockMeta.sections[s].fields[f].getEnumElement(sections[s][f], t.getCurrentLang(), t.languages())
+              blockMeta.sections[s].fields[f].getEnumElement(sections[s][f], _translate.getCurrentLang(), t.languages())
             "
             [label]="blockMeta.sections[s].fields[f].name | label"
             [icon]="!hideDescriptions && !disabled ? 'help-circle-outline' : null"
