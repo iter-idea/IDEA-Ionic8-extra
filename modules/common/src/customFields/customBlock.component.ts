@@ -42,7 +42,7 @@ export class IDEACustomBlockComponent {
   CFT = CustomFieldTypes;
 
   private _alert = inject(AlertController);
-  private _translate = inject(IDEATranslationsService);
+  _translate = inject(IDEATranslationsService);
 
   hasFieldAnError(field: string): boolean {
     return this.errors.has(field);
