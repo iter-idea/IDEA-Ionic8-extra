@@ -9,22 +9,22 @@ export const auth0Guard: CanActivateFn = async (
   _: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): Promise<boolean> => {
-  const auth = inject(IDEAAuth0Service);
-  const api = inject(IDEAApiService);
+  const _auth = inject(IDEAAuth0Service);
+  const _api = inject(IDEAApiService);
 
-  if (!api.authToken)
-    api.authToken = async (): Promise<string> => {
+  if (!_api.authToken)
+    _api.authToken = async (): Promise<string> => {
       try {
-        return getValidIdToken(auth);
+        return getValidIdToken(_auth);
       } catch (error) {
-        auth.goToLogin(state.url);
+        _auth.goToLogin(state.url);
         return null;
       }
     };
 
-  if (await auth.isUserAuthenticated()) return true;
+  if (await _auth.isUserAuthenticated()) return true;
   else {
-    auth.goToLogin(state.url);
+    _auth.goToLogin(state.url);
     return false;
   }
 };

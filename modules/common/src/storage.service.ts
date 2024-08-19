@@ -4,9 +4,9 @@ import { Storage } from '@ionic/storage-angular';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAStorageService {
-  private theStorage: Storage | null = null;
-
   private _storage = inject(Storage);
+
+  private theStorage: Storage | null = null;
 
   constructor() {
     this.init();

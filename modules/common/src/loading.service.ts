@@ -5,10 +5,10 @@ import { IDEATranslationsService } from './translations/translations.service';
 
 @Injectable({ providedIn: 'root' })
 export class IDEALoadingService {
-  private loadingElement: HTMLIonLoadingElement;
-
   private _loading = inject(LoadingController);
   private _translate = inject(IDEATranslationsService);
+
+  private loadingElement: HTMLIonLoadingElement;
 
   /**
    * Show a loading animation.

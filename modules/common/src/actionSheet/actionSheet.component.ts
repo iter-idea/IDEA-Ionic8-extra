@@ -12,6 +12,8 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['actionSheet.component.scss']
 })
 export class IDEAActionSheetComponent implements OnInit {
+  private _popover = inject(PopoverController);
+
   /**
    * An array of buttons for the actions panel.
    */
@@ -30,8 +32,6 @@ export class IDEAActionSheetComponent implements OnInit {
   @Input() subHeader: string;
 
   withIcons: boolean;
-
-  private _popover = inject(PopoverController);
 
   ngOnInit(): void {
     // based on the input, changes the way the UI behaves

@@ -13,6 +13,10 @@ const MAX_PAGE_SIZE = 24;
   styleUrls: ['listElements.component.scss']
 })
 export class IDEAListELementsComponent implements OnInit {
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * It should be read only until the component closure.
    */
@@ -35,10 +39,6 @@ export class IDEAListELementsComponent implements OnInit {
   currentPage: number;
 
   @ViewChild('searchbar') searchbar: IonSearchbar;
-
-  private _modal = inject(ModalController);
-  private _alert = inject(AlertController);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this.workingData = Array.from(this.data || (this.labelElements ? new Array<Label>() : new Array<string>()));

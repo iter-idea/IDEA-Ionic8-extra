@@ -11,6 +11,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['list.component.scss']
 })
 export class IDEAListComponent {
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The list to manage.
    */
@@ -75,9 +78,6 @@ export class IDEAListComponent {
    * Icon select.
    */
   @Output() iconSelect = new EventEmitter<void>();
-
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
 
   async openList(): Promise<void> {
     if (this.disabled) return;

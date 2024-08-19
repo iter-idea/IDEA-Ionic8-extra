@@ -15,6 +15,10 @@ const SUNDAY = 259200000;
   styleUrls: ['calendarPicker.component.scss']
 })
 export class IDEACalendarPickerComponent implements OnInit {
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
+
   @Input() inputDate: epochDateTime | epochISOString;
   @Input() timePicker = false;
   @Input() manualTimePicker = false;
@@ -34,10 +38,6 @@ export class IDEACalendarPickerComponent implements OnInit {
   weekDays: string[];
   dateMin: Date;
   dateMax: Date;
-
-  private _modal = inject(ModalController);
-  private _alert = inject(AlertController);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this.today = new Date();

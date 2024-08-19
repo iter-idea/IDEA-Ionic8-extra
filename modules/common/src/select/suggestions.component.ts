@@ -14,6 +14,10 @@ const MAX_PAGE_SIZE = 24;
   styleUrls: ['suggestions.component.scss']
 })
 export class IDEASuggestionsComponent implements OnInit {
+  private _platform = inject(Platform);
+  private _modal = inject(ModalController);
+  private _storage = inject(IDEAStorageService);
+
   /**
    * The suggestions to show.
    */
@@ -74,10 +78,6 @@ export class IDEASuggestionsComponent implements OnInit {
   @ViewChild(IonSearchbar) searchbar: IonSearchbar;
   shouldShowDetails: boolean;
   detailsAreAvailable: boolean;
-
-  private _platform = inject(Platform);
-  private _modal = inject(ModalController);
-  private _storage = inject(IDEAStorageService);
 
   async ngOnInit(): Promise<void> {
     if (this.sortData)

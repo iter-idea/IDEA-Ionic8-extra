@@ -67,6 +67,11 @@ export const NUM_ELEMENTS_WITH_MANUAL_SYNC = 300;
  */
 @Injectable()
 export class IDEAOfflineDataService {
+  protected _storage = inject(IDEAStorageService);
+  protected _translate = inject(IDEATranslationsService);
+  protected _offline = inject(IDEAOfflineService);
+  protected _API = inject(IDEAAWSAPIService);
+
   /**
    * True when running a synchronization.
    */
@@ -113,11 +118,6 @@ export class IDEAOfflineDataService {
    * Key to acquire from the storage the lastSyncAt information of the team.
    */
   protected queueAPIRequestKey: string;
-
-  protected _storage = inject(IDEAStorageService);
-  protected _translate = inject(IDEATranslationsService);
-  protected _offline = inject(IDEAOfflineService);
-  protected _API = inject(IDEAAWSAPIService);
 
   constructor() {
     this.queueAPIRequests = new Array<APIRequest>();

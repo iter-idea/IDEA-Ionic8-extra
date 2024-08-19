@@ -15,6 +15,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['label.component.scss']
 })
 export class IDEALabelComponent implements OnInit {
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The label to manage.
    * Note: the name is set to not overlap with IDEA's components typical use of the attribute `label`.
@@ -74,9 +77,6 @@ export class IDEALabelComponent implements OnInit {
 
   variableCodes: string[];
   htmlContent: string;
-
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this.languages = this.languages || this._translate.languages();

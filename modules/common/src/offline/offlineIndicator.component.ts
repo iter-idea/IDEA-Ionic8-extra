@@ -11,6 +11,12 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['offlineIndicator.component.scss']
 })
 export class IDEAOfflineIndicatorComponent {
+  private _alert = inject(AlertController);
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+  _platform = inject(Platform);
+  _offline = inject(IDEAOfflineDataService);
+
   /**
    * Vertical position.
    */
@@ -23,12 +29,6 @@ export class IDEAOfflineIndicatorComponent {
    * Whether it is positionated on an edge.
    */
   @Input() edge = false;
-
-  private _alert = inject(AlertController);
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
-  _platform = inject(Platform);
-  _offline = inject(IDEAOfflineDataService);
 
   async showStatus(): Promise<void> {
     if (this._offline.isOffline()) {

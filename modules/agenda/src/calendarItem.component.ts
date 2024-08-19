@@ -12,6 +12,13 @@ import { IDEACalendarsService } from './calendars.service';
   styleUrls: ['calendarItem.component.scss']
 })
 export class IDEACalendarItemComponent {
+  private _alert = inject(AlertController);
+  private _modal = inject(ModalController);
+  private _message = inject(IDEAMessageService);
+  private _loading = inject(IDEALoadingService);
+  private _translate = inject(IDEATranslationsService);
+  private _calendars = inject(IDEACalendarsService);
+
   /**
    * The calendar to show.
    */
@@ -32,13 +39,6 @@ export class IDEACalendarItemComponent {
    * Report to parent components a change.
    */
   @Output() somethingChanged = new EventEmitter<Calendar>();
-
-  private _alert = inject(AlertController);
-  private _modal = inject(ModalController);
-  private _message = inject(IDEAMessageService);
-  private _loading = inject(IDEALoadingService);
-  private _translate = inject(IDEATranslationsService);
-  private _calendars = inject(IDEACalendarsService);
 
   async manageCalendar(): Promise<void> {
     if (this.disabled) return;

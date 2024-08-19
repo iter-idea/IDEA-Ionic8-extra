@@ -14,6 +14,11 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['labeler.component.scss']
 })
 export class IDEALabelerComponent {
+  private _platform = inject(Platform);
+  private _modal = inject(ModalController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The detail to highlight.
    */
@@ -49,11 +54,6 @@ export class IDEALabelerComponent {
 
   _label: Label;
   errors = new Set<string>();
-
-  private _platform = inject(Platform);
-  private _modal = inject(ModalController);
-  private _message = inject(IDEAMessageService);
-  private _translate = inject(IDEATranslationsService);
 
   ionViewDidEnter(): void {
     this.title = this.title || this._translate._('IDEA_COMMON.LABELER.MANAGE_LABEL');

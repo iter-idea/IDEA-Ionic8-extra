@@ -13,6 +13,8 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
   styleUrls: ['emailData.component.scss']
 })
 export class IDEAEmailDataComponent implements OnInit {
+  private _modal = inject(ModalController);
+
   /**
    * The email data to manage.
    */
@@ -61,8 +63,6 @@ export class IDEAEmailDataComponent implements OnInit {
    * The list of variables codes to use for substitutions.
    */
   variablesPlain: string[];
-
-  private _modal = inject(ModalController);
 
   ngOnInit(): void {
     // create a plain list of variable codes

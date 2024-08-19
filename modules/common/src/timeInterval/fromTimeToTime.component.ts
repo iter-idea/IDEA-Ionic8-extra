@@ -10,6 +10,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['fromTimeToTime.component.scss']
 })
 export class IDEAFromTimeToTimeComponent implements OnInit {
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The time interval to set.
    */
@@ -36,9 +39,6 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   Periods = Periods;
   timeIntervalWC: TimeInterval;
   minutes: number;
-
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this.segment = Segments.FROM;

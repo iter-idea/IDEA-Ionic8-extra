@@ -29,6 +29,10 @@ import { IDEATranslationsService } from '@idea-ionic/common';
   styleUrls: ['agenda.component.scss']
 })
 export class IDEAAgendaComponent implements OnInit {
+  private _cdr = inject(ChangeDetectorRef);
+  private _platform = inject(Platform);
+  _translate = inject(IDEATranslationsService);
+
   /**
    * The events to display in the calendar.
    */
@@ -129,10 +133,6 @@ export class IDEAAgendaComponent implements OnInit {
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
   darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-  private _cdr = inject(ChangeDetectorRef);
-  private _platform = inject(Platform);
-  _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this.locale = this._translate.getCurrentLang();

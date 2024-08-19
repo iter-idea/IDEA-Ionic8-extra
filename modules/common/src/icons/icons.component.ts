@@ -8,6 +8,8 @@ import { Ionicons, loopStringEnumValues } from 'idea-toolbox';
   styleUrls: ['icons.component.scss']
 })
 export class IDEAIconsComponent {
+  private _modal = inject(ModalController);
+
   /**
    * A placeholder for the searchbar.
    */
@@ -19,8 +21,6 @@ export class IDEAIconsComponent {
    * icons take a lot to redraw (so it's better to just hide them when not needed).
    */
   shouldShowIcon: { [icon: string]: boolean } = {};
-
-  private _modal = inject(ModalController);
 
   ionViewDidEnter(): void {
     // note: it will take a while for the icons to draw in the UI; @idea to improve

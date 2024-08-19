@@ -10,6 +10,8 @@ import { IDEASuggestionsComponent } from './suggestions.component';
   styleUrls: ['select.component.scss']
 })
 export class IDEASelectComponent implements OnChanges {
+  private _modal = inject(ModalController);
+
   /**
    * The description to show in the field.
    * Set the property so it detects changes.
@@ -130,8 +132,6 @@ export class IDEASelectComponent implements OnChanges {
    * On select (with the field disabled) event.
    */
   @Output() selectWhenDisabled = new EventEmitter<void>();
-
-  private _modal = inject(ModalController);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.avoidAutoSelection && (changes['data'] || changes['category1'] || changes['category2'])) {

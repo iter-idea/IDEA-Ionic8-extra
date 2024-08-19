@@ -10,12 +10,12 @@ import { IDEAAuthService } from './auth.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAForgotPasswordPage {
-  email: string;
-
   private _nav = inject(NavController);
   private _message = inject(IDEAMessageService);
   private _loading = inject(IDEALoadingService);
   private _auth = inject(IDEAAuthService);
+
+  email: string;
 
   async forgotPassword(): Promise<void> {
     try {

@@ -10,6 +10,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['customBlock.component.scss']
 })
 export class IDEACustomBlockComponent {
+  private _alert = inject(AlertController);
+  _translate = inject(IDEATranslationsService);
+
   /**
    * The custom sections to manage.
    */
@@ -40,9 +43,6 @@ export class IDEACustomBlockComponent {
   @Input() errorPrefix = '';
 
   CFT = CustomFieldTypes;
-
-  private _alert = inject(AlertController);
-  _translate = inject(IDEATranslationsService);
 
   hasFieldAnError(field: string): boolean {
     return this.errors.has(field);

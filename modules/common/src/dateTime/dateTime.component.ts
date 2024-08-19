@@ -23,6 +23,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['dateTime.component.scss']
 })
 export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The date to show/pick.
    */
@@ -90,9 +93,6 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   valueToDisplay: string;
   private langChangeSubscription: Subscription;
 
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
-
   ngOnInit(): void {
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
       this.valueToDisplay = this.getValueToDisplay(this.date);
@@ -107,7 +107,6 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
 
   async openCalendarPicker(): Promise<void> {
     if (this.disabled) return;
-
     const modal = await this._modal.create({
       component: IDEACalendarPickerComponent,
       componentProps: {

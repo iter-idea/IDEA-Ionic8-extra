@@ -10,6 +10,8 @@ const PERMISSION_GRANTED = 'granted';
   styleUrls: ['cameraReader.component.scss']
 })
 export class IDEABarcodeCameraReaderComponent {
+  _platform = inject(Platform);
+
   /**
    * The button's fill.
    */
@@ -31,8 +33,6 @@ export class IDEABarcodeCameraReaderComponent {
 
   isPermissionGranted = false;
   barcodeReaderUIHtml: HTMLDivElement = null;
-
-  _platform = inject(Platform);
 
   private async canDeviceScanBarcode(): Promise<boolean> {
     return this._platform.is('capacitor') && !!BarcodeScanner;

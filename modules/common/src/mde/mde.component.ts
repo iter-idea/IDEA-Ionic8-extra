@@ -7,6 +7,8 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['mde.component.scss']
 })
 export class IDEAMDEComponent implements OnInit {
+  private _modal = inject(ModalController);
+
   /**
    * Id to identify this specific Markdown Editor (default: 'mde').
    */
@@ -38,8 +40,6 @@ export class IDEAMDEComponent implements OnInit {
 
   value: string;
 
-  private modalCtrl = inject(ModalController);
-
   ngOnInit(): void {
     this.id = this.id || 'mde';
     this.variables = this.variables || new Array<string>();
@@ -47,9 +47,9 @@ export class IDEAMDEComponent implements OnInit {
   }
 
   close(): void {
-    this.modalCtrl.dismiss();
+    this._modal.dismiss();
   }
   confirm(): void {
-    this.modalCtrl.dismiss(this.value);
+    this._modal.dismiss(this.value);
   }
 }

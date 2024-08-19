@@ -11,12 +11,12 @@ import { IDEAErrorReportingService } from './errorReporting.service';
  */
 @Injectable()
 export class IDEAPushNotificationsService {
+  private _platform = inject(Platform);
+  private _errorReporting = inject(IDEAErrorReportingService);
+
   registrations: Observable<PushNotificationsDevice>;
   notifications: Observable<PushNotificationSchema>;
   errors: Observable<Error>;
-
-  private _platform = inject(Platform);
-  private _errorReporting = inject(IDEAErrorReportingService);
 
   constructor() {
     if (!this.isAvailable()) return;

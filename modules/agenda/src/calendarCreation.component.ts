@@ -11,6 +11,13 @@ import { IDEACalendarsService } from './calendars.service';
   styleUrls: ['calendarCreation.component.scss']
 })
 export class IDEACalendarCreationComponent implements OnInit {
+  private _calendars = inject(IDEACalendarsService);
+  private _modal = inject(ModalController);
+  private _tc = inject(IDEATinCanService);
+  private _loading = inject(IDEALoadingService);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * Whether we want to allow the creation of only a particular type of calendar, based on the scope.
    */
@@ -24,13 +31,6 @@ export class IDEACalendarCreationComponent implements OnInit {
   calendar: Calendar;
   DEFAULT_COLOR = '#555';
   SOURCES = Object.keys(ExternalCalendarSources);
-
-  private _calendars = inject(IDEACalendarsService);
-  private _modal = inject(ModalController);
-  private _tc = inject(IDEATinCanService);
-  private _loading = inject(IDEALoadingService);
-  private _message = inject(IDEAMessageService);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this.calendar = new Calendar();

@@ -16,6 +16,10 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
   styleUrls: ['signature.component.scss']
 })
 export class IDEASignatureComponent {
+  private _modal = inject(ModalController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * An existing signature to use.
    */
@@ -34,10 +38,6 @@ export class IDEASignatureComponent {
   pad: SignaturePad | null = null;
   signatoryError: boolean;
   signatureError: boolean;
-
-  private _modal = inject(ModalController);
-  private _message = inject(IDEAMessageService);
-  private _translate = inject(IDEATranslationsService);
 
   ionViewDidEnter(): void {
     // prepare the canvas area for the signature

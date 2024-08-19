@@ -10,14 +10,14 @@ import { IDEAAuthService } from './auth.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAMFAChallengePage implements OnInit {
-  otpCode: string;
-  errorMsg: string;
-
   private _nav = inject(NavController);
   private _message = inject(IDEAMessageService);
   private _loading = inject(IDEALoadingService);
   private _auth = inject(IDEAAuthService);
   private _translate = inject(IDEATranslationsService);
+
+  otpCode: string;
+  errorMsg: string;
 
   ngOnInit(): void {
     if (!this._auth.challengeUsername) this.goToAuth();

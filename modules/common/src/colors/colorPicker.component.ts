@@ -127,6 +127,8 @@ export class IDEAColorPickerComponent {
   ]
 })
 export class ColorsPaletteComponent {
+  private _popover = inject(PopoverController);
+
   /**
    * The pickable colors.
    */
@@ -135,8 +137,6 @@ export class ColorsPaletteComponent {
    * The current color.
    */
   @Input() current: string;
-
-  private _popover = inject(PopoverController);
 
   pick(color: string): void {
     this._popover.dismiss(color);

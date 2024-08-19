@@ -13,6 +13,11 @@ import { IDEAMessageService } from '../message.service';
   styleUrls: ['customBlockMeta.component.scss']
 })
 export class IDEACustomBlockMetaComponent {
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The CustomBlockMeta to manage.
    */
@@ -29,11 +34,6 @@ export class IDEACustomBlockMetaComponent {
    * Lines preferences for the component.
    */
   @Input() lines: string;
-
-  private _modal = inject(ModalController);
-  private _alert = inject(AlertController);
-  private _message = inject(IDEAMessageService);
-  private _translate = inject(IDEATranslationsService);
 
   reorderSectionsLegend(ev: any): void {
     this.block.sectionsLegend = ev.detail.complete(this.block.sectionsLegend);

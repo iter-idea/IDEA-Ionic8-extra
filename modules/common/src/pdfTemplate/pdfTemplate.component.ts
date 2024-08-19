@@ -26,6 +26,13 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
   styleUrls: ['pdfTemplate.component.scss']
 })
 export class IDEAPDFTemplateComponent implements OnInit {
+  private _popover = inject(PopoverController);
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _actions = inject(IDEAActionSheetController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The blueprint to define the allowed sections and fields for this PDF template.
    */
@@ -56,13 +63,6 @@ export class IDEAPDFTemplateComponent implements OnInit {
   editSections = false;
   moveMode: MoveModeData = null;
   errors = new Set<string>();
-
-  private _popover = inject(PopoverController);
-  private _modal = inject(ModalController);
-  private _alert = inject(AlertController);
-  private _actions = inject(IDEAActionSheetController);
-  private _message = inject(IDEAMessageService);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     // work on a copy

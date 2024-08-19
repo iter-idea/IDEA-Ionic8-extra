@@ -8,6 +8,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['showHintButton.component.scss']
 })
 export class IDEAShowHintButtonComponent {
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The string to show as title of the alert.
    */
@@ -51,9 +54,6 @@ export class IDEAShowHintButtonComponent {
    * The IonIcon to show for the button.
    */
   @Input() icon = 'help-circle-outline';
-
-  private _alert = inject(AlertController);
-  private _translate = inject(IDEATranslationsService);
 
   async showHint(event?: any): Promise<void> {
     if (event) event.stopPropagation();

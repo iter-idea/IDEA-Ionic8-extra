@@ -11,6 +11,9 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
   styleUrls: ['sendEmail.component.scss']
 })
 export class IDEASendEmailComponent implements OnInit {
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The content and receivers of the email.
    */
@@ -37,9 +40,6 @@ export class IDEASendEmailComponent implements OnInit {
   @Input() lines: string;
 
   emailWC: EmailData;
-
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this.emailWC = new EmailData(this.email);

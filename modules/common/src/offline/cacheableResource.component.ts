@@ -8,10 +8,10 @@ import { IDEAOfflineDataService, CacheableResource } from './offlineData.service
   styleUrls: ['cacheableResource.component.scss']
 })
 export class IDEACacheableResourceComponent {
+  _offline = inject(IDEAOfflineDataService);
+
   /**
    * The resouece to manage.
    */
   @Input() resource: CacheableResource;
-
-  _offline = inject(IDEAOfflineDataService);
 }

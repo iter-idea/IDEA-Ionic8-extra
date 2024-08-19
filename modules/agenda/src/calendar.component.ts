@@ -17,6 +17,15 @@ import { IDEACalendarsService } from './calendars.service';
   styleUrls: ['calendar.component.scss']
 })
 export class IDEACalendarComponent implements OnInit {
+  private _calendars = inject(IDEACalendarsService);
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _tc = inject(IDEATinCanService);
+  private _loading = inject(IDEALoadingService);
+  private _message = inject(IDEAMessageService);
+  private _API = inject(IDEAAWSAPIService);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The calendar to manage.
    */
@@ -35,15 +44,6 @@ export class IDEACalendarComponent implements OnInit {
   membership: Membership;
   errors = new Set<string>();
   DEFAULT_COLOR = '#555';
-
-  private _calendars = inject(IDEACalendarsService);
-  private _modal = inject(ModalController);
-  private _alert = inject(AlertController);
-  private _tc = inject(IDEATinCanService);
-  private _loading = inject(IDEALoadingService);
-  private _message = inject(IDEAMessageService);
-  private _API = inject(IDEAAWSAPIService);
-  private _translate = inject(IDEATranslationsService);
 
   async ngOnInit(): Promise<void> {
     this.membership = this._tc.get('membership');

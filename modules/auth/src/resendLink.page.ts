@@ -10,14 +10,14 @@ import { IDEAAuthService } from './auth.service';
   styleUrls: ['auth.scss']
 })
 export class IDEAResendLinkPage {
-  email: string;
-  errorMsg: string;
-
   private _nav = inject(NavController);
   private _message = inject(IDEAMessageService);
   private _loading = inject(IDEALoadingService);
   private _auth = inject(IDEAAuthService);
   private _translate = inject(IDEATranslationsService);
+
+  email: string;
+  errorMsg: string;
 
   async resendConfirmationLink(): Promise<void> {
     this.errorMsg = null;

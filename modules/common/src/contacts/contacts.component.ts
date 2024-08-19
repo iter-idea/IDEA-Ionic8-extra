@@ -10,6 +10,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['contacts.component.scss']
 })
 export class IDEAContactsComponent {
+  private _alert = inject(AlertController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The contacts to manage.
    */
@@ -30,9 +33,6 @@ export class IDEAContactsComponent {
    * The color for the component.
    */
   @Input() color: string;
-
-  private _alert = inject(AlertController);
-  private _translate = inject(IDEATranslationsService);
 
   sendEmail(): void {
     if (!this.contacts.email) return;

@@ -12,6 +12,8 @@ const MAX_PAGE_SIZE = 24;
   styleUrls: ['checks.component.scss']
 })
 export class IDEAChecksComponent implements OnInit {
+  private _modal = inject(ModalController);
+
   /**
    * It should be read only until the component closure.
    */
@@ -61,8 +63,6 @@ export class IDEAChecksComponent implements OnInit {
   activeCategories2: Set<string>;
 
   @ViewChild('searchbar') searchbar: IonSearchbar;
-
-  private _modal = inject(ModalController);
 
   ngOnInit(): void {
     this.workingData = JSON.parse(JSON.stringify(this.data || new Array<Check>()));

@@ -15,6 +15,11 @@ import { IDEAMessageService } from '../message.service';
   styleUrls: ['customSectionMeta.component.scss']
 })
 export class IDEACustomSectionMetaComponent implements OnInit {
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The CustomSectionMeta to manage.
    */
@@ -39,11 +44,6 @@ export class IDEACustomSectionMetaComponent implements OnInit {
   _section: CustomSectionMeta;
   errors = new Set<string>();
   DISPLAY_TEMPLATE_MAX_NUM_FIELD_PER_ROW = 3;
-
-  private _modal = inject(ModalController);
-  private _alert = inject(AlertController);
-  private _message = inject(IDEAMessageService);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this._section = new CustomSectionMeta(this.section, this._translate.languages());

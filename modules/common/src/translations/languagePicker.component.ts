@@ -16,13 +16,13 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['languagePicker.component.scss']
 })
 export class IDEALanguagePickerComponent {
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * Button fill preference.
    */
   @Input() fill: string;
-
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
 
   getFlagURL(): string {
     return `assets/flags/${this._translate.getCurrentLang()}.png`;

@@ -19,6 +19,14 @@ import {
   styleUrls: ['attachments.component.scss']
 })
 export class IDEAttachmentsComponent implements OnInit {
+  private _platform = inject(Platform);
+  private _loading = inject(IDEALoadingService);
+  private _message = inject(IDEAMessageService);
+  private _tc = inject(IDEATinCanService);
+  private _api = inject(IDEAAWSAPIService);
+  _offline = inject(IDEAOfflineService);
+  _translate = inject(IDEATranslationsService);
+
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
@@ -52,14 +60,6 @@ export class IDEAttachmentsComponent implements OnInit {
    * Stack of errors from the last upload.
    */
   uploadErrors: string[] = [];
-
-  private _platform = inject(Platform);
-  private _loading = inject(IDEALoadingService);
-  private _message = inject(IDEAMessageService);
-  private _tc = inject(IDEATinCanService);
-  private _api = inject(IDEAAWSAPIService);
-  _offline = inject(IDEAOfflineService);
-  _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths

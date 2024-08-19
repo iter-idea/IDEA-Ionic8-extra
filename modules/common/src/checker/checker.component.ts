@@ -12,6 +12,9 @@ import { IDEAChecksComponent } from './checks.component';
   styleUrls: ['checker.component.scss']
 })
 export class IDEACheckerComponent {
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The checks to show.
    */
@@ -117,9 +120,6 @@ export class IDEACheckerComponent {
    * Icon select.
    */
   @Output() iconSelect = new EventEmitter<void>();
-
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
 
   async fetchDataAndOpenModal(): Promise<void> {
     if (this.disabled) return;

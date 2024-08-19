@@ -16,6 +16,13 @@ import {
   styleUrls: ['RCPicker.component.scss']
 })
 export class IDEARCPickerComponent implements OnChanges {
+  private _loading = inject(IDEALoadingService);
+  private _message = inject(IDEAMessageService);
+  private _tc = inject(IDEATinCanService);
+  private _API = inject(IDEAAWSAPIService);
+  _offline = inject(IDEAOfflineService);
+  _translate = inject(IDEATranslationsService);
+
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
@@ -39,13 +46,6 @@ export class IDEARCPickerComponent implements OnChanges {
 
   resources: RCResource[];
   resourcesSuggestions: Suggestion[];
-
-  private _loading = inject(IDEALoadingService);
-  private _message = inject(IDEAMessageService);
-  private _tc = inject(IDEATinCanService);
-  private _API = inject(IDEAAWSAPIService);
-  _offline = inject(IDEAOfflineService);
-  _translate = inject(IDEATranslationsService);
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes.team || changes.folder) {

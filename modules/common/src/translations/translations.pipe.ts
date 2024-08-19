@@ -9,6 +9,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   pure: false // required to update the translations when the language change
 })
 export class IDEATranslatePipe implements PipeTransform, OnDestroy {
+  private _translate = inject(IDEATranslationsService);
+  private _ref = inject(ChangeDetectorRef);
+
   /**
    * The value to display.
    */
@@ -25,9 +28,6 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
    * Subscription to the (current) language changes.
    */
   private onLangChange: Subscription;
-
-  private _translate = inject(IDEATranslationsService);
-  private _ref = inject(ChangeDetectorRef);
 
   updateValue(key: string, interpolateParams?: any): void {
     const res = this._translate.instant(key, interpolateParams);

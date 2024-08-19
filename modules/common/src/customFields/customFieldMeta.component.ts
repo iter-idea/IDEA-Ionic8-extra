@@ -14,6 +14,11 @@ import { IDEAMessageService } from '../message.service';
   styleUrls: ['customFieldMeta.component.scss']
 })
 export class IDEACustomFieldMetaComponent implements OnInit {
+  private _alert = inject(AlertController);
+  private _modal = inject(ModalController);
+  private _message = inject(IDEAMessageService);
+  _translate = inject(IDEATranslationsService);
+
   /**
    * The CustomFieldMeta to manage.
    */
@@ -31,11 +36,6 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   errors = new Set<string>();
   FIELD_TYPES: string[] = Object.keys(CustomFieldTypes);
   CFT = CustomFieldTypes;
-
-  private _alert = inject(AlertController);
-  private _modal = inject(ModalController);
-  private _message = inject(IDEAMessageService);
-  _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     this._field = new CustomFieldMeta(this.field, this._translate.languages());

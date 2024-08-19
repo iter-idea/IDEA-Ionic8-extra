@@ -17,17 +17,16 @@ import {
 })
 export class IDEATeamsPage implements OnInit {
   protected _env = inject(IDEAEnvironment);
-
-  user: User;
-  teams: Team[];
-  project: string;
-
   private _tc = inject(IDEATinCanService);
   private _nav = inject(NavController);
   private _loading = inject(IDEALoadingService);
   private _message = inject(IDEAMessageService);
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
+
+  user: User;
+  teams: Team[];
+  project: string;
 
   ngOnInit(): void {
     this.project = this._env.idea.project;

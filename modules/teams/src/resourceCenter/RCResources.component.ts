@@ -23,6 +23,16 @@ const MAX_PAGE_SIZE = 24;
   styleUrls: ['RCResources.component.scss']
 })
 export class IDEARCResourcesComponent implements OnInit {
+  private _tc = inject(IDEATinCanService);
+  private _modal = inject(ModalController);
+  private _alert = inject(AlertController);
+  private _actions = inject(IDEAActionSheetController);
+  private _loading = inject(IDEALoadingService);
+  private _message = inject(IDEAMessageService);
+  private _translate = inject(IDEATranslationsService);
+  private _API = inject(IDEAAWSAPIService);
+  _offline = inject(IDEAOfflineService);
+
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */
@@ -43,16 +53,6 @@ export class IDEARCResourcesComponent implements OnInit {
   @ViewChild('searchbar') searchbar: IonSearchbar;
 
   uploadErrors: string[];
-
-  private _tc = inject(IDEATinCanService);
-  private _modal = inject(ModalController);
-  private _alert = inject(AlertController);
-  private _actions = inject(IDEAActionSheetController);
-  private _loading = inject(IDEALoadingService);
-  private _message = inject(IDEAMessageService);
-  private _translate = inject(IDEATranslationsService);
-  private _API = inject(IDEAAWSAPIService);
-  _offline = inject(IDEAOfflineService);
 
   ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths

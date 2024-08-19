@@ -8,6 +8,10 @@ import { IDEAAWSAPIService, IDEATinCanService, IDEAMessageService } from '@idea-
   styleUrls: ['RCConfigurator.component.scss']
 })
 export class IDEARCConfiguratorComponent implements OnInit {
+  private _message = inject(IDEAMessageService);
+  private _tc = inject(IDEATinCanService);
+  private _API = inject(IDEAAWSAPIService);
+
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
@@ -43,10 +47,6 @@ export class IDEARCConfiguratorComponent implements OnInit {
 
   folders: RCFolder[];
   foldersSuggestions: Suggestion[];
-
-  private _message = inject(IDEAMessageService);
-  private _tc = inject(IDEATinCanService);
-  private _API = inject(IDEAAWSAPIService);
 
   async ngOnInit(): Promise<void> {
     // if the team isn't specified, try to guess it in the usual IDEA's paths

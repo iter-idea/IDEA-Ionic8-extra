@@ -24,6 +24,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
   styleUrls: ['timeInterval.component.scss']
 })
 export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
+  private _modal = inject(ModalController);
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The time interval to set.
    */
@@ -91,9 +94,6 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
 
   valueToDisplay: string;
   private langChangeSubscription: Subscription;
-
-  private _modal = inject(ModalController);
-  private _translate = inject(IDEATranslationsService);
 
   ngOnInit(): void {
     // when the language changes, set the locale
