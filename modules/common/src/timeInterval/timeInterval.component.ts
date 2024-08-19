@@ -95,6 +95,8 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   valueToDisplay: string;
   private langChangeSubscription: Subscription;
 
+  isOpening = false;
+
   ngOnInit(): void {
     // when the language changes, set the locale
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
@@ -124,6 +126,8 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async pickTimeInterval(): Promise<void> {
+    if (this.isOpening) return;
+    this.isOpening = true;
     const modal = await this._modal.create({
       component: IDEAFromTimeToTimeComponent,
       componentProps: {
@@ -142,6 +146,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     modal.present();
+    this.isOpening = false;
   }
 
   doSelectWhenDisabled(): void {

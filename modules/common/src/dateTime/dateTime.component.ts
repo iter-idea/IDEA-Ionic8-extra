@@ -93,6 +93,8 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   valueToDisplay: string;
   private langChangeSubscription: Subscription;
 
+  isOpening = false;
+
   ngOnInit(): void {
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
       this.valueToDisplay = this.getValueToDisplay(this.date);
@@ -106,7 +108,8 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async openCalendarPicker(): Promise<void> {
-    if (this.disabled) return;
+    if (this.disabled || this.isOpening) return;
+    this.isOpening = true;
     const modal = await this._modal.create({
       component: IDEACalendarPickerComponent,
       componentProps: {
@@ -126,6 +129,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     modal.present();
+    this.isOpening = false;
   }
 
   private getValueToDisplay(date: epochDateTime | epochISOString): string {

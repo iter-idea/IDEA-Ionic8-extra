@@ -64,12 +64,16 @@ export class IDEAEmailDataComponent implements OnInit {
    */
   variablesPlain: string[];
 
+  isOpening = false;
+
   ngOnInit(): void {
     // create a plain list of variable codes
     this.variablesPlain = (this.variables || []).map(x => x.code);
   }
 
   async openEmailDataConfiguration(): Promise<void> {
+    if (this.isOpening) return;
+    this.isOpening = true;
     const modal = await this._modal.create({
       component: IDEAEmailDataConfigurationComponent,
       componentProps: {
@@ -82,6 +86,7 @@ export class IDEAEmailDataComponent implements OnInit {
     });
     modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
     modal.present();
+    this.isOpening = false;
   }
 
   doIconSelect(event: any): void {

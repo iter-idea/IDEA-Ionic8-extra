@@ -3,6 +3,7 @@
   [color]="color"
   [lines]="lines"
   [button]="!disabled"
+  [disabled]="isOpening"
   [title]="placeholder || valueToDisplay || ''"
   [class.withLabel]="label"
   (click)="disabled ? doSelectWhenDisabled() : pickTimeInterval()"

@@ -121,6 +121,8 @@ export class IDEACheckerComponent {
    */
   @Output() iconSelect = new EventEmitter<void>();
 
+  isOpening = false;
+
   async fetchDataAndOpenModal(): Promise<void> {
     if (this.disabled) return;
     if (typeof this.dataProvider === 'function') {
@@ -133,7 +135,8 @@ export class IDEACheckerComponent {
     } else this.openChecker();
   }
   private async openChecker(): Promise<void> {
-    if (this.disabled) return;
+    if (this.disabled || this.isOpening) return;
+    this.isOpening = true;
     const modal = await this._modal.create({
       component: IDEAChecksComponent,
       componentProps: {
@@ -151,6 +154,7 @@ export class IDEACheckerComponent {
     });
     modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
     modal.present();
+    this.isOpening = false;
   }
 
   getPreview(): string {

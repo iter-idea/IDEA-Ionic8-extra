@@ -4,6 +4,7 @@
   [lines]="lines"
   [title]="placeholder || label || ''"
   [button]="!disabled"
+  [disabled]="isOpening"
   [class.withLabel]="label"
   (click)="openCalendarPicker()"
 >

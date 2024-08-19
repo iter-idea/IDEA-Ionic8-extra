@@ -133,6 +133,8 @@ export class IDEASelectComponent implements OnChanges {
    */
   @Output() selectWhenDisabled = new EventEmitter<void>();
 
+  isOpening = false;
+
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.avoidAutoSelection && (changes['data'] || changes['category1'] || changes['category2'])) {
       const filteredData = (this.data || [])
@@ -163,7 +165,8 @@ export class IDEASelectComponent implements OnChanges {
     );
   }
   private async openSuggestions(): Promise<void> {
-    if (this.disabled) return;
+    if (this.disabled || this.isOpening) return;
+    this.isOpening = true;
     this.convertDataInSuggestions();
     const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
@@ -184,7 +187,6 @@ export class IDEASelectComponent implements OnChanges {
       },
       backdropDismiss: !this.mustChoose
     });
-
     modal.onDidDismiss().then(({ data }): void => {
       // manage a cancel option (modal dismission or cancel button)
       if (data === undefined || data === null) return;
@@ -196,6 +198,7 @@ export class IDEASelectComponent implements OnChanges {
       else this.description = data.value;
     });
     modal.present();
+    this.isOpening = false;
   }
 
   doSelectWhenDisabled(): void {

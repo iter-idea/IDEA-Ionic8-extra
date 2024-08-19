@@ -8,6 +8,8 @@ import { EmailData, mdToHtml, StringVariable } from 'idea-toolbox';
   styleUrls: ['emailDataConfiguration.component.scss']
 })
 export class IDEAEmailDataConfigurationComponent implements OnInit {
+  private _modal = inject(ModalController);
+
   /**
    * The emailData to configure.
    */
@@ -30,8 +32,6 @@ export class IDEAEmailDataConfigurationComponent implements OnInit {
   @Input() disabled: boolean;
   emailDataWC: EmailData;
   variablesPlain: string[];
-
-  private _modal = inject(ModalController);
 
   ngOnInit(): void {
     this.emailDataWC = new EmailData(this.emailData);

@@ -78,6 +78,8 @@ export class IDEALabelComponent implements OnInit {
   variableCodes: string[];
   htmlContent: string;
 
+  isOpening = false;
+
   ngOnInit(): void {
     this.languages = this.languages || this._translate.languages();
     this.variableCodes = (this.variables || []).map(x => x.code);
@@ -85,6 +87,8 @@ export class IDEALabelComponent implements OnInit {
   }
 
   async edit(): Promise<void> {
+    if (this.isOpening) return;
+    this.isOpening = true;
     const componentProps = {
       label: this.content,
       languages: this.languages,
@@ -103,6 +107,7 @@ export class IDEALabelComponent implements OnInit {
       this.change.emit();
     });
     modal.present();
+    this.isOpening = false;
   }
 
   private calcHTMLContent(): void {

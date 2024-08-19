@@ -79,8 +79,11 @@ export class IDEAListComponent {
    */
   @Output() iconSelect = new EventEmitter<void>();
 
+  isOpening = false;
+
   async openList(): Promise<void> {
-    if (this.disabled) return;
+    if (this.disabled || this.isOpening) return;
+    this.isOpening = true;
     const modal = await this._modal.create({
       component: IDEAListELementsComponent,
       componentProps: {
@@ -90,8 +93,9 @@ export class IDEAListComponent {
         noElementsFoundText: this.noElementsFoundText
       }
     });
-    modal.onDidDismiss().then(({ data }) => (data ? this.change.emit() : null));
+    modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
     modal.present();
+    this.isOpening = false;
   }
 
   getPreview(): string {

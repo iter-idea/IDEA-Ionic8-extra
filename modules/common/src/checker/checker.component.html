@@ -4,6 +4,7 @@
   [lines]="lines"
   [title]="searchPlaceholder || null"
   [button]="!disabled"
+  [disabled]="isOpening"
   [class.withLabel]="label"
   (click)="fetchDataAndOpenModal()"
 >
