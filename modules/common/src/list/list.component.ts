@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Label } from 'idea-toolbox';
 
-import { IDEAListELementsComponent } from './listElements.component';
+import { IDEAListElementsComponent } from './listElements.component';
 import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
@@ -85,7 +85,7 @@ export class IDEAListComponent {
     if (this.disabled || this.isOpening) return;
     this.isOpening = true;
     const modal = await this._modal.create({
-      component: IDEAListELementsComponent,
+      component: IDEAListElementsComponent,
       componentProps: {
         data: this.data,
         labelElements: this.labelElements,

@@ -12,7 +12,7 @@ const MAX_PAGE_SIZE = 24;
   templateUrl: 'listElements.component.html',
   styleUrls: ['listElements.component.scss']
 })
-export class IDEAListELementsComponent implements OnInit {
+export class IDEAListElementsComponent implements OnInit {
   private _modal = inject(ModalController);
   private _alert = inject(AlertController);
   private _translate = inject(IDEATranslationsService);
