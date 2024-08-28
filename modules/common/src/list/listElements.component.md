@@ -1,4 +1,4 @@
-# IDEAListELementsComponent
+# IDEAListElementsComponent
 
 ## Selector
 
