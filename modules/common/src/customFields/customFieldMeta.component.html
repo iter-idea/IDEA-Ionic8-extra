@@ -184,7 +184,7 @@
   @if (!disabled) {
     <ion-list class="obligatoryToggleList">
       <ion-item lines="none">
-        <ion-toggle label="'IDEA_COMMON.CUSTOM_FIELDS.OBLIGATORY' | translate" [(ngModel)]="_field.obligatory" />
+        <ion-toggle [label]="'IDEA_COMMON.CUSTOM_FIELDS.OBLIGATORY' | translate" [(ngModel)]="_field.obligatory" />
       </ion-item>
     </ion-list>
   }
