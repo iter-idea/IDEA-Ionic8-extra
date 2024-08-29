@@ -1,3 +1,5 @@
+/// <reference types="@types/google.maps" />
+
 import { Component, ElementRef, Input, OnInit, Renderer2, inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Loader } from '@googlemaps/js-api-loader';
