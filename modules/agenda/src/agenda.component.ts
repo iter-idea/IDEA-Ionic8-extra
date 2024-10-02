@@ -122,7 +122,7 @@ export class IDEAAgendaComponent implements OnInit {
   CalendarView = CalendarView;
   Attendance = EventAttendance;
   viewDate = new Date();
-  refresh = new Subject();
+  refresh = new Subject<void>();
   /**
    * @hide
    */
