@@ -81,6 +81,13 @@
       [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'"
     >
       {{ event.title | calendarEventTitle: view : event }}
+      @if (event.target) {
+        <p>{{ event.target }}</p>
+      } @else {
+        @if (event.location) {
+          <p>{{ event.location }}</p>
+        }
+      }
       @if (!event.allDay) {
         <p>{{ getPreviewDescription(event.description) }}</p>
       }
@@ -101,6 +108,7 @@
     <div
       class="cal-event"
       [class.external]="weekEvent.event.external"
+      [class.allDay]="weekEvent.event.allDay"
       [class.needsAction]="Attendance.NEEDS_ACTION === weekEvent.event.attendance"
       [class.declined]="Attendance.DECLINED === weekEvent.event.attendance"
       [class.tentative]="Attendance.TENTATIVE === weekEvent.event.attendance"

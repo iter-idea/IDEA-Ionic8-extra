@@ -212,8 +212,16 @@ export class IDEAAgendaComponent implements OnInit {
   getTooltipContent(event: AgendaEvent): string {
     if (!event) return '';
     let str = event.title ? '<b>' + event.title + '</b>' : '';
-    if (event.description) str = str.concat('<br>', event.description);
-    if (event.icons) event.icons.forEach(x => (str = str.concat('<br>', '<i>', x.title, '</i>')));
+    if (event.target) str = str.concat('<br>', event.target);
+    if (event.location) str = str.concat('<br>', event.location);
+    if (event.description) {
+      str = str.concat('<br>');
+      str = str.concat('<br>', event.description);
+    }
+    if (event.icons) {
+      str = str.concat('<br>');
+      event.icons.forEach(x => (str = str.concat('<br>', '<i>', x.title, '</i>')));
+    }
     if (event.avatars && event.avatars.length) {
       str = str.concat('<br><br>~');
       event.avatars.forEach(x => (str = str.concat('<br>', x.title)));
@@ -287,9 +295,13 @@ export class IDEAAgendaComponent implements OnInit {
  */
 export interface AgendaEvent extends CalendarEvent {
   /**
-   * A brief description for the event (e.g. customer, address, etc.).
+   * A brief description for the event.
    */
   description?: string;
+  /**
+   * The customer/stakeholder/target of the event.
+   */
+  target?: string;
   /**
    * The location of the event.
    */

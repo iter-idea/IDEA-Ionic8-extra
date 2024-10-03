@@ -41,6 +41,9 @@ idea-agenda .agenda {
     font-size: 14px;
     white-space: break-spaces;
   }
+  .cal-week-view .cal-all-day-events .cal-events-row {
+    height: 42px;
+  }
   // general border color
   .cal-day-headers,
   .cal-header,
@@ -103,6 +106,10 @@ idea-agenda .agenda {
     border-left: 4px solid var(--idea-agenda-event-border-color);
     box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
     background: var(--idea-agenda-event-background);
+  }
+  mwl-calendar-week-view-event .cal-event.allDay,
+  mwl-calendar-day-view .cal-event.allDay {
+    height: 100%;
   }
   // give less focus to external events
   .cal-event.external {
