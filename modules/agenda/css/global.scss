@@ -11,6 +11,7 @@ idea-agenda .agenda {
   --idea-agenda-month-badge: var(--ion-color-primary);
   --idea-agenda-event-background: var(--ion-color-primary-shade);
   --idea-agenda-event-border-color: var(--ion-color-white);
+  --idea-agenda-event-color: var(--ion-color-primary-contrast);
   --idea-agenda-month-detail-background: var(--ion-color-light);
   --idea-agenda-month-detail-color: var(--ion-color-light-contrast);
   --idea-agenda-month-detail-shadow-box: inset 0 0 6px 0 rgba(0, 0, 0, 0.5);
@@ -106,6 +107,7 @@ idea-agenda .agenda {
     border-left: 4px solid var(--idea-agenda-event-border-color);
     box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
     background: var(--idea-agenda-event-background);
+    color: var(--idea-agenda-event-color);
   }
   mwl-calendar-week-view-event .cal-event.allDay,
   mwl-calendar-day-view .cal-event.allDay {
@@ -115,9 +117,6 @@ idea-agenda .agenda {
   .cal-event.external {
     opacity: 0.6;
     border: 1px solid var(--idea-agenda-external-event-border-color) !important;
-    .cal-event-title {
-      color: var(--ion-text-color) !important;
-    }
   }
   // manage the attendance of external events
   .cal-event.external.needsAction {
