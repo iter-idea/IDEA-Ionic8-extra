@@ -5,7 +5,7 @@ import { IDEATranslationsService } from './translations.service';
 /**
  * Handle labels with the languages loaded from IDEA's translation service.
  */
-@Pipe({ name: 'label', pure: false })
+@Pipe({ name: 'label', pure: false, standalone: true })
 export class IDEALocalizedLabelPipe implements PipeTransform {
   private _translate = inject(IDEATranslationsService);
 

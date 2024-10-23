@@ -89,7 +89,7 @@ export * from './src/translations/dateLocale.pipe';
 export * from './src/translations/label.pipe';
 export * from './src/translations/languagePicker.component';
 export * from './src/translations/translations.module';
-export * from './src/translations/translations.pipe';
+export * from './src/translations/translate.pipe';
 export * from './src/translations/translations.service';
 
 export * from './src/userAvatar/userAvatar.component';

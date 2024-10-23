@@ -86,7 +86,7 @@ export class IDEATranslationsService {
   /**
    * Sets the default language to use as a fallback.
    */
-  setDefaultLang(lang: string) {
+  setDefaultLang(lang: string): void {
     if (this.langs.includes(lang)) this.defaultLang = lang;
     else this.defaultLang = this.langs[0];
   }
@@ -131,7 +131,7 @@ export class IDEATranslationsService {
       // check whether the language is among the available ones; otherwise, fallback to default
       if (!this.langs.includes(lang)) lang = this.defaultLang;
       // load translations
-      this.loadTranlations(lang).then(() => {
+      this.loadTranlations(lang).then((): void => {
         // set the lang
         this.currentLang = lang;
         // emit the change
@@ -218,7 +218,7 @@ export class IDEATranslationsService {
           this.modulesPath.map(m => this.loadTranslationFileHelper(this.basePath.concat(m), lang))
         );
       }
-      Promise.all(promises).then(() => resolve());
+      Promise.all(promises).then((): void => resolve());
     });
   }
   /**
@@ -241,7 +241,7 @@ export class IDEATranslationsService {
    */
   private interpolate(expr: string, params?: any): string {
     if (!params || !expr) return expr;
-    return expr.replace(this.templateMatcher, (substring: string, b: string) => {
+    return expr.replace(this.templateMatcher, (substring: string, b: string): any => {
       const r = this.getValue(params, b);
       return this.isDefined(r) ? r : substring;
     });

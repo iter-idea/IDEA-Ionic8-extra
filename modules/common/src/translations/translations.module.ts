@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 
-import { IDEATranslatePipe } from './translations.pipe';
+import { IDEATranslatePipe } from './translate.pipe';
 import { IDEALocalizedDatePipe } from './dateLocale.pipe';
 import { IDEALocalizedLabelPipe } from './label.pipe';
 
 import { IDEALanguagePickerComponent } from './languagePicker.component';
 
+/**
+ * @deprecated use standalone imports instead
+ * @todo to remove in future releases
+ */
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALocalizedLabelPipe, IDEALanguagePickerComponent],
+  imports: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALocalizedLabelPipe, IDEALanguagePickerComponent],
   exports: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALocalizedLabelPipe, IDEALanguagePickerComponent]
 })
 export class IDEATranslationsModule {}

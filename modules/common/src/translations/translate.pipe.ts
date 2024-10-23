@@ -1,13 +1,11 @@
 import { ChangeDetectorRef, Injectable, OnDestroy, Pipe, PipeTransform, inject } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs'; // @todo replace rxjs with something else?
 
 import { IDEATranslationsService } from '../translations/translations.service';
 
 @Injectable()
-@Pipe({
-  name: 'translate',
-  pure: false // required to update the translations when the language change
-})
+// NOT pure because we need to update the translations when the language change
+@Pipe({ name: 'translate', pure: false, standalone: true })
 export class IDEATranslatePipe implements PipeTransform, OnDestroy {
   private _translate = inject(IDEATranslationsService);
   private _ref = inject(ChangeDetectorRef);
