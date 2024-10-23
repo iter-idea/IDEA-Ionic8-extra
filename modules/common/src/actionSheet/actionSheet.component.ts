@@ -1,6 +1,15 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
-import { PopoverController } from '@ionic/angular';
+import {
+  IonContent,
+  IonGrid,
+  IonCol,
+  IonRow,
+  IonLabel,
+  IonButton,
+  IonIcon,
+  PopoverController
+} from '@ionic/angular/standalone';
 
 /**
  * It's an alternative for desktop devices to the traditional ActionSheet.
@@ -8,8 +17,92 @@ import { PopoverController } from '@ionic/angular';
  */
 @Component({
   selector: 'idea-action-sheet',
-  templateUrl: 'actionSheet.component.html',
-  styleUrls: ['actionSheet.component.scss']
+  standalone: true,
+  imports: [IonIcon, IonButton, IonLabel, IonRow, IonCol, IonGrid, IonContent],
+  template: `
+    <ion-content [class]="cssClass">
+      <ion-grid class="ion-padding">
+        @if (header) {
+          <ion-row class="headerRow">
+            <ion-col class="ion-text-center">
+              <ion-label class="ion-text-wrap">
+                {{ header }}
+                @if (subHeader) {
+                  <p>{{ subHeader }}</p>
+                }
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        }
+        <ion-row class="ion-justify-content-center buttonsRow">
+          @for (button of buttons; track button) {
+            <ion-col [size]="withIcons ? 6 : 12">
+              <ion-button
+                fill="clear"
+                expand="full"
+                color="medium"
+                [class.withIcon]="withIcons"
+                [class.destructive]="button.role === 'destructive'"
+                [class.cancel]="button.role === 'cancel'"
+                (click)="buttonClicked(button)"
+              >
+                <div>
+                  @if (withIcons) {
+                    <ion-icon [icon]="button.icon || 'flash'" />
+                  }
+                  @if (withIcons) {
+                    <br />
+                  }
+                  <ion-label class="ion-text-wrap">{{ button.text }}</ion-label>
+                </div>
+              </ion-button>
+            </ion-col>
+          }
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  `,
+  styles: [
+    `
+      ion-row.headerRow {
+        margin-top: 8px;
+        margin-bottom: 16px;
+        font-size: 1.2em;
+        font-weight: 500;
+      }
+      ion-row.buttonsRow {
+        margin-bottom: 8px;
+        ion-button {
+          text-transform: none;
+          --ion-color-base: var(--ion-text-color-step-350) !important;
+          &.destructive {
+            --ion-color-base: var(--ion-color-danger) !important;
+          }
+          &.cancel {
+            --ion-color-base: var(--ion-text-color-step-650) !important;
+          }
+          &.withIcon {
+            height: 100%;
+            div {
+              display: flex;
+              flex-flow: column nowrap;
+              align-items: center;
+              ion-icon {
+                font-size: 1.8em;
+              }
+              br {
+                content: '';
+                margin-bottom: 10px;
+              }
+            }
+          }
+        }
+      }
+      .action-sheet-cancel ion-icon {
+        opacity: 0.8;
+      }
+    `
+  ]
 })
 export class IDEAActionSheetComponent implements OnInit {
   private _popover = inject(PopoverController);
@@ -38,8 +131,8 @@ export class IDEAActionSheetComponent implements OnInit {
     this.withIcons = this.buttons.some(b => b.icon);
   }
 
-  buttonClicked(b: ActionSheetButton): void {
-    if (b.handler) b.handler();
+  buttonClicked(button: ActionSheetButton): void {
+    if (button.handler) button.handler();
     this._popover.dismiss();
   }
 }

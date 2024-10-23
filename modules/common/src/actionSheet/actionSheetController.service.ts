@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
-import { ActionSheetController, Platform, PopoverController } from '@ionic/angular';
+import { ActionSheetController, Platform, PopoverController } from '@ionic/angular/standalone';
 
 import { IDEAActionSheetComponent } from './actionSheet.component';
 
@@ -8,7 +8,7 @@ import { IDEAActionSheetComponent } from './actionSheet.component';
  * It's an alternative to the traditional ActionSheetController.
  * It shares (almost) the same inputs, so they are interchangeable.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAActionSheetController {
   private _platform = inject(Platform);
   private _actions = inject(ActionSheetController);

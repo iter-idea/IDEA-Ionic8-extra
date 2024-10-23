@@ -1,5 +1,4 @@
 export * from './src/actionSheet/actionSheet.component';
-export * from './src/actionSheet/actionSheet.module';
 export * from './src/actionSheet/actionSheetController.service';
 
 export * from './src/address/address.component';
