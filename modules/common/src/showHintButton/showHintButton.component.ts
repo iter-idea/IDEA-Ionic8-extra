@@ -1,11 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonButton, IonIcon } from '@ionic/angular/standalone';
+
 import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-show-hint-button',
-  templateUrl: 'showHintButton.component.html',
-  styleUrls: ['showHintButton.component.scss']
+  standalone: true,
+  imports: [CommonModule, IonButton, IonIcon],
+  template: `
+    <ion-button [slot]="slot" [fill]="fill" [color]="color" (click)="showHint($event)">
+      <ion-icon [icon]="icon" slot="icon-only" />
+    </ion-button>
+  `
 })
 export class IDEAShowHintButtonComponent {
   private _alert = inject(AlertController);
@@ -37,7 +44,7 @@ export class IDEAShowHintButtonComponent {
   /**
    * A CSS class to apply to the alert box.
    */
-  @Input() cssClass? = 'alertLongOptions';
+  @Input() cssClass = 'alertLongOptions';
   /**
    * The slots where to put the button.
    */
