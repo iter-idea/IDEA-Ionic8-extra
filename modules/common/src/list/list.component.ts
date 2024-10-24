@@ -1,14 +1,94 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
 import { IDEAListElementsComponent } from './listElements.component';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
 
 @Component({
   selector: 'idea-list',
-  templateUrl: 'list.component.html',
-  styleUrls: ['list.component.scss']
+  standalone: true,
+  imports: [CommonModule, IDEATranslatePipe, IonItem, IonButton, IonIcon, IonLabel, IonText],
+  template: `
+    <ion-item
+      class="listItem"
+      [color]="color"
+      [lines]="lines"
+      [button]="!disabled"
+      [disabled]="isOpening"
+      [title]="placeholder || ''"
+      [class.withLabel]="label"
+      (click)="openList()"
+    >
+      @if (icon) {
+        <ion-button
+          fill="clear"
+          slot="start"
+          [color]="iconColor"
+          [class.marginTop]="label"
+          (click)="doIconSelect($event)"
+        >
+          <ion-icon [icon]="icon" slot="icon-only" />
+        </ion-button>
+      }
+      @if (label) {
+        <ion-label position="stacked" [class.selectable]="!disabled">
+          {{ label }}
+          @if (obligatory && !disabled) {
+            <ion-text class="obligatoryDot" />
+          }
+        </ion-label>
+      }
+      <ion-label
+        class="description"
+        [class.selectable]="!disabled"
+        [class.placeholder]="!getPreview() || noPreviewText"
+      >
+        {{ getPreview() || placeholder }}
+      </ion-label>
+      @if (!disabled) {
+        <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      }
+    </ion-item>
+  `,
+  styles: [
+    `
+      .listItem {
+        min-height: 48px;
+        height: auto;
+        .description {
+          margin: 10px 0;
+          height: 20px;
+          line-height: 20px;
+          width: 100%;
+        }
+        .placeholder {
+          color: var(--ion-color-medium);
+        }
+        .selectIcon {
+          margin: 0;
+          padding-left: 4px;
+          font-size: 0.8em;
+          color: var(--ion-color-medium);
+        }
+      }
+      .listItem.withLabel {
+        min-height: 58px;
+        height: auto;
+        .selectIcon {
+          padding-top: 25px;
+        }
+        ion-icon[slot='start'] {
+          margin-top: 16px;
+        }
+      }
+      .selectable {
+        cursor: pointer;
+      }
+    `
+  ]
 })
 export class IDEAListComponent {
   private _modal = inject(ModalController);

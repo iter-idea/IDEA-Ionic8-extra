@@ -1,16 +1,102 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
-import { IonInfiniteScroll, AlertController, ModalController, IonSearchbar } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  IonSearchbar,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonList,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent
+} from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
 import { IDEALabelerComponent } from '../labeler/labeler.component';
 
 const MAX_PAGE_SIZE = 24;
 
 @Component({
   selector: 'idea-list-elements',
-  templateUrl: 'listElements.component.html',
-  styleUrls: ['listElements.component.scss']
+  standalone: true,
+  imports: [
+    CommonModule,
+    IDEATranslatePipe,
+    IDEALabelerComponent,
+    IonSearchbar,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonList,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent
+  ],
+  template: `
+    <ion-header>
+      <ion-toolbar color="ideaToolbar">
+        <ion-buttons slot="start">
+          <ion-button [title]="'IDEA_COMMON.LIST.CANCEL_AND_CLOSE' | translate" (click)="close()">
+            <ion-icon slot="icon-only" icon="chevron-down" />
+          </ion-button>
+        </ion-buttons>
+        <ion-searchbar
+          #searchbar
+          [placeholder]="searchPlaceholder || ('COMMON.SEARCH' | translate)"
+          (ionInput)="search($event.target.value)"
+        />
+        <ion-buttons slot="end">
+          <ion-button [title]="'IDEA_COMMON.LIST.NEW_ELEMENT' | translate" (click)="addElement()">
+            <ion-icon icon="add" slot="icon-only" />
+          </ion-button>
+          <ion-button [title]="'IDEA_COMMON.LIST.SAVE_AND_CLOSE' | translate" (click)="close(true)">
+            <ion-icon icon="checkmark-circle" slot="icon-only" />
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list class="listElements">
+        @if (!filteredList.length) {
+          <ion-item lines="none">
+            <ion-label>
+              <i>{{ noElementsFoundText || ('IDEA_COMMON.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
+            </ion-label>
+          </ion-item>
+        }
+        @for (element of filteredList; track element) {
+          <ion-item class="listElement">
+            <ion-label>{{ getElementName(element) }}</ion-label>
+            @if (labelElements) {
+              <ion-button slot="end" fill="clear" (click)="editElement(element)">
+                <ion-icon icon="pencil-sharp" slot="icon-only" />
+              </ion-button>
+            }
+            <ion-button
+              slot="end"
+              fill="clear"
+              color="danger"
+              [title]="'IDEA_COMMON.LIST.DELETE_ELEMENT' | translate"
+              (click)="removeElement(element)"
+            >
+              <ion-icon icon="trash-outline" slot="icon-only" />
+            </ion-button>
+          </ion-item>
+        }
+      </ion-list>
+      <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
+        <ion-infinite-scroll-content />
+      </ion-infinite-scroll>
+    </ion-content>
+  `
 })
 export class IDEAListElementsComponent implements OnInit {
   private _modal = inject(ModalController);

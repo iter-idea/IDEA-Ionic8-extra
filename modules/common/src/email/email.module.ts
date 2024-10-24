@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
-import { IDEAListModule } from '../list/list.module';
+import { IDEAListComponent } from '../list/list.component';
 
 import { IDEAEmailDataComponent } from './emailData.component';
 import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.component';
@@ -16,7 +16,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
     FormsModule,
     IonicModule,
     IDEATranslationsModule,
-    IDEAListModule,
+    IDEAListComponent,
     IDEAHiglightedVariablesPipe
   ],
   declarations: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent],
