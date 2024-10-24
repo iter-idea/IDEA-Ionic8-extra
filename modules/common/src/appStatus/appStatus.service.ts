@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular/standalone';
 import { AppStatus } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
