@@ -1,15 +1,46 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import {
+  ModalController,
+  AlertController,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonList
+} from '@ionic/angular/standalone';
 import { CustomFieldMeta, CustomFieldTypes, Label } from 'idea-toolbox';
 
+import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEAMessageService } from '../message.service';
 import { IDEALabelerComponent } from '../labeler/labeler.component';
 import { IDEAIconsComponent } from '../icons/icons.component';
-
-import { IDEATranslationsService } from '../translations/translations.service';
-import { IDEAMessageService } from '../message.service';
+import { IDEASelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'idea-custom-field-meta',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IDEALabelerComponent,
+    IDEAIconsComponent,
+    IDEASelectComponent,
+    IonHeader,
+    IonList,
+    IonContent,
+    IonTitle,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonToolbar
+  ],
   templateUrl: 'customFieldMeta.component.html',
   styleUrls: ['customFieldMeta.component.scss']
 })

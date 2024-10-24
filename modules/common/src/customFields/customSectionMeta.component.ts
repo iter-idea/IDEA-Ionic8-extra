@@ -1,16 +1,46 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import {
+  ModalController,
+  AlertController,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonList,
+  IonReorderGroup,
+  IonTitle
+} from '@ionic/angular/standalone';
 import { CustomFieldMeta, CustomSectionMeta, Label, Suggestion } from 'idea-toolbox';
 
 import { IDEACustomFieldMetaComponent } from './customFieldMeta.component';
 import { IDEALabelerComponent } from '../labeler/labeler.component';
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
-
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
 import { IDEAMessageService } from '../message.service';
 
 @Component({
   selector: 'idea-custom-section-meta',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IDEALabelerComponent,
+    IonReorderGroup,
+    IonList,
+    IonContent,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonToolbar,
+    IonHeader,
+    IonTitle
+  ],
   templateUrl: 'customSectionMeta.component.html',
   styleUrls: ['customSectionMeta.component.scss']
 })

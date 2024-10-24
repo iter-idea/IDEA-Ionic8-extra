@@ -1,11 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { AlertController } from '@ionic/angular/standalone';
 import { CustomBlockMeta, CustomFieldTypes } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
+import { IDEASelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'idea-custom-block',
+  standalone: true,
+  imports: [CommonModule, FormsModule, IDEATranslatePipe, IDEALocalizedLabelPipe, IDEASelectComponent],
   templateUrl: 'customBlock.component.html',
   styleUrls: ['customBlock.component.scss']
 })

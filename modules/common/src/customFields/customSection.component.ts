@@ -1,11 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { AlertController } from '@ionic/angular/standalone';
 import { CustomFieldTypes, CustomSectionMeta } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
 
 @Component({
   selector: 'idea-custom-section',
+  standalone: true,
+  imports: [CommonModule, FormsModule, IDEATranslatePipe],
   templateUrl: 'customSection.component.html',
   styleUrls: ['customSection.component.scss']
 })

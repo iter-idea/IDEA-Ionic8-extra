@@ -11,7 +11,6 @@ export * from './src/checker/checker.component';
 export * from './src/customFields/customBlock.component';
 export * from './src/customFields/customBlockMeta.component';
 export * from './src/customFields/customFieldMeta.component';
-export * from './src/customFields/customFields.module';
 export * from './src/customFields/customSection.component';
 export * from './src/customFields/customSectionMeta.component';
 
