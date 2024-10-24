@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
-import { ModalController, IonItem, IonLabel, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Check } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -12,7 +12,7 @@ import { IDEAChecksComponent } from './checks.component';
 @Component({
   selector: 'idea-checker',
   standalone: true,
-  imports: [CommonModule, IDEATranslatePipe, IDEAUserAvatarComponent, IonLabel, IonItem, IonButton, IonIcon],
+  imports: [CommonModule, IDEATranslatePipe, IDEAUserAvatarComponent, IonLabel, IonItem, IonButton, IonIcon, IonText],
   template: `
     <ion-item
       class="checkerItem"

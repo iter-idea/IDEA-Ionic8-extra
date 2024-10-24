@@ -13,7 +13,10 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
-  IonTitle
+  IonTitle,
+  IonItem,
+  IonLabel,
+  IonAvatar
 } from '@ionic/angular/standalone';
 import { Check, Suggestion } from 'idea-toolbox';
 
@@ -41,7 +44,10 @@ const MAX_PAGE_SIZE = 24;
     IonInfiniteScrollContent,
     IonList,
     IonContent,
-    IonHeader
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonAvatar
   ],
   template: `
     <ion-header>

@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
-import { ModalController, IonItem, IonLabel, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Label, Languages, mdToHtml, StringVariable } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
 
 import { IDEALabelerComponent } from './labeler.component';
-import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
 
 /**
  * Manage the content of a Label.
@@ -14,7 +14,7 @@ import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
 @Component({
   selector: 'idea-label',
   standalone: true,
-  imports: [CommonModule, IDEAHiglightedVariablesPipe, IonItem, IonLabel, IonButton, IonIcon],
+  imports: [CommonModule, IDEAHiglightedVariablesPipe, IonItem, IonLabel, IonButton, IonIcon, IonText],
   template: `
     <ion-item
       class="labelItem"

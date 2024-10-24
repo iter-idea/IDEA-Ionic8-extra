@@ -1,7 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AlertController } from '@ionic/angular/standalone';
+import {
+  AlertController,
+  IonList,
+  IonListHeader,
+  IonLabel,
+  IonItem,
+  IonButton,
+  IonIcon,
+  IonText,
+  IonTextarea,
+  IonInput
+} from '@ionic/angular/standalone';
 import { CustomBlockMeta, CustomFieldTypes } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -12,7 +23,22 @@ import { IDEASelectComponent } from '../select/select.component';
 @Component({
   selector: 'idea-custom-block',
   standalone: true,
-  imports: [CommonModule, FormsModule, IDEATranslatePipe, IDEALocalizedLabelPipe, IDEASelectComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IDEALocalizedLabelPipe,
+    IDEASelectComponent,
+    IonText,
+    IonIcon,
+    IonButton,
+    IonItem,
+    IonLabel,
+    IonListHeader,
+    IonList,
+    IonInput,
+    IonTextarea
+  ],
   templateUrl: 'customBlock.component.html',
   styleUrls: ['customBlock.component.scss']
 })

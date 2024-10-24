@@ -11,12 +11,25 @@ import {
   IonIcon,
   IonTitle,
   IonContent,
-  IonList
+  IonList,
+  IonListHeader,
+  IonLabel,
+  IonText,
+  IonBadge,
+  IonItem,
+  IonInput,
+  IonReorderGroup,
+  IonReorder,
+  IonCol,
+  IonRow,
+  IonSelect,
+  IonSelectOption
 } from '@ionic/angular/standalone';
 import { CustomFieldMeta, CustomFieldTypes, Label } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
 import { IDEAMessageService } from '../message.service';
 import { IDEALabelerComponent } from '../labeler/labeler.component';
 import { IDEAIconsComponent } from '../icons/icons.component';
@@ -29,9 +42,20 @@ import { IDEASelectComponent } from '../select/select.component';
     CommonModule,
     FormsModule,
     IDEATranslatePipe,
+    IDEALocalizedLabelPipe,
     IDEALabelerComponent,
     IDEAIconsComponent,
     IDEASelectComponent,
+    IonRow,
+    IonCol,
+    IonReorder,
+    IonReorderGroup,
+    IonInput,
+    IonItem,
+    IonBadge,
+    IonText,
+    IonLabel,
+    IonListHeader,
     IonHeader,
     IonList,
     IonContent,
@@ -39,7 +63,9 @@ import { IDEASelectComponent } from '../select/select.component';
     IonIcon,
     IonButton,
     IonButtons,
-    IonToolbar
+    IonToolbar,
+    IonSelect,
+    IonSelectOption
   ],
   templateUrl: 'customFieldMeta.component.html',
   styleUrls: ['customFieldMeta.component.scss']

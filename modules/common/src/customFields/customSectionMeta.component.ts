@@ -12,16 +12,28 @@ import {
   IonContent,
   IonList,
   IonReorderGroup,
-  IonTitle
+  IonTitle,
+  IonListHeader,
+  IonLabel,
+  IonItem,
+  IonInput,
+  IonText,
+  IonReorder,
+  IonBadge,
+  IonRow,
+  IonCol,
+  IonItemDivider
 } from '@ionic/angular/standalone';
 import { CustomFieldMeta, CustomSectionMeta, Label, Suggestion } from 'idea-toolbox';
 
-import { IDEACustomFieldMetaComponent } from './customFieldMeta.component';
-import { IDEALabelerComponent } from '../labeler/labeler.component';
-import { IDEASuggestionsComponent } from '../select/suggestions.component';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
 import { IDEAMessageService } from '../message.service';
+import { IDEALabelerComponent } from '../labeler/labeler.component';
+import { IDEASuggestionsComponent } from '../select/suggestions.component';
+
+import { IDEACustomFieldMetaComponent } from './customFieldMeta.component';
 
 @Component({
   selector: 'idea-custom-section-meta',
@@ -30,7 +42,18 @@ import { IDEAMessageService } from '../message.service';
     CommonModule,
     FormsModule,
     IDEATranslatePipe,
+    IDEALocalizedLabelPipe,
     IDEALabelerComponent,
+    IonItemDivider,
+    IonCol,
+    IonRow,
+    IonBadge,
+    IonReorder,
+    IonText,
+    IonInput,
+    IonItem,
+    IonLabel,
+    IonListHeader,
     IonReorderGroup,
     IonList,
     IonContent,

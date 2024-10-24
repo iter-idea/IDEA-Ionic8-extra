@@ -12,7 +12,9 @@ import {
   IonContent,
   IonList,
   IonInfiniteScroll,
-  IonInfiniteScrollContent
+  IonInfiniteScrollContent,
+  IonItem,
+  IonLabel
 } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
@@ -38,7 +40,9 @@ const MAX_PAGE_SIZE = 24;
     IonContent,
     IonList,
     IonInfiniteScroll,
-    IonInfiniteScrollContent
+    IonInfiniteScrollContent,
+    IonItem,
+    IonLabel
   ],
   template: `
     <ion-header>

@@ -154,7 +154,7 @@
                         [sizeMd]="section.getColumnFieldSize(i)"
                         [class.hasFieldAnError]="hasFieldAnError('s[' + index + '].' + 'columns[' + i + ']')"
                       >
-                        @if (!section.columns[i].isComplex()) {
+                        @if (!isColumnComplex(section.columns[i])) {
                           <ion-chip
                             color="primary"
                             class="simpleField"
@@ -170,7 +170,7 @@
                           </ion-chip>
                         }
                         <!---->
-                        @if (section.columns[i].isComplex()) {
+                        @if (isColumnComplex(section.columns[i])) {
                           <ion-chip
                             color="dark"
                             [title]="displayField(section, i, true)"

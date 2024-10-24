@@ -10,14 +10,21 @@ import {
   IonButton,
   IonIcon,
   IonContent,
-  IonTitle
+  IonTitle,
+  IonListHeader,
+  IonLabel,
+  IonList,
+  IonItem,
+  IonThumbnail,
+  IonTextarea,
+  IonText
 } from '@ionic/angular/standalone';
 import { Label, LabelVariable, Languages, StringVariable } from 'idea-toolbox';
 
-import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
+import { IDEAMessageService } from '../message.service';
 
 /**
  * A component for filling in an Label.
@@ -36,7 +43,14 @@ import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
     IonButton,
     IonButtons,
     IonToolbar,
-    IonHeader
+    IonHeader,
+    IonList,
+    IonListHeader,
+    IonLabel,
+    IonItem,
+    IonThumbnail,
+    IonTextarea,
+    IonText
   ],
   template: `
     <ion-header>

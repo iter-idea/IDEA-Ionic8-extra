@@ -1,10 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { ModalController, AlertController, IonReorderGroup } from '@ionic/angular/standalone';
+import {
+  ModalController,
+  AlertController,
+  IonReorderGroup,
+  IonItem,
+  IonLabel,
+  IonReorder,
+  IonButton,
+  IonIcon,
+  IonRow,
+  IonCol
+} from '@ionic/angular/standalone';
 import { CustomBlockMeta, CustomSectionMeta, Label } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
 import { IDEAMessageService } from '../message.service';
 
 import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
@@ -12,7 +24,19 @@ import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
 @Component({
   selector: 'idea-custom-block-meta',
   standalone: true,
-  imports: [CommonModule, IDEATranslatePipe, IonReorderGroup],
+  imports: [
+    CommonModule,
+    IDEATranslatePipe,
+    IDEALocalizedLabelPipe,
+    IonCol,
+    IonRow,
+    IonIcon,
+    IonButton,
+    IonReorder,
+    IonLabel,
+    IonItem,
+    IonReorderGroup
+  ],
   templateUrl: 'customBlockMeta.component.html',
   styleUrls: ['customBlockMeta.component.scss']
 })

@@ -16,7 +16,10 @@ import {
   IonList,
   IonToolbar,
   IonTitle,
-  IonListHeader
+  IonListHeader,
+  IonButtons,
+  IonItem,
+  IonChip
 } from '@ionic/angular/standalone';
 import {
   Label,
@@ -31,21 +34,25 @@ import {
   Suggestion
 } from 'idea-toolbox';
 
-import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
+import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
+import { IDEAMessageService } from '../message.service';
 import { IDEAActionSheetController } from '../actionSheet/actionSheetController.service';
 import { IDEALabelerComponent } from '../labeler/labeler.component';
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
-import { IDEATranslatePipe } from '../translations/translate.pipe';
-import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
 
 @Component({
   selector: 'idea-pdf-template',
   standalone: true,
   imports: [
+    IonItem,
+    IonButtons,
     CommonModule,
     FormsModule,
     IDEATranslatePipe,
+    IDEALocalizedLabelPipe,
     IDEAHiglightedVariablesPipe,
     IonContent,
     IonLabel,
@@ -53,7 +60,12 @@ import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
     IonTitle,
     IonToolbar,
     IonList,
-    IonHeader
+    IonHeader,
+    IonButton,
+    IonIcon,
+    IonRow,
+    IonCol,
+    IonChip
   ],
   templateUrl: 'pdfTemplate.component.html',
   styleUrls: ['pdfTemplate.component.scss']
@@ -321,6 +333,10 @@ export class IDEAPDFTemplateComponent implements OnInit {
     await modal.present();
   }
 
+  isColumnComplex(field: string | PDFTemplateSimpleField | PDFTemplateComplexField): boolean {
+    if (typeof field === 'string') return false;
+    return field.isComplex();
+  }
   displayField(section: PDFTemplateSection, colIndex: number, forceLabel?: boolean): string {
     // skip in case the column doesn't contain a field
     if (!section.doesColumnContainAField(colIndex)) return;

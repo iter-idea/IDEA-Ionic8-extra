@@ -1,16 +1,40 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AlertController } from '@ionic/angular/standalone';
+import {
+  AlertController,
+  IonItem,
+  IonLabel,
+  IonText,
+  IonButton,
+  IonIcon,
+  IonInput,
+  IonTextarea
+} from '@ionic/angular/standalone';
 import { CustomFieldTypes, CustomSectionMeta } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
+import { IDEASelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'idea-custom-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, IDEATranslatePipe],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IDEALocalizedLabelPipe,
+    IDEASelectComponent,
+    IonIcon,
+    IonButton,
+    IonText,
+    IonLabel,
+    IonItem,
+    IonInput,
+    IonTextarea
+  ],
   templateUrl: 'customSection.component.html',
   styleUrls: ['customSection.component.scss']
 })

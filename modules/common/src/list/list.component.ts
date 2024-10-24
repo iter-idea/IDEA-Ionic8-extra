@@ -3,9 +3,10 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
-import { IDEAListElementsComponent } from './listElements.component';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
+
+import { IDEAListElementsComponent } from './listElements.component';
 
 @Component({
   selector: 'idea-list',
