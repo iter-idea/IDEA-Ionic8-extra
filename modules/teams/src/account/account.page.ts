@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular/standalone';
 import { User } from 'idea-toolbox';
 import { IDEAEnvironment, IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
 import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular/standalone';
 
 import { IDEATranslationsService } from './translations/translations.service';
 

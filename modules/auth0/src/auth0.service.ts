@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { Auth0User } from 'idea-toolbox';
 import { IDEAEnvironment } from '@idea-ionic/common';

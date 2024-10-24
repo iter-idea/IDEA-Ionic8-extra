@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { Calendar, ExternalCalendarSources, Suggestion } from 'idea-toolbox';
 import {

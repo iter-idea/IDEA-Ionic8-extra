@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 
 import { IDEAEnvironment } from '../environment';
 

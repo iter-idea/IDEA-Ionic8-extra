@@ -1,5 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
-import { ModalController, AlertController, Platform } from '@ionic/angular';
+import { ModalController, AlertController, Platform } from '@ionic/angular/standalone';
 import { IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEAOfflineManagerComponent } from './offlineManager.component';

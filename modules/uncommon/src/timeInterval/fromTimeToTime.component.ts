@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular/standalone';
 import { TimeInterval } from 'idea-toolbox';
 import { IDEATranslationsService } from '@idea-ionic/common';
 

@@ -9,7 +9,7 @@ import {
   OnChanges,
   inject
 } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { epochDateTime, epochISOString } from 'idea-toolbox';
 import { IDEATranslationsService } from '@idea-ionic/common';

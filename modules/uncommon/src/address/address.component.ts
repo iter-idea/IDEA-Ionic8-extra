@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { IonAccordionGroup } from '@ionic/angular';
+import { IonAccordionGroup } from '@ionic/angular/standalone';
 import { Address, Countries, Suggestion } from 'idea-toolbox';
 
 @Component({

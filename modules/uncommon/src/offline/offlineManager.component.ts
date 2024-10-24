@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { IDEAActionSheetController, IDEATranslationsService } from '@idea-ionic/common';
 

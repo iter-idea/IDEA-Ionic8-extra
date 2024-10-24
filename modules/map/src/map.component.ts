@@ -1,7 +1,7 @@
 /// <reference types="@types/google.maps" />
 
 import { Component, ElementRef, Input, OnInit, Renderer2, inject } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 import { Loader } from '@googlemaps/js-api-loader';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
 import { Geolocation, Position } from '@capacitor/geolocation';

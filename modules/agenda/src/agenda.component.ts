@@ -8,7 +8,7 @@ import {
   ChangeDetectorRef,
   inject
 } from '@angular/core';
-import { IonContent, Platform } from '@ionic/angular';
+import { IonContent, Platform } from '@ionic/angular/standalone';
 import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
 import {
   CalendarEvent,

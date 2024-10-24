@@ -1,5 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular/standalone';
 import { Contacts } from 'idea-toolbox';
 import { IDEATranslationsService } from '@idea-ionic/common';
 

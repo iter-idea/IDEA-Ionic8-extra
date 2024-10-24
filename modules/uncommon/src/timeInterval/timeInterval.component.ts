@@ -10,7 +10,7 @@ import {
   inject
 } from '@angular/core';
 import { OverlayEventDetail } from '@ionic/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { TimeInterval } from 'idea-toolbox';
 import { IDEATranslationsService } from '@idea-ionic/common';

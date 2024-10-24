@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEAStorageService } from '@idea-ionic/common';
 
 import { IDEAErrorReportingService } from './errorReporting.service';

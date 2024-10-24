@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular/standalone';
 import { epochDateTime, epochISOString } from 'idea-toolbox';
 import { IDEATranslationsService } from '@idea-ionic/common';
 

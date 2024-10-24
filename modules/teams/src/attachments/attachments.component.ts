@@ -1,6 +1,6 @@
 import heic2any from 'heic2any';
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Attachment } from 'idea-toolbox';

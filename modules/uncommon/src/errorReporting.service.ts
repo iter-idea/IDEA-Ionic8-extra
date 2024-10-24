@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 import { ClientInfo, ErrorReport } from 'idea-toolbox';
 import { IDEAEnvironment } from '@idea-ionic/common';
 

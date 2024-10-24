@@ -1,5 +1,11 @@
 import { ViewChild, Component, Input, OnInit, inject } from '@angular/core';
-import { IonInfiniteScroll, AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
+import {
+  IonInfiniteScroll,
+  AlertController,
+  ModalController,
+  IonRefresher,
+  IonSearchbar
+} from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { loopStringEnumValues, RCFolder, RCResource, RCResourceFormats } from 'idea-toolbox';
 import {
