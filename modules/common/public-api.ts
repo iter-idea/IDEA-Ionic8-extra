@@ -57,10 +57,8 @@ export * from './src/translations/translations.service';
 export * from './src/userAvatar/userAvatar.component';
 export * from './src/userAvatar/userAvatar.module';
 
-export * from './src/variables/highlightedVariables.pipe';
-export * from './src/variables/variables.module';
-
 export * from './src/api.service';
+export * from './src/highlightedVariables.pipe';
 export * from './src/linkify.pipe';
 export * from './src/loading.service';
 export * from './src/message.service';

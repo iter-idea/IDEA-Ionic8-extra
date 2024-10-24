@@ -3,14 +3,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { IDEATranslationsModule } from '../translations/translations.module';
+import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
+
 import { IDEALabelerComponent } from './labeler.component';
 import { IDEALabelComponent } from './label.component';
 
-import { IDEATranslationsModule } from '../translations/translations.module';
-import { IDEAVariablesModule } from '../variables/variables.module';
-
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule, IDEATranslationsModule, IDEAVariablesModule],
+  imports: [IonicModule, CommonModule, FormsModule, IDEATranslationsModule, IDEAHiglightedVariablesPipe],
   declarations: [IDEALabelerComponent, IDEALabelComponent],
   exports: [IDEALabelerComponent, IDEALabelComponent]
 })

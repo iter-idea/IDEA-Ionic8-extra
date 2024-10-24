@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
-import { IDEAVariablesModule } from '../variables/variables.module';
+import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
 
 import { IDEAPDFTemplateComponent, IDEAPDFTemplateFieldResizeComponent } from './pdfTemplate.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAVariablesModule],
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAHiglightedVariablesPipe],
   declarations: [IDEAPDFTemplateComponent, IDEAPDFTemplateFieldResizeComponent],
   exports: [IDEAPDFTemplateComponent, IDEAPDFTemplateFieldResizeComponent]
 })
