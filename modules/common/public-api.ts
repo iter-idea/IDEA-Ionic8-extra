@@ -16,11 +16,9 @@ export * from './src/customFields/customFields.module';
 export * from './src/customFields/customSection.component';
 export * from './src/customFields/customSectionMeta.component';
 
-export * from './src/email/email.module';
 export * from './src/email/emailData.component';
 export * from './src/email/emailDataConfiguration.component';
 export * from './src/email/sendEmail.component';
-export * from './src/email/sendEmail.module';
 
 export * from './src/icons/icons.component';
 
