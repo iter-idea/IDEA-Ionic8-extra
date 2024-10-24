@@ -27,7 +27,6 @@ export * from './src/icons/icons.module';
 
 export * from './src/labeler/label.component';
 export * from './src/labeler/labeler.component';
-export * from './src/labeler/labeler.module';
 
 export * from './src/list/list.module';
 export * from './src/list/list.component';

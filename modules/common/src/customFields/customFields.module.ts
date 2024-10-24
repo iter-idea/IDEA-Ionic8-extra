@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
-import { IDEALabelerModule } from '../labeler/labeler.module';
+import { IDEALabelerComponent } from '../labeler/labeler.component';
 import { IDEAIconsModule } from '../icons/icons.module';
 import { IDEASelectComponent } from '../select/select.component';
 
@@ -20,7 +20,7 @@ import { IDEACustomSectionComponent } from './customSection.component';
     FormsModule,
     IonicModule,
     IDEATranslationsModule,
-    IDEALabelerModule,
+    IDEALabelerComponent,
     IDEAIconsModule,
     IDEASelectComponent
   ],

@@ -1,18 +1,93 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonItem, IonLabel, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { Label, Languages, mdToHtml, StringVariable } from 'idea-toolbox';
 
-import { IDEALabelerComponent } from './labeler.component';
-
 import { IDEATranslationsService } from '../translations/translations.service';
+
+import { IDEALabelerComponent } from './labeler.component';
+import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
 
 /**
  * Manage the content of a Label.
  */
 @Component({
   selector: 'idea-label',
-  templateUrl: 'label.component.html',
-  styleUrls: ['label.component.scss']
+  standalone: true,
+  imports: [CommonModule, IDEAHiglightedVariablesPipe, IonItem, IonLabel, IonButton, IonIcon],
+  template: `
+    <ion-item
+      class="labelItem"
+      button
+      [disabled]="isOpening"
+      [color]="color"
+      [lines]="lines"
+      [title]="placeholder || ''"
+      [class.withLabel]="label"
+      (click)="edit()"
+    >
+      @if (icon) {
+        <ion-button
+          fill="clear"
+          slot="start"
+          [color]="iconColor"
+          [class.marginTop]="label"
+          (click)="doIconSelect($event)"
+        >
+          <ion-icon [icon]="icon" slot="icon-only" />
+        </ion-button>
+      }
+      @if (label) {
+        <ion-label position="stacked">
+          {{ label }}
+          @if (!disabled && obligatory) {
+            <ion-text class="obligatoryDot" />
+          }
+        </ion-label>
+      }
+      <div class="description">
+        @if (!htmlContent) {
+          <div class="placeholder">{{ placeholder }}</div>
+        }
+        @if (htmlContent) {
+          <div class="innerContent" [class.md]="markdown" [innerHTML]="htmlContent | highlight: variableCodes"></div>
+        }
+      </div>
+      <ion-icon slot="end" icon="chevron-forward" class="selectIcon" />
+    </ion-item>
+  `,
+  styles: [
+    `
+      .labelItem {
+        min-height: 48px;
+        height: auto;
+        .description {
+          min-height: 20px;
+          height: auto;
+          line-height: 20px;
+          width: 100%;
+        }
+        .placeholder {
+          color: var(--ion-color-medium);
+          padding-bottom: 6px;
+        }
+        .selectIcon {
+          color: var(--ion-text-color-step-500);
+          font-size: 1.3em;
+        }
+      }
+      .labelItem.withLabel {
+        min-height: 58px;
+        height: auto;
+        .selectIcon {
+          padding-top: 4px;
+        }
+        ion-button[slot='start'] {
+          margin-top: 16px;
+        }
+      }
+    `
+  ]
 })
 export class IDEALabelComponent implements OnInit {
   private _modal = inject(ModalController);
