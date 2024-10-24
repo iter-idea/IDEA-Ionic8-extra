@@ -23,7 +23,6 @@ export * from './src/email/sendEmail.component';
 export * from './src/email/sendEmail.module';
 
 export * from './src/icons/icons.component';
-export * from './src/icons/icons.module';
 
 export * from './src/labeler/label.component';
 export * from './src/labeler/labeler.component';

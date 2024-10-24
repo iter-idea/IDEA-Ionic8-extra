@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEALabelerComponent } from '../labeler/labeler.component';
-import { IDEAIconsModule } from '../icons/icons.module';
+import { IDEAIconsComponent } from '../icons/icons.component';
 import { IDEASelectComponent } from '../select/select.component';
 
 import { IDEACustomBlockMetaComponent } from './customBlockMeta.component';
@@ -21,7 +21,7 @@ import { IDEACustomSectionComponent } from './customSection.component';
     IonicModule,
     IDEATranslationsModule,
     IDEALabelerComponent,
-    IDEAIconsModule,
+    IDEAIconsComponent,
     IDEASelectComponent
   ],
   exports: [
