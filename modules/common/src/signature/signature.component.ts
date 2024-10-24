@@ -1,19 +1,152 @@
 import { Component, Input, inject } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  IonButton,
+  IonButtons,
+  IonCol,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonRow,
+  IonTitle,
+  IonToolbar,
+  ModalController
+} from '@ionic/angular/standalone';
 import SignaturePad from 'signature_pad';
 import { Signature, Suggestion } from 'idea-toolbox';
 
-import { IDEATranslationsService } from '../translations/translations.service';
-import { IDEAMessageService } from '../message.service';
-
+import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEASelectModule } from '../select/select.module';
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
+import { IDEAMessageService } from '../message.service';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
 
 @Component({
   selector: 'idea-signature',
-  templateUrl: 'signature.component.html',
-  styleUrls: ['signature.component.scss']
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IDEASelectModule,
+    IonHeader,
+    IonToolbar,
+    IonButton,
+    IonButtons,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonList,
+    IonListHeader,
+    IonLabel,
+    IonItem,
+    IonInput,
+    IonRow,
+    IonCol
+  ],
+  template: `
+    <ion-header>
+      <ion-toolbar color="ideaToolbar">
+        <ion-buttons slot="start">
+          <ion-button [title]="'IDEA_COMMON.SIGNATURE.CANCEL' | translate" (click)="close()">
+            <ion-icon icon="close" slot="icon-only" />
+          </ion-button>
+        </ion-buttons>
+        <ion-title>{{ 'IDEA_COMMON.SIGNATURE.SIGNATURE' | translate }}</ion-title>
+        <ion-buttons slot="end">
+          @if (existingSignature) {
+            <ion-button [title]="'IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE' | translate" (click)="undo()">
+              <ion-icon icon="arrow-undo" slot="icon-only" />
+            </ion-button>
+          }
+          @if (canEdit()) {
+            <ion-button [title]="'IDEA_COMMON.SIGNATURE.SAVE_SIGNATURE' | translate" (click)="save()">
+              <ion-icon icon="checkmark" slot="icon-only" />
+            </ion-button>
+          }
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list class="aList">
+        <ion-list-header>
+          <ion-label>{{ 'IDEA_COMMON.SIGNATURE.SIGNATORY' | translate }}</ion-label>
+        </ion-list-header>
+        <ion-item lines="none">
+          <ion-input
+            type="text"
+            [placeholder]="'IDEA_COMMON.SIGNATURE.NAME_AND_SURNAME' | translate"
+            [disabled]="!canEdit()"
+            [class.fieldHasError]="signatoryError"
+            [(ngModel)]="signature.signatory"
+          />
+          @if (contacts.length && canEdit()) {
+            <ion-button
+              fill="clear"
+              color="dark"
+              slot="end"
+              [title]="'IDEA_COMMON.SIGNATURE.CHOOSE_FROM_CONTACTS' | translate"
+              (click)="pickSignatory()"
+            >
+              <ion-icon icon="person-circle" slot="icon-only" />
+            </ion-button>
+          }
+        </ion-item>
+      </ion-list>
+      <ion-list class="aList">
+        <ion-list-header>
+          <ion-label>{{ 'IDEA_COMMON.SIGNATURE.SIGNATURE_EXPLANATION' | translate }}</ion-label>
+        </ion-list-header>
+        <div class="canvasContainer" [class.fieldHasError]="signatureError">
+          <canvas id="signatureCanvas"></canvas>
+        </div>
+        @if (canEdit()) {
+          <ion-row>
+            <ion-col class="ion-text-right">
+              <ion-button fill="clear" [title]="'IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE' | translate" (click)="clear()">
+                <ion-icon icon="trash-outline" slot="icon-only" />
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        }
+      </ion-list>
+    </ion-content>
+  `,
+  styles: [
+    `
+      .aList {
+        ion-list-header {
+          font-size: 0.7em;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        .canvasContainer {
+          margin: 0 auto;
+          text-align: center;
+          background: white;
+          #signatureCanvas {
+            width: 100%;
+            height: 250px;
+          }
+        }
+        .canvasContainer.fieldHasError {
+          border-bottom: 2px solid var(--ion-color-danger) !important;
+        }
+        .fieldHasError {
+          --border-color: var(--ion-color-danger) !important;
+          --inner-border-width: 0 0 2px 0 !important;
+        }
+      }
+    `
+  ]
 })
 export class IDEASignatureComponent {
   private _modal = inject(ModalController);
