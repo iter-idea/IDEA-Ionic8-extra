@@ -36,9 +36,7 @@ export * from './src/list/listElements.component';
 export * from './src/pdfTemplate/pdfTemplate.component';
 export * from './src/pdfTemplate/pdfTemplate.module';
 
-export * from './src/select/boldPrefix.pipe';
 export * from './src/select/select.component';
-export * from './src/select/select.module';
 export * from './src/select/suggestions.component';
 
 export * from './src/showHintButton/showHintButton.component';
@@ -55,6 +53,7 @@ export * from './src/translations/translations.service';
 export * from './src/userAvatar/userAvatar.component';
 
 export * from './src/api.service';
+export * from './src/boldPrefix.pipe';
 export * from './src/highlightedVariables.pipe';
 export * from './src/linkify.pipe';
 export * from './src/loading.service';

@@ -1,8 +1,28 @@
+import { CommonModule } from '@angular/common';
 import { Component, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
-import { IonInfiniteScroll, ModalController, IonSearchbar, Platform } from '@ionic/angular';
+import {
+  IonInfiniteScroll,
+  ModalController,
+  IonSearchbar,
+  Platform,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonContent,
+  IonList,
+  IonInfiniteScrollContent,
+  IonText,
+  IonButton,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonBadge
+} from '@ionic/angular/standalone';
 import { Suggestion } from 'idea-toolbox';
 
 import { IDEAStorageService } from '../storage.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEABoldPrefix } from '../boldPrefix.pipe';
 
 const SHOULD_SHOW_DETAILS_STORAGE_KEY = 'ideaSelectShouldShowDetails';
 
@@ -10,6 +30,26 @@ const MAX_PAGE_SIZE = 24;
 
 @Component({
   selector: 'idea-suggestions',
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonBadge,
+    IonLabel,
+    IonItem,
+    IonIcon,
+    IonButton,
+    IonText,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonList,
+    IonContent,
+    IonButtons,
+    IonToolbar,
+    IonHeader,
+    IonSearchbar,
+    IDEATranslatePipe,
+    IDEABoldPrefix
+  ],
   templateUrl: 'suggestions.component.html',
   styleUrls: ['suggestions.component.scss']
 })

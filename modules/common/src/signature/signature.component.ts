@@ -22,8 +22,8 @@ import SignaturePad from 'signature_pad';
 import { Signature, Suggestion } from 'idea-toolbox';
 
 import { IDEATranslatePipe } from '../translations/translate.pipe';
-import { IDEASelectModule } from '../select/select.module';
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
+import { IDEASelectComponent } from '../select/select.component';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 
@@ -36,7 +36,7 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
     CommonModule,
     FormsModule,
     IDEATranslatePipe,
-    IDEASelectModule,
+    IDEASelectComponent,
     IonHeader,
     IonToolbar,
     IonButton,

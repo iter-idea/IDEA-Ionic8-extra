@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { IonAvatar, IonImg } from '@ionic/angular/standalone';
 import { COLORS } from 'idea-toolbox';
 
-import { IDEASelectModule } from '../select/select.module';
+import { IDEASelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'idea-user-avatar',
   standalone: true,
-  imports: [CommonModule, IDEASelectModule, IonAvatar, IonImg],
+  imports: [CommonModule, IDEASelectComponent, IonAvatar, IonImg],
   template: `
     <div class="container">
       @if (src) {

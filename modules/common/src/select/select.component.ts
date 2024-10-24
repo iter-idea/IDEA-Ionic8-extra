@@ -1,11 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, inject } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Suggestion } from 'idea-toolbox';
 
 import { IDEASuggestionsComponent } from './suggestions.component';
 
 @Component({
   selector: 'idea-select',
+  standalone: true,
+  imports: [CommonModule, IonLabel, IonItem, IonButton, IonLabel, IonText, IonIcon],
   templateUrl: 'select.component.html',
   styleUrls: ['select.component.scss']
 })

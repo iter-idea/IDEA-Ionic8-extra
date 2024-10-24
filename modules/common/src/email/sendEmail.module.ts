@@ -5,10 +5,10 @@ import { IonicModule } from '@ionic/angular';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEASendEmailComponent } from './sendEmail.component';
-import { IDEASelectModule } from '../select/select.module';
+import { IDEASelectComponent } from '../select/select.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectModule],
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEASelectComponent],
   declarations: [IDEASendEmailComponent],
   exports: [IDEASendEmailComponent]
 })
