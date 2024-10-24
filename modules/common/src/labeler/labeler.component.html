@@ -41,9 +41,6 @@
       {{ 'IDEA_COMMON.LABELER.EXPLANATION' | translate }}
     </p>
   }
-  @if (markdown && !disabled) {
-    <idea-mde-toolbar />
-  }
   @if (_label) {
     <ion-list class="aList" [class.viewMode]="disabled">
       @for (l of languages.available; track l) {

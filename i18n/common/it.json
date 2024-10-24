@@ -1,27 +1,5 @@
 {
   "IDEA_COMMON": {
-    "ADDRESS": {
-      "ADDRESS": "Indirizzo",
-      "ADDRESS2": "Informazioni supplementari indirizzo",
-      "ADDRESS2_HINT": "Appartamento, piano, edificio, unità , ecc.",
-      "ADDRESS_HINT": "Via e civico, nome azienda, c/o",
-      "CITY": "Città ",
-      "CITY_HINT": "Città ",
-      "COMPLETE_ADDRESS": "Indirizzo",
-      "COMPLETE_ADDRESS_HINT": "Indirizzo completo; tocca per i dettagli",
-      "CONTACT": "Nome completo",
-      "CONTACT_HINT": "Nome contatto/destinatario",
-      "COUNTRY": "Nazione",
-      "COUNTRY_HINT": "Nazione",
-      "EMAIL": "Email",
-      "EMAIL_HINT": "Indirizzo email di contatto",
-      "PHONE": "Telefono",
-      "PHONE_HINT": "Numero di telefono/cellulare di contatto",
-      "POSTCODE": "CAP",
-      "POSTCODE_HINT": "Codice di Avviamento Postale / codice ZIP",
-      "PROVINCE": "Provincia",
-      "PROVINCE_HINT": "Provincia"
-    },
     "APP_STATUS": {
       "UPDATE": "Aggiorna",
       "NEW_VERSION": "Nuova versione disponibile: {{newVersion}}",
@@ -29,14 +7,6 @@
       "MAINTENANCE": "L'app è in modalità di manutenzione",
       "GOT_IT": "Ho capito",
       "EVERYTHING_IS_OK": "Tutto ok!"
-    },
-    "CALENDAR": {
-      "CLOSE_WITHOUT_SAVING": "Chiudi senza salvare",
-      "MONTH": "Mese",
-      "RESET": "Reset",
-      "SET_DATE": "Scegli una data",
-      "SET_TIME": "Scegli un orario",
-      "YEAR": "Anno"
     },
     "CHECKER": {
       "ALL": "Tutti",
@@ -51,16 +21,6 @@
       "RESET": "Reset",
       "SEARCH": "Ricerca",
       "SELECT_ALL": "Seleziona tutto"
-    },
-    "CONTACTS": {
-      "CALL": "Chiama",
-      "EMAIL": "Email",
-      "EMAIL_HINT": "Indirizzo email",
-      "NAME": "Nome",
-      "NAME_HINT": "Nome completo del contatto",
-      "PHONE": "Telefono",
-      "PHONE_HINT": "Numero di telefono/cellulare",
-      "SEND_EMAIL": "Invia email"
     },
     "CUSTOM_FIELDS": {
       "ADD_FIELD": "Aggiungi un campo",
@@ -113,21 +73,6 @@
       "SECTION_NAME_HINT": "Il nome per identificare la sezione",
       "TYPE": "Tipo"
     },
-    "DURATION": { "HH": "ore", "HOURS": "Ore", "MINUTES": "Minuti", "MM": "min", "SECONDS": "Secondi", "SS": "sec" },
-    "ECHO": {
-      "ACCOUNT_CONFIRMED": "Account confermato: puoi procedere con il login.",
-      "EMAIL_CHANGED": "Indirizzo email cambiato con successo. Dovrai ora autenticarti nuovamente.",
-      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR": "Errore nel collegamento all'account esterno; riprovare",
-      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "L'account esterno è stato collegato. Torna alla pagina dei calendari per completare la configurazione",
-      "GITHUB_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di GitHub; riprovare.",
-      "GITHUB_SOURCE_INTEGRATION_SUCCESS": "GitHub è stato collegato. Puoi ora terminare la configurazione.",
-      "INVALID_ACTION": "Azione non valida",
-      "REQUEST_FAILED": "La richiesta specificata è fallita; riprovare.",
-      "TEAM_JOINED": "Ti sei unito al team con successo.",
-      "TRELLO_SOURCE_INTEGRATION_ERROR": "Errore nell'integrazione di Trello; riprovare.",
-      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copia e incolla il seguente token nella schermata precedente per completare la configurazione: {{token}}",
-      "YOU_CAN_CLOSE_THE_PAGE": "Puoi chiudere questa pagina ora."
-    },
     "EMAIL": {
       "ATTACHMENTS": "Allegati",
       "BCC": "Ccn",
@@ -143,14 +88,6 @@
       "TO": "A",
       "VARIABLES_AVAILABLE": "Variabili disponibili",
       "VARIABLES_AVAILABLE_I": "Queste sono le variabili che puoi usare in oggetto e contenuto dell'email. All'invio di un'email verranno sostituite dai loro valori."
-    },
-    "FTTT": {
-      "AM": "Mattina",
-      "FROM": "Dalle",
-      "MINUTES_PREFERENCE": "Preferenza minuti",
-      "PERIOD": "Periodo",
-      "PM": "Pomeriggio",
-      "TO": "Alle"
     },
     "LABELER": {
       "EXPLANATION": "Se una qualsiasi traduzione è mancante, verrà usata quella nella lingua di default.",
@@ -174,42 +111,6 @@
       "SAVE_AND_CLOSE": "Salva e chiudi"
     },
     "LOADING": { "PLEASE_WAIT": "Attendere prego..." },
-    "MDE": {
-      "CLOSE_WITHOUT_SAVING": "Chiudi senza salvare",
-      "SAVE_AND_CLOSE": "Salva e chiudi",
-      "TITLE": "Editor Markdown",
-      "TOOLBAR": { "BOLD": "Bold", "ITALIC": "Italic", "STRIKE": "Strike" },
-      "VARIABLES": "Variabili"
-    },
-    "OFFLINE": {
-      "ADVANCED_ACTIONS": "Azioni avanzate",
-      "CANCEL_REQUEST": "Annulla la richiesta",
-      "DELETION_IS_IRREVERSIBLE": "La cancellazione è irreversibile",
-      "DONT_EXIT_APP_DISCLAIMER": "Per piacere, non uscire dall'app durante la sincronizzazione",
-      "DOWNLOAD": "Download",
-      "DOWNLOAD_LOG": "Scarica un log della richiesta fallita",
-      "DOWNLOAD_RESOURCES_EXPLANATION": "Lista delle risorse disponibili quando offline",
-      "ERROR_CODE": "Codice errore",
-      "ERROR_DURING_LAST_SYNC": "Si è verificato un errore durante l'ultima sincronizzazione; per favore riprova.",
-      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Le funzionalità  sono ridotte e i contenuti potrebbero non essere aggiornati",
-      "FORCE_FULL_SYNC": "Sincronizzazione da zero",
-      "FULL_SYNC_DISCLAIMER": "Tutti i dati offline verranno eliminati e l'operazione potrebbe richiedere diversi minuti",
-      "HUGE_SYNC_NEED_MANUAL_CONFIRMATION": "Sono presenti molti dati da sincronizzare. Conferma se vuoi continuare.",
-      "LAST_SYNC": "Ultima sincronizzazione",
-      "LOADING": "Caricamento...",
-      "NEVER": "Mai",
-      "NOW": "Adesso",
-      "NO_ELEMENTS_TO_UPLOAD": "Nessun elemento da caricare",
-      "OFFLINE_MANAGER": "Offline manager",
-      "REQUEST_FAILED_EXPLANATION_I": "Caricamento della risorsa fallito; per piacere, riprova.",
-      "REQUEST_FAILED_EXPLANATION_II": "Se l'errore persiste, cancella la richiesta per procedere.",
-      "REQUEST_FAILED_EXPLANATION_III": "Puoi richiedere un log dell'errore per ulteriori analisi.",
-      "SYNC_IN_PROGRESS": "Sincronizzazione in corso",
-      "SYNC_NOW": "Sync",
-      "UPLOAD": "Upload",
-      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Lista delle azioni create offline che devono essere caricate online",
-      "YOU_ARE_OFFLINE": "Sei offline"
-    },
     "PDF_TEMPLATE": {
       "ADD_A_SECTION": "Aggiungi una nuova sezione al template",
       "BLANK_ROW": "Riga vuota",
@@ -257,10 +158,6 @@
       "SELECT_": "Seleziona {{suggestion}}",
       "SHOW_DETAILS": "Mostra dettagli",
       "TAP_TO_FILTER": "Tocca per filtrare"
-    },
-    "SENTIMENT": {
-      "RESULT": { "MIXED": "Misto", "NEGATIVE": "Negativo", "NEUTRAL": "Neutro", "POSITIVE": "Positivo" },
-      "RESULT_HINT": "Si deduce dal testo un sentimento generalmente {{sentiment}}"
     },
     "SIGNATURE": {
       "CANCEL": "Annulla",

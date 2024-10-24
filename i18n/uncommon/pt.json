@@ -1,0 +1,84 @@
+{
+  "IDEA_UNCOMMON": {
+    "ADDRESS": {
+      "ADDRESS": "Endereço",
+      "ADDRESS2": "Informação suplementar do endereço",
+      "ADDRESS2_HINT": "Apartamento, suite, unidade, prédio, andar, etc.",
+      "ADDRESS_HINT": "Endereço da rua, caixa de correio, nome da empresa",
+      "CITY": "Cidade",
+      "CITY_HINT": "Cidade",
+      "COMPLETE_ADDRESS": "Morada",
+      "COMPLETE_ADDRESS_HINT": "Morada completa; clicar para ver detalhes",
+      "CONTACT": "Nome completo",
+      "CONTACT_HINT": "Contacto/nome completo do receptor",
+      "COUNTRY": "País",
+      "COUNTRY_HINT": "País",
+      "EMAIL": "Email",
+      "EMAIL_HINT": "Contacto de Endereço de email",
+      "PHONE": "Telefone",
+      "PHONE_HINT": "Contacto de telefone/ contacto de telemóvel",
+      "POSTCODE": "Código postal",
+      "POSTCODE_HINT": "Código postal/ código ZIP",
+      "PROVINCE": "Região",
+      "PROVINCE_HINT": "Região, distrito, concelho"
+    },
+    "CALENDAR": {
+      "CLOSE_WITHOUT_SAVING": "Fechar sem gravar",
+      "MONTH": "Mês",
+      "RESET": "Repor",
+      "SET_DATE": "Estabelecer fecha",
+      "SET_TIME": "Estabelecer hora",
+      "YEAR": "Ano"
+    },
+    "CONTACTS": {
+      "EMAIL": "E-mail",
+      "EMAIL_HINT": "Endereço de correio eletronico",
+      "NAME": "Nome",
+      "NAME_HINT": "Nome completo do contacto",
+      "PHONE": "Número de telemóvel",
+      "PHONE_HINT": "Numero de telemóvel"
+    },
+    "DURATION": { "HH": "hh", "HOURS": "Horas", "MINUTES": "Minutos", "MM": "mm", "SECONDS": "Segundos", "SS": "ss" },
+    "ECHO": {
+      "ACCOUNT_CONFIRMED": "Conta confirmada: Você já pode entrar com a sua conta",
+      "EMAIL_CHANGED": "Endereço de e-mail atualizado com sucesso. É necessário que entre com a sua conta novamente",
+      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR": "Erro ao efetuar a ligação com a conta externa; tente outra vez",
+      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "A conta externa já está ligada. Volte para a página dos calendários para completar a configuração",
+      "GITHUB_SOURCE_INTEGRATION_ERROR": "Erro ao integrar o GitHub; tente outra vez",
+      "GITHUB_SOURCE_INTEGRATION_SUCCESS": "O GitHub foi conectado. Agora pode completar a configuração",
+      "GO_TO_HOME_HINT": "Clique para ir para a página inicial do serviço",
+      "HOMEPAGE": "Voltar à página inicial",
+      "REQUEST_FAILED": "O pedido falhou; tente outra vez.",
+      "TEAM_JOINED": "Você juntou-se à equipa com sucesso.",
+      "TRELLO_SOURCE_INTEGRATION_ERROR": "Erro ao integrar o Trello; tente outra vez",
+      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copie e cole o objeto seguinte na pagina anterior para completar a configuração: {{token}}"
+    },
+    "MDE": {
+      "CLOSE_WITHOUT_SAVING": "Fechar sem gravar",
+      "SAVE_AND_CLOSE": "Guardar e fechar",
+      "TITLE": "Marcar editor",
+      "TOOLBAR": { "BOLD": "Bold", "ITALIC": "Itálico", "STRIKE": "Strike" },
+      "VARIABLES": "Variaveis"
+    },
+    "OFFLINE": {
+      "DELETION_IS_IRREVERSIBLE": "A eliminação é irreversivel",
+      "DOWNLOAD": "Descarregar",
+      "DOWNLOAD_RESOURCES_EXPLANATION": "Lista dos recursos disponíveis offline",
+      "ERROR_DURING_LAST_SYNC": "Houve um erro durante a última sincronização; por favor tente outra vez",
+      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Funcionalidade reduzida e conteúdo pode não estar atualizada",
+      "FORCE_FULL_SYNC": "Forçar sincronização total",
+      "HUGE_SYNC_NEED_MANUAL_CONFIRMATION": "Há muita informação por sincronizar. Confirme para continuar",
+      "LAST_SYNC": "Ultima sincronização",
+      "LOADING": "Carregando...",
+      "NOW": "Agora",
+      "NO_ELEMENTS_TO_UPLOAD": "Sem elementos de carregar",
+      "OFFLINE_MANAGER": "Gestor offline",
+      "REQUEST_FAILED": "Pedido falhado; tente outra vez ou cancele o pedido",
+      "SYNC_IN_PROGRESS": "Sincronização em progresso",
+      "SYNC_NOW": "Sincronizar\n",
+      "UPLOAD": "Carregar",
+      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Recursos criados offline precisam de ser carregados online",
+      "YOU_ARE_OFFLINE": "Estás offline"
+    }
+  }
+}

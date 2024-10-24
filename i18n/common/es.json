@@ -1,35 +1,5 @@
 {
   "IDEA_COMMON": {
-    "ADDRESS": {
-      "ADDRESS": "Dirección",
-      "ADDRESS2": "Información de dirección suplementaria  ",
-      "ADDRESS2_HINT": "Apartamento, bloque, edificio, piso, etc.",
-      "ADDRESS_HINT": "Codigo postal, buzón, nombre de la compaía, c/o",
-      "CITY": "Ciudad",
-      "CITY_HINT": "Ciudad",
-      "COMPLETE_ADDRESS": "Dirección ",
-      "COMPLETE_ADDRESS_HINT": "Completa tu dirección; tap para más detalles",
-      "CONTACT": "Nombre completo",
-      "CONTACT_HINT": "Nombre completo del contacto/receptor ",
-      "COUNTRY": "País",
-      "COUNTRY_HINT": "País",
-      "EMAIL": "Correo electrónico",
-      "EMAIL_HINT": "Correo electrónico de contacto",
-      "PHONE": "Teléfono",
-      "PHONE_HINT": "Teléfono de contacto/número de teléfono móvil",
-      "POSTCODE": "Código postal",
-      "POSTCODE_HINT": "Código postal",
-      "PROVINCE": "Provincia",
-      "PROVINCE_HINT": "Provincia, distrito, área"
-    },
-    "CALENDAR": {
-      "CLOSE_WITHOUT_SAVING": "Cerrar sin guardar",
-      "MONTH": "Mes",
-      "RESET": "Reset",
-      "SET_DATE": "Fija una fecha",
-      "SET_TIME": "Fija una hora",
-      "YEAR": "Año"
-    },
     "CHECKER": {
       "ALL": "Todos",
       "CLOSE_WITHOUT_SELECTING": "Cerrar sin seleccionar nada",
@@ -43,16 +13,6 @@
       "RESET": "Reiniciar",
       "SEARCH": "Buscar",
       "SELECT_ALL": "Seleccionar todo"
-    },
-    "CONTACTS": {
-      "CALL": "Llamar",
-      "EMAIL": "Email",
-      "EMAIL_HINT": "Dirección de correo electrónico",
-      "NAME": "Nombre",
-      "NAME_HINT": "Nombre de contacto",
-      "PHONE": "Telefono",
-      "PHONE_HINT": "Telefono móvil",
-      "SEND_EMAIL": "Enviar correo"
     },
     "CUSTOM_FIELDS": {
       "ADD_FIELD": "Añadir un campo",
@@ -105,21 +65,6 @@
       "SECTION_NAME_HINT": "El nombre para identificar la sección",
       "TYPE": "Tipo"
     },
-    "DURATION": { "HH": "hh", "HOURS": "Horas", "MINUTES": "Minutos", "MM": "mm", "SECONDS": "Segundos", "SS": "ss" },
-    "ECHO": {
-      "ACCOUNT_CONFIRMED": "Cuenta confirmada: ahora puede iniciar sesión.",
-      "EMAIL_CHANGED": "Dirección de correo electrónico actualizada correctamente. Ahora debe iniciar sesión de nuevo.",
-      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR": "Error al vincular la cuenta externa; Inténtalo de nuevo",
-      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "La cuenta externa ahora está vinculada. Regrese a la página de calendarios para completar la configuración",
-      "GITHUB_SOURCE_INTEGRATION_ERROR": "Error durante la integración de GitHub; Inténtalo de nuevo.",
-      "GITHUB_SOURCE_INTEGRATION_SUCCESS": "GitHub ha sido conectado. Ahora puede completar la configuración.",
-      "INVALID_ACTION": "Acción inválida",
-      "REQUEST_FAILED": "La solicitud falló; Inténtalo de nuevo.",
-      "TEAM_JOINED": "Te uniste con éxito al grupo.",
-      "TRELLO_SOURCE_INTEGRATION_ERROR": "Error durante la integración de Trello; Inténtalo de nuevo.",
-      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copie y pegue el siguiente token en la página anterior para completar la configuración: {{token}}",
-      "YOU_CAN_CLOSE_THE_PAGE": "El nombre para identificar la sección"
-    },
     "EMAIL": {
       "ATTACHMENTS": "Archivos adjuntos",
       "BCC": "Bbc",
@@ -135,14 +80,6 @@
       "TO": "Para",
       "VARIABLES_AVAILABLE": "Variables disponibles",
       "VARIABLES_AVAILABLE_I": "Estas son todas las variables que puede utilizar en el asunto y el contenido. Al enviar un correo electrónico serán sustituidas por sus valores."
-    },
-    "FTTT": {
-      "AM": "Mañana",
-      "FROM": "De",
-      "MINUTES_PREFERENCE": "Minutos de preferencia",
-      "PERIOD": "Período ",
-      "PM": "Tarde",
-      "TO": "Para"
     },
     "LABELER": {
       "EXPLANATION": "Solo la traducción en el idioma predeterminado es obligatoria. Si falta alguna traducción, se utiliza la del idioma predeterminado.",
@@ -166,42 +103,6 @@
       "SAVE_AND_CLOSE": "Guardar y cerrar"
     },
     "LOADING": { "PLEASE_WAIT": "Espera por favor..." },
-    "MDE": {
-      "CLOSE_WITHOUT_SAVING": "Cerrar sin guardar",
-      "SAVE_AND_CLOSE": "Guardar y cerrar",
-      "TITLE": "Editor de rebajas",
-      "TOOLBAR": { "BOLD": "Negrita", "ITALIC": "Italic", "STRIKE": "Huelga" },
-      "VARIABLES": "Variables"
-    },
-    "OFFLINE": {
-      "ADVANCED_ACTIONS": "Acciones avanzadas",
-      "CANCEL_REQUEST": "Eliminar solicitud",
-      "DELETION_IS_IRREVERSIBLE": "La eliminación es irreversible.",
-      "DONT_EXIT_APP_DISCLAIMER": "Por favor, no sales de la aplicación durante la sincronización",
-      "DOWNLOAD": "Descargar",
-      "DOWNLOAD_LOG": "Descargar un registro de la solicitud fallida",
-      "DOWNLOAD_RESOURCES_EXPLANATION": "Lista de los recursos disponibles sin conexión",
-      "ERROR_CODE": "Error código",
-      "ERROR_DURING_LAST_SYNC": "Hubo un error durante la última sincronización; Inténtalo de nuevo.",
-      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "La funcionalidad se reduce y los contenidos pueden no estar actualizados",
-      "FORCE_FULL_SYNC": "Forzar sincronización completa",
-      "FULL_SYNC_DISCLAIMER": "Todos los datos fuera de línea serán eliminados; la operación podría tardar varios minutos",
-      "HUGE_SYNC_NEED_MANUAL_CONFIRMATION": "Hay muchos datos para sincronizar. Confirmar para continuar.",
-      "LAST_SYNC": "Última sincronización",
-      "LOADING": "Cargando...",
-      "NEVER": "Nunca",
-      "NOW": "Ahora",
-      "NO_ELEMENTS_TO_UPLOAD": "No hay elementos para cargar",
-      "OFFLINE_MANAGER": "Administrador sin conexión\n",
-      "REQUEST_FAILED_EXPLANATION_I": "La carga para este recurso falló; inténtelo de nuevo.",
-      "REQUEST_FAILED_EXPLANATION_II": "Si el error persiste, cancelar la solicitud para continuar.",
-      "REQUEST_FAILED_EXPLANATION_III": "Puedes solicitar un registro del error para un análisis adicional.",
-      "SYNC_IN_PROGRESS": "Sincronización en progreso",
-      "SYNC_NOW": "Sincronizar",
-      "UPLOAD": "Subir archivo",
-      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Los recursos creados sin conexión deben cargarse en línea",
-      "YOU_ARE_OFFLINE": "Está fuera de línea"
-    },
     "PDF_TEMPLATE": {
       "ADD_A_SECTION": "Añadir una nueva sección a la plantilla",
       "BLANK_ROW": "Fila en blanco",
@@ -249,10 +150,6 @@
       "SELECT_": "Seleccione {{sugerencia}}",
       "SHOW_DETAILS": "Mostrar detalles",
       "TAP_TO_FILTER": "Seleccionar para filtrar"
-    },
-    "SENTIMENT": {
-      "RESULT": { "MIXED": "Mezclado", "NEGATIVE": "Negativo", "NEUTRAL": "Neutral ", "POSITIVE": "Positivo" },
-      "RESULT_HINT": "Detectamos un sentimiento de {{sentimiento}} general del texto"
     },
     "SIGNATURE": {
       "CANCEL": "Cancelar",

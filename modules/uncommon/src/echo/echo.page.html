@@ -1,0 +1,25 @@
+<ion-content>
+  <div class="flexBox">
+    <ion-card class="echoCard maxWidthContainer">
+      <ion-img [src]="'assets/icons/icon-auth.svg'" />
+      <ion-card-header>
+        <ion-card-title>
+          @if (success === true) {
+          <ion-icon color="success" name="checkmark" />
+          } @if (success === false) {
+          <ion-icon color="danger" name="close" />
+          }
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="selectable">
+        {{ content }} @if (htmlContent) {
+        <div class="htmlContent" [innerHTML]="htmlContent"></div>
+        } @if (success === false || success === true) {
+        <p class="youCanCloseMe">
+          <i>{{ 'IDEA_UNCOMMON.ECHO.YOU_CAN_CLOSE_THE_PAGE' | translate }}</i>
+        </p>
+        }
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/uncommon",
+  "lib": {
+    "entryFile": "public-api.ts"
+  },
+  "allowedNonPeerDependencies": ["heic2any"],
+  "assets": ["./css/*.scss"]
+}

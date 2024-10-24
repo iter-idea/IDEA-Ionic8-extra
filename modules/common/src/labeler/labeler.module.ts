@@ -7,11 +7,10 @@ import { IDEALabelerComponent } from './labeler.component';
 import { IDEALabelComponent } from './label.component';
 
 import { IDEATranslationsModule } from '../translations/translations.module';
-import { IDEAMDEModule } from '../mde/mde.module';
 import { IDEAVariablesModule } from '../variables/variables.module';
 
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule, IDEATranslationsModule, IDEAMDEModule, IDEAVariablesModule],
+  imports: [IonicModule, CommonModule, FormsModule, IDEATranslationsModule, IDEAVariablesModule],
   declarations: [IDEALabelerComponent, IDEALabelComponent],
   exports: [IDEALabelerComponent, IDEALabelComponent]
 })

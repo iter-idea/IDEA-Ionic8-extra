@@ -73,19 +73,6 @@ ion-modal.forceBackdrop {
   padding-bottom: 30px;
 }
 
-.announcementCard,
-.echoCard {
-  .htmlContent {
-    h1,
-    h2 {
-      margin-bottom: 20px;
-    }
-    p {
-      margin: 10px 0;
-    }
-  }
-}
-
 ion-popover.actionSheetPopover {
   --width: 400px;
   ion-content {

@@ -1,27 +1,5 @@
 {
   "IDEA_COMMON": {
-    "ADDRESS": {
-      "ADDRESS": "Address",
-      "ADDRESS2": "Supplementary address info",
-      "ADDRESS2_HINT": "Apartment, suite, unit, building, floor, etc.",
-      "ADDRESS_HINT": "Street address, P.O. box, company name, c/o",
-      "CITY": "City",
-      "CITY_HINT": "City",
-      "COMPLETE_ADDRESS": "Address",
-      "COMPLETE_ADDRESS_HINT": "Complete address; tap for details",
-      "CONTACT": "Fullname",
-      "CONTACT_HINT": "Contact/receiver's full name",
-      "COUNTRY": "Country",
-      "COUNTRY_HINT": "Country",
-      "EMAIL": "Email",
-      "EMAIL_HINT": "Contact email address",
-      "PHONE": "Phone",
-      "PHONE_HINT": "Contact phone/cellphone number",
-      "POSTCODE": "Postal code",
-      "POSTCODE_HINT": "Postal code/ZIP code",
-      "PROVINCE": "Province",
-      "PROVINCE_HINT": "Province, district, area"
-    },
     "APP_STATUS": {
       "UPDATE": "Update",
       "NEW_VERSION": "New version available: {{newVersion}}",
@@ -29,14 +7,6 @@
       "MAINTENANCE": "The app is in maintenance mode",
       "GOT_IT": "Got it",
       "EVERYTHING_IS_OK": "It's all good!"
-    },
-    "CALENDAR": {
-      "CLOSE_WITHOUT_SAVING": "Close without saving",
-      "MONTH": "Month",
-      "RESET": "Reset",
-      "SET_DATE": "Set a date",
-      "SET_TIME": "Set a time",
-      "YEAR": "Year"
     },
     "CHECKER": {
       "ALL": "All",
@@ -51,16 +21,6 @@
       "RESET": "Reset",
       "SEARCH": "Search",
       "SELECT_ALL": "Select all"
-    },
-    "CONTACTS": {
-      "CALL": "Call",
-      "EMAIL": "Email",
-      "EMAIL_HINT": "Email address",
-      "NAME": "Name",
-      "NAME_HINT": "Full name of the contact",
-      "PHONE": "Phone",
-      "PHONE_HINT": "Phone/cellphone number",
-      "SEND_EMAIL": "Send email"
     },
     "CUSTOM_FIELDS": {
       "ADD_FIELD": "Add a field",
@@ -113,21 +73,6 @@
       "SECTION_NAME_HINT": "The name to identify the section",
       "TYPE": "Type"
     },
-    "DURATION": { "HH": "hh", "HOURS": "Hours", "MINUTES": "Minutes", "MM": "mm", "SECONDS": "Seconds", "SS": "ss" },
-    "ECHO": {
-      "ACCOUNT_CONFIRMED": "Account confirmed: you can now sign-in.",
-      "EMAIL_CHANGED": "Email address successfully updated. You now have to sign-in again.",
-      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR": "Error while linking the external account; try again",
-      "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "The external account is now linked. Go back to the calendars page to complete the configuration",
-      "GITHUB_SOURCE_INTEGRATION_ERROR": "Error during the integration of GitHub; try again.",
-      "GITHUB_SOURCE_INTEGRATION_SUCCESS": "GitHub has been connected. You can now complete the configuration.",
-      "INVALID_ACTION": "Invalid action",
-      "REQUEST_FAILED": "The request failed; try again.",
-      "TEAM_JOINED": "You successfully joined the team.",
-      "TRELLO_SOURCE_INTEGRATION_ERROR": "Error during the integration of Trello; try again.",
-      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copy and paste the following token in the previous page to complete the configuration: {{token}}",
-      "YOU_CAN_CLOSE_THE_PAGE": "You can close this page now."
-    },
     "EMAIL": {
       "ATTACHMENTS": "Attachments",
       "BCC": "Bbc",
@@ -143,14 +88,6 @@
       "TO": "To",
       "VARIABLES_AVAILABLE": "Variables available",
       "VARIABLES_AVAILABLE_I": "These are all the variables you can use in subject and content. When sending an email they will be substitute by their values."
-    },
-    "FTTT": {
-      "AM": "AM",
-      "FROM": "From",
-      "MINUTES_PREFERENCE": "Minutes preference",
-      "PERIOD": "Period",
-      "PM": "PM",
-      "TO": "To"
     },
     "LABELER": {
       "EXPLANATION": "If any translation is missing, the one in the default language is used instead.",
@@ -174,42 +111,6 @@
       "SAVE_AND_CLOSE": "Save and close"
     },
     "LOADING": { "PLEASE_WAIT": "Please wait..." },
-    "MDE": {
-      "CLOSE_WITHOUT_SAVING": "Close without saving",
-      "SAVE_AND_CLOSE": "Save and close",
-      "TITLE": "Markdown editor",
-      "TOOLBAR": { "BOLD": "Bold", "ITALIC": "Italic", "STRIKE": "Strike" },
-      "VARIABLES": "Variables"
-    },
-    "OFFLINE": {
-      "ADVANCED_ACTIONS": "Advanced actions",
-      "CANCEL_REQUEST": "Cancel the request",
-      "DELETION_IS_IRREVERSIBLE": "The deletion is irreversible",
-      "DONT_EXIT_APP_DISCLAIMER": "Please, don't exit the app while synchronising",
-      "DOWNLOAD": "Download",
-      "DOWNLOAD_LOG": "Download a log of the failed request",
-      "DOWNLOAD_RESOURCES_EXPLANATION": "List of the resources available offline",
-      "ERROR_CODE": "Error code",
-      "ERROR_DURING_LAST_SYNC": "There was an error during the last synchronisation; please try again.",
-      "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Functionality is reduced and contents may be not up to date",
-      "FORCE_FULL_SYNC": "Full synchronisation",
-      "FULL_SYNC_DISCLAIMER": "All the offline data will be removed and the operation could take several minutes",
-      "HUGE_SYNC_NEED_MANUAL_CONFIRMATION": "There is a lot of data to synchronise. Confirm to proceed.",
-      "LAST_SYNC": "Last synchronisation",
-      "LOADING": "Loading...",
-      "NEVER": "Never",
-      "NOW": "Now",
-      "NO_ELEMENTS_TO_UPLOAD": "No elements to upload",
-      "OFFLINE_MANAGER": "Offline manager",
-      "REQUEST_FAILED_EXPLANATION_I": "Upload failed for this resource; please try again.",
-      "REQUEST_FAILED_EXPLANATION_II": "If the error persist, cancel the request to proceed.",
-      "REQUEST_FAILED_EXPLANATION_III": "You can request a log of the error for further analysis.",
-      "SYNC_IN_PROGRESS": "Synchronisation in progress",
-      "SYNC_NOW": "Sync",
-      "UPLOAD": "Upload",
-      "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Resources created offline that must be uploaded online",
-      "YOU_ARE_OFFLINE": "You are offline"
-    },
     "PDF_TEMPLATE": {
       "ADD_A_SECTION": "Add a new section to the template",
       "BLANK_ROW": "Blank row",
@@ -257,10 +158,6 @@
       "SELECT_": "Select {{suggestion}}",
       "SHOW_DETAILS": "Show details",
       "TAP_TO_FILTER": "Tap to filter"
-    },
-    "SENTIMENT": {
-      "RESULT": { "MIXED": "Mixed", "NEGATIVE": "Negative", "NEUTRAL": "Neutral", "POSITIVE": "Positive" },
-      "RESULT_HINT": "We detected a generally {{sentiment}} sentiment from the text"
     },
     "SIGNATURE": {
       "CANCEL": "Cancel",

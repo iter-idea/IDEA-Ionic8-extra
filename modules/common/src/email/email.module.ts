@@ -6,20 +6,11 @@ import { IonicModule } from '@ionic/angular';
 import { IDEATranslationsModule } from '../translations/translations.module';
 import { IDEAEmailDataComponent } from './emailData.component';
 import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.component';
-import { IDEAMDEModule } from '../mde/mde.module';
 import { IDEAListModule } from '../list/list.module';
 import { IDEAVariablesModule } from '../variables/variables.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    IDEATranslationsModule,
-    IDEAMDEModule,
-    IDEAListModule,
-    IDEAVariablesModule
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, IDEATranslationsModule, IDEAListModule, IDEAVariablesModule],
   declarations: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent],
   exports: [IDEAEmailDataComponent, IDEAEmailDataConfigurationComponent]
 })

@@ -1,0 +1,38 @@
+{
+  "name": "@idea-ionic/uncommon",
+  "version": "8.2.1",
+  "description": "IDEA Ionic uncommon components",
+  "license": "MPL-2.0",
+  "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iter-idea/IDEA-Ionic8-extra"
+  },
+  "homepage": "https://github.com/iter-idea/IDEA-Ionic8-extra/tree/main/modules/uncommon",
+  "keywords": [
+    "idea",
+    "ionic",
+    "angular"
+  ],
+  "bugs": {
+    "url": "https://github.com/iter-idea/IDEA-Ionic8-extra/issues"
+  },
+  "peerDependencies": {
+    "@angular/common": "^18.1.0",
+    "@angular/core": "^18.1.0",
+    "@angular/forms": "^18.1.0",
+    "@angular/router": "^18.1.0",
+    "@capacitor/network": "^6.0.1",
+    "@capacitor/push-notifications": "^6.0.1",
+    "@idea-ionic/common": "^8.x.x",
+    "@ionic/angular": "^8.0.0",
+    "@ionic/storage-angular": "^4.0.0",
+    "idea-toolbox": "^7.x.x",
+    "rxjs": "~7.8.0",
+    "zone.js": "~0.14.3"
+  },
+  "dependencies": {
+    "tslib": "^2.4.1"
+  },
+  "sideEffects": false
+}

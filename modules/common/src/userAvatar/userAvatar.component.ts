@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-import { COLORS } from '../colors.model';
+import { COLORS } from 'idea-toolbox';
 
 @Component({
   selector: 'idea-user-avatar',

@@ -1,0 +1,15 @@
+// @idea to import in project's global.scss; example:
+// @import '../node_modules/@idea-ionic/uncommon/css/global.scss';
+
+.announcementCard,
+.echoCard {
+  .htmlContent {
+    h1,
+    h2 {
+      margin-bottom: 20px;
+    }
+    p {
+      margin: 10px 0;
+    }
+  }
+}
