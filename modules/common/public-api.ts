@@ -55,7 +55,6 @@ export * from './src/translations/translate.pipe';
 export * from './src/translations/translations.service';
 
 export * from './src/userAvatar/userAvatar.component';
-export * from './src/userAvatar/userAvatar.module';
 
 export * from './src/api.service';
 export * from './src/highlightedVariables.pipe';

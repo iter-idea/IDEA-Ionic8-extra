@@ -1,10 +1,84 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IonAvatar, IonImg } from '@ionic/angular/standalone';
 import { COLORS } from 'idea-toolbox';
+
+import { IDEASelectModule } from '../select/select.module';
 
 @Component({
   selector: 'idea-user-avatar',
-  templateUrl: 'userAvatar.component.html',
-  styleUrls: ['userAvatar.component.scss']
+  standalone: true,
+  imports: [CommonModule, IDEASelectModule, IonAvatar, IonImg],
+  template: `
+    <div class="container">
+      @if (src) {
+        <ion-avatar style="height: var(--avatar-size); width: var(--avatar-size)" [ngClass]="size" [title]="name">
+          <ion-img [src]="src" (ionError)="fallbackToInitials()" />
+        </ion-avatar>
+      }
+      @if (!src) {
+        <div
+          class="circle"
+          style="height: var(--avatar-size); width: var(--avatar-size)"
+          [ngClass]="size"
+          [title]="name"
+          [style.background]="'#' + color"
+        >
+          <div
+            class="text"
+            style="line-height: var(--avatar-size); font-size: var(--avatar-font-size)"
+            [style.color]="'#' + fontColor"
+          >
+            {{ initials }}
+          </div>
+        </div>
+      }
+    </div>
+  `,
+  styles: [
+    `
+      div.container {
+        text-align: center;
+        padding: var(--avatar-container-padding, 0);
+        margin: var(--avatar-container-margin, 0);
+      }
+      ion-avatar,
+      div.circle {
+        border: 0.5px solid var(--ion-color-dark-tint);
+        margin: 0 auto;
+      }
+      div.circle {
+        border-radius: 50%;
+        display: inline-block;
+        text-align: center;
+        vertical-align: top;
+        div.text {
+          font-weight: bold;
+          letter-spacing: -0.5px;
+        }
+      }
+      .mini {
+        --avatar-size: 14px;
+        --avatar-font-size: 8px;
+      }
+      .small {
+        --avatar-size: 24px;
+        --avatar-font-size: 9px;
+      }
+      .default {
+        --avatar-size: 40px;
+        --avatar-font-size: 16px;
+      }
+      .large {
+        --avatar-size: 80px;
+        --avatar-font-size: 32px;
+      }
+      .extraLarge {
+        --avatar-size: 120px;
+        --avatar-font-size: 52px;
+      }
+    `
+  ]
 })
 export class IDEAUserAvatarComponent implements OnInit {
   /**
