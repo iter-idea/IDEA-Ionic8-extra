@@ -1,5 +1,23 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { AlertController, ModalController, PopoverController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import {
+  AlertController,
+  ModalController,
+  PopoverController,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonButton,
+  IonIcon,
+  IonLabel,
+  IonHeader,
+  IonList,
+  IonToolbar,
+  IonTitle,
+  IonListHeader
+} from '@ionic/angular/standalone';
 import {
   Label,
   LabelVariable,
@@ -16,12 +34,27 @@ import {
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAActionSheetController } from '../actionSheet/actionSheetController.service';
-
 import { IDEALabelerComponent } from '../labeler/labeler.component';
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
 
 @Component({
   selector: 'idea-pdf-template',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IDEAHiglightedVariablesPipe,
+    IonContent,
+    IonLabel,
+    IonListHeader,
+    IonTitle,
+    IonToolbar,
+    IonList,
+    IonHeader
+  ],
   templateUrl: 'pdfTemplate.component.html',
   styleUrls: ['pdfTemplate.component.scss']
 })
@@ -506,6 +539,8 @@ export interface MoveModeData {
  */
 @Component({
   selector: 'idea-pdf-template-field-resize',
+  standalone: true,
+  imports: [CommonModule, IDEATranslatePipe, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonLabel],
   template: `
     <ion-content>
       <ion-grid>

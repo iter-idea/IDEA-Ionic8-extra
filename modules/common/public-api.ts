@@ -34,7 +34,6 @@ export * from './src/list/list.component';
 export * from './src/list/listElements.component';
 
 export * from './src/pdfTemplate/pdfTemplate.component';
-export * from './src/pdfTemplate/pdfTemplate.module';
 
 export * from './src/select/select.component';
 export * from './src/select/suggestions.component';
