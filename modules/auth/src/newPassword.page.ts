@@ -1,14 +1,108 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { NavController, PopoverController } from '@ionic/angular';
-import { IDEAEnvironment, IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+import { FormsModule } from '@angular/forms';
+import {
+  NavController,
+  PopoverController,
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonItem,
+  IonLabel,
+  IonIcon,
+  IonButton,
+  IonInput
+} from '@ionic/angular/standalone';
+import {
+  IDEAEnvironment,
+  IDEAMessageService,
+  IDEALoadingService,
+  IDEATranslationsService,
+  IDEATranslatePipe
+} from '@idea-ionic/common';
 
 import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
-
 import { IDEAAuthService } from './auth.service';
 
 @Component({
   selector: 'idea-new-password',
-  templateUrl: 'newPassword.page.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IonButton,
+    IonIcon,
+    IonLabel,
+    IonItem,
+    IonCardContent,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCardHeader,
+    IonCard,
+    IonContent,
+    IonInput
+  ],
+  template: `
+    <ion-content>
+      <form class="flexBox">
+        <ion-card class="authCard">
+          <ion-card-header>
+            <ion-card-title color="primary">{{ 'IDEA_AUTH.CHOOSE_A_PASSWORD' | translate }}</ion-card-title>
+            <ion-card-subtitle>{{ 'IDEA_AUTH.YOU_NEED_TO_CHOOSE_A_NEW_PASSWORD' | translate }}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            @if (errorMsg) {
+              <p class="errorBox">
+                <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
+                {{ errorMsg }}
+              </p>
+            }
+            <ion-item>
+              <ion-label position="inline">
+                <ion-icon name="key" color="primary" />
+              </ion-label>
+              <ion-input
+                type="password"
+                spellcheck="false"
+                autocorrect="off"
+                autocomplete="new-password"
+                [pattern]="_auth.getPasswordPolicyPatternForInput()"
+                [clearOnEdit]="false"
+                [placeholder]="'IDEA_AUTH.PASSWORD' | translate"
+                [title]="'IDEA_AUTH.CHOOSE_A_PASSWORD' | translate"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="newPassword"
+                (keyup.enter)="confirmNewPassword()"
+              />
+              <ion-button slot="end" fill="clear" color="dark" (click)="openPasswordPolicy($event)">
+                <ion-icon icon="help-circle-outline" slot="icon-only" />
+              </ion-button>
+            </ion-item>
+            <ion-button
+              expand="block"
+              [title]="'IDEA_AUTH.CONFIRM_NEW_PASSWORD_HINT' | translate"
+              (click)="confirmNewPassword()"
+            >
+              {{ 'IDEA_AUTH.CONFIRM_NEW_PASSWORD' | translate }}
+            </ion-button>
+            <ion-button
+              fill="clear"
+              expand="block"
+              class="smallCaseButton"
+              [title]="'IDEA_AUTH.BACK_TO_SIGN_IN_HINT' | translate"
+              (click)="goToAuth()"
+            >
+              {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </form>
+    </ion-content>
+  `,
   styleUrls: ['auth.scss']
 })
 export class IDEANewPasswordPage implements OnInit {

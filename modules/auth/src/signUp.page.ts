@@ -1,15 +1,184 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { NavController, PopoverController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import {
+  NavController,
+  PopoverController,
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonItem,
+  IonIcon,
+  IonLabel,
+  IonButton,
+  IonRow,
+  IonCol,
+  IonText,
+  IonInput,
+  IonCheckbox
+} from '@ionic/angular/standalone';
 import { isEmpty } from 'idea-toolbox';
-import { IDEAEnvironment, IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+import {
+  IDEAEnvironment,
+  IDEAMessageService,
+  IDEALoadingService,
+  IDEATranslationsService,
+  IDEATranslatePipe
+} from '@idea-ionic/common';
 
 import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
-
 import { IDEAAuthService } from './auth.service';
 
 @Component({
   selector: 'idea-sign-up',
-  templateUrl: 'signUp.page.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IonText,
+    IonCol,
+    IonRow,
+    IonButton,
+    IonLabel,
+    IonIcon,
+    IonItem,
+    IonCardContent,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCardHeader,
+    IonCard,
+    IonContent,
+    IonInput,
+    IonCheckbox
+  ],
+  template: `
+    <ion-content>
+      <form class="flexBox">
+        <ion-card class="authCard">
+          <ion-card-header>
+            <ion-card-title color="primary">{{ 'IDEA_AUTH.NEW_ACCOUNT' | translate }}</ion-card-title>
+            <ion-card-subtitle>{{ 'IDEA_AUTH.REGISTER_A_NEW_ACCOUNT_TO_THE_SYSTEM' | translate }}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            @if (errorMsg) {
+              <p class="errorBox">
+                <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
+                {{ errorMsg }}
+              </p>
+            }
+            <ion-item>
+              <ion-label position="inline">
+                <ion-icon name="person-circle" color="primary" />
+              </ion-label>
+              <ion-input
+                type="email"
+                inputmode="email"
+                pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
+                spellcheck="false"
+                autocorrect="off"
+                autocomplete="off"
+                [placeholder]="'IDEA_AUTH.EMAIL' | translate"
+                [title]="'IDEA_AUTH.REGISTRATION_EMAIL_HINT' | translate"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="email"
+                (keyup.enter)="register()"
+              />
+            </ion-item>
+            <ion-item>
+              <ion-label position="inline">
+                <ion-icon name="key" color="primary" />
+              </ion-label>
+              <ion-input
+                type="password"
+                spellcheck="false"
+                autocorrect="off"
+                autocomplete="off"
+                [pattern]="_auth.getPasswordPolicyPatternForInput()"
+                [clearOnEdit]="false"
+                [placeholder]="'IDEA_AUTH.PASSWORD' | translate"
+                [title]="'IDEA_AUTH.CHOOSE_A_PASSWORD' | translate"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="password"
+                (keyup.enter)="register()"
+              />
+              <ion-button slot="end" fill="clear" color="dark" (click)="openPasswordPolicy($event)">
+                <ion-icon icon="help-circle-outline" slot="icon-only" />
+              </ion-button>
+            </ion-item>
+            @if (
+              translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') ||
+              translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')
+            ) {
+              <ion-row class="agreementsAcceptanceRow">
+                <ion-col>
+                  <ion-checkbox size="small" [ngModelOptions]="{ standalone: true }" [(ngModel)]="agreementsCheck" />
+                  {{ 'IDEA_AUTH.AGREEMENTS_CHECK_REGISTRATION' | translate }}:
+                  @if (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
+                    <a
+                      ion-text
+                      color="primary"
+                      target="_blank"
+                      [title]="'IDEA_AUTH.TERMS_AND_CONDITIONS_HINT' | translate"
+                      [href]="'IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL' | translate"
+                    >
+                      {{ 'IDEA_AUTH.TERMS_AND_CONDITIONS' | translate }}
+                    </a>
+                  }
+                  @if (
+                    translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL') &&
+                    translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
+                  ) {
+                    <ion-text> & </ion-text>
+                  }
+                  @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
+                    <a
+                      ion-text
+                      color="primary"
+                      target="_blank"
+                      [title]="'IDEA_AUTH.PRIVACY_POLICY_HINT' | translate"
+                      [href]="'IDEA_VARIABLES.PRIVACY_POLICY_URL' | translate"
+                    >
+                      {{ 'IDEA_AUTH.PRIVACY_POLICY' | translate }}
+                    </a>
+                  }
+                </ion-col>
+              </ion-row>
+            }
+            <ion-button
+              expand="block"
+              [disabled]="!agreementsCheck"
+              [title]="'IDEA_AUTH.CREATE_AN_ACCOUNT_HINT' | translate"
+              (click)="register()"
+            >
+              {{ 'IDEA_AUTH.CREATE_AN_ACCOUNT' | translate }}
+            </ion-button>
+            <ion-button
+              fill="clear"
+              expand="block"
+              class="smallCaseButton"
+              [title]="'IDEA_AUTH.HAVEN_T_RECEIVED_CONFIRMATION_LINK_HINT' | translate"
+              (click)="goToResendLink()"
+            >
+              {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_CONFIRMATION_LINK' | translate }}
+            </ion-button>
+            <ion-button
+              fill="clear"
+              expand="block"
+              class="smallCaseButton"
+              [title]="'IDEA_AUTH.BACK_TO_SIGN_IN_HINT' | translate"
+              (click)="goToAuth()"
+            >
+              {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </form>
+    </ion-content>
+  `,
   styleUrls: ['auth.scss']
 })
 export class IDEASignUpPage implements OnInit {

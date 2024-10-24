@@ -1,8 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { IDEAEnvironment } from '@idea-ionic/common';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
+import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-password-policy',
+  standalone: true,
+  imports: [CommonModule, IDEATranslatePipe, IonCard, IonCardHeader, IonCardTitle, IonCardContent],
   template: `
     <ion-card class="passwordPolicyCard">
       <ion-card-header>

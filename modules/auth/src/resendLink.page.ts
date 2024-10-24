@@ -1,12 +1,98 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { IDEAMessageService, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+import { FormsModule } from '@angular/forms';
+import {
+  NavController,
+  IonContent,
+  IonIcon,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonCardSubtitle,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonButton
+} from '@ionic/angular/standalone';
+import { IDEAMessageService, IDEALoadingService, IDEATranslationsService, IDEATranslatePipe } from '@idea-ionic/common';
 
 import { IDEAAuthService } from './auth.service';
 
 @Component({
   selector: 'idea-resend-link',
-  templateUrl: 'resendLink.page.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IonButton,
+    IonLabel,
+    IonItem,
+    IonInput,
+    IonCardSubtitle,
+    IonCardContent,
+    IonCardTitle,
+    IonCardHeader,
+    IonCard,
+    IonIcon,
+    IonContent,
+    IonInput
+  ],
+  template: `
+    <ion-content>
+      <form class="flexBox">
+        <ion-card class="authCard">
+          <ion-card-header>
+            <ion-card-title color="primary">{{ 'IDEA_AUTH.CONFIRM_ACCOUNT' | translate }}</ion-card-title>
+            <ion-card-subtitle>{{ 'IDEA_AUTH.RESEND_CONFIRMATION_LINK_HINT' | translate }}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            @if (errorMsg) {
+              <p class="errorBox">
+                <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
+                {{ errorMsg }}
+              </p>
+            }
+            <ion-item>
+              <ion-label position="inline">
+                <ion-icon name="person-circle" color="primary" />
+              </ion-label>
+              <ion-input
+                type="email"
+                inputmode="email"
+                pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
+                spellcheck="false"
+                autocorrect="off"
+                autocomplete="email"
+                [placeholder]="'IDEA_AUTH.EMAIL' | translate"
+                [title]="'IDEA_AUTH.EMAIL_HINT' | translate"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="email"
+                (keyup.enter)="resendConfirmationLink()"
+              />
+            </ion-item>
+            <ion-button
+              expand="block"
+              [title]="'IDEA_AUTH.RESEND_LINK_HINT' | translate"
+              (click)="resendConfirmationLink()"
+            >
+              {{ 'IDEA_AUTH.RESEND_LINK' | translate }}
+            </ion-button>
+            <ion-button
+              fill="clear"
+              expand="block"
+              class="smallCaseButton"
+              [title]="'IDEA_AUTH.BACK_TO_SIGN_IN_HINT' | translate"
+              (click)="goToAuth()"
+            >
+              {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </form>
+    </ion-content>
+  `,
   styleUrls: ['auth.scss']
 })
 export class IDEAResendLinkPage {

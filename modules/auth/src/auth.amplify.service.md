@@ -19,7 +19,7 @@ const DEVICE_KEY_ATTRIBUTE = 'custom:'.concat(env.idea.project);
  *
  * Note: in IDEA's Cognito users pools, the email is an alias of the username.
  */
-@Injectable()
+@Injectable({ provideIn: 'root' })
 export class IDEAAuthService {
   constructor(protected storage: IDEAStorageService) {
     Auth.configure({ userPoolId: env.aws.cognito.userPoolId, userPoolWebClientId: env.aws.cognito.userPoolClientId });
