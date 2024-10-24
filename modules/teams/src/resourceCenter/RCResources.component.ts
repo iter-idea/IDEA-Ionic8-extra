@@ -4,14 +4,11 @@ import { Browser } from '@capacitor/browser';
 import { loopStringEnumValues, RCFolder, RCResource, RCResourceFormats } from 'idea-toolbox';
 import {
   IDEALoadingService,
-  IDEAAWSAPIService,
-  CacheModes,
-  IDEATinCanService,
   IDEAMessageService,
   IDEATranslationsService,
-  IDEAOfflineService,
   IDEAActionSheetController
 } from '@idea-ionic/common';
+import { CacheModes, IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 const FILE_SIZE_LIMIT_MB = 10;
 

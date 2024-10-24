@@ -18,21 +18,21 @@
     "url": "https://github.com/iter-idea/IDEA-Ionic8-extra/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^18.1.0",
-    "@angular/core": "^18.1.0",
-    "@angular/forms": "^18.1.0",
-    "@angular/platform-browser": "^18.1.0",
-    "@angular/platform-browser-dynamic": "^18.1.0",
-    "@angular/router": "^18.1.0",
-    "@capacitor/browser": "^6.0.1",
-    "@capacitor/camera": "^6.0.1",
-    "@capacitor/core": "6.1.1",
+    "@angular/common": "^18.2.8",
+    "@angular/core": "^18.2.8",
+    "@angular/forms": "^18.2.8",
+    "@angular/platform-browser": "^18.2.8",
+    "@angular/platform-browser-dynamic": "^18.2.8",
+    "@angular/router": "^18.2.8",
+    "@capacitor/browser": "^6.0.3",
+    "@capacitor/camera": "^6.0.2",
     "@idea-ionic/common": "^8.x.x",
+    "@idea-ionic/uncommon": "^8.x.x",
     "@ionic/angular": "^8.0.0",
     "@ionic/storage-angular": "^4.0.0",
     "idea-toolbox": "^7.x.x",
     "rxjs": "~7.8.0",
-    "zone.js": "~0.14.3"
+    "zone.js": "~0.14.10"
   },
   "dependencies": {
     "heic2any": "^0.0.4",

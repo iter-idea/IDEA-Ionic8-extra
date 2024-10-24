@@ -4,14 +4,9 @@ import { Platform } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Attachment } from 'idea-toolbox';
-import {
-  IDEALoadingService,
-  IDEAAWSAPIService,
-  IDEATinCanService,
-  IDEAMessageService,
-  IDEATranslationsService,
-  IDEAOfflineService
-} from '@idea-ionic/common';
+import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import {} from '@idea-ionic/common';
+import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'idea-attachments',

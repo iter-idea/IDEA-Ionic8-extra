@@ -1,14 +1,8 @@
 import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { RCAttachedResource, RCConfiguredFolder, RCResource, RCResourceFormats, Suggestion } from 'idea-toolbox';
-import {
-  IDEALoadingService,
-  IDEAAWSAPIService,
-  IDEATinCanService,
-  IDEAMessageService,
-  IDEATranslationsService,
-  IDEAOfflineService
-} from '@idea-ionic/common';
+import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'idea-rc-picker',

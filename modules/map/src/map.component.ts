@@ -4,9 +4,9 @@ import { Component, ElementRef, Input, OnInit, Renderer2, inject } from '@angula
 import { Platform } from '@ionic/angular';
 import { Loader } from '@googlemaps/js-api-loader';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
-import { Geolocation } from '@capacitor/geolocation';
+import { Geolocation, Position } from '@capacitor/geolocation';
 import { Network } from '@capacitor/network';
-import { IDEAEnvironment, IDEATinCanService } from '@idea-ionic/common';
+import { IDEAEnvironment } from '@idea-ionic/common';
 
 import { MAP_DARK_MODE_STYLE } from './darkMode.style';
 
@@ -37,16 +37,12 @@ const MARKERS_STYLES = [
  */
 const DEFAULT_ZOOM = 8;
 
-@Component({
-  selector: 'idea-map',
-  template: ''
-})
+@Component({ selector: 'idea-map', template: '' })
 export class IDEAMapComponent implements OnInit {
   protected _env = inject(IDEAEnvironment);
   private _platform = inject(Platform);
   private _element = inject(ElementRef);
   private _renderer = inject(Renderer2);
-  private _tc = inject(IDEATinCanService);
 
   /**
    * The Google Maps' map object.
@@ -163,10 +159,10 @@ export class IDEAMapComponent implements OnInit {
    * Resolve the chosen promise when the SDK is fully loaded.
    */
   private injectSDK(resolve: any): void {
-    if (this._tc.get('ideaMapLibsLoaded')) return resolve();
+    if (!this._env.google?.mapsApiKey) return resolve();
     // load the library using the correct API key and set the service as "ready" when the loading ends
-    new Loader({ apiKey: this._env.google?.mapsApiKey }).load().then((): void => {
-      this._tc.set('ideaMapLibsLoaded', true);
+    new Loader({ apiKey: this._env.google.mapsApiKey }).load().then((): void => {
+      this._env.google.mapsApiKey = null;
       resolve();
     });
   }
@@ -174,7 +170,7 @@ export class IDEAMapComponent implements OnInit {
   /**
    * Get a gegolocation position; if it fails (e.g. permissions are missing), resolve null, rather than throwing errors.
    */
-  private getLocationSafely(highAccuracy?: boolean): Promise<GeolocationPosition> {
+  private getLocationSafely(highAccuracy?: boolean): Promise<Position> {
     return new Promise(resolve => {
       if (!Geolocation) return resolve(null);
       if (!this.centerOnCurrentPosition) return resolve(null);
@@ -218,7 +214,7 @@ export class IDEAMapComponent implements OnInit {
   /**
    * Set the map's center to the current position.
    */
-  setCenterToCurrentLocation(highAccuracy?: boolean): Promise<GeolocationPosition> {
+  setCenterToCurrentLocation(highAccuracy?: boolean): Promise<Position> {
     return new Promise((resolve, reject): void => {
       if (!Geolocation) return resolve(null);
       Geolocation.getCurrentPosition({ enableHighAccuracy: highAccuracy })

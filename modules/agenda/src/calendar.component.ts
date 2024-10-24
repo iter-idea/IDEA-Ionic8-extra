@@ -1,13 +1,8 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { Calendar, Check, Membership } from 'idea-toolbox';
-import {
-  IDEALoadingService,
-  IDEAAWSAPIService,
-  IDEATinCanService,
-  IDEAMessageService,
-  IDEATranslationsService
-} from '@idea-ionic/common';
+import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 import { IDEACalendarsService } from './calendars.service';
 

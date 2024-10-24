@@ -1,14 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Team, User } from 'idea-toolbox';
-import {
-  IDEAEnvironment,
-  IDEALoadingService,
-  IDEAAWSAPIService,
-  IDEATinCanService,
-  IDEAMessageService,
-  IDEATranslationsService
-} from '@idea-ionic/common';
+import { IDEAEnvironment, IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'teams',

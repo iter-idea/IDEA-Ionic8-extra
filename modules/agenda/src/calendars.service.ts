@@ -5,10 +5,10 @@ import { Calendar, ExternalCalendarSources, Suggestion } from 'idea-toolbox';
 import {
   IDEAEnvironment,
   IDEALoadingService,
-  IDEAAWSAPIService,
   IDEATranslationsService,
   IDEASuggestionsComponent
 } from '@idea-ionic/common';
+import { IDEAAWSAPIService } from '@idea-ionic/uncommon';
 
 /**
  * Note: to test locally, you need to temporarily change the redirect URI:
@@ -133,10 +133,10 @@ export class IDEACalendarsService {
       const res = await (
         await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', { headers })
       ).json();
-      return res.items.map((c: any): ExtCalendar => ({ name: c.summary, id: c.id } as ExtCalendar));
+      return res.items.map((c: any): ExtCalendar => ({ name: c.summary, id: c.id }) as ExtCalendar);
     } else if (cal.external.service === ExternalCalendarSources.MICROSOFT) {
       const res = await (await fetch('https://graph.microsoft.com/v1.0/me/calendars', { headers })).json();
-      return res.value.map((c: any): ExtCalendar => ({ name: c.name, id: c.id } as ExtCalendar));
+      return res.value.map((c: any): ExtCalendar => ({ name: c.name, id: c.id }) as ExtCalendar);
     }
   }
 

@@ -1,14 +1,7 @@
 import { ViewChild, Component, Input, OnInit, inject } from '@angular/core';
 import { IonInfiniteScroll, AlertController, ModalController, IonRefresher, IonSearchbar } from '@ionic/angular';
-import {
-  IDEALoadingService,
-  IDEAAWSAPIService,
-  CacheModes,
-  IDEATinCanService,
-  IDEAMessageService,
-  IDEAOfflineService,
-  IDEATranslationsService
-} from '@idea-ionic/common';
+import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import { CacheModes, IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 import { RCFolder } from 'idea-toolbox';
 
 import { IDEARCResourcesComponent } from './RCResources.component';
