@@ -7,7 +7,6 @@ export * from './src/appStatus/appStatus.service';
 
 export * from './src/checker/checks.component';
 export * from './src/checker/checker.component';
-export * from './src/checker/checker.module';
 
 export * from './src/customFields/customBlock.component';
 export * from './src/customFields/customBlockMeta.component';

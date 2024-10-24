@@ -1,15 +1,96 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonItem, IonLabel, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { Check } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEAUserAvatarComponent } from '../userAvatar/userAvatar.component';
 
 import { IDEAChecksComponent } from './checks.component';
 
 @Component({
   selector: 'idea-checker',
-  templateUrl: 'checker.component.html',
-  styleUrls: ['checker.component.scss']
+  standalone: true,
+  imports: [CommonModule, IDEATranslatePipe, IDEAUserAvatarComponent, IonLabel, IonItem, IonButton, IonIcon],
+  template: `
+    <ion-item
+      class="checkerItem"
+      [color]="color"
+      [lines]="lines"
+      [title]="searchPlaceholder || null"
+      [button]="!disabled"
+      [disabled]="isOpening"
+      [class.withLabel]="label"
+      (click)="fetchDataAndOpenModal()"
+    >
+      @if (icon) {
+        <ion-button
+          fill="clear"
+          slot="start"
+          [color]="iconColor"
+          [class.marginTop]="label"
+          (click)="doIconSelect($event)"
+        >
+          <ion-icon [icon]="icon" slot="icon-only" />
+        </ion-button>
+      }
+      @if (label) {
+        <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled">
+          {{ label }}
+          @if (obligatory && !disabled) {
+            <ion-text class="obligatoryDot" />
+          }
+        </ion-label>
+      }
+      <ion-label
+        class="description"
+        [class.selectable]="!disabled || tappableWhenDisabled"
+        [class.placeholder]="getPreview() === allText || getPreview() === noneText || noPreviewText"
+      >
+        {{ getPreview() }}
+      </ion-label>
+      @if (!disabled) {
+        <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      }
+    </ion-item>
+  `,
+  styles: [
+    `
+      .checkerItem {
+        min-height: 48px;
+        height: auto;
+        .description {
+          margin: 10px 0;
+          height: 20px;
+          line-height: 20px;
+          width: 100%;
+        }
+        .placeholder {
+          color: var(--ion-color-medium);
+        }
+        .selectIcon {
+          margin: 0;
+          padding-left: 4px;
+          font-size: 0.8em;
+          color: var(--ion-color-medium);
+        }
+      }
+      .checkerItem.withLabel {
+        min-height: 58px;
+        height: auto;
+        .selectIcon {
+          padding-top: 25px;
+        }
+        ion-button[slot='start'] {
+          margin-top: 16px;
+        }
+      }
+      .selectable {
+        cursor: pointer;
+      }
+    `
+  ]
 })
 export class IDEACheckerComponent {
   private _modal = inject(ModalController);
