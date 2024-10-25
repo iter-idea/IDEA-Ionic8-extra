@@ -1,13 +1,117 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { NavController } from '@ionic/angular/standalone';
+import {
+  NavController,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonListHeader,
+  IonLabel,
+  IonItem,
+  IonBadge
+} from '@ionic/angular/standalone';
 import { Team, User } from 'idea-toolbox';
-import { IDEAEnvironment, IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import {
+  IDEAEnvironment,
+  IDEALoadingService,
+  IDEAMessageService,
+  IDEATranslatePipe,
+  IDEATranslationsService
+} from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'teams',
-  templateUrl: 'teams.page.html',
-  styleUrls: ['teams.page.scss']
+  standalone: true,
+  imports: [
+    CommonModule,
+    IDEATranslatePipe,
+    IonBadge,
+    IonItem,
+    IonLabel,
+    IonListHeader,
+    IonList,
+    IonContent,
+    IonTitle,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonToolbar,
+    IonHeader
+  ],
+  template: `
+    <ion-header>
+      <ion-toolbar color="ideaToolbar">
+        <ion-buttons slot="start">
+          @if (aTeamIsSelected()) {
+            <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
+              <ion-icon name="arrow-back" slot="icon-only" />
+            </ion-button>
+          }
+        </ion-buttons>
+        <ion-title>{{ 'IDEA_TEAMS.TEAMS.SELECT_A_TEAM' | translate }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button [title]="'IDEA_TEAMS.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT' | translate" (click)="openAccount()">
+            <ion-icon name="person" slot="icon-only" />
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list lines="full" class="aList maxWidthContainer">
+        @if (!aTeamIsSelected()) {
+          <ion-list-header>
+            <ion-label class="ion-text-center">
+              <h2>{{ 'IDEA_TEAMS.TEAMS.YOU_NEED_A_TEAM_TO_CONTINUE' | translate }}</h2>
+            </ion-label>
+          </ion-list-header>
+        }
+        @for (team of teams; track team) {
+          <ion-item
+            [title]="'IDEA_TEAMS.TEAMS.SELECT_TEAM_' | translate: { team: team.name }"
+            [button]="true"
+            [disabled]="!teamIsActiveOnProject(team)"
+            (click)="selectTeam(team)"
+          >
+            <ion-label>
+              <b>{{ team.name }}</b>
+              @if (!teamIsActiveOnProject(team)) {
+                <p>{{ 'IDEA_TEAMS.TEAMS.TEAM_NOT_ACTIVATED_DISCLAIMER' | translate }}</p>
+              }
+              @if (team.activeInProjects.length) {
+                <p>
+                  {{ 'IDEA_TEAMS.TEAMS.ACTIVE_ON' | translate }}:
+                  @for (p of team.activeInProjects; track p) {
+                    <ion-badge color="light" size="small"> {{ getProjectName(p) }} </ion-badge>
+                  }
+                </p>
+              }
+            </ion-label>
+            @if (isCurrentTeam(team)) {
+              <ion-badge slot="end" color="primary" [title]="'IDEA_TEAMS.TEAMS.CURRENT_TEAM_EXPLANATION' | translate">
+                {{ 'IDEA_TEAMS.TEAMS.CURRENT' | translate }}
+              </ion-badge>
+            }
+          </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+  `,
+  styles: [
+    `
+      .aList {
+        ion-item ion-label p ion-badge {
+          margin-top: 4px;
+          vertical-align: bottom;
+        }
+      }
+    `
+  ]
 })
 export class IDEATeamsPage implements OnInit {
   protected _env = inject(IDEAEnvironment);

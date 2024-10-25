@@ -8,4 +8,5 @@ export * from './src/resourceCenter/RCFolders.component';
 export * from './src/resourceCenter/RCPicker.component';
 export * from './src/resourceCenter/RCResources.component';
 
-export * from './src/teams/teams.module';
+export * from './src/teams/teams.page';
+export * from './src/teams/teams.routes';
