@@ -1,14 +1,35 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
-import { IDEAEnvironment, IDEATranslationsService } from '@idea-ionic/common';
+import { IonItem, IonSpinner, IonBadge } from '@ionic/angular/standalone';
+import { IDEAEnvironment, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAOfflineService } from '../offline/offline.service';
 
 @Component({
   selector: 'idea-sentiment',
-  templateUrl: 'sentiment.component.html',
-  styleUrls: ['sentiment.component.scss']
+  standalone: true,
+  imports: [CommonModule, IDEATranslatePipe, IonBadge, IonSpinner, IonItem],
+  template: `
+    @if (text && _offline.isOnline()) {
+      <ion-item [lines]="lines" [color]="color">
+        @if (!sentiment) {
+          <ion-spinner slot="end" size="small" />
+        }
+        @if (sentiment) {
+          <ion-badge
+            slot="end"
+            size="small"
+            [color]="getColorBySentiment()"
+            [title]="'IDEA_UNCOMMON.SENTIMENT.RESULT_HINT' | translate: { sentiment: sentiment }"
+          >
+            {{ 'IDEA_UNCOMMON.SENTIMENT.RESULT.' + sentiment | translate }}
+          </ion-badge>
+        }
+      </ion-item>
+    }
+  `
 })
 export class IDEASentimentComponent implements OnChanges {
   protected _env = inject(IDEAEnvironment);

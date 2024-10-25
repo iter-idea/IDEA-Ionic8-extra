@@ -24,7 +24,6 @@ export * from './src/offline/offlineIndicator.component';
 export * from './src/offline/offlineManager.component';
 
 export * from './src/sentiment/sentiment.component';
-export * from './src/sentiment/sentiment.module';
 
 export * from './src/timeInterval/fromTimeToTime.component';
 export * from './src/timeInterval/timeInterval.component';
