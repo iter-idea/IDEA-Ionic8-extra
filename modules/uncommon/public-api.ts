@@ -14,7 +14,6 @@ export * from './src/duration/duration.component';
 export * from './src/echo/echo.page';
 export * from './src/echo/echo.routes';
 
-export * from './src/mde/mde.module';
 export * from './src/mde/mde.component';
 export * from './src/mde/mdeToolbar.component';
 
