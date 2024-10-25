@@ -18,7 +18,6 @@ export * from './src/mde/mde.component';
 export * from './src/mde/mdeToolbar.component';
 
 export * from './src/offline/cacheableResource.component';
-export * from './src/offline/offline.module';
 export * from './src/offline/offline.service';
 export * from './src/offline/offlineData.service';
 export * from './src/offline/offlineIndicator.component';

@@ -1,5 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { ModalController, AlertController, Platform } from '@ionic/angular/standalone';
+import { ModalController, AlertController, Platform, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEAOfflineManagerComponent } from './offlineManager.component';
@@ -7,8 +8,30 @@ import { IDEAOfflineDataService } from './offlineData.service';
 
 @Component({
   selector: 'idea-offline-indicator',
-  templateUrl: 'offlineIndicator.component.html',
-  styleUrls: ['offlineIndicator.component.scss']
+  standalone: true,
+  imports: [CommonModule, IonFab, IonFabButton, IonIcon],
+  template: `
+    @if (
+      _platform.is('mobile') && (_offline.isOffline() || _offline.synchronizing || _offline.requiresManualConfirmation)
+    ) {
+      <ion-fab [vertical]="vertical" [horizontal]="horizontal" [edge]="edge">
+        <ion-fab-button color="dark" size="small" (click)="showStatus()">
+          <!-- OFFLINE -->
+          @if (_offline.isOffline()) {
+            <ion-icon name="airplane" />
+          }
+          <!-- SYNCHRONISING -->
+          @if (_offline.isOnline() && _offline.synchronizing) {
+            <ion-icon name="sync" />
+          }
+          <!-- NEED MANAL SYNCHRONISATION -->
+          @if (_offline.isOnline() && _offline.requiresManualConfirmation) {
+            <ion-icon name="pause" />
+          }
+        </ion-fab-button>
+      </ion-fab>
+    }
+  `
 })
 export class IDEAOfflineIndicatorComponent {
   private _alert = inject(AlertController);

@@ -1,12 +1,55 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular/standalone';
+import {
+  ModalController,
+  AlertController,
+  IonHeader,
+  IonToolbar,
+  IonButton,
+  IonIcon,
+  IonButtons,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonListHeader,
+  IonLabel,
+  IonText,
+  IonItem,
+  IonSpinner
+} from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
-import { IDEAActionSheetController, IDEATranslationsService } from '@idea-ionic/common';
+import {
+  IDEAActionSheetController,
+  IDEALocalizedDatePipe,
+  IDEATranslatePipe,
+  IDEATranslationsService
+} from '@idea-ionic/common';
 
 import { IDEAOfflineDataService, APIRequest } from './offlineData.service';
+import { IDEACacheableResourceComponent } from './cacheableResource.component';
 
 @Component({
   selector: 'idea-offline-manager',
+  standalone: true,
+  imports: [
+    CommonModule,
+    IDEATranslatePipe,
+    IDEALocalizedDatePipe,
+    IDEACacheableResourceComponent,
+    IonSpinner,
+    IonItem,
+    IonText,
+    IonLabel,
+    IonListHeader,
+    IonList,
+    IonContent,
+    IonTitle,
+    IonButtons,
+    IonIcon,
+    IonButton,
+    IonToolbar,
+    IonHeader
+  ],
   templateUrl: 'offlineManager.component.html',
   styleUrls: ['offlineManager.component.scss']
 })

@@ -64,7 +64,7 @@ export const NUM_ELEMENTS_WITH_MANUAL_SYNC = 300;
  *   }
  * }
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAOfflineDataService {
   protected _storage = inject(IDEAStorageService);
   protected _translate = inject(IDEATranslationsService);

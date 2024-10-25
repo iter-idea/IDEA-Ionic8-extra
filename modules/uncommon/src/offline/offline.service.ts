@@ -6,7 +6,7 @@ import { Network } from '@capacitor/network';
  * Utility to monitor the network connection.
  * Note: don't use it directly, if you're also using IDEAOfflineDataService.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAOfflineService {
   /**
    * True/false if the platform is offline/online.
