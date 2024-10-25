@@ -1,12 +1,30 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { RCConfiguredFolder, RCFolder, Suggestion } from 'idea-toolbox';
-import { IDEAMessageService } from '@idea-ionic/common';
+import { IDEAMessageService, IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'idea-rc-configurator',
-  templateUrl: 'RCConfigurator.component.html',
-  styleUrls: ['RCConfigurator.component.scss']
+  standalone: true,
+  imports: [CommonModule, IDEATranslatePipe, IDEASelectComponent],
+  template: `
+    <idea-select
+      [data]="foldersSuggestions"
+      [description]="folder?.name || 'IDEA_TEAMS.RESOURCE_CENTER.NO_FOLDER_SELECTED' | translate"
+      [label]="label"
+      [placeholder]="'IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER' | translate"
+      [searchPlaceholder]="'IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER' | translate"
+      [lines]="lines"
+      [hideIdFromUI]="true"
+      [disabled]="!editMode"
+      [avoidAutoSelection]="true"
+      [icon]="icon"
+      [iconColor]="iconColor"
+      (select)="$event ? setFolder($event?.value) : null"
+      (iconSelect)="iconSelect.emit()"
+    />
+  `
 })
 export class IDEARCConfiguratorComponent implements OnInit {
   private _message = inject(IDEAMessageService);

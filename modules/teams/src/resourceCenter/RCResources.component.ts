@@ -1,10 +1,27 @@
+import { CommonModule } from '@angular/common';
 import { ViewChild, Component, Input, OnInit, inject } from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
   ModalController,
   IonRefresher,
-  IonSearchbar
+  IonSearchbar,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonRefresherContent,
+  IonList,
+  IonCard,
+  IonCardContent,
+  IonListHeader,
+  IonLabel,
+  IonItem,
+  IonSkeletonText,
+  IonNote,
+  IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { loopStringEnumValues, RCFolder, RCResource, RCResourceFormats } from 'idea-toolbox';
@@ -12,7 +29,9 @@ import {
   IDEALoadingService,
   IDEAMessageService,
   IDEATranslationsService,
-  IDEAActionSheetController
+  IDEAActionSheetController,
+  IDEATranslatePipe,
+  IDEALocalizedDatePipe
 } from '@idea-ionic/common';
 import { CacheModes, IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 
@@ -22,8 +41,147 @@ const MAX_PAGE_SIZE = 24;
 
 @Component({
   selector: 'idea-rc-resources',
-  templateUrl: 'RCResources.component.html',
-  styleUrls: ['RCResources.component.scss']
+  standalone: true,
+  imports: [
+    CommonModule,
+    IDEATranslatePipe,
+    IDEALocalizedDatePipe,
+    IonSearchbar,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonNote,
+    IonSkeletonText,
+    IonItem,
+    IonLabel,
+    IonListHeader,
+    IonCardContent,
+    IonCard,
+    IonList,
+    IonRefresher,
+    IonRefresherContent,
+    IonContent,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonToolbar,
+    IonHeader
+  ],
+  template: `
+    <ion-header>
+      <ion-toolbar color="ideaToolbar">
+        <ion-buttons slot="start">
+          <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
+            <ion-icon name="arrow-back" slot="icon-only" />
+          </ion-button>
+        </ion-buttons>
+        <ion-searchbar
+          #searchbar
+          [placeholder]="
+            'IDEA_TEAMS.RESOURCE_CENTER.SEARCH_FOR_RESOURCES_OF_FOLDER_' | translate: { folder: folder.name }
+          "
+          (ionInput)="search($event.target ? $event.target.value : '')"
+        />
+        <ion-buttons slot="end">
+          @if (admin) {
+            <ion-button
+              [disabled]="_offline.isOffline()"
+              [title]="'IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_NEW_RESOURCES' | translate"
+              (click)="browseUploadNewResource()"
+            >
+              <ion-icon slot="icon-only" name="cloud-upload" />
+            </ion-button>
+          }
+          <input
+            id="newResourcePicker"
+            type="file"
+            accept=".jpg,.jpeg,.png,.pdf"
+            multiple
+            style="display: none"
+            (change)="uploadNewResources($event)"
+          />
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event.target)">
+        <ion-refresher-content />
+      </ion-refresher>
+      <ion-list class="aList">
+        @if (uploadErrors?.length) {
+          <ion-card color="danger">
+            <ion-card-content>
+              <b>{{ 'IDEA_TEAMS.RESOURCE_CENTER.THE_FOLLOWING_FILES_FAILED_UPLOAD' | translate }}:</b>
+              <ul>
+                @for (err of uploadErrors; track err) {
+                  <li>{{ err }}</li>
+                }
+              </ul>
+            </ion-card-content>
+          </ion-card>
+        }
+        <ion-list-header>
+          <ion-label>
+            <h2>{{ folder.name }}</h2>
+          </ion-label>
+        </ion-list-header>
+        @if (!filteredResources) {
+          <ion-item>
+            <ion-label>
+              <ion-skeleton-text animated style="width: 50%" />
+            </ion-label>
+          </ion-item>
+        }
+        @if (filteredResources && !filteredResources.length) {
+          <ion-item class="noElements">
+            <ion-label>{{ 'COMMON.NO_ELEMENT_FOUND' | translate }}</ion-label>
+          </ion-item>
+        }
+        @for (r of filteredResources; track r) {
+          <ion-item>
+            <ion-button
+              slot="start"
+              fill="clear"
+              [title]="'IDEA_TEAMS.RESOURCE_CENTER.OPEN_RESOURCE' | translate"
+              [disabled]="_offline.isOffline()"
+              (click)="openResource(r)"
+            >
+              <ion-icon name="open-outline" slot="icon-only" />
+            </ion-button>
+            <ion-icon slot="start" color="medium" [name]="getFormatIcon(r.format)" [title]="r.format" />
+            <ion-label>
+              {{ r.name }}
+              <p>
+                {{ 'IDEA_TEAMS.RESOURCE_CENTER.LASTLY_UPDATED_X_AGO' | translate: { time: (r.version | dateLocale) } }}
+              </p>
+            </ion-label>
+            <ion-note slot="end">{{ r.format }}</ion-note>
+            @if (admin) {
+              <ion-button
+                color="medium"
+                fill="clear"
+                slot="end"
+                [title]="'IDEA_TEAMS.RESOURCE_CENTER.ACTIONS_ON_THE_RESOURCE' | translate"
+                [disabled]="_offline.isOffline()"
+                (click)="actionsOnResource(r)"
+              >
+                <ion-icon name="ellipsis-vertical" slot="icon-only" />
+              </ion-button>
+            }
+            <input
+              [id]="r.resourceId.concat('_picker')"
+              type="file"
+              accept=".jpg,.jpeg,.png,.pdf"
+              style="display: none"
+              (change)="updateResource(r, $event)"
+            />
+          </ion-item>
+        }
+        <ion-infinite-scroll (ionInfinite)="search(searchbar?.value, $event.target)">
+          <ion-infinite-scroll-content />
+        </ion-infinite-scroll>
+      </ion-list>
+    </ion-content>
+  `
 })
 export class IDEARCResourcesComponent implements OnInit {
   private _tc = inject(IDEATinCanService);
