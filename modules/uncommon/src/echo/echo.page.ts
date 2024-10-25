@@ -1,15 +1,89 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {
+  IonContent,
+  IonCard,
+  IonImg,
+  IonCardHeader,
+  IonCardTitle,
+  IonIcon,
+  IonCardContent
+} from '@ionic/angular/standalone';
 import { ExternalCalendarSources, mdToHtml } from 'idea-toolbox';
-import { IDEAEnvironment, IDEALoadingService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEATinCanService } from '../tinCan.service';
 
 @Component({
   selector: 'idea-echo',
-  templateUrl: 'echo.page.html',
-  styleUrls: ['echo.page.scss']
+  standalone: true,
+  imports: [
+    CommonModule,
+    IDEATranslatePipe,
+    IonCardContent,
+    IonIcon,
+    IonCardTitle,
+    IonCardHeader,
+    IonImg,
+    IonCard,
+    IonContent
+  ],
+  template: `
+    <ion-content>
+      <div class="flexBox">
+        <ion-card class="echoCard maxWidthContainer">
+          <ion-img [src]="'assets/icons/icon-auth.svg'" />
+          <ion-card-header>
+            <ion-card-title>
+              @if (success === true) {
+                <ion-icon color="success" name="checkmark" />
+              }
+              @if (success === false) {
+                <ion-icon color="danger" name="close" />
+              }
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="selectable">
+            {{ content }}
+            @if (htmlContent) {
+              <div class="htmlContent" [innerHTML]="htmlContent"></div>
+            }
+            @if (success === false || success === true) {
+              <p class="youCanCloseMe">
+                <i>{{ 'IDEA_UNCOMMON.ECHO.YOU_CAN_CLOSE_THE_PAGE' | translate }}</i>
+              </p>
+            }
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-content>
+  `,
+  styles: [
+    `
+      .echoCard {
+        min-width: 300px;
+        padding: 30px 20px;
+        text-align: center;
+        ion-img {
+          width: 80px;
+          display: block;
+          margin: 0 auto;
+        }
+        ion-icon {
+          font-size: 1.8em;
+        }
+        ion-card-content {
+          margin-bottom: 20px;
+          font-size: 1.2em;
+          p.youCanCloseMe {
+            margin-top: 12px;
+          }
+        }
+      }
+    `
+  ]
 })
 export class IDEAEchoPage implements OnInit {
   protected _env = inject(IDEAEnvironment);
