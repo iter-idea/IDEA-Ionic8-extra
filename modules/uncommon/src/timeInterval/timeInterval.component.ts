@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   Input,
@@ -9,8 +10,7 @@ import {
   OnChanges,
   inject
 } from '@angular/core';
-import { OverlayEventDetail } from '@ionic/core';
-import { ModalController } from '@ionic/angular/standalone';
+import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { TimeInterval } from 'idea-toolbox';
 import { IDEATranslationsService } from '@idea-ionic/common';
@@ -19,8 +19,87 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
 
 @Component({
   selector: 'idea-time-interval',
-  templateUrl: 'timeInterval.component.html',
-  styleUrls: ['timeInterval.component.scss']
+  standalone: true,
+  imports: [IonLabel, IonText, IonIcon, IonButton, IonItem, CommonModule],
+  template: `
+    <ion-item
+      class="timeIntervalItem"
+      [color]="color"
+      [lines]="lines"
+      [button]="!disabled"
+      [disabled]="isOpening"
+      [title]="placeholder || valueToDisplay || ''"
+      [class.withLabel]="label"
+      (click)="disabled ? doSelectWhenDisabled() : pickTimeInterval()"
+    >
+      @if (icon) {
+        <ion-button
+          fill="clear"
+          slot="start"
+          [color]="iconColor"
+          [class.marginTop]="label"
+          (click)="doIconSelect($event)"
+        >
+          <ion-icon [name]="icon" slot="icon-only" />
+        </ion-button>
+      }
+      @if (label) {
+        <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled">
+          {{ label }}
+          @if (obligatory && !disabled) {
+            <ion-text class="obligatoryDot" />
+          }
+        </ion-label>
+      }
+      <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled">
+        @if (!valueToDisplay && !disabled) {
+          <ion-text class="placeholder" [class.selectable]="!disabled">
+            {{ placeholder }}
+          </ion-text>
+        }
+        {{ valueToDisplay }}
+      </ion-label>
+      @if (!disabled) {
+        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      }
+    </ion-item>
+  `,
+  styles: [
+    `
+      .timeIntervalItem {
+        min-height: 48px;
+        height: auto;
+        .description {
+          margin: 10px 0;
+          height: 20px;
+          line-height: 20px;
+          width: 100%;
+        }
+        .placeholder {
+          color: var(--ion-color-medium);
+        }
+        .selectIcon {
+          margin: 0;
+          padding-left: 4px;
+          font-size: 0.8em;
+          color: var(--ion-color-medium);
+        }
+      }
+      .timeIntervalItem.withLabel {
+        min-height: 58px;
+        height: auto;
+        .selectIcon {
+          padding-top: 25px;
+        }
+        ion-button[slot='start'] {
+          margin-top: 16px;
+        }
+      }
+      .selectable {
+        cursor: pointer;
+      }
+    `
+  ]
 })
 export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   private _modal = inject(ModalController);
@@ -137,7 +216,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
         title: this.label
       }
     });
-    modal.onDidDismiss().then((res: OverlayEventDetail): void => {
+    modal.onDidDismiss().then((res: any): void => {
       // if the content changed, update the internal values and notify the parent component
       if (res.data === true || res.data === false) {
         this.valueToDisplay = this.getValueToDisplay(this.timeInterval);

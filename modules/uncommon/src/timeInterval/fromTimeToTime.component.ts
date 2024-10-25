@@ -1,10 +1,46 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { ModalController } from '@ionic/angular/standalone';
+import {
+  ModalController,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonText,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel
+} from '@ionic/angular/standalone';
 import { TimeInterval } from 'idea-toolbox';
-import { IDEATranslationsService } from '@idea-ionic/common';
+import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-from-time-to-time',
+  standalone: true,
+  imports: [
+    CommonModule,
+    IDEATranslatePipe,
+    IonLabel,
+    IonSegmentButton,
+    IonSegment,
+    IonText,
+    IonCol,
+    IonRow,
+    IonGrid,
+    IonContent,
+    IonTitle,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonToolbar,
+    IonHeader
+  ],
   templateUrl: 'fromTimeToTime.component.html',
   styleUrls: ['fromTimeToTime.component.scss']
 })

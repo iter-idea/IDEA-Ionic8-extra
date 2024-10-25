@@ -27,7 +27,6 @@ export * from './src/sentiment/sentiment.component';
 
 export * from './src/timeInterval/fromTimeToTime.component';
 export * from './src/timeInterval/timeInterval.component';
-export * from './src/timeInterval/timeInterval.module';
 
 export * from './src/AWSAPI.service';
 export * from './src/AWSAPISocket.service';
