@@ -1,13 +1,21 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { Platform } from '@ionic/angular/standalone';
+import { Platform, IonButton } from '@ionic/angular/standalone';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
 const PERMISSION_GRANTED = 'granted';
 
 @Component({
   selector: 'idea-barcode-camera-reader',
-  templateUrl: 'cameraReader.component.html',
-  styleUrls: ['cameraReader.component.scss']
+  standalone: true,
+  imports: [CommonModule, IonButton],
+  template: `
+    @if (_platform.is('capacitor')) {
+      <ion-button [fill]="fill" [color]="color" (click)="startScanWithCamera()">
+        <ng-content></ng-content>
+      </ion-button>
+    }
+  `
 })
 export class IDEABarcodeCameraReaderComponent {
   _platform = inject(Platform);
