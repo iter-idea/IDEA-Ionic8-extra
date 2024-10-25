@@ -21,7 +21,7 @@
       }
       @if (calendar.teamId) {
         <span>
-          {{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate: { team: tc.get('team').name } }}
+          {{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate: { team: team.name } }}
         </span>
       }
     </ion-title>
@@ -96,7 +96,7 @@
             <ion-card class="step2" [button]="true" (click)="saveNewCalendar(s)">
               <ion-card-header>
                 <ion-card-title>
-                  <ion-icon [name]="calendars.getServiceIcon(s)" />
+                  <ion-icon [name]="_calendars.getServiceIcon(s)" />
                 </ion-card-title>
               </ion-card-header>
               <ion-card-content>

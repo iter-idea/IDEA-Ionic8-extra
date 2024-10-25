@@ -28,7 +28,7 @@ export class IDEACalendarsService {
   /**
    * Get the ion-icon of an external service from its name.
    */
-  getServiceIcon(service: ExternalCalendarSources): string {
+  getServiceIcon(service: ExternalCalendarSources | string): string {
     switch (service) {
       case ExternalCalendarSources.GOOGLE:
         return 'logo-google';

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
-import { Calendar, ExternalCalendarInfo, ExternalCalendarSources, Membership } from 'idea-toolbox';
+import { Calendar, ExternalCalendarInfo, ExternalCalendarSources, Membership, Team } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
 import { IDEATinCanService } from '@idea-ionic/uncommon';
 
@@ -12,12 +12,12 @@ import { IDEACalendarsService } from './calendars.service';
   styleUrls: ['calendarCreation.component.scss']
 })
 export class IDEACalendarCreationComponent implements OnInit {
-  private _calendars = inject(IDEACalendarsService);
   private _modal = inject(ModalController);
-  private _tc = inject(IDEATinCanService);
   private _loading = inject(IDEALoadingService);
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
+  private _tc = inject(IDEATinCanService);
+  _calendars = inject(IDEACalendarsService);
 
   /**
    * Whether we want to allow the creation of only a particular type of calendar, based on the scope.
@@ -28,6 +28,7 @@ export class IDEACalendarCreationComponent implements OnInit {
    */
   @Input() onlyExternalCalendars: boolean;
 
+  team: Team;
   membership: Membership;
   calendar: Calendar;
   DEFAULT_COLOR = '#555';
@@ -35,8 +36,9 @@ export class IDEACalendarCreationComponent implements OnInit {
 
   ngOnInit(): void {
     this.calendar = new Calendar();
+    this.team = this._tc.get('team');
     this.membership = this._tc.get('membership');
-    if (this.fixScope === CalendarScopes.SHARED) this.calendar.teamId = this.membership.teamId;
+    if (this.fixScope === CalendarScopes.SHARED) this.calendar.teamId = this.team.teamId;
     if (this.fixScope === CalendarScopes.PRIVATE) this.calendar.userId = this.membership.userId;
   }
 
@@ -50,7 +52,7 @@ export class IDEACalendarCreationComponent implements OnInit {
     return Boolean(this.calendar.userId) || Boolean(this.calendar.teamId);
   }
 
-  async saveNewCalendar(service?: ExternalCalendarSources): Promise<void> {
+  async saveNewCalendar(service?: ExternalCalendarSources | string): Promise<void> {
     if (!this.scopeIsSet()) return;
     if (!service && this.onlyExternalCalendars) return;
     if (service) {
