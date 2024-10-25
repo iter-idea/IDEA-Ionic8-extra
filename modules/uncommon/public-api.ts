@@ -9,7 +9,6 @@ export * from './src/contacts/contacts.component';
 export * from './src/dateTime/calendarPicker.component';
 export * from './src/dateTime/dateTime.component';
 
-export * from './src/duration/duration.module';
 export * from './src/duration/duration.component';
 
 export * from './src/echo/echo.module';

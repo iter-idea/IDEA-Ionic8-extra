@@ -1,9 +1,93 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { IonItem, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
+import { IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-duration',
-  templateUrl: 'duration.component.html',
-  styleUrls: ['duration.component.scss']
+  standalone: true,
+  imports: [IonText, IonLabel, IonIcon, IonItem, CommonModule, FormsModule, IDEATranslatePipe],
+  template: `
+    <ion-item class="durationItem" [lines]="lines" [color]="color" [title]="title || label">
+      @if (icon) {
+        <ion-icon slot="start" [name]="icon" />
+      }
+      @if (!icon && label) {
+        <ion-label position="stacked">
+          {{ label }}
+          @if (obligatory && !disabled) {
+            <ion-text class="obligatoryDot" />
+          }
+        </ion-label>
+      }
+      <ion-label class="value">
+        <ion-input
+          type="number"
+          min="0"
+          max="23"
+          inputmode="numeric"
+          [disabled]="disabled"
+          [(ngModel)]="hours"
+          (ionChange)="setDuration('hours')"
+        />
+        <ion-text>{{
+          ((shortLabels ? 'IDEA_UNCOMMON.DURATION.HH' : 'IDEA_UNCOMMON.DURATION.HOURS') | translate).toLowerCase()
+        }}</ion-text>
+        <ion-input
+          type="number"
+          min="0"
+          max="59"
+          inputmode="numeric"
+          [disabled]="disabled"
+          [(ngModel)]="minutes"
+          (ionChange)="setDuration('minutes')"
+        />
+        <ion-text>{{
+          ((shortLabels ? 'IDEA_UNCOMMON.DURATION.MM' : 'IDEA_UNCOMMON.DURATION.MINUTES') | translate).toLowerCase()
+        }}</ion-text>
+        @if (!hideSeconds) {
+          <ion-input
+            type="number"
+            min="0"
+            max="59"
+            inputmode="numeric"
+            [disabled]="disabled"
+            [(ngModel)]="seconds"
+            (ionChange)="setDuration('seconds')"
+          />
+        }
+        @if (!hideSeconds) {
+          <ion-text>
+            {{
+              ((shortLabels ? 'IDEA_UNCOMMON.DURATION.SS' : 'IDEA_UNCOMMON.DURATION.SECONDS') | translate).toLowerCase()
+            }}
+          </ion-text>
+        }
+      </ion-label>
+    </ion-item>
+  `,
+  styles: [
+    `
+      .durationItem {
+        .value {
+          max-width: none;
+          width: 100%;
+          pointer-events: all;
+          ion-input {
+            display: inline-block;
+            max-width: 35px;
+            text-align: right;
+          }
+          ion-text {
+            margin-left: 10px;
+            margin-right: 20px;
+            font-size: 0.8em;
+          }
+        }
+      }
+    `
+  ]
 })
 export class IDEADurationComponent implements OnChanges {
   /**
