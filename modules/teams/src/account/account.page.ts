@@ -1,13 +1,149 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import {
+  AlertController,
+  NavController,
+  IonList,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonItem,
+  IonInput,
+  IonListHeader,
+  IonBadge,
+  IonLabel
+} from '@ionic/angular/standalone';
 import { User } from 'idea-toolbox';
-import { IDEAEnvironment, IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import {
+  IDEAEnvironment,
+  IDEALoadingService,
+  IDEAMessageService,
+  IDEATranslatePipe,
+  IDEATranslationsService
+} from '@idea-ionic/common';
 import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'account',
-  templateUrl: 'account.page.html',
-  styleUrls: ['account.page.scss']
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IonLabel,
+    IonBadge,
+    IonListHeader,
+    IonInput,
+    IonItem,
+    IonContent,
+    IonTitle,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonToolbar,
+    IonHeader,
+    IonList
+  ],
+  template: `
+    <ion-header>
+      <ion-toolbar color="ideaToolbar">
+        <ion-buttons slot="start">
+          <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
+            <ion-icon name="arrow-back" slot="icon-only" />
+          </ion-button>
+        </ion-buttons>
+        <ion-title>{{ 'IDEA_TEAMS.ACCOUNT.ACCOUNT' | translate }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list lines="full" class="account">
+        <ion-item>
+          <ion-input
+            type="text"
+            readonly="true"
+            labelPlacement="stacked"
+            [label]="'IDEA_TEAMS.ACCOUNT.EMAIL' | translate"
+            [(ngModel)]="newEmail"
+          />
+          <ion-button
+            slot="end"
+            fill="clear"
+            class="marginTop"
+            [title]="'IDEA_TEAMS.ACCOUNT.SET_A_NEW_EMAIL' | translate"
+            (click)="updateEmail()"
+          >
+            <ion-icon name="pencil" slot="icon-only" />
+          </ion-button>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            type="text"
+            readonly="true"
+            value="********"
+            labelPlacement="stacked"
+            [label]="'IDEA_TEAMS.ACCOUNT.PASSWORD' | translate"
+          />
+          <ion-button
+            slot="end"
+            fill="clear"
+            class="marginTop"
+            [title]="'IDEA_TEAMS.ACCOUNT.SET_A_NEW_PASSWORD' | translate"
+            (click)="updatePassword()"
+          >
+            <ion-icon name="pencil" slot="icon-only" />
+          </ion-button>
+        </ion-item>
+        <ion-list-header class="disruptive">
+          <ion-badge color="danger">
+            <ion-icon name="nuclear" /> {{ 'IDEA_TEAMS.ACCOUNT.DISRUPTIVE_ACTIONS' | translate }}
+          </ion-badge>
+        </ion-list-header>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            {{ 'IDEA_TEAMS.ACCOUNT.USER_DELETION' | translate }}
+            <p>
+              {{ 'IDEA_TEAMS.ACCOUNT.IRREVERSIBLE_OPERATION' | translate }}
+              <br />
+              <i>{{ 'IDEA_TEAMS.ACCOUNT.YOU_MUST_LEAVE_ALL_TEAMS_FIRST' | translate }}</i>
+            </p>
+          </ion-label>
+          <ion-button
+            slot="end"
+            color="danger"
+            [title]="'IDEA_TEAMS.ACCOUNT.DELETE_PERMANENTLY_USER' | translate"
+            (click)="deleteUser()"
+          >
+            {{ 'IDEA_TEAMS.ACCOUNT.DELETE' | translate }}
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  `,
+  styles: [
+    `
+      .account {
+        max-width: 500px;
+        margin: 0 auto;
+        background: transparent;
+        ion-item {
+          --background: var(--ion-color-white);
+          --border-color: var(--ion-color-light);
+        }
+      }
+      .disruptive {
+        margin-top: 50px;
+        padding-left: 0;
+      }
+      .marginTop {
+        margin-top: 14px;
+      }
+    `
+  ]
 })
 export class IDEAAccountPage implements OnInit {
   protected _env = inject(IDEAEnvironment);

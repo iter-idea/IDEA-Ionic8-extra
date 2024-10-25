@@ -1,4 +1,5 @@
-export * from './src/account/account.module';
+export * from './src/account/account.page';
+export * from './src/account/account.routes';
 
 export * from './src/attachments/attachments.component';
 export * from './src/attachments/attachments.module';
