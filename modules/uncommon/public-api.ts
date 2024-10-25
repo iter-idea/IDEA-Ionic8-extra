@@ -3,7 +3,6 @@ export * from './src/address/address.component';
 export * from './src/announcement/announcement.component';
 
 export * from './src/colors/colorPicker.component';
-export * from './src/colors/colorPicker.module';
 
 export * from './src/contacts/contacts.component';
 export * from './src/contacts/contacts.module';

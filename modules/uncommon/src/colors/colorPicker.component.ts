@@ -1,5 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
-import { PopoverController } from '@ionic/angular/standalone';
+import {
+  PopoverController,
+  IonItem,
+  IonButton,
+  IonIcon,
+  IonLabel,
+  IonText,
+  IonAvatar,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol
+} from '@ionic/angular/standalone';
 import { Color, COLORS } from 'idea-toolbox';
 
 /**
@@ -7,8 +20,71 @@ import { Color, COLORS } from 'idea-toolbox';
  */
 @Component({
   selector: 'idea-color-picker',
-  templateUrl: 'colorPicker.component.html',
-  styleUrls: ['colorPicker.component.scss']
+  standalone: true,
+  imports: [CommonModule, IonAvatar, IonText, IonLabel, IonIcon, IonButton, IonItem],
+  template: `
+    <ion-item
+      class="colorPickerItem"
+      [color]="color"
+      [lines]="lines"
+      [button]="!disabled"
+      [title]="placeholder || ''"
+      [class.withLabel]="label"
+      (click)="openPalette($event)"
+    >
+      @if (icon) {
+        <ion-button fill="clear" slot="start" [color]="iconColor" (click)="doIconSelect($event)">
+          <ion-icon [name]="icon" slot="icon-only" />
+        </ion-button>
+      }
+      @if (label) {
+        <ion-label [class.selectable]="!disabled">
+          {{ label }}
+          @if (obligatory && !disabled) {
+            <ion-text class="obligatoryDot" />
+          }
+        </ion-label>
+      }
+      <ion-avatar slot="end" class="colorCircle" [style.background-color]="current" />
+      @if (!disabled) {
+        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      }
+    </ion-item>
+  `,
+  styles: [
+    `
+      .colorPickerItem {
+        min-height: 48px;
+        height: auto;
+        .placeholder {
+          color: var(--ion-color-medium);
+        }
+        .selectIcon {
+          margin: 0;
+          padding-left: 4px;
+          font-size: 0.8em;
+          color: var(--ion-color-medium);
+        }
+      }
+      .selectItem.withLabel {
+        min-height: 58px;
+        height: auto;
+        .selectIcon {
+          padding-top: 25px;
+        }
+        ion-button[slot='start'] {
+          margin-top: 16px;
+        }
+      }
+      .selectable {
+        cursor: pointer;
+      }
+      ion-avatar.colorCircle {
+        width: 20px;
+        height: 20px;
+      }
+    `
+  ]
 })
 export class IDEAColorPickerComponent {
   /**
@@ -84,6 +160,8 @@ export class IDEAColorPickerComponent {
  */
 @Component({
   selector: 'idea-colors-palette',
+  standalone: true,
+  imports: [CommonModule, IonContent, IonGrid, IonRow, IonCol, IonAvatar, IonIcon],
   template: `
     <ion-content>
       <ion-grid>
