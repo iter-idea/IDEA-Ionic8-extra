@@ -1,7 +1,24 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import {
+  AlertController,
+  ModalController,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonGrid,
+  IonContent,
+  IonRow,
+  IonCol,
+  IonInput,
+  IonFooter
+} from '@ionic/angular/standalone';
 import { epochDateTime, epochISOString } from 'idea-toolbox';
-import { IDEATranslationsService } from '@idea-ionic/common';
+import { IDEALocalizedDatePipe, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 /**
  * A random sunday, used as reference to calculate the week days.
@@ -10,6 +27,25 @@ const SUNDAY = 259200000;
 
 @Component({
   selector: 'idea-calendar-picker',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IDEATranslatePipe,
+    IDEALocalizedDatePipe,
+    IonFooter,
+    IonInput,
+    IonCol,
+    IonRow,
+    IonContent,
+    IonGrid,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonTitle,
+    IonToolbar,
+    IonHeader
+  ],
   templateUrl: 'calendarPicker.component.html',
   styleUrls: ['calendarPicker.component.scss']
 })

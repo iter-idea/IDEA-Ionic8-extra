@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   Input,
@@ -9,17 +10,99 @@ import {
   OnChanges,
   inject
 } from '@angular/core';
-import { ModalController } from '@ionic/angular/standalone';
+import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { epochDateTime, epochISOString } from 'idea-toolbox';
-import { IDEATranslationsService } from '@idea-ionic/common';
+import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
 
 @Component({
   selector: 'idea-date-time',
-  templateUrl: 'dateTime.component.html',
-  styleUrls: ['dateTime.component.scss']
+  standalone: true,
+  imports: [CommonModule, IDEATranslatePipe, IonText, IonLabel, IonIcon, IonButton, IonItem],
+  template: `
+    <ion-item
+      class="dateTimeItem"
+      [color]="color"
+      [lines]="lines"
+      [title]="placeholder || label || ''"
+      [button]="!disabled"
+      [disabled]="isOpening"
+      [class.withLabel]="label"
+      (click)="openCalendarPicker()"
+    >
+      @if (icon) {
+        <ion-button
+          fill="clear"
+          slot="start"
+          [color]="iconColor"
+          [class.marginTop]="label"
+          (click)="doIconSelect($event)"
+        >
+          <ion-icon [icon]="icon" slot="icon-only" />
+        </ion-button>
+      }
+      @if (label) {
+        <ion-label position="stacked" [class.selectable]="!disabled">
+          {{ label }}
+          @if (obligatory && !disabled) {
+            <ion-text class="obligatoryDot" />
+          }
+        </ion-label>
+      }
+      <ion-label class="value" [class.selectable]="!disabled">
+        @if (!valueToDisplay && !disabled) {
+          <ion-text class="placeholder" [class.selectable]="!disabled">
+            {{ placeholder }}
+          </ion-text>
+        }
+        {{ valueToDisplay }}
+      </ion-label>
+      @if (!disabled) {
+        <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      }
+    </ion-item>
+  `,
+  styles: [
+    `
+      .dateTimeItem {
+        min-height: 48px;
+        height: auto;
+        .description {
+          margin: 10px 0;
+          height: 20px;
+          line-height: 20px;
+          width: 100%;
+        }
+        .placeholder {
+          color: var(--ion-color-medium);
+        }
+        .value {
+          white-space: nowrap;
+        }
+        .selectIcon {
+          margin: 0;
+          padding-left: 4px;
+          font-size: 0.8em;
+          color: var(--ion-color-medium);
+        }
+      }
+      .dateTimeItem.withLabel {
+        min-height: 58px;
+        height: auto;
+        .selectIcon {
+          padding-top: 25px;
+        }
+        ion-button[slot='start'] {
+          margin-top: 16px;
+        }
+      }
+      .selectable {
+        cursor: pointer;
+      }
+    `
+  ]
 })
 export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   private _modal = inject(ModalController);
