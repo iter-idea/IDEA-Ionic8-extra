@@ -1,12 +1,84 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { AlertController } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { AlertController, IonItem, IonButton, IonIcon, IonInput } from '@ionic/angular/standalone';
 import { Contacts } from 'idea-toolbox';
-import { IDEATranslationsService } from '@idea-ionic/common';
+import { IDEASelectComponent, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-contacts',
-  templateUrl: 'contacts.component.html',
-  styleUrls: ['contacts.component.scss']
+  standalone: true,
+  imports: [CommonModule, FormsModule, IDEATranslatePipe, IDEASelectComponent, IonInput, IonIcon, IonButton, IonItem],
+  template: `
+    <div class="contacts">
+      @if (showName) {
+        <ion-item [lines]="lines" [color]="color">
+          <ion-input
+            autocomplete="new"
+            labelPlacement="stacked"
+            [label]="'IDEA_UNCOMMON.CONTACTS.NAME' | translate"
+            [disabled]="!editMode"
+            [placeholder]="'IDEA_UNCOMMON.CONTACTS.NAME_HINT' | translate"
+            [title]="'IDEA_UNCOMMON.CONTACTS.NAME_HINT' | translate"
+            [(ngModel)]="contacts.name"
+          />
+        </ion-item>
+      }
+      <ion-item [lines]="lines" [color]="color">
+        <ion-input
+          autocomplete="new"
+          labelPlacement="stacked"
+          [label]="'IDEA_UNCOMMON.CONTACTS.PHONE' | translate"
+          [disabled]="!editMode"
+          [placeholder]="'IDEA_UNCOMMON.CONTACTS.PHONE_HINT' | translate"
+          [title]="'IDEA_UNCOMMON.CONTACTS.PHONE_HINT' | translate"
+          [(ngModel)]="contacts.phone"
+        />
+        @if (!editMode) {
+          <ion-button
+            slot="end"
+            fill="clear"
+            color="dark"
+            class="marginTop"
+            [title]="'IDEA_UNCOMMON.CONTACTS.CALL' | translate"
+            (click)="call()"
+          >
+            <ion-icon name="call" slot="icon-only" />
+          </ion-button>
+        }
+      </ion-item>
+      <ion-item [lines]="lines" [color]="color">
+        <ion-input
+          autocomplete="new"
+          labelPlacement="stacked"
+          [label]="'IDEA_UNCOMMON.CONTACTS.EMAIL' | translate"
+          [disabled]="!editMode"
+          [placeholder]="'IDEA_UNCOMMON.CONTACTS.EMAIL_HINT' | translate"
+          [title]="'IDEA_UNCOMMON.CONTACTS.EMAIL_HINT' | translate"
+          [(ngModel)]="contacts.email"
+        />
+        @if (!editMode) {
+          <ion-button
+            slot="end"
+            fill="clear"
+            color="dark"
+            class="marginTop"
+            [title]="'IDEA_UNCOMMON.CONTACTS.SEND_EMAIL' | translate"
+            (click)="sendEmail()"
+          >
+            <ion-icon name="mail" slot="icon-only" />
+          </ion-button>
+        }
+      </ion-item>
+    </div>
+  `,
+  styles: [
+    `
+      .marginTop {
+        margin-top: 14px;
+      }
+    `
+  ]
 })
 export class IDEAContactsComponent {
   private _alert = inject(AlertController);

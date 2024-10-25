@@ -5,7 +5,6 @@ export * from './src/announcement/announcement.component';
 export * from './src/colors/colorPicker.component';
 
 export * from './src/contacts/contacts.component';
-export * from './src/contacts/contacts.module';
 
 export * from './src/dateTime/calendarPicker.component';
 export * from './src/dateTime/dateTime.component';
