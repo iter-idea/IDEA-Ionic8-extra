@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
+import { IonCard, IonCardContent, IonButton } from '@ionic/angular/standalone';
 import { Announcement, mdToHtml } from 'idea-toolbox';
-import { IDEAEnvironment, IDEAStorageService } from '@idea-ionic/common';
+import { IDEAEnvironment, IDEAStorageService, IDEATranslatePipe } from '@idea-ionic/common';
 
 import { IDEATinCanService } from '../tinCan.service';
 
@@ -9,8 +11,22 @@ import { IDEATinCanService } from '../tinCan.service';
  */
 @Component({
   selector: 'idea-announcement',
-  templateUrl: 'announcement.component.html',
-  styleUrls: ['announcement.component.scss']
+  standalone: true,
+  imports: [CommonModule, IDEATranslatePipe, IonButton, IonCardContent, IonCard],
+  template: `
+    @if (htmlContent) {
+      <ion-card class="announcementCard" [color]="color">
+        <ion-card-content>
+          <p class="htmlContent" [innerHTML]="htmlContent"></p>
+          <p class="ion-text-right">
+            <ion-button color="primary" (click)="markAsRead()">
+              {{ 'COMMON.GOT_IT' | translate }}
+            </ion-button>
+          </p>
+        </ion-card-content>
+      </ion-card>
+    }
+  `
 })
 export class IDEAAnnouncementComponent implements OnInit {
   protected _env = inject(IDEAEnvironment);
