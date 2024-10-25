@@ -8,7 +8,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CustomDateFormatter } from './dateFormatter.provider';
 
 import { IDEACheckerComponent, IDEATranslationsModule, IDEAUserAvatarComponent } from '@idea-ionic/common';
-import { IDEAColorPickerModule } from '@idea-ionic/uncommon';
+import { IDEAColorPickerComponent } from '@idea-ionic/uncommon';
 
 import { IDEAAgendaComponent } from './agenda.component';
 import { IDEACalendarComponent } from './calendar.component';
@@ -23,7 +23,7 @@ import { IDEACalendarsService } from './calendars.service';
     FormsModule,
     IonicModule,
     IDEATranslationsModule,
-    IDEAColorPickerModule,
+    IDEAColorPickerComponent,
     IDEACheckerComponent,
     IDEAUserAvatarComponent,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
