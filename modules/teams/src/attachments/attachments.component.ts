@@ -1,15 +1,18 @@
-import heic2any from 'heic2any';
+import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { Platform, IonItem, IonButton, IonIcon, IonInput, IonLabel, IonSpinner } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import heic2any from 'heic2any';
 import { Attachment } from 'idea-toolbox';
-import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
-import {} from '@idea-ionic/common';
+import { IDEALoadingService, IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'idea-attachments',
+  standalone: true,
+  imports: [CommonModule, FormsModule, IDEATranslatePipe, IonSpinner, IonLabel, IonInput, IonIcon, IonButton, IonItem],
   templateUrl: 'attachments.component.html',
   styleUrls: ['attachments.component.scss']
 })
