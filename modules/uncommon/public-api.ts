@@ -1,5 +1,4 @@
 export * from './src/address/address.component';
-export * from './src/address/address.module';
 
 export * from './src/announcement/announcement.component';
 export * from './src/announcement/announcement.module';
