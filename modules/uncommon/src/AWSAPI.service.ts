@@ -15,7 +15,7 @@ import { IDEAOfflineService } from './offline/offline.service';
  *
  * Note: requires an `AWSAPIAuthToken` variable to be set by IDEATinCanService service.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAAWSAPIService {
   protected _env = inject(IDEAEnvironment);
   protected _http = inject(HttpClient);
@@ -44,7 +44,7 @@ export class IDEAAWSAPIService {
    * @param options the request options
    */
   protected request(resource: string, method: string, options?: APIRequestOption): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
       const opt = options || {};
       // prepare the url
       const url = this.prepareURL(resource, opt);
@@ -76,8 +76,8 @@ export class IDEAAWSAPIService {
       }
       // handle the request response
       req.subscribe(
-        (res: any) => resolve(res),
-        async (err: HttpErrorResponse) => {
+        (res: any): void => resolve(res),
+        async (err: HttpErrorResponse): Promise<void> => {
           // check if the request failed for network reasons (to trigger offline mode if needed)
           await this._offline.check();
           // (async) send a report, if wanted
@@ -132,7 +132,7 @@ export class IDEAAWSAPIService {
   /**
    * Converts the error message to be readable.
    */
-  protected fixErrMessageBeforeReject(err: HttpErrorResponse, reject: any) {
+  protected fixErrMessageBeforeReject(err: HttpErrorResponse, reject: any): void {
     let e;
     try {
       if (!err || !err.error) e = {};
@@ -166,7 +166,7 @@ export class IDEAAWSAPIService {
    * @param options the request options
    */
   getResource(resource: string, options?: APIRequestOption): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
       const opt = options || {};
       // if offline and with a cache mode set, force the request to the cache
       if (!navigator.onLine && opt.useCache) opt.useCache = CacheModes.CACHE_ONLY;
@@ -174,50 +174,50 @@ export class IDEAAWSAPIService {
       switch (opt.useCache) {
         case CacheModes.CACHE_ONLY:
           // return the result from the cache, without retrying online if a result wasn't found
-          this.getFromCache(resource, opt).then((res: any) => {
+          this.getFromCache(resource, opt).then((res: any): void => {
             if (res) resolve(res);
             else reject();
           });
           break;
         case CacheModes.CACHE_FIRST:
           // return the result from the cache
-          this.getFromCache(resource, opt).then((localRes: any) => {
+          this.getFromCache(resource, opt).then((localRes: any): void => {
             // check whether the local resource is present (element or list)
             if (localRes && (opt.resourceId || localRes.length)) {
               resolve(localRes);
               // asynchrounously execute the request online, to update the cache with latest data
               this.request(resource, 'GET', opt)
-                .then((cloudRes: any) => {
+                .then((cloudRes: any): void => {
                   // update the cache (if it fails, it's ok)
-                  this.putInCache(resource, cloudRes, opt).catch(() => {});
+                  this.putInCache(resource, cloudRes, opt).catch((): void => {});
                 })
-                .catch(() => {}); // we already returned the result, an error is acceptable
+                .catch((): void => {}); // we already returned the result, an error is acceptable
             } else {
               // if the result isn't found in the cache, return the result of the online request
               this.request(resource, 'GET', opt)
-                .then((res: any) => {
+                .then((res: any): void => {
                   resolve(res);
                   // update the cache (if it fails, it's ok)
-                  this.putInCache(resource, res, opt).catch(() => {});
+                  this.putInCache(resource, res, opt).catch((): void => {});
                 })
-                .catch((err: Error) => reject(err)); // element not found
+                .catch((err: Error): void => reject(err)); // element not found
             }
           });
           break;
         case CacheModes.NETWORK_FIRST:
           // return the result from an online request
           this.request(resource, 'GET', opt)
-            .then((cloudRes: any) => {
+            .then((cloudRes: any): void => {
               resolve(cloudRes);
               // asynchrounously get the same element from cache and decide whether to update or not
-              this.getFromCache(resource, opt).then(() => {
+              this.getFromCache(resource, opt).then((): void => {
                 // update the cache (if it fails, it's ok)
-                this.putInCache(resource, cloudRes, opt).catch(() => {});
+                this.putInCache(resource, cloudRes, opt).catch((): void => {});
               });
             })
             .catch(() => {
               // if a request to the network fails, check in cache
-              this.getFromCache(resource, opt).then((res: any) => {
+              this.getFromCache(resource, opt).then((res: any): void => {
                 if (res) resolve(res);
                 else reject();
               });
@@ -227,8 +227,8 @@ export class IDEAAWSAPIService {
           /* CacheModes.NO_CACHE */
           // return the result from an online request, with no cache involved
           this.request(resource, 'GET', opt)
-            .then((res: any) => resolve(res))
-            .catch((err: Error) => reject(err));
+            .then((res: any): void => resolve(res))
+            .catch((err: Error): void => reject(err));
       }
     });
   }
@@ -247,47 +247,47 @@ export class IDEAAWSAPIService {
       switch (opt.useCache) {
         case CacheModes.CACHE_ONLY:
           // return the result from the cache, without retrying online if a result wasn't found
-          this.getFromCache(resource, opt).then((res: any) => {
+          this.getFromCache(resource, opt).then((res: any): void => {
             if (res) observer.next(res);
             else observer.error();
           });
           break;
         case CacheModes.CACHE_FIRST:
           // return the result from the cache
-          this.getFromCache(resource, opt).then((localRes: any) => {
+          this.getFromCache(resource, opt).then((localRes: any): void => {
             if (localRes) {
               observer.next(localRes);
               // asynchrounously execute the request online, to update the cache with latest data
               this.request(resource, 'GET', opt)
-                .then((cloudRes: any) => {
+                .then((cloudRes: any): void => {
                   observer.next(cloudRes);
                   // update the cache (if it fails, it's ok)
-                  this.putInCache(resource, cloudRes, opt).catch(() => {});
+                  this.putInCache(resource, cloudRes, opt).catch((): void => {});
                 })
-                .catch(() => {}); // we already returned the result, an error is acceptable
+                .catch((): void => {}); // we already returned the result, an error is acceptable
             } else {
               // if the result isn't found in the cache, return the result of the online request
               this.request(resource, 'GET', opt)
-                .then((res: any) => {
+                .then((res: any): void => {
                   observer.next(res);
                   // update the cache (if it fails, it's ok)
-                  this.putInCache(resource, res, opt).catch(() => {});
+                  this.putInCache(resource, res, opt).catch((): void => {});
                 })
-                .catch((err: Error) => observer.error(err)); // element not found
+                .catch((err: Error): void => observer.error(err)); // element not found
             }
           });
           break;
         case CacheModes.NETWORK_FIRST:
           // return the result from an online request
           this.request(resource, 'GET', opt)
-            .then((cloudRes: any) => {
+            .then((cloudRes: any): void => {
               observer.next(cloudRes);
               // update the cache (if it fails, it's ok)
-              this.putInCache(resource, cloudRes, opt).catch(() => {});
+              this.putInCache(resource, cloudRes, opt).catch((): void => {});
             })
-            .catch(() => {
+            .catch((): void => {
               // if a request to the network fails, check in cache
-              this.getFromCache(resource, opt).then((res: any) => {
+              this.getFromCache(resource, opt).then((res: any): void => {
                 if (res) observer.next(res);
                 else observer.error();
               });
@@ -297,8 +297,8 @@ export class IDEAAWSAPIService {
           /* CacheModes.NO_CACHE */
           // return the result from an online request, with no cache involved
           this.request(resource, 'GET', opt)
-            .then((res: any) => observer.next(res))
-            .catch((err: Error) => observer.error(err));
+            .then((res: any): void => observer.next(res))
+            .catch((err: Error): void => observer.error(err));
       }
     });
   }
@@ -317,7 +317,7 @@ export class IDEAAWSAPIService {
       // get from storage, by the complete url
       this._storage
         .get(url.concat(queryParams.toString()))
-        .then((res: any) => (res ? resolve(res) : opt.resourceId ? resolve(null) : resolve([])));
+        .then((res: any): void => (res ? resolve(res) : opt.resourceId ? resolve(null) : resolve([])));
     });
   }
   /**
@@ -335,8 +335,8 @@ export class IDEAAWSAPIService {
       // put in the storage, by the complete url
       this._storage
         .set(url.concat(queryParams.toString()), data)
-        .then(() => resolve())
-        .catch((err: Error) => reject(err));
+        .then((): void => resolve())
+        .catch((err: Error): void => reject(err));
     });
   }
   /**
@@ -345,7 +345,7 @@ export class IDEAAWSAPIService {
    * @param options the request options
    */
   deleteFromCache(resource: string, options?: APIRequestOption): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
       const opt = options || {};
       // prepare the url and the query params
       const url = this.prepareURL(resource, opt);
@@ -353,8 +353,8 @@ export class IDEAAWSAPIService {
       // delete from storage, by the complete url
       this._storage
         .remove(url.concat(queryParams.toString()))
-        .then(() => resolve())
-        .catch((err: Error) => reject(err));
+        .then((): void => resolve())
+        .catch((err: Error): void => reject(err));
     });
   }
 

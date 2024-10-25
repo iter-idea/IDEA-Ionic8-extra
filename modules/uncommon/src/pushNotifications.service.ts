@@ -9,7 +9,7 @@ import { IDEAErrorReportingService } from './errorReporting.service';
 /**
  * To subscribe push notifications events.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAPushNotificationsService {
   private _platform = inject(Platform);
   private _errorReporting = inject(IDEAErrorReportingService);

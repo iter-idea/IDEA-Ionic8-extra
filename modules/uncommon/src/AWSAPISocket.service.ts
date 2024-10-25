@@ -11,7 +11,7 @@ import { IDEATinCanService } from './tinCan.service';
  *
  * Note: requires an `AWSAPIAuthToken` variable to be set by IDEATinCanService service.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAAWSAPISocketService {
   protected _env = inject(IDEAEnvironment);
   protected _tc = inject(IDEATinCanService);
@@ -89,7 +89,7 @@ export class IDEAAWSAPISocketService {
       // mark the start of the connection as the first activity time
       this.lastActivityAt = Date.now();
       // set a timer that every N minutes checks if we need to ping the connection to keep it alive
-      this.pingTimeout = setTimeout(() => this.keepItAlive(), this.minutesToMS(this.KEEP_ALIVE_MINUTES_INTERVAL));
+      this.pingTimeout = setTimeout((): void => this.keepItAlive(), this.minutesToMS(this.KEEP_ALIVE_MINUTES_INTERVAL));
       // set the connection as correctly opened at least once (for re-connecting scenarios)
       this.wasOpenAtLeastOnce = true;
       // run the user-defined onOpen actions
@@ -163,7 +163,10 @@ export class IDEAAWSAPISocketService {
     if (this.options.debug) console.log('WEBSOCKET WILL TRY TO RE-OPEN', isOnline, new Date());
     if (isOnline) return this.open();
     // if we are offline, set a timer to try to re-open the connection later on
-    this.offlineTimeout = setTimeout(() => this.reOpen(), this.minutesToMS(this.TRY_AGAIN_OFFLINE_MINUTES));
+    this.offlineTimeout = setTimeout(
+      (): Promise<void> => this.reOpen(),
+      this.minutesToMS(this.TRY_AGAIN_OFFLINE_MINUTES)
+    );
   }
 
   /**
@@ -191,7 +194,7 @@ export class IDEAAWSAPISocketService {
       this.ping();
     // set again the timer to keep the connection alive
     if (this.pingTimeout) clearTimeout(this.pingTimeout);
-    this.pingTimeout = setTimeout(() => this.keepItAlive(), this.minutesToMS(this.KEEP_ALIVE_MINUTES_INTERVAL));
+    this.pingTimeout = setTimeout((): void => this.keepItAlive(), this.minutesToMS(this.KEEP_ALIVE_MINUTES_INTERVAL));
   }
 
   /**

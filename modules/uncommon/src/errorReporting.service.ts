@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular/standalone';
 import { ClientInfo, ErrorReport } from 'idea-toolbox';
 import { IDEAEnvironment } from '@idea-ionic/common';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IDEAErrorReportingService {
   protected _env = inject(IDEAEnvironment);
   protected _http = inject(HttpClient);
@@ -37,8 +37,8 @@ export class IDEAErrorReportingService {
       this._http
         .post(this.apiUrl.concat(`/projects/${this._env.idea.project}/errorReporting`), report)
         .toPromise()
-        .catch(() => {}) // note: never throw an error when reporting an error
-        .finally(() => resolve());
+        .catch((): void => {}) // note: never throw an error when reporting an error
+        .finally((): void => resolve());
     });
   }
 
