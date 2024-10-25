@@ -1,5 +1,6 @@
 /// <reference types="@types/google.maps" />
 
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, Renderer2, inject } from '@angular/core';
 import { Platform } from '@ionic/angular/standalone';
 import { Loader } from '@googlemaps/js-api-loader';
@@ -37,7 +38,7 @@ const MARKERS_STYLES = [
  */
 const DEFAULT_ZOOM = 8;
 
-@Component({ selector: 'idea-map', template: '' })
+@Component({ selector: 'idea-map', standalone: true, imports: [CommonModule], template: '' })
 export class IDEAMapComponent implements OnInit {
   protected _env = inject(IDEAEnvironment);
   private _platform = inject(Platform);
