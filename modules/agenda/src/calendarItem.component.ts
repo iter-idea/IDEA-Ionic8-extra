@@ -17,7 +17,7 @@ export class IDEACalendarItemComponent {
   private _message = inject(IDEAMessageService);
   private _loading = inject(IDEALoadingService);
   private _translate = inject(IDEATranslationsService);
-  private _calendars = inject(IDEACalendarsService);
+  _calendars = inject(IDEACalendarsService);
 
   /**
    * The calendar to show.
@@ -60,7 +60,7 @@ export class IDEACalendarItemComponent {
     modal.present();
   }
 
-  private async linkExtCalendarOrDelete(): Promise<void> {
+  async linkExtCalendarOrDelete(): Promise<void> {
     if (this.disabled) return;
     try {
       const cal = await this._calendars.chooseAndSetExternalCalendar(this.calendar);

@@ -93,7 +93,7 @@
               {{ 'IDEA_AGENDA.CALENDARS.SERVICES.' + calendarWC.external.service | translate }}
               <p>{{ calendarWC.external.name }} ({{ calendarWC.external.email }})</p>
             </ion-label>
-            <ion-icon slot="end" [name]="calendars.getServiceIcon(calendarWC.external.service)" />
+            <ion-icon slot="end" [name]="_calendars.getServiceIcon(calendarWC.external.service)" />
           </ion-item>
           <ion-item lines="inset">
             <ion-label>

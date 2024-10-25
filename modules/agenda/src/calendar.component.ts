@@ -17,7 +17,6 @@ import { IDEACalendarsService } from './calendars.service';
   styleUrls: ['calendar.component.scss']
 })
 export class IDEACalendarComponent implements OnInit {
-  private _calendars = inject(IDEACalendarsService);
   private _modal = inject(ModalController);
   private _alert = inject(AlertController);
   private _tc = inject(IDEATinCanService);
@@ -25,6 +24,7 @@ export class IDEACalendarComponent implements OnInit {
   private _message = inject(IDEAMessageService);
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
+  _calendars = inject(IDEACalendarsService);
 
   /**
    * The calendar to manage.

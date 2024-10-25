@@ -30,7 +30,7 @@
     @if (calendar.external?.service) {
       <ion-icon
         slot="end"
-        [name]="calendars.getServiceIcon(calendar.external.service)"
+        [name]="_calendars.getServiceIcon(calendar.external.service)"
         [title]="
           ('IDEA_AGENDA.CALENDARS.LINKED_TO' | translate) +
           ' ' +
