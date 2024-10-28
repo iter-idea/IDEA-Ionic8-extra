@@ -77,6 +77,7 @@ export class IDEACalendarCreationComponent implements OnInit {
         return;
       }
       try {
+        await this._loading.hide();
         await this._calendars.linkExtService(this.calendar, this.baseURL);
         const res = await this._calendars.chooseAndSetExternalCalendar(this.calendar);
         if (!res) {
