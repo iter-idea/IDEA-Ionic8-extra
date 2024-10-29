@@ -27,6 +27,10 @@ export class IDEACalendarCreationComponent implements OnInit {
    * Whether we want to allow the creation of local calendars.
    */
   @Input() onlyExternalCalendars: boolean;
+  /**
+   * The URL to be used on the redirect calls.
+   */
+  @Input() baseURL: string;
 
   team: Team;
   membership: Membership;
@@ -70,34 +74,35 @@ export class IDEACalendarCreationComponent implements OnInit {
       this.calendar.load(cal);
       this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_CREATED');
       if (!cal.external) {
-        this._modal.dismiss(this.calendar);
+        await this._modal.dismiss(this.calendar);
         return;
       }
       try {
-        await this._calendars.linkExtService(this.calendar);
+        await this._loading.hide();
+        await this._calendars.linkExtService(this.calendar, this.baseURL);
         const res = await this._calendars.chooseAndSetExternalCalendar(this.calendar);
         if (!res) {
-          this._modal.dismiss(this.calendar);
+          await this._modal.dismiss(this.calendar);
           return;
         }
         this.calendar.load(res);
-        await this._loading.show(this._translate._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
         try {
+          await this._loading.show(this._translate._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
           await this._calendars.syncCalendar(this.calendar);
-          this._message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED');
+          await this._message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED');
         } catch (error) {
-          this._message.error('COMMON.OPERATION_FAILED');
+          await this._message.error('COMMON.OPERATION_FAILED');
         } finally {
-          this._modal.dismiss(this.calendar);
+          await this._modal.dismiss(this.calendar);
         }
       } catch (error) {
-        this._message.error('COMMON.OPERATION_FAILED');
-        this._modal.dismiss(this.calendar);
+        await this._message.error('COMMON.OPERATION_FAILED');
+        await this._modal.dismiss(this.calendar);
       }
     } catch (error) {
-      this._message.error('COMMON.OPERATION_FAILED');
+      await this._message.error('COMMON.OPERATION_FAILED');
     } finally {
-      this._loading.hide();
+      await this._loading.hide();
     }
   }
 
