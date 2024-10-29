@@ -78,9 +78,9 @@ export class IDEACalendarsService {
   /**
    * Link the calendar with the chosen external service (auth flow).
    */
-  async linkExtService(cal: Calendar): Promise<void> {
+  async linkExtService(cal: Calendar, baseURL: string): Promise<void> {
     if (!cal.external) throw new Error('NOT_EXTERNAL');
-    const baseURL = window.location.protocol.concat('//', window.location.hostname);
+    if (!baseURL) baseURL = window.location.protocol.concat('//', window.location.hostname);
     let url: string;
     switch (cal.external.service) {
       case ExternalCalendarSources.GOOGLE:
