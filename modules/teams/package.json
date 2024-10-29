@@ -1,6 +1,6 @@
 {
   "name": "@idea-ionic/teams",
-  "version": "8.1.2",
+  "version": "8.1.3",
   "description": "IDEA Ionic teams components",
   "license": "MPL-2.0",
   "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
@@ -27,7 +27,7 @@
     "@capacitor/browser": "^6.0.1",
     "@capacitor/camera": "^6.0.1",
     "@capacitor/core": "6.1.1",
-    "@idea-ionic/common": "^8.x.x",
+    "@idea-ionic/common": "8.1.3",
     "@ionic/angular": "^8.0.0",
     "@ionic/storage-angular": "^4.0.0",
     "idea-toolbox": "^7.x.x",
