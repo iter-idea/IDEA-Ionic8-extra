@@ -36,6 +36,10 @@ export class IDEACalendarItemComponent {
    */
   @Input() hideColor: boolean;
   /**
+   * The URL to be used on the redirect calls.
+   */
+  @Input() baseURL: string;
+  /**
    * Report to parent components a change.
    */
   @Output() somethingChanged = new EventEmitter<Calendar>();
@@ -92,7 +96,7 @@ export class IDEACalendarItemComponent {
       };
       const doLink = async (): Promise<void> => {
         try {
-          await this._calendars.linkExtService(this.calendar);
+          await this._calendars.linkExtService(this.calendar, this.baseURL);
           this.linkExtCalendarOrDelete();
         } catch (error) {
           this._message.error('COMMON.OPERATION_FAILED');
