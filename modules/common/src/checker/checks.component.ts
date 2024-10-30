@@ -16,7 +16,8 @@ import {
   IonTitle,
   IonItem,
   IonLabel,
-  IonAvatar
+  IonAvatar,
+  IonCheckbox
 } from '@ionic/angular/standalone';
 import { Check, Suggestion } from 'idea-toolbox';
 
@@ -47,7 +48,8 @@ const MAX_PAGE_SIZE = 24;
     IonHeader,
     IonItem,
     IonLabel,
-    IonAvatar
+    IonAvatar,
+    IonCheckbox
   ],
   template: `
     <ion-header>

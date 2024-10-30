@@ -17,7 +17,8 @@ import {
   IonItem,
   IonThumbnail,
   IonTextarea,
-  IonText
+  IonText,
+  IonInput
 } from '@ionic/angular/standalone';
 import { Label, LabelVariable, Languages, StringVariable } from 'idea-toolbox';
 
@@ -48,6 +49,7 @@ import { IDEAMessageService } from '../message.service';
     IonListHeader,
     IonLabel,
     IonItem,
+    IonInput,
     IonThumbnail,
     IonTextarea,
     IonText
