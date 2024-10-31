@@ -174,7 +174,7 @@ ion-label {
   --ion-color-ideaToolbar-tint: #2d2f33;
 
   --ion-color-transparent: transparent;
-  --ion-color-transparent-rgb: 0, 0, 0, 0;
+  --ion-color-transparent-rgb: 255, 255, 255;
   --ion-color-transparent-contrast: black;
   --ion-color-transparent-contrast-rgb: 0, 0, 0;
   --ion-color-transparent-shade: transparent;
@@ -242,12 +242,12 @@ ion-label {
     --ion-color-ideaToolbar-shade: #080808;
     --ion-color-ideaToolbar-tint: #222;
 
-    --ion-color-transparent: #121212;
-    --ion-color-transparent-rgb: 30, 30, 30;
-    --ion-color-transparent-contrast: #ccc;
-    --ion-color-transparent-contrast-rgb: 204, 204, 204;
-    --ion-color-transparent-shade: #121212;
-    --ion-color-transparent-tint: #121212;
+    --ion-color-transparent: transparent;
+    --ion-color-transparent-rgb: 0, 0, 0;
+    --ion-color-transparent-contrast: #fff;
+    --ion-color-transparent-contrast-rgb: 255, 255, 255;
+    --ion-color-transparent-shade: transparent;
+    --ion-color-transparent-tint: transparent;
 
     --ion-text-color-step-50: #f2f2f2;
     --ion-text-color-step-100: #e6e6e6;
