@@ -23,7 +23,8 @@ import {
   IonCol,
   IonRow,
   IonSelect,
-  IonSelectOption
+  IonSelectOption,
+  IonToggle
 } from '@ionic/angular/standalone';
 import { CustomFieldMeta, CustomFieldTypes, Label } from 'idea-toolbox';
 
@@ -65,7 +66,8 @@ import { IDEASelectComponent } from '../select/select.component';
     IonButtons,
     IonToolbar,
     IonSelect,
-    IonSelectOption
+    IonSelectOption,
+    IonToggle
   ],
   templateUrl: 'customFieldMeta.component.html',
   styleUrls: ['customFieldMeta.component.scss']
