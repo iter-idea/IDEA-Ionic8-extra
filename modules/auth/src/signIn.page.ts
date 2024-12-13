@@ -79,7 +79,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
             </ion-card-header>
             <ion-card-content>
               @if (errorMsg) {
-                <p class="errorBox">
+                <p testId="signin.error" class="errorBox">
                   <b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg }}
                 </p>
               }
@@ -88,6 +88,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
                   <ion-icon name="person-circle" color="primary" />
                 </ion-label>
                 <ion-input
+                  testId="signin.email"
                   type="email"
                   inputmode="email"
                   pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
@@ -106,6 +107,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
                   <ion-icon name="key" color="primary" />
                 </ion-label>
                 <ion-input
+                  testId="signin.password"
                   id="current-password"
                   type="password"
                   spellcheck="false"
@@ -131,6 +133,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
                     @if (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
                       <a
                         ion-text
+                        testId="openTermsAndConditionsButton"
                         color="primary"
                         target="_blank"
                         [title]="'IDEA_AUTH.TERMS_AND_CONDITIONS_HINT' | translate"
@@ -148,6 +151,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
                     @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
                       <a
                         ion-text
+                        testId="openPrivacyPolicyButton"
                         color="primary"
                         target="_blank"
                         [title]="'IDEA_AUTH.PRIVACY_POLICY_HINT' | translate"
@@ -160,6 +164,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
                 </ion-row>
               }
               <ion-button
+                testId="signInButton"
                 expand="block"
                 [disabled]="!agreementsCheck"
                 [title]="'IDEA_AUTH.SIGN_IN_HINT' | translate"
@@ -169,6 +174,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
               </ion-button>
               @if (registrationPossible) {
                 <ion-button
+                  testId="createAnAccountButton"
                   fill="clear"
                   expand="block"
                   class="smallCaseButton"
@@ -179,6 +185,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
                 </ion-button>
               }
               <ion-button
+                testId="forgotPasswordButton"
                 fill="clear"
                 expand="block"
                 class="smallCaseButton"
@@ -189,6 +196,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
               </ion-button>
               @if (hasIntroPage) {
                 <ion-button
+                  testId="backToIntroButton"
                   fill="clear"
                   expand="block"
                   color="medium"

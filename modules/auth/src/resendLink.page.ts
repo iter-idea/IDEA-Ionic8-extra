@@ -49,7 +49,7 @@ import { IDEAAuthService } from './auth.service';
           </ion-card-header>
           <ion-card-content>
             @if (errorMsg) {
-              <p class="errorBox">
+              <p testId="resendlink.error" class="errorBox">
                 <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
                 {{ errorMsg }}
               </p>
@@ -59,6 +59,7 @@ import { IDEAAuthService } from './auth.service';
                 <ion-icon name="person-circle" color="primary" />
               </ion-label>
               <ion-input
+                testId="resendlink.email"
                 type="email"
                 inputmode="email"
                 pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
@@ -73,6 +74,7 @@ import { IDEAAuthService } from './auth.service';
               />
             </ion-item>
             <ion-button
+              testId="resendLinkButton"
               expand="block"
               [title]="'IDEA_AUTH.RESEND_LINK_HINT' | translate"
               (click)="resendConfirmationLink()"
@@ -80,6 +82,7 @@ import { IDEAAuthService } from './auth.service';
               {{ 'IDEA_AUTH.RESEND_LINK' | translate }}
             </ion-button>
             <ion-button
+              testId="backToSignInButton"
               fill="clear"
               expand="block"
               class="smallCaseButton"

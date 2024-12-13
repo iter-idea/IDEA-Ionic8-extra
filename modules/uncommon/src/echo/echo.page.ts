@@ -38,10 +38,10 @@ import { IDEATinCanService } from '../tinCan.service';
           <ion-card-header>
             <ion-card-title>
               @if (success === true) {
-                <ion-icon color="success" name="checkmark" />
+                <ion-icon testId="echoSuccess" color="success" name="checkmark" />
               }
               @if (success === false) {
-                <ion-icon color="danger" name="close" />
+                <ion-icon testId="echoFailure" color="danger" name="close" />
               }
             </ion-card-title>
           </ion-card-header>

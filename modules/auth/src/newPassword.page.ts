@@ -56,7 +56,7 @@ import { IDEAAuthService } from './auth.service';
           </ion-card-header>
           <ion-card-content>
             @if (errorMsg) {
-              <p class="errorBox">
+              <p testId="newpassword.error" class="errorBox">
                 <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
                 {{ errorMsg }}
               </p>
@@ -66,6 +66,7 @@ import { IDEAAuthService } from './auth.service';
                 <ion-icon name="key" color="primary" />
               </ion-label>
               <ion-input
+                testId="newpassword.password"
                 type="password"
                 spellcheck="false"
                 autocorrect="off"
@@ -78,11 +79,18 @@ import { IDEAAuthService } from './auth.service';
                 [(ngModel)]="newPassword"
                 (keyup.enter)="confirmNewPassword()"
               />
-              <ion-button slot="end" fill="clear" color="dark" (click)="openPasswordPolicy($event)">
+              <ion-button
+                testId="openPasswordPolicyButton"
+                slot="end"
+                fill="clear"
+                color="dark"
+                (click)="openPasswordPolicy($event)"
+              >
                 <ion-icon icon="help-circle-outline" slot="icon-only" />
               </ion-button>
             </ion-item>
             <ion-button
+              testId="confirmNewPaswordButton"
               expand="block"
               [title]="'IDEA_AUTH.CONFIRM_NEW_PASSWORD_HINT' | translate"
               (click)="confirmNewPassword()"
@@ -90,6 +98,7 @@ import { IDEAAuthService } from './auth.service';
               {{ 'IDEA_AUTH.CONFIRM_NEW_PASSWORD' | translate }}
             </ion-button>
             <ion-button
+              testId="backToSignInButton"
               fill="clear"
               expand="block"
               class="smallCaseButton"

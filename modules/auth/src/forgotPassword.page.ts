@@ -52,6 +52,7 @@ import { IDEAAuthService } from './auth.service';
                 <ion-icon name="person-circle" color="primary" />
               </ion-label>
               <ion-input
+                testId="forgotpassword.email"
                 type="email"
                 inputmode="email"
                 pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
@@ -66,6 +67,7 @@ import { IDEAAuthService } from './auth.service';
               />
             </ion-item>
             <ion-button
+              testId="resetPasswordButton"
               expand="block"
               [title]="'IDEA_AUTH.RESET_MY_PASSWORD_HINT' | translate"
               (click)="forgotPassword()"
@@ -73,6 +75,7 @@ import { IDEAAuthService } from './auth.service';
               {{ 'IDEA_AUTH.RESET_MY_PASSWORD' | translate }}
             </ion-button>
             <ion-button
+              testId="insertResetCodeButton"
               fill="clear"
               expand="block"
               class="smallCaseButton"
@@ -82,6 +85,7 @@ import { IDEAAuthService } from './auth.service';
               {{ 'IDEA_AUTH.ALREADY_HAVE_A_RESET_CODE' | translate }}
             </ion-button>
             <ion-button
+              testId="backToSignInButton"
               fill="clear"
               expand="block"
               class="smallCaseButton"

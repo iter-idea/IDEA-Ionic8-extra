@@ -48,7 +48,7 @@ import { IDEAAuthService } from './auth.service';
           </ion-card-header>
           <ion-card-content>
             @if (errorMsg) {
-              <p class="errorBox">
+              <p testId="mfachallenge.error" class="errorBox">
                 <b>{{ 'IDEA_AUTH.ERROR' | translate }}.</b>
                 {{ errorMsg }}
               </p>
@@ -58,6 +58,7 @@ import { IDEAAuthService } from './auth.service';
                 <ion-icon name="key" color="primary" />
               </ion-label>
               <ion-input
+                testId="mfachallenge.otpcode"
                 inputmode="numeric"
                 [placeholder]="'IDEA_AUTH.OTP_CODE' | translate"
                 [title]="'IDEA_AUTH.ENTER_OTP_CODE' | translate"
@@ -67,6 +68,7 @@ import { IDEAAuthService } from './auth.service';
               />
             </ion-item>
             <ion-button
+              testId="confirmOTPCodeButton"
               expand="block"
               [title]="'IDEA_AUTH.CONFIRM_OTP_CODE_HINT' | translate"
               (click)="completeMFAChallenge()"
@@ -74,6 +76,7 @@ import { IDEAAuthService } from './auth.service';
               {{ 'IDEA_AUTH.CONFIRM_OTP_CODE' | translate }}
             </ion-button>
             <ion-button
+              testId="backToSignInButton"
               fill="clear"
               expand="block"
               class="smallCaseButton"
