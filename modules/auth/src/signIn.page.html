@@ -20,13 +20,14 @@
         </ion-card-header>
         <ion-card-content>
           @if (errorMsg) {
-          <p class="errorBox"><b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg }}</p>
+          <p testId="signin.error" class="errorBox"><b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg }}</p>
           }
           <ion-item>
             <ion-label position="inline">
               <ion-icon name="person-circle" color="primary" />
             </ion-label>
             <ion-input
+              testId="signin.email"
               type="email"
               inputmode="email"
               pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
@@ -45,6 +46,7 @@
               <ion-icon name="key" color="primary" />
             </ion-label>
             <ion-input
+              testId="signin.password"
               id="current-password"
               type="password"
               spellcheck="false"
@@ -66,6 +68,7 @@
               {{ 'IDEA_AUTH.AGREEMENTS_CHECK_LOGIN' | translate }}: @if
               (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
               <a
+                testId="openTermsAndConditionsButton"
                 ion-text
                 color="primary"
                 target="_blank"
@@ -79,6 +82,7 @@
               <ion-text> & </ion-text>
               } @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
               <a
+                testId="openPrivacyPolicyButton"
                 ion-text
                 color="primary"
                 target="_blank"
@@ -92,6 +96,7 @@
           </ion-row>
           }
           <ion-button
+            testId="signInButton"
             expand="block"
             [disabled]="!agreementsCheck"
             [title]="'IDEA_AUTH.SIGN_IN_HINT' | translate"
@@ -101,6 +106,7 @@
           </ion-button>
           @if (registrationPossible) {
           <ion-button
+            testId="createAnAccountButton"
             fill="clear"
             expand="block"
             class="smallCaseButton"
@@ -111,6 +117,7 @@
           </ion-button>
           }
           <ion-button
+            testId="forgotPasswordButton"
             fill="clear"
             expand="block"
             class="smallCaseButton"
@@ -121,6 +128,7 @@
           </ion-button>
           @if (hasIntroPage) {
           <ion-button
+            testId="backToIntroButton"
             fill="clear"
             expand="block"
             color="medium"
