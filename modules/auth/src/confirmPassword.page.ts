@@ -54,7 +54,7 @@ import { IDEAAuthService } from './auth.service';
           </ion-card-header>
           <ion-card-content>
             @if (errorMsg) {
-              <p class="errorBox">
+              <p testId="confirmpassword.error" class="errorBox">
                 <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
                 {{ errorMsg }}
               </p>
@@ -64,6 +64,7 @@ import { IDEAAuthService } from './auth.service';
                 <ion-icon name="person-circle" color="primary" />
               </ion-label>
               <ion-input
+                testId="confirmpassword.email"
                 type="email"
                 inputmode="email"
                 pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
@@ -82,6 +83,7 @@ import { IDEAAuthService } from './auth.service';
                 <ion-icon name="disc" color="primary" />
               </ion-label>
               <ion-input
+                testId="confirmpassword.code"
                 type="text"
                 spellcheck="false"
                 autocorrect="off"
@@ -98,6 +100,7 @@ import { IDEAAuthService } from './auth.service';
                 <ion-icon name="key" color="primary" />
               </ion-label>
               <ion-input
+                testId="confirmpassword.password"
                 type="password"
                 spellcheck="false"
                 autocorrect="off"
@@ -110,11 +113,18 @@ import { IDEAAuthService } from './auth.service';
                 [(ngModel)]="newPassword"
                 (keyup.enter)="confirmPassword()"
               />
-              <ion-button slot="end" fill="clear" color="dark" (click)="openPasswordPolicy($event)">
+              <ion-button
+                testId="openPasswordPolicyButton"
+                slot="end"
+                fill="clear"
+                color="dark"
+                (click)="openPasswordPolicy($event)"
+              >
                 <ion-icon icon="help-circle-outline" slot="icon-only" />
               </ion-button>
             </ion-item>
             <ion-button
+              testId="changePasswordButton"
               expand="block"
               [title]="'IDEA_AUTH.CHANGE_MY_PASSWORD_HINT' | translate"
               (click)="confirmPassword()"
@@ -122,6 +132,7 @@ import { IDEAAuthService } from './auth.service';
               {{ 'IDEA_AUTH.CHANGE_MY_PASSWORD' | translate }}
             </ion-button>
             <ion-button
+              testId="haventReceivedResetCodeButton"
               fill="clear"
               expand="block"
               class="smallCaseButton"
@@ -131,6 +142,7 @@ import { IDEAAuthService } from './auth.service';
               {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_A_RESET_CODE' | translate }}
             </ion-button>
             <ion-button
+              testId="backToSignInButton"
               fill="clear"
               expand="block"
               class="smallCaseButton"

@@ -53,7 +53,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
     <ion-header>
       <ion-toolbar color="ideaToolbar">
         <ion-buttons slot="start">
-          <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
+          <ion-button testId="closeButton" [title]="'COMMON.CLOSE' | translate" (click)="close()">
             <ion-icon name="arrow-back" slot="icon-only" />
           </ion-button>
         </ion-buttons>
@@ -64,6 +64,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
       <ion-list lines="full" class="account">
         <ion-item>
           <ion-input
+            testId="account.email"
             type="text"
             readonly="true"
             labelPlacement="stacked"
@@ -71,6 +72,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
             [(ngModel)]="newEmail"
           />
           <ion-button
+            testId="setNewEmailButton"
             slot="end"
             fill="clear"
             class="marginTop"
@@ -82,6 +84,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
         </ion-item>
         <ion-item>
           <ion-input
+            testId="account.password"
             type="text"
             readonly="true"
             value="********"
@@ -89,6 +92,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
             [label]="'IDEA_TEAMS.ACCOUNT.PASSWORD' | translate"
           />
           <ion-button
+            testId="setNewPasswordButton"
             slot="end"
             fill="clear"
             class="marginTop"
@@ -113,6 +117,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
             </p>
           </ion-label>
           <ion-button
+            testId="deleteUserButton"
             slot="end"
             color="danger"
             [title]="'IDEA_TEAMS.ACCOUNT.DELETE_PERMANENTLY_USER' | translate"

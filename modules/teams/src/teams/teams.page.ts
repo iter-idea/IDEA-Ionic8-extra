@@ -49,14 +49,18 @@ import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
       <ion-toolbar color="ideaToolbar">
         <ion-buttons slot="start">
           @if (aTeamIsSelected()) {
-            <ion-button [title]="'COMMON.CLOSE' | translate" (click)="close()">
+            <ion-button testId="closeButton" [title]="'COMMON.CLOSE' | translate" (click)="close()">
               <ion-icon name="arrow-back" slot="icon-only" />
             </ion-button>
           }
         </ion-buttons>
         <ion-title>{{ 'IDEA_TEAMS.TEAMS.SELECT_A_TEAM' | translate }}</ion-title>
         <ion-buttons slot="end">
-          <ion-button [title]="'IDEA_TEAMS.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT' | translate" (click)="openAccount()">
+          <ion-button
+            testId="manageAccountButton"
+            [title]="'IDEA_TEAMS.ACCOUNT.MANAGE_YOUR_ACCOUNT_HINT' | translate"
+            (click)="openAccount()"
+          >
             <ion-icon name="person" slot="icon-only" />
           </ion-button>
         </ion-buttons>
