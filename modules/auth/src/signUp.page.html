@@ -7,7 +7,7 @@
       </ion-card-header>
       <ion-card-content>
         @if (errorMsg) {
-        <p class="errorBox">
+        <p testId="signup.error" class="errorBox">
           <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
           {{ errorMsg }}
         </p>
@@ -17,6 +17,7 @@
             <ion-icon name="person-circle" color="primary" />
           </ion-label>
           <ion-input
+            testId="signup.email"
             type="email"
             inputmode="email"
             pattern="[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}"
@@ -35,6 +36,7 @@
             <ion-icon name="key" color="primary" />
           </ion-label>
           <ion-input
+            testId="signup.password"
             type="password"
             spellcheck="false"
             autocorrect="off"
@@ -47,7 +49,13 @@
             [(ngModel)]="password"
             (keyup.enter)="register()"
           />
-          <ion-button slot="end" fill="clear" color="dark" (click)="openPasswordPolicy($event)">
+          <ion-button
+            testId="openPasswordPolicyButton"
+            slot="end"
+            fill="clear"
+            color="dark"
+            (click)="openPasswordPolicy($event)"
+          >
             <ion-icon icon="help-circle-outline" slot="icon-only" />
           </ion-button>
         </ion-item>
@@ -59,6 +67,7 @@
             {{ 'IDEA_AUTH.AGREEMENTS_CHECK_REGISTRATION' | translate }}: @if
             (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
             <a
+              testId="openTermsAndConditionsButton"
               ion-text
               color="primary"
               target="_blank"
@@ -72,6 +81,7 @@
             <ion-text> & </ion-text>
             } @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
             <a
+              testId="openPrivacyPolicyButton"
               ion-text
               color="primary"
               target="_blank"
@@ -85,6 +95,7 @@
         </ion-row>
         }
         <ion-button
+          testId="signUpButton"
           expand="block"
           [disabled]="!agreementsCheck"
           [title]="'IDEA_AUTH.CREATE_AN_ACCOUNT_HINT' | translate"
@@ -93,6 +104,7 @@
           {{ 'IDEA_AUTH.CREATE_AN_ACCOUNT' | translate }}
         </ion-button>
         <ion-button
+          testId="resendLinkButton"
           fill="clear"
           expand="block"
           class="smallCaseButton"
@@ -102,6 +114,7 @@
           {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_CONFIRMATION_LINK' | translate }}
         </ion-button>
         <ion-button
+          testId="backToSignInButton"
           fill="clear"
           expand="block"
           class="smallCaseButton"
