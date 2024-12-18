@@ -40,7 +40,7 @@
       "DESCRIPTION_HINT": "Descrizione di come il campo dovrebbe essere compilato",
       "DISPLAY_TEMPLATE": "Layout di stampa",
       "DISPLAY_TEMPLATE_I": "Personalizza il layout della sezione nei report PDF. Gestisci multiple righe e disponi un massimo di tre campi in ognuna, nell'ordine che preferisci. Se un campo non è nel layout, non verrà mostrato nel report PDF. Righe vuote verranno ignorate.",
-      "DUPLICATED_KEY": "Esiste già  un campo con quel nome",
+      "DUPLICATED_KEY": "Esiste già un campo con quel nome",
       "FIELDS_TYPES": {
         "BOOLEAN": "Si / No",
         "ENUM": "Scelta",
