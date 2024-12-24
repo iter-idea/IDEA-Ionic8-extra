@@ -22,7 +22,6 @@ import { EmailData, StringVariable, Suggestion } from 'idea-toolbox';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 import { IDEASuggestionsComponent } from '../select/suggestions.component';
-import { IDEASelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'idea-send-email',
@@ -31,7 +30,6 @@ import { IDEASelectComponent } from '../select/select.component';
     CommonModule,
     FormsModule,
     IDEATranslatePipe,
-    IDEASelectComponent,
     IonHeader,
     IonToolbar,
     IonTitle,

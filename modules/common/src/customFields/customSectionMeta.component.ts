@@ -43,7 +43,6 @@ import { IDEACustomFieldMetaComponent } from './customFieldMeta.component';
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
-    IDEALabelerComponent,
     IonItemDivider,
     IonCol,
     IonRow,

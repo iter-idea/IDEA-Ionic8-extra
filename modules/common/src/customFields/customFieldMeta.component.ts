@@ -34,7 +34,6 @@ import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
 import { IDEAMessageService } from '../message.service';
 import { IDEALabelerComponent } from '../labeler/labeler.component';
 import { IDEAIconsComponent } from '../icons/icons.component';
-import { IDEASelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'idea-custom-field-meta',
@@ -44,9 +43,6 @@ import { IDEASelectComponent } from '../select/select.component';
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
-    IDEALabelerComponent,
-    IDEAIconsComponent,
-    IDEASelectComponent,
     IonRow,
     IonCol,
     IonReorder,

@@ -4,14 +4,13 @@ import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from 
 import { Label } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
-import { IDEATranslatePipe } from '../translations/translate.pipe';
 
 import { IDEAListElementsComponent } from './listElements.component';
 
 @Component({
   selector: 'idea-list',
   standalone: true,
-  imports: [CommonModule, IDEATranslatePipe, IonItem, IonButton, IonIcon, IonLabel, IonText],
+  imports: [CommonModule, IonItem, IonButton, IonIcon, IonLabel, IonText],
   template: `
     <ion-item
       class="listItem"

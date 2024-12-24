@@ -30,7 +30,6 @@ const MAX_PAGE_SIZE = 24;
   imports: [
     CommonModule,
     IDEATranslatePipe,
-    IDEALabelerComponent,
     IonSearchbar,
     IonHeader,
     IonToolbar,

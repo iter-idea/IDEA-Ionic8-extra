@@ -3,12 +3,12 @@ import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonItem, IonButton, IonIcon, IonInput } from '@ionic/angular/standalone';
 import { Contacts } from 'idea-toolbox';
-import { IDEASelectComponent, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-contacts',
   standalone: true,
-  imports: [CommonModule, FormsModule, IDEATranslatePipe, IDEASelectComponent, IonInput, IonIcon, IonButton, IonItem],
+  imports: [CommonModule, FormsModule, IDEATranslatePipe, IonInput, IonIcon, IonButton, IonItem],
   template: `
     <div class="contacts">
       @if (showName) {

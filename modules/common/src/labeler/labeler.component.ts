@@ -24,7 +24,6 @@ import { Label, LabelVariable, Languages, StringVariable } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
-import { IDEAHiglightedVariablesPipe } from '../highlightedVariables.pipe';
 import { IDEAMessageService } from '../message.service';
 
 /**
@@ -37,7 +36,6 @@ import { IDEAMessageService } from '../message.service';
     CommonModule,
     FormsModule,
     IDEATranslatePipe,
-    IDEAHiglightedVariablesPipe,
     IonTitle,
     IonContent,
     IonIcon,

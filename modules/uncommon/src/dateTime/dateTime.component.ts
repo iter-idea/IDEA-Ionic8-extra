@@ -13,14 +13,14 @@ import {
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { epochDateTime, epochISOString } from 'idea-toolbox';
-import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEACalendarPickerComponent } from './calendarPicker.component';
 
 @Component({
   selector: 'idea-date-time',
   standalone: true,
-  imports: [CommonModule, IDEATranslatePipe, IonText, IonLabel, IonIcon, IonButton, IonItem],
+  imports: [CommonModule, IonText, IonLabel, IonIcon, IonButton, IonItem],
   template: `
     <ion-item
       class="dateTimeItem"

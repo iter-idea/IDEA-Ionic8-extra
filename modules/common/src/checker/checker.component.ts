@@ -4,15 +4,13 @@ import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from 
 import { Check } from 'idea-toolbox';
 
 import { IDEATranslationsService } from '../translations/translations.service';
-import { IDEATranslatePipe } from '../translations/translate.pipe';
-import { IDEAUserAvatarComponent } from '../userAvatar/userAvatar.component';
 
 import { IDEAChecksComponent } from './checks.component';
 
 @Component({
   selector: 'idea-checker',
   standalone: true,
-  imports: [CommonModule, IDEATranslatePipe, IDEAUserAvatarComponent, IonLabel, IonItem, IonButton, IonIcon, IonText],
+  imports: [CommonModule, IonLabel, IonItem, IonButton, IonIcon, IonText],
   template: `
     <ion-item
       class="checkerItem"
