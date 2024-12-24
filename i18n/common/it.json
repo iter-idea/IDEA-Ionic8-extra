@@ -8,6 +8,27 @@
       "GOT_IT": "Ho capito",
       "EVERYTHING_IS_OK": "Tutto ok!"
     },
+    "ATTACHMENTS": {
+      "ERROR_UPLOADING_ATTACHMENT": "Errore durante il caricamento dell'allegato",
+      "HIDE_ERROR": "Nascondi errore",
+      "DOWNLOAD_ATTACHMENT": "Scarica allegato",
+      "REMOVE_ATTACHMENT": "Rimuovi allegato",
+      "TAP_TO_ADD_ATTACHMENT": "Clicca per aggiungere un allegato",
+      "ALLOWED_FORMATS_AND_SIZE": "Formati ammessi: {{formats}}; massima dimensione file: {{size}}MB.",
+      "UPLOADING": "Caricamento in corso...",
+      "FILE_IS_TOO_BIG": "Il file è troppo grande (max: {{maxSize}} MB)",
+      "NO_ATTACHMENTS": "Nessun allegato",
+      "ADD_SECTION": "Aggiungi una sezione",
+      "ADD_SECTION_HINT": "Scegli un nome per la nuova sezione",
+      "DUPLICATED_KEY": "Esiste già una sezione con quel nome",
+      "SECTION_NAME": "Nome",
+      "SECTION_NAME_P": "Il nome per identificare la sezione",
+      "SECTION_DESCRIPTION": "Descrizione",
+      "SECTION_DESCRIPTION_P": "Spiegazione della sezione per gli utenti",
+      "NO_ELEMENTS": "Nessun elemento",
+      "DELETE_EMPTY_SECTION": "Prima di rimuovere la sezione, devi rimuovere tutti i suoi allegati.",
+      "MANAGE_SECTION": "Gestisci sezione"
+    },
     "CHECKER": {
       "ALL": "Tutti",
       "CLOSE_WITHOUT_SELECTING": "Chiudi senza selezionare nulla",

@@ -8,6 +8,27 @@
       "GOT_IT": "Got it",
       "EVERYTHING_IS_OK": "It's all good!"
     },
+    "ATTACHMENTS": {
+      "ERROR_UPLOADING_ATTACHMENT": "Error while uploading the attachment",
+      "HIDE_ERROR": "Hide the error",
+      "DOWNLOAD_ATTACHMENT": "Download attachment",
+      "REMOVE_ATTACHMENT": "Remove attachment",
+      "TAP_TO_ADD_ATTACHMENT": "Tap to add an attachment...",
+      "ALLOWED_FORMATS_AND_SIZE": "Allowed formats: {{formats}}; max file size: {{size}}MB.",
+      "UPLOADING": "Uploading...",
+      "FILE_IS_TOO_BIG": "The file is too big (max: {{maxSize}} MB)",
+      "NO_ATTACHMENTS": "No attachments",
+      "ADD_SECTION": "Add a section",
+      "ADD_SECTION_HINT": "Choose a name for the new section",
+      "DUPLICATED_KEY": "A section with that name already exists",
+      "SECTION_NAME": "Name",
+      "SECTION_NAME_P": "The name to identify the section",
+      "SECTION_DESCRIPTION": "Description",
+      "SECTION_DESCRIPTION_P": "Explanation of the section for the users",
+      "NO_ELEMENTS": "No elements",
+      "DELETE_EMPTY_SECTION": "Before removing the section, you must remove all its attachments.",
+      "MANAGE_SECTION": "Manage section"
+    },
     "CHECKER": {
       "ALL": "All",
       "CLOSE_WITHOUT_SELECTING": "Close without selecting anything",

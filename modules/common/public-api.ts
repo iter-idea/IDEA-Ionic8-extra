@@ -5,6 +5,11 @@ export * from './src/appStatus/appStatus.page';
 export * from './src/appStatus/appStatus.routes';
 export * from './src/appStatus/appStatus.service';
 
+export * from './src/attachments/attachments.component';
+export * from './src/attachments/attachmentSections.component';
+export * from './src/attachments/manageAttachmentsSection.component';
+export * from './src/attachments/attachments.service';
+
 export * from './src/checker/checks.component';
 export * from './src/checker/checker.component';
 

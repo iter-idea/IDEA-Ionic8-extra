@@ -21,6 +21,9 @@
 
 - [idea-action-sheet](modules/common/src/actionSheet/actionSheet.component.md). It's an alternative for desktop devices to the traditional ActionSheet.
 It shares (almost) the same inputs so they are interchangeable.
+- [idea-attachment-sections](modules/common/src/attachments/attachmentSections.component.md)
+- [idea-attachments](modules/common/src/attachments/attachments.component.md)
+- [idea-attachments-section](modules/common/src/attachments/manageAttachmentsSection.component.md)
 - [idea-checker](modules/common/src/checker/checker.component.md)
 - [idea-checks](modules/common/src/checker/checks.component.md)
 - [idea-custom-block](modules/common/src/customFields/customBlock.component.md)
