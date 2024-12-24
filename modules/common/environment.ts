@@ -17,6 +17,7 @@ export interface IDEAEnvironmentConfiguration {
       bundle: string;
       appleStoreURL?: string;
       googleStoreURL?: string;
+      maxFileUploadSizeMB?: number;
     };
     api?: {
       url: string;
