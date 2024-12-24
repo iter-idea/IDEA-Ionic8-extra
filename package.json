@@ -1,6 +1,6 @@
 {
   "name": "idea-ionic-extra",
-  "version": "8.3.0",
+  "version": "8.3.1",
   "license": "MPL-2.0",
   "scripts": {
     "ng": "ng",
