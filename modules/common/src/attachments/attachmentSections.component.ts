@@ -43,7 +43,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     @if (!attachmentSections.sectionsLegend.length) {
       <ion-item lines="none" [color]="color">
         <ion-label>
-          <i>{{ 'ATTACHMENTS.NO_ELEMENTS' | translate }}</i>
+          <i>{{ 'IDEA_COMMON.ATTACHMENTS.NO_ELEMENTS' | translate }}</i>
         </ion-label>
       </ion-item>
     }
@@ -111,7 +111,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     @if (!disabled) {
       <div class="ion-padding ion-text-center">
         <ion-button size="small" color="primary" (click)="addNewSection()">
-          {{ 'ATTACHMENTS.ADD_SECTION' | translate }}
+          {{ 'IDEA_COMMON.ATTACHMENTS.ADD_SECTION' | translate }}
         </ion-button>
       </div>
     }
@@ -177,7 +177,7 @@ export class IDEAAttachmentSectionsComponent {
     let header: string, subHeader: string, buttons: any[];
     if (this.attachmentSections.sections[sectionKey].attachments.length) {
       header = this._translate._('COMMON.REMOVE');
-      subHeader = this._translate._('ATTACHMENTS.DELETE_EMPTY_SECTION');
+      subHeader = this._translate._('IDEA_COMMON.ATTACHMENTS.DELETE_EMPTY_SECTION');
       buttons = [this._translate._('COMMON.GOT_IT')];
     } else {
       const doRemoveSection = (): void => {
@@ -204,7 +204,7 @@ export class IDEAAttachmentSectionsComponent {
       if (!key.trim()) return;
 
       if (this.attachmentSections.sectionsLegend.some(x => x === key))
-        return this._message.error('ATTACHMENTS.DUPLICATED_KEY');
+        return this._message.error('IDEA_COMMON.ATTACHMENTS.DUPLICATED_KEY');
 
       const section = new AttachmentSection(null, this._translate.languages());
       section.name = new Label(null, this._translate.languages());
@@ -216,8 +216,8 @@ export class IDEAAttachmentSectionsComponent {
       this.manageSection(key);
     };
 
-    const header = this._translate._('ATTACHMENTS.ADD_SECTION');
-    const message = this._translate._('ATTACHMENTS.ADD_SECTION_HINT');
+    const header = this._translate._('IDEA_COMMON.ATTACHMENTS.ADD_SECTION');
+    const message = this._translate._('IDEA_COMMON.ATTACHMENTS.ADD_SECTION_HINT');
     const inputs: any = [{ name: 'name', type: 'text' }];
     const buttons = [
       { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },

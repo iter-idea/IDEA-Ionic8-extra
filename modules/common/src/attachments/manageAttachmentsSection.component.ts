@@ -57,7 +57,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
             <ion-icon slot="icon-only" icon="close" />
           </ion-button>
         </ion-buttons>
-        <ion-title>{{ 'ATTACHMENTS.MANAGE_SECTION' | translate }}</ion-title>
+        <ion-title>{{ 'IDEA_COMMON.ATTACHMENTS.MANAGE_SECTION' | translate }}</ion-title>
         <ion-buttons slot="end">
           <ion-button [title]="'COMMON.SAVE' | translate" (click)="save()">
             <ion-icon slot="icon-only" icon="checkmark-circle" />
@@ -73,9 +73,11 @@ import { IDEATranslationsService } from '../translations/translations.service';
             readonly="true"
             labelPlacement="stacked"
             [value]="_section.name | label"
-            [placeholder]="'ATTACHMENTS.SECTION_NAME_P' | translate"
+            [placeholder]="'IDEA_COMMON.ATTACHMENTS.SECTION_NAME_P' | translate"
           >
-            <div slot="label">{{ 'ATTACHMENTS.SECTION_NAME' | translate }} <ion-text class="obligatoryDot" /></div>
+            <div slot="label">
+              {{ 'IDEA_COMMON.ATTACHMENTS.SECTION_NAME' | translate }} <ion-text class="obligatoryDot" />
+            </div>
           </ion-input>
           <ion-button
             slot="end"
@@ -92,9 +94,9 @@ import { IDEATranslationsService } from '../translations/translations.service';
             type="text"
             readonly="true"
             labelPlacement="stacked"
-            [label]="'ATTACHMENTS.SECTION_DESCRIPTION' | translate"
+            [label]="'IDEA_COMMON.ATTACHMENTS.SECTION_DESCRIPTION' | translate"
             [value]="_section.description | label"
-            [placeholder]="'ATTACHMENTS.SECTION_DESCRIPTION_P' | translate"
+            [placeholder]="'IDEA_COMMON.ATTACHMENTS.SECTION_DESCRIPTION_P' | translate"
           />
           <ion-button
             slot="end"
@@ -169,10 +171,10 @@ export class IDEAManageAttachmentsSectionComponent implements OnInit {
   }
 
   async editName(): Promise<void> {
-    await this.editLabel(this._translate._('ATTACHMENTS.SECTION_NAME'), this._section.name, true);
+    await this.editLabel(this._translate._('IDEA_COMMON.ATTACHMENTS.SECTION_NAME'), this._section.name, true);
   }
   async editDescription(): Promise<void> {
-    await this.editLabel(this._translate._('ATTACHMENTS.SECTION_DESCRIPTION'), this._section.description);
+    await this.editLabel(this._translate._('IDEA_COMMON.ATTACHMENTS.SECTION_DESCRIPTION'), this._section.description);
   }
   private async editLabel(title: string, label: Label, obligatory = false): Promise<void> {
     const componentProps = { title, label, obligatory };

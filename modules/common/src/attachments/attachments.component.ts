@@ -49,13 +49,18 @@ import { IDEAAttachmentsService } from './attachments.service';
             <ion-input [(ngModel)]="att.name" />
             <ion-note slot="end">.{{ att.format }}</ion-note>
             @if (!att.attachmentId) {
-              <ion-spinner size="small" color="medium" slot="end" [title]="'ATTACHMENTS.UPLOADING' | translate" />
+              <ion-spinner
+                size="small"
+                color="medium"
+                slot="end"
+                [title]="'IDEA_COMMON.ATTACHMENTS.UPLOADING' | translate"
+              />
             }
             <ion-button
               slot="end"
               color="danger"
               fill="clear"
-              [title]="'ATTACHMENTS.REMOVE_ATTACHMENT' | translate"
+              [title]="'IDEA_COMMON.ATTACHMENTS.REMOVE_ATTACHMENT' | translate"
               (click)="removeAttachment(att)"
             >
               <ion-icon icon="remove" slot="icon-only" />
@@ -68,7 +73,7 @@ import { IDEAAttachmentsService } from './attachments.service';
               slot="end"
               color="medium"
               fill="clear"
-              [title]="'ATTACHMENTS.DOWNLOAD_ATTACHMENT' | translate"
+              [title]="'IDEA_COMMON.ATTACHMENTS.DOWNLOAD_ATTACHMENT' | translate"
               (click)="downloadAttachment(att)"
             >
               <ion-icon icon="cloud-download-outline" slot="icon-only" />
@@ -79,7 +84,7 @@ import { IDEAAttachmentsService } from './attachments.service';
         @if (disabled) {
           <ion-item lines="none" [color]="color">
             <ion-label>
-              <i>{{ 'ATTACHMENTS.NO_ATTACHMENTS' | translate }}</i>
+              <i>{{ 'IDEA_COMMON.ATTACHMENTS.NO_ATTACHMENTS' | translate }}</i>
             </ion-label>
           </ion-item>
         }
@@ -96,20 +101,20 @@ import { IDEAAttachmentsService } from './attachments.service';
           (change)="addAttachmentsFromPicker($event.target)"
         />
         <ion-label>
-          <i>{{ 'ATTACHMENTS.TAP_TO_ADD_ATTACHMENT' | translate }}</i>
+          <i>{{ 'IDEA_COMMON.ATTACHMENTS.TAP_TO_ADD_ATTACHMENT' | translate }}</i>
         </ion-label>
       </ion-item>
       @for (err of uploadErrors; track $index) {
         <ion-item class="attachmentItem error" [color]="color">
           <ion-label color="danger" class="ion-text-wrap">
             {{ err.file }}
-            <p>{{ err.error || ('ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT' | translate) }}</p>
+            <p>{{ err.error || ('IDEA_COMMON.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT' | translate) }}</p>
           </ion-label>
           <ion-button
             slot="end"
             color="danger"
             fill="clear"
-            [title]="'ATTACHMENTS.HIDE_ERROR' | translate"
+            [title]="'IDEA_COMMON.ATTACHMENTS.HIDE_ERROR' | translate"
             (click)="removeErrorFromList(err)"
           >
             <ion-icon name="close" slot="icon-only" />
@@ -119,7 +124,8 @@ import { IDEAAttachmentsService } from './attachments.service';
       <ion-item-divider [color]="color">
         <ion-label>
           {{
-            'ATTACHMENTS.ALLOWED_FORMATS_AND_SIZE' | translate: { formats: acceptedFormats.join(', '), size: maxSize }
+            'IDEA_COMMON.ATTACHMENTS.ALLOWED_FORMATS_AND_SIZE'
+              | translate: { formats: acceptedFormats.join(', '), size: maxSize }
           }}
         </ion-label>
       </ion-item-divider>
@@ -205,7 +211,7 @@ export class IDEAAttachmentsComponent {
       attachment.attachmentId = await this._attachments.uploadAndGetId(file, this.entityPath);
     } catch (err: any) {
       if (err.message === 'File is too big')
-        err.message = this._translate._('ATTACHMENTS.FILE_IS_TOO_BIG', { maxSize: this.maxSize });
+        err.message = this._translate._('IDEA_COMMON.ATTACHMENTS.FILE_IS_TOO_BIG', { maxSize: this.maxSize });
       this.uploadErrors.push({ file: attachment.name, error: err.message });
       this.removeAttachment(attachment);
       this._message.error(err.message, true);
