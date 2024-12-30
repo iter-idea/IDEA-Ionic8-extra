@@ -40,6 +40,9 @@ export * from './src/showHintButton/showHintButton.component';
 
 export * from './src/signature/signature.component';
 
+export * from './src/tooltip/tooltip.component';
+export * from './src/tooltip/tooltip.directive';
+
 export * from './src/translations/dateLocale.pipe';
 export * from './src/translations/label.pipe';
 export * from './src/translations/languagePicker.component';

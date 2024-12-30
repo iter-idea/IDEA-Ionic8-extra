@@ -191,6 +191,9 @@
       "SIGNATURE_EXPLANATION": "Draw the signature here below",
       "SIGNATURE_IS_TOO_COMPLEX": "The signature is too complex; please sign again",
       "VERIFY_SIGNATORY_AND_SIGNATURE": "Verify signatory and signature"
+    },
+    "TOOLTIP": {
+      "LEARN_MORE": "Learn more"
     }
   }
 }

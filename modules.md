@@ -44,6 +44,7 @@ It shares (almost) the same inputs so they are interchangeable.
 - [idea-suggestions](modules/common/src/select/suggestions.component.md)
 - [idea-show-hint-button](modules/common/src/showHintButton/showHintButton.component.md)
 - [idea-signature](modules/common/src/signature/signature.component.md)
+- [app-tooltip](modules/common/src/tooltip/tooltip.component.md)
 - [idea-language-picker](modules/common/src/translations/languagePicker.component.md)
 - [idea-user-avatar](modules/common/src/userAvatar/userAvatar.component.md)
 

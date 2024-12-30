@@ -191,6 +191,9 @@
       "SIGNATURE_EXPLANATION": "Disegna la firma qui sotto",
       "SIGNATURE_IS_TOO_COMPLEX": "La firma è troppo complessa; per piacere, ripetila",
       "VERIFY_SIGNATORY_AND_SIGNATURE": "Verifica firmatario e firma"
+    },
+    "TOOLTIP": {
+      "LEARN_MORE": "Scopri di più"
     }
   }
 }
