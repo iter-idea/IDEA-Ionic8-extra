@@ -151,6 +151,14 @@ ion-label {
   width: fit-content;
 }
 
+ion-popover.chipCheckerPopover::part(content) {
+  --width: 600px;
+  background-color: var(--ion-color-white);
+  @media only screen and (max-width: 767px) {
+    --width: 400px;
+  }
+}
+
 :root {
   --ion-color-dark: #222428;
   --ion-color-dark-rgb: 34, 36, 40;

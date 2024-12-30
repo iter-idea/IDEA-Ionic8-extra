@@ -12,6 +12,7 @@ export * from './src/attachments/attachments.service';
 
 export * from './src/checker/checks.component';
 export * from './src/checker/checker.component';
+export * from './src/checker/chipChecker.component';
 export * from './src/checker/inlineChecker.component';
 
 export * from './src/customFields/customBlock.component';
