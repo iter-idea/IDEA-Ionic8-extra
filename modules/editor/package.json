@@ -1,0 +1,36 @@
+{
+  "name": "@idea-ionic/editor",
+  "version": "8.4.0",
+  "description": "IDEA Ionic editor component",
+  "license": "MPL-2.0",
+  "author": "ITER IDEA <info@iter-idea.com> (https://iter-idea.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iter-idea/IDEA-Ionic8-extra"
+  },
+  "homepage": "https://github.com/iter-idea/IDEA-Ionic8-extra/tree/main/modules/editor",
+  "keywords": [
+    "idea",
+    "ionic",
+    "angular"
+  ],
+  "bugs": {
+    "url": "https://github.com/iter-idea/IDEA-Ionic8-extra/issues"
+  },
+  "peerDependencies": {
+    "@angular/common": "^18.2.8",
+    "@angular/core": "^18.2.8",
+    "@angular/forms": "^18.2.8",
+    "@capacitor/core": "^6.1.1",
+    "@idea-ionic/common": "^8.x.x",
+    "@ionic/angular": "^8.0.0",
+    "rxjs": "~7.8.0",
+    "zone.js": "~0.14.10"
+  },
+  "dependencies": {
+    "@kolkov/angular-editor": "^3.0.0-beta.2",
+    "docs-soap": "^1.2.1",
+    "tslib": "^2.4.1"
+  },
+  "sideEffects": false
+}

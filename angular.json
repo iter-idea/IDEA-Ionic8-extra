@@ -274,6 +274,40 @@
           }
         }
       }
+    },
+    "editor": {
+      "projectType": "library",
+      "root": "modules/editor",
+      "sourceRoot": "modules/editor/src",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "modules/editor/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "modules/editor/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "modules/editor/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["modules/editor/src/**/*.ts", "modules/editor/src/**/*.html"]
+          }
+        }
+      }
     }
   },
   "schematics": {

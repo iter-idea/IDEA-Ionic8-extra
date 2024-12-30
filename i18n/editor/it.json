@@ -1,0 +1,12 @@
+{
+  "IDEA_EDITOR": {
+    "SELECT_SIZE_FOR_IMAGE": "Scegli una dimensione per le immagini selezionate",
+    "FILE_NOT_IMAGE": "Il file selezionato non è un immagine",
+    "SIZES": {
+      "SMALL": "Piccola",
+      "MEDIUM": "Media",
+      "LARGE": "Grande",
+      "ORIGINAL": "Originale"
+    }
+  }
+}
