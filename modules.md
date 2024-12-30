@@ -26,6 +26,8 @@ It shares (almost) the same inputs so they are interchangeable.
 - [idea-attachments-section](modules/common/src/attachments/manageAttachmentsSection.component.md)
 - [idea-checker](modules/common/src/checker/checker.component.md)
 - [idea-checks](modules/common/src/checker/checks.component.md)
+- [idea-chip-checker](modules/common/src/checker/chipChecker.component.md)
+- [idea-inline-checker](modules/common/src/checker/inlineChecker.component.md)
 - [idea-custom-block](modules/common/src/customFields/customBlock.component.md)
 - [idea-custom-block-meta](modules/common/src/customFields/customBlockMeta.component.md)
 - [idea-custom-field-meta](modules/common/src/customFields/customFieldMeta.component.md)
@@ -47,6 +49,10 @@ It shares (almost) the same inputs so they are interchangeable.
 - [app-tooltip](modules/common/src/tooltip/tooltip.component.md)
 - [idea-language-picker](modules/common/src/translations/languagePicker.component.md)
 - [idea-user-avatar](modules/common/src/userAvatar/userAvatar.component.md)
+
+## editor
+
+- [app-html-editor](modules/editor/src/htmlEditor.component.md)
 
 ## map
 
