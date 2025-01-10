@@ -62,6 +62,9 @@ import { IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '
         .angular-editor-toolbar {
           border-color: var(--idea-html-editor-border-color, var(--ion-color-light-shade)) !important;
           background-color: var(--idea-html-editor-toolbar-background-color, var(--ion-color-light)) !important;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
         }
         .angular-editor-textarea {
           background-color: var(--idea-html-editor-background-color, var(--ion-color-light)) !important;
