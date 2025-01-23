@@ -21,6 +21,7 @@ import {
   IonCheckbox
 } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
+import { isEmpty } from 'idea-toolbox';
 import {
   IDEAEnvironment,
   IDEAMessageService,
@@ -97,103 +98,130 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
                   autocomplete="email"
                   [placeholder]="'IDEA_AUTH.EMAIL' | translate"
                   [title]="'IDEA_AUTH.EMAIL_HINT' | translate"
+                  [disabled]="externalProviders.length && doneExternalProviderCheck"
                   [ngModelOptions]="{ standalone: true }"
                   [(ngModel)]="email"
-                  (keyup.enter)="login()"
+                  (keyup.enter)="externalProviders.length ? checkForExternalProviderEmail() : login()"
                 />
+                @if (externalProviders.length && doneExternalProviderCheck) {
+                  <ion-button
+                    slot="end"
+                    fill="clear"
+                    [title]="'IDEA_AUTH.EDIT_EMAIL' | translate"
+                    (click)="doneExternalProviderCheck = false"
+                  >
+                    <ion-icon icon="pencil" slot="icon-only" />
+                  </ion-button>
+                }
               </ion-item>
-              <ion-item>
-                <ion-label position="inline">
-                  <ion-icon name="key" color="primary" />
-                </ion-label>
-                <ion-input
-                  testId="signin.password"
-                  id="current-password"
-                  type="password"
-                  spellcheck="false"
-                  autocorrect="off"
-                  autocomplete="current-password"
-                  [clearOnEdit]="false"
-                  [placeholder]="'IDEA_AUTH.PASSWORD' | translate"
-                  [title]="'IDEA_AUTH.PASSWORD_HINT' | translate"
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="password"
-                  (keyup.enter)="login()"
-                />
-              </ion-item>
-              @if (
-                !registrationPossible &&
-                (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') ||
-                  translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL'))
-              ) {
-                <ion-row class="agreementsAcceptanceRow">
-                  <ion-col>
-                    <ion-checkbox size="small" [ngModelOptions]="{ standalone: true }" [(ngModel)]="agreementsCheck" />
-                    {{ 'IDEA_AUTH.AGREEMENTS_CHECK_LOGIN' | translate }}:
-                    @if (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
-                      <a
-                        ion-text
-                        testId="openTermsAndConditionsButton"
-                        color="primary"
-                        target="_blank"
-                        [title]="'IDEA_AUTH.TERMS_AND_CONDITIONS_HINT' | translate"
-                        [href]="'IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL' | translate"
-                      >
-                        {{ 'IDEA_AUTH.TERMS_AND_CONDITIONS' | translate }}
-                      </a>
-                    }
-                    @if (
-                      translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL') &&
-                      translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
-                    ) {
-                      <ion-text> & </ion-text>
-                    }
-                    @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
-                      <a
-                        ion-text
-                        testId="openPrivacyPolicyButton"
-                        color="primary"
-                        target="_blank"
-                        [title]="'IDEA_AUTH.PRIVACY_POLICY_HINT' | translate"
-                        [href]="'IDEA_VARIABLES.PRIVACY_POLICY_URL' | translate"
-                      >
-                        {{ 'IDEA_AUTH.PRIVACY_POLICY' | translate }}
-                      </a>
-                    }
-                  </ion-col>
-                </ion-row>
-              }
-              <ion-button
-                testId="signInButton"
-                expand="block"
-                [disabled]="!agreementsCheck"
-                [title]="'IDEA_AUTH.SIGN_IN_HINT' | translate"
-                (click)="login()"
-              >
-                {{ 'IDEA_AUTH.SIGN_IN' | translate }}
-              </ion-button>
-              @if (registrationPossible) {
+              @if (externalProviders.length && !doneExternalProviderCheck) {
                 <ion-button
-                  testId="createAnAccountButton"
+                  testId="continueButton"
+                  expand="block"
+                  [disabled]="!agreementsCheck"
+                  [title]="'IDEA_AUTH.CONTINUE_HINT' | translate"
+                  (click)="checkExternalProviderEmail()"
+                >
+                  {{ 'IDEA_AUTH.CONTINUE' | translate }}
+                </ion-button>
+              } @else {
+                <ion-item>
+                  <ion-label position="inline">
+                    <ion-icon name="key" color="primary" />
+                  </ion-label>
+                  <ion-input
+                    testId="signin.password"
+                    id="current-password"
+                    type="password"
+                    spellcheck="false"
+                    autocorrect="off"
+                    autocomplete="current-password"
+                    [clearOnEdit]="false"
+                    [placeholder]="'IDEA_AUTH.PASSWORD' | translate"
+                    [title]="'IDEA_AUTH.PASSWORD_HINT' | translate"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="password"
+                    (keyup.enter)="login()"
+                  />
+                </ion-item>
+                @if (
+                  !registrationPossible &&
+                  (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') ||
+                    translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL'))
+                ) {
+                  <ion-row class="agreementsAcceptanceRow">
+                    <ion-col>
+                      <ion-checkbox
+                        size="small"
+                        [ngModelOptions]="{ standalone: true }"
+                        [(ngModel)]="agreementsCheck"
+                      />
+                      {{ 'IDEA_AUTH.AGREEMENTS_CHECK_LOGIN' | translate }}:
+                      @if (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
+                        <a
+                          ion-text
+                          testId="openTermsAndConditionsButton"
+                          color="primary"
+                          target="_blank"
+                          [title]="'IDEA_AUTH.TERMS_AND_CONDITIONS_HINT' | translate"
+                          [href]="'IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL' | translate"
+                        >
+                          {{ 'IDEA_AUTH.TERMS_AND_CONDITIONS' | translate }}
+                        </a>
+                      }
+                      @if (
+                        translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL') &&
+                        translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')
+                      ) {
+                        <ion-text> & </ion-text>
+                      }
+                      @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
+                        <a
+                          ion-text
+                          testId="openPrivacyPolicyButton"
+                          color="primary"
+                          target="_blank"
+                          [title]="'IDEA_AUTH.PRIVACY_POLICY_HINT' | translate"
+                          [href]="'IDEA_VARIABLES.PRIVACY_POLICY_URL' | translate"
+                        >
+                          {{ 'IDEA_AUTH.PRIVACY_POLICY' | translate }}
+                        </a>
+                      }
+                    </ion-col>
+                  </ion-row>
+                }
+                <ion-button
+                  testId="signInButton"
+                  expand="block"
+                  [disabled]="!agreementsCheck"
+                  [title]="'IDEA_AUTH.SIGN_IN_HINT' | translate"
+                  (click)="login()"
+                >
+                  {{ 'IDEA_AUTH.SIGN_IN' | translate }}
+                </ion-button>
+                @if (registrationPossible) {
+                  <ion-button
+                    testId="createAnAccountButton"
+                    fill="clear"
+                    expand="block"
+                    class="smallCaseButton"
+                    [title]="'IDEA_AUTH.CREATE_AN_ACCOUNT_HINT' | translate"
+                    (click)="goToRegistration()"
+                  >
+                    {{ 'IDEA_AUTH.CREATE_AN_ACCOUNT' | translate }}
+                  </ion-button>
+                }
+                <ion-button
+                  testId="forgotPasswordButton"
                   fill="clear"
                   expand="block"
                   class="smallCaseButton"
-                  [title]="'IDEA_AUTH.CREATE_AN_ACCOUNT_HINT' | translate"
-                  (click)="goToRegistration()"
+                  [title]="'IDEA_AUTH.I_FORGOT_MY_PASSWORD_HINT' | translate"
+                  (click)="goToForgotPassword()"
                 >
-                  {{ 'IDEA_AUTH.CREATE_AN_ACCOUNT' | translate }}
+                  {{ 'IDEA_AUTH.I_FORGOT_MY_PASSWORD' | translate }}
                 </ion-button>
               }
-              <ion-button
-                testId="forgotPasswordButton"
-                fill="clear"
-                expand="block"
-                class="smallCaseButton"
-                [title]="'IDEA_AUTH.I_FORGOT_MY_PASSWORD_HINT' | translate"
-                (click)="goToForgotPassword()"
-              >
-                {{ 'IDEA_AUTH.I_FORGOT_MY_PASSWORD' | translate }}
-              </ion-button>
               @if (hasIntroPage) {
                 <ion-button
                   testId="backToIntroButton"
@@ -235,6 +263,8 @@ export class IDEASignInPage {
   registrationPossible: boolean;
   hasIntroPage: boolean;
   website: string;
+  externalProviders: { type: string; name: string; emailDomains: string[] }[];
+  doneExternalProviderCheck = false;
 
   email: string;
   password: string;
@@ -277,6 +307,15 @@ export class IDEASignInPage {
     } finally {
       this._loading.hide();
     }
+  }
+
+  checkForExternalProviderEmail(): void {
+    if (isEmpty(this.email, 'email')) return;
+    const emailDomain = this.email.split('@')[1];
+    this.doneExternalProviderCheck = true;
+    const provider = this.externalProviders.find(p => p.emailDomains.includes(emailDomain));
+    if (provider)
+      this._nav.navigateForward(['auth', provider.type], { queryParams: { provider: provider.name, go: true } });
   }
 
   goToIntro(): void {

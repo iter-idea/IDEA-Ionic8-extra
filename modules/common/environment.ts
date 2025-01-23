@@ -53,6 +53,8 @@ export interface IDEAEnvironmentConfiguration {
     cognito?: {
       userPoolId: string;
       userPoolClientId: string;
+      domain?: string;
+      externalProviders?: { type: 'okta'; name: string; emailDomains: string[] }[];
     };
   };
   google?: {

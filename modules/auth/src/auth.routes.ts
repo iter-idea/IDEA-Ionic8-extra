@@ -8,6 +8,7 @@ import { IDEAForgotPasswordPage } from './forgotPassword.page';
 import { IDEAConfirmPasswordPage } from './confirmPassword.page';
 import { IDEAMFAChallengePage } from './mfaChallenge.page';
 import { IDEASetupMFAPage } from './setupMFA.page';
+import { IDEAOktaPage } from './okta.page';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'setup-mfa', component: IDEASetupMFAPage },
   { path: 'resend-link', component: IDEAResendLinkPage },
   { path: 'forgot-password', component: IDEAForgotPasswordPage },
-  { path: 'confirm-password', component: IDEAConfirmPasswordPage }
+  { path: 'confirm-password', component: IDEAConfirmPasswordPage },
+  { path: 'okta', component: IDEAOktaPage }
 ];

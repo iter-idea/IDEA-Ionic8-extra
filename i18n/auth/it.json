@@ -98,6 +98,10 @@
     "ENABLE_MFA": "Abilita MFA",
     "DISABLE_MFA": "Disabilita MFA",
     "DISABLE_MFA_I": "Disabilita MFA o cambia l'app di autenticazione",
-    "DISABLE_MFA_II": "Inserisci la password monouso (OTP) fornita dalla tua app di autenticazione per disabilitare l'autenticazione a più fattori (MFA) nel tuo account."
+    "DISABLE_MFA_II": "Inserisci la password monouso (OTP) fornita dalla tua app di autenticazione per disabilitare l'autenticazione a più fattori (MFA) nel tuo account.",
+    "EDIT_EMAIL": "Modifica indirizzo email",
+    "CONTINUE": "Continua",
+    "CONTINUE_HINT": "Continua l'accesso con l'email selezionata",
+    "UNKNOWN_PROVIDER": "Provider di accesso sconosciuto"
   }
 }
