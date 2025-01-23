@@ -120,7 +120,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
                   expand="block"
                   [disabled]="!agreementsCheck"
                   [title]="'IDEA_AUTH.CONTINUE_HINT' | translate"
-                  (click)="checkExternalProviderEmail()"
+                  (click)="checkForExternalProviderEmail()"
                 >
                   {{ 'IDEA_AUTH.CONTINUE' | translate }}
                 </ion-button>
