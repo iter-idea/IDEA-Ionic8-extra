@@ -52,7 +52,7 @@ It shares (almost) the same inputs so they are interchangeable.
 
 ## editor
 
-- [app-html-editor](modules/editor/src/htmlEditor.component.md)
+- [idea-html-editor](modules/editor/src/htmlEditor.component.md)
 
 ## map
 

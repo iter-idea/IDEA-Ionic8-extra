@@ -2,7 +2,7 @@
 
 ## Selector
 
-app-html-editor
+idea-html-editor
 
 ## Inputs
 
