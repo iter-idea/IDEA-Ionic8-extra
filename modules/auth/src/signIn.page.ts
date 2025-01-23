@@ -278,6 +278,7 @@ export class IDEASignInPage {
     this.registrationPossible = this._env.idea.auth.registrationIsPossible;
     this.hasIntroPage = this._env.idea.auth.hasIntroPage;
     this.website = this._env.idea.auth.website;
+    this.externalProviders = this._env.aws.cognito?.externalProviders || [];
   }
   ionViewDidEnter(): void {
     // manage the scenario in which we just created a new account (show a explanatory message: email must be confirmed)
