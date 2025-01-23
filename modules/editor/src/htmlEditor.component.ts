@@ -21,7 +21,7 @@ import { IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '
 @Component({
   standalone: true,
   imports: [FormsModule, AngularEditorModule, IDEATranslatePipe],
-  selector: 'app-html-editor',
+  selector: 'idea-html-editor',
   template: `
     @if (editMode) {
       <angular-editor
