@@ -28,7 +28,7 @@
     "zone.js": "~0.14.10"
   },
   "dependencies": {
-    "@kolkov/angular-editor": "^3.0.0-beta.2",
+    "@kolkov/angular-editor": "3.0.0-beta.0",
     "docs-soap": "^1.2.1",
     "tslib": "^2.4.1"
   },
