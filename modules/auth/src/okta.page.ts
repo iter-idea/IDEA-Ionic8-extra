@@ -44,7 +44,8 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
         </div>
       </ion-content>
     }
-  `
+  `,
+  styleUrls: ['auth.scss']
 })
 export class IDEAOktaPage {
   private _route = inject(ActivatedRoute);
