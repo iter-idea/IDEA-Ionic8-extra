@@ -225,6 +225,11 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
       imgElement.src = imageUrl;
       this.lastDropPosition.insertNode(imgElement);
       this.lastDropPosition = null;
+
+      const editor = document.querySelector('angular-editor div[contenteditable="true"]') as HTMLElement;
+      const imagesSelected = editor.querySelectorAll('img');
+      if (imagesSelected.length === 1) imagesSelected[0].removeAttribute('width');
+      this.contentChange.emit(this.editor.textArea.nativeElement.innerHTML);
     }
   }
 
