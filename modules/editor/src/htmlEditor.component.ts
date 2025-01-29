@@ -220,7 +220,17 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
   }
 
   private insertImageAtLastDropPosition(imageUrl: string): void {
-    if (this.lastDropPosition) this.editor.executeCommand('insertImage', imageUrl);
+    if (this.lastDropPosition) {
+      const imgElement = document.createElement('img');
+      imgElement.src = imageUrl;
+      this.lastDropPosition.insertNode(imgElement);
+      this.lastDropPosition = null;
+
+      const editor = document.querySelector('angular-editor div[contenteditable="true"]') as HTMLElement;
+      const imagesSelected = editor.querySelectorAll('img');
+      if (imagesSelected.length === 1) imagesSelected[0].removeAttribute('width');
+      this.contentChange.emit(this.editor.textArea.nativeElement.innerHTML);
+    }
   }
 
   moveCursorToDropPosition(event: DragEvent): void {
