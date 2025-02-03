@@ -24,7 +24,7 @@ import { IDEAStorageService } from '../storage.service';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 import { IDEABoldPrefix } from '../boldPrefix.pipe';
 
-const SHOULD_SHOW_DETAILS_STORAGE_KEY = 'ideaSelectShouldShowDetails';
+const SHOULD_HIDE_DETAILS_STORAGE_KEY = 'ideaSelectShouldHideDetails';
 
 const MAX_PAGE_SIZE = 24;
 
@@ -133,7 +133,7 @@ export class IDEASuggestionsComponent implements OnInit {
     if (!this.detailsAreAvailable) this.shouldShowDetails = false;
     else {
       try {
-        this.shouldShowDetails = Boolean(await this._storage.get(SHOULD_SHOW_DETAILS_STORAGE_KEY));
+        this.shouldShowDetails = !(await this._storage.get(SHOULD_HIDE_DETAILS_STORAGE_KEY));
       } catch (error) {
         this.shouldShowDetails = false;
       }
@@ -265,6 +265,6 @@ export class IDEASuggestionsComponent implements OnInit {
   toggleDetailsVisibilityPreference(): void {
     if (!this.detailsAreAvailable) return;
     this.shouldShowDetails = !this.shouldShowDetails;
-    this._storage.set(SHOULD_SHOW_DETAILS_STORAGE_KEY, this.shouldShowDetails);
+    this._storage.set(SHOULD_HIDE_DETAILS_STORAGE_KEY, !this.shouldShowDetails);
   }
 }
