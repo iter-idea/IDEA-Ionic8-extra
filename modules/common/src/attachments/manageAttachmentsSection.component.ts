@@ -110,7 +110,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
         </ion-item>
         <ion-list-header>
           <ion-label>
-            <h3>{{ 'ASSEMBLIES.ATTACHMENTS' | translate }}</h3>
+            <h3>{{ 'IDEA_COMMON.ATTACHMENTS.ATTACHMENTS' | translate }}</h3>
           </ion-label>
         </ion-list-header>
         <idea-attachments
