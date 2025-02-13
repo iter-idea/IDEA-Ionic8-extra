@@ -9,6 +9,7 @@
       "EVERYTHING_IS_OK": "It's all good!"
     },
     "ATTACHMENTS": {
+      "ATTACHMENTS": "Attachments",
       "ERROR_UPLOADING_ATTACHMENT": "Error while uploading the attachment",
       "HIDE_ERROR": "Hide the error",
       "DOWNLOAD_ATTACHMENT": "Download attachment",
