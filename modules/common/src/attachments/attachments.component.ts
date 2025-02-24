@@ -175,7 +175,7 @@ export class IDEAAttachmentsComponent {
   /**
    * Whether we are viewing or editing the attachments.
    */
-  @Input() disabled = true;
+  @Input() disabled = false;
   /**
    * The background color of the component.
    */
