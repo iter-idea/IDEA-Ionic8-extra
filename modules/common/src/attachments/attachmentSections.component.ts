@@ -71,6 +71,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
                 [style.background-color]="'var(--ion-color-' + color + ')'"
               >
                 <idea-attachments
+                  [disabled]="true"
                   [entityPath]="entityPath"
                   [attachments]="attachmentSections.sections[sectionKey].attachments"
                   [acceptedFormats]="acceptedFormats"
