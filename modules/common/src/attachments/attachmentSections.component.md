@@ -10,7 +10,7 @@ idea-attachment-sections
 - `entityPath` (*string | string[]*) - The API path to the entity for which we want to manage the attachments.
 - `acceptedFormats` (*string[]*) - The list of accepted formats.
 - `multiple` (*boolean*) - Whether to accept multiple files as target for the browse function.
-- `disabled` (*boolean*) - Whether the component is enabled or not.
+- `disabled` (*boolean*) - Whether the component is disabled or not.
 - `lines` (*string*) - Lines preferences for the component.
 - `color` (*string*) - The background color of the component.
 
