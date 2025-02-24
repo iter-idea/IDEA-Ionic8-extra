@@ -140,9 +140,9 @@ export class IDEAAttachmentSectionsComponent {
    */
   @Input() multiple = false;
   /**
-   * Whether the component is enabled or not.
+   * Whether the component is disabled or not.
    */
-  @Input() disabled = true;
+  @Input() disabled = false;
   /**
    * Lines preferences for the component.
    */
