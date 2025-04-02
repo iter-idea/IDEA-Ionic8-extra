@@ -25,6 +25,7 @@ import { IDEAAttachmentsComponent } from './attachments.component';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEAAttachmentsService } from './attachments.service';
 
 @Component({
   selector: 'idea-attachments-section',
@@ -120,7 +121,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
           [multiple]="multiple"
           [color]="color"
           [disabled]="false"
-          (download)="download.emit($event)"
+          (download)="_attachments.downloadInEditMode.emit($event)"
         />
       </ion-list>
     </ion-content>
@@ -129,6 +130,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
 export class IDEAManageAttachmentsSectionComponent implements OnInit {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
+  _attachments = inject(IDEAAttachmentsService)
 
   /**
    * The attachments section to manage.
@@ -154,10 +156,6 @@ export class IDEAManageAttachmentsSectionComponent implements OnInit {
    * The background color of the component.
    */
   @Input() color: string;
-  /**
-   * Trigger to download a file by URL.
-   */
-  @Output() download = new EventEmitter<string>();
 
   _section: AttachmentSection;
   errors = new Set<string>();
