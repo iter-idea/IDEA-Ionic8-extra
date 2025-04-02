@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, Output, inject } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -21,6 +22,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
 import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
+import { IDEAAttachmentsService } from './attachments.service';
 
 @Component({
   selector: 'idea-attachment-sections',
@@ -118,11 +120,12 @@ import { IDEATranslationsService } from '../translations/translations.service';
     }
   `
 })
-export class IDEAAttachmentSectionsComponent {
+export class IDEAAttachmentSectionsComponent implements OnInit {
   private _modal = inject(ModalController);
   private _alert = inject(AlertController);
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
+  private _attachments = inject(IDEAAttachmentsService);
 
   /**
    * The attachment sections to display and manage.
@@ -156,6 +159,14 @@ export class IDEAAttachmentSectionsComponent {
    * Trigger to download a file by URL.
    */
   @Output() download = new EventEmitter<string>();
+
+  protected downloadInEditModeSub: Subscription;
+
+  ngOnInit(): void {
+    this.downloadInEditModeSub = this._attachments.downloadInEditMode.subscribe(url => {
+      this.download.emit(url);
+    });
+  }
 
   reorderSectionsLegend(ev: any): void {
     this.attachmentSections.sectionsLegend = ev.detail.complete(this.attachmentSections.sectionsLegend);
