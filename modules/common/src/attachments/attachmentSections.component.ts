@@ -167,7 +167,8 @@ export class IDEAAttachmentSectionsComponent {
       section: this.attachmentSections.sections[s],
       entityPath: this.entityPath,
       disabled: this.disabled,
-      lines: this.lines
+      lines: this.lines,
+      downloadCallback: (url: string): void => this.download.emit(url)
     };
     const modal = await this._modal.create({ component: IDEAManageAttachmentsSectionComponent, componentProps });
     modal.present();

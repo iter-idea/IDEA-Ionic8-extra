@@ -2,7 +2,7 @@
 
 ## Selector
 
-idea-attachments-section
+idea-manage-attachments-section
 
 ## Inputs
 
@@ -12,7 +12,5 @@ idea-attachments-section
 - `multiple` (*boolean*) - Whether to accept multiple files as target for the browse function.
 - `lines` (*string*) - Lines preferences for the component.
 - `color` (*string*) - The background color of the component.
+- `downloadCallback` (*(url: string) => void*) - Trigger a callback in the parent component to download a file by URL.
 
-## Outputs
-
-- `download` (*EventEmitter<string>*) - Trigger to download a file by URL.

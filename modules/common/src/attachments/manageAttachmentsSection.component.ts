@@ -27,7 +27,7 @@ import { IDEALocalizedLabelPipe } from '../translations/label.pipe';
 import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
-  selector: 'idea-attachments-section',
+  selector: 'idea-manage-attachments-section',
   standalone: true,
   imports: [
     CommonModule,
@@ -120,7 +120,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
           [multiple]="multiple"
           [color]="color"
           [disabled]="false"
-          (download)="download.emit($event)"
+          (download)="downloadCallback($event)"
         />
       </ion-list>
     </ion-content>
@@ -155,9 +155,9 @@ export class IDEAManageAttachmentsSectionComponent implements OnInit {
    */
   @Input() color: string;
   /**
-   * Trigger to download a file by URL.
+   * Trigger a callback in the parent component to download a file by URL.
    */
-  @Output() download = new EventEmitter<string>();
+  @Input() downloadCallback: (url: string) => void;
 
   _section: AttachmentSection;
   errors = new Set<string>();
