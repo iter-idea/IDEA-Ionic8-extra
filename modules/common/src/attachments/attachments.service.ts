@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { EventEmitter, Output, inject, Injectable } from '@angular/core';
 import { Attachment } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
@@ -8,6 +8,11 @@ import { IDEAApiService } from '../api.service';
 export class IDEAAttachmentsService {
   protected _env = inject(IDEAEnvironment);
   protected _api = inject(IDEAApiService);
+
+  /**
+   * Trigger to download a file by URL when in edit mode.
+   */
+  @Output() downloadInEditMode = new EventEmitter<string>();
 
   /**
    * Upload a new attachment related to an entity and return the `attachmentId`.
