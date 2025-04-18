@@ -17,7 +17,8 @@ import {
   IonList,
   IonItem,
   IonCheckbox,
-  IonInfiniteScrollContent
+  IonInfiniteScrollContent,
+  IonTitle
 } from '@ionic/angular/standalone';
 import { Check } from 'idea-toolbox';
 
@@ -137,6 +138,10 @@ export class IDEAChipCheckerComponent {
    */
   @Input() limitSelectionToNum: number;
   /**
+   * Whether to allow the select/deselect-all buttons.
+   */
+  @Input() allowSelectDeselectAll: boolean;
+  /**
    * Whether to show the reset button.
    */
   @Input() resetButton = true;
@@ -162,6 +167,7 @@ export class IDEAChipCheckerComponent {
       searchPlaceholder: this.searchPlaceholder,
       noElementsFoundText: this.noElementsFoundText,
       limitSelectionToNum: this.limitSelectionToNum,
+      allowSelectDeselectAll: this.allowSelectDeselectAll,
       showAsPopover: this.showAsPopover
     };
     const cssClass = 'chipCheckerPopover';
@@ -218,6 +224,7 @@ export class IDEAChipCheckerComponent {
     IonContent,
     IonList,
     IonItem,
+    IonTitle,
     IonCheckbox,
     IonLabel,
     IonInfiniteScroll,
@@ -240,6 +247,28 @@ export class IDEAChipCheckerComponent {
           (ionInput)="search($event.target.value)"
         />
       </ion-toolbar>
+      @if (allowSelectDeselectAll) {
+        <ion-toolbar color="ideaToolbar" class="secondary">
+          <ion-title>
+            {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}
+            @if (limitSelectionToNum) {
+              <span>
+                {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
+              </span>
+            }
+          </ion-title>
+          @if (!limitSelectionToNum) {
+            <ion-buttons slot="end">
+              <ion-button [title]="'IDEA_COMMON.CHECKER.DESELECT_ALL' | translate" (click)="checkAll(false)">
+                <ion-icon slot="icon-only" name="square-outline" />
+              </ion-button>
+              <ion-button [title]="'IDEA_COMMON.CHECKER.SELECT_ALL' | translate" (click)="checkAll(true)">
+                <ion-icon slot="icon-only" name="checkbox-outline" />
+              </ion-button>
+            </ion-buttons>
+          }
+        </ion-toolbar>
+      }
     </ion-header>
     <ion-content>
       <ion-list>
@@ -283,6 +312,20 @@ export class IDEAChipCheckerComponent {
   `,
   styles: [
     `
+      ion-toolbar.secondary {
+        --min-height: 44px;
+        ion-title {
+          font-size: 0.8em;
+        }
+        ion-buttons ion-button {
+          height: auto;
+          font-size: 0.8em;
+          --padding-top: 6px;
+          --padding-end: 8px;
+          --padding-bottom: 6px;
+          --padding-start: 8px;
+        }
+      }
       ion-list {
         background: transparent;
       }
@@ -328,8 +371,13 @@ class IDEAChipChecksComponent implements OnInit {
   /**
    * Limit the number of selectable elements to the value provided.
    * If this number is forced to `1`, the component turns into a single selection.
+   * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
   @Input() limitSelectionToNum: number;
+  /**
+   * Whether to allow the select/deselect-all buttons.
+   */
+  @Input() allowSelectDeselectAll: boolean;
   /**
    * Whether to show the check list as a popover.
    * If false, we show a centered modal.
@@ -382,6 +430,10 @@ class IDEAChipChecksComponent implements OnInit {
     const index = this.data.indexOf(check);
     if (index !== -1) this.data[index].checked = true;
     this.showAsPopover ? this._popover.dismiss() : this._modal.dismiss();
+  }
+
+  checkAll(check: boolean): void {
+    this.data.forEach(x => (x.checked = check));
   }
 
   close(): void {
