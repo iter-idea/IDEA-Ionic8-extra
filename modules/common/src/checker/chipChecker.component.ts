@@ -257,7 +257,7 @@ export class IDEAChipCheckerComponent {
               </span>
             }
           </ion-title>
-          @if (!limitSelectionToNum && allowSelectDeselectAll) {
+          @if (!limitSelectionToNum) {
             <ion-buttons slot="end">
               <ion-button [title]="'IDEA_COMMON.CHECKER.DESELECT_ALL' | translate" (click)="checkAll(false)">
                 <ion-icon slot="icon-only" name="square-outline" />
