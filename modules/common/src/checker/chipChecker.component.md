@@ -22,6 +22,7 @@ idea-chip-checker
 - `sortData` (*boolean*) - If true, sort alphabetically the data.
 - `numMaxElementsInPreview` (*number*) - How many elements to show in the preview before to generalize on the number.
 - `limitSelectionToNum` (*number*) - Limit the number of selectable elements to the value provided.
+- `allowSelectDeselectAll` (*boolean*) - Whether to allow the select/deselect-all buttons.
 - `resetButton` (*boolean*) - Whether to show the reset button.
 - `showAsPopover` (*boolean*) - Whether to show the check list as a popover.
 If false, we show a centered modal.
