@@ -247,26 +247,28 @@ export class IDEAChipCheckerComponent {
           (ionInput)="search($event.target.value)"
         />
       </ion-toolbar>
-      <ion-toolbar color="ideaToolbar" class="secondary">
-        <ion-title>
-          {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}
-          @if (limitSelectionToNum) {
-            <span>
-              {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
-            </span>
+      @if (allowSelectDeselectAll) {
+        <ion-toolbar color="ideaToolbar" class="secondary">
+          <ion-title>
+            {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}
+            @if (limitSelectionToNum) {
+              <span>
+                {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
+              </span>
+            }
+          </ion-title>
+          @if (!limitSelectionToNum && allowSelectDeselectAll) {
+            <ion-buttons slot="end">
+              <ion-button [title]="'IDEA_COMMON.CHECKER.DESELECT_ALL' | translate" (click)="checkAll(false)">
+                <ion-icon slot="icon-only" name="square-outline" />
+              </ion-button>
+              <ion-button [title]="'IDEA_COMMON.CHECKER.SELECT_ALL' | translate" (click)="checkAll(true)">
+                <ion-icon slot="icon-only" name="checkbox-outline" />
+              </ion-button>
+            </ion-buttons>
           }
-        </ion-title>
-        @if (!limitSelectionToNum && allowSelectDeselectAll) {
-          <ion-buttons slot="end">
-            <ion-button [title]="'IDEA_COMMON.CHECKER.DESELECT_ALL' | translate" (click)="checkAll(false)">
-              <ion-icon slot="icon-only" name="square-outline" />
-            </ion-button>
-            <ion-button [title]="'IDEA_COMMON.CHECKER.SELECT_ALL' | translate" (click)="checkAll(true)">
-              <ion-icon slot="icon-only" name="checkbox-outline" />
-            </ion-button>
-          </ion-buttons>
-        }
-      </ion-toolbar>
+        </ion-toolbar>
+      }
     </ion-header>
     <ion-content>
       <ion-list>
@@ -322,17 +324,6 @@ export class IDEAChipCheckerComponent {
           --padding-end: 8px;
           --padding-bottom: 6px;
           --padding-start: 8px;
-        }
-        .additionalToolbar {
-          padding: 0px 5px 5px 15px;
-          text-align: left;
-          ion-button {
-            text-transform: none;
-            font-weight: normal;
-          }
-          ion-button.strong {
-            font-weight: bold;
-          }
         }
       }
       ion-list {
