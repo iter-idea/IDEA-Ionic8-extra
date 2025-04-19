@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml } from 'idea-toolbox';
+import { getStringEnumKeyByValue, Label, Languages, LanguagesISO639, mdToHtml, TIMEZONE_OFFSETS } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
 
@@ -272,10 +272,11 @@ export class IDEATranslationsService {
   }
 
   /**
-   * Format a date in the current locale.
+   * Format a date in the current locale (optionally forcing a timeZone).
    */
-  formatDate(value: any, pattern: string = 'mediumDate'): string {
-    const datePipe: DatePipe = new DatePipe(this.getCurrentLang());
+  formatDate(value: any, pattern: string = 'mediumDate', timeZone?: string): string {
+    const timeZoneOffset = timeZone ? TIMEZONE_OFFSETS[timeZone] : undefined;
+    const datePipe = new DatePipe(this.getCurrentLang(), timeZoneOffset);
     return datePipe.transform(value, pattern);
   }
 

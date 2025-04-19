@@ -10,9 +10,9 @@ export class IDEALocalizedDatePipe implements PipeTransform {
   private _translate = inject(IDEATranslationsService);
 
   /**
-   * Pipe function to format the date in the correct locale.
+   * Pipe function to format the date in the correct locale (optionally forcing a timeZone).
    */
-  transform(value: any, pattern: string = 'mediumDate'): any {
-    return this._translate.formatDate(value, pattern);
+  transform(value: any, pattern: string = 'mediumDate', timeZone?: string): any {
+    return this._translate.formatDate(value, pattern, timeZone);
   }
 }
