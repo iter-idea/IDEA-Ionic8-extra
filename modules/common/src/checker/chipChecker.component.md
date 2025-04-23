@@ -16,6 +16,7 @@ idea-chip-checker
 - `noneEqualsAll` (*boolean*) - If true, no elements selected equals all the elements selected.
 - `noneText` (*string*) - If no element is selected, set this custom text.
 - `allText` (*string*) - If all the elements are selected, set this custom text.
+- `previewTextKey` (*string*) - The translation key to get the preview text; it has a `num` variable available.
 - `color` (*string*) - The color for the component.
 - `inactiveColor` (*string*) - The color for the inactive component.
 - `disabled` (*boolean*) - If true, the component is disabled.

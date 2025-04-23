@@ -15,6 +15,7 @@ idea-inline-checker
 - `disabled` (*boolean*) - Whether the component is disabled.
 - `reorder` (*boolean*) - Whether the checklist is reorderable or not.
 - `numMaxElementsInPreview` (*number*) - How many elements to show in the preview before to generalize on the number.
+- `previewTextKey` (*string*) - The translation key to get the preview text; it has a `num` variable available.
 
 ## Outputs
 

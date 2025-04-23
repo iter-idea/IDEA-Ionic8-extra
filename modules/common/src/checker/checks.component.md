@@ -17,4 +17,5 @@ Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
 - `category1` (*string*) - A pre-filter for the category1.
 - `category2` (*string*) - A pre-filter for the category2.
 - `showCategoriesFilters` (*boolean*) - Whether tho show the categories filters.
+- `previewTextKey` (*string*) - The translation key to get the preview text; it has a `num` variable available.
 
