@@ -73,7 +73,7 @@ const MAX_PAGE_SIZE = 24;
       </ion-toolbar>
       <ion-toolbar color="ideaToolbar" class="secondary">
         <ion-title>
-          {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}
+          {{ previewTextKey | translate: { num: getNumChecked() } }}
           @if (limitSelectionToNum) {
             <span>
               {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
@@ -252,6 +252,10 @@ export class IDEAChecksComponent implements OnInit {
    * Whether tho show the categories filters.
    */
   @Input() showCategoriesFilters: boolean = false;
+  /**
+   * The translation key to get the preview text; it has a `num` variable available.
+   */
+  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
 
   workingData: Check[];
   filteredChecks: Check[];

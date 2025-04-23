@@ -114,6 +114,10 @@ export class IDEAChipCheckerComponent {
    */
   @Input() allText: string;
   /**
+   * The translation key to get the preview text; it has a `num` variable available.
+   */
+  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
+  /**
    * The color for the component.
    */
   @Input() color = 'primary';
@@ -168,7 +172,8 @@ export class IDEAChipCheckerComponent {
       noElementsFoundText: this.noElementsFoundText,
       limitSelectionToNum: this.limitSelectionToNum,
       allowSelectDeselectAll: this.allowSelectDeselectAll,
-      showAsPopover: this.showAsPopover
+      showAsPopover: this.showAsPopover,
+      previewTextKey: this.previewTextKey
     };
     const cssClass = 'chipCheckerPopover';
     const modal = this.showAsPopover
@@ -192,7 +197,7 @@ export class IDEAChipCheckerComponent {
           .slice(0, this.numMaxElementsInPreview)
           .map(x => x.name)
           .join(', ');
-      return this._translate._('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
+      return this._translate._(this.previewTextKey, { num: checked.length });
     }
   }
   private allChecked(): boolean {
@@ -250,7 +255,7 @@ export class IDEAChipCheckerComponent {
       @if (allowSelectDeselectAll) {
         <ion-toolbar color="ideaToolbar" class="secondary">
           <ion-title>
-            {{ 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED' | translate: { num: getNumChecked() } }}
+            {{ previewTextKey | translate: { num: getNumChecked() } }}
             @if (limitSelectionToNum) {
               <span>
                 {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
@@ -368,6 +373,10 @@ class IDEAChipChecksComponent implements OnInit {
    * The text to show in case no element is found after a search.
    */
   @Input() noElementsFoundText: string;
+  /**
+   * The translation key to get the preview text; it has a `num` variable available.
+   */
+  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
   /**
    * Limit the number of selectable elements to the value provided.
    * If this number is forced to `1`, the component turns into a single selection.

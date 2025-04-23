@@ -86,6 +86,10 @@ export class IDEAInlineCheckerComponent {
    * How many elements to show in the preview before to generalize on the number.
    */
   @Input() numMaxElementsInPreview = 4;
+  /**
+   * The translation key to get the preview text; it has a `num` variable available.
+   */
+  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
 
   /**
    * On change event.
@@ -116,7 +120,7 @@ export class IDEAInlineCheckerComponent {
         .slice(0, this.numMaxElementsInPreview)
         .map(x => x.name)
         .join(', ');
-    else return this._translate._('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
+    else return this._translate._(this.previewTextKey, { num: checked.length });
   }
 }
 

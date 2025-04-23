@@ -139,6 +139,10 @@ export class IDEACheckerComponent {
    */
   @Input() allText: string;
   /**
+   * The translation key to get the preview text; it has a `num` variable available.
+   */
+  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
+  /**
    * Lines preferences for the item.
    */
   @Input() lines: string;
@@ -228,7 +232,8 @@ export class IDEACheckerComponent {
         limitSelectionToNum: this.limitSelectionToNum,
         category1: this.category1,
         category2: this.category2,
-        showCategoriesFilters: this.showCategoriesFilters
+        showCategoriesFilters: this.showCategoriesFilters,
+        previewTextKey: this.previewTextKey
       }
     });
     modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
@@ -250,7 +255,7 @@ export class IDEACheckerComponent {
           .slice(0, this.numMaxElementsInPreview)
           .map(x => x.name)
           .join(', ');
-      else return this._translate._('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED', { num: checked.length });
+      else return this._translate._(this.previewTextKey, { num: checked.length });
     }
   }
 
