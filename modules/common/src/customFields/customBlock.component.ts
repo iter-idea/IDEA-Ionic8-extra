@@ -11,7 +11,8 @@ import {
   IonIcon,
   IonText,
   IonTextarea,
-  IonInput
+  IonInput,
+  IonCheckbox
 } from '@ionic/angular/standalone';
 import { CustomBlockMeta, CustomFieldTypes } from 'idea-toolbox';
 
@@ -37,7 +38,8 @@ import { IDEASelectComponent } from '../select/select.component';
     IonListHeader,
     IonList,
     IonInput,
-    IonTextarea
+    IonTextarea,
+    IonCheckbox
   ],
   templateUrl: 'customBlock.component.html',
   styleUrls: ['customBlock.component.scss']

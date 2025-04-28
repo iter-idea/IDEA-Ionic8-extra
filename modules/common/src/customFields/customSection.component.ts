@@ -9,7 +9,8 @@ import {
   IonButton,
   IonIcon,
   IonInput,
-  IonTextarea
+  IonTextarea,
+  IonCheckbox
 } from '@ionic/angular/standalone';
 import { CustomFieldTypes, CustomSectionMeta } from 'idea-toolbox';
 
@@ -33,7 +34,8 @@ import { IDEASelectComponent } from '../select/select.component';
     IonLabel,
     IonItem,
     IonInput,
-    IonTextarea
+    IonTextarea,
+    IonCheckbox
   ],
   templateUrl: 'customSection.component.html',
   styleUrls: ['customSection.component.scss']
