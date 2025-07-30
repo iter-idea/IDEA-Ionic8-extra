@@ -44,9 +44,7 @@ export class IDEATranslatePipe implements PipeTransform, OnDestroy {
         // we accept objects written in the template such as {n:1}, {'n':1}, {n:'v'}
         // which is why we might need to change it to real JSON objects such as {"n":1} or {"n":"v"}
         const validArgs: string = args[0]
-          // eslint-disable-next-line no-useless-escape
           .replace(/(\')?([a-zA-Z0-9_]+)(\')?(\s)?:/g, '"$2":')
-          // eslint-disable-next-line no-useless-escape
           .replace(/:(\s)?(\')(.*?)(\')/g, ':"$3"');
         try {
           interpolateParams = JSON.parse(validArgs);
