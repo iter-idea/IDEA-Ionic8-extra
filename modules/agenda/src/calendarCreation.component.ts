@@ -7,6 +7,7 @@ import { IDEATinCanService } from '@idea-ionic/uncommon';
 import { IDEACalendarsService } from './calendars.service';
 
 @Component({
+  standalone: false,
   selector: 'idea-calendar-creation',
   templateUrl: 'calendarCreation.component.html',
   styleUrls: ['calendarCreation.component.scss']

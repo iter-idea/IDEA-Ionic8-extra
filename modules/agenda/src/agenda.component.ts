@@ -23,6 +23,7 @@ import ColorParse from 'color-parse';
 import { IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
+  standalone: false,
   selector: 'idea-agenda',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'agenda.component.html',

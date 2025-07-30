@@ -7,6 +7,7 @@ import { IDEACalendarComponent } from './calendar.component';
 import { IDEACalendarsService } from './calendars.service';
 
 @Component({
+  standalone: false,
   selector: 'idea-calendar-item',
   templateUrl: 'calendarItem.component.html',
   styleUrls: ['calendarItem.component.scss']

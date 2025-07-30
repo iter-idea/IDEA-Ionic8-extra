@@ -63,11 +63,11 @@ export class IDEABarcodeCameraReaderComponent {
 
     await this.showCameraScannerUI();
 
-    const listener = await BarcodeScanner.addListener('barcodeScanned', async result => {
+    const listener = await BarcodeScanner.addListener('barcodesScanned', async result => {
       await listener.remove();
       await this.hideCameraScannerUI();
       await BarcodeScanner.stopScan();
-      this.scan.emit(result.barcode.displayValue || '');
+      this.scan.emit(result.barcodes?.[0].displayValue || '');
     });
 
     await BarcodeScanner.startScan();
