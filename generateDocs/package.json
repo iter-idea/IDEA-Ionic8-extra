@@ -6,11 +6,11 @@
     "build": "tsc --build"
   },
   "dependencies": {
-    "ts-morph": "^23.0.0"
+    "ts-morph": "^26.0.0"
   },
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.14.11",
-    "typescript": "^5.5.2"
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^24.1.0",
+    "typescript": "^5.8.3"
   }
 }
