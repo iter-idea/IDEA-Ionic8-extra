@@ -1,3 +1,5 @@
+### ⚠️⚠️⚠️ This branch is not maintained anymore; we suggest switching to standalone components (from modules) and using the main branch
+
 # IDEA Ionic extra
 
 IDEA's extra components and services built on **Ionic 8**, and distributed with different NPM packages.
@@ -8,10 +10,10 @@ _The last version fully compatible with **Ionic 5** is [v5.29.4](https://github.
 
 ## Standalone components vs modules
 
-In preparation for Angular 19, we separated the repository into two branches.
+We separated the repository into two branches.
 
 1. The `main` one (rif. `v8.2.x` — in the future `v9.x.x`) mainly works with **standalone components** and the new Angular compiler; for this reason, when updating, **most of the imports will change from modules to components**; `Agenda` and `Auth0` are the only packages that will continue working with modules. This newer version is faster, lighter and follows the latest Angular standards. You can use this version also in applications organized in modules, but we suggest refactoring to use standalone components to get the most out of it in terms of performance.
-2. The `modules` branch (rif. `v8.1.x`) will continue working with modules; today, there are no differences in features compared with the `main` branch.
+2. The `modules` branch (rif. `v8.1.x`) will continue working with modules and stay on the repository for a while; however, it won't be updated anymore with later versions of Angular or with improvements implemented in the `main` branch.
 
 ## Packages
 
