@@ -32,10 +32,10 @@
   --max-width: 300px;
   --width: 300px;
   .alert-button-role-cancel {
-    color: var(--ion-color-medium-shade);
+    color: var(--ion-color-medium-shade) !important;
   }
   .alert-button-role-destructive {
-    color: var(--ion-color-danger);
+    color: var(--ion-color-danger) !important;
   }
 }
 
