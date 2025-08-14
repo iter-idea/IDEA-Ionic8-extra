@@ -12,6 +12,12 @@ npm i --save @idea-ionic/editor
 
 _Be sure to install all the requested peer dependencies._
 
+Then, add this imports into the `global.scss` file, after the import on the top of the page:
+
+```
+@use '@idea-ionic/editor/css/global.scss';
+```
+
 To make sure the translations are loaded into the project:
 
 - add a reference to this module in the environment variable `idea.ionicExtraModules` (see `environment.ts`);

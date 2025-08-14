@@ -1,0 +1,88 @@
+// @idea to import in project's global.scss; example:
+// @use '../node_modules/@idea-ionic/editor/css/global.scss';
+
+IDEAHTMLEditorComponent {
+  :root {
+    --idea-html-editor-background-color: var(--ion-color-light);
+    --idea-html-editor-border-color: var(--ion-color-light-shade);
+    --idea-html-editor-color: var(--ion-color-light-contrast);
+    --idea-html-editor-toolbar-background-color: var(--ion-color-light);
+    --idea-html-editor-toolbar-color: var(--ion-color-light-contrast);
+    --idea-html-editor-toolbar-border-color: var(--ion-color-light);
+    --idea-html-editor-button-background-color: var(--ion-color-light);
+    --idea-html-editor-button-border-color: var(--ion-color-light);
+    --idea-html-editor-button-color: var(--ion-color-light-contrast);
+    --idea-html-editor-button-focused: var(--ion-color-medium);
+    --idea-html-editor-button-selected: var(--ion-color-medium-tint);
+
+    --idea-html-editor-view-margin: 0;
+    --idea-html-editor-view-padding: 20px;
+    --idea-html-editor-view-background-color: var(--ion-color-white);
+    --idea-html-editor-view-color: var(--ion-color-white-contrast);
+    --idea-html-editor-view-box-shadow: none;
+    --idea-html-editor-view-border-width: 1px;
+    --idea-html-editor-view-border-color: var(--ion-border-color);
+    --idea-html-editor-view-border-radius: 0;
+  }
+  ::ng-deep {
+    .angular-editor-wrapper {
+      background-color: transparent !important;
+    }
+    .angular-editor-toolbar {
+      border-color: var(--idea-html-editor-border-color) !important;
+      background-color: var(--idea-html-editor-toolbar-background-color) !important;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .ae-picker-options,
+    .ae-picker-label,
+    .ae-picker-label:before {
+      background: var(--idea-html-editor-toolbar-background-color) !important;
+      background-color: var(--idea-html-editor-toolbar-background-color) !important;
+      border-color: var(--idea-html-editor-toolbar-border-color) !important;
+      color: var(--idea-html-editor-toolbar-color) !important;
+    }
+    .angular-editor-toolbar svg {
+      fill: currentColor !important;
+    }
+    .angular-editor-toolbar #indent-,
+    .angular-editor-toolbar #outdent- {
+      stroke: currentColor !important;
+    }
+    .angular-editor-toolbar .ae-picker-options .ae-picker-item.focused,
+    .ae-picker-options .ae-picker-item:hover {
+      background-color: var(--idea-html-editor-button-focused) !important;
+      color: var(--idea-html-editor-toolbar-color) !important;
+    }
+    .ae-picker-options .ae-picker-item.selected {
+      background-color: var(--idea-html-editor-button-selected) !important;
+      color: var(--idea-html-editor-toolbar-color) !important;
+    }
+    .angular-editor-button {
+      background-color: var(--idea-html-editor-button-background-color) !important;
+      border-color: var(--idea-html-editor-button-border-color) !important;
+      color: var(--idea-html-editor-button-color) !important;
+    }
+    .angular-editor-textarea {
+      background-color: var(--idea-html-editor-background-color) !important;
+      border-color: var(--idea-html-editor-border-color) !important;
+      color: var(--idea-html-editor-color) !important;
+    }
+  }
+  ::ng-deep:has(+ #foregroundColorPicker-),
+  ::ng-deep:has(+ #backgroundColorPicker-) {
+    display: inline !important;
+    position: absolute;
+    visibility: hidden;
+  }
+  div.view {
+    margin: var(--idea-html-editor-view-margin);
+    padding: var(--idea-html-editor-view-padding);
+    background-color: var(--idea-html-editor-view-background-color);
+    color: var(--idea-html-editor-view-color);
+    box-shadow: var(--idea-html-editor-view-box-shadow);
+    border: var(--idea-html-editor-view-border-width) solid var(--idea-html-editor-view-border-color);
+    border-radius: var(--idea-html-editor-view-border-radius);
+  }
+}
