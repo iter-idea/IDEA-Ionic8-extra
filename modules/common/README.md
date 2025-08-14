@@ -15,7 +15,7 @@ _Be sure to install all the requested peer dependencies._
 Then, add this imports into the `global.scss` file, after the import on the top of the page:
 
 ```
-@use '@idea-ionic/common/css/global.scss';
+@use '@idea-ionic/common/css/global.scss' as idea-ionic-common;
 ```
 
 To make sure the translations are loaded into the project:

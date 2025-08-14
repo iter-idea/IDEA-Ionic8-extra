@@ -16,7 +16,7 @@ Then, add this imports into the `global.scss` file, after the import on the top 
 
 ```
 @use 'angular-calendar/css/angular-calendar.css';
-@use '@idea-ionic/agenda/css/global.scss';
+@use '@idea-ionic/agenda/css/global.scss' as idea-ionic-agenda;
 ```
 
 To make sure the translations are loaded into the project:
