@@ -25,54 +25,52 @@
 }
 
 idea-html-editor {
-  ::ng-deep {
-    .angular-editor-wrapper {
-      background-color: transparent !important;
-    }
-    .angular-editor-toolbar {
-      border-color: var(--idea-html-editor-border-color) !important;
-      background-color: var(--idea-html-editor-toolbar-background-color) !important;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .ae-picker-options,
-    .ae-picker-label,
-    .ae-picker-label:before {
-      background: var(--idea-html-editor-toolbar-background-color) !important;
-      background-color: var(--idea-html-editor-toolbar-background-color) !important;
-      border-color: var(--idea-html-editor-toolbar-border-color) !important;
-      color: var(--idea-html-editor-toolbar-color) !important;
-    }
-    .angular-editor-toolbar svg {
-      fill: currentColor !important;
-    }
-    .angular-editor-toolbar #indent-,
-    .angular-editor-toolbar #outdent- {
-      stroke: currentColor !important;
-    }
-    .angular-editor-toolbar .ae-picker-options .ae-picker-item.focused,
-    .ae-picker-options .ae-picker-item:hover {
-      background-color: var(--idea-html-editor-button-focused) !important;
-      color: var(--idea-html-editor-toolbar-color) !important;
-    }
-    .ae-picker-options .ae-picker-item.selected {
-      background-color: var(--idea-html-editor-button-selected) !important;
-      color: var(--idea-html-editor-toolbar-color) !important;
-    }
-    .angular-editor-button {
-      background-color: var(--idea-html-editor-button-background-color) !important;
-      border-color: var(--idea-html-editor-button-border-color) !important;
-      color: var(--idea-html-editor-button-color) !important;
-    }
-    .angular-editor-textarea {
-      background-color: var(--idea-html-editor-background-color) !important;
-      border-color: var(--idea-html-editor-border-color) !important;
-      color: var(--idea-html-editor-color) !important;
-    }
+  .angular-editor-wrapper {
+    background-color: transparent !important;
   }
-  ::ng-deep:has(+ #foregroundColorPicker-),
-  ::ng-deep:has(+ #backgroundColorPicker-) {
+  .angular-editor-toolbar {
+    border-color: var(--idea-html-editor-border-color) !important;
+    background-color: var(--idea-html-editor-toolbar-background-color) !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .ae-picker-options,
+  .ae-picker-label,
+  .ae-picker-label:before {
+    background: var(--idea-html-editor-toolbar-background-color) !important;
+    background-color: var(--idea-html-editor-toolbar-background-color) !important;
+    border-color: var(--idea-html-editor-toolbar-border-color) !important;
+    color: var(--idea-html-editor-toolbar-color) !important;
+  }
+  .angular-editor-toolbar svg {
+    fill: currentColor !important;
+  }
+  .angular-editor-toolbar #indent-,
+  .angular-editor-toolbar #outdent- {
+    stroke: currentColor !important;
+  }
+  .angular-editor-toolbar .ae-picker-options .ae-picker-item.focused,
+  .ae-picker-options .ae-picker-item:hover {
+    background-color: var(--idea-html-editor-button-focused) !important;
+    color: var(--idea-html-editor-toolbar-color) !important;
+  }
+  .ae-picker-options .ae-picker-item.selected {
+    background-color: var(--idea-html-editor-button-selected) !important;
+    color: var(--idea-html-editor-toolbar-color) !important;
+  }
+  .angular-editor-button {
+    background-color: var(--idea-html-editor-button-background-color) !important;
+    border-color: var(--idea-html-editor-button-border-color) !important;
+    color: var(--idea-html-editor-button-color) !important;
+  }
+  .angular-editor-textarea {
+    background-color: var(--idea-html-editor-background-color) !important;
+    border-color: var(--idea-html-editor-border-color) !important;
+    color: var(--idea-html-editor-color) !important;
+  }
+  #foregroundColorPicker-,
+  #backgroundColorPicker- {
     display: inline !important;
     position: absolute;
     visibility: hidden;
