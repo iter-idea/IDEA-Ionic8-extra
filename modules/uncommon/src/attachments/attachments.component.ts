@@ -142,7 +142,7 @@ import { IDEATinCanService } from '../tinCan.service';
     `
   ]
 })
-export class IDEOldAttachmentsComponent implements OnInit {
+export class IDEAOldAttachmentsComponent implements OnInit {
   private _platform = inject(Platform);
   private _loading = inject(IDEALoadingService);
   private _message = inject(IDEAMessageService);
