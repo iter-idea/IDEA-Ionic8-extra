@@ -1,4 +1,4 @@
-# IDEOldAttachmentsComponent
+# IDEAOldAttachmentsComponent
 
 ## Selector
 
