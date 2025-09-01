@@ -70,6 +70,7 @@ It shares (almost) the same inputs so they are interchangeable.
 
 - [idea-address](modules/uncommon/src/address/address.component.md)
 - [idea-announcement](modules/uncommon/src/announcement/announcement.component.md). Announcement card that can be set in any interface to show the alert for this project.
+- [idea-old-attachments](modules/uncommon/src/attachments/attachments.component.md)
 - [idea-color-picker](modules/uncommon/src/colors/colorPicker.component.md). Pick a color from a defined set.
 - [idea-contacts](modules/uncommon/src/contacts/contacts.component.md)
 - [idea-calendar-picker](modules/uncommon/src/dateTime/calendarPicker.component.md)
