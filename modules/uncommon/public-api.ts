@@ -1,5 +1,7 @@
 export * from './src/address/address.component';
 
+export * from './src/attachments/attachments.component';
+
 export * from './src/announcement/announcement.component';
 
 export * from './src/colors/colorPicker.component';
