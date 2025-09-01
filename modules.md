@@ -68,6 +68,7 @@ It shares (almost) the same inputs so they are interchangeable.
 
 ## uncommon
 
+- [old-idea-attachments](modules/uncommon/src/oldAttachments.component.md)
 - [idea-address](modules/uncommon/src/address/address.component.md)
 - [idea-announcement](modules/uncommon/src/announcement/announcement.component.md). Announcement card that can be set in any interface to show the alert for this project.
 - [idea-old-attachments](modules/uncommon/src/attachments/attachments.component.md)
