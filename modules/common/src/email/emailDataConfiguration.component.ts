@@ -14,7 +14,8 @@ import {
   IonItem,
   IonLabel,
   IonListHeader,
-  IonTextarea
+  IonTextarea,
+  IonInput
 } from '@ionic/angular/standalone';
 import { EmailData, mdToHtml, StringVariable } from 'idea-toolbox';
 
@@ -40,6 +41,7 @@ import { IDEAListComponent } from '../list/list.component';
     IonContent,
     IonList,
     IonItem,
+    IonInput,
     IonLabel,
     IonListHeader,
     IonTextarea
