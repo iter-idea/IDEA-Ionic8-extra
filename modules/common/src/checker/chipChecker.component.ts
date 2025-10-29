@@ -157,7 +157,7 @@ export class IDEAChipCheckerComponent {
   /**
    * On change event.
    */
-  @Output() change = new EventEmitter<void>();
+  @Output() change = new EventEmitter<string | void>();
 
   isOpening = false;
 
@@ -179,7 +179,11 @@ export class IDEAChipCheckerComponent {
     const modal = this.showAsPopover
       ? await this._popover.create({ component, componentProps, event, cssClass })
       : await this._modal.create({ component, componentProps, cssClass });
-    modal.onDidDismiss().then((): void => this.change.emit());
+    modal.onDidDismiss().then((): void => {
+      const checks = this.data.filter(x => x.checked);
+      if (checks.length === 1) this.change.emit(checks[0].value as string);
+      else this.change.emit();
+    });
     modal.present();
     this.isOpening = false;
   }
