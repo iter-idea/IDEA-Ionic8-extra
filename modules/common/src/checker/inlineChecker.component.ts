@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonCheckbox,
@@ -83,6 +83,10 @@ export class IDEAInlineCheckerComponent {
    */
   @Input() reorder = false;
   /**
+   * If true, sort the checklist alphabetically.
+   */
+  @Input() sortData: boolean;
+  /**
    * How many elements to show in the preview before to generalize on the number.
    */
   @Input() numMaxElementsInPreview = 4;
@@ -102,7 +106,7 @@ export class IDEAInlineCheckerComponent {
     if (this.disabled || this.isOpening) return;
     this.isOpening = true;
     const component = IDEAInlineChecksComponent;
-    const componentProps = { data: this.data, reorder: this.reorder };
+    const componentProps = { data: this.data, reorder: this.reorder, sortData: this.sortData };
     const cssClass = 'popoverLarge';
     const modal = await this._popover.create({ component, componentProps, event, cssClass });
     modal.onDidDismiss().then((): void => this.change.emit());
@@ -143,7 +147,7 @@ export class IDEAInlineCheckerComponent {
     </ion-content>
   `
 })
-class IDEAInlineChecksComponent {
+class IDEAInlineChecksComponent implements OnInit {
   /**
    * The checklist to show.
    */
@@ -152,6 +156,17 @@ class IDEAInlineChecksComponent {
    * Whether the checklist is reorderable or not.
    */
   @Input() reorder = false;
+  /**
+   * If true, sort the checklist alphabetically.
+   */
+  @Input() sortData: boolean;
+
+  ngOnInit(): void {
+    if (this.sortData)
+      this.data.sort((a, b): number =>
+        a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
+      );
+  }
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>): void {
     if (!this.reorder) return;
