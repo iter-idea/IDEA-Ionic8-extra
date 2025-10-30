@@ -14,6 +14,7 @@ idea-inline-checker
 - `color` (*string*) - The color of the component.
 - `disabled` (*boolean*) - Whether the component is disabled.
 - `reorder` (*boolean*) - Whether the checklist is reorderable or not.
+- `sortData` (*boolean*) - If true, sort the checklist alphabetically.
 - `numMaxElementsInPreview` (*number*) - How many elements to show in the preview before to generalize on the number.
 - `previewTextKey` (*string*) - The translation key to get the preview text; it has a `num` variable available.
 

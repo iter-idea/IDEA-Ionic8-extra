@@ -30,4 +30,4 @@ If false, we show a centered modal.
 
 ## Outputs
 
-- `change` (*EventEmitter<void>*) - On change event.
+- `change` (*EventEmitter<string[]>*) - On change event.
