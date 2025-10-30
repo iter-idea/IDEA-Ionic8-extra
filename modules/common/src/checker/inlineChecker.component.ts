@@ -161,9 +161,9 @@ class IDEAInlineChecksComponent implements OnInit {
    */
   @Input() sortData: boolean;
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     if (this.sortData)
-      this.data = this.data.sort((a, b): number =>
+      this.data.sort((a, b): number =>
         a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
       );
   }
