@@ -105,40 +105,6 @@
         }
       }
     },
-    "map": {
-      "projectType": "library",
-      "root": "modules/map",
-      "sourceRoot": "modules/map/src",
-      "schematics": {
-        "@ionic/angular-toolkit:page": {
-          "styleext": "scss",
-          "standalone": true
-        }
-      },
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "modules/map/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "modules/map/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "modules/map/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": ["modules/map/src/**/*.ts", "modules/map/src/**/*.html"]
-          }
-        }
-      }
-    },
     "teams": {
       "projectType": "library",
       "root": "modules/teams",

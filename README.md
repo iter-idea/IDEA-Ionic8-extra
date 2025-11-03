@@ -16,7 +16,6 @@ _The last version fully compatible with **Ionic 5** is [v5.29.4](https://github.
 - [auth0](modules/auth0)
 - [barcode](modules/barcode)
 - [editor](modules/editor)
-- [map](modules/map)
 - [teams](modules/teams)
 - [uncommon](modules/uncommon)
 

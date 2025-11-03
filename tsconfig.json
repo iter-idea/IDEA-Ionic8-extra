@@ -24,7 +24,6 @@
       "agenda": ["./dist/agenda"],
       "auth": ["./dist/auth"],
       "common": ["./dist/common"],
-      "map": ["./dist/map"],
       "teams": ["./dist/teams"],
       "uncommon": ["./dist/uncommon"]
     }

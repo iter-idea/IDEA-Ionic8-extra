@@ -60,7 +60,6 @@ export interface IDEAEnvironmentConfiguration {
   google?: {
     apiClientId: string;
     apiScope: string;
-    mapsApiKey: string;
   };
   microsoft?: {
     apiClientId: string;

@@ -54,10 +54,6 @@ It shares (almost) the same inputs so they are interchangeable.
 
 - [idea-html-editor](modules/editor/src/htmlEditor.component.md)
 
-## map
-
-- [idea-map](modules/map/src/map.component.md)
-
 ## teams
 
 - [idea-attachments](modules/teams/src/attachments/attachments.component.md)
