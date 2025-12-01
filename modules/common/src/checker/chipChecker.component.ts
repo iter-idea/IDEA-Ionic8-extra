@@ -32,10 +32,13 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
   imports: [IonChip, IonIcon, IonLabel, IonText, IonButton],
   selector: 'idea-chip-checker',
   template: `
+    @let active = someChecked();
     <ion-chip
-      class="chipChecker"
       tabindex="0"
-      [color]="someChecked() ? color : inactiveColor"
+      class="chipChecker"
+      [class.active]="active"
+      [class.inactive]="!active"
+      [color]="active ? color : inactiveColor"
       [disabled]="disabled || isOpening"
       (click)="openChecker($event)"
       (keyup.enter)="openChecker($event)"
@@ -47,7 +50,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
         <ion-text class="chipCheckerLabel">{{ label }}:</ion-text>
         <ion-text class="chipCheckerText">{{ getPreview() }}</ion-text>
       </ion-label>
-      @if (resetButton && someChecked()) {
+      @if (resetButton && active) {
         <ion-button size="small" fill="clear" (click)="resetChecks($event)">
           <ion-icon icon="close-circle" slot="icon-only" size="small" />
         </ion-button>
@@ -56,6 +59,9 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
   `,
   styles: [
     `
+      ion-chip.chipChecker {
+        height: 40px;
+      }
       ion-text.chipCheckerLabel {
         font-weight: 600;
         padding-right: 4px;
