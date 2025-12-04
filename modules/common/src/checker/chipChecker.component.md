@@ -21,6 +21,7 @@ idea-chip-checker
 - `inactiveColor` (*string*) - The color for the inactive component.
 - `disabled` (*boolean*) - If true, the component is disabled.
 - `sortData` (*boolean*) - If true, sort alphabetically the data.
+- `alwaysShowValue` (*boolean*) - Whether to always show the `value`, even when the `name` is set.
 - `numMaxElementsInPreview` (*number*) - How many elements to show in the preview before to generalize on the number.
 - `limitSelectionToNum` (*number*) - Limit the number of selectable elements to the value provided.
 - `allowSelectDeselectAll` (*boolean*) - Whether to allow the select/deselect-all buttons.
