@@ -140,6 +140,10 @@ export class IDEAChipCheckerComponent {
    */
   @Input() sortData: boolean;
   /**
+   * Whether to always show the `value`, even when the `name` is set.
+   */
+  @Input() alwaysShowValue = false;
+  /**
    * How many elements to show in the preview before to generalize on the number.
    */
   @Input() numMaxElementsInPreview = 4;
@@ -174,6 +178,7 @@ export class IDEAChipCheckerComponent {
     const componentProps = {
       data: this.data,
       sortData: this.sortData,
+      alwaysShowValue: this.alwaysShowValue,
       searchPlaceholder: this.searchPlaceholder,
       noElementsFoundText: this.noElementsFoundText,
       limitSelectionToNum: this.limitSelectionToNum,
@@ -292,6 +297,8 @@ export class IDEAChipCheckerComponent {
               <ion-checkbox
                 labelPlacement="end"
                 justify="start"
+                [class.alwaysShowValue]="alwaysShowValue"
+                [helperText]="alwaysShowValue ? check.value : undefined"
                 [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
                 [(ngModel)]="check.checked"
               >
@@ -303,11 +310,14 @@ export class IDEAChipCheckerComponent {
             </ion-item>
           } @else {
             <ion-item color="white" class="chipCheck" button (click)="selectSingle(check)">
-              <ion-label>
+              <ion-label [class.alwaysShowValue]="alwaysShowValue">
                 @if (check.category1) {
                   <strong>{{ check.category1 }}</strong>
                 }
                 {{ check.name }}
+                @if (alwaysShowValue) {
+                  <p>{{ check.value }}</p>
+                }
               </ion-label>
             </ion-item>
           }
@@ -354,9 +364,19 @@ export class IDEAChipCheckerComponent {
             font-weight: 600;
             padding-right: 4px;
           }
+          &.alwaysShowValue {
+            margin: 8px 0;
+            > p {
+              font-size: 0.8em;
+              margin: 0;
+            }
+          }
         }
         ion-checkbox {
           margin: 0 12px;
+          &.alwaysShowValue {
+            margin: 2px 12px;
+          }
         }
       }
     `
@@ -374,6 +394,10 @@ class IDEAChipChecksComponent implements OnInit {
    * If true, sort alphabetically the data (by name or, fallback, by value).
    */
   @Input() sortData: boolean;
+  /**
+   * Whether to always show the `value`, even when the `name` is set.
+   */
+  @Input() alwaysShowValue = false;
   /**
    * A placeholder for the searchbar.
    */
