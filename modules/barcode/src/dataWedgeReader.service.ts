@@ -10,7 +10,7 @@ import { Injectable, NgZone, inject } from '@angular/core';
  * in order to work, the following plugin: `com-easystep2-datawedge-plugin-intent-cordova`.
  */
 @Injectable({ providedIn: 'root' })
-export class DataWedgeReaderService {
+export class IDEADataWedgeReaderService {
   private ngZone = inject(NgZone);
   /**
    * To manage device's intents.
