@@ -121,7 +121,6 @@ interface IntentShim {
     filters: { filterActions: string[]; filterCategories: string[] },
     callback: (intent: any) => void
   ): void;
-  setDebugMode(enabled: boolean, onSuccess?: Function, onError?: Function): void;
 }
 
 /**
