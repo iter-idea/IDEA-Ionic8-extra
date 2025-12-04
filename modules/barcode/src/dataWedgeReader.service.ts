@@ -131,3 +131,32 @@ export interface ScanData {
   type: string;
   timestamp: string;
 }
+
+/**
+ * Keywords forbidden in the team's scan rules.
+ */
+const SCAN_RULES_FORBIDDEN_KEYWORDS = [/window/, /document/, /eval/, /Function/];
+
+/**
+ * Run a team's can rule starting from a scanned value.
+ */
+export const runScanRule = (rule: string, params: Record<string, any>): any => {
+  if (typeof rule !== 'string' || !rule.trim()) throw new Error('Invalid rule: must be a non-empty string');
+  if (typeof params !== 'object' || params === null) throw new Error('Invalid params: must be a non-null object');
+
+  if (SCAN_RULES_FORBIDDEN_KEYWORDS.some(p => p.test(rule))) throw new Error('Rule contains forbidden keywords');
+
+  for (const key of Object.keys(params)) {
+    if (!/^[$A-Z_][0-9A-Z_$]*$/i.test(key)) throw new Error(`Invalid parameter name: ${key}`);
+  }
+
+  for (const value of Object.values(params)) {
+    if (value === undefined) throw new Error('Parameter values cannot be undefined');
+  }
+
+  try {
+    return new Function(...Object.keys(params), `return ${rule}`)(...Object.values(params));
+  } catch (_) {
+    return '';
+  }
+};
