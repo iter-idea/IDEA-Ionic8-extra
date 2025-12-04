@@ -16,7 +16,7 @@ To use DataWedge on a supported Android device (e.g. Zebra), you have to add to 
 
 ```xml
 <intent-filter>
-    <action android:name="com.darryncampbell.cordova.plugin.intent.ACTION"/>
+    <action android:name="com.easystep2.datawedge.plugin.intent.ACTION"/>
     <category android:name="android.intent.category.DEFAULT"/>
 </intent-filter>
 ```
