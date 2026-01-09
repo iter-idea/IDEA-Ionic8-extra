@@ -12,4 +12,5 @@ idea-send-email
 - `values` (*{ [variable: string]: string | number; }*) - A map of the values to substitute to the variables.
 - `contacts` (*Suggestion[]*) - The suggested contacts for the email composer.
 - `lines` (*string*) - Lines preferences for the items.
+- `disableChangeOfAddresses` (*boolean*) - Whether we want to prevent the user to change the addresses pre-set.
 

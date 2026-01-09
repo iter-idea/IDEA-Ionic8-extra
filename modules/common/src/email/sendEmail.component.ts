@@ -66,9 +66,11 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
           <ion-label>
             <h2>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}</h2>
           </ion-label>
-          <ion-button color="dark" (click)="addAddressToList(emailWC.to)">
-            <ion-icon slot="icon-only" name="add-circle" />
-          </ion-button>
+          @if (!disableChangeOfAddresses) {
+            <ion-button color="dark" (click)="addAddressToList(emailWC.to)">
+              <ion-icon slot="icon-only" name="add-circle" />
+            </ion-button>
+          }
         </ion-list-header>
         @if (!emailWC.to.length) {
           <ion-item>
@@ -77,9 +79,11 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
         }
         @for (x of emailWC.to; track x) {
           <ion-item>
-            <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.to, x)">
-              <ion-icon slot="icon-only" name="remove" />
-            </ion-button>
+            @if (!disableChangeOfAddresses) {
+              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.to, x)">
+                <ion-icon slot="icon-only" name="remove" />
+              </ion-button>
+            }
             <ion-label>{{ x }}</ion-label>
           </ion-item>
         }
@@ -87,9 +91,11 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
           <ion-label>
             <h2>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}</h2>
           </ion-label>
-          <ion-button color="dark" (click)="addAddressToList(emailWC.cc)">
-            <ion-icon slot="icon-only" name="add-circle" />
-          </ion-button>
+          @if (!disableChangeOfAddresses) {
+            <ion-button color="dark" (click)="addAddressToList(emailWC.cc)">
+              <ion-icon slot="icon-only" name="add-circle" />
+            </ion-button>
+          }
         </ion-list-header>
         @if (!emailWC.cc.length) {
           <ion-item>
@@ -98,9 +104,11 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
         }
         @for (x of emailWC.cc; track x) {
           <ion-item>
-            <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.cc, x)">
-              <ion-icon slot="icon-only" name="remove" />
-            </ion-button>
+            @if (!disableChangeOfAddresses) {
+              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.cc, x)">
+                <ion-icon slot="icon-only" name="remove" />
+              </ion-button>
+            }
             <ion-label>{{ x }}</ion-label>
           </ion-item>
         }
@@ -108,9 +116,11 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
           <ion-label>
             <h2>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}</h2>
           </ion-label>
-          <ion-button color="dark" (click)="addAddressToList(emailWC.bcc)">
-            <ion-icon slot="icon-only" name="add-circle" />
-          </ion-button>
+          @if (!disableChangeOfAddresses) {
+            <ion-button color="dark" (click)="addAddressToList(emailWC.bcc)">
+              <ion-icon slot="icon-only" name="add-circle" />
+            </ion-button>
+          }
         </ion-list-header>
         @if (!emailWC.bcc.length) {
           <ion-item>
@@ -119,9 +129,11 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
         }
         @for (x of emailWC.bcc; track x) {
           <ion-item>
-            <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.bcc, x)">
-              <ion-icon slot="icon-only" name="remove" />
-            </ion-button>
+            @if (!disableChangeOfAddresses) {
+              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.bcc, x)">
+                <ion-icon slot="icon-only" name="remove" />
+              </ion-button>
+            }
             <ion-label>{{ x }}</ion-label>
           </ion-item>
         }
@@ -195,6 +207,10 @@ export class IDEASendEmailComponent implements OnInit {
    * Lines preferences for the items.
    */
   @Input() lines: string;
+  /**
+   * Whether we want to prevent the user to change the addresses pre-set.
+   */
+  @Input() disableChangeOfAddresses = false;
 
   emailWC: EmailData;
 
@@ -213,6 +229,7 @@ export class IDEASendEmailComponent implements OnInit {
   }
 
   async addAddressToList(list: string[]): Promise<void> {
+    if (this.disableChangeOfAddresses) return;
     const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
       componentProps: {
@@ -230,6 +247,7 @@ export class IDEASendEmailComponent implements OnInit {
     modal.present();
   }
   removeAddressFromList(list: string[], address: string): void {
+    if (this.disableChangeOfAddresses) return;
     list.splice(list.indexOf(address), 1);
   }
 
