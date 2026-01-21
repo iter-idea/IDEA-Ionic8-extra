@@ -42,7 +42,8 @@
       "NUM_ELEMENTS_SELECTED": "{{num}} elements selected",
       "RESET": "Reset",
       "SEARCH": "Search",
-      "SELECT_ALL": "Select all"
+      "SELECT_ALL": "Select all",
+      "SHOW_ONLY_CHECKED": "Show only checked"
     },
     "CUSTOM_FIELDS": {
       "ADD_FIELD": "Add a field",

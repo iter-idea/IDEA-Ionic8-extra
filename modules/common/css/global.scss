@@ -57,7 +57,11 @@
 }
 
 ion-popover.popoverLarge::part(content) {
-  width: 350px;
+  width: 500px;
+  max-height: 600px;
+  @media only screen and (max-width: 767px) {
+    width: 350px;
+  }
 }
 
 ion-modal.modalFullScreen {

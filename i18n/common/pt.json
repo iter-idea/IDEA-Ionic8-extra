@@ -12,7 +12,8 @@
       "SEARCH": "Pesquisar",
       "SELECT_ALL": "Seleciona tudo",
       "RESET": "Redefinir",
-      "LIMIT_OF_NUM": "(de {{num}})"
+      "LIMIT_OF_NUM": "(de {{num}})",
+      "SHOW_ONLY_CHECKED": "Mostrar os selecionados"
     },
     "CUSTOM_FIELDS": {
       "CHOICES": "Escolhas possível ",
