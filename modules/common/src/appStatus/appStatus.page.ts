@@ -28,7 +28,6 @@ import { IDEAAppStatusService } from './appStatus.service';
  */
 @Component({
   selector: 'idea-app-status',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

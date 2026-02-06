@@ -13,7 +13,6 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
  */
 @Component({
   selector: 'idea-email-data',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

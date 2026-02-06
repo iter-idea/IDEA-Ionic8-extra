@@ -4,7 +4,6 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-mde-toolbar',
-  standalone: true,
   imports: [CommonModule, IDEATranslatePipe],
   template: `
     <div class="mdeToolbar">

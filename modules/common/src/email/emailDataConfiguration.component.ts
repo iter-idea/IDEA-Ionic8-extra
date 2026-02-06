@@ -25,7 +25,6 @@ import { IDEAListComponent } from '../list/list.component';
 
 @Component({
   selector: 'idea-email-data-configuration',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

@@ -23,7 +23,6 @@ import { IDEASelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'idea-custom-block',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

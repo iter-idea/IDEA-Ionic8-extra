@@ -22,7 +22,6 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-from-time-to-time',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

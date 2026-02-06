@@ -37,7 +37,6 @@ import { IDEACustomFieldMetaComponent } from './customFieldMeta.component';
 
 @Component({
   selector: 'idea-custom-section-meta',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

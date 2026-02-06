@@ -21,7 +21,6 @@ import { docsSoap } from 'docs-soap';
 import { IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
-  standalone: true,
   imports: [FormsModule, AngularEditorModule, IDEATranslatePipe, IonIcon],
   selector: 'idea-html-editor',
   changeDetection: ChangeDetectionStrategy.OnPush,

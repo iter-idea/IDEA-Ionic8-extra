@@ -9,7 +9,6 @@ import { IDEAOfflineService } from '../offline/offline.service';
 
 @Component({
   selector: 'idea-sentiment',
-  standalone: true,
   imports: [CommonModule, IDEATranslatePipe, IonBadge, IonSpinner, IonItem],
   template: `
     @if (text && _offline.isOnline()) {

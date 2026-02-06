@@ -5,7 +5,6 @@ import { COLORS } from 'idea-toolbox';
 
 @Component({
   selector: 'idea-user-avatar',
-  standalone: true,
   imports: [CommonModule, IonAvatar, IonImg],
   template: `
     <div class="container">

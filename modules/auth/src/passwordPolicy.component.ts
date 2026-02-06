@@ -5,7 +5,6 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-password-policy',
-  standalone: true,
   imports: [CommonModule, IDEATranslatePipe, IonCard, IonCardHeader, IonCardTitle, IonCardContent],
   template: `
     <ion-card class="passwordPolicyCard">

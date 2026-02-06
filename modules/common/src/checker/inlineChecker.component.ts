@@ -29,7 +29,6 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
 const PAGINATION_MAX_PAGE_SIZE = 24;
 
 @Component({
-  standalone: true,
   imports: [IonItem, IonInput, IonIcon],
   selector: 'idea-inline-checker',
   template: `
@@ -168,7 +167,6 @@ export class IDEAInlineCheckerComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [
     FormsModule,
     IDEATranslatePipe,

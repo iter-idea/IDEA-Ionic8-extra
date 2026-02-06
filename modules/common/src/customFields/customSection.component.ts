@@ -21,7 +21,6 @@ import { IDEASelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'idea-custom-section',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

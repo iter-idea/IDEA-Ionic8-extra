@@ -8,7 +8,6 @@ import { IDEAAuthService } from '../auth.service';
 
 @Component({
   selector: 'idea-setup-mfa-button',
-  standalone: true,
   imports: [CommonModule, IDEATranslatePipe, IonButton],
   template: `
     @if (isMFAEnabled !== undefined) {

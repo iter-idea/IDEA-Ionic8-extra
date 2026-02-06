@@ -29,7 +29,6 @@ const MAX_PAGE_SIZE = 24;
 
 @Component({
   selector: 'idea-checks',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

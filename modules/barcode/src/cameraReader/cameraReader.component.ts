@@ -7,7 +7,6 @@ const PERMISSION_GRANTED = 'granted';
 
 @Component({
   selector: 'idea-barcode-camera-reader',
-  standalone: true,
   imports: [CommonModule, IonButton],
   template: `
     @if (_platform.is('capacitor')) {

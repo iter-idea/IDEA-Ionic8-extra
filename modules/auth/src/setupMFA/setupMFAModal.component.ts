@@ -25,7 +25,6 @@ import { IDEAAuthService } from '../auth.service';
 
 @Component({
   selector: 'idea-setup-mfa-modal',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

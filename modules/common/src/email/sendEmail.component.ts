@@ -25,7 +25,6 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
 
 @Component({
   selector: 'idea-send-email',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

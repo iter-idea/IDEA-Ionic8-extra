@@ -21,7 +21,6 @@ import { IDEAAuthService } from './auth.service';
 
 @Component({
   selector: 'idea-resend-link',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

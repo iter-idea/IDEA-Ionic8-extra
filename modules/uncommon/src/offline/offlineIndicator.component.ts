@@ -8,7 +8,6 @@ import { IDEAOfflineDataService } from './offlineData.service';
 
 @Component({
   selector: 'idea-offline-indicator',
-  standalone: true,
   imports: [CommonModule, IonFab, IonFabButton, IonIcon],
   template: `
     @if (

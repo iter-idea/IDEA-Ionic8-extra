@@ -24,7 +24,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-attachment-sections',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

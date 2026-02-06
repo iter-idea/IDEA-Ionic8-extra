@@ -6,7 +6,6 @@ import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'idea-rc-configurator',
-  standalone: true,
   imports: [CommonModule, IDEATranslatePipe, IDEASelectComponent],
   template: `
     <idea-select

@@ -7,7 +7,6 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-address',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

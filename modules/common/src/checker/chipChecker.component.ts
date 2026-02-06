@@ -28,7 +28,6 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
 const PAGINATION_MAX_PAGE_SIZE = 24;
 
 @Component({
-  standalone: true,
   imports: [IonChip, IonIcon, IonLabel, IonText, IonButton],
   selector: 'idea-chip-checker',
   template: `
@@ -230,7 +229,6 @@ export class IDEAChipCheckerComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [
     FormsModule,
     IDEATranslatePipe,

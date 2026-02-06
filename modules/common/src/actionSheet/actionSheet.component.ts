@@ -17,7 +17,6 @@ import {
  */
 @Component({
   selector: 'idea-action-sheet',
-  standalone: true,
   imports: [IonIcon, IonButton, IonLabel, IonRow, IonCol, IonGrid, IonContent],
   template: `
     <ion-content [class]="cssClass">

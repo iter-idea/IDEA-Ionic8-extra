@@ -30,7 +30,6 @@ import { IDEACacheableResourceComponent } from './cacheableResource.component';
 
 @Component({
   selector: 'idea-offline-manager',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

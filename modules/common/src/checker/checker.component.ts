@@ -9,7 +9,6 @@ import { IDEAChecksComponent } from './checks.component';
 
 @Component({
   selector: 'idea-checker',
-  standalone: true,
   imports: [CommonModule, IonLabel, IonItem, IonButton, IonIcon, IonText],
   template: `
     <ion-item

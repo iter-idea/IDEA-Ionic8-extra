@@ -20,7 +20,6 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
 // @todo add pagination to grid
 @Component({
   selector: 'idea-icons',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

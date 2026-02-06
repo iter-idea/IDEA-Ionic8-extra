@@ -7,7 +7,6 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-contacts',
-  standalone: true,
   imports: [CommonModule, FormsModule, IDEATranslatePipe, IonInput, IonIcon, IonButton, IonItem],
   template: `
     <div class="contacts">

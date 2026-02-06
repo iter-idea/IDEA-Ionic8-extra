@@ -45,7 +45,6 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
 
 @Component({
   selector: 'idea-pdf-template',
-  standalone: true,
   imports: [
     IonItem,
     IonButtons,
@@ -555,7 +554,6 @@ export interface MoveModeData {
  */
 @Component({
   selector: 'idea-pdf-template-field-resize',
-  standalone: true,
   imports: [CommonModule, IDEATranslatePipe, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonLabel],
   template: `
     <ion-content>

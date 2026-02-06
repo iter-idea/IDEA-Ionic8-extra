@@ -11,7 +11,6 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
 
 @Component({
   selector: 'idea-attachments',
-  standalone: true,
   imports: [CommonModule, FormsModule, IDEATranslatePipe, IonSpinner, IonLabel, IonInput, IonIcon, IonButton, IonItem],
   templateUrl: 'attachments.component.html',
   styleUrls: ['attachments.component.scss']
