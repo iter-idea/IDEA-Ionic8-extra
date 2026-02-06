@@ -14,7 +14,7 @@ import { IDEATooltipComponent } from './tooltip.component';
 
 import { IDEATranslationsService } from '../translations/translations.service';
 
-@Directive({ standalone: true, selector: '[tooltip]' })
+@Directive({ selector: '[tooltip]' })
 export class IDEATooltipDirective implements OnDestroy {
   private _injector = inject(Injector);
   private _elementRef = inject(ElementRef);

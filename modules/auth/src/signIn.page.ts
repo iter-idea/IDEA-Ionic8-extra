@@ -34,7 +34,6 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
 
 @Component({
   selector: 'idea-sign-in',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

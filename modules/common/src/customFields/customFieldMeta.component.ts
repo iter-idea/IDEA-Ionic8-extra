@@ -37,7 +37,6 @@ import { IDEAIconsComponent } from '../icons/icons.component';
 
 @Component({
   selector: 'idea-custom-field-meta',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

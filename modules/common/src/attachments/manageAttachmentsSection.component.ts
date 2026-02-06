@@ -28,7 +28,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-manage-attachments-section',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

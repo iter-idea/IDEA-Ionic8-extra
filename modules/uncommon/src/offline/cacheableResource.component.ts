@@ -6,7 +6,6 @@ import { IDEAOfflineDataService, CacheableResource } from './offlineData.service
 
 @Component({
   selector: 'idea-cacheable-resource',
-  standalone: true,
   imports: [CommonModule, IonSpinner, IonIcon, IonLabel, IonItem],
   template: `
     <ion-item class="cacheableResourceItem">

@@ -19,7 +19,6 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
 
 @Component({
   selector: 'idea-time-interval',
-  standalone: true,
   imports: [IonLabel, IonText, IonIcon, IonButton, IonItem, CommonModule],
   template: `
     <ion-item

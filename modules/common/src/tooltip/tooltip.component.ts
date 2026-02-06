@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 
 @Component({
-  standalone: true,
   selector: 'app-tooltip',
   imports: [IDEATranslatePipe],
   template: `

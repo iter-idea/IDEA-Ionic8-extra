@@ -6,7 +6,6 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-duration',
-  standalone: true,
   imports: [IonText, IonLabel, IonIcon, IonItem, CommonModule, FormsModule, IDEATranslatePipe],
   template: `
     <ion-item class="durationItem" [lines]="lines" [color]="color" [title]="title || label">

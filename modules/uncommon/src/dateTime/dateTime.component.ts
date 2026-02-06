@@ -19,7 +19,6 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
 
 @Component({
   selector: 'idea-date-time',
-  standalone: true,
   imports: [CommonModule, IonText, IonLabel, IonIcon, IonButton, IonItem],
   template: `
     <ion-item

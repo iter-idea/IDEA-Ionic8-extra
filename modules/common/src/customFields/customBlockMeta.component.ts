@@ -23,7 +23,6 @@ import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
 
 @Component({
   selector: 'idea-custom-block-meta',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

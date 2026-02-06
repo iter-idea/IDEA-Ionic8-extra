@@ -26,7 +26,6 @@ const MAX_PAGE_SIZE = 24;
 
 @Component({
   selector: 'idea-list-elements',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

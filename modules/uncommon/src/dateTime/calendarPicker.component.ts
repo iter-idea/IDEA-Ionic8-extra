@@ -27,7 +27,6 @@ const SUNDAY = 259200000;
 
 @Component({
   selector: 'idea-calendar-picker',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

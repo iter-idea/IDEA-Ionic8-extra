@@ -30,7 +30,6 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
 
 @Component({
   selector: 'idea-signature',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

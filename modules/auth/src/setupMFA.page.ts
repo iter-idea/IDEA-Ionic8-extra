@@ -16,7 +16,6 @@ import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component
 
 @Component({
   selector: 'idea-mfa-setup',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

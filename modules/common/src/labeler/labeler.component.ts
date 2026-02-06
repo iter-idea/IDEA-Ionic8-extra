@@ -31,7 +31,6 @@ import { IDEAMessageService } from '../message.service';
  */
 @Component({
   selector: 'idea-labeler',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

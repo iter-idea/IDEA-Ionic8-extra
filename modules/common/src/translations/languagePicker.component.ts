@@ -11,7 +11,6 @@ import { IDEATranslatePipe } from './translate.pipe';
 
 @Component({
   selector: 'idea-language-picker',
-  standalone: true,
   imports: [IonButton, IonPopover, IonList, IonListHeader, IonItem, IonLabel, IDEATranslatePipe],
   template: `
     <ion-button id="click-trigger" [fill]="fill" [title]="'IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE' | translate">

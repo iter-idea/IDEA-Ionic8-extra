@@ -20,7 +20,6 @@ import { Color, COLORS } from 'idea-toolbox';
  */
 @Component({
   selector: 'idea-color-picker',
-  standalone: true,
   imports: [CommonModule, IonAvatar, IonText, IonLabel, IonIcon, IonButton, IonItem],
   template: `
     <ion-item
@@ -160,7 +159,6 @@ export class IDEAColorPickerComponent {
  */
 @Component({
   selector: 'idea-colors-palette',
-  standalone: true,
   imports: [CommonModule, IonContent, IonGrid, IonRow, IonCol, IonAvatar, IonIcon],
   template: `
     <ion-content>

@@ -30,7 +30,6 @@ const MAX_PAGE_SIZE = 24;
 
 @Component({
   selector: 'idea-suggestions',
-  standalone: true,
   imports: [
     CommonModule,
     IonBadge,

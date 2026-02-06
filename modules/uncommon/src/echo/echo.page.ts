@@ -18,7 +18,6 @@ import { IDEATinCanService } from '../tinCan.service';
 
 @Component({
   selector: 'idea-echo',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

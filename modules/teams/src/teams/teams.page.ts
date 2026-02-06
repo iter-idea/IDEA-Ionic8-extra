@@ -27,7 +27,6 @@ import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'teams',
-  standalone: true,
   imports: [
     CommonModule,
     IDEATranslatePipe,

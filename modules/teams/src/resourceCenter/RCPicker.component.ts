@@ -15,7 +15,6 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
 
 @Component({
   selector: 'idea-rc-picker',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

@@ -6,7 +6,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 
 @Component({
   selector: 'idea-show-hint-button',
-  standalone: true,
   imports: [CommonModule, IonButton, IonIcon],
   template: `
     <ion-button [slot]="slot" [fill]="fill" [color]="color" (click)="showHint($event)">

@@ -13,7 +13,6 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'okta',
-  standalone: true,
   imports: [IDEATranslatePipe, IonContent, IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardContent, IonButton],
   template: `
     @if (!code && !go) {

@@ -9,7 +9,6 @@ import { IDEAListElementsComponent } from './listElements.component';
 
 @Component({
   selector: 'idea-list',
-  standalone: true,
   imports: [CommonModule, IonItem, IonButton, IonIcon, IonLabel, IonText],
   template: `
     <ion-item

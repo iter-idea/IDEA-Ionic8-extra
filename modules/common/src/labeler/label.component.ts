@@ -13,7 +13,7 @@ import { IDEALabelerComponent } from './labeler.component';
  */
 @Component({
   selector: 'idea-label',
-  standalone: true,
+
   imports: [CommonModule, IDEAHiglightedVariablesPipe, IonItem, IonLabel, IonButton, IonIcon, IonText],
   template: `
     <ion-item

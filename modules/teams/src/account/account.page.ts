@@ -30,7 +30,6 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
 
 @Component({
   selector: 'account',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

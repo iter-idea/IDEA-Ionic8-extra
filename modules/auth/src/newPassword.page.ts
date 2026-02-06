@@ -29,7 +29,6 @@ import { IDEAAuthService } from './auth.service';
 
 @Component({
   selector: 'idea-new-password',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

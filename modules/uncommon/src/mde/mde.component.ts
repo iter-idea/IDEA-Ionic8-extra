@@ -19,7 +19,6 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
 
 @Component({
   selector: 'idea-mde',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

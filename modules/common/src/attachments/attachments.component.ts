@@ -23,7 +23,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAAttachmentsService } from './attachments.service';
 
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

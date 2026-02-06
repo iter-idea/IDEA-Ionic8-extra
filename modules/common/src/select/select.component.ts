@@ -7,7 +7,6 @@ import { IDEASuggestionsComponent } from './suggestions.component';
 
 @Component({
   selector: 'idea-select',
-  standalone: true,
   imports: [CommonModule, IonLabel, IonItem, IonButton, IonLabel, IonText, IonIcon],
   templateUrl: 'select.component.html',
   styleUrls: ['select.component.scss']

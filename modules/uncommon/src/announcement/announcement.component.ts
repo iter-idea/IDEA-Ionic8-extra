@@ -11,7 +11,6 @@ import { IDEATinCanService } from '../tinCan.service';
  */
 @Component({
   selector: 'idea-announcement',
-  standalone: true,
   imports: [CommonModule, IDEATranslatePipe, IonButton, IonCardContent, IonCard],
   template: `
     @if (htmlContent) {

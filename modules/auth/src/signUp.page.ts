@@ -34,7 +34,6 @@ import { IDEAAuthService } from './auth.service';
 
 @Component({
   selector: 'idea-sign-up',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
