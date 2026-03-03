@@ -213,7 +213,7 @@ export class IDEAAttachmentsComponent {
         err.message = this._translate._('IDEA_COMMON.ATTACHMENTS.FILE_IS_TOO_BIG', { maxSize: this.maxSize });
       this.uploadErrors.push({ file: attachment.name, error: err.message });
       this.removeAttachment(attachment);
-      this._message.error(err.message, true);
+      this._message.error(err.message, { dontTranslate: true });
     }
   }
 
