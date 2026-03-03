@@ -84,6 +84,11 @@ ion-popover.actionSheetPopover {
   }
 }
 
+ion-toast.toastWithServerMessage::part(message) {
+  font-size: 0.85em;
+  font-style: italic;
+}
+
 ion-text.obligatoryDot::after {
   content: '*';
   font-size: 1.1em;

@@ -10,46 +10,72 @@ export class IDEAMessageService {
 
   /**
    * Show a generic message toast.
-   * @param message message to show
-   * @param color Ionic colors defined in the theme
+   * @param message message to show (i18n key to translate, if `dontTranslate === false`)
+   * @param color among Ionic colors defined in the theme
+   * @param dontTranslate whether the message is already a translated text
+   * @param serverMessage some untranslatable text from the back-end, to add as detail after the message
    */
-  private async show(message: string, color: string, dontTranslate: boolean): Promise<void> {
-    message = dontTranslate ? message : this._translate._(message);
+  private async show(
+    message: string,
+    options: { color: string; dontTranslate?: boolean; serverMessage?: string }
+  ): Promise<void> {
+    message = message || '';
+    const { color, dontTranslate, serverMessage } = options;
 
-    const duration = 3000;
+    if (!dontTranslate) message = this._translate._(message);
+
+    const duration = serverMessage ? 5000 : 3000;
     const position = 'bottom';
     const buttons = [{ text: 'X', role: 'cancel' }];
+    const header = serverMessage ? message : undefined;
+    const cssClass = serverMessage ? 'toastWithServerMessage' : '';
 
-    const toast = await this._toast.create({ message, duration, position, color, buttons });
+    const toast = await this._toast.create({
+      message: serverMessage || message,
+      header,
+      duration,
+      position,
+      color,
+      buttons,
+      cssClass
+    });
     return await toast.present();
   }
 
   /**
    * Show an info message toast.
    * @param message message to show
+   * @param options for translations and additional text to show
    */
-  async info(message: string, dontTranslate?: boolean): Promise<void> {
-    return await this.show(message, 'dark', dontTranslate);
+  async info(message: string, options?: { dontTranslate?: boolean; serverMessage?: string }): Promise<void> {
+    const { dontTranslate, serverMessage } = options || {};
+    return await this.show(message, { color: 'dark', dontTranslate, serverMessage });
   }
   /**
    * Show a success message toast.
    * @param message message to show
+   * @param options for translations and additional text to show
    */
-  async success(message: string, dontTranslate?: boolean): Promise<void> {
-    return await this.show(message, 'success', dontTranslate);
+  async success(message: string, options?: { dontTranslate?: boolean; serverMessage?: string }): Promise<void> {
+    const { dontTranslate, serverMessage } = options || {};
+    return await this.show(message, { color: 'success', dontTranslate, serverMessage });
   }
   /**
    * Show an error message toast.
    * @param message message to show
+   * @param options for translations and additional text to show
    */
-  async error(message: string, dontTranslate?: boolean): Promise<void> {
-    return await this.show(message, 'danger', dontTranslate);
+  async error(message: string, options?: { dontTranslate?: boolean; serverMessage?: string }): Promise<void> {
+    const { dontTranslate, serverMessage } = options || {};
+    return await this.show(message, { color: 'danger', dontTranslate, serverMessage });
   }
   /**
-   * Show an warning message toast.
+   * Show a warning message toast.
    * @param message message to show
+   * @param options for translations and additional text to show
    */
-  async warning(message: string, dontTranslate?: boolean): Promise<void> {
-    return await this.show(message, 'warning', dontTranslate);
+  async warning(message: string, options?: { dontTranslate?: boolean; serverMessage?: string }): Promise<void> {
+    const { dontTranslate, serverMessage } = options || {};
+    return await this.show(message, { color: 'warning', dontTranslate, serverMessage });
   }
 }
