@@ -282,7 +282,7 @@ export class IDEATranslationsService {
    * Format a date in the current locale (optionally forcing a timeZone).
    */
   formatDate(value: any, pattern: string = 'mediumDate', timeZone?: string): string {
-    const timeZoneOffset = timeZone ? getTzOffsetMinutesString(timeZone) : undefined;
+    const timeZoneOffset = timeZone ? getTzOffsetMinutesString(timeZone, new Date(value)) : undefined;
     const datePipe = new DatePipe(this.getCurrentLang(), timeZoneOffset);
     return datePipe.transform(value, pattern);
   }
