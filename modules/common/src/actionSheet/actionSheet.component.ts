@@ -14,11 +14,6 @@ import {
 /**
  * It's an alternative for desktop devices to the traditional ActionSheet.
  * It shares (almost) the same inputs so they are interchangeable.
- *
- * Note: this component is instantiated dynamically by `IDEAActionSheetController` through Ionic's
- * `PopoverController` (`componentProps`). With `useSetInputAPI` disabled (the default), Ionic assigns
- * those props via `Object.assign`, which would overwrite signal inputs (`InputSignal`) with plain values.
- * For this reason the inputs below must stay as classic `@Input()` properties.
  */
 @Component({
   selector: 'idea-action-sheet',
@@ -109,6 +104,12 @@ import {
     `
   ]
 })
+/**
+ * Note: this component is instantiated dynamically by `IDEAActionSheetController` through Ionic's
+ * `PopoverController` (`componentProps`). With `useSetInputAPI` disabled (the default), Ionic assigns
+ * those props via `Object.assign`, which would overwrite signal inputs (`InputSignal`) with plain values.
+ * For this reason the inputs below must stay as classic `@Input()` properties.
+ */
 export class IDEAActionSheetComponent implements OnInit {
   private _popover = inject(PopoverController);
 
