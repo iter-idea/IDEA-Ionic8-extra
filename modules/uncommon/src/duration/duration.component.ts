@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  OnChanges,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonItem, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { IDEATranslatePipe } from '@idea-ionic/common';
@@ -65,6 +73,7 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
       </ion-label>
     </ion-item>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .durationItem {

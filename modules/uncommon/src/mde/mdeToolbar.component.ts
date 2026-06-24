@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
@@ -11,6 +11,7 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
       ~{{ 'IDEA_UNCOMMON.MDE.TOOLBAR.STRIKE' | translate }}~
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .mdeToolbar {

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   IonContent,
@@ -48,6 +48,7 @@ import { IDEATinCanService } from '../tinCan.service';
       </div>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .echoCard {

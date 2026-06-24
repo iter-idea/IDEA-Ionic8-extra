@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -189,6 +189,7 @@ import { IDEAAuthService } from './auth.service';
       </form>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['auth.scss']
 })
 export class IDEASignUpPage implements OnInit {

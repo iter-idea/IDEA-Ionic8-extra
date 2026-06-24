@@ -114,7 +114,9 @@
       [class.tentative]="Attendance.TENTATIVE === weekEvent.event.attendance"
       [style.border-left-color]="weekEvent.event.color?.primary"
       [style.color]="getAlternateColor(weekEvent.event.color?.primary, darkMode ? 80 : -40)"
-      [style.background-color]="getAlternateColor(weekEvent.event.color?.primary, darkMode ? 60 : 80, 0.2)"
+      [style.background-color]="
+        getAlternateColor(weekEvent.event.color?.primary, darkMode ? 60 : 80, 0.2)
+      "
       [mwlCalendarTooltip]="!tooltipDisabled && !isMobile() ? getTooltipContent(weekEvent.event) : ''"
       [tooltipPlacement]="tooltipPlacement"
       [tooltipEvent]="weekEvent.tempEvent || weekEvent.event"

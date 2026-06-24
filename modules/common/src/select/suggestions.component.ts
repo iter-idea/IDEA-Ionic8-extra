@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   IonInfiniteScroll,
   ModalController,
@@ -48,6 +48,7 @@ const MAX_PAGE_SIZE = 24;
     IDEABoldPrefix
   ],
   templateUrl: 'suggestions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['suggestions.component.scss']
 })
 export class IDEASuggestionsComponent implements OnInit {

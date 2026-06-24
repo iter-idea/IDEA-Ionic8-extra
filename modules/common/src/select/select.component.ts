@@ -1,4 +1,13 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  OnChanges,
+  inject,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Suggestion } from 'idea-toolbox';
 
@@ -8,6 +17,7 @@ import { IDEASuggestionsComponent } from './suggestions.component';
   selector: 'idea-select',
   imports: [IonLabel, IonItem, IonButton, IonLabel, IonText, IonIcon],
   templateUrl: 'select.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['select.component.scss']
 })
 export class IDEASelectComponent implements OnChanges {

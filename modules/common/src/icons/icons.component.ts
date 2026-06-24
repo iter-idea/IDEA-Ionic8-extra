@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ModalController,
   IonHeader,
@@ -61,6 +61,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
       </ion-grid>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-grid {

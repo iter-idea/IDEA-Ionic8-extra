@@ -1,5 +1,5 @@
 import heic2any from 'heic2any';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Platform } from '@ionic/angular';
 import { IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSpinner } from '@ionic/angular/standalone';
@@ -114,6 +114,7 @@ import { IDEATinCanService } from '../tinCan.service';
       </ion-item>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .attachments {

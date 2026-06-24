@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 
@@ -37,6 +37,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-card-content>
     </ion-card>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-card.passwordPolicyCard {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ModalController,
   IonHeader,
@@ -39,6 +39,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
     IonHeader
   ],
   templateUrl: 'fromTimeToTime.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['fromTimeToTime.component.scss']
 })
 export class IDEAFromTimeToTimeComponent implements OnInit {

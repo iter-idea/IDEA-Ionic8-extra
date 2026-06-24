@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonAccordionGroup, IonAccordion, IonItem, IonInput, IonList, IonText } from '@ionic/angular/standalone';
 import { Address, Countries, Suggestion } from 'idea-toolbox';
@@ -169,6 +169,7 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-accordion-group>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-item[slot='header'] ion-input {

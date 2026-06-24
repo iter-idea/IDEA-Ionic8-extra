@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
 import { Calendar, ExternalCalendarInfo, ExternalCalendarSources, Membership, Team } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -11,6 +11,7 @@ import { IDEACalendarsService } from './calendars.service';
   standalone: false,
   selector: 'idea-calendar-creation',
   templateUrl: 'calendarCreation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['calendarCreation.component.scss']
 })
 export class IDEACalendarCreationComponent implements OnInit {

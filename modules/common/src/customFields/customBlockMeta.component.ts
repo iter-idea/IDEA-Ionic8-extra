@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -35,6 +35,7 @@ import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
     IonReorderGroup
   ],
   templateUrl: 'customBlockMeta.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['customBlockMeta.component.scss']
 })
 export class IDEACustomBlockMetaComponent {

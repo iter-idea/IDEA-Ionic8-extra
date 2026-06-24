@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   PopoverController,
   IonItem,
@@ -49,6 +49,7 @@ import { Color, COLORS } from 'idea-toolbox';
       }
     </ion-item>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .colorPickerItem {
@@ -181,6 +182,7 @@ export class IDEAColorPickerComponent {
       </ion-grid>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-content {

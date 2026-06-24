@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   AlertController,
   ModalController,
@@ -40,6 +40,7 @@ const MAX_PAGE_SIZE = 24;
     IonItem,
     IonLabel
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">

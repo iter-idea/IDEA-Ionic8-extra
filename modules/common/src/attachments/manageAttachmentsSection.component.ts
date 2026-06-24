@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -46,6 +46,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     IonHeader,
     IonTitle
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">

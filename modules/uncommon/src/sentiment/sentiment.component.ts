@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  inject,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
 import { IonItem, IonSpinner, IonBadge } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
@@ -9,6 +18,7 @@ import { IDEAOfflineService } from '../offline/offline.service';
 @Component({
   selector: 'idea-sentiment',
   imports: [IDEATranslatePipe, IonBadge, IonSpinner, IonItem],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (text && _offline.isOnline()) {
       <ion-item [lines]="lines" [color]="color">

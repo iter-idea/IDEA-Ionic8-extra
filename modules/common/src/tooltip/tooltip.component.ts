@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 
@@ -17,6 +17,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .tooltipContainer {

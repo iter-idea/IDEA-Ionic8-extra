@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -46,6 +46,7 @@ const SUNDAY = 259200000;
     IonHeader
   ],
   templateUrl: 'calendarPicker.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['calendarPicker.component.scss']
 })
 export class IDEACalendarPickerComponent implements OnInit {

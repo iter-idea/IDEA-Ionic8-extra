@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
@@ -51,6 +51,7 @@ import { IDEAListElementsComponent } from './listElements.component';
       }
     </ion-item>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .listItem {

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Check } from 'idea-toolbox';
 
@@ -51,6 +51,7 @@ import { IDEAChecksComponent } from './checks.component';
       }
     </ion-item>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .checkerItem {

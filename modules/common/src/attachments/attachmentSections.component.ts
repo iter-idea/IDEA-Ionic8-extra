@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -36,6 +36,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     IonAccordionGroup,
     IonAccordion
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (!attachmentSections.sectionsLegend.length) {
       <ion-item lines="none" [color]="color">

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular/standalone';
 import { Calendar } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -11,6 +11,7 @@ import { IDEACalendarsService } from './calendars.service';
   standalone: false,
   selector: 'idea-calendar-item',
   templateUrl: 'calendarItem.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['calendarItem.component.scss']
 })
 export class IDEACalendarItemComponent {

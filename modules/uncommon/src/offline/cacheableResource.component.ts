@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { IonItem, IonLabel, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 
 import { IDEAOfflineDataService, CacheableResource } from './offlineData.service';
@@ -6,6 +6,7 @@ import { IDEAOfflineDataService, CacheableResource } from './offlineData.service
 @Component({
   selector: 'idea-cacheable-resource',
   imports: [IonSpinner, IonIcon, IonLabel, IonItem],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ion-item class="cacheableResourceItem">
       <ion-label>{{ resource.description }}</ion-label>

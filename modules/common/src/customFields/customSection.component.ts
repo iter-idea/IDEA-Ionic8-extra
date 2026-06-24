@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -35,6 +35,7 @@ import { IDEASelectComponent } from '../select/select.component';
     IonCheckbox
   ],
   templateUrl: 'customSection.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['customSection.component.scss']
 })
 export class IDEACustomSectionComponent {

@@ -1,4 +1,13 @@
-import { Component, Input, Output, EventEmitter, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+  OnInit,
+  ViewChild,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonCheckbox,
@@ -46,6 +55,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       <ion-input readonly [labelPlacement]="labelPlacement" [label]="label" [value]="getPreview()" />
     </ion-item>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-icon[icon='caret-down'] {
@@ -268,6 +278,7 @@ export class IDEAInlineCheckerComponent {
       </ion-infinite-scroll>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-list {

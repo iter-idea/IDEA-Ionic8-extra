@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -61,6 +61,7 @@ import { IDEACustomFieldMetaComponent } from './customFieldMeta.component';
     IonTitle
   ],
   templateUrl: 'customSectionMeta.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['customSectionMeta.component.scss']
 })
 export class IDEACustomSectionMetaComponent implements OnInit {

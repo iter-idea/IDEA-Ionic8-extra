@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import {
   IonContent,
@@ -61,6 +61,7 @@ import {
       </ion-grid>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-row.headerRow {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -65,6 +65,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
     IonChip
   ],
   templateUrl: 'pdfTemplate.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['pdfTemplate.component.scss']
 })
 export class IDEAPDFTemplateComponent implements OnInit {
@@ -588,6 +589,7 @@ export interface MoveModeData {
       </ion-grid>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-content {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonButton,
@@ -44,6 +44,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-content>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['auth.scss']
 })
 export class IDEAOktaPage {

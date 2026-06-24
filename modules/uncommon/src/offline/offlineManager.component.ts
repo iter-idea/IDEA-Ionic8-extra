@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -50,6 +50,7 @@ import { IDEACacheableResourceComponent } from './cacheableResource.component';
     IonHeader
   ],
   templateUrl: 'offlineManager.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['offlineManager.component.scss']
 })
 export class IDEAOfflineManagerComponent {

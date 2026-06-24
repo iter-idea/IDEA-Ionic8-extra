@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, OnInit, inject } from '@angular/core';
+import { Component, ViewChild, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonInfiniteScroll,
@@ -164,6 +164,7 @@ const MAX_PAGE_SIZE = 24;
       </ion-infinite-scroll>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-toolbar.secondary {

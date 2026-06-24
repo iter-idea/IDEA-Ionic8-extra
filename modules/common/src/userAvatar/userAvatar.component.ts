@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonAvatar, IonImg } from '@ionic/angular/standalone';
 import { COLORS } from 'idea-toolbox';
@@ -32,6 +32,7 @@ import { COLORS } from 'idea-toolbox';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       div.container {

@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController, AlertController, Platform, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { IDEATranslationsService } from '@idea-ionic/common';
 
@@ -8,6 +8,7 @@ import { IDEAOfflineDataService } from './offlineData.service';
 @Component({
   selector: 'idea-offline-indicator',
   imports: [IonFab, IonFabButton, IonIcon],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (
       _platform.is('mobile') && (_offline.isOffline() || _offline.synchronizing || _offline.requiresManualConfirmation)

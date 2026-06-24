@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   NavController,
   IonContent,
@@ -51,6 +51,7 @@ import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component
       </form>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['auth.scss']
 })
 export class IDEASetupMFAPage {

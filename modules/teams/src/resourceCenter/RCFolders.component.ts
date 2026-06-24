@@ -1,4 +1,4 @@
-import { ViewChild, Component, Input, OnInit, inject } from '@angular/core';
+import { ViewChild, Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
@@ -46,6 +46,7 @@ const MAX_PAGE_SIZE = 24;
     IonHeader,
     IonSearchbar
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">

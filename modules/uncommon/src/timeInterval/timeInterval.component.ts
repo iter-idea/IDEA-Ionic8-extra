@@ -7,7 +7,8 @@ import {
   OnInit,
   OnDestroy,
   OnChanges,
-  inject
+  inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
@@ -62,6 +63,7 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
       }
     </ion-item>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .timeIntervalItem {

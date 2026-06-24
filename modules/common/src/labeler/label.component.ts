@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Label, Languages, mdToHtml, StringVariable } from 'idea-toolbox';
 
@@ -55,6 +55,7 @@ import { IDEALabelerComponent } from './labeler.component';
       <ion-icon slot="end" icon="chevron-forward" class="selectIcon" />
     </ion-item>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       .labelItem {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -63,6 +63,7 @@ import { IDEAIconsComponent } from '../icons/icons.component';
     IonToggle
   ],
   templateUrl: 'customFieldMeta.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['customFieldMeta.component.scss']
 })
 export class IDEACustomFieldMetaComponent implements OnInit {

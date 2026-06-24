@@ -5,6 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": ["amazon-cognito-identity-js"]
+    "types": [
+      "amazon-cognito-identity-js"
+    ]
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { IonCard, IonCardContent, IonButton } from '@ionic/angular/standalone';
 import { Announcement, mdToHtml } from 'idea-toolbox';
 import { IDEAEnvironment, IDEAStorageService, IDEATranslatePipe } from '@idea-ionic/common';
@@ -11,6 +11,7 @@ import { IDEATinCanService } from '../tinCan.service';
 @Component({
   selector: 'idea-announcement',
   imports: [IDEATranslatePipe, IonButton, IonCardContent, IonCard],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (htmlContent) {
       <ion-card class="announcementCard" [color]="color">

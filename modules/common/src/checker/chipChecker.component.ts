@@ -1,4 +1,13 @@
-import { Component, ViewChild, Input, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  inject,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -56,6 +65,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       }
     </ion-chip>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-chip.chipChecker {
@@ -332,6 +342,7 @@ export class IDEAChipCheckerComponent {
       </ion-infinite-scroll>
     </ion-content>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       ion-toolbar.secondary {

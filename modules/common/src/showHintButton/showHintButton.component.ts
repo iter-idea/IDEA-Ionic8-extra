@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AlertController, IonButton, IonIcon } from '@ionic/angular/standalone';
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -6,6 +6,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
 @Component({
   selector: 'idea-show-hint-button',
   imports: [IonButton, IonIcon],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ion-button [slot]="slot" [fill]="fill" [color]="color" (click)="showHint($event)">
       <ion-icon [icon]="icon" slot="icon-only" />

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Suggestion } from 'idea-toolbox';
 import { IonButton, IonItem, IonLabel, IonList, IonListHeader, IonPopover } from '@ionic/angular/standalone';
 
@@ -32,6 +32,7 @@ import { IDEATranslatePipe } from './translate.pipe';
       </ng-template>
     </ion-popover>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       img {

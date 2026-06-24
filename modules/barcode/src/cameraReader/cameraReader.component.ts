@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Platform, IonButton } from '@ionic/angular/standalone';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
@@ -7,6 +7,7 @@ const PERMISSION_GRANTED = 'granted';
 @Component({
   selector: 'idea-barcode-camera-reader',
   imports: [IonButton],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (_platform.is('capacitor')) {
       <ion-button [fill]="fill" [color]="color" (click)="startScanWithCamera()">
