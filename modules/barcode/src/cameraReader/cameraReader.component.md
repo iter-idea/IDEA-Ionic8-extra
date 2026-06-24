@@ -6,11 +6,10 @@ idea-barcode-camera-reader
 
 ## Inputs
 
-- `fill` (*string*) - The button's fill.
-- `color` (*string*) - The button's color.
-- `isScanning` (*boolean*) - Whether the barcode reader is currently scanning.
+- `fill` (_string_) - The button's fill.
+- `color` (_string_) - The button's color.
+- `isScanning` (_boolean_) - Whether the barcode reader is currently scanning.
 
 ## Outputs
 
-- `isScanningChange` (*EventEmitter<boolean>*) 
-- `scan` (*EventEmitter<string>*) - Output the result read by the scanner.
+- `scan` (_string_) - Output the result read by the scanner.

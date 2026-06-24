@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -48,7 +47,6 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
   imports: [
     IonItem,
     IonButtons,
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
@@ -66,6 +64,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
     IonCol,
     IonChip
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'pdfTemplate.component.html',
   styleUrls: ['pdfTemplate.component.scss']
 })
@@ -80,18 +79,20 @@ export class IDEAPDFTemplateComponent implements OnInit {
   /**
    * The blueprint to define the allowed sections and fields for this PDF template.
    */
-  @Input() blueprint: PDFTemplateBlueprint;
+  readonly blueprint = input<PDFTemplateBlueprint>();
   /**
    * The PDF template to manage, as list of sections.
    */
-  @Input() template: PDFTemplateSection[];
+  readonly template = input<PDFTemplateSection[]>();
   /**
    * Language preferences.
    */
-  @Input() languages: Languages;
+  readonly languages = input<Languages>();
   /**
    * If true, the component is disabled.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() disabled = false;
 
   /**
@@ -110,9 +111,9 @@ export class IDEAPDFTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     // work on a copy
-    this._template = (this.template || []).map(section => new PDFTemplateSection(section, this.languages));
+    this._template = (this.template() || []).map(section => new PDFTemplateSection(section, this.languages()));
     // prepare the stack (base level, i.e. the main template), to view and manage inner sections
-    this.stack = [{ blueprint: this.blueprint, template: this._template }];
+    this.stack = [{ blueprint: this.blueprint(), template: this._template }];
   }
 
   getCurrentLayer(): PDFTemplateLayer {
@@ -155,22 +156,22 @@ export class IDEAPDFTemplateComponent implements OnInit {
     buttons.push({
       text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.NORMAL_ROW'),
       icon: 'apps',
-      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.ROW }, this.languages))
+      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.ROW }, this.languages()))
     });
     buttons.push({
       text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.HEADER'),
       icon: 'bookmark',
-      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.HEADER }, this.languages))
+      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.HEADER }, this.languages()))
     });
     buttons.push({
       text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW'),
       icon: 'code',
-      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.BLANK_ROW }, this.languages))
+      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.BLANK_ROW }, this.languages()))
     });
     buttons.push({
       text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK'),
       icon: 'code-slash',
-      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.PAGE_BREAK }, this.languages))
+      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.PAGE_BREAK }, this.languages()))
     });
 
     // add the inner and repeated sections, based on the blueprint
@@ -184,7 +185,7 @@ export class IDEAPDFTemplateComponent implements OnInit {
             this.addSectionHelper(
               new PDFTemplateSection(
                 { type: ib.type, description: ib.description, context: ib.context },
-                this.languages
+                this.languages()
               )
             )
         });
@@ -200,7 +201,7 @@ export class IDEAPDFTemplateComponent implements OnInit {
     // complete the section, based on its type
     switch (section.type) {
       case this.ST.HEADER:
-        section.title[this.languages.default] = this._translate._('IDEA_COMMON.PDF_TEMPLATE.NEW_HEADER');
+        section.title[this.languages().default] = this._translate._('IDEA_COMMON.PDF_TEMPLATE.NEW_HEADER');
         break;
     }
     // add the new section to the current template
@@ -302,15 +303,15 @@ export class IDEAPDFTemplateComponent implements OnInit {
   private addSimpleField(section: PDFTemplateSection, colIndex: number): void {
     // let the user pick a variable from the list available on this layer, and add a simple field to the desired column
     this.pickVariableFromList(
-      variable => (section.columns[colIndex] = new PDFTemplateSimpleField(variable, this.languages))
+      variable => (section.columns[colIndex] = new PDFTemplateSimpleField(variable, this.languages()))
     );
   }
   private addComplexField(section: PDFTemplateSection, colIndex: number): void {
     // init the content of a new complex field
-    const content = new Label(null, this.languages);
-    content[this.languages.default] = '--';
+    const content = new Label(null, this.languages());
+    content[this.languages().default] = '--';
     // set the field in the chosen column of the section
-    section.columns[colIndex] = new PDFTemplateComplexField({ content }, this.languages);
+    section.columns[colIndex] = new PDFTemplateComplexField({ content }, this.languages());
     // directly open the field
     this.openField(section, colIndex);
   }
@@ -494,7 +495,7 @@ export class IDEAPDFTemplateComponent implements OnInit {
   private checkErrorsOnCurrentLayer(): void {
     this.errors = new Set<string>();
     this.getCurrentLayer().template.forEach((s, i): void => {
-      s.validate(this.languages, this.getCurrentLayer().blueprint.variables).forEach(e => {
+      s.validate(this.languages(), this.getCurrentLayer().blueprint.variables).forEach(e => {
         // highlight a specific column of a section of type ROW
         if (e.startsWith('columns[')) this.errors.add(`s[${i}].${e}`);
         // highlight the entire section
@@ -508,8 +509,8 @@ export class IDEAPDFTemplateComponent implements OnInit {
     this.checkErrorsOnCurrentLayer();
     if (this.errors.size) return this._message.error('IDEA_COMMON.PDF_TEMPLATE.ONE_OR_MORE_SECTIONS_HAVE_ERRORS');
     // save changes (without losing reference of the original array) and close
-    this.template.splice(0, this.template.length);
-    this._template.forEach(section => this.template.push(new PDFTemplateSection(section, this.languages)));
+    this.template().splice(0, this.template().length);
+    this._template.forEach(section => this.template().push(new PDFTemplateSection(section, this.languages())));
     this.close();
   }
   close(): void {
@@ -554,35 +555,36 @@ export interface MoveModeData {
  */
 @Component({
   selector: 'idea-pdf-template-field-resize',
-  imports: [CommonModule, IDEATranslatePipe, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonLabel],
+  imports: [IDEATranslatePipe, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonLabel],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <ion-grid>
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
-            <ion-button size="small" [disabled]="size === 1" (click)="shrink()">
+            <ion-button size="small" [disabled]="size() === 1" (click)="shrink()">
               <ion-icon name="remove" slot="icon-only" />
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center">
             <ion-label>
-              {{ 'IDEA_COMMON.PDF_TEMPLATE.SIZE' | translate }}: <b>{{ size }}</b>
+              {{ 'IDEA_COMMON.PDF_TEMPLATE.SIZE' | translate }}: <b>{{ size() }}</b>
             </ion-label>
           </ion-col>
           <ion-col class="ion-text-center">
-            <ion-button size="small" [disabled]="size === max" (click)="grow()">
+            <ion-button size="small" [disabled]="size() === max()" (click)="grow()">
               <ion-icon name="add" slot="icon-only" />
             </ion-button>
           </ion-col>
         </ion-row>
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
-            <ion-button size="small" color="secondary" [disabled]="size === 1" (click)="shrinkToMin()">
+            <ion-button size="small" color="secondary" [disabled]="size() === 1" (click)="shrinkToMin()">
               <ion-icon name="contract" slot="icon-only" />
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center">
-            <ion-button size="small" color="secondary" [disabled]="size === max" (click)="growToMax()">
+            <ion-button size="small" color="secondary" [disabled]="size() === max()" (click)="growToMax()">
               <ion-icon name="expand" slot="icon-only" />
             </ion-button>
           </ion-col>
@@ -602,36 +604,36 @@ export class IDEAPDFTemplateFieldResizeComponent {
   /**
    * The columns of the section containing the field.
    */
-  @Input() columns: string[];
+  readonly columns = input<string[]>();
   /**
    * The current position of the field.
    */
-  @Input() colIndex: number;
+  readonly colIndex = input<number>();
   /**
    * The current size of the field.
    */
-  @Input() size: number;
+  readonly size = model<number>();
   /**
    * The max size to which the field can grow.
    */
-  @Input() max: number;
+  readonly max = input<number>();
 
   grow(): void {
-    if (this.size < this.max && !this.columns[this.colIndex + this.size]) {
-      this.columns[this.colIndex + this.size] = '-';
-      this.size++;
+    if (this.size() < this.max() && !this.columns()[this.colIndex() + this.size()]) {
+      this.columns()[this.colIndex() + this.size()] = '-';
+      this.size.set(this.size() + 1);
     }
   }
   growToMax(): void {
-    while (this.size < this.max) this.grow();
+    while (this.size() < this.max()) this.grow();
   }
   shrink(): void {
-    if (this.size > 1 && this.columns[this.colIndex + this.size - 1] === '-') {
-      this.columns[this.colIndex + this.size - 1] = null;
-      this.size--;
+    if (this.size() > 1 && this.columns()[this.colIndex() + this.size() - 1] === '-') {
+      this.columns()[this.colIndex() + this.size() - 1] = null;
+      this.size.set(this.size() - 1);
     }
   }
   shrinkToMin(): void {
-    while (this.size > 1) this.shrink();
+    while (this.size() > 1) this.shrink();
   }
 }

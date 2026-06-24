@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonButton,
@@ -14,6 +14,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 @Component({
   selector: 'okta',
   imports: [IDEATranslatePipe, IonContent, IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardContent, IonButton],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (!code && !go) {
       <ion-content>

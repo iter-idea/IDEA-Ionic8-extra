@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, viewChild, input } from '@angular/core';
 import {
   AlertController,
   ModalController,
@@ -27,7 +26,6 @@ const MAX_PAGE_SIZE = 24;
 @Component({
   selector: 'idea-list-elements',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonSearchbar,
     IonHeader,
@@ -42,6 +40,7 @@ const MAX_PAGE_SIZE = 24;
     IonItem,
     IonLabel
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -52,7 +51,7 @@ const MAX_PAGE_SIZE = 24;
         </ion-buttons>
         <ion-searchbar
           #searchbar
-          [placeholder]="searchPlaceholder || ('COMMON.SEARCH' | translate)"
+          [placeholder]="searchPlaceholder() || ('COMMON.SEARCH' | translate)"
           (ionInput)="search($event.target.value)"
         />
         <ion-buttons slot="end">
@@ -70,14 +69,14 @@ const MAX_PAGE_SIZE = 24;
         @if (!filteredList.length) {
           <ion-item lines="none">
             <ion-label>
-              <i>{{ noElementsFoundText || ('IDEA_COMMON.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
+              <i>{{ noElementsFoundText() || ('IDEA_COMMON.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
             </ion-label>
           </ion-item>
         }
         @for (element of filteredList; track element) {
           <ion-item class="listElement">
             <ion-label>{{ getElementName(element) }}</ion-label>
-            @if (labelElements) {
+            @if (labelElements()) {
               <ion-button slot="end" fill="clear" (click)="editElement(element)">
                 <ion-icon icon="pencil-sharp" slot="icon-only" />
               </ion-button>
@@ -108,38 +107,38 @@ export class IDEAListElementsComponent implements OnInit {
   /**
    * It should be read only until the component closure.
    */
-  @Input() data: (Label | string)[];
+  readonly data = input<(Label | string)[]>();
   /**
    * Whether the elements are labels or simple strings.
    */
-  @Input() labelElements: boolean;
+  readonly labelElements = input<boolean>();
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder: string;
+  readonly searchPlaceholder = input<string>();
   /**
    * The text to show in case no element is found after a search.
    */
-  @Input() noElementsFoundText: string;
+  readonly noElementsFoundText = input<string>();
 
   workingData: (Label | string)[];
   filteredList: (Label | string)[];
   currentPage: number;
 
-  @ViewChild('searchbar') searchbar: IonSearchbar;
+  readonly searchbar = viewChild<IonSearchbar>('searchbar');
 
   ngOnInit(): void {
-    this.workingData = Array.from(this.data || (this.labelElements ? new Array<Label>() : new Array<string>()));
+    this.workingData = Array.from(this.data() || (this.labelElements() ? new Array<Label>() : new Array<string>()));
     this.search();
   }
 
   getElementName(x: Label | string): any {
-    return this.labelElements
+    return this.labelElements()
       ? (x as Label).translate(this._translate.getCurrentLang(), this._translate.languages())
       : x;
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredList = (this.workingData || [])
@@ -158,7 +157,7 @@ export class IDEAListElementsComponent implements OnInit {
   }
 
   addElement(): void {
-    if (this.labelElements) {
+    if (this.labelElements()) {
       const l = new Label(null, this._translate.languages());
       l[this._translate.getDefaultLang()] = '-';
       this.workingData.push(l);
@@ -166,11 +165,12 @@ export class IDEAListElementsComponent implements OnInit {
     } else this.addStrElement();
   }
   editElement(element: Label | string): void {
-    if (this.labelElements) this.editLabel(element as Label);
+    if (this.labelElements()) this.editLabel(element as Label);
   }
   removeElement(element: Label | string): void {
     this.workingData.splice(this.workingData.indexOf(element), 1);
-    this.search(this.searchbar ? this.searchbar.value : '');
+    const searchbar = this.searchbar();
+    this.search(searchbar ? searchbar.value : '');
   }
 
   async addStrElement(): Promise<void> {
@@ -184,7 +184,8 @@ export class IDEAListElementsComponent implements OnInit {
           handler: ({ element }): void => {
             if (element && element.trim()) {
               this.workingData.push(element);
-              this.search(this.searchbar ? this.searchbar.value : '');
+              const searchbar = this.searchbar();
+              this.search(searchbar ? searchbar.value : '');
             }
           }
         }
@@ -199,16 +200,20 @@ export class IDEAListElementsComponent implements OnInit {
       component: IDEALabelerComponent,
       componentProps: { label, obligatory: true }
     });
-    modal.onDidDismiss().then((): void => this.search(this.searchbar ? this.searchbar.value : ''));
+    modal.onDidDismiss().then((): void => {
+      const searchbar = this.searchbar();
+      return this.search(searchbar ? searchbar.value : '');
+    });
     modal.present();
   }
 
   close(save?: boolean): void {
     // empty and refill the array without losing the reference
+    const data = this.data();
     if (save) {
-      this.data.length = 0;
-      this.workingData.sort().forEach(x => this.data.push(x));
+      data.length = 0;
+      this.workingData.sort().forEach(x => this.data().push(x));
     }
-    this._modal.dismiss(save ? this.data : null);
+    this._modal.dismiss(save ? data : null);
   }
 }

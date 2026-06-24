@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonAccordionGroup, IonAccordion, IonItem, IonInput, IonList, IonText } from '@ionic/angular/standalone';
 import { Address, Countries, Suggestion } from 'idea-toolbox';
@@ -8,7 +7,6 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
 @Component({
   selector: 'idea-address',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEASelectComponent,
@@ -19,31 +17,32 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
     IonAccordion,
     IonAccordionGroup
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (address) {
       <ion-accordion-group #accordion>
         <ion-accordion value="open">
-          <ion-item slot="header" button [color]="color" [lines]="lines">
+          <ion-item slot="header" button [color]="color()" [lines]="lines()">
             @if (isCollapsed()) {
               <ion-input
                 readonly
                 [labelPlacement]="isCollapsed() ? 'stacked' : ''"
-                [label]="label || ('IDEA_UNCOMMON.ADDRESS.COMPLETE_ADDRESS' | translate)"
+                [label]="label() || ('IDEA_UNCOMMON.ADDRESS.COMPLETE_ADDRESS' | translate)"
                 [title]="'IDEA_UNCOMMON.ADDRESS.COMPLETE_ADDRESS_HINT' | translate"
-                [placeholder]="placeholder"
+                [placeholder]="placeholder()"
                 [value]="address.getFullAddress()"
                 (ionChange)="addressChange.emit(address)"
               />
             }
           </ion-item>
           <ion-list slot="content">
-            @if (showContact) {
-              <ion-item [color]="color">
+            @if (showContact()) {
+              <ion-item [color]="color()">
                 <ion-input
                   autocomplete="new"
                   labelPlacement="stacked"
                   [label]="'IDEA_UNCOMMON.ADDRESS.CONTACT' | translate"
-                  [disabled]="!editMode"
+                  [disabled]="!editMode()"
                   [placeholder]="'IDEA_UNCOMMON.ADDRESS.CONTACT_HINT' | translate"
                   [title]="'IDEA_UNCOMMON.ADDRESS.CONTACT_HINT' | translate"
                   [(ngModel)]="address.contact"
@@ -51,13 +50,13 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
                 />
               </ion-item>
             }
-            @if (showEmail) {
-              <ion-item [color]="color">
+            @if (showEmail()) {
+              <ion-item [color]="color()">
                 <ion-input
                   autocomplete="new"
                   labelPlacement="stacked"
                   [label]="'IDEA_UNCOMMON.ADDRESS.EMAIL' | translate"
-                  [disabled]="!editMode"
+                  [disabled]="!editMode()"
                   [placeholder]="'IDEA_UNCOMMON.ADDRESS.EMAIL_HINT' | translate"
                   [title]="'IDEA_UNCOMMON.ADDRESS.EMAIL_HINT' | translate"
                   [(ngModel)]="address.email"
@@ -65,13 +64,13 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
                 />
               </ion-item>
             }
-            @if (showPhone) {
-              <ion-item [color]="color">
+            @if (showPhone()) {
+              <ion-item [color]="color()">
                 <ion-input
                   autocomplete="new"
                   labelPlacement="stacked"
                   [label]="'IDEA_UNCOMMON.ADDRESS.PHONE' | translate"
-                  [disabled]="!editMode"
+                  [disabled]="!editMode()"
                   [placeholder]="'IDEA_UNCOMMON.ADDRESS.PHONE_HINT' | translate"
                   [title]="'IDEA_UNCOMMON.ADDRESS.PHONE_HINT' | translate"
                   [(ngModel)]="address.phone"
@@ -79,11 +78,11 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
                 />
               </ion-item>
             }
-            <ion-item [color]="color">
+            <ion-item [color]="color()">
               <ion-input
                 autocomplete="new"
                 labelPlacement="stacked"
-                [disabled]="!editMode"
+                [disabled]="!editMode()"
                 [placeholder]="'IDEA_UNCOMMON.ADDRESS.ADDRESS_HINT' | translate"
                 [title]="'IDEA_UNCOMMON.ADDRESS.ADDRESS_HINT' | translate"
                 [(ngModel)]="address.address"
@@ -91,19 +90,19 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
               >
                 <div slot="label">
                   {{ 'IDEA_UNCOMMON.ADDRESS.ADDRESS' | translate }}
-                  @if (editMode && obligatory) {
+                  @if (editMode() && obligatory()) {
                     <ion-text class="obligatoryDot" />
                   }
                 </div>
               </ion-input>
             </ion-item>
-            @if (showAddress2) {
-              <ion-item [color]="color">
+            @if (showAddress2()) {
+              <ion-item [color]="color()">
                 <ion-input
                   autocomplete="new"
                   labelPlacement="stacked"
                   [label]="'IDEA_UNCOMMON.ADDRESS.ADDRESS2' | translate"
-                  [disabled]="!editMode"
+                  [disabled]="!editMode()"
                   [placeholder]="'IDEA_UNCOMMON.ADDRESS.ADDRESS2_HINT' | translate"
                   [title]="'IDEA_UNCOMMON.ADDRESS.ADDRESS2_HINT' | translate"
                   [(ngModel)]="address.address2"
@@ -111,22 +110,22 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
                 />
               </ion-item>
             }
-            <ion-item [color]="color">
+            <ion-item [color]="color()">
               <ion-input
                 autocomplete="new"
                 labelPlacement="stacked"
                 [label]="'IDEA_UNCOMMON.ADDRESS.POSTCODE' | translate"
-                [disabled]="!editMode"
+                [disabled]="!editMode()"
                 [placeholder]="'IDEA_UNCOMMON.ADDRESS.POSTCODE_HINT' | translate"
                 [title]="'IDEA_UNCOMMON.ADDRESS.POSTCODE_HINT' | translate"
                 [(ngModel)]="address.postcode"
                 (ionChange)="addressChange.emit(address)"
               />
             </ion-item>
-            <ion-item [color]="color">
+            <ion-item [color]="color()">
               <ion-input
                 autocomplete="new"
-                [disabled]="!editMode"
+                [disabled]="!editMode()"
                 labelPlacement="stacked"
                 [placeholder]="'IDEA_UNCOMMON.ADDRESS.CITY_HINT' | translate"
                 [title]="'IDEA_UNCOMMON.ADDRESS.CITY_HINT' | translate"
@@ -135,18 +134,18 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
               >
                 <div slot="label">
                   {{ 'IDEA_UNCOMMON.ADDRESS.CITY' | translate }}
-                  @if (editMode && obligatory) {
+                  @if (editMode() && obligatory()) {
                     <ion-text class="obligatoryDot" />
                   }
                 </div>
               </ion-input>
             </ion-item>
-            <ion-item [color]="color">
+            <ion-item [color]="color()">
               <ion-input
                 autocomplete="new"
                 labelPlacement="stacked"
                 [label]="'IDEA_UNCOMMON.ADDRESS.PROVINCE' | translate"
-                [disabled]="!editMode"
+                [disabled]="!editMode()"
                 [placeholder]="'IDEA_UNCOMMON.ADDRESS.PROVINCE_HINT' | translate"
                 [title]="'IDEA_UNCOMMON.ADDRESS.PROVINCE_HINT' | translate"
                 [(ngModel)]="address.province"
@@ -154,16 +153,16 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
               />
             </ion-item>
             <idea-select
-              [color]="color"
+              [color]="color()"
               [data]="countriesSuggestions"
               [label]="'IDEA_UNCOMMON.ADDRESS.COUNTRY' | translate"
-              [lines]="editMode ? lines : null"
+              [lines]="editMode() ? lines() : null"
               [description]="getCountryName(address.country)"
               [placeholder]="'IDEA_UNCOMMON.ADDRESS.COUNTRY_HINT' | translate"
               [searchPlaceholder]="'IDEA_UNCOMMON.ADDRESS.COUNTRY_HINT' | translate"
               [hideIdFromUI]="true"
               [avoidAutoSelection]="true"
-              [disabled]="!editMode"
+              [disabled]="!editMode()"
               (select)="setCountryFromSuggestion($event)"
             />
           </ion-list>
@@ -189,56 +188,58 @@ export class IDEAAddressComponent implements OnInit {
   /**
    * The address to manage.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() address: Address;
-  @Output() addressChange = new EventEmitter<Address>();
+  readonly addressChange = output<Address>();
   /**
    * If true, show the field `contact`.
    */
-  @Input() showContact = false;
+  readonly showContact = input(false);
   /**
    * If true, show the field `address2`.
    */
-  @Input() showAddress2 = false;
+  readonly showAddress2 = input(false);
   /**
    * If true, show the field `phone`.
    */
-  @Input() showPhone = false;
+  readonly showPhone = input(false);
   /**
    * If true, show the field `email`.
    */
-  @Input() showEmail = false;
+  readonly showEmail = input(false);
   /**
    * Whether the fields are editable or disabled.
    */
-  @Input() editMode = true;
+  readonly editMode = input(true);
   /**
    * If true, show obligatory dots.
    */
-  @Input() obligatory = false;
+  readonly obligatory = input(false);
   /**
    * The lines attribute of the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * The label to show for the field; if not set, it has a default value.
    */
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * The placeholder to show for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * To toggle the detailed view.
    */
-  @Input() openByDefault = false;
+  readonly openByDefault = input(false);
 
   countriesSuggestions: Suggestion[];
   Countries = Countries;
-  @ViewChild('accordion') accordion: IonAccordionGroup;
+  readonly accordion = viewChild<IonAccordionGroup>('accordion');
 
   ngOnInit(): void {
     this.countriesSuggestions = Object.keys(Countries).map(
@@ -247,7 +248,7 @@ export class IDEAAddressComponent implements OnInit {
   }
 
   isCollapsed(): boolean {
-    return this.accordion?.value !== 'open';
+    return this.accordion()?.value !== 'open';
   }
 
   getCountryName(countryCode: Countries): string {

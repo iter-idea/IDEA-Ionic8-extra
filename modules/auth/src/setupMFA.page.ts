@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   NavController,
   IonContent,
@@ -17,7 +16,6 @@ import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component
 @Component({
   selector: 'idea-mfa-setup',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IDEASetupMFAButtonComponent,
     IonButton,
@@ -28,6 +26,7 @@ import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component
     IonCard,
     IonContent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <form class="flexBox">

@@ -1,5 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -31,7 +31,6 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
 @Component({
   selector: 'idea-signature',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonHeader,
@@ -49,6 +48,7 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
     IonRow,
     IonCol
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -59,7 +59,7 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
         </ion-buttons>
         <ion-title>{{ 'IDEA_COMMON.SIGNATURE.SIGNATURE' | translate }}</ion-title>
         <ion-buttons slot="end">
-          @if (existingSignature) {
+          @if (existingSignature()) {
             <ion-button [title]="'IDEA_COMMON.SIGNATURE.CLEAR_SIGNATURE' | translate" (click)="undo()">
               <ion-icon icon="arrow-undo" slot="icon-only" />
             </ion-button>
@@ -85,7 +85,7 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
             [class.fieldHasError]="signatoryError"
             [(ngModel)]="signature.signatory"
           />
-          @if (contacts.length && canEdit()) {
+          @if (contacts().length && canEdit()) {
             <ion-button
               fill="clear"
               color="dark"
@@ -153,15 +153,15 @@ export class IDEASignatureComponent {
   /**
    * An existing signature to use.
    */
-  @Input() existingSignature: Signature;
+  readonly existingSignature = input<Signature>();
   /**
    * Whether it is possible or not to edit an existing signature.
    */
-  @Input() preventEditing: boolean;
+  readonly preventEditing = input<boolean>();
   /**
    * A list of contacts that could be the signatory of this signature.
    */
-  @Input() contacts: string[];
+  readonly contacts = input<string[]>();
 
   signature = new Signature();
   canvas: HTMLCanvasElement | null = null;
@@ -175,25 +175,27 @@ export class IDEASignatureComponent {
     this.pad = new SignaturePad(this.canvas);
     this.resizeCanvas();
     // in case a signature already exists, show it
-    if (this.existingSignature) {
-      this.signature.load(this.existingSignature);
+    const existingSignature = this.existingSignature();
+    if (existingSignature) {
+      this.signature.load(existingSignature);
       this.pad.fromDataURL(this.signature.pngURL);
       if (this.canEdit()) this.pad.on();
       else this.pad.off();
     }
     // pre-load the first contact, if any (and the signatory isn't already filled out)
-    if (this.contacts.length && !this.signature.signatory) this.signature.signatory = this.contacts[0];
+    const contacts = this.contacts();
+    if (contacts.length && !this.signature.signatory) this.signature.signatory = contacts[0];
   }
 
   canEdit(): boolean {
-    return !this.existingSignature || !this.preventEditing;
+    return !this.existingSignature() || !this.preventEditing();
   }
 
   async pickSignatory(): Promise<void> {
     const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
       componentProps: {
-        data: (this.contacts || []).map(c => new Suggestion({ value: c })),
+        data: (this.contacts() || []).map(c => new Suggestion({ value: c })),
         searchPlaceholder: this._translate._('IDEA_COMMON.SIGNATURE.CHOOSE_A_SIGNATORY'),
         hideClearButton: true
       }

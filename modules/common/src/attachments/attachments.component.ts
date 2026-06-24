@@ -1,6 +1,6 @@
-import { Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, inject, Input, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import {
   IonButton,
   IonIcon,
@@ -24,7 +24,6 @@ import { IDEAAttachmentsService } from './attachments.service';
 
 @Component({
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonItem,
@@ -39,11 +38,12 @@ import { IDEAAttachmentsService } from './attachments.service';
     IonReorder
   ],
   selector: 'idea-attachments',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderAttachments($event)">
+    <ion-reorder-group [disabled]="disabled()" (ionItemReorder)="reorderAttachments($event)">
       @for (att of attachments; track att.attachmentId) {
-        <ion-item class="attachmentItem" [color]="color" [lines]="!disabled ? 'inset' : 'none'">
-          @if (!disabled) {
+        <ion-item class="attachmentItem" [color]="color()" [lines]="!disabled() ? 'inset' : 'none'">
+          @if (!disabled()) {
             <ion-reorder slot="start" />
             <ion-input [(ngModel)]="att.name" />
             <ion-note slot="end">.{{ att.format }}</ion-note>
@@ -80,8 +80,8 @@ import { IDEAAttachmentsService } from './attachments.service';
           }
         </ion-item>
       } @empty {
-        @if (disabled) {
-          <ion-item lines="none" [color]="color">
+        @if (disabled()) {
+          <ion-item lines="none" [color]="color()">
             <ion-label>
               <i>{{ 'IDEA_COMMON.ATTACHMENTS.NO_ATTACHMENTS' | translate }}</i>
             </ion-label>
@@ -89,14 +89,14 @@ import { IDEAAttachmentsService } from './attachments.service';
         }
       }
     </ion-reorder-group>
-    @if (!disabled) {
-      <ion-item button [color]="color" (click)="browseFiles()">
+    @if (!disabled()) {
+      <ion-item button [color]="color()" (click)="browseFiles()">
         <input
           #filePicker
           type="file"
           style="display: none"
-          [multiple]="multiple"
-          [accept]="acceptedFormats.join(',')"
+          [multiple]="multiple()"
+          [accept]="acceptedFormats().join(',')"
           (change)="addAttachmentsFromPicker($event.target)"
         />
         <ion-label>
@@ -104,7 +104,7 @@ import { IDEAAttachmentsService } from './attachments.service';
         </ion-label>
       </ion-item>
       @for (err of uploadErrors; track $index) {
-        <ion-item class="attachmentItem error" [color]="color">
+        <ion-item class="attachmentItem error" [color]="color()">
           <ion-label color="danger" class="ion-text-wrap">
             {{ err.file }}
             <p>{{ err.error || ('IDEA_COMMON.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT' | translate) }}</p>
@@ -120,11 +120,11 @@ import { IDEAAttachmentsService } from './attachments.service';
           </ion-button>
         </ion-item>
       }
-      <ion-item-divider [color]="color">
+      <ion-item-divider [color]="color()">
         <ion-label>
           {{
             'IDEA_COMMON.ATTACHMENTS.ALLOWED_FORMATS_AND_SIZE'
-              | translate: { formats: acceptedFormats.join(', '), size: maxSize }
+              | translate: { formats: acceptedFormats().join(', '), size: maxSize }
           }}
         </ion-label>
       </ion-item-divider>
@@ -158,39 +158,41 @@ export class IDEAAttachmentsComponent {
   /**
    * The array of attachments to display and manage.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() attachments: Attachment[];
   /**
    * The API path to the entity for which we want to manage the attachments.
    */
-  @Input() entityPath: string | string[];
+  readonly entityPath = input<string | string[]>();
   /**
    * The list of accepted formats.
    */
-  @Input() acceptedFormats = ['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx'];
+  readonly acceptedFormats = input(['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx']);
   /**
    * Whether to accept multiple files as target for the browse function.
    */
-  @Input() multiple = false;
+  readonly multiple = input(false);
   /**
    * Whether we are viewing or editing the attachments.
    */
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * The background color of the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * Trigger to download a file by URL.
    */
-  @Output() download = new EventEmitter<string>();
+  readonly download = output<string>();
 
-  @ViewChild('filePicker') attachmentPicker: any;
+  readonly attachmentPicker = viewChild<any>('filePicker');
 
   uploadErrors: UploadError[] = [];
   maxSize = this._env.idea.app.maxFileUploadSizeMB;
 
   async browseFiles(): Promise<void> {
-    this.attachmentPicker.nativeElement.click();
+    this.attachmentPicker().nativeElement.click();
   }
   addAttachmentsFromPicker(target: HTMLInputElement): void {
     this.uploadErrors = [];
@@ -207,7 +209,7 @@ export class IDEAAttachmentsComponent {
   private async addAttachmentToListAndUpload(attachment: Attachment, file: File): Promise<void> {
     try {
       this.attachments.push(attachment);
-      attachment.attachmentId = await this._attachments.uploadAndGetId(file, this.entityPath);
+      attachment.attachmentId = await this._attachments.uploadAndGetId(file, this.entityPath());
     } catch (err: any) {
       if (err.message === 'File is too big')
         err.message = this._translate._('IDEA_COMMON.ATTACHMENTS.FILE_IS_TOO_BIG', { maxSize: this.maxSize });
@@ -232,7 +234,7 @@ export class IDEAAttachmentsComponent {
   async downloadAttachment(attachment: Attachment): Promise<void> {
     try {
       await this._loading.show();
-      const url = await this._attachments.getDownloadURL(attachment, this.entityPath);
+      const url = await this._attachments.getDownloadURL(attachment, this.entityPath());
       this.download.emit(url);
     } catch (error) {
       this._message.error('COMMON.OPERATION_FAILED');

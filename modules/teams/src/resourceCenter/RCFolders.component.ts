@@ -1,5 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { ViewChild, Component, Input, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  inject,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  viewChild,
+  input
+} from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
@@ -30,7 +38,6 @@ const MAX_PAGE_SIZE = 24;
 @Component({
   selector: 'idea-rc-folders',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonSkeletonText,
     IonInfiniteScroll,
@@ -48,6 +55,7 @@ const MAX_PAGE_SIZE = 24;
     IonHeader,
     IonSearchbar
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -62,7 +70,7 @@ const MAX_PAGE_SIZE = 24;
           (ionInput)="search($event.target ? $event.target.value : '')"
         />
         <ion-buttons slot="end">
-          @if (admin) {
+          @if (admin()) {
             <ion-button
               [disabled]="_offline.isOffline()"
               [title]="'IDEA_TEAMS.RESOURCE_CENTER.CREATE_NEW_FOLDER' | translate"
@@ -132,21 +140,24 @@ export class IDEARCFoldersComponent implements OnInit {
   private _translate = inject(IDEATranslationsService);
   private _API = inject(IDEAAWSAPIService);
   _offline = inject(IDEAOfflineService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() teamId: string;
   /**
    * Whether the user has permissions to manage the resource center.
    */
-  @Input() admin: boolean;
+  readonly admin = input<boolean>();
 
   folders: RCFolder[];
   filteredFolders: RCFolder[];
   currentPage: number;
 
-  @ViewChild('searchbar') searchbar: IonSearchbar;
+  readonly searchbar = viewChild<IonSearchbar>('searchbar');
 
   ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
@@ -159,13 +170,15 @@ export class IDEARCFoldersComponent implements OnInit {
         useCache: getFromNetwork ? CacheModes.NETWORK_FIRST : CacheModes.CACHE_FIRST
       });
       this.folders = folders.map(f => new RCFolder(f));
-      this.search(this.searchbar ? this.searchbar.value : null);
+      const searchbar = this.searchbar();
+      this.search(searchbar ? searchbar.value : null);
+      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST');
     }
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredFolders = (this.folders || [])
@@ -180,7 +193,7 @@ export class IDEARCFoldersComponent implements OnInit {
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
-  doRefresh(refresher?: IonRefresher): void {
+  doRefresh(refresher?: HTMLIonRefresherElement): void {
     this.filteredFolders = null;
     setTimeout((): void => {
       this.loadFolders(Boolean(refresher));
@@ -190,11 +203,11 @@ export class IDEARCFoldersComponent implements OnInit {
 
   openFolder(folder: RCFolder): void {
     this._modal
-      .create({ component: IDEARCResourcesComponent, componentProps: { folder, admin: this.admin } })
+      .create({ component: IDEARCResourcesComponent, componentProps: { folder, admin: this.admin() } })
       .then(modal => modal.present());
   }
   async newFolder(): Promise<void> {
-    if (!this.admin) return;
+    if (!this.admin()) return;
 
     const doCreate = async ({ name }: any): Promise<void> => {
       if (!name) return;
@@ -228,7 +241,7 @@ export class IDEARCFoldersComponent implements OnInit {
 
   async renameFolder(folder: RCFolder, event?: any): Promise<void> {
     if (event) event.stopPropagation();
-    if (!this.admin) return;
+    if (!this.admin()) return;
 
     const doRemove = async ({ name }: any): Promise<void> => {
       if (!name) return;
@@ -264,7 +277,7 @@ export class IDEARCFoldersComponent implements OnInit {
   }
   async deleteFolder(folder: RCFolder, event?: any): Promise<void> {
     if (event) event.stopPropagation();
-    if (!this.admin) return;
+    if (!this.admin()) return;
 
     const doDelete = async (): Promise<void> => {
       try {

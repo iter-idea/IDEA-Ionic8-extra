@@ -76,7 +76,7 @@
         </ion-col>
       </ion-row>
       <ion-row class="ion-align-items-center">
-        @if (!onlyExternalCalendars) {
+        @if (!onlyExternalCalendars()) {
           <ion-col class="ion-text-center" [size]="12">
             <ion-card class="step2" [button]="true" (click)="saveNewCalendar()">
               <ion-card-header>

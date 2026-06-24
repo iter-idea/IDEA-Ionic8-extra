@@ -6,7 +6,6 @@ idea-offline-indicator
 
 ## Inputs
 
-- `vertical` (*string*) - Vertical position.
-- `horizontal` (*string*) - Horizontal position.
-- `edge` (*boolean*) - Whether it is positionated on an edge.
-
+- `vertical` (_string_) - Vertical position.
+- `horizontal` (_string_) - Horizontal position.
+- `edge` (_boolean_) - Whether it is positionated on an edge.

@@ -1,19 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, output, input } from '@angular/core';
 
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 
 @Component({
   selector: 'app-tooltip',
   imports: [IDEATranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="tooltipContainer" (mouseleave)="onTooltipMouseLeave()">
       <span class="closeButton" (click)="onClose()">×</span>
-      @if (title) {
-        <div class="tooltipTitle">{{ title }}</div>
+      @if (title()) {
+        <div class="tooltipTitle">{{ title() }}</div>
       }
-      <div class="tooltipText">{{ text }}</div>
-      @if (link) {
-        <a [href]="link" target="_blank" class="tooltipLink">{{ 'IDEA_COMMON.TOOLTIP.LEARN_MORE' | translate }}</a>
+      <div class="tooltipText">{{ text() }}</div>
+      @if (link()) {
+        <a [href]="link()" target="_blank" class="tooltipLink">{{ 'IDEA_COMMON.TOOLTIP.LEARN_MORE' | translate }}</a>
       }
     </div>
   `,
@@ -59,19 +60,19 @@ export class IDEATooltipComponent {
   /**
    * The tooltip title.
    */
-  @Input() title = '';
+  readonly title = input('');
   /**
    * The tooltip text.
    */
-  @Input() text = '';
+  readonly text = input('');
   /**
    * The tooltip link.
    */
-  @Input() link = '';
+  readonly link = input('');
   /**
    * The tooltip close event.
    */
-  @Output() closed = new EventEmitter<void>();
+  readonly closed = output<void>();
 
   onTooltipMouseLeave(): void {
     this.onClose();

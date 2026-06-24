@@ -29,6 +29,30 @@ npm i --save @idea-ionic/<module>
 
 Make sure to install to follow the instructions of each specific module.
 
+## Develop
+
+This is a single Angular CLI workspace: every dependency lives in the **root** `package.json`, and the libraries are built from the root — sibling `@idea-ionic/*` packages resolve from the locally-built `dist/` via tsconfig `paths`. The per-module `package.json` files only declare what **consumers** need (peer dependencies); they are **not** meant to be installed individually.
+
+Install once, from the repository root — do **not** run `npm i` inside `modules/*`:
+
+```
+npm ci
+```
+
+Build the libraries in dependency order (`common` and `uncommon` first); `build:all` encodes that order:
+
+```
+npm run build:all      # build every module, in order
+ng build common        # or a single module — build its @idea-ionic/* dependencies first
+```
+
+Lint and format:
+
+```
+npm run lint
+npm run format         # write changes; or `npm run format:check` to verify
+```
+
 ## Release
 
 _**Note well: before to release, test everything and make a pull request with the changes to be approved.**_

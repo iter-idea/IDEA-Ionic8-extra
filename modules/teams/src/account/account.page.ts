@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -31,7 +30,6 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
 @Component({
   selector: 'account',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonLabel,
@@ -48,6 +46,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
     IonHeader,
     IonList
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -205,7 +204,9 @@ export class IDEAAccountPage implements OnInit {
   async updatePassword(): Promise<void> {
     const doUpdate = async ({ old, newP, new2 }: any): Promise<void> => {
       if (newP.length < 8)
-        this._message.warning(this._translate._('IDEA_TEAMS.ACCOUNT.INVALID_PASSWORD', { n: 8 }), true);
+        this._message.warning(this._translate._('IDEA_TEAMS.ACCOUNT.INVALID_PASSWORD', { n: 8 }), {
+          dontTranslate: true
+        });
       else if (newP !== new2) this._message.warning('IDEA_TEAMS.ACCOUNT.PASSWORD_CONFIRMATION_DONT_MATCH');
       else {
         try {

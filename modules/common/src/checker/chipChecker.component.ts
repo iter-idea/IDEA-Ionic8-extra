@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -30,6 +30,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
 @Component({
   imports: [IonChip, IonIcon, IonLabel, IonText, IonButton],
   selector: 'idea-chip-checker',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let active = someChecked();
     <ion-chip
@@ -37,19 +38,19 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       class="chipChecker"
       [class.active]="active"
       [class.inactive]="!active"
-      [color]="active ? color : inactiveColor"
-      [disabled]="disabled || isOpening"
+      [color]="active ? color() : inactiveColor()"
+      [disabled]="disabled() || isOpening"
       (click)="openChecker($event)"
       (keyup.enter)="openChecker($event)"
     >
       @if (icon) {
-        <ion-icon [icon]="icon" [color]="iconColor" />
+        <ion-icon [icon]="icon" [color]="iconColor()" />
       }
       <ion-label>
-        <ion-text class="chipCheckerLabel">{{ label }}:</ion-text>
+        <ion-text class="chipCheckerLabel">{{ label() }}:</ion-text>
         <ion-text class="chipCheckerText">{{ getPreview() }}</ion-text>
       </ion-label>
-      @if (resetButton && active) {
+      @if (resetButton() && active) {
         <ion-button size="small" fill="clear" (click)="resetChecks($event)">
           <ion-icon icon="close-circle" slot="icon-only" size="small" />
         </ion-button>
@@ -81,116 +82,119 @@ export class IDEAChipCheckerComponent {
   /**
    * The checks to show.
    */
-  @Input() data: Check[] = [];
+  readonly data = input<Check[]>([]);
   /**
    * The label for the field.
    */
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * The icon for the field.
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder: string;
+  readonly searchPlaceholder = input<string>();
   /**
    * If true, show the string instead of the preview text.
    */
-  @Input() noPreviewText: string;
+  readonly noPreviewText = input<string>();
   /**
    * The text to show in case no element is found after a search.
    */
-  @Input() noElementsFoundText: string;
+  readonly noElementsFoundText = input<string>();
   /**
    * If true, no elements selected equals all the elements selected.
    */
-  @Input() noneEqualsAll: boolean;
+  readonly noneEqualsAll = input<boolean>();
   /**
    * If no element is selected, set this custom text.
    */
-  @Input() noneText: string;
+  readonly noneText = input<string>();
   /**
    * If all the elements are selected, set this custom text.
    */
-  @Input() allText: string;
+  readonly allText = input<string>();
   /**
    * The translation key to get the preview text; it has a `num` variable available.
    */
-  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
+  readonly previewTextKey = input('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED');
   /**
    * The color for the component.
    */
-  @Input() color = 'primary';
+  readonly color = input('primary');
   /**
    * The color for the inactive component.
    */
-  @Input() inactiveColor = 'dark';
+  readonly inactiveColor = input('dark');
   /**
    * If true, the component is disabled.
    */
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * If true, sort alphabetically the data.
    */
-  @Input() sortData: boolean;
+  readonly sortData = input<boolean>();
   /**
    * Whether to always show the `value`, even when the `name` is set.
    */
-  @Input() alwaysShowValue = false;
+  readonly alwaysShowValue = input(false);
   /**
    * How many elements to show in the preview before to generalize on the number.
    */
-  @Input() numMaxElementsInPreview = 4;
+  readonly numMaxElementsInPreview = input(4);
   /**
    * Limit the number of selectable elements to the value provided.
    */
-  @Input() limitSelectionToNum: number;
+  readonly limitSelectionToNum = input<number>();
   /**
    * Whether to allow the select/deselect-all buttons.
    */
-  @Input() allowSelectDeselectAll: boolean;
+  readonly allowSelectDeselectAll = input<boolean>();
   /**
    * Whether to show the reset button.
    */
-  @Input() resetButton = true;
+  readonly resetButton = input(true);
   /**
    * Whether to show the check list as a popover.
    * If false, we show a centered modal.
    */
-  @Input() showAsPopover = true;
+  readonly showAsPopover = input(true);
   /**
    * On change event.
    */
-  @Output() change = new EventEmitter<string[]>();
+  readonly change = output<string[]>();
 
   isOpening = false;
 
   async openChecker(event: Event): Promise<void> {
-    if (this.disabled || this.isOpening) return;
+    if (this.disabled() || this.isOpening) return;
     this.isOpening = true;
     const component = IDEAChipChecksComponent;
     const componentProps = {
-      data: this.data,
-      sortData: this.sortData,
-      alwaysShowValue: this.alwaysShowValue,
-      searchPlaceholder: this.searchPlaceholder,
-      noElementsFoundText: this.noElementsFoundText,
-      limitSelectionToNum: this.limitSelectionToNum,
-      allowSelectDeselectAll: this.allowSelectDeselectAll,
-      showAsPopover: this.showAsPopover,
-      previewTextKey: this.previewTextKey
+      data: this.data(),
+      sortData: this.sortData(),
+      alwaysShowValue: this.alwaysShowValue(),
+      searchPlaceholder: this.searchPlaceholder(),
+      noElementsFoundText: this.noElementsFoundText(),
+      limitSelectionToNum: this.limitSelectionToNum(),
+      allowSelectDeselectAll: this.allowSelectDeselectAll(),
+      showAsPopover: this.showAsPopover(),
+      previewTextKey: this.previewTextKey()
     };
     const cssClass = 'chipCheckerPopover';
-    const modal = this.showAsPopover
+    const modal = this.showAsPopover()
       ? await this._popover.create({ component, componentProps, event, cssClass })
       : await this._modal.create({ component, componentProps, cssClass });
     modal.onDidDismiss().then((): void => {
-      const checkValues = this.data.filter(x => x.checked).map(x => x.value as string);
+      const checkValues = this.data()
+        .filter(x => x.checked)
+        .map(x => x.value as string);
       this.change.emit(checkValues);
     });
     modal.present();
@@ -198,33 +202,38 @@ export class IDEAChipCheckerComponent {
   }
 
   getPreview(): string {
-    if (!this.data || !this.data.length) return null;
-    if (this.noPreviewText) return this.noPreviewText;
-    if (this.allText && this.allChecked()) return this.allText;
+    const data = this.data();
+    if (!data || !data.length) return null;
+    const noPreviewText = this.noPreviewText();
+    if (noPreviewText) return noPreviewText;
+    const allText = this.allText();
+    if (allText && this.allChecked()) return allText;
     else {
-      const checked = this.data.filter(x => x.checked);
-      if (this.noneText && checked.length === 0) return this.noneText;
-      if (checked.length && checked.length <= this.numMaxElementsInPreview)
-        return this.data
+      const checked = data.filter(x => x.checked);
+      const noneText = this.noneText();
+      if (noneText && checked.length === 0) return noneText;
+      if (checked.length && checked.length <= this.numMaxElementsInPreview())
+        return data
           .filter(x => x.checked)
-          .slice(0, this.numMaxElementsInPreview)
+          .slice(0, this.numMaxElementsInPreview())
           .map(x => x.name)
           .join(', ');
-      return this._translate._(this.previewTextKey, { num: checked.length });
+      return this._translate._(this.previewTextKey(), { num: checked.length });
     }
   }
   private allChecked(): boolean {
-    return this.data?.every(x => x.checked) || (this.data?.every(x => !x.checked) && this.noneEqualsAll);
+    const data = this.data();
+    return data?.every(x => x.checked) || (data?.every(x => !x.checked) && this.noneEqualsAll());
   }
 
   someChecked(): boolean {
-    return this.data?.some(x => x.checked);
+    return this.data()?.some(x => x.checked);
   }
 
   resetChecks(event: Event): void {
     if (event) event.stopPropagation();
-    this.data?.forEach(x => (x.checked = false));
-    this.change.emit();
+    this.data()?.forEach(x => (x.checked = false));
+    this.change.emit([]);
   }
 }
 
@@ -248,6 +257,7 @@ export class IDEAChipCheckerComponent {
     IonInfiniteScrollContent
   ],
   selector: 'idea-chip-checks',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header class="ion-no-border">
       <ion-toolbar color="ideaToolbar">
@@ -260,14 +270,14 @@ export class IDEAChipCheckerComponent {
           #searchbar
           color="white"
           lines="none"
-          [placeholder]="searchPlaceholder || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
+          [placeholder]="searchPlaceholder() || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
           (ionInput)="search($event.target.value)"
         />
       </ion-toolbar>
-      @if (allowSelectDeselectAll) {
+      @if (allowSelectDeselectAll()) {
         <ion-toolbar color="ideaToolbar" class="secondary">
           <ion-title>
-            {{ previewTextKey | translate: { num: getNumChecked() } }}
+            {{ previewTextKey() | translate: { num: getNumChecked() } }}
             @if (limitSelectionToNum) {
               <span>
                 {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
@@ -295,8 +305,8 @@ export class IDEAChipCheckerComponent {
               <ion-checkbox
                 labelPlacement="end"
                 justify="start"
-                [class.alwaysShowValue]="alwaysShowValue"
-                [helperText]="alwaysShowValue ? check.value : undefined"
+                [class.alwaysShowValue]="alwaysShowValue()"
+                [helperText]="alwaysShowValue() ? check.value : undefined"
                 [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
                 [(ngModel)]="check.checked"
               >
@@ -308,12 +318,12 @@ export class IDEAChipCheckerComponent {
             </ion-item>
           } @else {
             <ion-item color="white" class="chipCheck" button (click)="selectSingle(check)">
-              <ion-label [class.alwaysShowValue]="alwaysShowValue">
+              <ion-label [class.alwaysShowValue]="alwaysShowValue()">
                 @if (check.category1) {
                   <strong>{{ check.category1 }}</strong>
                 }
                 {{ check.name }}
-                @if (alwaysShowValue) {
+                @if (alwaysShowValue()) {
                   <p>{{ check.value }}</p>
                 }
               </ion-label>
@@ -322,7 +332,7 @@ export class IDEAChipCheckerComponent {
         } @empty {
           <ion-item color="white" lines="none">
             <ion-label class="ion-text-center">
-              <i>{{ noElementsFoundText ?? ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
+              <i>{{ noElementsFoundText() ?? ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
             </ion-label>
           </ion-item>
         }
@@ -387,47 +397,50 @@ class IDEAChipChecksComponent implements OnInit {
   /**
    * The data to show.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() data: Check[];
   /**
    * If true, sort alphabetically the data (by name or, fallback, by value).
    */
-  @Input() sortData: boolean;
+  readonly sortData = input<boolean>();
   /**
    * Whether to always show the `value`, even when the `name` is set.
    */
-  @Input() alwaysShowValue = false;
+  readonly alwaysShowValue = input(false);
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder: string;
+  readonly searchPlaceholder = input<string>();
   /**
    * The text to show in case no element is found after a search.
    */
-  @Input() noElementsFoundText: string;
+  readonly noElementsFoundText = input<string>();
   /**
    * The translation key to get the preview text; it has a `num` variable available.
    */
-  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
+  readonly previewTextKey = input('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED');
   /**
    * Limit the number of selectable elements to the value provided.
    * If this number is forced to `1`, the component turns into a single selection.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() limitSelectionToNum: number;
   /**
    * Whether to allow the select/deselect-all buttons.
    */
-  @Input() allowSelectDeselectAll: boolean;
+  readonly allowSelectDeselectAll = input<boolean>();
   /**
    * Whether to show the check list as a popover.
    * If false, we show a centered modal.
    */
-  @Input() showAsPopover: boolean;
+  readonly showAsPopover = input<boolean>();
 
   filteredChecks: Check[];
   currentPage: number;
 
-  @ViewChild('searchbar') searchbar: IonSearchbar;
+  readonly searchbar = viewChild<IonSearchbar>('searchbar');
 
   ngOnInit(): void {
     if (!this.data) this.data = [];
@@ -435,10 +448,10 @@ class IDEAChipChecksComponent implements OnInit {
   }
   ionViewDidEnter(): void {
     // set the focus / open the keyboard when entering the component
-    setTimeout((): Promise<void> => this.searchbar.setFocus(), 100);
+    setTimeout((): Promise<void> => this.searchbar().setFocus(), 100);
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredChecks = this.data
@@ -452,7 +465,7 @@ class IDEAChipChecksComponent implements OnInit {
               .some(f => f.toLowerCase().includes(searchTerm))
           )
       );
-    if (this.sortData) this.filteredChecks = this.filteredChecks.sort((a, b): number => a.name.localeCompare(b.name));
+    if (this.sortData()) this.filteredChecks = this.filteredChecks.sort((a, b): number => a.name.localeCompare(b.name));
 
     if (scrollToNextPage) this.currentPage++;
     else this.currentPage = 0;
@@ -469,7 +482,7 @@ class IDEAChipChecksComponent implements OnInit {
     this.data.forEach(x => (x.checked = false));
     const index = this.data.indexOf(check);
     if (index !== -1) this.data[index].checked = true;
-    this.showAsPopover ? this._popover.dismiss() : this._modal.dismiss();
+    this.showAsPopover() ? this._popover.dismiss() : this._modal.dismiss();
   }
 
   checkAll(check: boolean): void {
@@ -477,6 +490,6 @@ class IDEAChipChecksComponent implements OnInit {
   }
 
   close(): void {
-    this.showAsPopover ? this._popover.dismiss() : this._modal.dismiss();
+    this.showAsPopover() ? this._popover.dismiss() : this._modal.dismiss();
   }
 }

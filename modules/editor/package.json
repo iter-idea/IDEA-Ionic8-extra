@@ -18,17 +18,16 @@
     "url": "https://github.com/iter-idea/IDEA-Ionic8-extra/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^20.1.3",
-    "@angular/core": "^20.1.3",
-    "@angular/forms": "^20.1.3",
-    "@capacitor/core": "^7.4.2",
+    "@angular/common": "^22.0.2",
+    "@angular/core": "^22.0.2",
+    "@angular/forms": "^22.0.2",
+    "@capacitor/core": "^8.4.1",
     "@idea-ionic/common": "^8.x.x",
-    "@ionic/angular": "^8.6.5",
-    "rxjs": "~7.8.0",
-    "zone.js": "~0.15.1"
+    "@ionic/angular": "^8.8.11",
+    "rxjs": "~7.8.0"
   },
   "dependencies": {
-    "@kolkov/angular-editor": "^3.0.0-beta.2",
+    "@kolkov/angular-editor": "^3.0.5",
     "docs-soap": "^1.2.1",
     "tslib": "^2.4.1"
   },

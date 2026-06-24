@@ -6,11 +6,10 @@ idea-send-email
 
 ## Inputs
 
-- `email` (*EmailData*) - The content and receivers of the email.
-- `attachments` (*string[]*) - Visual indicators of the attachments that will be sent.
-- `variables` (*StringVariable[]*) - The variables the user can use for subject and content.
-- `values` (*{ [variable: string]: string | number; }*) - A map of the values to substitute to the variables.
-- `contacts` (*Suggestion[]*) - The suggested contacts for the email composer.
-- `lines` (*string*) - Lines preferences for the items.
-- `disableChangeOfAddresses` (*boolean*) - Whether we want to prevent the user to change the addresses pre-set.
-
+- `email` (_EmailData_) - The content and receivers of the email.
+- `attachments` (_string[]_) - Visual indicators of the attachments that will be sent.
+- `variables` (_StringVariable[]_) - The variables the user can use for subject and content.
+- `values` (_{ [variable: string]: string | number; }_) - A map of the values to substitute to the variables.
+- `contacts` (_Suggestion[]_) - The suggested contacts for the email composer.
+- `lines` (_string_) - Lines preferences for the items.
+- `disableChangeOfAddresses` (_boolean_) - Whether we want to prevent the user to change the addresses pre-set.

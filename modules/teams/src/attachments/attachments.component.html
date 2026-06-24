@@ -1,9 +1,9 @@
-@for (att of attachments; track att; let index = $index; let odd = $odd) {
+@for (att of attachments(); track att; let index = $index; let odd = $odd) {
   <ion-item
     class="attachments"
     [class.fieldHasError]="hasFieldAnError('attachments[' + index + '].attachmentId')"
     [class.odd]="odd"
-    [lines]="lines"
+    [lines]="lines()"
   >
     @if (att.attachmentId && _offline.isOnline()) {
       <ion-button fill="clear" size="small" slot="start" (click)="openAttachment(att)">
@@ -44,7 +44,7 @@
   </ion-item>
 }
 <!----->
-@if (!editMode && !attachments?.length) {
+@if (!editMode && !attachments()?.length) {
   <ion-item lines="none" class="noAttachments">
     <ion-label>
       {{ 'IDEA_TEAMS.ATTACHMENTS.NO_ATTACHMENT' | translate }}
@@ -55,7 +55,7 @@
 @if (editMode) {
   <div>
     @for (err of uploadErrors; track err) {
-      <ion-item class="attachments" [lines]="lines">
+      <ion-item class="attachments" [lines]="lines()">
         <ion-icon name="alert-circle" slot="start" color="danger" />
         <ion-label color="danger">
           {{ err }}

@@ -1,5 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Input,
+  OnInit,
+  inject,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  viewChild,
+  input
+} from '@angular/core';
 import {
   IonInfiniteScroll,
   ModalController,
@@ -31,7 +40,6 @@ const MAX_PAGE_SIZE = 24;
 @Component({
   selector: 'idea-suggestions',
   imports: [
-    CommonModule,
     IonBadge,
     IonLabel,
     IonItem,
@@ -49,6 +57,7 @@ const MAX_PAGE_SIZE = 24;
     IDEATranslatePipe,
     IDEABoldPrefix
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'suggestions.component.html',
   styleUrls: ['suggestions.component.scss']
 })
@@ -56,77 +65,86 @@ export class IDEASuggestionsComponent implements OnInit {
   private _platform = inject(Platform);
   private _modal = inject(ModalController);
   private _storage = inject(IDEAStorageService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The suggestions to show.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() data: Suggestion[] = [];
   /**
    * If true, sort the suggestions alphabetically.
    */
-  @Input() sortData: boolean;
+  readonly sortData = input<boolean>();
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder: string;
+  readonly searchPlaceholder = input<string>();
   /**
    * Text to show when there isn't a result.
    */
-  @Input() noElementsFoundText: string;
+  readonly noElementsFoundText = input<string>();
   /**
    * If true, allows to select a new custom value (outside the suggestions).
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() allowUnlistedValues: boolean;
   /**
    * If `allowUnlistedValues` is set, show this to help users understanding what happens by selecting the unlisted val.
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() allowUnlistedValuesPrefix: string;
   /**
    * If true, doesn't show the id in the UI.
    */
-  @Input() hideIdFromUI: boolean;
+  readonly hideIdFromUI = input<boolean>();
   /**
    * If true, doesn't show the clear button in the header.
    */
-  @Input() hideClearButton: boolean;
+  readonly hideClearButton = input<boolean>();
   /**
    * If true, the user doesn't have the option to cancel the selection: an option must be chosen.
    */
-  @Input() mustChoose: boolean;
+  readonly mustChoose = input<boolean>();
   /**
    * A pre-filter for the category1.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() category1: string;
   /**
    * A pre-filter for the category2.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() category2: string;
   /**
    * Whether tho show the categories filters.
    */
-  @Input() showCategoriesFilters: boolean;
+  readonly showCategoriesFilters = input<boolean>();
   /**
    * An arbitrary number of elements to show in each page; suggested: a multiple of 2, 3 and 4 (good for any UI size).
    */
-  @Input() numPerPage: number;
+  readonly numPerPage = input<number>();
 
   suggestions: Suggestion[] = [];
   currentPage: number;
   activeCategories1: Set<string>;
   activeCategories2: Set<string>;
-  @ViewChild(IonSearchbar) searchbar: IonSearchbar;
+  readonly searchbar = viewChild(IonSearchbar);
   shouldShowDetails: boolean;
   detailsAreAvailable: boolean;
 
   async ngOnInit(): Promise<void> {
-    if (this.sortData)
+    if (this.sortData())
       this.data = this.data.sort((a, b): number =>
         a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
       );
 
     this.loadActiveCategories();
     this.detailsAreAvailable = this.data.some(
-      x => (x.name && !this.hideIdFromUI) || x.category1 || x.category2 || x.description
+      x => (x.name && !this.hideIdFromUI()) || x.category1 || x.category2 || x.description
     );
 
     if (!this.detailsAreAvailable) this.shouldShowDetails = false;
@@ -138,9 +156,10 @@ export class IDEASuggestionsComponent implements OnInit {
       }
     }
     this.search();
+    this._cdr.markForCheck();
   }
   ionViewDidEnter(): void {
-    if (this._platform.is('desktop')) this.searchbar.setFocus();
+    if (this._platform.is('desktop')) this.searchbar().setFocus();
   }
 
   private loadActiveCategories(): void {
@@ -156,7 +175,7 @@ export class IDEASuggestionsComponent implements OnInit {
       .sort()
       .map(x => new Suggestion({ value: x }));
   }
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.suggestions = (this.data || [])
@@ -189,7 +208,8 @@ export class IDEASuggestionsComponent implements OnInit {
       if (data) {
         if (whichCategory === 2) this.category2 = data.value;
         else this.category1 = data.value;
-        this.search(this.searchbar ? this.searchbar.value : null);
+        const searchbar = this.searchbar();
+        this.search(searchbar ? searchbar.value : null);
       }
     });
     modal.present();
@@ -197,7 +217,8 @@ export class IDEASuggestionsComponent implements OnInit {
   resetFilterCategoryN(whichCategory: number): void {
     if (whichCategory === 2) this.category2 = null;
     else this.category1 = null;
-    this.search(this.searchbar ? this.searchbar.value : null);
+    const searchbar = this.searchbar();
+    this.search(searchbar ? searchbar.value : null);
   }
 
   /**

@@ -1,14 +1,14 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
-  Input,
-  Output,
-  EventEmitter,
   SimpleChanges,
   OnInit,
   OnDestroy,
   OnChanges,
-  inject
+  inject,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  output,
+  input
 } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
@@ -19,47 +19,48 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
 
 @Component({
   selector: 'idea-time-interval',
-  imports: [IonLabel, IonText, IonIcon, IonButton, IonItem, CommonModule],
+  imports: [IonLabel, IonText, IonIcon, IonButton, IonItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="timeIntervalItem"
-      [color]="color"
-      [lines]="lines"
-      [button]="!disabled"
+      [color]="color()"
+      [lines]="lines()"
+      [button]="!disabled()"
       [disabled]="isOpening"
-      [title]="placeholder || valueToDisplay || ''"
-      [class.withLabel]="label"
-      (click)="disabled ? doSelectWhenDisabled() : pickTimeInterval()"
+      [title]="placeholder() || valueToDisplay || ''"
+      [class.withLabel]="label()"
+      (click)="disabled() ? doSelectWhenDisabled() : pickTimeInterval()"
     >
-      @if (icon) {
+      @if (icon()) {
         <ion-button
           fill="clear"
           slot="start"
-          [color]="iconColor"
-          [class.marginTop]="label"
+          [color]="iconColor()"
+          [class.marginTop]="label()"
           (click)="doIconSelect($event)"
         >
-          <ion-icon [name]="icon" slot="icon-only" />
+          <ion-icon [name]="icon()" slot="icon-only" />
         </ion-button>
       }
-      @if (label) {
-        <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled">
-          {{ label }}
-          @if (obligatory && !disabled) {
+      @if (label()) {
+        <ion-label position="stacked" [class.selectable]="!disabled() || tappableWhenDisabled()">
+          {{ label() }}
+          @if (obligatory() && !disabled()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
-      <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled">
-        @if (!valueToDisplay && !disabled) {
-          <ion-text class="placeholder" [class.selectable]="!disabled">
-            {{ placeholder }}
+      <ion-label class="description" [class.selectable]="!disabled() || tappableWhenDisabled()">
+        @if (!valueToDisplay && !disabled()) {
+          <ion-text class="placeholder" [class.selectable]="!disabled()">
+            {{ placeholder() }}
           </ion-text>
         }
         {{ valueToDisplay }}
       </ion-label>
-      @if (!disabled) {
-        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      @if (!disabled()) {
+        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled()" />
       }
     </ion-item>
   `,
@@ -103,71 +104,72 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
 export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The time interval to set.
    */
-  @Input() timeInterval: TimeInterval;
+  readonly timeInterval = input<TimeInterval>();
   /**
    * Whether we should start picking the time displaying the afternoon (PM) or the morning (AM, default).
    */
-  @Input() period: Periods = Periods.AM;
+  readonly period = input<Periods>(Periods.AM);
   /**
    * A time to use as lower limit for the possible choices.
    */
-  @Input() notEarlierThan: number;
+  readonly notEarlierThan = input<number>();
   /**
    * A time to use as upper limit for the possible choices.
    */
-  @Input() notLaterThan: number;
+  readonly notLaterThan = input<number>();
   /**
    * The label for the field.
    */
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * The icon for the field.
    */
-  @Input() icon: string;
+  readonly icon = input<string>();
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * A placeholder for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * If true, the component is disabled.
    */
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * If true, the field has a tappable effect when disabled.
    */
-  @Input() tappableWhenDisabled: boolean;
+  readonly tappableWhenDisabled = input<boolean>();
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() obligatory: boolean;
+  readonly obligatory = input<boolean>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * On select event.
    */
-  @Output() select = new EventEmitter<void>();
+  readonly select = output<void>();
   /**
    * Icon select.
    */
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly iconSelect = output<void>();
   /**
    * On select (with the field disabled) event.
    */
-  @Output() selectWhenDisabled = new EventEmitter<void>();
+  readonly selectWhenDisabled = output<void>();
 
   valueToDisplay: string;
   private langChangeSubscription: Subscription;
@@ -177,7 +179,8 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     // when the language changes, set the locale
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
-      this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
+      this.valueToDisplay = this.getValueToDisplay(this.timeInterval());
+      this._cdr.markForCheck();
     });
   }
   ngOnDestroy(): void {
@@ -208,18 +211,19 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
     const modal = await this._modal.create({
       component: IDEAFromTimeToTimeComponent,
       componentProps: {
-        timeInterval: this.timeInterval,
-        period: this.period,
-        notEarlierThan: this.notEarlierThan,
-        notLaterThan: this.notLaterThan,
-        title: this.label
+        timeInterval: this.timeInterval(),
+        period: this.period(),
+        notEarlierThan: this.notEarlierThan(),
+        notLaterThan: this.notLaterThan(),
+        title: this.label()
       }
     });
     modal.onDidDismiss().then((res: any): void => {
       // if the content changed, update the internal values and notify the parent component
       if (res.data === true || res.data === false) {
-        this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
+        this.valueToDisplay = this.getValueToDisplay(this.timeInterval());
         this.select.emit();
+        this._cdr.markForCheck();
       }
     });
     modal.present();
@@ -227,7 +231,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   doSelectWhenDisabled(): void {
-    if (this.disabled) this.selectWhenDisabled.emit();
+    if (this.disabled()) this.selectWhenDisabled.emit();
   }
 
   doIconSelect(event: any): void {

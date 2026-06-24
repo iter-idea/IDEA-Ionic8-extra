@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -24,7 +23,6 @@ import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
 @Component({
   selector: 'idea-custom-block-meta',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
     IonCol,
@@ -36,6 +34,7 @@ import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
     IonItem,
     IonReorderGroup
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'customBlockMeta.component.html',
   styleUrls: ['customBlockMeta.component.scss']
 })
@@ -48,30 +47,30 @@ export class IDEACustomBlockMetaComponent {
   /**
    * The CustomBlockMeta to manage.
    */
-  @Input() block: CustomBlockMeta;
+  readonly block = input<CustomBlockMeta>();
   /**
    * Whether the custom sections should manage the display template or it should be hidden.
    */
-  @Input() useDisplayTemplate = false;
+  readonly useDisplayTemplate = input(false);
   /**
    * Whether the component is enabled or not.
    */
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * Lines preferences for the component.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
 
   reorderSectionsLegend(ev: any): void {
-    this.block.sectionsLegend = ev.detail.complete(this.block.sectionsLegend);
+    this.block().sectionsLegend = ev.detail.complete(this.block().sectionsLegend);
   }
 
   async openSection(s: string): Promise<void> {
     const componentProps = {
-      section: this.block.sections[s],
-      useDisplayTemplate: this.useDisplayTemplate,
-      disabled: this.disabled,
-      lines: this.lines
+      section: this.block().sections[s],
+      useDisplayTemplate: this.useDisplayTemplate(),
+      disabled: this.disabled(),
+      lines: this.lines()
     };
     const modal = await this._modal.create({ component: IDEACustomSectionMetaComponent, componentProps });
     await modal.present();
@@ -81,8 +80,9 @@ export class IDEACustomBlockMetaComponent {
     if (ev) ev.stopPropagation();
 
     const doRemoveSection = (): void => {
-      this.block.sectionsLegend.splice(this.block.sectionsLegend.indexOf(s), 1);
-      delete this.block.sections[s];
+      const block = this.block();
+      this.block().sectionsLegend.splice(block.sectionsLegend.indexOf(s), 1);
+      delete block.sections[s];
     };
     const buttons = [
       { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
@@ -102,7 +102,8 @@ export class IDEACustomBlockMetaComponent {
       const key = name.replace(/[^\w]/g, '');
       if (!key.trim()) return;
       // check wheter the key is unique
-      if (this.block.sectionsLegend.some(x => x === key))
+      const block = this.block();
+      if (block.sectionsLegend.some(x => x === key))
         return this._message.error('IDEA_COMMON.CUSTOM_FIELDS.DUPLICATED_KEY');
       // initialize a new section
       const section = new CustomSectionMeta(null, this._translate.languages());
@@ -110,8 +111,8 @@ export class IDEACustomBlockMetaComponent {
       section.name = new Label(null, this._translate.languages());
       section.name[this._translate.getDefaultLang()] = name;
       // add the section to the block
-      this.block.sections[key] = section;
-      this.block.sectionsLegend.push(key);
+      block.sections[key] = section;
+      block.sectionsLegend.push(key);
       // open the section to configure it
       this.openSection(key);
     };

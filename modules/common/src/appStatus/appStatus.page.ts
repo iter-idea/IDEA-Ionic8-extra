@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -29,7 +29,6 @@ import { IDEAAppStatusService } from './appStatus.service';
 @Component({
   selector: 'idea-app-status',
   imports: [
-    CommonModule,
     FormsModule,
     IonContent,
     IonCard,
@@ -44,6 +43,7 @@ import { IDEAAppStatusService } from './appStatus.service';
     IonIcon,
     IDEATranslatePipe
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (status) {
       <ion-content class="ion-padding">

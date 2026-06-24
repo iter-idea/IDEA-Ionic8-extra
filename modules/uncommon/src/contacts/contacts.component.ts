@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonItem, IonButton, IonIcon, IonInput } from '@ionic/angular/standalone';
 import { Contacts } from 'idea-toolbox';
@@ -7,33 +6,34 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-contacts',
-  imports: [CommonModule, FormsModule, IDEATranslatePipe, IonInput, IonIcon, IonButton, IonItem],
+  imports: [FormsModule, IDEATranslatePipe, IonInput, IonIcon, IonButton, IonItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="contacts">
-      @if (showName) {
-        <ion-item [lines]="lines" [color]="color">
+      @if (showName()) {
+        <ion-item [lines]="lines()" [color]="color()">
           <ion-input
             autocomplete="new"
             labelPlacement="stacked"
             [label]="'IDEA_UNCOMMON.CONTACTS.NAME' | translate"
-            [disabled]="!editMode"
+            [disabled]="!editMode()"
             [placeholder]="'IDEA_UNCOMMON.CONTACTS.NAME_HINT' | translate"
             [title]="'IDEA_UNCOMMON.CONTACTS.NAME_HINT' | translate"
-            [(ngModel)]="contacts.name"
+            [(ngModel)]="contacts().name"
           />
         </ion-item>
       }
-      <ion-item [lines]="lines" [color]="color">
+      <ion-item [lines]="lines()" [color]="color()">
         <ion-input
           autocomplete="new"
           labelPlacement="stacked"
           [label]="'IDEA_UNCOMMON.CONTACTS.PHONE' | translate"
-          [disabled]="!editMode"
+          [disabled]="!editMode()"
           [placeholder]="'IDEA_UNCOMMON.CONTACTS.PHONE_HINT' | translate"
           [title]="'IDEA_UNCOMMON.CONTACTS.PHONE_HINT' | translate"
-          [(ngModel)]="contacts.phone"
+          [(ngModel)]="contacts().phone"
         />
-        @if (!editMode) {
+        @if (!editMode()) {
           <ion-button
             slot="end"
             fill="clear"
@@ -46,17 +46,17 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
           </ion-button>
         }
       </ion-item>
-      <ion-item [lines]="lines" [color]="color">
+      <ion-item [lines]="lines()" [color]="color()">
         <ion-input
           autocomplete="new"
           labelPlacement="stacked"
           [label]="'IDEA_UNCOMMON.CONTACTS.EMAIL' | translate"
-          [disabled]="!editMode"
+          [disabled]="!editMode()"
           [placeholder]="'IDEA_UNCOMMON.CONTACTS.EMAIL_HINT' | translate"
           [title]="'IDEA_UNCOMMON.CONTACTS.EMAIL_HINT' | translate"
-          [(ngModel)]="contacts.email"
+          [(ngModel)]="contacts().email"
         />
-        @if (!editMode) {
+        @if (!editMode()) {
           <ion-button
             slot="end"
             fill="clear"
@@ -86,33 +86,35 @@ export class IDEAContactsComponent {
   /**
    * The contacts to manage.
    */
-  @Input() contacts: Contacts = new Contacts();
+  readonly contacts = input<Contacts>(new Contacts());
   /**
    * If true, show the field `name`.
    */
-  @Input() showName = false;
+  readonly showName = input(false);
   /**
    * Whether the fields are editable or disabled.
    */
-  @Input() editMode = true;
+  readonly editMode = input(true);
   /**
    * The lines attribute of the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
 
   sendEmail(): void {
-    if (!this.contacts.email) return;
-    const url = `mailto:${this.contacts.email}`;
-    this.preExternalAction(this.contacts.email, (): Window => window.open(url, '_system'));
+    const contacts = this.contacts();
+    if (!contacts.email) return;
+    const url = `mailto:${contacts.email}`;
+    this.preExternalAction(contacts.email, (): Window => window.open(url, '_system'));
   }
   call(): void {
-    if (!this.contacts.phone) return;
-    const url = `tel:${this.contacts.phone}`;
-    this.preExternalAction(this.contacts.phone, (): Window => window.open(url, '_system'));
+    const contacts = this.contacts();
+    if (!contacts.phone) return;
+    const url = `tel:${contacts.phone}`;
+    this.preExternalAction(contacts.phone, (): Window => window.open(url, '_system'));
   }
 
   private preExternalAction(message: string, cb: () => void): void {

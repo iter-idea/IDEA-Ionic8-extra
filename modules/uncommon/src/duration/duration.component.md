@@ -6,17 +6,17 @@ idea-duration
 
 ## Inputs
 
-- `default` (*number*) - The default number of seconds, to build the duration.
-- `label` (*string*) - The label for the field.
-- `icon` (*string*) - The icon (alternative to the label) for the field.
-- `title` (*string*) - The title (hint) for the field.
-- `disabled` (*boolean*) - If true, the component is disabled.
-- `obligatory` (*boolean*) - If true, the obligatory dot is shown.
-- `lines` (*string*) - Lines preferences for the item.
-- `color` (*string*) - The color for the component.
-- `hideSeconds` (*boolean*) - Whether to show or hide the seconds input.
-- `shortLabels` (*boolean*) - Whether to show a shortened version of the labels.
+- `default` (_number_) - The default number of seconds, to build the duration.
+- `label` (_string_) - The label for the field.
+- `icon` (_string_) - The icon (alternative to the label) for the field.
+- `title` (_string_) - The title (hint) for the field.
+- `disabled` (_boolean_) - If true, the component is disabled.
+- `obligatory` (_boolean_) - If true, the obligatory dot is shown.
+- `lines` (_string_) - Lines preferences for the item.
+- `color` (_string_) - The color for the component.
+- `hideSeconds` (_boolean_) - Whether to show or hide the seconds input.
+- `shortLabels` (_boolean_) - Whether to show a shortened version of the labels.
 
 ## Outputs
 
-- `set` (*EventEmitter<number>*) - On change event. It emits a number of seconds representing the duration.
+- `set` (_number_) - On change event. It emits a number of seconds representing the duration.

@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import {
   PopoverController,
   IonItem,
@@ -20,33 +19,34 @@ import { Color, COLORS } from 'idea-toolbox';
  */
 @Component({
   selector: 'idea-color-picker',
-  imports: [CommonModule, IonAvatar, IonText, IonLabel, IonIcon, IonButton, IonItem],
+  imports: [IonAvatar, IonText, IonLabel, IonIcon, IonButton, IonItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="colorPickerItem"
-      [color]="color"
-      [lines]="lines"
-      [button]="!disabled"
-      [title]="placeholder || ''"
-      [class.withLabel]="label"
+      [color]="color()"
+      [lines]="lines()"
+      [button]="!disabled()"
+      [title]="placeholder() || ''"
+      [class.withLabel]="label()"
       (click)="openPalette($event)"
     >
-      @if (icon) {
-        <ion-button fill="clear" slot="start" [color]="iconColor" (click)="doIconSelect($event)">
-          <ion-icon [name]="icon" slot="icon-only" />
+      @if (icon()) {
+        <ion-button fill="clear" slot="start" [color]="iconColor()" (click)="doIconSelect($event)">
+          <ion-icon [name]="icon()" slot="icon-only" />
         </ion-button>
       }
-      @if (label) {
-        <ion-label [class.selectable]="!disabled">
-          {{ label }}
-          @if (obligatory && !disabled) {
+      @if (label()) {
+        <ion-label [class.selectable]="!disabled()">
+          {{ label() }}
+          @if (obligatory() && !disabled()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
-      <ion-avatar slot="end" class="colorCircle" [style.background-color]="current" />
-      @if (!disabled) {
-        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      <ion-avatar slot="end" class="colorCircle" [style.background-color]="current()" />
+      @if (!disabled()) {
+        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled()" />
       }
     </ion-item>
   `,
@@ -89,58 +89,58 @@ export class IDEAColorPickerComponent {
   /**
    * The pickable colors.
    */
-  @Input() colors: Color[] = COLORS;
+  readonly colors = input<Color[]>(COLORS);
   /**
    * The current color.
    */
-  @Input() current: string;
+  readonly current = input<string>();
   /**
    * The label for the field.
    */
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * A placeholder for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * The icon for the field.
    */
-  @Input() icon: string;
+  readonly icon = input<string>();
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * If true, the component is disabled.
    */
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() obligatory: boolean;
+  readonly obligatory = input<boolean>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * On select event.
    */
-  @Output() select = new EventEmitter<string>();
+  readonly select = output<string>();
   /**
    * Icon select.
    */
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly iconSelect = output<void>();
 
   private _popover = inject(PopoverController);
 
   async openPalette(event: any): Promise<void> {
-    if (this.disabled) return;
+    if (this.disabled()) return;
 
-    const componentProps = { colors: this.colors, current: this.current };
+    const componentProps = { colors: this.colors(), current: this.current() };
     const popover = await this._popover.create({ component: ColorsPaletteComponent, componentProps, event });
     popover.onDidDismiss().then(res => {
       if (res && res.data) this.select.emit(res.data);
@@ -159,12 +159,13 @@ export class IDEAColorPickerComponent {
  */
 @Component({
   selector: 'idea-colors-palette',
-  imports: [CommonModule, IonContent, IonGrid, IonRow, IonCol, IonAvatar, IonIcon],
+  imports: [IonContent, IonGrid, IonRow, IonCol, IonAvatar, IonIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <ion-grid>
         <ion-row>
-          @for (c of colors; track c) {
+          @for (c of colors(); track c) {
             <ion-col [size]="2">
               <ion-avatar
                 class="colorCircle tappable"
@@ -172,7 +173,7 @@ export class IDEAColorPickerComponent {
                 [title]="c.name || c.hex"
                 (click)="pick(c.hex)"
               >
-                @if (c.hex === current) {
+                @if (c.hex === current()) {
                   <ion-icon name="checkmark" />
                 }
               </ion-avatar>
@@ -207,11 +208,11 @@ export class ColorsPaletteComponent {
   /**
    * The pickable colors.
    */
-  @Input() colors: Color[];
+  readonly colors = input<Color[]>();
   /**
    * The current color.
    */
-  @Input() current: string;
+  readonly current = input<string>();
 
   pick(color: string): void {
     this._popover.dismiss(color);

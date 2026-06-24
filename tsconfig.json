@@ -19,8 +19,9 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "lib": ["ES2022", "dom"],
     "paths": {
+      "@idea-ionic/common": ["./dist/common"],
+      "@idea-ionic/uncommon": ["./dist/uncommon"],
       "agenda": ["./dist/agenda"],
       "auth": ["./dist/auth"],
       "common": ["./dist/common"],
@@ -28,10 +29,5 @@
       "uncommon": ["./dist/uncommon"]
     }
   },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": false,
-    "strictInputAccessModifiers": false,
-    "strictTemplates": false
-  }
+  "angularCompilerOptions": {}
 }

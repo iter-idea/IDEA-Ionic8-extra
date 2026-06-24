@@ -6,9 +6,8 @@ idea-contacts
 
 ## Inputs
 
-- `contacts` (*Contacts*) - The contacts to manage.
-- `showName` (*boolean*) - If true, show the field `name`.
-- `editMode` (*boolean*) - Whether the fields are editable or disabled.
-- `lines` (*string*) - The lines attribute of the item.
-- `color` (*string*) - The color for the component.
-
+- `contacts` (_Contacts_) - The contacts to manage.
+- `showName` (_boolean_) - If true, show the field `name`.
+- `editMode` (_boolean_) - Whether the fields are editable or disabled.
+- `lines` (_string_) - The lines attribute of the item.
+- `color` (_string_) - The color for the component.

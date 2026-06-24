@@ -1,30 +1,36 @@
 <ion-item
   class="selectItem"
-  [color]="color"
-  [lines]="lines"
+  [color]="color()"
+  [lines]="lines()"
   [button]="!disabled"
   [disabled]="isOpening"
-  [title]="placeholder || description || ''"
+  [title]="placeholder() || description || ''"
   [class.withLabel]="label"
   (click)="disabled ? doSelectWhenDisabled() : fetchDataAndOpenModal()"
 >
   @if (icon) {
-    <ion-button fill="clear" slot="start" [color]="iconColor" [class.marginTop]="label" (click)="doIconSelect($event)">
+    <ion-button
+      fill="clear"
+      slot="start"
+      [color]="iconColor()"
+      [class.marginTop]="label"
+      (click)="doIconSelect($event)"
+    >
       <ion-icon [icon]="icon" slot="icon-only" />
     </ion-button>
   }
   @if (label) {
-    <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled">
+    <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled()">
       {{ label }}
-      @if (obligatory && !disabled) {
+      @if (obligatory() && !disabled) {
         <ion-text class="obligatoryDot" />
       }
     </ion-label>
   }
-  <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled">
+  <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled()">
     @if (!description && !disabled) {
       <ion-text class="placeholder">
-        {{ placeholder }}
+        {{ placeholder() }}
       </ion-text>
     }
     {{ description }}

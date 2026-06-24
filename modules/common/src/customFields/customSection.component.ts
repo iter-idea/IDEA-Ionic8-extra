@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -22,7 +21,6 @@ import { IDEASelectComponent } from '../select/select.component';
 @Component({
   selector: 'idea-custom-section',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
@@ -36,6 +34,7 @@ import { IDEASelectComponent } from '../select/select.component';
     IonTextarea,
     IonCheckbox
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'customSection.component.html',
   styleUrls: ['customSection.component.scss']
 })
@@ -46,44 +45,44 @@ export class IDEACustomSectionComponent {
   /**
    * The custom fields to manage.
    */
-  @Input() fields: any;
+  readonly fields = input<any>();
   /**
    * The CustomSectionMeta that describe the custom fields.
    */
-  @Input() sectionMeta: CustomSectionMeta;
+  readonly sectionMeta = input<CustomSectionMeta>();
   /**
    * Whether the component is enabled or not.
    */
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * Lines preferences for the component.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * Whether to hide the descriptions (buttons).
    */
-  @Input() hideDescriptions = false;
+  readonly hideDescriptions = input(false);
   /**
    * Show errors as reported from the parent component.
    */
-  @Input() errors = new Set();
+  readonly errors = input(new Set<string>());
   /**
    * Add a custom prefix to the error string identifier.
    */
-  @Input() errorPrefix = '';
+  readonly errorPrefix = input('');
 
   CFT = CustomFieldTypes;
 
   hasFieldAnError(field: string): boolean {
-    return this.errors.has(field);
+    return this.errors().has(field);
   }
 
   async openDescription(fieldKey: string, event: any): Promise<void> {
     if (event) event.stopPropagation();
-    const message = this._translate._label(this.sectionMeta.fields[fieldKey].description);
+    const message = this._translate._label(this.sectionMeta().fields[fieldKey].description);
     if (!message) return;
 
-    const header = this._translate._label(this.sectionMeta.fields[fieldKey].name);
+    const header = this._translate._label(this.sectionMeta().fields[fieldKey].name);
     const alert = await this._alert.create({ header, message, buttons: ['OK'], cssClass: 'alertLongOptions' });
     await alert.present();
   }

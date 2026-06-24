@@ -1,8 +1,7 @@
 {
-  "extends": "./node_modules/@tsconfig/node22/tsconfig.json",
+  "extends": "./node_modules/@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
-    "strictPropertyInitialization": false,
-    "strictNullChecks": false
+    "types": ["node"]
   },
   "files": ["index.ts"]
 }

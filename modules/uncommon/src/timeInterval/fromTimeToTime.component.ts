@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import {
   ModalController,
   IonHeader,
@@ -23,7 +22,6 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 @Component({
   selector: 'idea-from-time-to-time',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonLabel,
     IonSegmentButton,
@@ -40,6 +38,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
     IonToolbar,
     IonHeader
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'fromTimeToTime.component.html',
   styleUrls: ['fromTimeToTime.component.scss']
 })
@@ -50,23 +49,25 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   /**
    * The time interval to set.
    */
-  @Input() timeInterval: TimeInterval;
+  readonly timeInterval = input<TimeInterval>();
   /**
    * Whether we should start picking the time displaying the afternoon (PM) or the morning (AM, default).
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() period: Periods = Periods.AM;
   /**
    * A time to use as lower limit for the possible choices.
    */
-  @Input() notEarlierThan: number;
+  readonly notEarlierThan = input<number>();
   /**
    * A time to use as upper limit for the possible choices.
    */
-  @Input() notLaterThan: number;
+  readonly notLaterThan = input<number>();
   /**
    * The title of the component.
    */
-  @Input() title: string;
+  readonly title = input<string>();
 
   segment: Segments;
   Segments = Segments;
@@ -77,7 +78,7 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   ngOnInit(): void {
     this.segment = Segments.FROM;
     this.minutes = 30;
-    this.timeIntervalWC = new TimeInterval(this.timeInterval);
+    this.timeIntervalWC = new TimeInterval(this.timeInterval());
   }
 
   setInterval(hours: number, minutes?: number): void {
@@ -139,11 +140,11 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
     // adjust the hour based on the start of the interval and the settings of am/pm
     hours = this.contextualizeHour(hours, minutes);
     // check whether the selected time is inside the given boundaries
+    const notEarlierThan = this.notEarlierThan();
+    const notLaterThan = this.notLaterThan();
     return (
-      (!this.notEarlierThan ||
-        this.timeToMs(hours, minutes) >= this.notEarlierThan ||
-        this.timeToMs(hours, minutes) === 0) &&
-      (!this.notLaterThan || this.timeToMs(hours, minutes) <= this.notLaterThan)
+      (!notEarlierThan || this.timeToMs(hours, minutes) >= notEarlierThan || this.timeToMs(hours, minutes) === 0) &&
+      (!notLaterThan || this.timeToMs(hours, minutes) <= notLaterThan)
     );
   }
 
@@ -169,12 +170,12 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   }
 
   save(): void {
-    this.timeInterval.load(this.timeIntervalWC);
+    this.timeInterval().load(this.timeIntervalWC);
     this._modal.dismiss(true);
   }
 
   reset(): void {
-    this.timeInterval.reset();
+    this.timeInterval().reset();
     this._modal.dismiss(false);
   }
 

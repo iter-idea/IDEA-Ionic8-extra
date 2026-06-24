@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular/standalone';
 import { Calendar } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -10,6 +10,7 @@ import { IDEACalendarsService } from './calendars.service';
   // eslint-disable-next-line
   standalone: false,
   selector: 'idea-calendar-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'calendarItem.component.html',
   styleUrls: ['calendarItem.component.scss']
 })
@@ -24,36 +25,38 @@ export class IDEACalendarItemComponent {
   /**
    * The calendar to show.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() calendar: Calendar;
   /**
    * Whether the component is disabled.
    */
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * Whether we want to enable advanced permissions (based on the memberships) on the calendar.
    */
-  @Input() advancedPermissions: boolean;
+  readonly advancedPermissions = input<boolean>();
   /**
    * Whether the calendar color is an important detail or it shouldn't be shown.
    */
-  @Input() hideColor: boolean;
+  readonly hideColor = input<boolean>();
   /**
    * The URL to be used on the redirect calls.
    */
-  @Input() baseURL: string;
+  readonly baseURL = input<string>();
   /**
    * Report to parent components a change.
    */
-  @Output() somethingChanged = new EventEmitter<Calendar>();
+  readonly somethingChanged = output<Calendar>();
 
   async manageCalendar(): Promise<void> {
-    if (this.disabled) return;
+    if (this.disabled()) return;
     const modal = await this._modal.create({
       component: IDEACalendarComponent,
       componentProps: {
         calendar: this.calendar,
-        advancedPermissions: this.advancedPermissions,
-        hideColor: this.hideColor
+        advancedPermissions: this.advancedPermissions(),
+        hideColor: this.hideColor()
       }
     });
     modal.onDidDismiss().then(res => {
@@ -61,13 +64,13 @@ export class IDEACalendarItemComponent {
       if (cal === undefined) return;
       else if (cal === null) this.calendar = null;
       else this.calendar.load(cal);
-      this.somethingChanged.emit();
+      this.somethingChanged.emit(this.calendar);
     });
     modal.present();
   }
 
   async linkExtCalendarOrDelete(): Promise<void> {
-    if (this.disabled) return;
+    if (this.disabled()) return;
     try {
       const cal = await this._calendars.chooseAndSetExternalCalendar(this.calendar);
       if (!cal) throw new Error('NO_EXTERNAL_CALENDAR_CHOSEN');
@@ -81,7 +84,7 @@ export class IDEACalendarItemComponent {
         this._message.error('COMMON.OPERATION_FAILED');
       } finally {
         this._loading.hide();
-        this.somethingChanged.emit();
+        this.somethingChanged.emit(this.calendar);
       }
     } catch (error) {
       const doDelete = async (): Promise<void> => {
@@ -89,7 +92,7 @@ export class IDEACalendarItemComponent {
           await this._loading.show();
           await this._calendars.deleteCalendar(this.calendar);
           this._message.success('COMMON.OPERATION_COMPLETED');
-          this.somethingChanged.emit();
+          this.somethingChanged.emit(this.calendar);
         } catch (error) {
           this._message.error('COMMON.OPERATION_FAILED');
         } finally {
@@ -98,7 +101,7 @@ export class IDEACalendarItemComponent {
       };
       const doLink = async (): Promise<void> => {
         try {
-          await this._calendars.linkExtService(this.calendar, this.baseURL);
+          await this._calendars.linkExtService(this.calendar, this.baseURL());
           this.linkExtCalendarOrDelete();
         } catch (error) {
           this._message.error('COMMON.OPERATION_FAILED');

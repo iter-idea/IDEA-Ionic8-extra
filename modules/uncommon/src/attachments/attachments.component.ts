@@ -1,5 +1,5 @@
 import heic2any from 'heic2any';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Platform } from '@ionic/angular';
 import { IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSpinner } from '@ionic/angular/standalone';
@@ -15,13 +15,14 @@ import { IDEATinCanService } from '../tinCan.service';
 @Component({
   selector: 'idea-old-attachments',
   imports: [FormsModule, IDEATranslatePipe, IonItem, IonButton, IonIcon, IonInput, IonLabel, IonSpinner],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @for (att of attachments; track att; let index = $index; let odd = $odd) {
+    @for (att of attachments(); track att; let index = $index; let odd = $odd) {
       <ion-item
         class="attachments"
         [class.fieldHasError]="hasFieldAnError('attachments[' + index + '].attachmentId')"
         [class.odd]="odd"
-        [lines]="lines"
+        [lines]="lines()"
       >
         @if (att.attachmentId && _offline.isOnline()) {
           <ion-button fill="clear" size="small" slot="start" (click)="openAttachment(att)">
@@ -62,7 +63,7 @@ import { IDEATinCanService } from '../tinCan.service';
       </ion-item>
     }
     <!----->
-    @if (!editMode && !attachments?.length) {
+    @if (!editMode && !attachments()?.length) {
       <ion-item lines="none" class="noAttachments">
         <ion-label>
           {{ 'IDEA_TEAMS.ATTACHMENTS.NO_ATTACHMENT' | translate }}
@@ -73,7 +74,7 @@ import { IDEATinCanService } from '../tinCan.service';
     @if (editMode) {
       <div>
         @for (err of uploadErrors; track err) {
-          <ion-item class="attachments" [lines]="lines">
+          <ion-item class="attachments" [lines]="lines()">
             <ion-icon name="alert-circle" slot="start" color="danger" />
             <ion-label color="danger">
               {{ err }}
@@ -154,27 +155,30 @@ export class IDEAOldAttachmentsComponent implements OnInit {
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() team: string | null = null;
   /**
    * The path to the online API resource, as an array. Don't include the team. E.g. `['entities', entityId]`.
    */
-  @Input() pathResource: string[] = [];
+  readonly pathResource = input<string[]>([]);
   /**
    * The array in which we want to add/remove attachments.
    */
-  @Input() attachments: Attachment[] | null = null;
+  readonly attachments = input<Attachment[] | null>(null);
   /**
    * Regulate the mode (view/edit).
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() editMode = false;
   /**
    * Show errors as reported from the parent component.
    */
-  @Input() errors = new Set<string>();
+  readonly errors = input(new Set<string>());
   /**
    * The lines attribute of the item.
    */
-  @Input() lines = 'none';
+  readonly lines = input('none');
 
   /**
    * URL towards to make API requests, based on the path of the resource.
@@ -189,8 +193,9 @@ export class IDEAOldAttachmentsComponent implements OnInit {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
     this.team = this.team || this._tc.get('membership').teamId || this._tc.get('teamId');
     this.requestURL = `teams/${this.team}/`;
-    if (this.pathResource && this.pathResource.length)
-      this.requestURL = this.requestURL.concat(this.pathResource.filter(x => x).join('/'));
+    const pathResource = this.pathResource();
+    if (pathResource && pathResource.length)
+      this.requestURL = this.requestURL.concat(pathResource.filter(x => x).join('/'));
   }
 
   isCapacitor(): boolean {
@@ -198,7 +203,7 @@ export class IDEAOldAttachmentsComponent implements OnInit {
   }
 
   hasFieldAnError(field: string): boolean {
-    return this.errors.has(field);
+    return this.errors().has(field);
   }
 
   browseFiles(): void {
@@ -240,7 +245,7 @@ export class IDEAOldAttachmentsComponent implements OnInit {
       content = await heic2any({ blob: content, toType: 'image/jpeg' });
     }
     const attachment = new Attachment({ name, format });
-    this.attachments.push(attachment);
+    this.attachments().push(attachment);
     try {
       const signedURL = await this._api.patchResource(this.requestURL, {
         body: { action: 'ATTACHMENTS_PUT', attachmentId: attachment.attachmentId }
@@ -255,8 +260,8 @@ export class IDEAOldAttachmentsComponent implements OnInit {
   }
 
   removeAttachment(attachment: Attachment): void {
-    const index = this.attachments.indexOf(attachment);
-    if (index !== -1) this.attachments.splice(index, 1);
+    const index = this.attachments().indexOf(attachment);
+    if (index !== -1) this.attachments().splice(index, 1);
   }
 
   async openAttachment(attachment: Attachment): Promise<void> {

@@ -8,18 +8,18 @@ idea-color-picker
 
 ## Inputs
 
-- `colors` (*Color[]*) - The pickable colors.
-- `current` (*string*) - The current color.
-- `label` (*string*) - The label for the field.
-- `placeholder` (*string*) - A placeholder for the field.
-- `icon` (*string*) - The icon for the field.
-- `iconColor` (*string*) - The color of the icon.
-- `disabled` (*boolean*) - If true, the component is disabled.
-- `obligatory` (*boolean*) - If true, the obligatory dot is shown.
-- `lines` (*string*) - Lines preferences for the item.
-- `color` (*string*) - The color for the component.
+- `colors` (_Color[]_) - The pickable colors.
+- `current` (_string_) - The current color.
+- `label` (_string_) - The label for the field.
+- `placeholder` (_string_) - A placeholder for the field.
+- `icon` (_string_) - The icon for the field.
+- `iconColor` (_string_) - The color of the icon.
+- `disabled` (_boolean_) - If true, the component is disabled.
+- `obligatory` (_boolean_) - If true, the obligatory dot is shown.
+- `lines` (_string_) - Lines preferences for the item.
+- `color` (_string_) - The color for the component.
 
 ## Outputs
 
-- `select` (*EventEmitter<string>*) - On select event.
-- `iconSelect` (*EventEmitter<void>*) - Icon select.
+- `select` (_string_) - On select event.
+- `iconSelect` (_void_) - Icon select.

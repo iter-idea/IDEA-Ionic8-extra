@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -22,7 +21,6 @@ import { IDEAAuthService } from './auth.service';
 @Component({
   selector: 'idea-resend-link',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonButton,
@@ -38,6 +36,7 @@ import { IDEAAuthService } from './auth.service';
     IonContent,
     IonInput
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <form class="flexBox">

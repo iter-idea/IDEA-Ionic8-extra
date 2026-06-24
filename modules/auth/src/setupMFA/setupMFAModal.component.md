@@ -3,4 +3,3 @@
 ## Selector
 
 idea-setup-mfa-modal
-

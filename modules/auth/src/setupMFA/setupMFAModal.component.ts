@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -26,7 +25,6 @@ import { IDEAAuthService } from '../auth.service';
 @Component({
   selector: 'idea-setup-mfa-modal',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonItem,
@@ -44,6 +42,7 @@ import { IDEAAuthService } from '../auth.service';
     IonHeader,
     IonInput
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">

@@ -1,17 +1,16 @@
 import { FormsModule } from '@angular/forms';
 import {
   Component,
-  EventEmitter,
-  Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChanges,
   inject,
   SecurityContext,
-  ViewChild,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  output,
+  viewChild,
+  input
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController, IonIcon } from '@ionic/angular/standalone';
@@ -25,7 +24,7 @@ import { IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '
   selector: 'idea-html-editor',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (editMode) {
+    @if (editMode()) {
       <angular-editor
         #editor
         [config]="editorConfig"
@@ -62,17 +61,17 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
   /**
    * Whether the parent page is in editMode or not (simplified).
    */
-  @Input() editMode = false;
+  readonly editMode = input(false);
   /**
    * The HTML content.
    */
-  @Input() content: string;
+  readonly content = input<string>();
   /**
    * Trigger when the HTML content changes.
    */
-  @Output() contentChange = new EventEmitter<string>();
+  readonly contentChange = output<string>();
 
-  @ViewChild('editor') editor: AngularEditorComponent;
+  readonly editor = viewChild<AngularEditorComponent>('editor');
 
   text: string;
 
@@ -90,13 +89,13 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
   sanitizedHtml: string;
 
   ngOnInit(): void {
-    this.text = this.content;
-    this.sanitizedHtml = this._sanitizer.sanitize(SecurityContext.HTML, this.content);
+    this.text = this.content();
+    this.sanitizedHtml = this._sanitizer.sanitize(SecurityContext.HTML, this.content());
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.content) {
-      this.text = this.content;
-      this.sanitizedHtml = this._sanitizer.sanitize(SecurityContext.HTML, this.content);
+      this.text = this.content();
+      this.sanitizedHtml = this._sanitizer.sanitize(SecurityContext.HTML, this.content());
       this._cdr.markForCheck();
     }
     if (changes.editMode) this._cdr.markForCheck();
@@ -124,7 +123,7 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
         if (width) img.setAttribute('width', String(width));
         else img.removeAttribute('width');
       });
-      this.contentChange.emit(this.editor.textArea.nativeElement.innerHTML);
+      this.contentChange.emit(this.editor().textArea.nativeElement.innerHTML);
       this._cdr.markForCheck();
     };
     const header = this._translate._('IDEA_EDITOR.SELECT_SIZE_FOR_IMAGE');
@@ -187,15 +186,16 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
       this.lastDropPosition.insertNode(imgElement);
       this.lastDropPosition = null;
 
-      const editor = this.editor?.textArea?.nativeElement as HTMLElement;
+      const editorValue = this.editor();
+      const editor = editorValue?.textArea?.nativeElement as HTMLElement;
       const imagesSelected = editor.querySelectorAll('img');
       if (imagesSelected.length === 1) imagesSelected[0].removeAttribute('width');
-      this.contentChange.emit(this.editor.textArea.nativeElement.innerHTML);
+      this.contentChange.emit(editorValue.textArea.nativeElement.innerHTML);
       this._cdr.markForCheck();
     }
   }
   private moveCursorToDropPosition(event: DragEvent): void {
-    const root = this.editor?.textArea?.nativeElement as HTMLElement;
+    const root = this.editor()?.textArea?.nativeElement as HTMLElement;
     if (!root) return;
     root.focus();
     const range =

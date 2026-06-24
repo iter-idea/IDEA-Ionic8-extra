@@ -5,6 +5,5 @@
   "singleQuote": true,
   "arrowParens": "avoid",
   "trailingComma": "none",
-  "jsxBracketSameLine": false,
-  "overrides": [{ "files": "front-end/**/*.html", "options": { "parser": "angular" } }]
+  "overrides": [{ "files": "*.html", "options": { "parser": "angular" } }]
 }

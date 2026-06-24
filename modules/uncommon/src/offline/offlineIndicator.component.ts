@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { ModalController, AlertController, Platform, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { IDEATranslationsService } from '@idea-ionic/common';
 
@@ -8,12 +7,13 @@ import { IDEAOfflineDataService } from './offlineData.service';
 
 @Component({
   selector: 'idea-offline-indicator',
-  imports: [CommonModule, IonFab, IonFabButton, IonIcon],
+  imports: [IonFab, IonFabButton, IonIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (
       _platform.is('mobile') && (_offline.isOffline() || _offline.synchronizing || _offline.requiresManualConfirmation)
     ) {
-      <ion-fab [vertical]="vertical" [horizontal]="horizontal" [edge]="edge">
+      <ion-fab [vertical]="vertical()" [horizontal]="horizontal()" [edge]="edge()">
         <ion-fab-button color="dark" size="small" (click)="showStatus()">
           <!-- OFFLINE -->
           @if (_offline.isOffline()) {
@@ -42,15 +42,15 @@ export class IDEAOfflineIndicatorComponent {
   /**
    * Vertical position.
    */
-  @Input() vertical = 'bottom';
+  readonly vertical = input('bottom');
   /**
    * Horizontal position.
    */
-  @Input() horizontal = 'start';
+  readonly horizontal = input('start');
   /**
    * Whether it is positionated on an edge.
    */
-  @Input() edge = false;
+  readonly edge = input(false);
 
   async showStatus(): Promise<void> {
     if (this._offline.isOffline()) {

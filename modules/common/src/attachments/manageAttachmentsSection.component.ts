@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -29,7 +28,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 @Component({
   selector: 'idea-manage-attachments-section',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
@@ -48,6 +46,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     IonHeader,
     IonTitle
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -66,7 +65,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     </ion-header>
     <ion-content class="editMode">
       <ion-list class="aList">
-        <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
+        <ion-item [lines]="lines()" [class.fieldHasError]="hasFieldAnError('name')">
           <ion-input
             type="text"
             readonly="true"
@@ -88,7 +87,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
             <ion-icon slot="icon-only" icon="pencil" />
           </ion-button>
         </ion-item>
-        <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
+        <ion-item [lines]="lines()" [class.fieldHasError]="hasFieldAnError('description')">
           <ion-input
             type="text"
             readonly="true"
@@ -113,13 +112,13 @@ import { IDEATranslationsService } from '../translations/translations.service';
           </ion-label>
         </ion-list-header>
         <idea-attachments
-          [entityPath]="entityPath"
+          [entityPath]="entityPath()"
           [attachments]="_section.attachments"
-          [acceptedFormats]="acceptedFormats"
-          [multiple]="multiple"
-          [color]="color"
+          [acceptedFormats]="acceptedFormats()"
+          [multiple]="multiple()"
+          [color]="color()"
           [disabled]="false"
-          (download)="downloadCallback($event)"
+          (download)="downloadCallback()($event)"
         />
       </ion-list>
     </ion-content>
@@ -132,37 +131,37 @@ export class IDEAManageAttachmentsSectionComponent implements OnInit {
   /**
    * The attachments section to manage.
    */
-  @Input() section: AttachmentSection;
+  readonly section = input<AttachmentSection>();
   /**
    * The API path to the entity for which we want to manage the attachments.
    */
-  @Input() entityPath: string | string[];
+  readonly entityPath = input<string | string[]>();
   /**
    * The list of accepted formats.
    */
-  @Input() acceptedFormats = ['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx'];
+  readonly acceptedFormats = input(['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx']);
   /**
    * Whether to accept multiple files as target for the browse function.
    */
-  @Input() multiple = true;
+  readonly multiple = input(true);
   /**
    * Lines preferences for the component.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The background color of the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * Trigger a callback in the parent component to download a file by URL.
    */
-  @Input() downloadCallback: (url: string) => void;
+  readonly downloadCallback = input<(url: string) => void>();
 
   _section: AttachmentSection;
   errors = new Set<string>();
 
   ngOnInit(): void {
-    this._section = new AttachmentSection(this.section, this._translate.languages());
+    this._section = new AttachmentSection(this.section(), this._translate.languages());
   }
 
   hasFieldAnError(field: string): boolean {
@@ -182,7 +181,7 @@ export class IDEAManageAttachmentsSectionComponent implements OnInit {
   }
 
   save(): void {
-    this.section.load(this._section, this._translate.languages());
+    this.section().load(this._section, this._translate.languages());
     this.close();
   }
 

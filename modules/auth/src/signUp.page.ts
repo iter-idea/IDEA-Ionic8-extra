@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -35,7 +34,6 @@ import { IDEAAuthService } from './auth.service';
 @Component({
   selector: 'idea-sign-up',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonText,
@@ -54,6 +52,7 @@ import { IDEAAuthService } from './auth.service';
     IonInput,
     IonCheckbox
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <form class="flexBox">

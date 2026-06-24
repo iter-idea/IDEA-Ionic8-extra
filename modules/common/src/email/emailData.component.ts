@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { EmailData, StringVariable } from 'idea-toolbox';
 
@@ -13,61 +12,53 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
  */
 @Component({
   selector: 'idea-email-data',
-  imports: [
-    CommonModule,
-    IDEATranslatePipe,
-    IDEAHiglightedVariablesPipe,
-    IonItem,
-    IonLabel,
-    IonButton,
-    IonIcon,
-    IonText
-  ],
+  imports: [IDEATranslatePipe, IDEAHiglightedVariablesPipe, IonItem, IonLabel, IonButton, IonIcon, IonText],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="emailDataItem"
       button
       [disabled]="isOpening"
-      [color]="color"
-      [lines]="lines"
-      [title]="placeholder || ''"
-      [class.withLabel]="label"
+      [color]="color()"
+      [lines]="lines()"
+      [title]="placeholder() || ''"
+      [class.withLabel]="label()"
       (click)="openEmailDataConfiguration()"
     >
-      @if (icon) {
+      @if (icon()) {
         <ion-button
           fill="clear"
           slot="start"
-          [color]="iconColor"
-          [class.marginTop]="label"
+          [color]="iconColor()"
+          [class.marginTop]="label()"
           (click)="doIconSelect($event)"
         >
-          <ion-icon [name]="icon" slot="icon-only" />
+          <ion-icon [name]="icon()" slot="icon-only" />
         </ion-button>
       }
-      @if (label) {
-        <ion-label position="stacked">{{ label }}</ion-label>
+      @if (label()) {
+        <ion-label position="stacked">{{ label() }}</ion-label>
       }
       <div class="description">
-        @if (!emailData.subject) {
-          <div class="placeholder">{{ placeholder }}</div>
+        @if (!emailData().subject) {
+          <div class="placeholder">{{ placeholder() }}</div>
         }
-        @if (emailData.subject) {
-          <div [innerHTML]="emailData.subject | highlight: variablesPlain"></div>
+        @if (emailData().subject) {
+          <div [innerHTML]="emailData().subject | highlight: variablesPlain"></div>
         }
-        @if (emailData.to.length) {
+        @if (emailData().to.length) {
           <p>
-            <ion-text>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}:</ion-text> {{ emailData.to.join(', ') }}
+            <ion-text>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}:</ion-text> {{ emailData().to.join(', ') }}
           </p>
         }
-        @if (emailData.cc.length) {
+        @if (emailData().cc.length) {
           <p>
-            <ion-text>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}:</ion-text> {{ emailData.cc.join(', ') }}
+            <ion-text>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}:</ion-text> {{ emailData().cc.join(', ') }}
           </p>
         }
-        @if (emailData.bcc.length) {
+        @if (emailData().bcc.length) {
           <p>
-            <ion-text>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}:</ion-text> {{ emailData.bcc.join(', ') }}
+            <ion-text>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}:</ion-text> {{ emailData().bcc.join(', ') }}
           </p>
         }
       </div>
@@ -123,47 +114,47 @@ export class IDEAEmailDataComponent implements OnInit {
   /**
    * The email data to manage.
    */
-  @Input() emailData: EmailData;
+  readonly emailData = input<EmailData>();
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() variables: StringVariable[];
+  readonly variables = input<StringVariable[]>();
   /**
    * The label for the field.
    */
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * The icon for the field.
    */
-  @Input() icon: string;
+  readonly icon = input<string>();
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * A placeholder for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * If true, the component is disabled.
    */
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * On change event.
    */
-  @Output() change = new EventEmitter<void>();
+  readonly change = output<void>();
   /**
    * Icon select.
    */
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly iconSelect = output<void>();
   /**
    * The list of variables codes to use for substitutions.
    */
@@ -173,7 +164,7 @@ export class IDEAEmailDataComponent implements OnInit {
 
   ngOnInit(): void {
     // create a plain list of variable codes
-    this.variablesPlain = (this.variables || []).map(x => x.code);
+    this.variablesPlain = (this.variables() || []).map(x => x.code);
   }
 
   async openEmailDataConfiguration(): Promise<void> {
@@ -182,11 +173,11 @@ export class IDEAEmailDataComponent implements OnInit {
     const modal = await this._modal.create({
       component: IDEAEmailDataConfigurationComponent,
       componentProps: {
-        emailData: this.emailData,
-        variables: this.variables,
-        title: this.label,
-        disabled: this.disabled,
-        lines: this.lines
+        emailData: this.emailData(),
+        variables: this.variables(),
+        title: this.label(),
+        disabled: this.disabled(),
+        lines: this.lines()
       }
     });
     modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));

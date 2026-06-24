@@ -1,21 +1,21 @@
-@if (!block.sectionsLegend.length) {
+@if (!block().sectionsLegend.length) {
   <ion-item lines="none">
     <ion-label>
       <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
     </ion-label>
   </ion-item>
 }
-<ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderSectionsLegend($event)">
-  @for (s of block.sectionsLegend; track s) {
-    <ion-item button detail [lines]="lines" (click)="openSection(s)">
-      @if (!disabled) {
+<ion-reorder-group [disabled]="disabled()" (ionItemReorder)="reorderSectionsLegend($event)">
+  @for (s of block().sectionsLegend; track s) {
+    <ion-item button detail [lines]="lines()" (click)="openSection(s)">
+      @if (!disabled()) {
         <ion-reorder slot="start" />
       }
       <ion-label>
-        {{ block.sections[s].name | label }}
-        <p>{{ block.sections[s].description | label }}</p>
+        {{ block().sections[s].name | label }}
+        <p>{{ block().sections[s].description | label }}</p>
       </ion-label>
-      @if (!disabled) {
+      @if (!disabled()) {
         <ion-button slot="end" fill="clear" color="danger" (click)="removeSection(s, $event)">
           <ion-icon icon="trash-outline" slot="icon-only" />
         </ion-button>
@@ -23,7 +23,7 @@
     </ion-item>
   }
 </ion-reorder-group>
-@if (!disabled) {
+@if (!disabled()) {
   <ion-row>
     <ion-col class="ion-padding ion-text-center">
       <ion-button size="small" color="primary" (click)="addNewSection()">

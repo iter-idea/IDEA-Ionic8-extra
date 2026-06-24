@@ -3,4 +3,3 @@
 ## Selector
 
 idea-password-policy
-

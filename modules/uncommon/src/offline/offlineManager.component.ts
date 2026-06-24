@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -49,6 +49,7 @@ import { IDEACacheableResourceComponent } from './cacheableResource.component';
     IonToolbar,
     IonHeader
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'offlineManager.component.html',
   styleUrls: ['offlineManager.component.scss']
 })

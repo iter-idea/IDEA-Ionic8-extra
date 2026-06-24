@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
 import { IonItem, IonSpinner, IonBadge } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
@@ -9,10 +8,11 @@ import { IDEAOfflineService } from '../offline/offline.service';
 
 @Component({
   selector: 'idea-sentiment',
-  imports: [CommonModule, IDEATranslatePipe, IonBadge, IonSpinner, IonItem],
+  imports: [IDEATranslatePipe, IonBadge, IonSpinner, IonItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (text && _offline.isOnline()) {
-      <ion-item [lines]="lines" [color]="color">
+    @if (text() && _offline.isOnline()) {
+      <ion-item [lines]="lines()" [color]="color()">
         @if (!sentiment) {
           <ion-spinner slot="end" size="small" />
         }
@@ -43,19 +43,19 @@ export class IDEASentimentComponent implements OnChanges {
   /**
    * The input text.
    */
-  @Input() text: string;
+  readonly text = input<string>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * Triggers when the sentiment change.
    */
-  @Output() change = new EventEmitter<Sentiment>();
+  readonly change = output<Sentiment>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.text.previousValue !== changes.text.currentValue) this.detectSentiment(changes.text.currentValue);
@@ -66,7 +66,7 @@ export class IDEASentimentComponent implements OnChanges {
       try {
         const { sentiment } = await this._API.postResource('sentiment', {
           idea: true,
-          body: { project: this._env.idea.project, language: this._translate.getCurrentLang(), text: this.text }
+          body: { project: this._env.idea.project, language: this._translate.getCurrentLang(), text: this.text() }
         });
         this.sentiment = sentiment;
         this.change.emit(this.sentiment);

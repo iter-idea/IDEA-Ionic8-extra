@@ -2,11 +2,11 @@ import {
   Component,
   ChangeDetectionStrategy,
   Input,
-  Output,
-  EventEmitter,
   OnInit,
   ChangeDetectorRef,
-  inject
+  inject,
+  output,
+  input
 } from '@angular/core';
 import { IonContent, Platform } from '@ionic/angular/standalone';
 import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
@@ -38,88 +38,96 @@ export class IDEAAgendaComponent implements OnInit {
   /**
    * The events to display in the calendar.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() events: AgendaEvent[] = [];
   /**
    * An array of day indexes (0 = sunday, 1 = monday, etc.) that will be hidden on the view.
    */
-  @Input() excludeDays: number[] = [];
+  readonly excludeDays = input<number[]>([]);
   /**
    * The day start hours in 24 hour time. Must be 0-23
    */
-  @Input() dayStartHour = 0;
+  readonly dayStartHour = input(0);
   /**
    * The day start hours in 24 hour time. Must be 0-23
    */
-  @Input() dayEndHour = 23;
+  readonly dayEndHour = input(23);
   /**
    * The number of segments in an hour. Must divide equally into 60.
    */
-  @Input() hourSegments = 2;
+  readonly hourSegments = input(2);
   /**
    * Whether to open the current day's details right away in month view.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() activeDayIsOpen = false;
   /**
    * The view mode for the agenda.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() view: CalendarView = CalendarView.Week;
   /**
    * The allowed view mode for the agenda.
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() allowedViews = [CalendarView.Day, CalendarView.Week, CalendarView.Month];
   /**
    * Whether to block any day/slot in the past.
    */
-  @Input() onlyFuture = false;
+  readonly onlyFuture = input(false);
   /**
    * Some notes to show underneath the calendar's header.
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() titleNotes: string;
   /**
    * The template for new events created by drag&drop.
    */
-  @Input() newEventTemplate: AgendaEvent = { title: 'New', start: null, meta: {} };
+  readonly newEventTemplate = input<AgendaEvent>({ title: 'New', start: null, meta: {} });
   /**
    * Whether (and how) to allow the creation of events by drag&drop.
    * If enabled, on mobile it requires the `parentContent` to be set for a correct execution.
    */
-  @Input() allowDragToCreate: DragToCreateOptions = DragToCreateOptions.DISABLED;
+  readonly allowDragToCreate = input<DragToCreateOptions>(DragToCreateOptions.DISABLED);
   /**
    * The parent ion-content, in case we want to control its scrollability for drag&drop features.
    */
-  @Input() parentContent: IonContent;
+  readonly parentContent = input<IonContent>();
   /**
    * Trigger when an event is selected.
    */
-  @Output() selectEvent = new EventEmitter<AgendaEvent>();
+  readonly selectEvent = output<AgendaEvent>();
   /**
    * Trigger when a day is selected.
    */
-  @Output() selectDay = new EventEmitter<Date>();
+  readonly selectDay = output<Date>();
   /**
    * Trigger when a time slot is selected.
    */
-  @Output() selectSlot = new EventEmitter<Date>();
+  readonly selectSlot = output<Date>();
   /**
    * Trigger when a new event is added by drag and drop.
    */
-  @Output() newEventByDrag = new EventEmitter<AgendaEvent>();
+  readonly newEventByDrag = output<AgendaEvent>();
   /**
    * Trigger when an event changed date (drag&drop or resize).
    */
-  @Output() changeEvent = new EventEmitter<AgendaEvent>();
+  readonly changeEvent = output<AgendaEvent>();
   /**
    * Trigger when the view date of reference changed (because we moved inside the calendar).
    */
-  @Output() changeDate = new EventEmitter<Date>();
+  readonly changeDate = output<Date>();
   /**
    * Trigger before the rendering of the week or day view.
    */
-  @Output() beforeWeekOrDayViewRenderEmitter = new EventEmitter<CalendarWeekViewBeforeRenderEvent>();
+  readonly beforeWeekOrDayViewRenderEmitter = output<CalendarWeekViewBeforeRenderEvent>();
   /**
    * Trigger before the rendering of the month view.
    */
-  @Output() beforeMonthViewRenderEmitter = new EventEmitter<CalendarMonthViewBeforeRenderEvent>();
+  readonly beforeMonthViewRenderEmitter = output<CalendarMonthViewBeforeRenderEvent>();
 
   CalendarView = CalendarView;
   Attendance = EventAttendance;
@@ -174,7 +182,7 @@ export class IDEAAgendaComponent implements OnInit {
   }
 
   dateIsValid(date: any, sameDayIsValid?: boolean): boolean {
-    if (!this.onlyFuture) return true;
+    if (!this.onlyFuture()) return true;
     return isFuture(date) || (sameDayIsValid ? isToday(date) : false);
   }
 
@@ -236,11 +244,12 @@ export class IDEAAgendaComponent implements OnInit {
   }
 
   startDragToCreate(event: Event, segmentDate: Date, segmentElement: HTMLElement): void {
-    if (!this.allowDragToCreate) return;
+    if (!this.allowDragToCreate()) return;
 
-    if (this.parentContent) this.parentContent.scrollY = false;
+    const parentContent = this.parentContent();
+    if (parentContent) parentContent.scrollY = false;
 
-    const eventByDragAndDrop: AgendaEvent = { ...this.newEventTemplate, start: segmentDate };
+    const eventByDragAndDrop: AgendaEvent = { ...this.newEventTemplate(), start: segmentDate };
     this.events = [...this.events, eventByDragAndDrop];
 
     const segmentPosition = segmentElement.getBoundingClientRect();
@@ -254,7 +263,7 @@ export class IDEAAgendaComponent implements OnInit {
       const daysDiff = floorToNearest(clientX - segmentPosition.left, segmentPosition.width) / segmentPosition.width;
 
       let newEnd: Date;
-      if (this.allowDragToCreate === DragToCreateOptions.ONLY_SAME_DAY) newEnd = addMinutes(segmentDate, minutesDiff);
+      if (this.allowDragToCreate() === DragToCreateOptions.ONLY_SAME_DAY) newEnd = addMinutes(segmentDate, minutesDiff);
       else newEnd = addDays(addMinutes(segmentDate, minutesDiff), daysDiff);
 
       if (newEnd > segmentDate && newEnd < endOfView) eventByDragAndDrop.end = newEnd;
@@ -262,7 +271,8 @@ export class IDEAAgendaComponent implements OnInit {
     };
 
     const endOfDrag = (): void => {
-      if (this.parentContent) this.parentContent.scrollY = true;
+      const parentContentValue = this.parentContent();
+      if (parentContentValue) parentContentValue.scrollY = true;
       eventByDragAndDrop.end = this.getFixedEndDateWithMinimumSegmentDuration(eventByDragAndDrop);
       refreshView();
       this.newEventByDrag.emit(eventByDragAndDrop);
@@ -285,7 +295,7 @@ export class IDEAAgendaComponent implements OnInit {
   }
   private getFixedEndDateWithMinimumSegmentDuration(agendaBooking: AgendaEvent): Date {
     const fixedEnd = new Date(agendaBooking.end || agendaBooking.start);
-    const segmentSizeInMinutes = 60 / this.hourSegments;
+    const segmentSizeInMinutes = 60 / this.hourSegments();
     if (fixedEnd.getTime() <= agendaBooking.start.getTime() + segmentSizeInMinutes * 60 * 1000)
       fixedEnd.setMinutes(agendaBooking.start.getMinutes() + segmentSizeInMinutes);
     return fixedEnd;

@@ -13,22 +13,15 @@ then
   exit -1
 fi
 
-# generate docs
+# generate docs (compile the TypeScript generator first)
 cd generateDocs
+npm ci
+npm run build
 node index
 cd ..
 
-# lint the modules
-for MODULE in ${MODULES_DIR}/*/;
-do
-  ng lint $(basename ${MODULE}) --fix
-done
-
-# build the modules (for production)
-for MODULE in ${MODULES_DIR}/*/;
-do
-  ng build $(basename ${MODULE}) --configuration production
-done
+npm run build:all
+npm run lint
 
 # bump the module's versions
 for MODULE in ${MODULES_DIR}/*/;

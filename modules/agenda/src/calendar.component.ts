@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, input } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular/standalone';
 import { Calendar, Check, Membership } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -10,6 +10,7 @@ import { IDEACalendarsService } from './calendars.service';
   // eslint-disable-next-line
   standalone: false,
   selector: 'idea-calendar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'calendar.component.html',
   styleUrls: ['calendar.component.scss']
 })
@@ -22,19 +23,20 @@ export class IDEACalendarComponent implements OnInit {
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
   _calendars = inject(IDEACalendarsService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The calendar to manage.
    */
-  @Input() calendar: Calendar;
+  readonly calendar = input<Calendar>();
   /**
    * Whether we want to enable advanced permissions (based on the memberships) on the calendar.
    */
-  @Input() advancedPermissions: boolean;
+  readonly advancedPermissions = input<boolean>();
   /**
    * Whether the calendar color is an important detail or it shouldn't be shown.
    */
-  @Input() hideColor: boolean;
+  readonly hideColor = input<boolean>();
 
   calendarWC: Calendar;
   membershipsChecks: Check[];
@@ -44,7 +46,7 @@ export class IDEACalendarComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.membership = this._tc.get('membership');
-    this.calendarWC = new Calendar(this.calendar);
+    this.calendarWC = new Calendar(this.calendar());
     try {
       const memberships: Membership[] = await this._API.getResource(`teams/${this.membership.teamId}/memberships`);
       this.membershipsChecks = memberships.map(
@@ -55,6 +57,7 @@ export class IDEACalendarComponent implements OnInit {
             checked: (this.calendarWC.usersCanManageAppointments || []).some(x => x === m.userId)
           })
       );
+      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('COMMON.COULDNT_LOAD_LIST');
     }
@@ -66,7 +69,7 @@ export class IDEACalendarComponent implements OnInit {
 
   async save(): Promise<void> {
     if (!this.calendarWC.color) this.calendarWC.color = this.DEFAULT_COLOR;
-    if (this.calendarWC.isShared() && this.advancedPermissions)
+    if (this.calendarWC.isShared() && this.advancedPermissions())
       this.calendarWC.usersCanManageAppointments = this.membershipsChecks
         .filter(x => x.checked)
         .map(x => String(x.value));
@@ -78,9 +81,9 @@ export class IDEACalendarComponent implements OnInit {
     try {
       await this._loading.show();
       const res = await this._calendars.putCalendar(this.calendarWC);
-      this.calendar.load(res);
+      this.calendar().load(res);
       this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_SAVED');
-      this._modal.dismiss(this.calendar);
+      this._modal.dismiss(this.calendar());
     } catch (error) {
       this._message.error('COMMON.OPERATION_FAILED');
     } finally {

@@ -5,7 +5,7 @@
         <ion-icon name="close" slot="icon-only" />
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ title }}</ion-title>
+    <ion-title>{{ title() }}</ion-title>
     <ion-buttons slot="end">
       <ion-button [title]="'COMMON.RESET' | translate" (click)="reset()">
         <ion-icon name="arrow-undo" slot="icon-only" />
@@ -335,7 +335,7 @@
         <ion-text class="prefLabel">{{ 'IDEA_UNCOMMON.FTTT.PERIOD' | translate }}:</ion-text>
       </ion-col>
       <ion-col [size]="9" [sizeSm]="5">
-        <ion-segment [value]="period" (ionChange)="period = $event?.detail?.value || period">
+        <ion-segment [value]="period" (ionChange)="period = $any($event?.detail?.value) || period">
           <ion-segment-button [value]="Periods.AM">
             <ion-label>{{ 'IDEA_UNCOMMON.FTTT.AM' | translate }}</ion-label>
           </ion-segment-button>
@@ -350,7 +350,7 @@
         <ion-text class="prefLabel">{{ 'IDEA_UNCOMMON.FTTT.MINUTES_PREFERENCE' | translate }}:</ion-text>
       </ion-col>
       <ion-col [size]="9" [sizeSm]="5">
-        <ion-segment [value]="minutes" (ionChange)="minutes = $event?.detail?.value || minutes">
+        <ion-segment [value]="minutes" (ionChange)="minutes = $any($event?.detail?.value) || minutes">
           <ion-segment-button value="15">
             <ion-label>15</ion-label>
           </ion-segment-button>

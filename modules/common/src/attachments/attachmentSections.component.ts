@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -25,7 +24,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 @Component({
   selector: 'idea-attachment-sections',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
     IDEAAttachmentsComponent,
@@ -38,44 +36,45 @@ import { IDEATranslationsService } from '../translations/translations.service';
     IonAccordionGroup,
     IonAccordion
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (!attachmentSections.sectionsLegend.length) {
-      <ion-item lines="none" [color]="color">
+    @if (!attachmentSections().sectionsLegend.length) {
+      <ion-item lines="none" [color]="color()">
         <ion-label>
           <i>{{ 'IDEA_COMMON.ATTACHMENTS.NO_ELEMENTS' | translate }}</i>
         </ion-label>
       </ion-item>
     }
     <ion-accordion-group>
-      <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderSectionsLegend($event)">
-        @for (sectionKey of attachmentSections.sectionsLegend; track sectionKey) {
-          @if (disabled) {
+      <ion-reorder-group [disabled]="disabled()" (ionItemReorder)="reorderSectionsLegend($event)">
+        @for (sectionKey of attachmentSections().sectionsLegend; track sectionKey) {
+          @if (disabled()) {
             <ion-accordion>
               <ion-item
                 slot="header"
-                [button]="!disabled"
-                [detail]="!disabled"
-                [lines]="lines"
-                [color]="color"
+                [button]="!disabled()"
+                [detail]="!disabled()"
+                [lines]="lines()"
+                [color]="color()"
                 (click)="manageSection(sectionKey)"
               >
                 <ion-label>
-                  {{ attachmentSections.sections[sectionKey].name | label }}
-                  <p>{{ attachmentSections.sections[sectionKey].description | label }}</p>
+                  {{ attachmentSections().sections[sectionKey].name | label }}
+                  <p>{{ attachmentSections().sections[sectionKey].description | label }}</p>
                 </ion-label>
               </ion-item>
               <div
                 slot="content"
                 class="ion-padding-start ion-padding-end"
-                [style.background-color]="'var(--ion-color-' + color + ')'"
+                [style.background-color]="'var(--ion-color-' + color() + ')'"
               >
                 <idea-attachments
                   [disabled]="true"
-                  [entityPath]="entityPath"
-                  [attachments]="attachmentSections.sections[sectionKey].attachments"
-                  [acceptedFormats]="acceptedFormats"
-                  [multiple]="multiple"
-                  [color]="color"
+                  [entityPath]="entityPath()"
+                  [attachments]="attachmentSections().sections[sectionKey].attachments"
+                  [acceptedFormats]="acceptedFormats()"
+                  [multiple]="multiple()"
+                  [color]="color()"
                   (download)="download.emit($event)"
                 />
               </div>
@@ -83,16 +82,16 @@ import { IDEATranslationsService } from '../translations/translations.service';
           } @else {
             <ion-item
               slot="header"
-              [button]="!disabled"
-              [detail]="!disabled"
-              [lines]="lines"
-              [color]="color"
+              [button]="!disabled()"
+              [detail]="!disabled()"
+              [lines]="lines()"
+              [color]="color()"
               (click)="manageSection(sectionKey)"
             >
               <ion-reorder slot="start" />
               <ion-label>
-                {{ attachmentSections.sections[sectionKey].name | label }}
-                <p>{{ attachmentSections.sections[sectionKey].description | label }}</p>
+                {{ attachmentSections().sections[sectionKey].name | label }}
+                <p>{{ attachmentSections().sections[sectionKey].description | label }}</p>
               </ion-label>
               <ion-button
                 slot="end"
@@ -108,7 +107,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
         }
       </ion-reorder-group>
     </ion-accordion-group>
-    @if (!disabled) {
+    @if (!disabled()) {
       <div class="ion-padding ion-text-center">
         <ion-button size="small" color="primary" (click)="addNewSection()">
           {{ 'IDEA_COMMON.ATTACHMENTS.ADD_SECTION' | translate }}
@@ -126,47 +125,48 @@ export class IDEAAttachmentSectionsComponent {
   /**
    * The attachment sections to display and manage.
    */
-  @Input() attachmentSections: AttachmentSections;
+  readonly attachmentSections = input<AttachmentSections>();
   /**
    * The API path to the entity for which we want to manage the attachments.
    */
-  @Input() entityPath: string | string[];
+  readonly entityPath = input<string | string[]>();
   /**
    * The list of accepted formats.
    */
-  @Input() acceptedFormats = ['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx'];
+  readonly acceptedFormats = input(['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx']);
   /**
    * Whether to accept multiple files as target for the browse function.
    */
-  @Input() multiple = false;
+  readonly multiple = input(false);
   /**
    * Whether the component is disabled or not.
    */
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * Lines preferences for the component.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The background color of the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * Trigger to download a file by URL.
    */
-  @Output() download = new EventEmitter<string>();
+  readonly download = output<string>();
 
   reorderSectionsLegend(ev: any): void {
-    this.attachmentSections.sectionsLegend = ev.detail.complete(this.attachmentSections.sectionsLegend);
+    this.attachmentSections().sectionsLegend = ev.detail.complete(this.attachmentSections().sectionsLegend);
   }
 
   async manageSection(s: string): Promise<void> {
-    if (this.disabled) return;
+    const disabled = this.disabled();
+    if (disabled) return;
     const componentProps = {
-      section: this.attachmentSections.sections[s],
-      entityPath: this.entityPath,
-      disabled: this.disabled,
-      lines: this.lines,
+      section: this.attachmentSections().sections[s],
+      entityPath: this.entityPath(),
+      disabled: disabled,
+      lines: this.lines(),
       downloadCallback: (url: string): void => this.download.emit(url)
     };
     const modal = await this._modal.create({ component: IDEAManageAttachmentsSectionComponent, componentProps });
@@ -176,14 +176,15 @@ export class IDEAAttachmentSectionsComponent {
   async removeSection(sectionKey: string, event: Event): Promise<void> {
     if (event) event.stopPropagation();
     let header: string, subHeader: string, buttons: any[];
-    if (this.attachmentSections.sections[sectionKey].attachments.length) {
+    if (this.attachmentSections().sections[sectionKey].attachments.length) {
       header = this._translate._('COMMON.REMOVE');
       subHeader = this._translate._('IDEA_COMMON.ATTACHMENTS.DELETE_EMPTY_SECTION');
       buttons = [this._translate._('COMMON.GOT_IT')];
     } else {
       const doRemoveSection = (): void => {
-        this.attachmentSections.sectionsLegend.splice(this.attachmentSections.sectionsLegend.indexOf(sectionKey), 1);
-        delete this.attachmentSections.sections[sectionKey];
+        const attachmentSections = this.attachmentSections();
+        this.attachmentSections().sectionsLegend.splice(attachmentSections.sectionsLegend.indexOf(sectionKey), 1);
+        delete attachmentSections.sections[sectionKey];
       };
       header = this._translate._('COMMON.REMOVE');
       subHeader = this._translate._('COMMON.ARE_YOU_SURE');
@@ -204,15 +205,16 @@ export class IDEAAttachmentSectionsComponent {
       const key = name.replace(/[^\w]/g, ''); // clean the key to avoid weird chars in the JSON
       if (!key.trim()) return;
 
-      if (this.attachmentSections.sectionsLegend.some(x => x === key))
+      const attachmentSections = this.attachmentSections();
+      if (attachmentSections.sectionsLegend.some(x => x === key))
         return this._message.error('IDEA_COMMON.ATTACHMENTS.DUPLICATED_KEY');
 
       const section = new AttachmentSection(null, this._translate.languages());
       section.name = new Label(null, this._translate.languages());
       section.name[this._translate.getDefaultLang()] = name;
 
-      this.attachmentSections.sections[key] = section;
-      this.attachmentSections.sectionsLegend.push(key);
+      attachmentSections.sections[key] = section;
+      attachmentSections.sectionsLegend.push(key);
 
       this.manageSection(key);
     };

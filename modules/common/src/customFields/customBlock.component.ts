@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -24,7 +23,6 @@ import { IDEASelectComponent } from '../select/select.component';
 @Component({
   selector: 'idea-custom-block',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
@@ -40,6 +38,7 @@ import { IDEASelectComponent } from '../select/select.component';
     IonTextarea,
     IonCheckbox
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'customBlock.component.html',
   styleUrls: ['customBlock.component.scss']
 })
@@ -50,47 +49,47 @@ export class IDEACustomBlockComponent {
   /**
    * The custom sections to manage.
    */
-  @Input() sections: any;
+  readonly sections = input<any>();
   /**
    * The CustomBlockMeta that describe the custom sections.
    */
-  @Input() blockMeta: CustomBlockMeta;
+  readonly blockMeta = input<CustomBlockMeta>();
   /**
    * Whether the component is enabled or not.
    */
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * Lines preferences for the component.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * Whether to hide the descriptions (buttons).
    */
-  @Input() hideDescriptions = false;
+  readonly hideDescriptions = input(false);
   /**
    * Show errors as reported from the parent component.
    */
-  @Input() errors = new Set();
+  readonly errors = input(new Set<string>());
   /**
    * Add a custom prefix to the error string identifier.
    */
-  @Input() errorPrefix = '';
+  readonly errorPrefix = input('');
 
   CFT = CustomFieldTypes;
 
   hasFieldAnError(field: string): boolean {
-    return this.errors.has(field);
+    return this.errors().has(field);
   }
 
   hasDescription(sectionKey: string, fieldKey: string): boolean {
-    return !!this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+    return !!this._translate._label(this.blockMeta().sections[sectionKey].fields[fieldKey].description);
   }
   async openDescription(sectionKey: string, fieldKey: string, event: any): Promise<void> {
     if (event) event.stopPropagation();
-    const message = this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+    const message = this._translate._label(this.blockMeta().sections[sectionKey].fields[fieldKey].description);
     if (!message) return;
 
-    const header = this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].name);
+    const header = this._translate._label(this.blockMeta().sections[sectionKey].fields[fieldKey].name);
     const alert = await this._alert.create({ header, message, buttons: ['OK'], cssClass: 'alertLongOptions' });
     await alert.present();
   }

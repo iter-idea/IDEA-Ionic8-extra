@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -35,7 +34,6 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
 @Component({
   selector: 'idea-sign-in',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonButton,
@@ -55,6 +53,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
     IonInput,
     IonCheckbox
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       @if (newAccountRegistered) {

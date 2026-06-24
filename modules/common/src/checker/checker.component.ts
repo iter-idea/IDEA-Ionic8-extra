@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Check } from 'idea-toolbox';
 
@@ -9,13 +8,14 @@ import { IDEAChecksComponent } from './checks.component';
 
 @Component({
   selector: 'idea-checker',
-  imports: [CommonModule, IonLabel, IonItem, IonButton, IonIcon, IonText],
+  imports: [IonLabel, IonItem, IonButton, IonIcon, IonText],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="checkerItem"
-      [color]="color"
-      [lines]="lines"
-      [title]="searchPlaceholder || null"
+      [color]="color()"
+      [lines]="lines()"
+      [title]="searchPlaceholder() || null"
       [button]="!disabled"
       [disabled]="isOpening"
       [class.withLabel]="label"
@@ -25,7 +25,7 @@ import { IDEAChecksComponent } from './checks.component';
         <ion-button
           fill="clear"
           slot="start"
-          [color]="iconColor"
+          [color]="iconColor()"
           [class.marginTop]="label"
           (click)="doIconSelect($event)"
         >
@@ -33,17 +33,17 @@ import { IDEAChecksComponent } from './checks.component';
         </ion-button>
       }
       @if (label) {
-        <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled">
+        <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled()">
           {{ label }}
-          @if (obligatory && !disabled) {
+          @if (obligatory() && !disabled) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
       <ion-label
         class="description"
-        [class.selectable]="!disabled || tappableWhenDisabled"
-        [class.placeholder]="getPreview() === allText || getPreview() === noneText || noPreviewText"
+        [class.selectable]="!disabled || tappableWhenDisabled()"
+        [class.placeholder]="getPreview() === allText() || getPreview() === noneText() || noPreviewText()"
       >
         {{ getPreview() }}
       </ion-label>
@@ -96,120 +96,126 @@ export class IDEACheckerComponent {
   /**
    * The checks to show.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() data: Check[] = [];
   /**
    * @deprecated Alternative to the case above; function that returns a Promise<Array<Check>>.
    */
-  @Input() dataProvider: any;
+  readonly dataProvider = input<any>();
   /**
    * The label for the field.
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder: string;
+  readonly searchPlaceholder = input<string>();
   /**
    * If true, show the string instead of the preview text.
    */
-  @Input() noPreviewText: string;
+  readonly noPreviewText = input<string>();
   /**
    * The text to show in case no element is found after a search.
    */
-  @Input() noElementsFoundText: string;
+  readonly noElementsFoundText = input<string>();
   /**
    * If true, no elements selected equals all the elements selected.
    */
-  @Input() noneEqualsAll: boolean;
+  readonly noneEqualsAll = input<boolean>();
   /**
    * If no element is selected, set this custom text.
    */
-  @Input() noneText: string;
+  readonly noneText = input<string>();
   /**
    * If all the elements are selected, set this custom text.
    */
-  @Input() allText: string;
+  readonly allText = input<string>();
   /**
    * The translation key to get the preview text; it has a `num` variable available.
    */
-  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
+  readonly previewTextKey = input('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED');
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * If true, the component is disabled.
    */
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.
    */
-  @Input() tappableWhenDisabled: boolean;
+  readonly tappableWhenDisabled = input<boolean>();
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() obligatory: boolean;
+  readonly obligatory = input<boolean>();
   /**
    * If true, sort alphabetically the data.
    */
-  @Input() sortData: boolean;
+  readonly sortData = input<boolean>();
   /**
    * How many elements to show in the preview before to generalize on the number.
    */
-  @Input() numMaxElementsInPreview = 4;
+  readonly numMaxElementsInPreview = input(4);
   /**
    * Whether to show an avatar aside each element.
    */
-  @Input() showAvatars: boolean;
+  readonly showAvatars = input<boolean>();
   /**
    * Limit the number of selectable elements to the value provided.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
-  @Input() limitSelectionToNum: number;
+  readonly limitSelectionToNum = input<number>();
   /**
    * Whether to allow the select/deselect-all buttons.
    */
-  @Input() allowSelectDeselectAll: boolean;
+  readonly allowSelectDeselectAll = input<boolean>();
   /**
    * A pre-filter for the category1.
    */
-  @Input() category1: string;
+  readonly category1 = input<string>();
   /**
    * A pre-filter for the category2.
    */
-  @Input() category2: string;
+  readonly category2 = input<string>();
   /**
    * Whether tho show the categories filters.
    */
-  @Input() showCategoriesFilters: boolean;
+  readonly showCategoriesFilters = input<boolean>();
   /**
    * On change event.
    */
-  @Output() change = new EventEmitter<void>();
+  readonly change = output<void>();
   /**
    * Icon select.
    */
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly iconSelect = output<void>();
 
   isOpening = false;
 
   async fetchDataAndOpenModal(): Promise<void> {
     if (this.disabled) return;
-    if (typeof this.dataProvider === 'function') {
+    const dataProvider = this.dataProvider();
+    if (typeof dataProvider === 'function') {
       try {
-        this.data = await this.dataProvider();
+        this.data = await dataProvider();
         this.openChecker();
       } catch (error) {
         this.data = [];
@@ -223,16 +229,16 @@ export class IDEACheckerComponent {
       component: IDEAChecksComponent,
       componentProps: {
         data: this.data,
-        sortData: this.sortData,
-        searchPlaceholder: this.searchPlaceholder,
-        noElementsFoundText: this.noElementsFoundText,
-        showAvatars: this.showAvatars,
-        allowSelectDeselectAll: this.allowSelectDeselectAll,
-        limitSelectionToNum: this.limitSelectionToNum,
-        category1: this.category1,
-        category2: this.category2,
-        showCategoriesFilters: this.showCategoriesFilters,
-        previewTextKey: this.previewTextKey
+        sortData: this.sortData(),
+        searchPlaceholder: this.searchPlaceholder(),
+        noElementsFoundText: this.noElementsFoundText(),
+        showAvatars: this.showAvatars(),
+        allowSelectDeselectAll: this.allowSelectDeselectAll(),
+        limitSelectionToNum: this.limitSelectionToNum(),
+        category1: this.category1(),
+        category2: this.category2(),
+        showCategoriesFilters: this.showCategoriesFilters(),
+        previewTextKey: this.previewTextKey()
       }
     });
     modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
@@ -242,19 +248,22 @@ export class IDEACheckerComponent {
 
   getPreview(): string {
     if (!this.data || !this.data.length) return null;
-    if (this.noPreviewText) return this.noPreviewText;
-    if (this.allText && (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll)))
-      return this.allText;
+    const noPreviewText = this.noPreviewText();
+    if (noPreviewText) return noPreviewText;
+    const allText = this.allText();
+    if (allText && (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll())))
+      return allText;
     else {
       const checked = this.data.filter(x => x.checked);
-      if (this.noneText && checked.length === 0) return this.noneText;
-      if (checked.length <= this.numMaxElementsInPreview)
+      const noneText = this.noneText();
+      if (noneText && checked.length === 0) return noneText;
+      if (checked.length <= this.numMaxElementsInPreview())
         return this.data
           .filter(x => x.checked)
-          .slice(0, this.numMaxElementsInPreview)
+          .slice(0, this.numMaxElementsInPreview())
           .map(x => x.name)
           .join(', ');
-      else return this._translate._(this.previewTextKey, { num: checked.length });
+      else return this._translate._(this.previewTextKey(), { num: checked.length });
     }
   }
 

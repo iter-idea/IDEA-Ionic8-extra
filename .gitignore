@@ -35,3 +35,4 @@ UserInterfaceState.xcuserstate
 
 .angular/cache
 generateDocs/*.js
+generateDocs/tsconfig.tsbuildinfo

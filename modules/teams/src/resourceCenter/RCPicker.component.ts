@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
 import { IonItem, IonButton, IonIcon, IonInput, IonLabel, IonText } from '@ionic/angular/standalone';
@@ -16,7 +15,6 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
 @Component({
   selector: 'idea-rc-picker',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEASelectComponent,
@@ -27,25 +25,26 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
     IonButton,
     IonItem
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @for (r of attachedResources; track r; let odd = $odd) {
-      <ion-item class="resources" [lines]="lines" [class.odd]="odd">
+    @for (r of attachedResources(); track r; let odd = $odd) {
+      <ion-item class="resources" [lines]="lines()" [class.odd]="odd">
         @if (_offline.isOnline()) {
           <ion-button fill="clear" size="small" slot="start" (click)="openResource(r, true)">
             <ion-icon name="open-outline" slot="icon-only" size="small" />
           </ion-button>
         }
-        @if (!editMode) {
+        @if (!editMode()) {
           <ion-icon slot="start" color="medium" [name]="getFormatIcon(r.format)" [title]="r.format" />
         }
-        @if (editMode) {
+        @if (editMode()) {
           <ion-input
             [(ngModel)]="r.name"
             [placeholder]="r.originalName"
             (ionBlur)="$event.target.value = $event.target.value || _translate._('IDEA_TEAMS.RESOURCE_CENTER.NO_NAME')"
           />
         }
-        @if (!editMode) {
+        @if (!editMode()) {
           <ion-label>
             {{ r.name }}
             <p>{{ r.originalName }}.{{ r.format }}</p>
@@ -61,7 +60,7 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
             }
           </ion-label>
         }
-        @if (editMode) {
+        @if (editMode()) {
           <ion-button
             slot="end"
             color="danger"
@@ -75,7 +74,7 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
       </ion-item>
     }
     <!----->
-    @if (!editMode && !attachedResources?.length) {
+    @if (!editMode() && !attachedResources()?.length) {
       <ion-item lines="none" class="noResources">
         <ion-label>
           {{ 'IDEA_TEAMS.RESOURCE_CENTER.NO_RESOURCES' | translate }}
@@ -83,7 +82,7 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
       </ion-item>
     }
     <!----->
-    @if (editMode && resourcesSuggestions) {
+    @if (editMode() && resourcesSuggestions) {
       <idea-select
         [data]="resourcesSuggestions"
         [placeholder]="'IDEA_TEAMS.RESOURCE_CENTER.TAP_TO_ADD_A_RESOURCE' | translate"
@@ -134,23 +133,25 @@ export class IDEARCPickerComponent implements OnChanges {
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() team: string;
   /**
    * The folder of which to load the resources.
    */
-  @Input() folder: RCConfiguredFolder;
+  readonly folder = input<RCConfiguredFolder>();
   /**
    * The array in which we want to add/remove resources.
    */
-  @Input() attachedResources: RCAttachedResource[];
+  readonly attachedResources = input<RCAttachedResource[]>();
   /**
    * Regulate the mode (view/edit).
    */
-  @Input() editMode = false;
+  readonly editMode = input(false);
   /**
    * The lines attribute of the item.
    */
-  @Input() lines = 'none';
+  readonly lines = input('none');
 
   resources: RCResource[];
   resourcesSuggestions: Suggestion[];
@@ -160,7 +161,7 @@ export class IDEARCPickerComponent implements OnChanges {
       // if the team isn't specified, try to guess it in the usual IDEA's paths
       this.team = this.team || this._tc.get('membership').teamId || this._tc.get('teamId');
       try {
-        const url = `teams/${this.team}/folders/${this.folder.folderId}/resources`;
+        const url = `teams/${this.team}/folders/${this.folder().folderId}/resources`;
         const resources: RCResource[] = await this._API.getResource(url);
         this.resources = resources;
         this.resourcesSuggestions = resources.map(
@@ -174,11 +175,11 @@ export class IDEARCPickerComponent implements OnChanges {
 
   addResource(resourceId: string): void {
     const resource = this.resources.find(r => r.resourceId === resourceId);
-    if (resource) this.attachedResources.push(new RCAttachedResource(resource));
+    if (resource) this.attachedResources().push(new RCAttachedResource(resource));
   }
 
   removeResource(resource: RCAttachedResource): void {
-    this.attachedResources.splice(this.attachedResources.indexOf(resource), 1);
+    this.attachedResources().splice(this.attachedResources().indexOf(resource), 1);
   }
 
   async openResource(resource: RCAttachedResource, latestVersion?: boolean): Promise<void> {
@@ -187,7 +188,7 @@ export class IDEARCPickerComponent implements OnChanges {
     if (!latestVersion) body.version = resource.version;
     try {
       await this._loading.show();
-      const request = `teams/${this.team}/folders/${this.folder.folderId}/resources`;
+      const request = `teams/${this.team}/folders/${this.folder().folderId}/resources`;
       const { url } = await this._API.patchResource(request, { resourceId: resource.resourceId, body });
       await Browser.open({ url });
     } catch (error) {

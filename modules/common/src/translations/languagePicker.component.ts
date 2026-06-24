@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { Suggestion } from 'idea-toolbox';
 import { IonButton, IonItem, IonLabel, IonList, IonListHeader, IonPopover } from '@ionic/angular/standalone';
 
@@ -12,8 +12,9 @@ import { IDEATranslatePipe } from './translate.pipe';
 @Component({
   selector: 'idea-language-picker',
   imports: [IonButton, IonPopover, IonList, IonListHeader, IonItem, IonLabel, IDEATranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ion-button id="click-trigger" [fill]="fill" [title]="'IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE' | translate">
+    <ion-button id="click-trigger" [fill]="fill()" [title]="'IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE' | translate">
       <img [src]="getFlagURL()" />
     </ion-button>
     <ion-popover #popover trigger="click-trigger" triggerAction="click">
@@ -48,7 +49,7 @@ export class IDEALanguagePickerComponent implements OnInit {
   /**
    * Button fill preference.
    */
-  @Input() fill: string;
+  readonly fill = input<string>();
 
   languages: { value: string; name: string }[] = [];
 

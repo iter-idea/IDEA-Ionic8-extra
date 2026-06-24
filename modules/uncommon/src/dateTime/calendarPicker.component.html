@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar color="ideaToolbar">
-    <ion-title>{{ title }}</ion-title>
+    <ion-title>{{ title() }}</ion-title>
     <ion-buttons slot="end">
-      @if (!hideClearButton) {
+      @if (!hideClearButton()) {
         <ion-button [title]="'IDEA_UNCOMMON.CALENDAR.RESET' | translate" (click)="save(true)">
           <ion-icon slot="icon-only" name="arrow-undo" />
         </ion-button>
@@ -98,14 +98,14 @@
         }
       </ion-row>
     }
-    @if (timePicker || manualTimePicker) {
+    @if (timePicker() || manualTimePicker()) {
       <ion-row>
         <h1 class="headerLabel">
           {{ 'IDEA_UNCOMMON.CALENDAR.SET_TIME' | translate }}
         </h1>
       </ion-row>
     }
-    @if (timePicker) {
+    @if (timePicker()) {
       <ion-row class="ion-align-items-center">
         <ion-col class="ion-no-padding" [size]="7">
           <ion-row>
@@ -144,7 +144,7 @@
         </ion-col>
       </ion-row>
     }
-    @if (manualTimePicker) {
+    @if (manualTimePicker()) {
       <ion-row class="ion-align-items-center manualTimePicker">
         <ion-col class="ion-text-center" [size]="12">
           <input type="number" min="0" max="23" [value]="hour" (change)="selectHour($event.target.value)" />

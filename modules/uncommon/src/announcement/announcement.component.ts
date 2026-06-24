@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { IonCard, IonCardContent, IonButton } from '@ionic/angular/standalone';
 import { Announcement, mdToHtml } from 'idea-toolbox';
 import { IDEAEnvironment, IDEAStorageService, IDEATranslatePipe } from '@idea-ionic/common';
@@ -11,7 +10,8 @@ import { IDEATinCanService } from '../tinCan.service';
  */
 @Component({
   selector: 'idea-announcement',
-  imports: [CommonModule, IDEATranslatePipe, IonButton, IonCardContent, IonCard],
+  imports: [IDEATranslatePipe, IonButton, IonCardContent, IonCard],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (htmlContent) {
       <ion-card class="announcementCard" [color]="color">
@@ -31,10 +31,13 @@ export class IDEAAnnouncementComponent implements OnInit {
   protected _env = inject(IDEAEnvironment);
   private _tc = inject(IDEATinCanService);
   private _storage = inject(IDEAStorageService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The color for the announcement card.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() color: string;
 
   announcement: Announcement;
@@ -51,11 +54,13 @@ export class IDEAAnnouncementComponent implements OnInit {
     if (this.announcement && this.announcement.content) {
       const lastRead: string = await this._storage.get(this.storageKey);
       if (!lastRead || this.announcement.content !== lastRead) this.htmlContent = mdToHtml(this.announcement.content);
+      this._cdr.markForCheck();
     }
   }
 
   async markAsRead(): Promise<void> {
     await this._storage.set(this.storageKey, this.announcement.content);
     this.htmlContent = null;
+    this._cdr.markForCheck();
   }
 }

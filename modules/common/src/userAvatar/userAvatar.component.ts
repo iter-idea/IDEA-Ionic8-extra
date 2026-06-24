@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonAvatar, IonImg } from '@ionic/angular/standalone';
 import { COLORS } from 'idea-toolbox';
@@ -6,10 +6,11 @@ import { COLORS } from 'idea-toolbox';
 @Component({
   selector: 'idea-user-avatar',
   imports: [CommonModule, IonAvatar, IonImg],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="container">
       @if (src) {
-        <ion-avatar style="height: var(--avatar-size); width: var(--avatar-size)" [ngClass]="size" [title]="name">
+        <ion-avatar style="height: var(--avatar-size); width: var(--avatar-size)" [ngClass]="size()" [title]="name()">
           <ion-img [src]="src" (ionError)="fallbackToInitials()" />
         </ion-avatar>
       }
@@ -17,8 +18,8 @@ import { COLORS } from 'idea-toolbox';
         <div
           class="circle"
           style="height: var(--avatar-size); width: var(--avatar-size)"
-          [ngClass]="size"
-          [title]="name"
+          [ngClass]="size()"
+          [title]="name()"
           [style.background]="'#' + color"
         >
           <div
@@ -81,18 +82,22 @@ export class IDEAUserAvatarComponent implements OnInit {
   /**
    * The link to the avatar media to show.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() src?: string;
   /**
    * The full name of the user (to use as fallback in case the media isn't available).
    */
-  @Input() name = '?';
+  readonly name = input('?');
   /**
    * The size of the avatar.
    */
-  @Input() size: 'mini' | 'small' | 'default' | 'large' | 'extraLarge' = 'default';
+  readonly size = input<'mini' | 'small' | 'default' | 'large' | 'extraLarge'>('default');
   /**
    * The HEX color of the avatar's background.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() color?: string;
 
   initials: string;
@@ -101,21 +106,22 @@ export class IDEAUserAvatarComponent implements OnInit {
 
   ngOnInit(): void {
     this.setInitialsFromName();
-    if (!this.color) this.color = getHexColorFromString(this.name);
+    if (!this.color) this.color = getHexColorFromString(this.name());
     if (this.color.charAt(0) === '#') this.color = this.color.slice(1);
     this.setFontColorBasedOnBackground();
   }
 
   private setInitialsFromName(): void {
-    if (!this.name) this.initials = '?';
+    const nameValue = this.name();
+    if (!nameValue) this.initials = '?';
     else {
-      const initials = this.name
+      const initials = nameValue
         .split(' ')
         .reduce((initials, name): string => initials + name.charAt(0), '')
         .toUpperCase();
 
       this.initials =
-        initials.length > 1 && this.size !== 'mini'
+        initials.length > 1 && this.size() !== 'mini'
           ? initials.charAt(0).concat(initials.charAt(initials.length - 1))
           : initials.charAt(0);
     }

@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import {
   ModalController,
   IonHeader,
@@ -21,7 +20,6 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
 @Component({
   selector: 'idea-icons',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonHeader,
     IonToolbar,
@@ -34,6 +32,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
     IonRow,
     IonCol
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -43,7 +42,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
           </ion-button>
         </ion-buttons>
         <ion-searchbar
-          [placeholder]="searchPlaceholder || ('COMMON.SEARCH' | translate)"
+          [placeholder]="searchPlaceholder() || ('COMMON.SEARCH' | translate)"
           [debounce]="100"
           (ionInput)="search($event.target ? $event.target.value : '')"
         />
@@ -77,7 +76,7 @@ export class IDEAIconsComponent {
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder: string;
+  readonly searchPlaceholder = input<string>();
 
   icons: Ionicons[];
   /**

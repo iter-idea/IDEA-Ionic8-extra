@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import {
   IonContent,
@@ -18,23 +18,24 @@ import {
 @Component({
   selector: 'idea-action-sheet',
   imports: [IonIcon, IonButton, IonLabel, IonRow, IonCol, IonGrid, IonContent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ion-content [class]="cssClass">
+    <ion-content [class]="cssClass()">
       <ion-grid class="ion-padding">
-        @if (header) {
+        @if (header()) {
           <ion-row class="headerRow">
             <ion-col class="ion-text-center">
               <ion-label class="ion-text-wrap">
-                {{ header }}
-                @if (subHeader) {
-                  <p>{{ subHeader }}</p>
+                {{ header() }}
+                @if (subHeader()) {
+                  <p>{{ subHeader() }}</p>
                 }
               </ion-label>
             </ion-col>
           </ion-row>
         }
         <ion-row class="ion-justify-content-center buttonsRow">
-          @for (button of buttons; track button) {
+          @for (button of buttons(); track button) {
             <ion-col [size]="withIcons ? 6 : 12">
               <ion-button
                 fill="clear"
@@ -109,25 +110,25 @@ export class IDEAActionSheetComponent implements OnInit {
   /**
    * An array of buttons for the actions panel.
    */
-  @Input() buttons: ActionSheetButton[] = [];
+  readonly buttons = input<ActionSheetButton[]>([]);
   /**
    * Additional classes to apply for custom CSS. If multiple classes are provided they should be separated by spaces.
    */
-  @Input() cssClass: string;
+  readonly cssClass = input<string>();
   /**
    * Title for the actions panel.
    */
-  @Input() header: string;
+  readonly header = input<string>();
   /**
    * Subtitle for the actions panel.
    */
-  @Input() subHeader: string;
+  readonly subHeader = input<string>();
 
   withIcons: boolean;
 
   ngOnInit(): void {
     // based on the input, changes the way the UI behaves
-    this.withIcons = this.buttons.some(b => b.icon);
+    this.withIcons = this.buttons().some(b => b.icon);
   }
 
   buttonClicked(button: ActionSheetButton): void {

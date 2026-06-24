@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -38,7 +37,6 @@ import { IDEAIconsComponent } from '../icons/icons.component';
 @Component({
   selector: 'idea-custom-field-meta',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
@@ -64,6 +62,7 @@ import { IDEAIconsComponent } from '../icons/icons.component';
     IonSelectOption,
     IonToggle
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'customFieldMeta.component.html',
   styleUrls: ['customFieldMeta.component.scss']
 })
@@ -76,15 +75,15 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   /**
    * The CustomFieldMeta to manage.
    */
-  @Input() field: CustomFieldMeta;
+  readonly field = input<CustomFieldMeta>();
   /**
    * Whether the component is enabled or not.
    */
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * Lines preferences for the component.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
 
   _field: CustomFieldMeta;
   errors = new Set<string>();
@@ -92,7 +91,7 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   CFT = CustomFieldTypes;
 
   ngOnInit(): void {
-    this._field = new CustomFieldMeta(this.field, this._translate.languages());
+    this._field = new CustomFieldMeta(this.field(), this._translate.languages());
   }
 
   hasFieldAnError(field: string): boolean {
@@ -176,7 +175,7 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   save(): Promise<void> {
     this.errors = new Set(this._field.validate(this._translate.languages()));
     if (this.errors.size) return this._message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
-    this.field.load(this._field, this._translate.languages());
+    this.field().load(this._field, this._translate.languages());
     this.close(true);
   }
 
