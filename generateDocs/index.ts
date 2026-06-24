@@ -49,7 +49,7 @@ function createModuleDocsAndGetComponentsInfo(modulePath: string): ComponentInfo
     const mainClass = file.getClasses()[0];
     if (!mainClass) return;
 
-    const name = mainClass.getName();
+    const name = mainClass.getName() ?? '';
     const comment = mainClass.getJsDocs()[0]?.getComment()?.toString();
     const selector = getSelectorOfComponentClass(mainClass);
     const inputAttributes = getAttributesInfoOfComponentClassForDecoratorType(mainClass, 'Input');
@@ -77,9 +77,10 @@ function createModuleDocsAndGetComponentsInfo(modulePath: string): ComponentInfo
 
 function getSelectorOfComponentClass(mainClass: ClassDeclaration): string {
   const componentDecorator = mainClass.getDecorator('Component');
+  if (!componentDecorator) return '';
   const pattern = /@Component\s*\(\s*{[^}]*selector\s*:\s*'([^']*)'[^}]*}/;
-  const [_, selector] = pattern.exec(componentDecorator.getText());
-  return selector;
+  const match = pattern.exec(componentDecorator.getText());
+  return match ? match[1] : '';
 }
 
 function getAttributesInfoOfComponentClassForDecoratorType(
@@ -91,8 +92,8 @@ function getAttributesInfoOfComponentClassForDecoratorType(
     .filter(prop => prop.getDecorators().some(decorator => decorator.getName() === decoratorType))
     .map(prop => ({
       name: prop.getName(),
-      type: prop.getType().getText(null, TypeFormatFlags.InTypeAlias),
-      comment: prop.getJsDocs()[0]?.getComment()?.toString()
+      type: prop.getType().getText(undefined, TypeFormatFlags.InTypeAlias),
+      comment: prop.getJsDocs()[0]?.getComment()?.toString() ?? ''
     }));
 }
 function getMDListOfComponentAttributeInfo(attributes: ComponentAttributeInfo[]): string {

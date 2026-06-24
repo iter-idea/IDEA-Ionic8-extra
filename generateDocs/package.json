@@ -9,8 +9,8 @@
     "ts-morph": "^26.0.0"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.2",
+    "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.1.0",
-    "typescript": "^5.8.3"
+    "typescript": "^6.0.3"
   }
 }
