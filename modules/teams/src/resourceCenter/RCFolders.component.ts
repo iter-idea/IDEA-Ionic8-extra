@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ViewChild, Component, Input, OnInit, inject } from '@angular/core';
 import {
   IonInfiniteScroll,
@@ -30,7 +29,6 @@ const MAX_PAGE_SIZE = 24;
 @Component({
   selector: 'idea-rc-folders',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonSkeletonText,
     IonInfiniteScroll,

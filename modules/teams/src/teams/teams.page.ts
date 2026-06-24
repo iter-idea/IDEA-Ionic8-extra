@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import {
   NavController,
@@ -28,7 +27,6 @@ import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 @Component({
   selector: 'teams',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonBadge,
     IonItem,

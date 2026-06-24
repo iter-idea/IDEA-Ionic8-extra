@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { IonItem, IonLabel, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 
@@ -6,7 +5,7 @@ import { IDEAOfflineDataService, CacheableResource } from './offlineData.service
 
 @Component({
   selector: 'idea-cacheable-resource',
-  imports: [CommonModule, IonSpinner, IonIcon, IonLabel, IonItem],
+  imports: [IonSpinner, IonIcon, IonLabel, IonItem],
   template: `
     <ion-item class="cacheableResourceItem">
       <ion-label>{{ resource.description }}</ion-label>

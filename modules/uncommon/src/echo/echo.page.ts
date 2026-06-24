@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -18,17 +17,7 @@ import { IDEATinCanService } from '../tinCan.service';
 
 @Component({
   selector: 'idea-echo',
-  imports: [
-    CommonModule,
-    IDEATranslatePipe,
-    IonCardContent,
-    IonIcon,
-    IonCardTitle,
-    IonCardHeader,
-    IonImg,
-    IonCard,
-    IonContent
-  ],
+  imports: [IDEATranslatePipe, IonCardContent, IonIcon, IonCardTitle, IonCardHeader, IonImg, IonCard, IonContent],
   template: `
     <ion-content>
       <div class="flexBox">

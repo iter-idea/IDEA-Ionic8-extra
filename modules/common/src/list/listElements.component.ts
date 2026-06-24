@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {
   AlertController,
@@ -27,7 +26,6 @@ const MAX_PAGE_SIZE = 24;
 @Component({
   selector: 'idea-list-elements',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonSearchbar,
     IonHeader,

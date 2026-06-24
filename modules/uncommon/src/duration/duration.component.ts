@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonItem, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
@@ -6,7 +5,7 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-duration',
-  imports: [IonText, IonLabel, IonIcon, IonItem, CommonModule, FormsModule, IDEATranslatePipe],
+  imports: [IonText, IonLabel, IonIcon, IonItem, FormsModule, IDEATranslatePipe],
   template: `
     <ion-item class="durationItem" [lines]="lines" [color]="color" [title]="title || label">
       @if (icon) {

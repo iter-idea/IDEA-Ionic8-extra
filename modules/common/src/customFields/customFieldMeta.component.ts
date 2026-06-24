@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -38,7 +37,6 @@ import { IDEAIconsComponent } from '../icons/icons.component';
 @Component({
   selector: 'idea-custom-field-meta',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,

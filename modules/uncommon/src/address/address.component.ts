@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonAccordionGroup, IonAccordion, IonItem, IonInput, IonList, IonText } from '@ionic/angular/standalone';
@@ -8,7 +7,6 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
 @Component({
   selector: 'idea-address',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEASelectComponent,

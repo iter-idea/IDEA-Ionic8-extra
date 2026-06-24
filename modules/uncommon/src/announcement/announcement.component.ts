@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { IonCard, IonCardContent, IonButton } from '@ionic/angular/standalone';
 import { Announcement, mdToHtml } from 'idea-toolbox';
@@ -11,7 +10,7 @@ import { IDEATinCanService } from '../tinCan.service';
  */
 @Component({
   selector: 'idea-announcement',
-  imports: [CommonModule, IDEATranslatePipe, IonButton, IonCardContent, IonCard],
+  imports: [IDEATranslatePipe, IonButton, IonCardContent, IonCard],
   template: `
     @if (htmlContent) {
       <ion-card class="announcementCard" [color]="color">

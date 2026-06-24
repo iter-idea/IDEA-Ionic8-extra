@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { IDEATranslatePipe } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-mde-toolbar',
-  imports: [CommonModule, IDEATranslatePipe],
+  imports: [IDEATranslatePipe],
   template: `
     <div class="mdeToolbar">
       <b>**{{ 'IDEA_UNCOMMON.MDE.TOOLBAR.BOLD' | translate }}**</b>

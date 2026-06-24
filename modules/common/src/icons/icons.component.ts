@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import {
   ModalController,
@@ -21,7 +20,6 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
 @Component({
   selector: 'idea-icons',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonHeader,
     IonToolbar,

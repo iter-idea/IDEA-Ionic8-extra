@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -35,7 +34,6 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
 @Component({
   selector: 'idea-sign-in',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonButton,

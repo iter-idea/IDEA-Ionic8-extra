@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import {
   ModalController,
@@ -23,7 +22,6 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 @Component({
   selector: 'idea-from-time-to-time',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IonLabel,
     IonSegmentButton,

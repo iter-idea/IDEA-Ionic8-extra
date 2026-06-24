@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   Input,
@@ -19,7 +18,7 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
 
 @Component({
   selector: 'idea-time-interval',
-  imports: [IonLabel, IonText, IonIcon, IonButton, IonItem, CommonModule],
+  imports: [IonLabel, IonText, IonIcon, IonButton, IonItem],
   template: `
     <ion-item
       class="timeIntervalItem"

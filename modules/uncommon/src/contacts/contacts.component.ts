@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonItem, IonButton, IonIcon, IonInput } from '@ionic/angular/standalone';
@@ -7,7 +6,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 
 @Component({
   selector: 'idea-contacts',
-  imports: [CommonModule, FormsModule, IDEATranslatePipe, IonInput, IonIcon, IonButton, IonItem],
+  imports: [FormsModule, IDEATranslatePipe, IonInput, IonIcon, IonButton, IonItem],
   template: `
     <div class="contacts">
       @if (showName) {

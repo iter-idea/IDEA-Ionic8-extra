@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -22,7 +21,6 @@ import { IDEAAuthService } from './auth.service';
 @Component({
   selector: 'idea-mfa-challenge',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonButton,
@@ -113,7 +111,7 @@ export class IDEAMFAChallengePage implements OnInit {
       window.location.assign('');
     } catch (error) {
       this.errorMsg = this._translate._('IDEA_AUTH.INVALID_OTP_CODE');
-      this._message.error(this.errorMsg, true);
+      this._message.error(this.errorMsg, { dontTranslate: true });
     } finally {
       this._loading.hide();
     }

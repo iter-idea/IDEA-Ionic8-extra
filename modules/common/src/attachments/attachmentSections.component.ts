@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import {
   ModalController,
@@ -25,7 +24,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 @Component({
   selector: 'idea-attachment-sections',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
     IDEAAttachmentsComponent,

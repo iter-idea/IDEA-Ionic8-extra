@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   Input,
@@ -19,7 +18,7 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
 
 @Component({
   selector: 'idea-date-time',
-  imports: [CommonModule, IonText, IonLabel, IonIcon, IonButton, IonItem],
+  imports: [IonText, IonLabel, IonIcon, IonButton, IonItem],
   template: `
     <ion-item
       class="dateTimeItem"

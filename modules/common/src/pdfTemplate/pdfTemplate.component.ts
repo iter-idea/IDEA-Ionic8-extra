@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -48,7 +47,6 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
   imports: [
     IonItem,
     IonButtons,
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
@@ -554,7 +552,7 @@ export interface MoveModeData {
  */
 @Component({
   selector: 'idea-pdf-template-field-resize',
-  imports: [CommonModule, IDEATranslatePipe, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonLabel],
+  imports: [IDEATranslatePipe, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonLabel],
   template: `
     <ion-content>
       <ion-grid>

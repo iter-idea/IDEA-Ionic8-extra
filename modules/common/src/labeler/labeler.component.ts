@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -32,7 +31,6 @@ import { IDEAMessageService } from '../message.service';
 @Component({
   selector: 'idea-labeler',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonTitle,

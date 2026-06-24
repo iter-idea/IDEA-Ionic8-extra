@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
 import { IonItem, IonSpinner, IonBadge } from '@ionic/angular/standalone';
@@ -9,7 +8,7 @@ import { IDEAOfflineService } from '../offline/offline.service';
 
 @Component({
   selector: 'idea-sentiment',
-  imports: [CommonModule, IDEATranslatePipe, IonBadge, IonSpinner, IonItem],
+  imports: [IDEATranslatePipe, IonBadge, IonSpinner, IonItem],
   template: `
     @if (text && _offline.isOnline()) {
       <ion-item [lines]="lines" [color]="color">

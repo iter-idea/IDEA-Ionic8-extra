@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -26,7 +25,6 @@ import { IDEAAuthService } from '../auth.service';
 @Component({
   selector: 'idea-setup-mfa-modal',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonItem,

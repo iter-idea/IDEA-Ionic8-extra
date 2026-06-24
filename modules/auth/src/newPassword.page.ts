@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -30,7 +29,6 @@ import { IDEAAuthService } from './auth.service';
 @Component({
   selector: 'idea-new-password',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonButton,

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -20,7 +19,6 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
 @Component({
   selector: 'idea-mde',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEAMDEToolbarComponent,

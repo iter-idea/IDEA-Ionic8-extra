@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Check } from 'idea-toolbox';
@@ -9,7 +8,7 @@ import { IDEAChecksComponent } from './checks.component';
 
 @Component({
   selector: 'idea-checker',
-  imports: [CommonModule, IonLabel, IonItem, IonButton, IonIcon, IonText],
+  imports: [IonLabel, IonItem, IonButton, IonIcon, IonText],
   template: `
     <ion-item
       class="checkerItem"

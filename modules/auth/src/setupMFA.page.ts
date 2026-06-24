@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   NavController,
@@ -17,7 +16,6 @@ import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component
 @Component({
   selector: 'idea-mfa-setup',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IDEASetupMFAButtonComponent,
     IonButton,

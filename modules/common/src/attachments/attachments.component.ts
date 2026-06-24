@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import {
   IonButton,
   IonIcon,
@@ -24,7 +24,6 @@ import { IDEAAttachmentsService } from './attachments.service';
 
 @Component({
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonItem,

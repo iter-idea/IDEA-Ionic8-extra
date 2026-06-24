@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {
   IonInfiniteScroll,
@@ -31,7 +30,6 @@ const MAX_PAGE_SIZE = 24;
 @Component({
   selector: 'idea-suggestions',
   imports: [
-    CommonModule,
     IonBadge,
     IonLabel,
     IonItem,

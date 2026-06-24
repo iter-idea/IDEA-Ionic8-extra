@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
@@ -16,7 +15,6 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
 @Component({
   selector: 'idea-rc-picker',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEASelectComponent,

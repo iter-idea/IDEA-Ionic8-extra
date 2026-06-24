@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Platform, IonItem, IonButton, IonIcon, IonInput, IonLabel, IonSpinner } from '@ionic/angular/standalone';
@@ -11,7 +10,7 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
 
 @Component({
   selector: 'idea-attachments',
-  imports: [CommonModule, FormsModule, IDEATranslatePipe, IonSpinner, IonLabel, IonInput, IonIcon, IonButton, IonItem],
+  imports: [FormsModule, IDEATranslatePipe, IonSpinner, IonLabel, IonInput, IonIcon, IonButton, IonItem],
   templateUrl: 'attachments.component.html',
   styleUrls: ['attachments.component.scss']
 })

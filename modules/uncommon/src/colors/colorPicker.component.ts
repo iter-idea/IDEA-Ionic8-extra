@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import {
   PopoverController,
@@ -20,7 +19,7 @@ import { Color, COLORS } from 'idea-toolbox';
  */
 @Component({
   selector: 'idea-color-picker',
-  imports: [CommonModule, IonAvatar, IonText, IonLabel, IonIcon, IonButton, IonItem],
+  imports: [IonAvatar, IonText, IonLabel, IonIcon, IonButton, IonItem],
   template: `
     <ion-item
       class="colorPickerItem"
@@ -159,7 +158,7 @@ export class IDEAColorPickerComponent {
  */
 @Component({
   selector: 'idea-colors-palette',
-  imports: [CommonModule, IonContent, IonGrid, IonRow, IonCol, IonAvatar, IonIcon],
+  imports: [IonContent, IonGrid, IonRow, IonCol, IonAvatar, IonIcon],
   template: `
     <ion-content>
       <ion-grid>

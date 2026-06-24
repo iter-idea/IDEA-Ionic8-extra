@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -29,7 +29,6 @@ import { IDEAAppStatusService } from './appStatus.service';
 @Component({
   selector: 'idea-app-status',
   imports: [
-    CommonModule,
     FormsModule,
     IonContent,
     IonCard,

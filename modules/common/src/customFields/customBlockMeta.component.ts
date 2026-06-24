@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import {
   ModalController,
@@ -24,7 +23,6 @@ import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
 @Component({
   selector: 'idea-custom-block-meta',
   imports: [
-    CommonModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,
     IonCol,

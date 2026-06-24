@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -22,7 +21,6 @@ import { IDEASelectComponent } from '../select/select.component';
 @Component({
   selector: 'idea-custom-section',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,

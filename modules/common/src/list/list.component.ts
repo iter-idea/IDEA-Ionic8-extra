@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
@@ -9,7 +8,7 @@ import { IDEAListElementsComponent } from './listElements.component';
 
 @Component({
   selector: 'idea-list',
-  imports: [CommonModule, IonItem, IonButton, IonIcon, IonLabel, IonText],
+  imports: [IonItem, IonButton, IonIcon, IonLabel, IonText],
   template: `
     <ion-item
       class="listItem"

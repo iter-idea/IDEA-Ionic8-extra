@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -30,7 +29,6 @@ const MAX_PAGE_SIZE = 24;
 @Component({
   selector: 'idea-checks',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEAUserAvatarComponent,

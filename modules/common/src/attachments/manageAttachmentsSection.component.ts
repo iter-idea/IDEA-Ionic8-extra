@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -29,7 +28,6 @@ import { IDEATranslationsService } from '../translations/translations.service';
 @Component({
   selector: 'idea-manage-attachments-section',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEALocalizedLabelPipe,

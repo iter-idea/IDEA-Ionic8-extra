@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -26,7 +25,6 @@ import { IDEAListComponent } from '../list/list.component';
 @Component({
   selector: 'idea-email-data-configuration',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IDEAHiglightedVariablesPipe,

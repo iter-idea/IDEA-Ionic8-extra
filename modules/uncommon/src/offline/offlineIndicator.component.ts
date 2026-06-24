@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { ModalController, AlertController, Platform, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { IDEATranslationsService } from '@idea-ionic/common';
@@ -8,7 +7,7 @@ import { IDEAOfflineDataService } from './offlineData.service';
 
 @Component({
   selector: 'idea-offline-indicator',
-  imports: [CommonModule, IonFab, IonFabButton, IonIcon],
+  imports: [IonFab, IonFabButton, IonIcon],
   template: `
     @if (
       _platform.is('mobile') && (_offline.isOffline() || _offline.synchronizing || _offline.requiresManualConfirmation)

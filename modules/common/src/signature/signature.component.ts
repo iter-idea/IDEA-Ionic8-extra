@@ -1,5 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -31,7 +31,6 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
 @Component({
   selector: 'idea-signature',
   imports: [
-    CommonModule,
     FormsModule,
     IDEATranslatePipe,
     IonHeader,

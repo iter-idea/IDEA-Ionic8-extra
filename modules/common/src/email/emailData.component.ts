@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { EmailData, StringVariable } from 'idea-toolbox';
@@ -13,16 +12,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
  */
 @Component({
   selector: 'idea-email-data',
-  imports: [
-    CommonModule,
-    IDEATranslatePipe,
-    IDEAHiglightedVariablesPipe,
-    IonItem,
-    IonLabel,
-    IonButton,
-    IonIcon,
-    IonText
-  ],
+  imports: [IDEATranslatePipe, IDEAHiglightedVariablesPipe, IonItem, IonLabel, IonButton, IonIcon, IonText],
   template: `
     <ion-item
       class="emailDataItem"
