@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, viewChild, input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  inject,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  viewChild,
+  input
+} from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,

@@ -1,4 +1,13 @@
-import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, output, input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  inject,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  output,
+  input
+} from '@angular/core';
 import { RCConfiguredFolder, RCFolder, Suggestion } from 'idea-toolbox';
 import { IDEAMessageService, IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
