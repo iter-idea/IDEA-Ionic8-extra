@@ -39,7 +39,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
     IonHeader
   ],
   templateUrl: 'fromTimeToTime.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['fromTimeToTime.component.scss']
 })
 export class IDEAFromTimeToTimeComponent implements OnInit {

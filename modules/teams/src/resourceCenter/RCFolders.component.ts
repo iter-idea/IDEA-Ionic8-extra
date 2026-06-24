@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, viewChild, input } from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
@@ -46,7 +46,7 @@ const MAX_PAGE_SIZE = 24;
     IonHeader,
     IonSearchbar
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -131,6 +131,7 @@ export class IDEARCFoldersComponent implements OnInit {
   private _translate = inject(IDEATranslationsService);
   private _API = inject(IDEAAWSAPIService);
   _offline = inject(IDEAOfflineService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
@@ -162,6 +163,7 @@ export class IDEARCFoldersComponent implements OnInit {
       this.folders = folders.map(f => new RCFolder(f));
       const searchbar = this.searchbar();
       this.search(searchbar ? searchbar.value : null);
+      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST');
     }

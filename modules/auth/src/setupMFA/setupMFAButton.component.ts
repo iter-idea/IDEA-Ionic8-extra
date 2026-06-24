@@ -8,7 +8,7 @@ import { IDEAAuthService } from '../auth.service';
 @Component({
   selector: 'idea-setup-mfa-button',
   imports: [IDEATranslatePipe, IonButton],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (isMFAEnabled !== undefined) {
       <ion-button [color]="color()" [fill]="fill()" (click)="openMFAModal()">

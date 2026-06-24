@@ -164,7 +164,7 @@ const MAX_PAGE_SIZE = 24;
       </ion-infinite-scroll>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-toolbar.secondary {

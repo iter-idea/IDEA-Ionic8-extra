@@ -39,7 +39,7 @@ import { IDEASelectComponent } from '../select/select.component';
     IonCheckbox
   ],
   templateUrl: 'customBlock.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['customBlock.component.scss']
 })
 export class IDEACustomBlockComponent {

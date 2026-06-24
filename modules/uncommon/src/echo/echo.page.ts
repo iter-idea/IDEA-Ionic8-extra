@@ -48,7 +48,7 @@ import { IDEATinCanService } from '../tinCan.service';
       </div>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .echoCard {

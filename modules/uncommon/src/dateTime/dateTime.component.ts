@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnChanges,
   inject,
+  ChangeDetectorRef,
   ChangeDetectionStrategy,
   output,
   input
@@ -63,7 +64,7 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .dateTimeItem {
@@ -107,6 +108,7 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
 export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The date to show/pick.
@@ -189,6 +191,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
       this.valueToDisplay = this.getValueToDisplay(this.date());
+      this._cdr.markForCheck();
     });
   }
   ngOnDestroy(): void {

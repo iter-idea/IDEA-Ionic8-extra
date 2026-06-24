@@ -56,7 +56,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       }
     </ion-chip>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-chip.chipChecker {
@@ -343,7 +343,7 @@ export class IDEAChipCheckerComponent {
       </ion-infinite-scroll>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-toolbar.secondary {

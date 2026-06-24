@@ -65,7 +65,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
     IonChip
   ],
   templateUrl: 'pdfTemplate.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['pdfTemplate.component.scss']
 })
 export class IDEAPDFTemplateComponent implements OnInit {
@@ -591,7 +591,7 @@ export interface MoveModeData {
       </ion-grid>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-content {

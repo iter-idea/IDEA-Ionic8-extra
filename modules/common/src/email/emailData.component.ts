@@ -64,7 +64,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
       <ion-icon slot="end" name="chevron-forward" class="selectIcon" />
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .emailDataItem {

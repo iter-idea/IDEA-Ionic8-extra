@@ -37,7 +37,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-card-content>
     </ion-card>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-card.passwordPolicyCard {

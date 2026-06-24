@@ -36,7 +36,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     IonAccordionGroup,
     IonAccordion
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (!attachmentSections().sectionsLegend.length) {
       <ion-item lines="none" [color]="color()">

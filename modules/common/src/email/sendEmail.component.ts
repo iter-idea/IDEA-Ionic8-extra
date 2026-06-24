@@ -166,7 +166,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .aList.sendEmailList {

@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnChanges,
   inject,
+  ChangeDetectorRef,
   ChangeDetectionStrategy,
   output,
   input
@@ -63,7 +64,7 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .timeIntervalItem {
@@ -104,6 +105,7 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
 export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The time interval to set.
@@ -188,6 +190,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
     // when the language changes, set the locale
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
       this.valueToDisplay = this.getValueToDisplay(this.timeInterval());
+      this._cdr.markForCheck();
     });
   }
   ngOnDestroy(): void {
@@ -230,6 +233,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
       if (res.data === true || res.data === false) {
         this.valueToDisplay = this.getValueToDisplay(this.timeInterval());
         this.select.emit();
+        this._cdr.markForCheck();
       }
     });
     modal.present();

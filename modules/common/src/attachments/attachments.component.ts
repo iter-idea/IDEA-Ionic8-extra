@@ -129,7 +129,7 @@ import { IDEAAttachmentsService } from './attachments.service';
       </ion-item-divider>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-item.attachmentItem {

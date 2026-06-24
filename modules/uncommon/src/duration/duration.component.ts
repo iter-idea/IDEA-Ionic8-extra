@@ -67,7 +67,7 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
       </ion-label>
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .durationItem {

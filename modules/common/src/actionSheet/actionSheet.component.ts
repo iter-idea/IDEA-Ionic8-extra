@@ -61,7 +61,7 @@ import {
       </ion-grid>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-row.headerRow {

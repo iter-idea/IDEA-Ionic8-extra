@@ -32,7 +32,7 @@ import { COLORS } from 'idea-toolbox';
       }
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       div.container {

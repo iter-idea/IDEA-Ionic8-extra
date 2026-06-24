@@ -119,7 +119,7 @@ import { IDEAListComponent } from '../list/list.component';
       }
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .content {

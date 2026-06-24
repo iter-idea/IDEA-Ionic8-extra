@@ -11,7 +11,7 @@ import { IDEACalendarsService } from './calendars.service';
   standalone: false,
   selector: 'idea-calendar-creation',
   templateUrl: 'calendarCreation.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['calendarCreation.component.scss']
 })
 export class IDEACalendarCreationComponent implements OnInit {

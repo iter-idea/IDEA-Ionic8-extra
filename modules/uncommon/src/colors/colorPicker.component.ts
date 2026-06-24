@@ -49,7 +49,7 @@ import { Color, COLORS } from 'idea-toolbox';
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .colorPickerItem {
@@ -191,7 +191,7 @@ export class IDEAColorPickerComponent {
       </ion-grid>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-content {

@@ -35,7 +35,7 @@ import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
     IonReorderGroup
   ],
   templateUrl: 'customBlockMeta.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['customBlockMeta.component.scss']
 })
 export class IDEACustomBlockMetaComponent {

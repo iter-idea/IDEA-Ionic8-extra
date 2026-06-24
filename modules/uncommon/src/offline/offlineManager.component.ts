@@ -50,7 +50,7 @@ import { IDEACacheableResourceComponent } from './cacheableResource.component';
     IonHeader
   ],
   templateUrl: 'offlineManager.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['offlineManager.component.scss']
 })
 export class IDEAOfflineManagerComponent {

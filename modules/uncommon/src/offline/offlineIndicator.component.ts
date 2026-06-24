@@ -8,7 +8,7 @@ import { IDEAOfflineDataService } from './offlineData.service';
 @Component({
   selector: 'idea-offline-indicator',
   imports: [IonFab, IonFabButton, IonIcon],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (
       _platform.is('mobile') && (_offline.isOffline() || _offline.synchronizing || _offline.requiresManualConfirmation)

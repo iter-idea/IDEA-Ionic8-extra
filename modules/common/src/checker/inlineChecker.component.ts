@@ -46,7 +46,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       <ion-input readonly [labelPlacement]="labelPlacement()" [label]="label()" [value]="getPreview()" />
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-icon[icon='caret-down'] {
@@ -271,7 +271,7 @@ export class IDEAInlineCheckerComponent {
       </ion-infinite-scroll>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-list {

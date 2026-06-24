@@ -95,7 +95,7 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
       />
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .resources {

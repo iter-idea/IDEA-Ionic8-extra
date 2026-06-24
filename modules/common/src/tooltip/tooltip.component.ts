@@ -17,7 +17,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
       }
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .tooltipContainer {

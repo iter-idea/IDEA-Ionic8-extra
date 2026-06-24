@@ -51,7 +51,7 @@ import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component
       </form>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['auth.scss']
 })
 export class IDEASetupMFAPage {

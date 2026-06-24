@@ -189,7 +189,7 @@ import { IDEAAuthService } from './auth.service';
       </form>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['auth.scss']
 })
 export class IDEASignUpPage implements OnInit {

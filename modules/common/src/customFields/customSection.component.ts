@@ -35,7 +35,7 @@ import { IDEASelectComponent } from '../select/select.component';
     IonCheckbox
   ],
   templateUrl: 'customSection.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['customSection.component.scss']
 })
 export class IDEACustomSectionComponent {

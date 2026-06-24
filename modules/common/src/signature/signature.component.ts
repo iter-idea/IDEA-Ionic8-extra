@@ -116,7 +116,7 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .aList {

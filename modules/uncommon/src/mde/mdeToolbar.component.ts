@@ -11,7 +11,7 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
       ~{{ 'IDEA_UNCOMMON.MDE.TOOLBAR.STRIKE' | translate }}~
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .mdeToolbar {

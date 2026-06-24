@@ -46,7 +46,7 @@ const SUNDAY = 259200000;
     IonHeader
   ],
   templateUrl: 'calendarPicker.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['calendarPicker.component.scss']
 })
 export class IDEACalendarPickerComponent implements OnInit {

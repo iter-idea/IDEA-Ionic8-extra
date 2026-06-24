@@ -6,7 +6,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
 @Component({
   selector: 'idea-show-hint-button',
   imports: [IonButton, IonIcon],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-button [slot]="slot()" [fill]="fill()" [color]="color()" (click)="showHint($event)">
       <ion-icon [icon]="icon()" slot="icon-only" />

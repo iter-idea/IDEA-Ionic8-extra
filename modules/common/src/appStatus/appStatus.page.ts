@@ -84,7 +84,7 @@ import { IDEAAppStatusService } from './appStatus.service';
       </ion-content>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-img.logo {

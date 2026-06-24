@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, viewChild, input } from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
@@ -65,7 +65,7 @@ const MAX_PAGE_SIZE = 24;
     IonToolbar,
     IonHeader
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -193,6 +193,7 @@ export class IDEARCResourcesComponent implements OnInit {
   private _translate = inject(IDEATranslationsService);
   private _API = inject(IDEAAWSAPIService);
   _offline = inject(IDEAOfflineService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
@@ -233,6 +234,7 @@ export class IDEARCResourcesComponent implements OnInit {
       this.resources = resources.map(r => new RCResource(r));
       const searchbar = this.searchbar();
       this.search(searchbar ? searchbar.value : null);
+      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST');
     }

@@ -44,7 +44,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-content>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['auth.scss']
 })
 export class IDEAOktaPage {

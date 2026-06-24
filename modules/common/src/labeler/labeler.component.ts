@@ -116,7 +116,7 @@ import { IDEAMessageService } from '../message.service';
       }
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-list.aList {

@@ -4,6 +4,7 @@ import {
   Input,
   OnInit,
   inject,
+  ChangeDetectorRef,
   ChangeDetectionStrategy,
   viewChild,
   input
@@ -57,13 +58,14 @@ const MAX_PAGE_SIZE = 24;
     IDEABoldPrefix
   ],
   templateUrl: 'suggestions.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['suggestions.component.scss']
 })
 export class IDEASuggestionsComponent implements OnInit {
   private _platform = inject(Platform);
   private _modal = inject(ModalController);
   private _storage = inject(IDEAStorageService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The suggestions to show.
@@ -158,6 +160,7 @@ export class IDEASuggestionsComponent implements OnInit {
       }
     }
     this.search();
+    this._cdr.markForCheck();
   }
   ionViewDidEnter(): void {
     if (this._platform.is('desktop')) this.searchbar().setFocus();

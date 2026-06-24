@@ -75,7 +75,7 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
       <idea-mde-toolbar />
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-content {

@@ -19,11 +19,7 @@ module.exports = defineConfig([
       '@angular-eslint/component-selector': ['error', { type: 'element', prefix: [], style: 'kebab-case' }],
       '@angular-eslint/component-class-suffix': ['error', { suffixes: ['Page', 'Component'] }],
       '@angular-eslint/directive-selector': ['error', { type: 'attribute', prefix: [], style: 'camelCase' }],
-      '@angular-eslint/no-output-native': 0,
-      // Off until the dedicated signals + OnPush/zoneless migration: Angular 22's `ng update` stamped
-      // ChangeDetectionStrategy.Eager on existing components to preserve behavior; v22's recommended config
-      // adds this rule, which would flag every one of them. Re-enable when components move to OnPush.
-      '@angular-eslint/prefer-on-push-component-change-detection': 'off'
+      '@angular-eslint/no-output-native': 0
     }
   },
   {

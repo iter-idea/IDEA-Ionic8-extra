@@ -46,7 +46,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     IonHeader,
     IonTitle
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">

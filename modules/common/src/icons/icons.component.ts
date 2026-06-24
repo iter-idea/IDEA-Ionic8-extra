@@ -61,7 +61,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
       </ion-grid>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-grid {

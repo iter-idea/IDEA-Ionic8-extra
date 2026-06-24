@@ -83,7 +83,7 @@ import { IDEAAuthService } from '../auth.service';
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-list.aList {

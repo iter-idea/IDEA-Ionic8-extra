@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import {
   NavController,
   IonHeader,
@@ -103,7 +103,7 @@ import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .aList {
@@ -123,6 +123,7 @@ export class IDEATeamsPage implements OnInit {
   private _message = inject(IDEAMessageService);
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
+  private _cdr = inject(ChangeDetectorRef);
 
   user: User;
   teams: Team[];
@@ -139,6 +140,7 @@ export class IDEATeamsPage implements OnInit {
       await this._loading.show();
       const teams: Team[] = await this._API.getResource('teams', { idea: true, params: { project: this.project } });
       this.teams = teams.map(t => new Team(t));
+      this._cdr.markForCheck();
     } catch (error) {
       this._nav.navigateRoot(['auth']);
     } finally {

@@ -126,7 +126,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .account {

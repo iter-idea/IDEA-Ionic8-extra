@@ -55,7 +55,7 @@ import { IDEALabelerComponent } from './labeler.component';
       <ion-icon slot="end" icon="chevron-forward" class="selectIcon" />
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .labelItem {

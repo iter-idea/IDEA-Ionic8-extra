@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, input } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular/standalone';
 import { Calendar, Check, Membership } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -11,7 +11,7 @@ import { IDEACalendarsService } from './calendars.service';
   standalone: false,
   selector: 'idea-calendar',
   templateUrl: 'calendar.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['calendar.component.scss']
 })
 export class IDEACalendarComponent implements OnInit {
@@ -23,6 +23,7 @@ export class IDEACalendarComponent implements OnInit {
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
   _calendars = inject(IDEACalendarsService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The calendar to manage.
@@ -56,6 +57,7 @@ export class IDEACalendarComponent implements OnInit {
             checked: (this.calendarWC.usersCanManageAppointments || []).some(x => x === m.userId)
           })
       );
+      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('COMMON.COULDNT_LOAD_LIST');
     }

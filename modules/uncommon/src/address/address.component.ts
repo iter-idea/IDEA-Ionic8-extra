@@ -169,7 +169,7 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-accordion-group>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-item[slot='header'] ion-input {

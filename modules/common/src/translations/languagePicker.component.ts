@@ -32,7 +32,7 @@ import { IDEATranslatePipe } from './translate.pipe';
       </ng-template>
     </ion-popover>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       img {

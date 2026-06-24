@@ -70,7 +70,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
       </ion-item>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .marginTop {

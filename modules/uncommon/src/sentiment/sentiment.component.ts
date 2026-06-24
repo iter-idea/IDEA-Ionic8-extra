@@ -9,7 +9,7 @@ import { IDEAOfflineService } from '../offline/offline.service';
 @Component({
   selector: 'idea-sentiment',
   imports: [IDEATranslatePipe, IonBadge, IonSpinner, IonItem],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (text() && _offline.isOnline()) {
       <ion-item [lines]="lines()" [color]="color()">

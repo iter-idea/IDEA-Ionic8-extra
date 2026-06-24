@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { RCConfiguredFolder, RCFolder, Suggestion } from 'idea-toolbox';
 import { IDEAMessageService, IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
@@ -6,7 +6,7 @@ import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 @Component({
   selector: 'idea-rc-configurator',
   imports: [IDEATranslatePipe, IDEASelectComponent],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <idea-select
       [data]="foldersSuggestions"
@@ -29,6 +29,7 @@ export class IDEARCConfiguratorComponent implements OnInit {
   private _message = inject(IDEAMessageService);
   private _tc = inject(IDEATinCanService);
   private _API = inject(IDEAAWSAPIService);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
@@ -75,6 +76,7 @@ export class IDEARCConfiguratorComponent implements OnInit {
       const folders: RCFolder[] = await this._API.getResource(`teams/${this.team}/folders`);
       this.folders = folders;
       this.foldersSuggestions = folders.map(x => new Suggestion({ value: x.folderId, name: x.name }));
+      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('COMMON.COULDNT_LOAD_LIST');
     }

@@ -51,7 +51,7 @@ import { IDEAChecksComponent } from './checks.component';
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .checkerItem {

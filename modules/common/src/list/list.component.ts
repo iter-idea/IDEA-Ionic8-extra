@@ -51,7 +51,7 @@ import { IDEAListElementsComponent } from './listElements.component';
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .listItem {

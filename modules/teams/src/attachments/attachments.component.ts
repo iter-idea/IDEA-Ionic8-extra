@@ -12,7 +12,7 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
   selector: 'idea-attachments',
   imports: [FormsModule, IDEATranslatePipe, IonSpinner, IonLabel, IonInput, IonIcon, IonButton, IonItem],
   templateUrl: 'attachments.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['attachments.component.scss']
 })
 export class IDEAttachmentsComponent implements OnInit {

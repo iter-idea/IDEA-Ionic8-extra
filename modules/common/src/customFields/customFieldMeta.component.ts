@@ -63,7 +63,7 @@ import { IDEAIconsComponent } from '../icons/icons.component';
     IonToggle
   ],
   templateUrl: 'customFieldMeta.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['customFieldMeta.component.scss']
 })
 export class IDEACustomFieldMetaComponent implements OnInit {

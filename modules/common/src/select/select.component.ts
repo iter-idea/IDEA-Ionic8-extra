@@ -17,7 +17,7 @@ import { IDEASuggestionsComponent } from './suggestions.component';
   selector: 'idea-select',
   imports: [IonLabel, IonItem, IonButton, IonLabel, IonText, IonIcon],
   templateUrl: 'select.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['select.component.scss']
 })
 export class IDEASelectComponent implements OnChanges {

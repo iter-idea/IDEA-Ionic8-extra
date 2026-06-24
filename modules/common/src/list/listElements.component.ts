@@ -40,7 +40,7 @@ const MAX_PAGE_SIZE = 24;
     IonItem,
     IonLabel
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">

@@ -114,7 +114,7 @@ import { IDEATinCanService } from '../tinCan.service';
       </ion-item>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .attachments {
