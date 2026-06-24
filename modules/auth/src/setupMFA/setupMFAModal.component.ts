@@ -42,6 +42,7 @@ import { IDEAAuthService } from '../auth.service';
     IonHeader,
     IonInput
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -83,7 +84,6 @@ import { IDEAAuthService } from '../auth.service';
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-list.aList {

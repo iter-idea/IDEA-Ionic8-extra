@@ -38,8 +38,8 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
     IonToolbar,
     IonHeader
   ],
-  templateUrl: 'fromTimeToTime.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'fromTimeToTime.component.html',
   styleUrls: ['fromTimeToTime.component.scss']
 })
 export class IDEAFromTimeToTimeComponent implements OnInit {

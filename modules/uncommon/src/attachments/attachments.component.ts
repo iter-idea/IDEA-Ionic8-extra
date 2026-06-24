@@ -15,6 +15,7 @@ import { IDEATinCanService } from '../tinCan.service';
 @Component({
   selector: 'idea-old-attachments',
   imports: [FormsModule, IDEATranslatePipe, IonItem, IonButton, IonIcon, IonInput, IonLabel, IonSpinner],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @for (att of attachments(); track att; let index = $index; let odd = $odd) {
       <ion-item
@@ -114,7 +115,6 @@ import { IDEATinCanService } from '../tinCan.service';
       </ion-item>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .attachments {
@@ -169,9 +169,7 @@ export class IDEAOldAttachmentsComponent implements OnInit {
   /**
    * Regulate the mode (view/edit).
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() editMode = false;
   /**
    * Show errors as reported from the parent component.

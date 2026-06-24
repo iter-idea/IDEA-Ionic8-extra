@@ -48,6 +48,7 @@ const MAX_PAGE_SIZE = 24;
     IonAvatar,
     IonCheckbox
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -164,7 +165,6 @@ const MAX_PAGE_SIZE = 24;
       </ion-infinite-scroll>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-toolbar.secondary {
@@ -233,9 +233,7 @@ export class IDEAChecksComponent implements OnInit {
    * Limit the number of selectable elements to the value provided.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() limitSelectionToNum: number;
   /**
    * Whether to allow the select/deselect-all buttons.

@@ -43,6 +43,7 @@ import { IDEAListComponent } from '../list/list.component';
     IonListHeader,
     IonTextarea
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -119,7 +120,6 @@ import { IDEAListComponent } from '../list/list.component';
       }
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .content {

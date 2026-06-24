@@ -38,8 +38,8 @@ import { IDEASelectComponent } from '../select/select.component';
     IonTextarea,
     IonCheckbox
   ],
-  templateUrl: 'customBlock.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'customBlock.component.html',
   styleUrls: ['customBlock.component.scss']
 })
 export class IDEACustomBlockComponent {

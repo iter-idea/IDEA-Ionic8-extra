@@ -49,8 +49,8 @@ import { IDEACacheableResourceComponent } from './cacheableResource.component';
     IonToolbar,
     IonHeader
   ],
-  templateUrl: 'offlineManager.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'offlineManager.component.html',
   styleUrls: ['offlineManager.component.scss']
 })
 export class IDEAOfflineManagerComponent {

@@ -11,8 +11,8 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
 @Component({
   selector: 'idea-attachments',
   imports: [FormsModule, IDEATranslatePipe, IonSpinner, IonLabel, IonInput, IonIcon, IonButton, IonItem],
-  templateUrl: 'attachments.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'attachments.component.html',
   styleUrls: ['attachments.component.scss']
 })
 export class IDEAttachmentsComponent implements OnInit {
@@ -41,9 +41,7 @@ export class IDEAttachmentsComponent implements OnInit {
   /**
    * Regulate the mode (view/edit).
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() editMode = false;
   /**
    * Show errors as reported from the parent component.

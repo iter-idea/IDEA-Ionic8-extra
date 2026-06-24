@@ -30,6 +30,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
 @Component({
   imports: [IonChip, IonIcon, IonLabel, IonText, IonButton],
   selector: 'idea-chip-checker',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let active = someChecked();
     <ion-chip
@@ -56,7 +57,6 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       }
     </ion-chip>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-chip.chipChecker {
@@ -90,9 +90,7 @@ export class IDEAChipCheckerComponent {
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
@@ -259,6 +257,7 @@ export class IDEAChipCheckerComponent {
     IonInfiniteScrollContent
   ],
   selector: 'idea-chip-checks',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header class="ion-no-border">
       <ion-toolbar color="ideaToolbar">
@@ -343,7 +342,6 @@ export class IDEAChipCheckerComponent {
       </ion-infinite-scroll>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-toolbar.secondary {
@@ -427,9 +425,7 @@ class IDEAChipChecksComponent implements OnInit {
    * If this number is forced to `1`, the component turns into a single selection.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() limitSelectionToNum: number;
   /**
    * Whether to allow the select/deselect-all buttons.

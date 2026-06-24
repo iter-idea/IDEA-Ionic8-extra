@@ -45,8 +45,8 @@ const SUNDAY = 259200000;
     IonToolbar,
     IonHeader
   ],
-  templateUrl: 'calendarPicker.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'calendarPicker.component.html',
   styleUrls: ['calendarPicker.component.scss']
 })
 export class IDEACalendarPickerComponent implements OnInit {

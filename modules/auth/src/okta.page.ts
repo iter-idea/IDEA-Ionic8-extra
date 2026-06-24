@@ -14,6 +14,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 @Component({
   selector: 'okta',
   imports: [IDEATranslatePipe, IonContent, IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardContent, IonButton],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (!code && !go) {
       <ion-content>
@@ -44,7 +45,6 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-content>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['auth.scss']
 })
 export class IDEAOktaPage {

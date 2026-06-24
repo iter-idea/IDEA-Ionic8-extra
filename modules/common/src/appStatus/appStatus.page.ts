@@ -43,6 +43,7 @@ import { IDEAAppStatusService } from './appStatus.service';
     IonIcon,
     IDEATranslatePipe
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (status) {
       <ion-content class="ion-padding">
@@ -84,7 +85,6 @@ import { IDEAAppStatusService } from './appStatus.service';
       </ion-content>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-img.logo {

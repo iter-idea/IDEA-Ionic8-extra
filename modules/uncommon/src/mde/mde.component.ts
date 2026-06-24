@@ -32,6 +32,7 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
     IonToolbar,
     IonHeader
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -75,7 +76,6 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
       <idea-mde-toolbar />
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-content {
@@ -119,16 +119,12 @@ export class IDEAMDEComponent implements OnInit {
   /**
    * The header text content.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() header: string;
   /**
    * The sub-header description.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() description: string;
   /**
    * A series of text variables to substitute with values.

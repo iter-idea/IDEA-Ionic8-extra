@@ -17,6 +17,7 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
     IonAccordion,
     IonAccordionGroup
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (address) {
       <ion-accordion-group #accordion>
@@ -169,7 +170,6 @@ import { IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-accordion-group>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-item[slot='header'] ion-input {

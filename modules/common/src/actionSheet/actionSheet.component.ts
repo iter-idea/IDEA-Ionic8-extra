@@ -18,6 +18,7 @@ import {
 @Component({
   selector: 'idea-action-sheet',
   imports: [IonIcon, IonButton, IonLabel, IonRow, IonCol, IonGrid, IonContent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content [class]="cssClass()">
       <ion-grid class="ion-padding">
@@ -61,7 +62,6 @@ import {
       </ion-grid>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-row.headerRow {

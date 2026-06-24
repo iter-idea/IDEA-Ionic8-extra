@@ -53,6 +53,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
     IonInput,
     IonCheckbox
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       @if (newAccountRegistered) {
@@ -246,7 +247,6 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
       </form>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['auth.scss']
 })
 export class IDEASignInPage {

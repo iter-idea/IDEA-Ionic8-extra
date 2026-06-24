@@ -38,6 +38,7 @@ import { IDEAAttachmentsService } from './attachments.service';
     IonReorder
   ],
   selector: 'idea-attachments',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-reorder-group [disabled]="disabled()" (ionItemReorder)="reorderAttachments($event)">
       @for (att of attachments; track att.attachmentId) {
@@ -129,7 +130,6 @@ import { IDEAAttachmentsService } from './attachments.service';
       </ion-item-divider>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-item.attachmentItem {

@@ -25,6 +25,7 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
     IonButton,
     IonItem
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @for (r of attachedResources(); track r; let odd = $odd) {
       <ion-item class="resources" [lines]="lines()" [class.odd]="odd">
@@ -95,7 +96,6 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
       />
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .resources {

@@ -72,9 +72,7 @@ export class IDEAAgendaComponent implements OnInit {
   /**
    * The allowed view mode for the agenda.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() allowedViews = [CalendarView.Day, CalendarView.Week, CalendarView.Month];
   /**
    * Whether to block any day/slot in the past.
@@ -83,9 +81,7 @@ export class IDEAAgendaComponent implements OnInit {
   /**
    * Some notes to show underneath the calendar's header.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() titleNotes: string;
   /**
    * The template for new events created by drag&drop.

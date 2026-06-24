@@ -31,6 +31,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
 @Component({
   imports: [IonItem, IonInput, IonIcon],
   selector: 'idea-inline-checker',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       [color]="color()"
@@ -46,7 +47,6 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       <ion-input readonly [labelPlacement]="labelPlacement()" [label]="label()" [value]="getPreview()" />
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-icon[icon='caret-down'] {
@@ -191,6 +191,7 @@ export class IDEAInlineCheckerComponent {
     IonTitle
   ],
   selector: 'idea-inline-checks',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (withSearchbar()) {
       <ion-header class="ion-no-border">
@@ -271,7 +272,6 @@ export class IDEAInlineCheckerComponent {
       </ion-infinite-scroll>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-list {

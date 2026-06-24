@@ -41,6 +41,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
     IonTextarea,
     IonInput
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -166,7 +167,6 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .aList.sendEmailList {

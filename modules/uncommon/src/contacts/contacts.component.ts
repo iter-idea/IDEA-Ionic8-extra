@@ -7,6 +7,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
 @Component({
   selector: 'idea-contacts',
   imports: [FormsModule, IDEATranslatePipe, IonInput, IonIcon, IonButton, IonItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="contacts">
       @if (showName()) {
@@ -70,7 +71,6 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
       </ion-item>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .marginTop {

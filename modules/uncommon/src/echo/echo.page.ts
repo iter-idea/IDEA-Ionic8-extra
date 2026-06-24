@@ -18,6 +18,7 @@ import { IDEATinCanService } from '../tinCan.service';
 @Component({
   selector: 'idea-echo',
   imports: [IDEATranslatePipe, IonCardContent, IonIcon, IonCardTitle, IonCardHeader, IonImg, IonCard, IonContent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <div class="flexBox">
@@ -48,7 +49,6 @@ import { IDEATinCanService } from '../tinCan.service';
       </div>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .echoCard {

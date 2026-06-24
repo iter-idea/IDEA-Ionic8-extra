@@ -5,6 +5,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 @Component({
   selector: 'idea-password-policy',
   imports: [IDEATranslatePipe, IonCard, IonCardHeader, IonCardTitle, IonCardContent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-card class="passwordPolicyCard">
       <ion-card-header>
@@ -37,7 +38,6 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
       </ion-card-content>
     </ion-card>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-card.passwordPolicyCard {

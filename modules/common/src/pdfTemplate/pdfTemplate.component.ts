@@ -64,8 +64,8 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
     IonCol,
     IonChip
   ],
-  templateUrl: 'pdfTemplate.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'pdfTemplate.component.html',
   styleUrls: ['pdfTemplate.component.scss']
 })
 export class IDEAPDFTemplateComponent implements OnInit {
@@ -556,6 +556,7 @@ export interface MoveModeData {
 @Component({
   selector: 'idea-pdf-template-field-resize',
   imports: [IDEATranslatePipe, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonLabel],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <ion-grid>
@@ -591,7 +592,6 @@ export interface MoveModeData {
       </ion-grid>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-content {

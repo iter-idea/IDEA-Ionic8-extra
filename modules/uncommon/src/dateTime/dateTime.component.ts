@@ -20,6 +20,7 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
 @Component({
   selector: 'idea-date-time',
   imports: [IonText, IonLabel, IonIcon, IonButton, IonItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="dateTimeItem"
@@ -63,7 +64,6 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .dateTimeItem {

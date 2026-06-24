@@ -4,6 +4,7 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
 @Component({
   selector: 'idea-mde-toolbar',
   imports: [IDEATranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="mdeToolbar">
       <b>**{{ 'IDEA_UNCOMMON.MDE.TOOLBAR.BOLD' | translate }}**</b>
@@ -11,7 +12,6 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
       ~{{ 'IDEA_UNCOMMON.MDE.TOOLBAR.STRIKE' | translate }}~
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .mdeToolbar {

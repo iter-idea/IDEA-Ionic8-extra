@@ -26,6 +26,7 @@ import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component
     IonCard,
     IonContent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <form class="flexBox">
@@ -51,7 +52,6 @@ import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component
       </form>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['auth.scss']
 })
 export class IDEASetupMFAPage {

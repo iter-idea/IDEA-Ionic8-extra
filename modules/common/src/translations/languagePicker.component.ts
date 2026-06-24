@@ -12,6 +12,7 @@ import { IDEATranslatePipe } from './translate.pipe';
 @Component({
   selector: 'idea-language-picker',
   imports: [IonButton, IonPopover, IonList, IonListHeader, IonItem, IonLabel, IDEATranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-button id="click-trigger" [fill]="fill()" [title]="'IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE' | translate">
       <img [src]="getFlagURL()" />
@@ -32,7 +33,6 @@ import { IDEATranslatePipe } from './translate.pipe';
       </ng-template>
     </ion-popover>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       img {

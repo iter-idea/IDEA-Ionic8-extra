@@ -16,8 +16,8 @@ import { IDEASuggestionsComponent } from './suggestions.component';
 @Component({
   selector: 'idea-select',
   imports: [IonLabel, IonItem, IonButton, IonLabel, IonText, IonIcon],
-  templateUrl: 'select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'select.component.html',
   styleUrls: ['select.component.scss']
 })
 export class IDEASelectComponent implements OnChanges {
@@ -50,16 +50,12 @@ export class IDEASelectComponent implements OnChanges {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
@@ -80,9 +76,7 @@ export class IDEASelectComponent implements OnChanges {
   /**
    * If true, the component is disabled.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.

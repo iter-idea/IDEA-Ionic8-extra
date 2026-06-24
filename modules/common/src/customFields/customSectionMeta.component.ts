@@ -60,8 +60,8 @@ import { IDEACustomFieldMetaComponent } from './customFieldMeta.component';
     IonHeader,
     IonTitle
   ],
-  templateUrl: 'customSectionMeta.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'customSectionMeta.component.html',
   styleUrls: ['customSectionMeta.component.scss']
 })
 export class IDEACustomSectionMetaComponent implements OnInit {

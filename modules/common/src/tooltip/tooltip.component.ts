@@ -5,6 +5,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
 @Component({
   selector: 'app-tooltip',
   imports: [IDEATranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="tooltipContainer" (mouseleave)="onTooltipMouseLeave()">
       <span class="closeButton" (click)="onClose()">×</span>
@@ -17,7 +18,6 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
       }
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .tooltipContainer {

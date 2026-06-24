@@ -6,6 +6,7 @@ import { COLORS } from 'idea-toolbox';
 @Component({
   selector: 'idea-user-avatar',
   imports: [CommonModule, IonAvatar, IonImg],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="container">
       @if (src) {
@@ -32,7 +33,6 @@ import { COLORS } from 'idea-toolbox';
       }
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       div.container {

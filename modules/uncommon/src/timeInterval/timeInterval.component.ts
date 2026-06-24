@@ -20,6 +20,7 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
 @Component({
   selector: 'idea-time-interval',
   imports: [IonLabel, IonText, IonIcon, IonButton, IonItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="timeIntervalItem"
@@ -63,7 +64,6 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .timeIntervalItem {

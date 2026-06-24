@@ -9,6 +9,7 @@ import { IDEAListElementsComponent } from './listElements.component';
 @Component({
   selector: 'idea-list',
   imports: [IonItem, IonButton, IonIcon, IonLabel, IonText],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="listItem"
@@ -51,7 +52,6 @@ import { IDEAListElementsComponent } from './listElements.component';
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .listItem {

@@ -20,6 +20,7 @@ import { Color, COLORS } from 'idea-toolbox';
 @Component({
   selector: 'idea-color-picker',
   imports: [IonAvatar, IonText, IonLabel, IonIcon, IonButton, IonItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="colorPickerItem"
@@ -49,7 +50,6 @@ import { Color, COLORS } from 'idea-toolbox';
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .colorPickerItem {
@@ -160,6 +160,7 @@ export class IDEAColorPickerComponent {
 @Component({
   selector: 'idea-colors-palette',
   imports: [IonContent, IonGrid, IonRow, IonCol, IonAvatar, IonIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <ion-grid>
@@ -182,7 +183,6 @@ export class IDEAColorPickerComponent {
       </ion-grid>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-content {

@@ -9,6 +9,7 @@ import { IDEAChecksComponent } from './checks.component';
 @Component({
   selector: 'idea-checker',
   imports: [IonLabel, IonItem, IonButton, IonIcon, IonText],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="checkerItem"
@@ -51,7 +52,6 @@ import { IDEAChecksComponent } from './checks.component';
       }
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .checkerItem {
@@ -106,16 +106,12 @@ export class IDEACheckerComponent {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
@@ -160,9 +156,7 @@ export class IDEACheckerComponent {
   /**
    * If true, the component is disabled.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.

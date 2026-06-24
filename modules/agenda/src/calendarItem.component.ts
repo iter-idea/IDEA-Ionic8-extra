@@ -10,8 +10,8 @@ import { IDEACalendarsService } from './calendars.service';
   // eslint-disable-next-line
   standalone: false,
   selector: 'idea-calendar-item',
-  templateUrl: 'calendarItem.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'calendarItem.component.html',
   styleUrls: ['calendarItem.component.scss']
 })
 export class IDEACalendarItemComponent {

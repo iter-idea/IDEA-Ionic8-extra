@@ -14,6 +14,7 @@ import { IDEALabelerComponent } from './labeler.component';
   selector: 'idea-label',
 
   imports: [IDEAHiglightedVariablesPipe, IonItem, IonLabel, IonButton, IonIcon, IonText],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="labelItem"
@@ -55,7 +56,6 @@ import { IDEALabelerComponent } from './labeler.component';
       <ion-icon slot="end" icon="chevron-forward" class="selectIcon" />
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .labelItem {
@@ -119,16 +119,12 @@ export class IDEALabelComponent implements OnInit {
   /**
    * The title (label) for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.

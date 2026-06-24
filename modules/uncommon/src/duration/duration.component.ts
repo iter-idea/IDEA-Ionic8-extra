@@ -6,6 +6,7 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
 @Component({
   selector: 'idea-duration',
   imports: [IonText, IonLabel, IonIcon, IonItem, FormsModule, IDEATranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item class="durationItem" [lines]="lines()" [color]="color()" [title]="title() || label">
       @if (icon) {
@@ -67,7 +68,6 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
       </ion-label>
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .durationItem {
@@ -100,16 +100,12 @@ export class IDEADurationComponent implements OnChanges {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon (alternative to the label) for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The title (hint) for the field.

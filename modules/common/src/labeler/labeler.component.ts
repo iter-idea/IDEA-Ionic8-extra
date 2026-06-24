@@ -49,6 +49,7 @@ import { IDEAMessageService } from '../message.service';
     IonTextarea,
     IonText
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -116,7 +117,6 @@ import { IDEAMessageService } from '../message.service';
       }
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-list.aList {
@@ -192,9 +192,7 @@ export class IDEALabelerComponent {
   /**
    * The variables the user can use for the label content.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() variables: (StringVariable | LabelVariable)[];
   /**
    * If true, the component is disabled.

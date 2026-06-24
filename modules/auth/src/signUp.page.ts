@@ -52,6 +52,7 @@ import { IDEAAuthService } from './auth.service';
     IonInput,
     IonCheckbox
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
       <form class="flexBox">
@@ -189,7 +190,6 @@ import { IDEAAuthService } from './auth.service';
       </form>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['auth.scss']
 })
 export class IDEASignUpPage implements OnInit {

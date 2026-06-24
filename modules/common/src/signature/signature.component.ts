@@ -48,6 +48,7 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
     IonRow,
     IonCol
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -116,7 +117,6 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .aList {

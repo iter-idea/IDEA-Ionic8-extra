@@ -32,6 +32,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
     IonRow,
     IonCol
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -61,7 +62,6 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
       </ion-grid>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       ion-grid {

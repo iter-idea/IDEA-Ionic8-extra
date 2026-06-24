@@ -57,8 +57,8 @@ const MAX_PAGE_SIZE = 24;
     IDEATranslatePipe,
     IDEABoldPrefix
   ],
-  templateUrl: 'suggestions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'suggestions.component.html',
   styleUrls: ['suggestions.component.scss']
 })
 export class IDEASuggestionsComponent implements OnInit {
@@ -88,16 +88,12 @@ export class IDEASuggestionsComponent implements OnInit {
   /**
    * If true, allows to select a new custom value (outside the suggestions).
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() allowUnlistedValues: boolean;
   /**
    * If `allowUnlistedValues` is set, show this to help users understanding what happens by selecting the unlisted val.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
+  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() allowUnlistedValuesPrefix: string;
   /**
    * If true, doesn't show the id in the UI.

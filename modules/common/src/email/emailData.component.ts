@@ -13,6 +13,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
 @Component({
   selector: 'idea-email-data',
   imports: [IDEATranslatePipe, IDEAHiglightedVariablesPipe, IonItem, IonLabel, IonButton, IonIcon, IonText],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-item
       class="emailDataItem"
@@ -64,7 +65,6 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
       <ion-icon slot="end" name="chevron-forward" class="selectIcon" />
     </ion-item>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .emailDataItem {

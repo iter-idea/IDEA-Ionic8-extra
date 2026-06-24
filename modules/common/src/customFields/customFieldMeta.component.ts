@@ -62,8 +62,8 @@ import { IDEAIconsComponent } from '../icons/icons.component';
     IonSelectOption,
     IonToggle
   ],
-  templateUrl: 'customFieldMeta.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'customFieldMeta.component.html',
   styleUrls: ['customFieldMeta.component.scss']
 })
 export class IDEACustomFieldMetaComponent implements OnInit {

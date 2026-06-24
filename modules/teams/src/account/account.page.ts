@@ -46,6 +46,7 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
     IonHeader,
     IonList
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-header>
       <ion-toolbar color="ideaToolbar">
@@ -126,7 +127,6 @@ import { IDEATinCanService, IDEAAWSAPIService } from '@idea-ionic/uncommon';
       </ion-list>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .account {
