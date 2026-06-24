@@ -66,8 +66,6 @@ export class IDEABarcodeCameraReaderComponent {
       await listener.remove();
       await this.hideCameraScannerUI();
       await BarcodeScanner.stopScan();
-      // Capacitor plugin callbacks run outside Angular: re-enter so the emit triggers change
-      // detection in the consuming app under both Zone.js and zoneless.
       this._zone.run(() => this.scan.emit(result.barcodes?.[0].displayValue || ''));
     });
 
