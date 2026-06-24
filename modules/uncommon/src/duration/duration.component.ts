@@ -1,12 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  SimpleChanges,
-  OnChanges,
-  ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonItem, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { IDEATranslatePipe } from '@idea-ionic/common';
@@ -15,14 +7,14 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
   selector: 'idea-duration',
   imports: [IonText, IonLabel, IonIcon, IonItem, FormsModule, IDEATranslatePipe],
   template: `
-    <ion-item class="durationItem" [lines]="lines" [color]="color" [title]="title || label">
+    <ion-item class="durationItem" [lines]="lines()" [color]="color()" [title]="title() || label">
       @if (icon) {
         <ion-icon slot="start" [name]="icon" />
       }
       @if (!icon && label) {
         <ion-label position="stacked">
           {{ label }}
-          @if (obligatory && !disabled) {
+          @if (obligatory() && !disabled()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
@@ -33,40 +25,42 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
           min="0"
           max="23"
           inputmode="numeric"
-          [disabled]="disabled"
+          [disabled]="disabled()"
           [(ngModel)]="hours"
           (ionChange)="setDuration('hours')"
         />
         <ion-text>{{
-          ((shortLabels ? 'IDEA_UNCOMMON.DURATION.HH' : 'IDEA_UNCOMMON.DURATION.HOURS') | translate).toLowerCase()
+          ((shortLabels() ? 'IDEA_UNCOMMON.DURATION.HH' : 'IDEA_UNCOMMON.DURATION.HOURS') | translate).toLowerCase()
         }}</ion-text>
         <ion-input
           type="number"
           min="0"
           max="59"
           inputmode="numeric"
-          [disabled]="disabled"
+          [disabled]="disabled()"
           [(ngModel)]="minutes"
           (ionChange)="setDuration('minutes')"
         />
         <ion-text>{{
-          ((shortLabels ? 'IDEA_UNCOMMON.DURATION.MM' : 'IDEA_UNCOMMON.DURATION.MINUTES') | translate).toLowerCase()
+          ((shortLabels() ? 'IDEA_UNCOMMON.DURATION.MM' : 'IDEA_UNCOMMON.DURATION.MINUTES') | translate).toLowerCase()
         }}</ion-text>
-        @if (!hideSeconds) {
+        @if (!hideSeconds()) {
           <ion-input
             type="number"
             min="0"
             max="59"
             inputmode="numeric"
-            [disabled]="disabled"
+            [disabled]="disabled()"
             [(ngModel)]="seconds"
             (ionChange)="setDuration('seconds')"
           />
         }
-        @if (!hideSeconds) {
+        @if (!hideSeconds()) {
           <ion-text>
             {{
-              ((shortLabels ? 'IDEA_UNCOMMON.DURATION.SS' : 'IDEA_UNCOMMON.DURATION.SECONDS') | translate).toLowerCase()
+              (
+                (shortLabels() ? 'IDEA_UNCOMMON.DURATION.SS' : 'IDEA_UNCOMMON.DURATION.SECONDS') | translate
+              ).toLowerCase()
             }}
           </ion-text>
         }
@@ -100,47 +94,55 @@ export class IDEADurationComponent implements OnChanges {
   /**
    * The default number of seconds, to build the duration.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() default: number;
   /**
    * The label for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon (alternative to the label) for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The title (hint) for the field.
    */
-  @Input() title: string;
+  readonly title = input<string>();
   /**
    * If true, the component is disabled.
    */
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() obligatory: boolean;
+  readonly obligatory = input<boolean>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * Whether to show or hide the seconds input.
    */
-  @Input() hideSeconds: boolean;
+  readonly hideSeconds = input<boolean>();
   /**
    * Whether to show a shortened version of the labels.
    */
-  @Input() shortLabels: boolean;
+  readonly shortLabels = input<boolean>();
   /**
    * On change event. It emits a number of seconds representing the duration.
    */
-  @Output() set = new EventEmitter<number>();
+  readonly set = output<number>();
 
   /**
    * The hour part of the duration.
@@ -166,7 +168,7 @@ export class IDEADurationComponent implements OnChanges {
       refDate.setSeconds(refDate.getSeconds() + this.default);
       this.hours = refDate.getHours();
       this.minutes = refDate.getMinutes();
-      this.seconds = this.hideSeconds ? 0 : refDate.getSeconds();
+      this.seconds = this.hideSeconds() ? 0 : refDate.getSeconds();
     }
   }
 
@@ -185,7 +187,7 @@ export class IDEADurationComponent implements OnChanges {
         break;
       case 'seconds':
         const ss = Number(this.seconds) || 0;
-        if (this.hideSeconds) this.seconds = 0;
+        if (this.hideSeconds()) this.seconds = 0;
         else this.seconds = ss > 59 ? 59 : ss < 0 ? 0 : ss;
         break;
     }

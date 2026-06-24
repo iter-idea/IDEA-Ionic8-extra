@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { IonItem, IonLabel, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 
 import { IDEAOfflineDataService, CacheableResource } from './offlineData.service';
@@ -9,17 +9,17 @@ import { IDEAOfflineDataService, CacheableResource } from './offlineData.service
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ion-item class="cacheableResourceItem">
-      <ion-label>{{ resource.description }}</ion-label>
-      @if (resource.error) {
+      <ion-label>{{ resource().description }}</ion-label>
+      @if (resource().error) {
         <ion-icon slot="end" name="alert-circle" color="danger" />
       }
-      @if (!resource.error && _offline.synchronizing && resource.synchronizing) {
+      @if (!resource().error && _offline.synchronizing && resource().synchronizing) {
         <ion-spinner slot="end" name="dots" />
       }
-      @if (!resource.error && !resource.synchronizing && !_offline.requiresManualConfirmation) {
+      @if (!resource().error && !resource().synchronizing && !_offline.requiresManualConfirmation) {
         <ion-icon slot="end" name="checkmark" color="success" />
       }
-      @if (!resource.error && !resource.synchronizing && _offline.requiresManualConfirmation) {
+      @if (!resource().error && !resource().synchronizing && _offline.requiresManualConfirmation) {
         <ion-icon slot="end" name="pause" color="dark" />
       }
     </ion-item>
@@ -31,5 +31,5 @@ export class IDEACacheableResourceComponent {
   /**
    * The resouece to manage.
    */
-  @Input() resource: CacheableResource;
+  readonly resource = input<CacheableResource>();
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
 import { Calendar, ExternalCalendarInfo, ExternalCalendarSources, Membership, Team } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -25,15 +25,15 @@ export class IDEACalendarCreationComponent implements OnInit {
   /**
    * Whether we want to allow the creation of only a particular type of calendar, based on the scope.
    */
-  @Input() fixScope: CalendarScopes;
+  readonly fixScope = input<CalendarScopes>();
   /**
    * Whether we want to allow the creation of local calendars.
    */
-  @Input() onlyExternalCalendars: boolean;
+  readonly onlyExternalCalendars = input<boolean>();
   /**
    * The URL to be used on the redirect calls.
    */
-  @Input() baseURL: string;
+  readonly baseURL = input<string>();
 
   team: Team;
   membership: Membership;
@@ -45,15 +45,16 @@ export class IDEACalendarCreationComponent implements OnInit {
     this.calendar = new Calendar();
     this.team = this._tc.get('team');
     this.membership = this._tc.get('membership');
-    if (this.fixScope === CalendarScopes.SHARED) this.calendar.teamId = this.team.teamId;
-    if (this.fixScope === CalendarScopes.PRIVATE) this.calendar.userId = this.membership.userId;
+    const fixScope = this.fixScope();
+    if (fixScope === CalendarScopes.SHARED) this.calendar.teamId = this.team.teamId;
+    if (fixScope === CalendarScopes.PRIVATE) this.calendar.userId = this.membership.userId;
   }
 
   resetScope(): void {
     if (this.canChangeScope()) this.calendar.teamId = this.calendar.userId = null;
   }
   canChangeScope(): boolean {
-    return !this.fixScope && this.scopeIsSet();
+    return !this.fixScope() && this.scopeIsSet();
   }
   scopeIsSet(): boolean {
     return Boolean(this.calendar.userId) || Boolean(this.calendar.teamId);
@@ -61,7 +62,7 @@ export class IDEACalendarCreationComponent implements OnInit {
 
   async saveNewCalendar(service?: ExternalCalendarSources | string): Promise<void> {
     if (!this.scopeIsSet()) return;
-    if (!service && this.onlyExternalCalendars) return;
+    if (!service && this.onlyExternalCalendars()) return;
     if (service) {
       this.calendar.external = new ExternalCalendarInfo({ service });
       this.calendar.name = '-'; // it will be substituted with the external name
@@ -82,7 +83,7 @@ export class IDEACalendarCreationComponent implements OnInit {
       }
       try {
         await this._loading.hide();
-        await this._calendars.linkExtService(this.calendar, this.baseURL);
+        await this._calendars.linkExtService(this.calendar, this.baseURL());
         const res = await this._calendars.chooseAndSetExternalCalendar(this.calendar);
         if (!res) {
           await this._modal.dismiss(this.calendar);

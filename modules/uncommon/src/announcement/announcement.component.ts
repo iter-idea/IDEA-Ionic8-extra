@@ -35,6 +35,8 @@ export class IDEAAnnouncementComponent implements OnInit {
   /**
    * The color for the announcement card.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() color: string;
 
   announcement: Announcement;

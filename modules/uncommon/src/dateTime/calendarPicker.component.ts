@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -54,13 +54,13 @@ export class IDEACalendarPickerComponent implements OnInit {
   private _alert = inject(AlertController);
   private _translate = inject(IDEATranslationsService);
 
-  @Input() inputDate: epochDateTime | epochISOString;
-  @Input() timePicker = false;
-  @Input() manualTimePicker = false;
-  @Input() title: string;
-  @Input() hideClearButton = false;
-  @Input() min: epochDateTime | epochISOString;
-  @Input() max: epochDateTime | epochISOString;
+  readonly inputDate = input<epochDateTime | epochISOString>();
+  readonly timePicker = input(false);
+  readonly manualTimePicker = input(false);
+  readonly title = input<string>();
+  readonly hideClearButton = input(false);
+  readonly min = input<epochDateTime | epochISOString>();
+  readonly max = input<epochDateTime | epochISOString>();
 
   refDate: Date;
   selectedDate: Date;
@@ -76,13 +76,15 @@ export class IDEACalendarPickerComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
-    this.refDate = this.inputDate ? new Date(this.inputDate) : new Date(this.today);
+    const inputDate = this.inputDate();
+    this.refDate = inputDate ? new Date(inputDate) : new Date(this.today);
     this.selectedDate = new Date(this.refDate);
     this.hour = 12; // to endure timezones
     this.minute = 0;
-    if (this.timePicker || this.manualTimePicker) {
+    const manualTimePicker = this.manualTimePicker();
+    if (this.timePicker() || manualTimePicker) {
       this.hour = this.selectedDate.getHours();
-      if (this.manualTimePicker) this.minute = this.selectedDate.getMinutes();
+      if (manualTimePicker) this.minute = this.selectedDate.getMinutes();
       else {
         // round the minutes a multiple of 5
         this.minute = Math.ceil(this.selectedDate.getMinutes() / 5) * 5;
@@ -100,8 +102,10 @@ export class IDEACalendarPickerComponent implements OnInit {
       this.weekDays.push(refDateForWeekDays.toLocaleDateString(this._translate.getCurrentLang(), { weekday: 'short' }));
       refDateForWeekDays.setDate(refDateForWeekDays.getDate() + 1);
     }
-    if (this.min) this.dateMin = new Date(this.min);
-    if (this.max) this.dateMax = new Date(this.max);
+    const min = this.min();
+    if (min) this.dateMin = new Date(min);
+    const max = this.max();
+    if (max) this.dateMax = new Date(max);
   }
 
   getLocalisedDay(date: Date): number {

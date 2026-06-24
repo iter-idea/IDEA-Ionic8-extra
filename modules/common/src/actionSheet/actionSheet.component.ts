@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import {
   IonContent,
@@ -19,7 +19,7 @@ import {
   selector: 'idea-action-sheet',
   imports: [IonIcon, IonButton, IonLabel, IonRow, IonCol, IonGrid, IonContent],
   template: `
-    <ion-content [class]="cssClass">
+    <ion-content [class]="cssClass()">
       <ion-grid class="ion-padding">
         @if (header) {
           <ion-row class="headerRow">
@@ -34,7 +34,7 @@ import {
           </ion-row>
         }
         <ion-row class="ion-justify-content-center buttonsRow">
-          @for (button of buttons; track button) {
+          @for (button of buttons(); track button) {
             <ion-col [size]="withIcons ? 6 : 12">
               <ion-button
                 fill="clear"
@@ -110,25 +110,31 @@ export class IDEAActionSheetComponent implements OnInit {
   /**
    * An array of buttons for the actions panel.
    */
-  @Input() buttons: ActionSheetButton[] = [];
+  readonly buttons = input<ActionSheetButton[]>([]);
   /**
    * Additional classes to apply for custom CSS. If multiple classes are provided they should be separated by spaces.
    */
-  @Input() cssClass: string;
+  readonly cssClass = input<string>();
   /**
    * Title for the actions panel.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() header: string;
   /**
    * Subtitle for the actions panel.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() subHeader: string;
 
   withIcons: boolean;
 
   ngOnInit(): void {
     // based on the input, changes the way the UI behaves
-    this.withIcons = this.buttons.some(b => b.icon);
+    this.withIcons = this.buttons().some(b => b.icon);
   }
 
   buttonClicked(button: ActionSheetButton): void {

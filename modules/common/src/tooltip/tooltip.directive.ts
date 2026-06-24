@@ -1,13 +1,13 @@
 import {
   Directive,
   ElementRef,
-  Input,
   ComponentRef,
   ViewContainerRef,
   Injector,
   HostListener,
   inject,
-  OnDestroy
+  OnDestroy,
+  input
 } from '@angular/core';
 
 import { IDEATooltipComponent } from './tooltip.component';
@@ -25,17 +25,17 @@ export class IDEATooltipDirective implements OnDestroy {
    * The key in the translations for the tooltip.
    * From this keys we also get the link ("_L") and title ("_T"), if any.
    */
-  @Input('tooltip') hint = '';
+  readonly hint = input('', { alias: 'tooltip' });
   /**
    * The delay before showing the tooltip.
    */
-  @Input() tooltipDelay = 1000;
+  readonly tooltipDelay = input(1000);
 
   private tooltipRef: ComponentRef<IDEATooltipComponent> | null = null;
   private showTimeout: any;
 
   @HostListener('mouseover') onMouseOver(): void {
-    this.showTooltip(this.tooltipDelay);
+    this.showTooltip(this.tooltipDelay());
   }
   @HostListener('mouseout') onMouseOut(): void {
     clearTimeout(this.showTimeout);
@@ -54,9 +54,9 @@ export class IDEATooltipDirective implements OnDestroy {
     this.tooltipRef = this._viewContainerRef.createComponent(IDEATooltipComponent, { injector: this._injector });
 
     const instance = this.tooltipRef.instance;
-    instance.title = this._translate._(`${this.hint}_T`);
-    instance.text = this._translate._(this.hint);
-    instance.link = this._translate._(`${this.hint}_L`);
+    instance.title = this._translate._(`${this.hint()}_T`);
+    instance.text = this._translate._(this.hint());
+    instance.link = this._translate._(`${this.hint()}_L`);
     instance.closed.subscribe((): void => {
       this.hideTooltip();
     });

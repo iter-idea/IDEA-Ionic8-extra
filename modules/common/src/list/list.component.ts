@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
@@ -12,11 +12,11 @@ import { IDEAListElementsComponent } from './listElements.component';
   template: `
     <ion-item
       class="listItem"
-      [color]="color"
-      [lines]="lines"
+      [color]="color()"
+      [lines]="lines()"
       [button]="!disabled"
       [disabled]="isOpening"
-      [title]="placeholder || ''"
+      [title]="placeholder() || ''"
       [class.withLabel]="label"
       (click)="openList()"
     >
@@ -24,7 +24,7 @@ import { IDEAListElementsComponent } from './listElements.component';
         <ion-button
           fill="clear"
           slot="start"
-          [color]="iconColor"
+          [color]="iconColor()"
           [class.marginTop]="label"
           (click)="doIconSelect($event)"
         >
@@ -34,7 +34,7 @@ import { IDEAListElementsComponent } from './listElements.component';
       @if (label) {
         <ion-label position="stacked" [class.selectable]="!disabled">
           {{ label }}
-          @if (obligatory && !disabled) {
+          @if (obligatory() && !disabled) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
@@ -42,9 +42,9 @@ import { IDEAListElementsComponent } from './listElements.component';
       <ion-label
         class="description"
         [class.selectable]="!disabled"
-        [class.placeholder]="!getPreview() || noPreviewText"
+        [class.placeholder]="!getPreview() || noPreviewText()"
       >
-        {{ getPreview() || placeholder }}
+        {{ getPreview() || placeholder() }}
       </ion-label>
       @if (!disabled) {
         <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled" />
@@ -96,67 +96,76 @@ export class IDEAListComponent {
   /**
    * The list to manage.
    */
-  @Input() data: (Label | string)[] = [];
+  readonly data = input<(Label | string)[]>([]);
   /**
    * Whether the elements are labels or simple strings.
    */
-  @Input() labelElements: boolean;
+  readonly labelElements = input<boolean>();
   /**
    * The label for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder: string;
+  readonly searchPlaceholder = input<string>();
   /**
    * Text to show when there isn't a result.
    */
-  @Input() noElementsFoundText: string;
+  readonly noElementsFoundText = input<string>();
   /**
    * If true, show the string instead of the preview text.
    */
-  @Input() noPreviewText: string;
+  readonly noPreviewText = input<string>();
   /**
    * A placeholder for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * If true, the component is disabled.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() disabled: boolean;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() obligatory: boolean;
+  readonly obligatory = input<boolean>();
   /**
    * How many elements to show in the preview before to generalize on the number.
    */
-  @Input() numMaxElementsInPreview = 4;
+  readonly numMaxElementsInPreview = input(4);
   /**
    * On change event.
    */
-  @Output() change = new EventEmitter<void>();
+  readonly change = output<void>();
   /**
    * Icon select.
    */
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly iconSelect = output<void>();
 
   isOpening = false;
 
@@ -166,10 +175,10 @@ export class IDEAListComponent {
     const modal = await this._modal.create({
       component: IDEAListElementsComponent,
       componentProps: {
-        data: this.data,
-        labelElements: this.labelElements,
-        searchPlaceholder: this.searchPlaceholder,
-        noElementsFoundText: this.noElementsFoundText
+        data: this.data(),
+        labelElements: this.labelElements(),
+        searchPlaceholder: this.searchPlaceholder(),
+        noElementsFoundText: this.noElementsFoundText()
       }
     });
     modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
@@ -178,17 +187,19 @@ export class IDEAListComponent {
   }
 
   getPreview(): string {
-    if (!this.data || !this.data.length) return null;
-    if (this.noPreviewText) return this.noPreviewText;
-    if (this.data.length <= this.numMaxElementsInPreview)
-      return this.data
-        .slice(0, this.numMaxElementsInPreview)
+    const data = this.data();
+    if (!data || !data.length) return null;
+    const noPreviewText = this.noPreviewText();
+    if (noPreviewText) return noPreviewText;
+    if (data.length <= this.numMaxElementsInPreview())
+      return data
+        .slice(0, this.numMaxElementsInPreview())
         .map(x => this.getElementName(x))
         .join(', ');
-    else return this._translate._('IDEA_COMMON.LIST.NUM_ELEMENTS_', { num: this.data.length });
+    else return this._translate._('IDEA_COMMON.LIST.NUM_ELEMENTS_', { num: data.length });
   }
   getElementName(x: Label | string): any {
-    return this.labelElements
+    return this.labelElements()
       ? (x as Label).translate(this._translate.getCurrentLang(), this._translate.languages())
       : x;
   }

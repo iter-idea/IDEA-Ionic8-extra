@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -41,7 +41,7 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
           </ion-button>
         </ion-buttons>
         <ion-title>
-          {{ title || ('IDEA_UNCOMMON.MDE.TITLE' | translate) }}
+          {{ title() || ('IDEA_UNCOMMON.MDE.TITLE' | translate) }}
         </ion-title>
         <ion-buttons slot="end">
           <ion-button [title]="'IDEA_UNCOMMON.MDE.SAVE_AND_CLOSE' | translate" (click)="confirm()">
@@ -71,7 +71,7 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
           }
         </p>
       }
-      <ion-textarea rows="12" [id]="id" [placeholder]="placeholder" [(ngModel)]="value" />
+      <ion-textarea rows="12" [id]="id" [placeholder]="placeholder()" [(ngModel)]="value" />
       <idea-mde-toolbar />
     </ion-content>
   `,
@@ -109,38 +109,48 @@ export class IDEAMDEComponent implements OnInit {
   /**
    * Id to identify this specific Markdown Editor (default: 'mde').
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() id: string;
   /**
    * The title of the modal.
    */
-  @Input() title: string;
+  readonly title = input<string>();
   /**
    * The header text content.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() header: string;
   /**
    * The sub-header description.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() description: string;
   /**
    * A series of text variables to substitute with values.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() variables: string[];
   /**
    * If set, will customize the initial value of the editor.
    */
-  @Input() initialValue: string;
+  readonly initialValue = input<string>();
   /**
    * Custom placeholder that should be displayed.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
 
   value: string;
 
   ngOnInit(): void {
     this.id = this.id || 'mde';
     this.variables = this.variables || new Array<string>();
-    this.value = this.initialValue;
+    this.value = this.initialValue();
   }
 
   close(): void {

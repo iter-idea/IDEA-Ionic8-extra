@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Label, Languages, mdToHtml, StringVariable } from 'idea-toolbox';
 
@@ -19,9 +19,9 @@ import { IDEALabelerComponent } from './labeler.component';
       class="labelItem"
       button
       [disabled]="isOpening"
-      [color]="color"
-      [lines]="lines"
-      [title]="placeholder || ''"
+      [color]="color()"
+      [lines]="lines()"
+      [title]="placeholder() || ''"
       [class.withLabel]="label"
       (click)="edit()"
     >
@@ -29,7 +29,7 @@ import { IDEALabelerComponent } from './labeler.component';
         <ion-button
           fill="clear"
           slot="start"
-          [color]="iconColor"
+          [color]="iconColor()"
           [class.marginTop]="label"
           (click)="doIconSelect($event)"
         >
@@ -39,17 +39,17 @@ import { IDEALabelerComponent } from './labeler.component';
       @if (label) {
         <ion-label position="stacked">
           {{ label }}
-          @if (!disabled && obligatory) {
+          @if (!disabled() && obligatory()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
       <div class="description">
         @if (!htmlContent) {
-          <div class="placeholder">{{ placeholder }}</div>
+          <div class="placeholder">{{ placeholder() }}</div>
         }
         @if (htmlContent) {
-          <div class="innerContent" [class.md]="markdown" [innerHTML]="htmlContent | highlight: variableCodes"></div>
+          <div class="innerContent" [class.md]="markdown()" [innerHTML]="htmlContent | highlight: variableCodes"></div>
         }
       </div>
       <ion-icon slot="end" icon="chevron-forward" class="selectIcon" />
@@ -97,58 +97,66 @@ export class IDEALabelComponent implements OnInit {
    * The label to manage.
    * Note: the name is set to not overlap with IDEA's components typical use of the attribute `label`.
    */
-  @Input() content: Label;
+  readonly content = input<Label>();
   /**
    * The languages preferences; if not set, it fallbacks to IDEATranslationsService's ones.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() languages: Languages;
   /**
    * Whether to display the label in textareas instead of text fields.
    */
-  @Input() textarea: boolean;
+  readonly textarea = input<boolean>();
   /**
    * Whether the label supports markdown.
    */
-  @Input() markdown: boolean;
+  readonly markdown = input<boolean>();
   /**
    * The variables the user can use in the label.
    */
-  @Input() variables: StringVariable[];
+  readonly variables = input<StringVariable[]>();
   /**
    * The title (label) for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * A placeholder for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * If true, the component is disabled.
    */
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * If true, the label is validated on save.
    */
-  @Input() obligatory: boolean;
+  readonly obligatory = input<boolean>();
 
-  @Output() change = new EventEmitter<void>();
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly change = output<void>();
+  readonly iconSelect = output<void>();
 
   variableCodes: string[];
   htmlContent: string;
@@ -157,7 +165,7 @@ export class IDEALabelComponent implements OnInit {
 
   ngOnInit(): void {
     this.languages = this.languages || this._translate.languages();
-    this.variableCodes = (this.variables || []).map(x => x.code);
+    this.variableCodes = (this.variables() || []).map(x => x.code);
     this.calcHTMLContent();
   }
 
@@ -165,15 +173,15 @@ export class IDEALabelComponent implements OnInit {
     if (this.isOpening) return;
     this.isOpening = true;
     const componentProps = {
-      label: this.content,
+      label: this.content(),
       languages: this.languages,
-      textarea: this.textarea,
-      markdown: this.markdown,
-      variables: this.variables,
+      textarea: this.textarea(),
+      markdown: this.markdown(),
+      variables: this.variables(),
       title: this.label,
-      obligatory: this.obligatory,
-      disabled: this.disabled,
-      lines: this.lines
+      obligatory: this.obligatory(),
+      disabled: this.disabled(),
+      lines: this.lines()
     };
     const modal = await this._modal.create({ component: IDEALabelerComponent, componentProps });
     modal.onDidDismiss().then(({ data }): void => {
@@ -186,8 +194,8 @@ export class IDEALabelComponent implements OnInit {
   }
 
   private calcHTMLContent(): void {
-    const str = this.content.translate(this.languages.default, this.languages);
-    this.htmlContent = str && this.markdown ? mdToHtml(str) : str;
+    const str = this.content().translate(this.languages.default, this.languages);
+    this.htmlContent = str && this.markdown() ? mdToHtml(str) : str;
   }
 
   doIconSelect(event: any): void {

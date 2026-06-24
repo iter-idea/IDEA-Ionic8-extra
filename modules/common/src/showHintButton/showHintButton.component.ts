@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { AlertController, IonButton, IonIcon } from '@ionic/angular/standalone';
 
 import { IDEATranslationsService } from '../translations/translations.service';
@@ -8,8 +8,8 @@ import { IDEATranslationsService } from '../translations/translations.service';
   imports: [IonButton, IonIcon],
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
-    <ion-button [slot]="slot" [fill]="fill" [color]="color" (click)="showHint($event)">
-      <ion-icon [icon]="icon" slot="icon-only" />
+    <ion-button [slot]="slot()" [fill]="fill()" [color]="color()" (click)="showHint($event)">
+      <ion-icon [icon]="icon()" slot="icon-only" />
     </ion-button>
   `
 })
@@ -20,16 +20,16 @@ export class IDEAShowHintButtonComponent {
   /**
    * The string to show as title of the alert.
    */
-  @Input() hint: string;
+  readonly hint = input<string>();
   /**
    * The string to show as content of the alert.
    * If not specified, it's equal to `hint.concat('_I')`.
    */
-  @Input() message?: string;
+  readonly message = input<string>();
   /**
    * The string to show as the alert's confirmation button.
    */
-  @Input() confirmationText = 'OK';
+  readonly confirmationText = input('OK');
   /**
    * Whether the input strings need to be translated or they are already.
    */
@@ -37,43 +37,45 @@ export class IDEAShowHintButtonComponent {
   get translate(): boolean | string {
     return this._shouldTranslate;
   }
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set translate(input: boolean | string) {
     this._shouldTranslate = String(input) !== 'false';
   }
   /**
    * A CSS class to apply to the alert box.
    */
-  @Input() cssClass = 'alertLongOptions';
+  readonly cssClass = input('alertLongOptions');
   /**
    * The slots where to put the button.
    */
-  @Input() slot = 'start';
+  readonly slot = input('start');
   /**
    * The fill attribute of the button.
    */
-  @Input() fill = 'clear';
+  readonly fill = input('clear');
   /**
    * The color of the button.
    */
-  @Input() color?: string;
+  readonly color = input<string>();
   /**
    * The IonIcon to show for the button.
    */
-  @Input() icon = 'help-circle-outline';
+  readonly icon = input('help-circle-outline');
 
   async showHint(event?: any): Promise<void> {
     if (event) event.stopPropagation();
 
-    if (!this.hint) return;
+    const hint = this.hint();
+    if (!hint) return;
 
-    const header = this._shouldTranslate ? this._translate._(this.hint) : this.hint;
-    const message = this._shouldTranslate ? this._translate._(this.message || this.hint.concat('_I')) : this.message;
+    const header = this._shouldTranslate ? this._translate._(hint) : hint;
+    const message = this._shouldTranslate ? this._translate._(this.message() || hint.concat('_I')) : this.message();
+    const confirmationText = this.confirmationText();
     const buttonText =
-      this._shouldTranslate && this.confirmationText !== 'OK'
-        ? this._translate._(this.confirmationText)
-        : this.confirmationText;
+      this._shouldTranslate && confirmationText !== 'OK' ? this._translate._(confirmationText) : confirmationText;
     const buttons = [{ text: buttonText }];
-    const cssClass = this.cssClass;
+    const cssClass = this.cssClass();
 
     const alert = await this._alert.create({ header, message, buttons, cssClass });
     alert.present();

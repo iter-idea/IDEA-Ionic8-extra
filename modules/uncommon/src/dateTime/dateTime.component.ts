@@ -1,14 +1,14 @@
 import {
   Component,
   Input,
-  Output,
-  EventEmitter,
   SimpleChanges,
   OnInit,
   OnDestroy,
   OnChanges,
   inject,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  output,
+  input
 } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
@@ -23,9 +23,9 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
   template: `
     <ion-item
       class="dateTimeItem"
-      [color]="color"
-      [lines]="lines"
-      [title]="placeholder || label || ''"
+      [color]="color()"
+      [lines]="lines()"
+      [title]="placeholder() || label || ''"
       [button]="!disabled"
       [disabled]="isOpening"
       [class.withLabel]="label"
@@ -35,7 +35,7 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
         <ion-button
           fill="clear"
           slot="start"
-          [color]="iconColor"
+          [color]="iconColor()"
           [class.marginTop]="label"
           (click)="doIconSelect($event)"
         >
@@ -45,7 +45,7 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
       @if (label) {
         <ion-label position="stacked" [class.selectable]="!disabled">
           {{ label }}
-          @if (obligatory && !disabled) {
+          @if (obligatory() && !disabled) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
@@ -53,7 +53,7 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
       <ion-label class="value" [class.selectable]="!disabled">
         @if (!valueToDisplay && !disabled) {
           <ion-text class="placeholder" [class.selectable]="!disabled">
-            {{ placeholder }}
+            {{ placeholder() }}
           </ion-text>
         }
         {{ valueToDisplay }}
@@ -111,66 +111,75 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The date to show/pick.
    */
-  @Input() date: epochDateTime | epochISOString;
+  readonly date = input<epochDateTime | epochISOString>();
   /**
    * Whether to show the time picker (datetime) or not (date).
    */
-  @Input() timePicker = false;
+  readonly timePicker = input(false);
   /**
    * Whether to show the MANUAL time picker (datetime) or not (date).
    */
-  @Input() manualTimePicker = false;
+  readonly manualTimePicker = input(false);
   /**
    * Whether to use the `epochISOString` format instead of `epochDateTime`.
    */
-  @Input() useISOFormat = false;
+  readonly useISOFormat = input(false);
   /**
    * The label for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * A placeholder for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * If true, the component is disabled.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() disabled = false;
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() obligatory = false;
+  readonly obligatory = input(false);
   /**
    * If true, hidew the clear button in the header.
    */
-  @Input() hideClearButton = false;
+  readonly hideClearButton = input(false);
   /**
    * If set, is the minimum date selectable.
    */
-  @Input() min: epochDateTime | epochISOString;
+  readonly min = input<epochDateTime | epochISOString>();
   /**
    * If set, is the maximum date selectable.
    */
-  @Input() max: epochDateTime | epochISOString;
+  readonly max = input<epochDateTime | epochISOString>();
 
-  @Output() dateChange = new EventEmitter<epochDateTime | epochISOString | null | any>();
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly dateChange = output<epochDateTime | epochISOString | null | any>();
+  readonly iconSelect = output<void>();
 
   valueToDisplay: string;
   private langChangeSubscription: Subscription;
@@ -179,14 +188,14 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
-      this.valueToDisplay = this.getValueToDisplay(this.date);
+      this.valueToDisplay = this.getValueToDisplay(this.date());
     });
   }
   ngOnDestroy(): void {
     if (this.langChangeSubscription) this.langChangeSubscription.unsubscribe();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.date || changes.timePicker) this.valueToDisplay = this.getValueToDisplay(this.date);
+    if (changes.date || changes.timePicker) this.valueToDisplay = this.getValueToDisplay(this.date());
   }
 
   async openCalendarPicker(): Promise<void> {
@@ -195,13 +204,13 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
     const modal = await this._modal.create({
       component: IDEACalendarPickerComponent,
       componentProps: {
-        inputDate: this.date,
+        inputDate: this.date(),
         title: this.label,
-        timePicker: this.timePicker,
-        manualTimePicker: this.manualTimePicker,
-        hideClearButton: this.hideClearButton,
-        min: this.min,
-        max: this.max
+        timePicker: this.timePicker(),
+        manualTimePicker: this.manualTimePicker(),
+        hideClearButton: this.hideClearButton(),
+        min: this.min(),
+        max: this.max()
       }
     });
     modal.onDidDismiss().then(({ data }): void => {
@@ -217,11 +226,14 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   private getValueToDisplay(date: epochDateTime | epochISOString): string {
     return !date
       ? ''
-      : this._translate.formatDate(date, this.timePicker || this.manualTimePicker ? 'd MMM yyyy, HH:mm' : 'mediumDate');
+      : this._translate.formatDate(
+          date,
+          this.timePicker() || this.manualTimePicker() ? 'd MMM yyyy, HH:mm' : 'mediumDate'
+        );
   }
 
   doSelect(date: Date): void {
-    this.dateChange.emit(date ? (this.useISOFormat ? date.toISOString() : date.valueOf()) : null);
+    this.dateChange.emit(date ? (this.useISOFormat() ? date.toISOString() : date.valueOf()) : null);
   }
   doIconSelect(event: Event): void {
     if (event) event.stopPropagation();

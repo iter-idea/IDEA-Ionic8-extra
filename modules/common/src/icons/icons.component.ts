@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import {
   ModalController,
   IonHeader,
@@ -41,7 +41,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
           </ion-button>
         </ion-buttons>
         <ion-searchbar
-          [placeholder]="searchPlaceholder || ('COMMON.SEARCH' | translate)"
+          [placeholder]="searchPlaceholder() || ('COMMON.SEARCH' | translate)"
           [debounce]="100"
           (ionInput)="search($event.target ? $event.target.value : '')"
         />
@@ -76,7 +76,7 @@ export class IDEAIconsComponent {
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder: string;
+  readonly searchPlaceholder = input<string>();
 
   icons: Ionicons[];
   /**

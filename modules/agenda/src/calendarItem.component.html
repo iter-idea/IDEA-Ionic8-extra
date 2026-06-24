@@ -1,11 +1,11 @@
 @if (calendar) {
   <ion-item
     class="calendarItem"
-    [button]="!disabled"
+    [button]="!disabled()"
     [title]="'IDEA_AGENDA.CALENDARS.EDIT_CALENDAR' | translate"
     (click)="calendar.external && !calendar.external.calendarId ? linkExtCalendarOrDelete() : manageCalendar()"
   >
-    @if (!hideColor) {
+    @if (!hideColor()) {
       <ion-avatar slot="start" class="colorCircle" [style.background-color]="calendar.color" />
     }
     <ion-label>

@@ -18,7 +18,7 @@
 <ion-content>
   <div [class.viewMode]="disabled" [class.editMode]="!disabled">
     <ion-list class="aList ion-padding">
-      @if (!hideHeaders) {
+      @if (!hideHeaders()) {
         @if (disabled) {
           <ion-list-header>
             <ion-label>
@@ -28,7 +28,7 @@
           </ion-list-header>
         }
         @if (!disabled) {
-          <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
+          <ion-item [lines]="lines()" [class.fieldHasError]="hasFieldAnError('name')">
             <ion-input
               type="text"
               readonly="true"
@@ -55,7 +55,7 @@
           </ion-item>
         }
         @if (!disabled) {
-          <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
+          <ion-item [lines]="lines()" [class.fieldHasError]="hasFieldAnError('description')">
             <ion-input
               type="text"
               readonly="true"
@@ -90,7 +90,7 @@
       }
       <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderFieldsLegend($event)">
         @for (f of _section.fieldsLegend; track f) {
-          <ion-item [button]="true" [lines]="lines" (click)="openField(f)">
+          <ion-item [button]="true" [lines]="lines()" (click)="openField(f)">
             @if (!disabled) {
               <ion-reorder slot="start" />
             }
@@ -122,7 +122,7 @@
         </ion-row>
       }
     </ion-list>
-    @if (useDisplayTemplate) {
+    @if (useDisplayTemplate()) {
       <ion-list class="aList ion-padding">
         <ion-list-header>
           <ion-label>
@@ -141,7 +141,7 @@
           @for (row of _section.displayTemplate; track row; let rowIndex = $index) {
             <div class="displayTemplateRow">
               <ion-item-divider>{{ 'IDEA_COMMON.CUSTOM_FIELDS.ROW' | translate }} {{ rowIndex + 1 }} </ion-item-divider>
-              <ion-item [lines]="lines">
+              <ion-item [lines]="lines()">
                 @if (!disabled) {
                   <ion-reorder slot="start" />
                 }

@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonItem, IonButton, IonIcon, IonInput } from '@ionic/angular/standalone';
 import { Contacts } from 'idea-toolbox';
@@ -9,30 +9,30 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
   imports: [FormsModule, IDEATranslatePipe, IonInput, IonIcon, IonButton, IonItem],
   template: `
     <div class="contacts">
-      @if (showName) {
-        <ion-item [lines]="lines" [color]="color">
+      @if (showName()) {
+        <ion-item [lines]="lines()" [color]="color()">
           <ion-input
             autocomplete="new"
             labelPlacement="stacked"
             [label]="'IDEA_UNCOMMON.CONTACTS.NAME' | translate"
-            [disabled]="!editMode"
+            [disabled]="!editMode()"
             [placeholder]="'IDEA_UNCOMMON.CONTACTS.NAME_HINT' | translate"
             [title]="'IDEA_UNCOMMON.CONTACTS.NAME_HINT' | translate"
             [(ngModel)]="contacts.name"
           />
         </ion-item>
       }
-      <ion-item [lines]="lines" [color]="color">
+      <ion-item [lines]="lines()" [color]="color()">
         <ion-input
           autocomplete="new"
           labelPlacement="stacked"
           [label]="'IDEA_UNCOMMON.CONTACTS.PHONE' | translate"
-          [disabled]="!editMode"
+          [disabled]="!editMode()"
           [placeholder]="'IDEA_UNCOMMON.CONTACTS.PHONE_HINT' | translate"
           [title]="'IDEA_UNCOMMON.CONTACTS.PHONE_HINT' | translate"
           [(ngModel)]="contacts.phone"
         />
-        @if (!editMode) {
+        @if (!editMode()) {
           <ion-button
             slot="end"
             fill="clear"
@@ -45,17 +45,17 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
           </ion-button>
         }
       </ion-item>
-      <ion-item [lines]="lines" [color]="color">
+      <ion-item [lines]="lines()" [color]="color()">
         <ion-input
           autocomplete="new"
           labelPlacement="stacked"
           [label]="'IDEA_UNCOMMON.CONTACTS.EMAIL' | translate"
-          [disabled]="!editMode"
+          [disabled]="!editMode()"
           [placeholder]="'IDEA_UNCOMMON.CONTACTS.EMAIL_HINT' | translate"
           [title]="'IDEA_UNCOMMON.CONTACTS.EMAIL_HINT' | translate"
           [(ngModel)]="contacts.email"
         />
-        @if (!editMode) {
+        @if (!editMode()) {
           <ion-button
             slot="end"
             fill="clear"
@@ -86,23 +86,25 @@ export class IDEAContactsComponent {
   /**
    * The contacts to manage.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() contacts: Contacts = new Contacts();
   /**
    * If true, show the field `name`.
    */
-  @Input() showName = false;
+  readonly showName = input(false);
   /**
    * Whether the fields are editable or disabled.
    */
-  @Input() editMode = true;
+  readonly editMode = input(true);
   /**
    * The lines attribute of the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
 
   sendEmail(): void {
     if (!this.contacts.email) return;

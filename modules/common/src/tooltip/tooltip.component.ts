@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, output } from '@angular/core';
 
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 
@@ -60,19 +60,25 @@ export class IDEATooltipComponent {
   /**
    * The tooltip title.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() title = '';
   /**
    * The tooltip text.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() text = '';
   /**
    * The tooltip link.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() link = '';
   /**
    * The tooltip close event.
    */
-  @Output() closed = new EventEmitter<void>();
+  readonly closed = output<void>();
 
   onTooltipMouseLeave(): void {
     this.onClose();

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { ModalController, IonButton } from '@ionic/angular/standalone';
 import { IDEATranslatePipe } from '@idea-ionic/common';
 
@@ -11,7 +11,7 @@ import { IDEAAuthService } from '../auth.service';
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (isMFAEnabled !== undefined) {
-      <ion-button [color]="color" [fill]="fill" (click)="openMFAModal()">
+      <ion-button [color]="color()" [fill]="fill()" (click)="openMFAModal()">
         {{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.SETUP_MFA') | translate }}
       </ion-button>
     }
@@ -24,15 +24,15 @@ export class IDEASetupMFAButtonComponent implements OnInit {
   /**
    * The color of the button.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * The fill option for the button.
    */
-  @Input() fill: string;
+  readonly fill = input<string>();
   /**
    * Trigger then the MFA setup changes.
    */
-  @Output() change = new EventEmitter<boolean>();
+  readonly change = output<boolean>();
 
   isMFAEnabled: boolean;
 

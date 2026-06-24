@@ -1,14 +1,14 @@
 import {
   Component,
   Input,
-  Output,
-  EventEmitter,
   SimpleChanges,
   OnInit,
   OnDestroy,
   OnChanges,
   inject,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  output,
+  input
 } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
@@ -23,11 +23,11 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
   template: `
     <ion-item
       class="timeIntervalItem"
-      [color]="color"
-      [lines]="lines"
+      [color]="color()"
+      [lines]="lines()"
       [button]="!disabled"
       [disabled]="isOpening"
-      [title]="placeholder || valueToDisplay || ''"
+      [title]="placeholder() || valueToDisplay || ''"
       [class.withLabel]="label"
       (click)="disabled ? doSelectWhenDisabled() : pickTimeInterval()"
     >
@@ -35,7 +35,7 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
         <ion-button
           fill="clear"
           slot="start"
-          [color]="iconColor"
+          [color]="iconColor()"
           [class.marginTop]="label"
           (click)="doIconSelect($event)"
         >
@@ -43,17 +43,17 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
         </ion-button>
       }
       @if (label) {
-        <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled">
+        <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled()">
           {{ label }}
-          @if (obligatory && !disabled) {
+          @if (obligatory() && !disabled) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
-      <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled">
+      <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled()">
         @if (!valueToDisplay && !disabled) {
           <ion-text class="placeholder" [class.selectable]="!disabled">
-            {{ placeholder }}
+            {{ placeholder() }}
           </ion-text>
         }
         {{ valueToDisplay }}
@@ -108,67 +108,76 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The time interval to set.
    */
-  @Input() timeInterval: TimeInterval;
+  readonly timeInterval = input<TimeInterval>();
   /**
    * Whether we should start picking the time displaying the afternoon (PM) or the morning (AM, default).
    */
-  @Input() period: Periods = Periods.AM;
+  readonly period = input<Periods>(Periods.AM);
   /**
    * A time to use as lower limit for the possible choices.
    */
-  @Input() notEarlierThan: number;
+  readonly notEarlierThan = input<number>();
   /**
    * A time to use as upper limit for the possible choices.
    */
-  @Input() notLaterThan: number;
+  readonly notLaterThan = input<number>();
   /**
    * The label for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * A placeholder for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * If true, the component is disabled.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.
    */
-  @Input() tappableWhenDisabled: boolean;
+  readonly tappableWhenDisabled = input<boolean>();
   /**
    * If true, the obligatory dot is shown.
    */
-  @Input() obligatory: boolean;
+  readonly obligatory = input<boolean>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * On select event.
    */
-  @Output() select = new EventEmitter<void>();
+  readonly select = output<void>();
   /**
    * Icon select.
    */
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly iconSelect = output<void>();
   /**
    * On select (with the field disabled) event.
    */
-  @Output() selectWhenDisabled = new EventEmitter<void>();
+  readonly selectWhenDisabled = output<void>();
 
   valueToDisplay: string;
   private langChangeSubscription: Subscription;
@@ -178,7 +187,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     // when the language changes, set the locale
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
-      this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
+      this.valueToDisplay = this.getValueToDisplay(this.timeInterval());
     });
   }
   ngOnDestroy(): void {
@@ -209,17 +218,17 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
     const modal = await this._modal.create({
       component: IDEAFromTimeToTimeComponent,
       componentProps: {
-        timeInterval: this.timeInterval,
-        period: this.period,
-        notEarlierThan: this.notEarlierThan,
-        notLaterThan: this.notLaterThan,
+        timeInterval: this.timeInterval(),
+        period: this.period(),
+        notEarlierThan: this.notEarlierThan(),
+        notLaterThan: this.notLaterThan(),
         title: this.label
       }
     });
     modal.onDidDismiss().then((res: any): void => {
       // if the content changed, update the internal values and notify the parent component
       if (res.data === true || res.data === false) {
-        this.valueToDisplay = this.getValueToDisplay(this.timeInterval);
+        this.valueToDisplay = this.getValueToDisplay(this.timeInterval());
         this.select.emit();
       }
     });

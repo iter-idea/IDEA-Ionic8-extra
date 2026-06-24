@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -45,36 +45,41 @@ export class IDEACustomSectionComponent {
   /**
    * The custom fields to manage.
    */
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() fields: any;
   /**
    * The CustomSectionMeta that describe the custom fields.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() sectionMeta: CustomSectionMeta;
   /**
    * Whether the component is enabled or not.
    */
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * Lines preferences for the component.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * Whether to hide the descriptions (buttons).
    */
-  @Input() hideDescriptions = false;
+  readonly hideDescriptions = input(false);
   /**
    * Show errors as reported from the parent component.
    */
-  @Input() errors = new Set();
+  readonly errors = input(new Set());
   /**
    * Add a custom prefix to the error string identifier.
    */
-  @Input() errorPrefix = '';
+  readonly errorPrefix = input('');
 
   CFT = CustomFieldTypes;
 
   hasFieldAnError(field: string): boolean {
-    return this.errors.has(field);
+    return this.errors().has(field);
   }
 
   async openDescription(fieldKey: string, event: any): Promise<void> {

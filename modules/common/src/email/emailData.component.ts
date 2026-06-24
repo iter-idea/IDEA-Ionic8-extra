@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { EmailData, StringVariable } from 'idea-toolbox';
 
@@ -18,9 +18,9 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
       class="emailDataItem"
       button
       [disabled]="isOpening"
-      [color]="color"
-      [lines]="lines"
-      [title]="placeholder || ''"
+      [color]="color()"
+      [lines]="lines()"
+      [title]="placeholder() || ''"
       [class.withLabel]="label"
       (click)="openEmailDataConfiguration()"
     >
@@ -28,7 +28,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
         <ion-button
           fill="clear"
           slot="start"
-          [color]="iconColor"
+          [color]="iconColor()"
           [class.marginTop]="label"
           (click)="doIconSelect($event)"
         >
@@ -40,7 +40,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
       }
       <div class="description">
         @if (!emailData.subject) {
-          <div class="placeholder">{{ placeholder }}</div>
+          <div class="placeholder">{{ placeholder() }}</div>
         }
         @if (emailData.subject) {
           <div [innerHTML]="emailData.subject | highlight: variablesPlain"></div>
@@ -114,47 +114,56 @@ export class IDEAEmailDataComponent implements OnInit {
   /**
    * The email data to manage.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() emailData: EmailData;
   /**
    * The variables the user can use for subject and content.
    */
-  @Input() variables: StringVariable[];
+  readonly variables = input<StringVariable[]>();
   /**
    * The label for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
    */
-  @Input() iconColor: string;
+  readonly iconColor = input<string>();
   /**
    * A placeholder for the field.
    */
-  @Input() placeholder: string;
+  readonly placeholder = input<string>();
   /**
    * Lines preferences for the item.
    */
-  @Input() lines: string;
+  readonly lines = input<string>();
   /**
    * The color for the component.
    */
-  @Input() color: string;
+  readonly color = input<string>();
   /**
    * If true, the component is disabled.
    */
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * On change event.
    */
-  @Output() change = new EventEmitter<void>();
+  readonly change = output<void>();
   /**
    * Icon select.
    */
-  @Output() iconSelect = new EventEmitter<void>();
+  readonly iconSelect = output<void>();
   /**
    * The list of variables codes to use for substitutions.
    */
@@ -164,7 +173,7 @@ export class IDEAEmailDataComponent implements OnInit {
 
   ngOnInit(): void {
     // create a plain list of variable codes
-    this.variablesPlain = (this.variables || []).map(x => x.code);
+    this.variablesPlain = (this.variables() || []).map(x => x.code);
   }
 
   async openEmailDataConfiguration(): Promise<void> {
@@ -174,10 +183,10 @@ export class IDEAEmailDataComponent implements OnInit {
       component: IDEAEmailDataConfigurationComponent,
       componentProps: {
         emailData: this.emailData,
-        variables: this.variables,
+        variables: this.variables(),
         title: this.label,
-        disabled: this.disabled,
-        lines: this.lines
+        disabled: this.disabled(),
+        lines: this.lines()
       }
     });
     modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
