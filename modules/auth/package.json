@@ -31,8 +31,7 @@
     "@ionic/storage-angular": "^4.0.0",
     "idea-toolbox": "^7.x.x",
     "qrcode": "^1.5.4",
-    "rxjs": "~7.8.0",
-    "zone.js": "~0.15.1"
+    "rxjs": "~7.8.0"
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.5"

@@ -34,8 +34,7 @@
     "angular-calendar": "^0.32.2",
     "date-fns": "^4.4.0",
     "idea-toolbox": "^7.x.x",
-    "rxjs": "~7.8.0",
-    "zone.js": "~0.15.1"
+    "rxjs": "~7.8.0"
   },
   "dependencies": {
     "color-parse": "^2.0.2",

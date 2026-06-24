@@ -24,8 +24,7 @@
     "@capacitor/core": "^8.4.1",
     "@idea-ionic/common": "^8.x.x",
     "@ionic/angular": "^8.8.11",
-    "rxjs": "~7.8.0",
-    "zone.js": "~0.15.1"
+    "rxjs": "~7.8.0"
   },
   "dependencies": {
     "@kolkov/angular-editor": "^3.0.0-beta.2",
