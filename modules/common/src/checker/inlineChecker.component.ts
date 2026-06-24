@@ -349,7 +349,7 @@ class IDEAInlineChecksComponent implements OnInit {
     this.search();
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredChecks = this.data().filter(

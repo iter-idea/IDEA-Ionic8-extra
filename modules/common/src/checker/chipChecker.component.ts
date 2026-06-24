@@ -455,7 +455,7 @@ class IDEAChipChecksComponent implements OnInit {
     setTimeout((): Promise<void> => this.searchbar().setFocus(), 100);
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredChecks = this.data

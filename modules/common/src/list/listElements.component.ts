@@ -138,7 +138,7 @@ export class IDEAListElementsComponent implements OnInit {
       : x;
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredList = (this.workingData || [])

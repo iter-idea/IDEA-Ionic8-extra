@@ -179,7 +179,7 @@ export class IDEASuggestionsComponent implements OnInit {
       .sort()
       .map(x => new Suggestion({ value: x }));
   }
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.suggestions = (this.data || [])

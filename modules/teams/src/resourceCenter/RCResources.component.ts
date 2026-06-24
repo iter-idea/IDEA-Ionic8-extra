@@ -240,7 +240,7 @@ export class IDEARCResourcesComponent implements OnInit {
     }
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredResources = (this.resources || [])
@@ -257,7 +257,7 @@ export class IDEARCResourcesComponent implements OnInit {
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
-  doRefresh(refresher?: IonRefresher): void {
+  doRefresh(refresher?: HTMLIonRefresherElement): void {
     this.filteredResources = null;
     setTimeout((): void => {
       this.loadResources(Boolean(refresher));

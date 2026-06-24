@@ -296,7 +296,7 @@ export class IDEAChecksComponent implements OnInit {
       .map(x => new Suggestion({ value: x }));
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredChecks = this.workingData

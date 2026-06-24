@@ -169,7 +169,7 @@ export class IDEARCFoldersComponent implements OnInit {
     }
   }
 
-  search(toSearch?: string, scrollToNextPage?: IonInfiniteScroll): void {
+  search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
     this.filteredFolders = (this.folders || [])
@@ -184,7 +184,7 @@ export class IDEARCFoldersComponent implements OnInit {
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
-  doRefresh(refresher?: IonRefresher): void {
+  doRefresh(refresher?: HTMLIonRefresherElement): void {
     this.filteredFolders = null;
     setTimeout((): void => {
       this.loadFolders(Boolean(refresher));
