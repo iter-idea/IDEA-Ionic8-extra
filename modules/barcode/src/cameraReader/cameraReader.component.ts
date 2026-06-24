@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, input, model, output, ChangeDetectionStrategy, NgZone } from '@angular/core';
 import { Platform, IonButton } from '@ionic/angular/standalone';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
@@ -7,10 +7,10 @@ const PERMISSION_GRANTED = 'granted';
 @Component({
   selector: 'idea-barcode-camera-reader',
   imports: [IonButton],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (_platform.is('capacitor')) {
-      <ion-button [fill]="fill" [color]="color" (click)="startScanWithCamera()">
+      <ion-button [fill]="fill()" [color]="color()" (click)="startScanWithCamera()">
         <ng-content></ng-content>
       </ion-button>
     }
@@ -18,25 +18,25 @@ const PERMISSION_GRANTED = 'granted';
 })
 export class IDEABarcodeCameraReaderComponent {
   _platform = inject(Platform);
+  private _zone = inject(NgZone);
 
   /**
    * The button's fill.
    */
-  @Input() fill?: string;
+  readonly fill = input<string>();
   /**
    * The button's color.
    */
-  @Input() color = 'primary';
+  readonly color = input('primary');
 
   /**
    * Whether the barcode reader is currently scanning.
    */
-  @Input() isScanning = false;
-  @Output() isScanningChange = new EventEmitter<boolean>();
+  readonly isScanning = model(false);
   /**
    * Output the result read by the scanner.
    */
-  @Output() scan = new EventEmitter<string>();
+  readonly scan = output<string>();
 
   isPermissionGranted = false;
   barcodeReaderUIHtml: HTMLDivElement = null;
@@ -58,7 +58,7 @@ export class IDEABarcodeCameraReaderComponent {
       });
 
     if (!this.isPermissionGranted) return;
-    if (this.isScanning) return await this.stopScanWithCamera();
+    if (this.isScanning()) return await this.stopScanWithCamera();
 
     await this.showCameraScannerUI();
 
@@ -66,7 +66,9 @@ export class IDEABarcodeCameraReaderComponent {
       await listener.remove();
       await this.hideCameraScannerUI();
       await BarcodeScanner.stopScan();
-      this.scan.emit(result.barcodes?.[0].displayValue || '');
+      // Capacitor plugin callbacks run outside Angular: re-enter so the emit triggers change
+      // detection in the consuming app under both Zone.js and zoneless.
+      this._zone.run(() => this.scan.emit(result.barcodes?.[0].displayValue || ''));
     });
 
     await BarcodeScanner.startScan();
@@ -78,8 +80,7 @@ export class IDEABarcodeCameraReaderComponent {
   }
 
   private async showCameraScannerUI(): Promise<void> {
-    this.isScanning = true;
-    this.isScanningChange.emit(this.isScanning);
+    this.isScanning.set(true);
     this.setBackgroundVisibility(false);
 
     if (!this.barcodeReaderUIHtml) this.generateScannerUIHtml();
@@ -87,8 +88,7 @@ export class IDEABarcodeCameraReaderComponent {
     document.body.appendChild(this.barcodeReaderUIHtml);
   }
   private async hideCameraScannerUI(): Promise<void> {
-    this.isScanning = false;
-    this.isScanningChange.emit(this.isScanning);
+    this.isScanning.set(false);
     this.setBackgroundVisibility(true);
 
     document.getElementById('barcode-reader').remove();
