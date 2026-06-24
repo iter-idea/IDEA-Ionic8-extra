@@ -6,9 +6,9 @@ idea-html-editor
 
 ## Inputs
 
-- `editMode` (*boolean*) - Whether the parent page is in editMode or not (simplified).
-- `content` (*string*) - The HTML content.
+- `editMode` (_boolean_) - Whether the parent page is in editMode or not (simplified).
+- `content` (_string_) - The HTML content.
 
 ## Outputs
 
-- `contentChange` (*EventEmitter<string>*) - Trigger when the HTML content changes.
+- `contentChange` (_string_) - Trigger when the HTML content changes.

@@ -6,5 +6,4 @@ idea-cacheable-resource
 
 ## Inputs
 
-- `resource` (*CacheableResource*) - The resouece to manage.
-
+- `resource` (_CacheableResource_) - The resouece to manage.

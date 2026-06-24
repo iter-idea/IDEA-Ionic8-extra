@@ -3,4 +3,3 @@
 ## Selector
 
 idea-mde-toolbar
-

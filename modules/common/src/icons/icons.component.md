@@ -6,5 +6,4 @@ idea-icons
 
 ## Inputs
 
-- `searchPlaceholder` (*string*) - A placeholder for the searchbar.
-
+- `searchPlaceholder` (_string_) - A placeholder for the searchbar.

@@ -8,17 +8,17 @@ idea-email-data
 
 ## Inputs
 
-- `emailData` (*EmailData*) - The email data to manage.
-- `variables` (*StringVariable[]*) - The variables the user can use for subject and content.
-- `label` (*string*) - The label for the field.
-- `icon` (*string*) - The icon for the field.
-- `iconColor` (*string*) - The color of the icon.
-- `placeholder` (*string*) - A placeholder for the field.
-- `lines` (*string*) - Lines preferences for the item.
-- `color` (*string*) - The color for the component.
-- `disabled` (*boolean*) - If true, the component is disabled.
+- `emailData` (_EmailData_) - The email data to manage.
+- `variables` (_StringVariable[]_) - The variables the user can use for subject and content.
+- `label` (_string_) - The label for the field.
+- `icon` (_string_) - The icon for the field.
+- `iconColor` (_string_) - The color of the icon.
+- `placeholder` (_string_) - A placeholder for the field.
+- `lines` (_string_) - Lines preferences for the item.
+- `color` (_string_) - The color for the component.
+- `disabled` (_boolean_) - If true, the component is disabled.
 
 ## Outputs
 
-- `change` (*EventEmitter<void>*) - On change event.
-- `iconSelect` (*EventEmitter<void>*) - Icon select.
+- `change` (_void_) - On change event.
+- `iconSelect` (_void_) - Icon select.

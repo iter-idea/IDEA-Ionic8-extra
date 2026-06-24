@@ -6,9 +6,9 @@ idea-setup-mfa-button
 
 ## Inputs
 
-- `color` (*string*) - The color of the button.
-- `fill` (*string*) - The fill option for the button.
+- `color` (_string_) - The color of the button.
+- `fill` (_string_) - The fill option for the button.
 
 ## Outputs
 
-- `change` (*EventEmitter<boolean>*) - Trigger then the MFA setup changes.
+- `change` (_boolean_) - Trigger then the MFA setup changes.

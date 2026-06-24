@@ -8,5 +8,4 @@ idea-announcement
 
 ## Inputs
 
-- `color` (*string*) - The color for the announcement card.
-
+- `color` (_string_) - The color for the announcement card.

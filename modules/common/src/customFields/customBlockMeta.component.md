@@ -6,8 +6,7 @@ idea-custom-block-meta
 
 ## Inputs
 
-- `block` (*CustomBlockMeta*) - The CustomBlockMeta to manage.
-- `useDisplayTemplate` (*boolean*) - Whether the custom sections should manage the display template or it should be hidden.
-- `disabled` (*boolean*) - Whether the component is enabled or not.
-- `lines` (*string*) - Lines preferences for the component.
-
+- `block` (_CustomBlockMeta_) - The CustomBlockMeta to manage.
+- `useDisplayTemplate` (_boolean_) - Whether the custom sections should manage the display template or it should be hidden.
+- `disabled` (_boolean_) - Whether the component is enabled or not.
+- `lines` (_string_) - Lines preferences for the component.

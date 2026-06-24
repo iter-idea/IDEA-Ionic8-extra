@@ -6,10 +6,10 @@ app-tooltip
 
 ## Inputs
 
-- `title` (*string*) - The tooltip title.
-- `text` (*string*) - The tooltip text.
-- `link` (*string*) - The tooltip link.
+- `title` (_string_) - The tooltip title.
+- `text` (_string_) - The tooltip text.
+- `link` (_string_) - The tooltip link.
 
 ## Outputs
 
-- `closed` (*EventEmitter<void>*) - The tooltip close event.
+- `closed` (_void_) - The tooltip close event.

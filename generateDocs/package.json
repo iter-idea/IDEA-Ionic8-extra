@@ -6,6 +6,7 @@
     "build": "tsc --build"
   },
   "dependencies": {
+    "prettier": "^3.6.2",
     "ts-morph": "^26.0.0"
   },
   "devDependencies": {

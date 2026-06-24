@@ -6,14 +6,14 @@ idea-rc-configurator
 
 ## Inputs
 
-- `team` (*string*) - The team from which we want to load the resources. Default: try to guess current team.
-- `folder` (*RCConfiguredFolder*) - The folder we want to configure with the Resource Center folder.
-- `label` (*string*) - The label for the field.
-- `editMode` (*boolean*) - Regulate the mode (view/edit).
-- `lines` (*string*) - The lines attribute of the item.
-- `icon` (*string*) - The icon for the field.
-- `iconColor` (*string*) - The color of the icon.
+- `team` (_string_) - The team from which we want to load the resources. Default: try to guess current team.
+- `folder` (_RCConfiguredFolder_) - The folder we want to configure with the Resource Center folder.
+- `label` (_string_) - The label for the field.
+- `editMode` (_boolean_) - Regulate the mode (view/edit).
+- `lines` (_string_) - The lines attribute of the item.
+- `icon` (_string_) - The icon for the field.
+- `iconColor` (_string_) - The color of the icon.
 
 ## Outputs
 
-- `iconSelect` (*EventEmitter<void>*) - Icon select.
+- `iconSelect` (_void_) - Icon select.

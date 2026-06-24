@@ -6,8 +6,7 @@ idea-user-avatar
 
 ## Inputs
 
-- `src` (*string*) - The link to the avatar media to show.
-- `name` (*string*) - The full name of the user (to use as fallback in case the media isn't available).
-- `size` (*"mini" | "small" | "default" | "large" | "extraLarge"*) - The size of the avatar.
-- `color` (*string*) - The HEX color of the avatar's background.
-
+- `src` (_string_) - The link to the avatar media to show.
+- `name` (_string_) - The full name of the user (to use as fallback in case the media isn't available).
+- `size` (_'mini' | 'small' | 'default' | 'large' | 'extraLarge'_) - The size of the avatar.
+- `color` (_string_) - The HEX color of the avatar's background.
