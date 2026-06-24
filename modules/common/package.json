@@ -31,7 +31,7 @@
     "zone.js": "~0.15.1"
   },
   "dependencies": {
-    "signature_pad": "^5.0.10",
+    "signature_pad": "^5.1.3",
     "tslib": "^2.4.1"
   },
   "sideEffects": false

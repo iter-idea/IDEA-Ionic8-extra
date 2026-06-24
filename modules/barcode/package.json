@@ -24,7 +24,7 @@
     "@capacitor-mlkit/barcode-scanning": "^8.1.0",
     "@capacitor/core": "^8.4.1",
     "@ionic/angular": "^8.8.11",
-    "com-easystep2-datawedge-plugin-intent-cordova": "^4.4.3",
+    "com-easystep2-datawedge-plugin-intent-cordova": "^5.2.1",
     "rxjs": "~7.8.0",
     "zone.js": "~0.15.1"
   },
