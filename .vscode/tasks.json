@@ -17,10 +17,11 @@
   ],
   "tasks": [
     {
-      "label": "Install the npm packages of all modules",
+      "label": "Build all modules",
+      "detail": "npm run build:all — builds every module in dependency order (common and uncommon first)",
       "type": "shell",
-      "command": "./install.sh",
-      "group": "build",
+      "command": "npm run build:all",
+      "group": { "kind": "build", "isDefault": true },
       "options": { "cwd": "${workspaceFolder}" },
       "presentation": {
         "reveal": "always",
@@ -29,9 +30,32 @@
     },
     {
       "label": "Build a module",
+      "detail": "ng build <module> — build its @idea-ionic/* dependencies first",
       "type": "shell",
       "command": "ng",
       "args": ["build", "${input:module}"],
+      "group": "build",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Lint",
+      "type": "shell",
+      "command": "npm run lint",
+      "group": "build",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Format",
+      "type": "shell",
+      "command": "npm run format",
       "group": "build",
       "options": { "cwd": "${workspaceFolder}" },
       "presentation": {
