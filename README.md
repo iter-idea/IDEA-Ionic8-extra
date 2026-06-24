@@ -31,10 +31,7 @@ Make sure to install to follow the instructions of each specific module.
 
 ## Develop
 
-This is a single Angular CLI workspace: every dependency lives in the **root** `package.json`, and the libraries
-are built from the root — sibling `@idea-ionic/*` packages resolve from the locally-built `dist/` via tsconfig
-`paths`. The per-module `package.json` files only declare what **consumers** need (peer dependencies); they are
-**not** meant to be installed individually (the old per-module `install.sh` was removed).
+This is a single Angular CLI workspace: every dependency lives in the **root** `package.json`, and the libraries are built from the root — sibling `@idea-ionic/*` packages resolve from the locally-built `dist/` via tsconfig `paths`. The per-module `package.json` files only declare what **consumers** need (peer dependencies); they are **not** meant to be installed individually.
 
 Install once, from the repository root — do **not** run `npm i` inside `modules/*`:
 
