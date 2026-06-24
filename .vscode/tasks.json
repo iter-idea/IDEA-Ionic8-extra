@@ -21,7 +21,7 @@
       "detail": "npm run build:all — builds every module in dependency order (common and uncommon first)",
       "type": "shell",
       "command": "npm run build:all",
-      "group": { "kind": "build", "isDefault": true },
+      "group": { "kind": "build" },
       "options": { "cwd": "${workspaceFolder}" },
       "presentation": {
         "reveal": "always",
