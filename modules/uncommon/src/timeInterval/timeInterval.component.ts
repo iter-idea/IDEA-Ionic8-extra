@@ -1,6 +1,5 @@
 import {
   Component,
-  Input,
   SimpleChanges,
   OnInit,
   OnDestroy,
@@ -26,41 +25,41 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
       class="timeIntervalItem"
       [color]="color()"
       [lines]="lines()"
-      [button]="!disabled"
+      [button]="!disabled()"
       [disabled]="isOpening"
       [title]="placeholder() || valueToDisplay || ''"
-      [class.withLabel]="label"
-      (click)="disabled ? doSelectWhenDisabled() : pickTimeInterval()"
+      [class.withLabel]="label()"
+      (click)="disabled() ? doSelectWhenDisabled() : pickTimeInterval()"
     >
-      @if (icon) {
+      @if (icon()) {
         <ion-button
           fill="clear"
           slot="start"
           [color]="iconColor()"
-          [class.marginTop]="label"
+          [class.marginTop]="label()"
           (click)="doIconSelect($event)"
         >
-          <ion-icon [name]="icon" slot="icon-only" />
+          <ion-icon [name]="icon()" slot="icon-only" />
         </ion-button>
       }
-      @if (label) {
-        <ion-label position="stacked" [class.selectable]="!disabled || tappableWhenDisabled()">
-          {{ label }}
-          @if (obligatory() && !disabled) {
+      @if (label()) {
+        <ion-label position="stacked" [class.selectable]="!disabled() || tappableWhenDisabled()">
+          {{ label() }}
+          @if (obligatory() && !disabled()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
-      <ion-label class="description" [class.selectable]="!disabled || tappableWhenDisabled()">
-        @if (!valueToDisplay && !disabled) {
-          <ion-text class="placeholder" [class.selectable]="!disabled">
+      <ion-label class="description" [class.selectable]="!disabled() || tappableWhenDisabled()">
+        @if (!valueToDisplay && !disabled()) {
+          <ion-text class="placeholder" [class.selectable]="!disabled()">
             {{ placeholder() }}
           </ion-text>
         }
         {{ valueToDisplay }}
       </ion-label>
-      @if (!disabled) {
-        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      @if (!disabled()) {
+        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled()" />
       }
     </ion-item>
   `,
@@ -126,17 +125,11 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() icon: string;
+  readonly icon = input<string>();
   /**
    * The color of the icon.
    */
@@ -148,10 +141,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * If true, the component is disabled.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * If true, the field has a tappable effect when disabled.
    */
@@ -225,7 +215,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
         period: this.period(),
         notEarlierThan: this.notEarlierThan(),
         notLaterThan: this.notLaterThan(),
-        title: this.label
+        title: this.label()
       }
     });
     modal.onDidDismiss().then((res: any): void => {
@@ -241,7 +231,7 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   doSelectWhenDisabled(): void {
-    if (this.disabled) this.selectWhenDisabled.emit();
+    if (this.disabled()) this.selectWhenDisabled.emit();
   }
 
   doIconSelect(event: any): void {

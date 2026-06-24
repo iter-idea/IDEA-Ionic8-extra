@@ -1,6 +1,5 @@
 import {
   Component,
-  Input,
   SimpleChanges,
   OnInit,
   OnDestroy,
@@ -26,41 +25,41 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
       class="dateTimeItem"
       [color]="color()"
       [lines]="lines()"
-      [title]="placeholder() || label || ''"
-      [button]="!disabled"
+      [title]="placeholder() || label() || ''"
+      [button]="!disabled()"
       [disabled]="isOpening"
-      [class.withLabel]="label"
+      [class.withLabel]="label()"
       (click)="openCalendarPicker()"
     >
-      @if (icon) {
+      @if (icon()) {
         <ion-button
           fill="clear"
           slot="start"
           [color]="iconColor()"
-          [class.marginTop]="label"
+          [class.marginTop]="label()"
           (click)="doIconSelect($event)"
         >
-          <ion-icon [icon]="icon" slot="icon-only" />
+          <ion-icon [icon]="icon()" slot="icon-only" />
         </ion-button>
       }
-      @if (label) {
-        <ion-label position="stacked" [class.selectable]="!disabled">
-          {{ label }}
-          @if (obligatory() && !disabled) {
+      @if (label()) {
+        <ion-label position="stacked" [class.selectable]="!disabled()">
+          {{ label() }}
+          @if (obligatory() && !disabled()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
-      <ion-label class="value" [class.selectable]="!disabled">
-        @if (!valueToDisplay && !disabled) {
-          <ion-text class="placeholder" [class.selectable]="!disabled">
+      <ion-label class="value" [class.selectable]="!disabled()">
+        @if (!valueToDisplay && !disabled()) {
+          <ion-text class="placeholder" [class.selectable]="!disabled()">
             {{ placeholder() }}
           </ion-text>
         }
         {{ valueToDisplay }}
       </ion-label>
-      @if (!disabled) {
-        <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      @if (!disabled()) {
+        <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled()" />
       }
     </ion-item>
   `,
@@ -129,17 +128,11 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() icon: string;
+  readonly icon = input<string>();
   /**
    * The color of the icon.
    */
@@ -159,10 +152,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * If true, the component is disabled.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * If true, the obligatory dot is shown.
    */
@@ -202,13 +192,13 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async openCalendarPicker(): Promise<void> {
-    if (this.disabled || this.isOpening) return;
+    if (this.disabled() || this.isOpening) return;
     this.isOpening = true;
     const modal = await this._modal.create({
       component: IDEACalendarPickerComponent,
       componentProps: {
         inputDate: this.date(),
-        title: this.label,
+        title: this.label(),
         timePicker: this.timePicker(),
         manualTimePicker: this.manualTimePicker(),
         hideClearButton: this.hideClearButton(),

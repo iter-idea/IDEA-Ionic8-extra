@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import {
   PopoverController,
   IonItem,
@@ -25,27 +25,27 @@ import { Color, COLORS } from 'idea-toolbox';
       class="colorPickerItem"
       [color]="color()"
       [lines]="lines()"
-      [button]="!disabled"
+      [button]="!disabled()"
       [title]="placeholder() || ''"
-      [class.withLabel]="label"
+      [class.withLabel]="label()"
       (click)="openPalette($event)"
     >
-      @if (icon) {
+      @if (icon()) {
         <ion-button fill="clear" slot="start" [color]="iconColor()" (click)="doIconSelect($event)">
-          <ion-icon [name]="icon" slot="icon-only" />
+          <ion-icon [name]="icon()" slot="icon-only" />
         </ion-button>
       }
-      @if (label) {
-        <ion-label [class.selectable]="!disabled">
-          {{ label }}
-          @if (obligatory() && !disabled) {
+      @if (label()) {
+        <ion-label [class.selectable]="!disabled()">
+          {{ label() }}
+          @if (obligatory() && !disabled()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
       <ion-avatar slot="end" class="colorCircle" [style.background-color]="current()" />
-      @if (!disabled) {
-        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      @if (!disabled()) {
+        <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled()" />
       }
     </ion-item>
   `,
@@ -97,10 +97,7 @@ export class IDEAColorPickerComponent {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * A placeholder for the field.
    */
@@ -108,10 +105,7 @@ export class IDEAColorPickerComponent {
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() icon: string;
+  readonly icon = input<string>();
   /**
    * The color of the icon.
    */
@@ -119,10 +113,7 @@ export class IDEAColorPickerComponent {
   /**
    * If true, the component is disabled.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * If true, the obligatory dot is shown.
    */
@@ -147,7 +138,7 @@ export class IDEAColorPickerComponent {
   private _popover = inject(PopoverController);
 
   async openPalette(event: any): Promise<void> {
-    if (this.disabled) return;
+    if (this.disabled()) return;
 
     const componentProps = { colors: this.colors(), current: this.current() };
     const popover = await this._popover.create({ component: ColorsPaletteComponent, componentProps, event });

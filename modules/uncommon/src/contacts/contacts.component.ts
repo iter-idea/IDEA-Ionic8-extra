@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonItem, IonButton, IonIcon, IonInput } from '@ionic/angular/standalone';
 import { Contacts } from 'idea-toolbox';
@@ -18,7 +18,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
             [disabled]="!editMode()"
             [placeholder]="'IDEA_UNCOMMON.CONTACTS.NAME_HINT' | translate"
             [title]="'IDEA_UNCOMMON.CONTACTS.NAME_HINT' | translate"
-            [(ngModel)]="contacts.name"
+            [(ngModel)]="contacts().name"
           />
         </ion-item>
       }
@@ -30,7 +30,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
           [disabled]="!editMode()"
           [placeholder]="'IDEA_UNCOMMON.CONTACTS.PHONE_HINT' | translate"
           [title]="'IDEA_UNCOMMON.CONTACTS.PHONE_HINT' | translate"
-          [(ngModel)]="contacts.phone"
+          [(ngModel)]="contacts().phone"
         />
         @if (!editMode()) {
           <ion-button
@@ -53,7 +53,7 @@ import { IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
           [disabled]="!editMode()"
           [placeholder]="'IDEA_UNCOMMON.CONTACTS.EMAIL_HINT' | translate"
           [title]="'IDEA_UNCOMMON.CONTACTS.EMAIL_HINT' | translate"
-          [(ngModel)]="contacts.email"
+          [(ngModel)]="contacts().email"
         />
         @if (!editMode()) {
           <ion-button
@@ -86,9 +86,7 @@ export class IDEAContactsComponent {
   /**
    * The contacts to manage.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() contacts: Contacts = new Contacts();
+  readonly contacts = input<Contacts>(new Contacts());
   /**
    * If true, show the field `name`.
    */
@@ -107,14 +105,16 @@ export class IDEAContactsComponent {
   readonly color = input<string>();
 
   sendEmail(): void {
-    if (!this.contacts.email) return;
-    const url = `mailto:${this.contacts.email}`;
-    this.preExternalAction(this.contacts.email, (): Window => window.open(url, '_system'));
+    const contacts = this.contacts();
+    if (!contacts.email) return;
+    const url = `mailto:${contacts.email}`;
+    this.preExternalAction(contacts.email, (): Window => window.open(url, '_system'));
   }
   call(): void {
-    if (!this.contacts.phone) return;
-    const url = `tel:${this.contacts.phone}`;
-    this.preExternalAction(this.contacts.phone, (): Window => window.open(url, '_system'));
+    const contacts = this.contacts();
+    if (!contacts.phone) return;
+    const url = `tel:${contacts.phone}`;
+    this.preExternalAction(contacts.phone, (): Window => window.open(url, '_system'));
   }
 
   private preExternalAction(message: string, cb: () => void): void {
