@@ -65,7 +65,7 @@ export class IDEACustomSectionComponent {
   /**
    * Show errors as reported from the parent component.
    */
-  readonly errors = input(new Set());
+  readonly errors = input(new Set<string>());
   /**
    * Add a custom prefix to the error string identifier.
    */
