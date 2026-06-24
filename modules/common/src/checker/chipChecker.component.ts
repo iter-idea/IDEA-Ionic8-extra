@@ -270,14 +270,14 @@ export class IDEAChipCheckerComponent {
           #searchbar
           color="white"
           lines="none"
-          [placeholder]="searchPlaceholder() || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
+          [placeholder]="searchPlaceholder || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
           (ionInput)="search($event.target.value)"
         />
       </ion-toolbar>
-      @if (allowSelectDeselectAll()) {
+      @if (allowSelectDeselectAll) {
         <ion-toolbar color="ideaToolbar" class="secondary">
           <ion-title>
-            {{ previewTextKey() | translate: { num: getNumChecked() } }}
+            {{ previewTextKey | translate: { num: getNumChecked() } }}
             @if (limitSelectionToNum) {
               <span>
                 {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
@@ -305,8 +305,8 @@ export class IDEAChipCheckerComponent {
               <ion-checkbox
                 labelPlacement="end"
                 justify="start"
-                [class.alwaysShowValue]="alwaysShowValue()"
-                [helperText]="alwaysShowValue() ? check.value : undefined"
+                [class.alwaysShowValue]="alwaysShowValue"
+                [helperText]="alwaysShowValue ? check.value : undefined"
                 [disabled]="!check.checked && getNumChecked() >= limitSelectionToNum"
                 [(ngModel)]="check.checked"
               >
@@ -318,12 +318,12 @@ export class IDEAChipCheckerComponent {
             </ion-item>
           } @else {
             <ion-item color="white" class="chipCheck" button (click)="selectSingle(check)">
-              <ion-label [class.alwaysShowValue]="alwaysShowValue()">
+              <ion-label [class.alwaysShowValue]="alwaysShowValue">
                 @if (check.category1) {
                   <strong>{{ check.category1 }}</strong>
                 }
                 {{ check.name }}
-                @if (alwaysShowValue()) {
+                @if (alwaysShowValue) {
                   <p>{{ check.value }}</p>
                 }
               </ion-label>
@@ -332,7 +332,7 @@ export class IDEAChipCheckerComponent {
         } @empty {
           <ion-item color="white" lines="none">
             <ion-label class="ion-text-center">
-              <i>{{ noElementsFoundText() ?? ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
+              <i>{{ noElementsFoundText ?? ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
             </ion-label>
           </ion-item>
         }
@@ -403,23 +403,23 @@ class IDEAChipChecksComponent implements OnInit {
   /**
    * If true, sort alphabetically the data (by name or, fallback, by value).
    */
-  readonly sortData = input<boolean>();
+  @Input() sortData?: boolean;
   /**
    * Whether to always show the `value`, even when the `name` is set.
    */
-  readonly alwaysShowValue = input(false);
+  @Input() alwaysShowValue = false;
   /**
    * A placeholder for the searchbar.
    */
-  readonly searchPlaceholder = input<string>();
+  @Input() searchPlaceholder?: string;
   /**
    * The text to show in case no element is found after a search.
    */
-  readonly noElementsFoundText = input<string>();
+  @Input() noElementsFoundText?: string;
   /**
    * The translation key to get the preview text; it has a `num` variable available.
    */
-  readonly previewTextKey = input('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED');
+  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
   /**
    * Limit the number of selectable elements to the value provided.
    * If this number is forced to `1`, the component turns into a single selection.
@@ -430,12 +430,12 @@ class IDEAChipChecksComponent implements OnInit {
   /**
    * Whether to allow the select/deselect-all buttons.
    */
-  readonly allowSelectDeselectAll = input<boolean>();
+  @Input() allowSelectDeselectAll?: boolean;
   /**
    * Whether to show the check list as a popover.
    * If false, we show a centered modal.
    */
-  readonly showAsPopover = input<boolean>();
+  @Input() showAsPopover?: boolean;
 
   filteredChecks: Check[];
   currentPage: number;
@@ -465,7 +465,7 @@ class IDEAChipChecksComponent implements OnInit {
               .some(f => f.toLowerCase().includes(searchTerm))
           )
       );
-    if (this.sortData()) this.filteredChecks = this.filteredChecks.sort((a, b): number => a.name.localeCompare(b.name));
+    if (this.sortData) this.filteredChecks = this.filteredChecks.sort((a, b): number => a.name.localeCompare(b.name));
 
     if (scrollToNextPage) this.currentPage++;
     else this.currentPage = 0;
@@ -482,7 +482,7 @@ class IDEAChipChecksComponent implements OnInit {
     this.data.forEach(x => (x.checked = false));
     const index = this.data.indexOf(check);
     if (index !== -1) this.data[index].checked = true;
-    this.showAsPopover() ? this._popover.dismiss() : this._modal.dismiss();
+    this.showAsPopover ? this._popover.dismiss() : this._modal.dismiss();
   }
 
   checkAll(check: boolean): void {
@@ -490,6 +490,6 @@ class IDEAChipChecksComponent implements OnInit {
   }
 
   close(): void {
-    this.showAsPopover() ? this._popover.dismiss() : this._modal.dismiss();
+    this.showAsPopover ? this._popover.dismiss() : this._modal.dismiss();
   }
 }

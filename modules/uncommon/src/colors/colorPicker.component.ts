@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, input, Input } from '@angular/core';
 import {
   PopoverController,
   IonItem,
@@ -165,7 +165,7 @@ export class IDEAColorPickerComponent {
     <ion-content>
       <ion-grid>
         <ion-row>
-          @for (c of colors(); track c) {
+          @for (c of colors; track c) {
             <ion-col [size]="2">
               <ion-avatar
                 class="colorCircle tappable"
@@ -173,7 +173,7 @@ export class IDEAColorPickerComponent {
                 [title]="c.name || c.hex"
                 (click)="pick(c.hex)"
               >
-                @if (c.hex === current()) {
+                @if (c.hex === current) {
                   <ion-icon name="checkmark" />
                 }
               </ion-avatar>
@@ -208,11 +208,11 @@ export class ColorsPaletteComponent {
   /**
    * The pickable colors.
    */
-  readonly colors = input<Color[]>();
+  @Input() colors?: Color[];
   /**
    * The current color.
    */
-  readonly current = input<string>();
+  @Input() current?: string;
 
   pick(color: string): void {
     this._popover.dismiss(color);

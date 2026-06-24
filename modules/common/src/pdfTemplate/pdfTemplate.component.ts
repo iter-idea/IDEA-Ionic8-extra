@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input, model } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -562,29 +562,29 @@ export interface MoveModeData {
       <ion-grid>
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
-            <ion-button size="small" [disabled]="size() === 1" (click)="shrink()">
+            <ion-button size="small" [disabled]="size === 1" (click)="shrink()">
               <ion-icon name="remove" slot="icon-only" />
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center">
             <ion-label>
-              {{ 'IDEA_COMMON.PDF_TEMPLATE.SIZE' | translate }}: <b>{{ size() }}</b>
+              {{ 'IDEA_COMMON.PDF_TEMPLATE.SIZE' | translate }}: <b>{{ size }}</b>
             </ion-label>
           </ion-col>
           <ion-col class="ion-text-center">
-            <ion-button size="small" [disabled]="size() === max()" (click)="grow()">
+            <ion-button size="small" [disabled]="size === max" (click)="grow()">
               <ion-icon name="add" slot="icon-only" />
             </ion-button>
           </ion-col>
         </ion-row>
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
-            <ion-button size="small" color="secondary" [disabled]="size() === 1" (click)="shrinkToMin()">
+            <ion-button size="small" color="secondary" [disabled]="size === 1" (click)="shrinkToMin()">
               <ion-icon name="contract" slot="icon-only" />
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center">
-            <ion-button size="small" color="secondary" [disabled]="size() === max()" (click)="growToMax()">
+            <ion-button size="small" color="secondary" [disabled]="size === max" (click)="growToMax()">
               <ion-icon name="expand" slot="icon-only" />
             </ion-button>
           </ion-col>
@@ -604,36 +604,36 @@ export class IDEAPDFTemplateFieldResizeComponent {
   /**
    * The columns of the section containing the field.
    */
-  readonly columns = input<string[]>();
+  @Input() columns?: string[];
   /**
    * The current position of the field.
    */
-  readonly colIndex = input<number>();
+  @Input() colIndex?: number;
   /**
    * The current size of the field.
    */
-  readonly size = model<number>();
+  @Input() size?: number;
   /**
    * The max size to which the field can grow.
    */
-  readonly max = input<number>();
+  @Input() max?: number;
 
   grow(): void {
-    if (this.size() < this.max() && !this.columns()[this.colIndex() + this.size()]) {
-      this.columns()[this.colIndex() + this.size()] = '-';
-      this.size.set(this.size() + 1);
+    if (this.size < this.max && !this.columns[this.colIndex + this.size]) {
+      this.columns[this.colIndex + this.size] = '-';
+      this.size = this.size + 1;
     }
   }
   growToMax(): void {
-    while (this.size() < this.max()) this.grow();
+    while (this.size < this.max) this.grow();
   }
   shrink(): void {
-    if (this.size() > 1 && this.columns()[this.colIndex() + this.size() - 1] === '-') {
-      this.columns()[this.colIndex() + this.size() - 1] = null;
-      this.size.set(this.size() - 1);
+    if (this.size > 1 && this.columns[this.colIndex + this.size - 1] === '-') {
+      this.columns[this.colIndex + this.size - 1] = null;
+      this.size = this.size - 1;
     }
   }
   shrinkToMin(): void {
-    while (this.size() > 1) this.shrink();
+    while (this.size > 1) this.shrink();
   }
 }

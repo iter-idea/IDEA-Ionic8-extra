@@ -202,7 +202,6 @@ export class IDEASelectComponent implements OnChanges {
         noElementsFoundText: this.noElementsFoundText(),
         allowUnlistedValues: this.allowUnlistedValues(),
         allowUnlistedValuesPrefix: this.allowUnlistedValuesPrefix(),
-        clearValueAfterSelection: this.clearValueAfterSelection(),
         hideIdFromUI: this.hideIdFromUI(),
         hideClearButton: this.hideClearButton(),
         mustChoose: this.mustChoose(),

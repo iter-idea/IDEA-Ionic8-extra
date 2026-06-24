@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, Input } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import {
   IonContent,
@@ -14,28 +14,33 @@ import {
 /**
  * It's an alternative for desktop devices to the traditional ActionSheet.
  * It shares (almost) the same inputs so they are interchangeable.
+ *
+ * Note: this component is instantiated dynamically by `IDEAActionSheetController` through Ionic's
+ * `PopoverController` (`componentProps`). With `useSetInputAPI` disabled (the default), Ionic assigns
+ * those props via `Object.assign`, which would overwrite signal inputs (`InputSignal`) with plain values.
+ * For this reason the inputs below must stay as classic `@Input()` properties.
  */
 @Component({
   selector: 'idea-action-sheet',
   imports: [IonIcon, IonButton, IonLabel, IonRow, IonCol, IonGrid, IonContent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ion-content [class]="cssClass()">
+    <ion-content [class]="cssClass">
       <ion-grid class="ion-padding">
-        @if (header()) {
+        @if (header) {
           <ion-row class="headerRow">
             <ion-col class="ion-text-center">
               <ion-label class="ion-text-wrap">
-                {{ header() }}
-                @if (subHeader()) {
-                  <p>{{ subHeader() }}</p>
+                {{ header }}
+                @if (subHeader) {
+                  <p>{{ subHeader }}</p>
                 }
               </ion-label>
             </ion-col>
           </ion-row>
         }
         <ion-row class="ion-justify-content-center buttonsRow">
-          @for (button of buttons(); track button) {
+          @for (button of buttons; track button) {
             <ion-col [size]="withIcons ? 6 : 12">
               <ion-button
                 fill="clear"
@@ -110,25 +115,25 @@ export class IDEAActionSheetComponent implements OnInit {
   /**
    * An array of buttons for the actions panel.
    */
-  readonly buttons = input<ActionSheetButton[]>([]);
+  @Input() buttons: ActionSheetButton[] = [];
   /**
    * Additional classes to apply for custom CSS. If multiple classes are provided they should be separated by spaces.
    */
-  readonly cssClass = input<string>();
+  @Input() cssClass?: string;
   /**
    * Title for the actions panel.
    */
-  readonly header = input<string>();
+  @Input() header?: string;
   /**
    * Subtitle for the actions panel.
    */
-  readonly subHeader = input<string>();
+  @Input() subHeader?: string;
 
   withIcons: boolean;
 
   ngOnInit(): void {
     // based on the input, changes the way the UI behaves
-    this.withIcons = this.buttons().some(b => b.icon);
+    this.withIcons = this.buttons.some(b => b.icon);
   }
 
   buttonClicked(button: ActionSheetButton): void {

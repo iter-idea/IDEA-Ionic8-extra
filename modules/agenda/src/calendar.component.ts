@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular/standalone';
 import { Calendar, Check, Membership } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -28,15 +28,15 @@ export class IDEACalendarComponent implements OnInit {
   /**
    * The calendar to manage.
    */
-  readonly calendar = input<Calendar>();
+  @Input() calendar?: Calendar;
   /**
    * Whether we want to enable advanced permissions (based on the memberships) on the calendar.
    */
-  readonly advancedPermissions = input<boolean>();
+  @Input() advancedPermissions?: boolean;
   /**
    * Whether the calendar color is an important detail or it shouldn't be shown.
    */
-  readonly hideColor = input<boolean>();
+  @Input() hideColor?: boolean;
 
   calendarWC: Calendar;
   membershipsChecks: Check[];
@@ -46,7 +46,7 @@ export class IDEACalendarComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.membership = this._tc.get('membership');
-    this.calendarWC = new Calendar(this.calendar());
+    this.calendarWC = new Calendar(this.calendar);
     try {
       const memberships: Membership[] = await this._API.getResource(`teams/${this.membership.teamId}/memberships`);
       this.membershipsChecks = memberships.map(
@@ -69,7 +69,7 @@ export class IDEACalendarComponent implements OnInit {
 
   async save(): Promise<void> {
     if (!this.calendarWC.color) this.calendarWC.color = this.DEFAULT_COLOR;
-    if (this.calendarWC.isShared() && this.advancedPermissions())
+    if (this.calendarWC.isShared() && this.advancedPermissions)
       this.calendarWC.usersCanManageAppointments = this.membershipsChecks
         .filter(x => x.checked)
         .map(x => String(x.value));
@@ -81,9 +81,9 @@ export class IDEACalendarComponent implements OnInit {
     try {
       await this._loading.show();
       const res = await this._calendars.putCalendar(this.calendarWC);
-      this.calendar().load(res);
+      this.calendar.load(res);
       this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_SAVED');
-      this._modal.dismiss(this.calendar());
+      this._modal.dismiss(this.calendar);
     } catch (error) {
       this._message.error('COMMON.OPERATION_FAILED');
     } finally {

@@ -165,7 +165,6 @@ export class IDEAAttachmentSectionsComponent {
     const componentProps = {
       section: this.attachmentSections().sections[s],
       entityPath: this.entityPath(),
-      disabled: disabled,
       lines: this.lines(),
       downloadCallback: (url: string): void => this.download.emit(url)
     };

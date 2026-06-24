@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -73,32 +73,32 @@ export class IDEACustomSectionMetaComponent implements OnInit {
   /**
    * The CustomSectionMeta to manage.
    */
-  readonly section = input<CustomSectionMeta>();
+  @Input() section?: CustomSectionMeta;
   /**
    * Whether to hide the headers of the section (in case we just want to display/manage the fields).
    */
-  readonly hideHeaders = input(false);
+  @Input() hideHeaders = false;
   /**
    * Whether the CustomSectionMeta should manage the display template or it should be hidden.
    */
-  readonly useDisplayTemplate = input(false);
+  @Input() useDisplayTemplate = false;
   /**
    * Whether the compoent is enabled or not.
    */
-  readonly disabled = input(false);
+  @Input() disabled = false;
   /**
    * Lines preferences for the component.
    */
-  readonly lines = input<string>();
+  @Input() lines?: string;
 
   _section: CustomSectionMeta;
   errors = new Set<string>();
   DISPLAY_TEMPLATE_MAX_NUM_FIELD_PER_ROW = 3;
 
   ngOnInit(): void {
-    this._section = new CustomSectionMeta(this.section(), this._translate.languages());
+    this._section = new CustomSectionMeta(this.section, this._translate.languages());
     // ensure backwards compatibility
-    if (this.useDisplayTemplate() && !this._section.displayTemplate) this._section.displayTemplate = [];
+    if (this.useDisplayTemplate && !this._section.displayTemplate) this._section.displayTemplate = [];
   }
 
   hasFieldAnError(field: string): boolean {
@@ -130,7 +130,7 @@ export class IDEACustomSectionMetaComponent implements OnInit {
     this._section.fieldsLegend = ev.detail.complete(this._section.fieldsLegend);
   }
   async openField(f: string): Promise<void> {
-    const componentProps = { field: this._section.fields[f], disabled: this.disabled(), lines: this.lines() };
+    const componentProps = { field: this._section.fields[f], disabled: this.disabled, lines: this.lines };
     const modal = await this._modal.create({ component: IDEACustomFieldMetaComponent, componentProps });
     await modal.present();
   }
@@ -229,9 +229,9 @@ export class IDEACustomSectionMetaComponent implements OnInit {
     this.errors = new Set(this._section.validate(this._translate.languages()));
     if (this.errors.size) return this._message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
 
-    if (this.useDisplayTemplate()) this.cleanEmptyDisplayTemplateRows();
+    if (this.useDisplayTemplate) this.cleanEmptyDisplayTemplateRows();
 
-    this.section().load(this._section, this._translate.languages());
+    this.section.load(this._section, this._translate.languages());
     this.close();
   }
 

@@ -1,14 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  Input,
-  OnInit,
-  inject,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
-  viewChild,
-  input
-} from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, viewChild } from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
@@ -86,12 +77,12 @@ const MAX_PAGE_SIZE = 24;
         <ion-searchbar
           #searchbar
           [placeholder]="
-            'IDEA_TEAMS.RESOURCE_CENTER.SEARCH_FOR_RESOURCES_OF_FOLDER_' | translate: { folder: folder().name }
+            'IDEA_TEAMS.RESOURCE_CENTER.SEARCH_FOR_RESOURCES_OF_FOLDER_' | translate: { folder: folder.name }
           "
           (ionInput)="search($event.target ? $event.target.value : '')"
         />
         <ion-buttons slot="end">
-          @if (admin()) {
+          @if (admin) {
             <ion-button
               [disabled]="_offline.isOffline()"
               [title]="'IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_NEW_RESOURCES' | translate"
@@ -130,7 +121,7 @@ const MAX_PAGE_SIZE = 24;
         }
         <ion-list-header>
           <ion-label>
-            <h2>{{ folder().name }}</h2>
+            <h2>{{ folder.name }}</h2>
           </ion-label>
         </ion-list-header>
         @if (!filteredResources) {
@@ -164,7 +155,7 @@ const MAX_PAGE_SIZE = 24;
               </p>
             </ion-label>
             <ion-note slot="end">{{ r.format }}</ion-note>
-            @if (admin()) {
+            @if (admin) {
               <ion-button
                 color="medium"
                 fill="clear"
@@ -213,11 +204,11 @@ export class IDEARCResourcesComponent implements OnInit {
   /**
    * The Resource Center's folder of which to show the resources.
    */
-  readonly folder = input<RCFolder>();
+  @Input() folder?: RCFolder;
   /**
    * Whether the user has permissions to manage the resource center.
    */
-  readonly admin = input<boolean>();
+  @Input() admin?: boolean;
 
   resources: RCResource[];
   filteredResources: RCResource[];
@@ -237,7 +228,7 @@ export class IDEARCResourcesComponent implements OnInit {
     try {
       const useCache = getFromNetwork ? CacheModes.NETWORK_FIRST : CacheModes.CACHE_FIRST;
       const resources: RCResource[] = await this._API.getResource(
-        `teams/${this.teamId}/folders/${this.folder().folderId}/resources`,
+        `teams/${this.teamId}/folders/${this.folder.folderId}/resources`,
         { useCache }
       );
       this.resources = resources.map(r => new RCResource(r));
@@ -277,7 +268,7 @@ export class IDEARCResourcesComponent implements OnInit {
   async openResource(resource: RCResource): Promise<void> {
     try {
       await this._loading.show();
-      const request = `teams/${this.teamId}/folders/${this.folder().folderId}/resources`;
+      const request = `teams/${this.teamId}/folders/${this.folder.folderId}/resources`;
       const body = { action: 'GET_DOWNLOAD_URL' };
       const { url } = await this._API.patchResource(request, { resourceId: resource.resourceId, body });
       Browser.open({ url });
@@ -302,7 +293,7 @@ export class IDEARCResourcesComponent implements OnInit {
   }
 
   async actionsOnResource(res: RCResource): Promise<void> {
-    if (!this.admin()) return;
+    if (!this.admin) return;
     const header = this._translate._('IDEA_TEAMS.RESOURCE_CENTER.ACTIONS_ON_RESOURCE');
     const buttons = [];
     buttons.push({
@@ -326,7 +317,7 @@ export class IDEARCResourcesComponent implements OnInit {
     actions.present();
   }
   browseUpdateResource(res: RCResource): void {
-    if (!this.admin()) return;
+    if (!this.admin) return;
     document.getElementById(res.resourceId.concat('_picker')).click();
   }
   async updateResource(res: RCResource, ev: any): Promise<void> {
@@ -349,7 +340,7 @@ export class IDEARCResourcesComponent implements OnInit {
       res.name = name;
       try {
         await this._loading.show();
-        const path = `teams/${this.teamId}/folders/${this.folder().folderId}/resources`;
+        const path = `teams/${this.teamId}/folders/${this.folder.folderId}/resources`;
         await this._API.putResource(path, { resourceId: res.resourceId, body: res });
         // full-refresh to be sure we update the cache
         this.loadResources(true);
@@ -379,7 +370,7 @@ export class IDEARCResourcesComponent implements OnInit {
     const doDelete = async (): Promise<void> => {
       try {
         await this._loading.show();
-        const path = `teams/${this.teamId}/folders/${this.folder().folderId}/resources`;
+        const path = `teams/${this.teamId}/folders/${this.folder.folderId}/resources`;
         await this._API.deleteResource(path, { resourceId: res.resourceId });
         // full-refresh to be sure we update the cache
         this.loadResources(true);
@@ -401,7 +392,7 @@ export class IDEARCResourcesComponent implements OnInit {
   }
 
   browseUploadNewResource(): void {
-    if (!this.admin()) return;
+    if (!this.admin) return;
     // browse the local file(s)
     document.getElementById('newResourcePicker').click();
   }
@@ -443,7 +434,7 @@ export class IDEARCResourcesComponent implements OnInit {
     }
 
     try {
-      const path = `teams/${this.teamId}/folders/${this.folder().folderId}/resources`;
+      const path = `teams/${this.teamId}/folders/${this.folder.folderId}/resources`;
       let req: Promise<RCResource>;
       if (existingRes) req = this._API.putResource(path, { resourceId: resource.resourceId, body: resource });
       else req = this._API.postResource(path, { body: resource });

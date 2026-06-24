@@ -239,8 +239,7 @@ export class IDEASendEmailComponent implements OnInit {
         sortData: true,
         searchPlaceholder: this._translate._('IDEA_COMMON.EMAIL.CHOOSE_OR_ADD_AN_ADDRESS'),
         noElementsFoundText: this._translate._('IDEA_COMMON.EMAIL.NO_ADDRESS_FOUND_YOU_CAN_ADD_ONE'),
-        allowUnlistedValues: true,
-        lines: this.lines()
+        allowUnlistedValues: true
       }
     });
     modal.onDidDismiss().then(res => {

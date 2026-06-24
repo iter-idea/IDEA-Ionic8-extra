@@ -6,8 +6,7 @@ import {
   inject,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
-  viewChild,
-  input
+  viewChild
 } from '@angular/core';
 import {
   IonInfiniteScroll,
@@ -76,15 +75,15 @@ export class IDEASuggestionsComponent implements OnInit {
   /**
    * If true, sort the suggestions alphabetically.
    */
-  readonly sortData = input<boolean>();
+  @Input() sortData?: boolean;
   /**
    * A placeholder for the searchbar.
    */
-  readonly searchPlaceholder = input<string>();
+  @Input() searchPlaceholder?: string;
   /**
    * Text to show when there isn't a result.
    */
-  readonly noElementsFoundText = input<string>();
+  @Input() noElementsFoundText?: string;
   /**
    * If true, allows to select a new custom value (outside the suggestions).
    */
@@ -98,15 +97,15 @@ export class IDEASuggestionsComponent implements OnInit {
   /**
    * If true, doesn't show the id in the UI.
    */
-  readonly hideIdFromUI = input<boolean>();
+  @Input() hideIdFromUI?: boolean;
   /**
    * If true, doesn't show the clear button in the header.
    */
-  readonly hideClearButton = input<boolean>();
+  @Input() hideClearButton?: boolean;
   /**
    * If true, the user doesn't have the option to cancel the selection: an option must be chosen.
    */
-  readonly mustChoose = input<boolean>();
+  @Input() mustChoose?: boolean;
   /**
    * A pre-filter for the category1.
    */
@@ -122,11 +121,11 @@ export class IDEASuggestionsComponent implements OnInit {
   /**
    * Whether tho show the categories filters.
    */
-  readonly showCategoriesFilters = input<boolean>();
+  @Input() showCategoriesFilters?: boolean;
   /**
    * An arbitrary number of elements to show in each page; suggested: a multiple of 2, 3 and 4 (good for any UI size).
    */
-  readonly numPerPage = input<number>();
+  @Input() numPerPage?: number;
 
   suggestions: Suggestion[] = [];
   currentPage: number;
@@ -137,14 +136,14 @@ export class IDEASuggestionsComponent implements OnInit {
   detailsAreAvailable: boolean;
 
   async ngOnInit(): Promise<void> {
-    if (this.sortData())
+    if (this.sortData)
       this.data = this.data.sort((a, b): number =>
         a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
       );
 
     this.loadActiveCategories();
     this.detailsAreAvailable = this.data.some(
-      x => (x.name && !this.hideIdFromUI()) || x.category1 || x.category2 || x.description
+      x => (x.name && !this.hideIdFromUI) || x.category1 || x.category2 || x.description
     );
 
     if (!this.detailsAreAvailable) this.shouldShowDetails = false;

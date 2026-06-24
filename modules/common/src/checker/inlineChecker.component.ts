@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonCheckbox,
@@ -193,7 +193,7 @@ export class IDEAInlineCheckerComponent {
   selector: 'idea-inline-checks',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (withSearchbar()) {
+    @if (withSearchbar) {
       <ion-header class="ion-no-border">
         <ion-toolbar color="ideaToolbar">
           <ion-buttons slot="start">
@@ -205,10 +205,10 @@ export class IDEAInlineCheckerComponent {
             #searchbar
             color="white"
             lines="none"
-            [placeholder]="searchPlaceholder() || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
+            [placeholder]="searchPlaceholder || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
             (ionInput)="search($event.target.value)"
           />
-          @if (limitSelectionToNum() !== 1) {
+          @if (limitSelectionToNum !== 1) {
             <ion-buttons slot="end">
               <ion-button
                 [title]="'IDEA_COMMON.CHECKER.SHOW_ONLY_CHECKED' | translate"
@@ -219,12 +219,12 @@ export class IDEAInlineCheckerComponent {
             </ion-buttons>
           }
         </ion-toolbar>
-        @if (limitSelectionToNum() !== 1) {
+        @if (limitSelectionToNum !== 1) {
           <ion-toolbar color="ideaToolbar" class="secondary">
             <ion-title>
-              {{ previewTextKey() | translate: { num: getNumChecked() } }}
-              @if (limitSelectionToNum()) {
-                <span>{{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum() } }}</span>
+              {{ previewTextKey | translate: { num: getNumChecked() } }}
+              @if (limitSelectionToNum) {
+                <span>{{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}</span>
               }
             </ion-title>
           </ion-toolbar>
@@ -233,7 +233,7 @@ export class IDEAInlineCheckerComponent {
     }
     <ion-content>
       <ion-list>
-        @if (limitSelectionToNum() === 1) {
+        @if (limitSelectionToNum === 1) {
           @for (check of filteredChecks; track check.value) {
             <ion-item color="white" button (click)="selectSingle(check)">
               <ion-label>{{ check.name }}</ion-label>
@@ -241,17 +241,17 @@ export class IDEAInlineCheckerComponent {
           } @empty {
             <ion-item color="white" lines="none">
               <ion-label class="ion-text-center">
-                <i>{{ noElementsFoundText() ?? ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
+                <i>{{ noElementsFoundText ?? ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
               </ion-label>
             </ion-item>
           }
         } @else {
-          <ion-reorder-group [disabled]="!reorder()" (ionItemReorder)="handleReorder($event)">
+          <ion-reorder-group [disabled]="!reorder" (ionItemReorder)="handleReorder($event)">
             @for (check of filteredChecks; track check.value) {
               <ion-item color="white">
                 <ion-reorder slot="start" />
                 <ion-checkbox
-                  [disabled]="!check.checked && limitSelectionToNum() && getNumChecked() >= limitSelectionToNum()"
+                  [disabled]="!check.checked && limitSelectionToNum && getNumChecked() >= limitSelectionToNum"
                   [(ngModel)]="check.checked"
                 >
                   {{ check.name }}
@@ -260,7 +260,7 @@ export class IDEAInlineCheckerComponent {
             } @empty {
               <ion-item color="white" lines="none">
                 <ion-label class="ion-text-center">
-                  <i>{{ noElementsFoundText() ?? ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
+                  <i>{{ noElementsFoundText ?? ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
                 </ion-label>
               </ion-item>
             }
@@ -292,36 +292,36 @@ class IDEAInlineChecksComponent implements OnInit {
   /**
    * The checklist to show and sort.
    */
-  readonly data = input<Check[]>([]);
+  @Input() data: Check[] = [];
   /**
    * Whether the checklist is reorderable or not.
    */
-  readonly reorder = input(false);
+  @Input() reorder = false;
   /**
    * If true, sort the checklist alphabetically.
    */
-  readonly sortData = input<boolean>();
+  @Input() sortData?: boolean;
   /**
    * If true, render the component centered in the screen and show a header with a searchbar.
    */
-  readonly withSearchbar = input(false);
+  @Input() withSearchbar = false;
   /**
    * A placeholder for the searchbar.
    */
-  readonly searchPlaceholder = input<string>();
+  @Input() searchPlaceholder?: string;
   /**
    * The text to show in case no element is found after a search.
    */
-  readonly noElementsFoundText = input<string>();
+  @Input() noElementsFoundText?: string;
   /**
    * The translation key to get the preview text; it has a `num` variable available.
    */
-  readonly previewTextKey = input('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED');
+  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
   /**
    * Limit the number of selectable elements to the value provided.
    * If this number is forced to `1`, the component turns into a single selection.
    */
-  readonly limitSelectionToNum = input<number>();
+  @Input() limitSelectionToNum?: number;
 
   readonly searchbar = viewChild<IonSearchbar>('searchbar');
 
@@ -330,18 +330,18 @@ class IDEAInlineChecksComponent implements OnInit {
   showOnlyChecked = false;
 
   ngOnInit(): void {
-    if (this.sortData()) {
+    if (this.sortData) {
       const compareByLabel = (a: Check, b: Check): number =>
         a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value));
-      if (this.reorder()) {
+      if (this.reorder) {
         const originalIndex = new Map<Check, number>();
-        for (let i = 0; i < this.data().length; i++) originalIndex.set(this.data()[i], i);
-        this.data().sort((a, b): number => {
+        for (let i = 0; i < this.data.length; i++) originalIndex.set(this.data[i], i);
+        this.data.sort((a, b): number => {
           if (a.checked && b.checked) return (originalIndex.get(a) || 0) - (originalIndex.get(b) || 0);
           if (a.checked !== b.checked) return a.checked ? -1 : 1;
           return compareByLabel(a, b);
         });
-      } else this.data().sort(compareByLabel);
+      } else this.data.sort(compareByLabel);
     }
     this.search();
   }
@@ -349,7 +349,7 @@ class IDEAInlineChecksComponent implements OnInit {
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
-    this.filteredChecks = this.data().filter(
+    this.filteredChecks = this.data.filter(
       x =>
         !x.hidden &&
         (!this.showOnlyChecked || x.checked) &&
@@ -370,23 +370,23 @@ class IDEAInlineChecksComponent implements OnInit {
   }
 
   getNumChecked(): number {
-    return this.data().filter(x => x.checked).length;
+    return this.data.filter(x => x.checked).length;
   }
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>): void {
-    if (!this.reorder()) return;
+    if (!this.reorder) return;
     const reordered = ev.detail.complete(this.filteredChecks);
     this.filteredChecks = reordered;
     const visibleChecks = new Set(reordered);
     const reorderedQueue = [...reordered];
-    const nextData = this.data().map(item => (visibleChecks.has(item) ? reorderedQueue.shift() : item));
-    this.data().splice(0, this.data().length, ...nextData);
+    const nextData = this.data.map(item => (visibleChecks.has(item) ? reorderedQueue.shift() : item));
+    this.data.splice(0, this.data.length, ...nextData);
   }
 
   selectSingle(check: Check): void {
-    this.data().forEach(x => (x.checked = false));
-    const index = this.data().indexOf(check);
-    if (index !== -1) this.data()[index].checked = true;
+    this.data.forEach(x => (x.checked = false));
+    const index = this.data.indexOf(check);
+    if (index !== -1) this.data[index].checked = true;
     this._popover.dismiss();
   }
 

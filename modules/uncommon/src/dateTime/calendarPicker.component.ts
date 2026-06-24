@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -54,13 +54,13 @@ export class IDEACalendarPickerComponent implements OnInit {
   private _alert = inject(AlertController);
   private _translate = inject(IDEATranslationsService);
 
-  readonly inputDate = input<epochDateTime | epochISOString>();
-  readonly timePicker = input(false);
-  readonly manualTimePicker = input(false);
-  readonly title = input<string>();
-  readonly hideClearButton = input(false);
-  readonly min = input<epochDateTime | epochISOString>();
-  readonly max = input<epochDateTime | epochISOString>();
+  @Input() inputDate?: epochDateTime | epochISOString;
+  @Input() timePicker = false;
+  @Input() manualTimePicker = false;
+  @Input() title?: string;
+  @Input() hideClearButton = false;
+  @Input() min?: epochDateTime | epochISOString;
+  @Input() max?: epochDateTime | epochISOString;
 
   refDate: Date;
   selectedDate: Date;
@@ -76,13 +76,13 @@ export class IDEACalendarPickerComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
-    const inputDate = this.inputDate();
+    const inputDate = this.inputDate;
     this.refDate = inputDate ? new Date(inputDate) : new Date(this.today);
     this.selectedDate = new Date(this.refDate);
     this.hour = 12; // to endure timezones
     this.minute = 0;
-    const manualTimePicker = this.manualTimePicker();
-    if (this.timePicker() || manualTimePicker) {
+    const manualTimePicker = this.manualTimePicker;
+    if (this.timePicker || manualTimePicker) {
       this.hour = this.selectedDate.getHours();
       if (manualTimePicker) this.minute = this.selectedDate.getMinutes();
       else {
@@ -102,9 +102,9 @@ export class IDEACalendarPickerComponent implements OnInit {
       this.weekDays.push(refDateForWeekDays.toLocaleDateString(this._translate.getCurrentLang(), { weekday: 'short' }));
       refDateForWeekDays.setDate(refDateForWeekDays.getDate() + 1);
     }
-    const min = this.min();
+    const min = this.min;
     if (min) this.dateMin = new Date(min);
-    const max = this.max();
+    const max = this.max;
     if (max) this.dateMax = new Date(max);
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -75,15 +75,15 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   /**
    * The CustomFieldMeta to manage.
    */
-  readonly field = input<CustomFieldMeta>();
+  @Input() field?: CustomFieldMeta;
   /**
    * Whether the component is enabled or not.
    */
-  readonly disabled = input(false);
+  @Input() disabled = false;
   /**
    * Lines preferences for the component.
    */
-  readonly lines = input<string>();
+  @Input() lines?: string;
 
   _field: CustomFieldMeta;
   errors = new Set<string>();
@@ -91,7 +91,7 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   CFT = CustomFieldTypes;
 
   ngOnInit(): void {
-    this._field = new CustomFieldMeta(this.field(), this._translate.languages());
+    this._field = new CustomFieldMeta(this.field, this._translate.languages());
   }
 
   hasFieldAnError(field: string): boolean {
@@ -175,7 +175,7 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   save(): Promise<void> {
     this.errors = new Set(this._field.validate(this._translate.languages()));
     if (this.errors.size) return this._message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
-    this.field().load(this._field, this._translate.languages());
+    this.field.load(this._field, this._translate.languages());
     this.close(true);
   }
 

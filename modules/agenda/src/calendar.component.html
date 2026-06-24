@@ -41,7 +41,7 @@
             [(ngModel)]="calendarWC.description"
           />
         </ion-item>
-        @if (!hideColor()) {
+        @if (!hideColor) {
           <idea-color-picker
             [lines]="'inset'"
             [current]="calendarWC.color"
@@ -50,7 +50,7 @@
             (select)="$event ? (calendarWC.color = $event) : null"
           />
         }
-        @if (membershipsChecks && calendarWC.isShared() && advancedPermissions()) {
+        @if (membershipsChecks && calendarWC.isShared() && advancedPermissions) {
           <idea-checker
             [data]="membershipsChecks"
             [label]="'IDEA_AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS' | translate"
@@ -69,7 +69,7 @@
               <h2>{{ 'IDEA_AGENDA.CALENDARS.INFO_ON_CALENDAR' | translate }}</h2>
             </ion-label>
           </ion-list-header>
-          @if (calendar().userId) {
+          @if (calendar.userId) {
             <ion-item lines="inset">
               <ion-label>
                 {{ 'IDEA_AGENDA.CALENDARS.PRIVATE_CALENDAR' | translate }}
@@ -78,7 +78,7 @@
               <ion-icon slot="end" name="person" />
             </ion-item>
           }
-          @if (calendar().teamId) {
+          @if (calendar.teamId) {
             <ion-item lines="inset">
               <ion-label>
                 {{ 'IDEA_AGENDA.CALENDARS.TEAM_CALENDAR' | translate }}

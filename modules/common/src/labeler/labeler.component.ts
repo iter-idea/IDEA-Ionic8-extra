@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -59,7 +59,7 @@ import { IDEAMessageService } from '../message.service';
           </ion-button>
         </ion-buttons>
         <ion-title>{{ title }}</ion-title>
-        @if (!disabled()) {
+        @if (!disabled) {
           <ion-buttons slot="end">
             <ion-button [title]="'COMMON.SAVE' | translate" (click)="save()">
               <ion-icon slot="icon-only" name="checkmark" />
@@ -69,7 +69,7 @@ import { IDEAMessageService } from '../message.service';
       </ion-toolbar>
     </ion-header>
     <ion-content [class.ion-padding]="isLargeScreen()">
-      @if (variables?.length && !disabled()) {
+      @if (variables?.length && !disabled) {
         <ion-list class="aList">
           <ion-list-header>
             <ion-label>
@@ -86,16 +86,16 @@ import { IDEAMessageService } from '../message.service';
           </ul>
         </ion-list>
       }
-      @if (!disabled()) {
+      @if (!disabled) {
         <p class="explanation">
-          @if (obligatory()) {
+          @if (obligatory) {
             <span>{{ 'IDEA_COMMON.LABELER.EXPLANATION_OBLIGATORY' | translate }}</span>
           }
           {{ 'IDEA_COMMON.LABELER.EXPLANATION' | translate }}
         </p>
       }
       @if (_label) {
-        <ion-list class="aList" [class.viewMode]="disabled()">
+        <ion-list class="aList" [class.viewMode]="disabled">
           @for (l of languages.available; track l) {
             <ion-item lines="inset" [class.fieldHasError]="hasFieldAnError(l)">
               <ion-thumbnail slot="start"><img [src]="getFlagURL(l)" /></ion-thumbnail>
@@ -105,11 +105,11 @@ import { IDEAMessageService } from '../message.service';
                   <ion-text>- {{ 'COMMON.DEFAULT' | translate }}</ion-text>
                 }
               </ion-label>
-              @if (!textarea()) {
-                <ion-input type="text" [(ngModel)]="_label[l]" [disabled]="disabled()" />
+              @if (!textarea) {
+                <ion-input type="text" [(ngModel)]="_label[l]" [disabled]="disabled" />
               }
-              @if (textarea()) {
-                <ion-textarea [(ngModel)]="_label[l]" [disabled]="disabled()" [rows]="3" [autoGrow]="true" />
+              @if (textarea) {
+                <ion-textarea [(ngModel)]="_label[l]" [disabled]="disabled" [rows]="3" [autoGrow]="true" />
               }
             </ion-item>
           }
@@ -168,7 +168,7 @@ export class IDEALabelerComponent {
   /**
    * The detail to highlight.
    */
-  readonly label = input<Label>();
+  @Input() label?: Label;
   /**
    * The languages preferences; if not set, it fallbacks to IDEATranslationsService's ones.
    */
@@ -184,11 +184,11 @@ export class IDEALabelerComponent {
   /**
    * Whether to display the label in textareas instead of text fields.
    */
-  readonly textarea = input<boolean>();
+  @Input() textarea?: boolean;
   /**
    * Whether the label supports markdown.
    */
-  readonly markdown = input<boolean>();
+  @Input() markdown?: boolean;
   /**
    * The variables the user can use for the label content.
    */
@@ -197,11 +197,11 @@ export class IDEALabelerComponent {
   /**
    * If true, the component is disabled.
    */
-  readonly disabled = input<boolean>();
+  @Input() disabled?: boolean;
   /**
    * If true, the label is validated on save.
    */
-  readonly obligatory = input<boolean>();
+  @Input() obligatory?: boolean;
 
   _label: Label;
   errors = new Set<string>();
@@ -209,7 +209,7 @@ export class IDEALabelerComponent {
   ionViewDidEnter(): void {
     this.title = this.title || this._translate._('IDEA_COMMON.LABELER.MANAGE_LABEL');
     this.languages = this.languages || this._translate.languages();
-    this._label = new Label(this.label(), this.languages);
+    this._label = new Label(this.label, this.languages);
   }
 
   hasFieldAnError(field: string): boolean {
@@ -232,11 +232,11 @@ export class IDEALabelerComponent {
   }
 
   save(): Promise<void> {
-    if (this.obligatory()) {
+    if (this.obligatory) {
       this.errors = new Set(this._label.validate(this.languages));
       if (this.errors.size) return this._message.error('IDEA_COMMON.LABELER.FILL_IN_DEFAULT_LANGUAGE');
     }
-    this.label().load(this._label, this.languages);
+    this.label.load(this._label, this.languages);
     this._modal.dismiss(true);
   }
 

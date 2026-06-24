@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -65,7 +65,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
     </ion-header>
     <ion-content class="editMode">
       <ion-list class="aList">
-        <ion-item [lines]="lines()" [class.fieldHasError]="hasFieldAnError('name')">
+        <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('name')">
           <ion-input
             type="text"
             readonly="true"
@@ -87,7 +87,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
             <ion-icon slot="icon-only" icon="pencil" />
           </ion-button>
         </ion-item>
-        <ion-item [lines]="lines()" [class.fieldHasError]="hasFieldAnError('description')">
+        <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('description')">
           <ion-input
             type="text"
             readonly="true"
@@ -112,13 +112,13 @@ import { IDEATranslationsService } from '../translations/translations.service';
           </ion-label>
         </ion-list-header>
         <idea-attachments
-          [entityPath]="entityPath()"
+          [entityPath]="entityPath"
           [attachments]="_section.attachments"
-          [acceptedFormats]="acceptedFormats()"
-          [multiple]="multiple()"
-          [color]="color()"
+          [acceptedFormats]="acceptedFormats"
+          [multiple]="multiple"
+          [color]="color"
           [disabled]="false"
-          (download)="downloadCallback()($event)"
+          (download)="downloadCallback($event)"
         />
       </ion-list>
     </ion-content>
@@ -131,37 +131,37 @@ export class IDEAManageAttachmentsSectionComponent implements OnInit {
   /**
    * The attachments section to manage.
    */
-  readonly section = input<AttachmentSection>();
+  @Input() section?: AttachmentSection;
   /**
    * The API path to the entity for which we want to manage the attachments.
    */
-  readonly entityPath = input<string | string[]>();
+  @Input() entityPath?: string | string[];
   /**
    * The list of accepted formats.
    */
-  readonly acceptedFormats = input(['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx']);
+  @Input() acceptedFormats = ['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx'];
   /**
    * Whether to accept multiple files as target for the browse function.
    */
-  readonly multiple = input(true);
+  @Input() multiple = true;
   /**
    * Lines preferences for the component.
    */
-  readonly lines = input<string>();
+  @Input() lines?: string;
   /**
    * The background color of the component.
    */
-  readonly color = input<string>();
+  @Input() color?: string;
   /**
    * Trigger a callback in the parent component to download a file by URL.
    */
-  readonly downloadCallback = input<(url: string) => void>();
+  @Input() downloadCallback?: (url: string) => void;
 
   _section: AttachmentSection;
   errors = new Set<string>();
 
   ngOnInit(): void {
-    this._section = new AttachmentSection(this.section(), this._translate.languages());
+    this._section = new AttachmentSection(this.section, this._translate.languages());
   }
 
   hasFieldAnError(field: string): boolean {
@@ -181,7 +181,7 @@ export class IDEAManageAttachmentsSectionComponent implements OnInit {
   }
 
   save(): void {
-    this.section().load(this._section, this._translate.languages());
+    this.section.load(this._section, this._translate.languages());
     this.close();
   }
 

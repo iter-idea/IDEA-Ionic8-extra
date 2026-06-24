@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ModalController,
   IonHeader,
@@ -49,7 +49,7 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   /**
    * The time interval to set.
    */
-  readonly timeInterval = input<TimeInterval>();
+  @Input() timeInterval?: TimeInterval;
   /**
    * Whether we should start picking the time displaying the afternoon (PM) or the morning (AM, default).
    */
@@ -59,15 +59,15 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   /**
    * A time to use as lower limit for the possible choices.
    */
-  readonly notEarlierThan = input<number>();
+  @Input() notEarlierThan?: number;
   /**
    * A time to use as upper limit for the possible choices.
    */
-  readonly notLaterThan = input<number>();
+  @Input() notLaterThan?: number;
   /**
    * The title of the component.
    */
-  readonly title = input<string>();
+  @Input() title?: string;
 
   segment: Segments;
   Segments = Segments;
@@ -78,7 +78,7 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   ngOnInit(): void {
     this.segment = Segments.FROM;
     this.minutes = 30;
-    this.timeIntervalWC = new TimeInterval(this.timeInterval());
+    this.timeIntervalWC = new TimeInterval(this.timeInterval);
   }
 
   setInterval(hours: number, minutes?: number): void {
@@ -140,8 +140,8 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
     // adjust the hour based on the start of the interval and the settings of am/pm
     hours = this.contextualizeHour(hours, minutes);
     // check whether the selected time is inside the given boundaries
-    const notEarlierThan = this.notEarlierThan();
-    const notLaterThan = this.notLaterThan();
+    const notEarlierThan = this.notEarlierThan;
+    const notLaterThan = this.notLaterThan;
     return (
       (!notEarlierThan || this.timeToMs(hours, minutes) >= notEarlierThan || this.timeToMs(hours, minutes) === 0) &&
       (!notLaterThan || this.timeToMs(hours, minutes) <= notLaterThan)
@@ -170,12 +170,12 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   }
 
   save(): void {
-    this.timeInterval().load(this.timeIntervalWC);
+    this.timeInterval.load(this.timeIntervalWC);
     this._modal.dismiss(true);
   }
 
   reset(): void {
-    this.timeInterval().reset();
+    this.timeInterval.reset();
     this._modal.dismiss(false);
   }
 

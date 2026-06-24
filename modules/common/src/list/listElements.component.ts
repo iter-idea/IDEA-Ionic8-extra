@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, viewChild, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, viewChild, Input } from '@angular/core';
 import {
   AlertController,
   ModalController,
@@ -51,7 +51,7 @@ const MAX_PAGE_SIZE = 24;
         </ion-buttons>
         <ion-searchbar
           #searchbar
-          [placeholder]="searchPlaceholder() || ('COMMON.SEARCH' | translate)"
+          [placeholder]="searchPlaceholder || ('COMMON.SEARCH' | translate)"
           (ionInput)="search($event.target.value)"
         />
         <ion-buttons slot="end">
@@ -69,14 +69,14 @@ const MAX_PAGE_SIZE = 24;
         @if (!filteredList.length) {
           <ion-item lines="none">
             <ion-label>
-              <i>{{ noElementsFoundText() || ('IDEA_COMMON.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
+              <i>{{ noElementsFoundText || ('IDEA_COMMON.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
             </ion-label>
           </ion-item>
         }
         @for (element of filteredList; track element) {
           <ion-item class="listElement">
             <ion-label>{{ getElementName(element) }}</ion-label>
-            @if (labelElements()) {
+            @if (labelElements) {
               <ion-button slot="end" fill="clear" (click)="editElement(element)">
                 <ion-icon icon="pencil-sharp" slot="icon-only" />
               </ion-button>
@@ -107,19 +107,19 @@ export class IDEAListElementsComponent implements OnInit {
   /**
    * It should be read only until the component closure.
    */
-  readonly data = input<(Label | string)[]>();
+  @Input() data?: (Label | string)[];
   /**
    * Whether the elements are labels or simple strings.
    */
-  readonly labelElements = input<boolean>();
+  @Input() labelElements?: boolean;
   /**
    * A placeholder for the searchbar.
    */
-  readonly searchPlaceholder = input<string>();
+  @Input() searchPlaceholder?: string;
   /**
    * The text to show in case no element is found after a search.
    */
-  readonly noElementsFoundText = input<string>();
+  @Input() noElementsFoundText?: string;
 
   workingData: (Label | string)[];
   filteredList: (Label | string)[];
@@ -128,12 +128,12 @@ export class IDEAListElementsComponent implements OnInit {
   readonly searchbar = viewChild<IonSearchbar>('searchbar');
 
   ngOnInit(): void {
-    this.workingData = Array.from(this.data() || (this.labelElements() ? new Array<Label>() : new Array<string>()));
+    this.workingData = Array.from(this.data || (this.labelElements ? new Array<Label>() : new Array<string>()));
     this.search();
   }
 
   getElementName(x: Label | string): any {
-    return this.labelElements()
+    return this.labelElements
       ? (x as Label).translate(this._translate.getCurrentLang(), this._translate.languages())
       : x;
   }
@@ -157,7 +157,7 @@ export class IDEAListElementsComponent implements OnInit {
   }
 
   addElement(): void {
-    if (this.labelElements()) {
+    if (this.labelElements) {
       const l = new Label(null, this._translate.languages());
       l[this._translate.getDefaultLang()] = '-';
       this.workingData.push(l);
@@ -165,7 +165,7 @@ export class IDEAListElementsComponent implements OnInit {
     } else this.addStrElement();
   }
   editElement(element: Label | string): void {
-    if (this.labelElements()) this.editLabel(element as Label);
+    if (this.labelElements) this.editLabel(element as Label);
   }
   removeElement(element: Label | string): void {
     this.workingData.splice(this.workingData.indexOf(element), 1);
@@ -209,10 +209,10 @@ export class IDEAListElementsComponent implements OnInit {
 
   close(save?: boolean): void {
     // empty and refill the array without losing the reference
-    const data = this.data();
+    const data = this.data;
     if (save) {
       data.length = 0;
-      this.workingData.sort().forEach(x => this.data().push(x));
+      this.workingData.sort().forEach(x => this.data.push(x));
     }
     this._modal.dismiss(save ? data : null);
   }

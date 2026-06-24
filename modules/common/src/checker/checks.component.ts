@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonInfiniteScroll,
@@ -60,7 +60,7 @@ const MAX_PAGE_SIZE = 24;
         <ion-searchbar
           #searchbar
           [debounce]="100"
-          [placeholder]="searchPlaceholder() || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
+          [placeholder]="searchPlaceholder || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
           (ionInput)="search($event.target.value)"
         />
         <ion-buttons slot="end">
@@ -71,14 +71,14 @@ const MAX_PAGE_SIZE = 24;
       </ion-toolbar>
       <ion-toolbar color="ideaToolbar" class="secondary">
         <ion-title>
-          {{ previewTextKey() | translate: { num: getNumChecked() } }}
+          {{ previewTextKey | translate: { num: getNumChecked() } }}
           @if (limitSelectionToNum) {
             <span>
               {{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}
             </span>
           }
         </ion-title>
-        @if (!limitSelectionToNum && allowSelectDeselectAll()) {
+        @if (!limitSelectionToNum && allowSelectDeselectAll) {
           <ion-buttons slot="end">
             <ion-button [title]="'IDEA_COMMON.CHECKER.DESELECT_ALL' | translate" (click)="checkAll(false)">
               <ion-icon slot="icon-only" name="square-outline" />
@@ -88,7 +88,7 @@ const MAX_PAGE_SIZE = 24;
             </ion-button>
           </ion-buttons>
         }
-        @if (limitSelectionToNum || !allowSelectDeselectAll()) {
+        @if (limitSelectionToNum || !allowSelectDeselectAll) {
           <ion-buttons slot="end">
             <ion-button [title]="'IDEA_COMMON.CHECKER.RESET' | translate" (click)="checkAll(false)">
               {{ 'IDEA_COMMON.CHECKER.RESET' | translate }}
@@ -96,7 +96,7 @@ const MAX_PAGE_SIZE = 24;
           </ion-buttons>
         }
       </ion-toolbar>
-      @if (showCategoriesFilters()) {
+      @if (showCategoriesFilters) {
         <ion-toolbar color="ideaToolbar" class="secondary">
           <div class="additionalToolbar">
             @if (activeCategories1?.size) {
@@ -130,13 +130,13 @@ const MAX_PAGE_SIZE = 24;
         @if (!filteredChecks.length) {
           <ion-item lines="none">
             <ion-label>
-              <i>{{ noElementsFoundText() || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
+              <i>{{ noElementsFoundText || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
             </ion-label>
           </ion-item>
         }
         @for (check of filteredChecks; track check.value) {
           <ion-item class="check">
-            @if (showAvatars()) {
+            @if (showAvatars) {
               <ion-avatar slot="start">
                 @if (check.color) {
                   <div class="circle" [style.background-color]="check.color"></div>
@@ -212,23 +212,23 @@ export class IDEAChecksComponent implements OnInit {
   /**
    * It should be read only until the component closure.
    */
-  readonly data = input<Check[]>();
+  @Input() data?: Check[];
   /**
    * If true, sort alphabetically the data (by name or, fallback, by value).
    */
-  readonly sortData = input<boolean>();
+  @Input() sortData?: boolean;
   /**
    * A placeholder for the searchbar.
    */
-  readonly searchPlaceholder = input<string>();
+  @Input() searchPlaceholder?: string;
   /**
    * The text to show in case no element is found after a search.
    */
-  readonly noElementsFoundText = input<string>();
+  @Input() noElementsFoundText?: string;
   /**
    * Whether to show an avatar aside each element.
    */
-  readonly showAvatars = input<boolean>();
+  @Input() showAvatars?: boolean;
   /**
    * Limit the number of selectable elements to the value provided.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
@@ -238,7 +238,7 @@ export class IDEAChecksComponent implements OnInit {
   /**
    * Whether to allow the select/deselect-all buttons.
    */
-  readonly allowSelectDeselectAll = input<boolean>();
+  @Input() allowSelectDeselectAll?: boolean;
   /**
    * A pre-filter for the category1.
    */
@@ -254,11 +254,11 @@ export class IDEAChecksComponent implements OnInit {
   /**
    * Whether tho show the categories filters.
    */
-  readonly showCategoriesFilters = input<boolean>(false);
+  @Input() showCategoriesFilters: boolean = false;
   /**
    * The translation key to get the preview text; it has a `num` variable available.
    */
-  readonly previewTextKey = input('IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED');
+  @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
 
   workingData: Check[];
   filteredChecks: Check[];
@@ -269,9 +269,9 @@ export class IDEAChecksComponent implements OnInit {
   readonly searchbar = viewChild<IonSearchbar>('searchbar');
 
   ngOnInit(): void {
-    this.workingData = JSON.parse(JSON.stringify(this.data() || new Array<Check>()));
+    this.workingData = JSON.parse(JSON.stringify(this.data || new Array<Check>()));
     this.filteredChecks = new Array<Check>();
-    if (this.sortData()) this.workingData = this.workingData.sort((a, b): number => a.name.localeCompare(b.name));
+    if (this.sortData) this.workingData = this.workingData.sort((a, b): number => a.name.localeCompare(b.name));
     this.loadActiveCategories();
     this.search();
   }
@@ -283,7 +283,7 @@ export class IDEAChecksComponent implements OnInit {
   private loadActiveCategories(): void {
     this.activeCategories1 = new Set<string>();
     this.activeCategories2 = new Set<string>();
-    this.data().forEach(a => {
+    this.data.forEach(a => {
       if (a.category1) this.activeCategories1.add(a.category1);
       if (a.category2) this.activeCategories2.add(a.category2);
     });
@@ -350,7 +350,7 @@ export class IDEAChecksComponent implements OnInit {
     this._modal.dismiss(false);
   }
   confirm(): void {
-    this.workingData.forEach(x => (this.data().find(y => x.value === y.value).checked = x.checked));
+    this.workingData.forEach(x => (this.data.find(y => x.value === y.value).checked = x.checked));
     this._modal.dismiss(true);
   }
 }
