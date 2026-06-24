@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, output, input } from '@angular/core';
 
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 
@@ -8,12 +8,12 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
   template: `
     <div class="tooltipContainer" (mouseleave)="onTooltipMouseLeave()">
       <span class="closeButton" (click)="onClose()">×</span>
-      @if (title) {
-        <div class="tooltipTitle">{{ title }}</div>
+      @if (title()) {
+        <div class="tooltipTitle">{{ title() }}</div>
       }
-      <div class="tooltipText">{{ text }}</div>
-      @if (link) {
-        <a [href]="link" target="_blank" class="tooltipLink">{{ 'IDEA_COMMON.TOOLTIP.LEARN_MORE' | translate }}</a>
+      <div class="tooltipText">{{ text() }}</div>
+      @if (link()) {
+        <a [href]="link()" target="_blank" class="tooltipLink">{{ 'IDEA_COMMON.TOOLTIP.LEARN_MORE' | translate }}</a>
       }
     </div>
   `,
@@ -60,21 +60,15 @@ export class IDEATooltipComponent {
   /**
    * The tooltip title.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() title = '';
+  readonly title = input('');
   /**
    * The tooltip text.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() text = '';
+  readonly text = input('');
   /**
    * The tooltip link.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() link = '';
+  readonly link = input('');
   /**
    * The tooltip close event.
    */

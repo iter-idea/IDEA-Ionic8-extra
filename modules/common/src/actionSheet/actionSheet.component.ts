@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { ActionSheetButton } from '@ionic/core';
 import {
   IonContent,
@@ -21,13 +21,13 @@ import {
   template: `
     <ion-content [class]="cssClass()">
       <ion-grid class="ion-padding">
-        @if (header) {
+        @if (header()) {
           <ion-row class="headerRow">
             <ion-col class="ion-text-center">
               <ion-label class="ion-text-wrap">
-                {{ header }}
-                @if (subHeader) {
-                  <p>{{ subHeader }}</p>
+                {{ header() }}
+                @if (subHeader()) {
+                  <p>{{ subHeader() }}</p>
                 }
               </ion-label>
             </ion-col>
@@ -118,17 +118,11 @@ export class IDEAActionSheetComponent implements OnInit {
   /**
    * Title for the actions panel.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() header: string;
+  readonly header = input<string>();
   /**
    * Subtitle for the actions panel.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() subHeader: string;
+  readonly subHeader = input<string>();
 
   withIcons: boolean;
 

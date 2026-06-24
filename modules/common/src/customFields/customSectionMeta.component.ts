@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -85,10 +85,7 @@ export class IDEACustomSectionMetaComponent implements OnInit {
   /**
    * Whether the compoent is enabled or not.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * Lines preferences for the component.
    */
@@ -133,7 +130,7 @@ export class IDEACustomSectionMetaComponent implements OnInit {
     this._section.fieldsLegend = ev.detail.complete(this._section.fieldsLegend);
   }
   async openField(f: string): Promise<void> {
-    const componentProps = { field: this._section.fields[f], disabled: this.disabled, lines: this.lines() };
+    const componentProps = { field: this._section.fields[f], disabled: this.disabled(), lines: this.lines() };
     const modal = await this._modal.create({ component: IDEACustomFieldMetaComponent, componentProps });
     await modal.present();
   }

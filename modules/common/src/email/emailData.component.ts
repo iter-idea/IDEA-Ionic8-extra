@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { EmailData, StringVariable } from 'idea-toolbox';
 
@@ -21,43 +21,43 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
       [color]="color()"
       [lines]="lines()"
       [title]="placeholder() || ''"
-      [class.withLabel]="label"
+      [class.withLabel]="label()"
       (click)="openEmailDataConfiguration()"
     >
-      @if (icon) {
+      @if (icon()) {
         <ion-button
           fill="clear"
           slot="start"
           [color]="iconColor()"
-          [class.marginTop]="label"
+          [class.marginTop]="label()"
           (click)="doIconSelect($event)"
         >
-          <ion-icon [name]="icon" slot="icon-only" />
+          <ion-icon [name]="icon()" slot="icon-only" />
         </ion-button>
       }
-      @if (label) {
-        <ion-label position="stacked">{{ label }}</ion-label>
+      @if (label()) {
+        <ion-label position="stacked">{{ label() }}</ion-label>
       }
       <div class="description">
-        @if (!emailData.subject) {
+        @if (!emailData().subject) {
           <div class="placeholder">{{ placeholder() }}</div>
         }
-        @if (emailData.subject) {
-          <div [innerHTML]="emailData.subject | highlight: variablesPlain"></div>
+        @if (emailData().subject) {
+          <div [innerHTML]="emailData().subject | highlight: variablesPlain"></div>
         }
-        @if (emailData.to.length) {
+        @if (emailData().to.length) {
           <p>
-            <ion-text>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}:</ion-text> {{ emailData.to.join(', ') }}
+            <ion-text>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}:</ion-text> {{ emailData().to.join(', ') }}
           </p>
         }
-        @if (emailData.cc.length) {
+        @if (emailData().cc.length) {
           <p>
-            <ion-text>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}:</ion-text> {{ emailData.cc.join(', ') }}
+            <ion-text>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}:</ion-text> {{ emailData().cc.join(', ') }}
           </p>
         }
-        @if (emailData.bcc.length) {
+        @if (emailData().bcc.length) {
           <p>
-            <ion-text>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}:</ion-text> {{ emailData.bcc.join(', ') }}
+            <ion-text>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}:</ion-text> {{ emailData().bcc.join(', ') }}
           </p>
         }
       </div>
@@ -114,10 +114,7 @@ export class IDEAEmailDataComponent implements OnInit {
   /**
    * The email data to manage.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() emailData: EmailData;
+  readonly emailData = input<EmailData>();
   /**
    * The variables the user can use for subject and content.
    */
@@ -125,17 +122,11 @@ export class IDEAEmailDataComponent implements OnInit {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() icon: string;
+  readonly icon = input<string>();
   /**
    * The color of the icon.
    */
@@ -182,9 +173,9 @@ export class IDEAEmailDataComponent implements OnInit {
     const modal = await this._modal.create({
       component: IDEAEmailDataConfigurationComponent,
       componentProps: {
-        emailData: this.emailData,
+        emailData: this.emailData(),
         variables: this.variables(),
-        title: this.label,
+        title: this.label(),
         disabled: this.disabled(),
         lines: this.lines()
       }

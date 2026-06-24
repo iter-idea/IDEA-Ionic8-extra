@@ -1,4 +1,4 @@
-import { Component, Input, inject, OnInit, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonCheckbox,
@@ -207,7 +207,7 @@ export class IDEAInlineCheckerComponent {
             [placeholder]="searchPlaceholder() || ('IDEA_COMMON.CHECKER.SEARCH' | translate)"
             (ionInput)="search($event.target.value)"
           />
-          @if (limitSelectionToNum !== 1) {
+          @if (limitSelectionToNum() !== 1) {
             <ion-buttons slot="end">
               <ion-button
                 [title]="'IDEA_COMMON.CHECKER.SHOW_ONLY_CHECKED' | translate"
@@ -218,12 +218,12 @@ export class IDEAInlineCheckerComponent {
             </ion-buttons>
           }
         </ion-toolbar>
-        @if (limitSelectionToNum !== 1) {
+        @if (limitSelectionToNum() !== 1) {
           <ion-toolbar color="ideaToolbar" class="secondary">
             <ion-title>
               {{ previewTextKey() | translate: { num: getNumChecked() } }}
-              @if (limitSelectionToNum) {
-                <span>{{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum } }}</span>
+              @if (limitSelectionToNum()) {
+                <span>{{ 'IDEA_COMMON.CHECKER.LIMIT_OF_NUM' | translate: { num: limitSelectionToNum() } }}</span>
               }
             </ion-title>
           </ion-toolbar>
@@ -232,7 +232,7 @@ export class IDEAInlineCheckerComponent {
     }
     <ion-content>
       <ion-list>
-        @if (limitSelectionToNum === 1) {
+        @if (limitSelectionToNum() === 1) {
           @for (check of filteredChecks; track check.value) {
             <ion-item color="white" button (click)="selectSingle(check)">
               <ion-label>{{ check.name }}</ion-label>
@@ -250,7 +250,7 @@ export class IDEAInlineCheckerComponent {
               <ion-item color="white">
                 <ion-reorder slot="start" />
                 <ion-checkbox
-                  [disabled]="!check.checked && limitSelectionToNum && getNumChecked() >= limitSelectionToNum"
+                  [disabled]="!check.checked && limitSelectionToNum() && getNumChecked() >= limitSelectionToNum()"
                   [(ngModel)]="check.checked"
                 >
                   {{ check.name }}
@@ -321,10 +321,7 @@ class IDEAInlineChecksComponent implements OnInit {
    * Limit the number of selectable elements to the value provided.
    * If this number is forced to `1`, the component turns into a single selection.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() limitSelectionToNum: number;
+  readonly limitSelectionToNum = input<number>();
 
   readonly searchbar = viewChild<IonSearchbar>('searchbar');
 

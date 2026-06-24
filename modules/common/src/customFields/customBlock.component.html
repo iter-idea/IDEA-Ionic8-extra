@@ -1,51 +1,51 @@
-@for (s of blockMeta.sectionsLegend; track s) {
+@for (s of blockMeta().sectionsLegend; track s) {
   <ion-list class="aList customBlockList">
     <ion-list-header>
       <ion-label>
-        <h2 [attr.toc]="blockMeta.sections[s].name | label">{{ blockMeta.sections[s].name | label }}</h2>
-        <p>{{ blockMeta.sections[s].description | label }}</p>
+        <h2 [attr.toc]="blockMeta().sections[s].name | label">{{ blockMeta().sections[s].name | label }}</h2>
+        <p>{{ blockMeta().sections[s].description | label }}</p>
       </ion-label>
     </ion-list-header>
-    @for (f of blockMeta.sections[s].fieldsLegend; track f) {
+    @for (f of blockMeta().sections[s].fieldsLegend; track f) {
       <div>
-        @if (blockMeta.sections[s].fields[f].type === CFT.ENUM) {
+        @if (blockMeta().sections[s].fields[f].type === CFT.ENUM) {
           <idea-select
             [data]="
-              blockMeta.sections[s].fields[f].getEnumAsSuggestion(_translate.getCurrentLang(), _translate.languages())
+              blockMeta().sections[s].fields[f].getEnumAsSuggestion(_translate.getCurrentLang(), _translate.languages())
             "
             [lines]="lines()"
             [description]="
-              blockMeta.sections[s].fields[f].getEnumElement(
-                sections[s][f],
+              blockMeta().sections[s].fields[f].getEnumElement(
+                sections()[s][f],
                 _translate.getCurrentLang(),
                 _translate.languages()
               )
             "
-            [label]="blockMeta.sections[s].fields[f].name | label"
+            [label]="blockMeta().sections[s].fields[f].name | label"
             [icon]="!hideDescriptions() && !disabled() ? 'help-circle-outline' : null"
-            [iconColor]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
+            [iconColor]="(blockMeta().sections[s].fields[f].description | label) ? 'primary' : 'medium'"
             [placeholder]="'COMMON.TAP_TO_SELECT' | translate"
-            [searchPlaceholder]="blockMeta.sections[s].fields[f].name | label"
+            [searchPlaceholder]="blockMeta().sections[s].fields[f].name | label"
             [hideIdFromUI]="true"
             [disabled]="disabled()"
-            [obligatory]="blockMeta.sections[s].fields[f].obligatory"
+            [obligatory]="blockMeta().sections[s].fields[f].obligatory"
             [class.fieldHasError]="hasFieldAnError(errorPrefix() + 'sections.' + s + '.' + f)"
-            (select)="$event ? (sections[s][f] = $event?.value) : null"
+            (select)="$event ? (sections()[s][f] = $event?.value) : null"
             (iconSelect)="openDescription(s, f, $event)"
           />
         }
         @if (
-          blockMeta.sections[s].fields[f].type === CFT.STRING ||
-          blockMeta.sections[s].fields[f].type === CFT.NUMBER ||
-          blockMeta.sections[s].fields[f].type === CFT.TEXT
+          blockMeta().sections[s].fields[f].type === CFT.STRING ||
+          blockMeta().sections[s].fields[f].type === CFT.NUMBER ||
+          blockMeta().sections[s].fields[f].type === CFT.TEXT
         ) {
           <ion-item
             [lines]="lines()"
             [class.fieldHasError]="hasFieldAnError(errorPrefix() + 'sections.' + s + '.' + f)"
           >
             <ion-label position="stacked" class="ion-text-wrap">
-              {{ blockMeta.sections[s].fields[f].name | label }}
-              @if (blockMeta.sections[s].fields[f].obligatory && !disabled()) {
+              {{ blockMeta().sections[s].fields[f].name | label }}
+              @if (blockMeta().sections[s].fields[f].obligatory && !disabled()) {
                 <ion-text class="obligatoryDot" />
               }
             </ion-label>
@@ -55,30 +55,30 @@
                 slot="start"
                 class="marginTop"
                 [disabled]="!hasDescription(s, f)"
-                [color]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
+                [color]="(blockMeta().sections[s].fields[f].description | label) ? 'primary' : 'medium'"
                 (click)="openDescription(s, f, $event)"
               >
                 <ion-icon name="help-circle-outline" slot="icon-only" />
               </ion-button>
             }
-            @if (blockMeta.sections[s].fields[f].type === CFT.STRING) {
-              <ion-input type="text" [disabled]="disabled()" [(ngModel)]="sections[s][f]" />
+            @if (blockMeta().sections[s].fields[f].type === CFT.STRING) {
+              <ion-input type="text" [disabled]="disabled()" [(ngModel)]="sections()[s][f]" />
             }
-            @if (blockMeta.sections[s].fields[f].type === CFT.NUMBER) {
+            @if (blockMeta().sections[s].fields[f].type === CFT.NUMBER) {
               <ion-input
                 type="number"
-                [min]="blockMeta.sections[s].fields[f].min"
-                [max]="blockMeta.sections[s].fields[f].max"
+                [min]="blockMeta().sections[s].fields[f].min"
+                [max]="blockMeta().sections[s].fields[f].max"
                 [disabled]="disabled()"
-                [(ngModel)]="sections[s][f]"
+                [(ngModel)]="sections()[s][f]"
               />
             }
-            @if (blockMeta.sections[s].fields[f].type === CFT.TEXT) {
-              <ion-textarea [rows]="3" [autoGrow]="true" [disabled]="disabled()" [(ngModel)]="sections[s][f]" />
+            @if (blockMeta().sections[s].fields[f].type === CFT.TEXT) {
+              <ion-textarea [rows]="3" [autoGrow]="true" [disabled]="disabled()" [(ngModel)]="sections()[s][f]" />
             }
           </ion-item>
         }
-        @if (blockMeta.sections[s].fields[f].type === CFT.BOOLEAN) {
+        @if (blockMeta().sections[s].fields[f].type === CFT.BOOLEAN) {
           <ion-item
             [lines]="lines()"
             [button]="!disabled()"
@@ -89,16 +89,16 @@
                 fill="clear"
                 slot="start"
                 [disabled]="!hasDescription(s, f)"
-                [color]="(blockMeta.sections[s].fields[f].description | label) ? 'primary' : 'medium'"
+                [color]="(blockMeta().sections[s].fields[f].description | label) ? 'primary' : 'medium'"
                 (click)="openDescription(s, f, $event)"
               >
                 <ion-icon name="help-circle-outline" slot="icon-only" />
               </ion-button>
             }
-            <ion-checkbox [disabled]="disabled()" [(ngModel)]="sections[s][f]">
+            <ion-checkbox [disabled]="disabled()" [(ngModel)]="sections()[s][f]">
               <span class="ion-text-wrap">
-                {{ blockMeta.sections[s].fields[f].name | label }}
-                @if (blockMeta.sections[s].fields[f].obligatory && !disabled()) {
+                {{ blockMeta().sections[s].fields[f].name | label }}
+                @if (blockMeta().sections[s].fields[f].obligatory && !disabled()) {
                   <ion-text class="obligatoryDot" />
                 }
               </span>

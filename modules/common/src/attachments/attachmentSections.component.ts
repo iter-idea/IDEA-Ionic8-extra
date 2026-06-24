@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -46,14 +46,14 @@ import { IDEATranslationsService } from '../translations/translations.service';
       </ion-item>
     }
     <ion-accordion-group>
-      <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderSectionsLegend($event)">
+      <ion-reorder-group [disabled]="disabled()" (ionItemReorder)="reorderSectionsLegend($event)">
         @for (sectionKey of attachmentSections().sectionsLegend; track sectionKey) {
-          @if (disabled) {
+          @if (disabled()) {
             <ion-accordion>
               <ion-item
                 slot="header"
-                [button]="!disabled"
-                [detail]="!disabled"
+                [button]="!disabled()"
+                [detail]="!disabled()"
                 [lines]="lines()"
                 [color]="color()"
                 (click)="manageSection(sectionKey)"
@@ -82,8 +82,8 @@ import { IDEATranslationsService } from '../translations/translations.service';
           } @else {
             <ion-item
               slot="header"
-              [button]="!disabled"
-              [detail]="!disabled"
+              [button]="!disabled()"
+              [detail]="!disabled()"
               [lines]="lines()"
               [color]="color()"
               (click)="manageSection(sectionKey)"
@@ -107,7 +107,7 @@ import { IDEATranslationsService } from '../translations/translations.service';
         }
       </ion-reorder-group>
     </ion-accordion-group>
-    @if (!disabled) {
+    @if (!disabled()) {
       <div class="ion-padding ion-text-center">
         <ion-button size="small" color="primary" (click)="addNewSection()">
           {{ 'IDEA_COMMON.ATTACHMENTS.ADD_SECTION' | translate }}
@@ -141,10 +141,7 @@ export class IDEAAttachmentSectionsComponent {
   /**
    * Whether the component is disabled or not.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() disabled = false;
+  readonly disabled = input(false);
   /**
    * Lines preferences for the component.
    */
@@ -163,11 +160,12 @@ export class IDEAAttachmentSectionsComponent {
   }
 
   async manageSection(s: string): Promise<void> {
-    if (this.disabled) return;
+    const disabled = this.disabled();
+    if (disabled) return;
     const componentProps = {
       section: this.attachmentSections().sections[s],
       entityPath: this.entityPath(),
-      disabled: this.disabled,
+      disabled: disabled,
       lines: this.lines(),
       downloadCallback: (url: string): void => this.download.emit(url)
     };

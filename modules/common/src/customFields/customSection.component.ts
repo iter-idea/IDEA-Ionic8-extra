@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -45,16 +45,11 @@ export class IDEACustomSectionComponent {
   /**
    * The custom fields to manage.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() fields: any;
+  readonly fields = input<any>();
   /**
    * The CustomSectionMeta that describe the custom fields.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() sectionMeta: CustomSectionMeta;
+  readonly sectionMeta = input<CustomSectionMeta>();
   /**
    * Whether the component is enabled or not.
    */
@@ -84,10 +79,10 @@ export class IDEACustomSectionComponent {
 
   async openDescription(fieldKey: string, event: any): Promise<void> {
     if (event) event.stopPropagation();
-    const message = this._translate._label(this.sectionMeta.fields[fieldKey].description);
+    const message = this._translate._label(this.sectionMeta().fields[fieldKey].description);
     if (!message) return;
 
-    const header = this._translate._label(this.sectionMeta.fields[fieldKey].name);
+    const header = this._translate._label(this.sectionMeta().fields[fieldKey].name);
     const alert = await this._alert.create({ header, message, buttons: ['OK'], cssClass: 'alertLongOptions' });
     await alert.present();
   }

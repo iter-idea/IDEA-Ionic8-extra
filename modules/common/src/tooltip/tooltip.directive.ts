@@ -54,9 +54,9 @@ export class IDEATooltipDirective implements OnDestroy {
     this.tooltipRef = this._viewContainerRef.createComponent(IDEATooltipComponent, { injector: this._injector });
 
     const instance = this.tooltipRef.instance;
-    instance.title = this._translate._(`${this.hint()}_T`);
-    instance.text = this._translate._(this.hint());
-    instance.link = this._translate._(`${this.hint()}_L`);
+    this.tooltipRef.setInput('title', this._translate._(`${this.hint()}_T`));
+    this.tooltipRef.setInput('text', this._translate._(this.hint()));
+    this.tooltipRef.setInput('link', this._translate._(`${this.hint()}_L`));
     instance.closed.subscribe((): void => {
       this.hideTooltip();
     });

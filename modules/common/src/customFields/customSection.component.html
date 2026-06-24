@@ -1,34 +1,34 @@
-@for (f of sectionMeta.fieldsLegend; track f) {
+@for (f of sectionMeta().fieldsLegend; track f) {
   <div>
-    @if (sectionMeta.fields[f].type === CFT.ENUM) {
+    @if (sectionMeta().fields[f].type === CFT.ENUM) {
       <idea-select
-        [data]="sectionMeta.fields[f].getEnumAsSuggestion(_translate.getCurrentLang(), _translate.languages())"
+        [data]="sectionMeta().fields[f].getEnumAsSuggestion(_translate.getCurrentLang(), _translate.languages())"
         [lines]="lines()"
         [description]="
-          sectionMeta.fields[f].getEnumElement(fields[f], _translate.getCurrentLang(), _translate.languages())
+          sectionMeta().fields[f].getEnumElement(fields()[f], _translate.getCurrentLang(), _translate.languages())
         "
-        [label]="sectionMeta.fields[f].name | label"
+        [label]="sectionMeta().fields[f].name | label"
         [icon]="!hideDescriptions() && !disabled() ? 'help-circle-outline' : null"
-        [iconColor]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
+        [iconColor]="(sectionMeta().fields[f].description | label) ? 'primary' : 'medium'"
         [placeholder]="'COMMON.TAP_TO_SELECT' | translate"
-        [searchPlaceholder]="sectionMeta.fields[f].name | label"
+        [searchPlaceholder]="sectionMeta().fields[f].name | label"
         [hideIdFromUI]="true"
         [disabled]="disabled()"
-        [obligatory]="sectionMeta.fields[f].obligatory"
+        [obligatory]="sectionMeta().fields[f].obligatory"
         [class.fieldHasError]="hasFieldAnError(errorPrefix() + f)"
-        (select)="$event ? (fields[f] = $event?.value) : null"
+        (select)="$event ? (fields()[f] = $event?.value) : null"
         (iconSelect)="openDescription(f, $event)"
       />
     }
     @if (
-      sectionMeta.fields[f].type === CFT.STRING ||
-      sectionMeta.fields[f].type === CFT.NUMBER ||
-      sectionMeta.fields[f].type === CFT.TEXT
+      sectionMeta().fields[f].type === CFT.STRING ||
+      sectionMeta().fields[f].type === CFT.NUMBER ||
+      sectionMeta().fields[f].type === CFT.TEXT
     ) {
       <ion-item [lines]="lines()" [class.fieldHasError]="hasFieldAnError(errorPrefix() + f)">
         <ion-label position="stacked" class="ion-text-wrap">
-          {{ sectionMeta.fields[f].name | label }}
-          @if (sectionMeta.fields[f].obligatory && !disabled()) {
+          {{ sectionMeta().fields[f].name | label }}
+          @if (sectionMeta().fields[f].obligatory && !disabled()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
@@ -37,45 +37,45 @@
             fill="clear"
             slot="start"
             class="marginTop"
-            [color]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
+            [color]="(sectionMeta().fields[f].description | label) ? 'primary' : 'medium'"
             (click)="openDescription(f, $event)"
           >
             <ion-icon icon="help-circle-outline" slot="icon-only" />
           </ion-button>
         }
-        @if (sectionMeta.fields[f].type === CFT.STRING) {
-          <ion-input type="text" [disabled]="disabled()" [(ngModel)]="fields[f]" />
+        @if (sectionMeta().fields[f].type === CFT.STRING) {
+          <ion-input type="text" [disabled]="disabled()" [(ngModel)]="fields()[f]" />
         }
-        @if (sectionMeta.fields[f].type === CFT.NUMBER) {
+        @if (sectionMeta().fields[f].type === CFT.NUMBER) {
           <ion-input
             type="number"
-            [min]="sectionMeta.fields[f].min"
-            [max]="sectionMeta.fields[f].max"
+            [min]="sectionMeta().fields[f].min"
+            [max]="sectionMeta().fields[f].max"
             [disabled]="disabled()"
-            [(ngModel)]="fields[f]"
+            [(ngModel)]="fields()[f]"
           />
         }
-        @if (sectionMeta.fields[f].type === CFT.TEXT) {
-          <ion-textarea [rows]="3" [autoGrow]="true" [disabled]="disabled()" [(ngModel)]="fields[f]" />
+        @if (sectionMeta().fields[f].type === CFT.TEXT) {
+          <ion-textarea [rows]="3" [autoGrow]="true" [disabled]="disabled()" [(ngModel)]="fields()[f]" />
         }
       </ion-item>
     }
-    @if (sectionMeta.fields[f].type === CFT.BOOLEAN) {
+    @if (sectionMeta().fields[f].type === CFT.BOOLEAN) {
       <ion-item [lines]="lines()" [button]="!disabled()" [class.fieldHasError]="hasFieldAnError(errorPrefix() + f)">
         @if (!hideDescriptions() && !disabled()) {
           <ion-button
             fill="clear"
             slot="start"
-            [color]="(sectionMeta.fields[f].description | label) ? 'primary' : 'medium'"
+            [color]="(sectionMeta().fields[f].description | label) ? 'primary' : 'medium'"
             (click)="openDescription(f, $event)"
           >
             <ion-icon icon="help-circle-outline" slot="icon-only" />
           </ion-button>
         }
-        <ion-checkbox [disabled]="disabled()" [(ngModel)]="fields[f]">
+        <ion-checkbox [disabled]="disabled()" [(ngModel)]="fields()[f]">
           <span class="ion-text-wrap">
-            {{ sectionMeta.fields[f].name | label }}
-            @if (sectionMeta.fields[f].obligatory && !disabled()) {
+            {{ sectionMeta().fields[f].name | label }}
+            @if (sectionMeta().fields[f].obligatory && !disabled()) {
               <ion-text class="obligatoryDot" />
             }
           </span>

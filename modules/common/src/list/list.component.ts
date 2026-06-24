@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
@@ -14,40 +14,40 @@ import { IDEAListElementsComponent } from './listElements.component';
       class="listItem"
       [color]="color()"
       [lines]="lines()"
-      [button]="!disabled"
+      [button]="!disabled()"
       [disabled]="isOpening"
       [title]="placeholder() || ''"
-      [class.withLabel]="label"
+      [class.withLabel]="label()"
       (click)="openList()"
     >
-      @if (icon) {
+      @if (icon()) {
         <ion-button
           fill="clear"
           slot="start"
           [color]="iconColor()"
-          [class.marginTop]="label"
+          [class.marginTop]="label()"
           (click)="doIconSelect($event)"
         >
-          <ion-icon [icon]="icon" slot="icon-only" />
+          <ion-icon [icon]="icon()" slot="icon-only" />
         </ion-button>
       }
-      @if (label) {
-        <ion-label position="stacked" [class.selectable]="!disabled">
-          {{ label }}
-          @if (obligatory() && !disabled) {
+      @if (label()) {
+        <ion-label position="stacked" [class.selectable]="!disabled()">
+          {{ label() }}
+          @if (obligatory() && !disabled()) {
             <ion-text class="obligatoryDot" />
           }
         </ion-label>
       }
       <ion-label
         class="description"
-        [class.selectable]="!disabled"
+        [class.selectable]="!disabled()"
         [class.placeholder]="!getPreview() || noPreviewText()"
       >
         {{ getPreview() || placeholder() }}
       </ion-label>
-      @if (!disabled) {
-        <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled" />
+      @if (!disabled()) {
+        <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled()" />
       }
     </ion-item>
   `,
@@ -104,17 +104,11 @@ export class IDEAListComponent {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() label: string;
+  readonly label = input<string>();
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() icon: string;
+  readonly icon = input<string>();
   /**
    * The color of the icon.
    */
@@ -146,10 +140,7 @@ export class IDEAListComponent {
   /**
    * If true, the component is disabled.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   /**
    * If true, the obligatory dot is shown.
    */
@@ -170,7 +161,7 @@ export class IDEAListComponent {
   isOpening = false;
 
   async openList(): Promise<void> {
-    if (this.disabled || this.isOpening) return;
+    if (this.disabled() || this.isOpening) return;
     this.isOpening = true;
     const modal = await this._modal.create({
       component: IDEAListElementsComponent,

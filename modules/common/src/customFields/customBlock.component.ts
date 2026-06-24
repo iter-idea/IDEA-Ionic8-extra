@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -49,16 +49,11 @@ export class IDEACustomBlockComponent {
   /**
    * The custom sections to manage.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() sections: any;
+  readonly sections = input<any>();
   /**
    * The CustomBlockMeta that describe the custom sections.
    */
-  // TODO: Skipped for migration because:
-  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
-  //  and migrating would break narrowing currently.
-  @Input() blockMeta: CustomBlockMeta;
+  readonly blockMeta = input<CustomBlockMeta>();
   /**
    * Whether the component is enabled or not.
    */
@@ -87,14 +82,14 @@ export class IDEACustomBlockComponent {
   }
 
   hasDescription(sectionKey: string, fieldKey: string): boolean {
-    return !!this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+    return !!this._translate._label(this.blockMeta().sections[sectionKey].fields[fieldKey].description);
   }
   async openDescription(sectionKey: string, fieldKey: string, event: any): Promise<void> {
     if (event) event.stopPropagation();
-    const message = this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].description);
+    const message = this._translate._label(this.blockMeta().sections[sectionKey].fields[fieldKey].description);
     if (!message) return;
 
-    const header = this._translate._label(this.blockMeta.sections[sectionKey].fields[fieldKey].name);
+    const header = this._translate._label(this.blockMeta().sections[sectionKey].fields[fieldKey].name);
     const alert = await this._alert.create({ header, message, buttons: ['OK'], cssClass: 'alertLongOptions' });
     await alert.present();
   }
