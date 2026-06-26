@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Platform, IonItem, IonButton, IonIcon, IonInput, IonLabel, IonSpinner } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
@@ -21,6 +21,7 @@ export class IDEAttachmentsComponent implements OnInit {
   private _message = inject(IDEAMessageService);
   private _tc = inject(IDEATinCanService);
   private _api = inject(IDEAAWSAPIService);
+  private _cd = inject(ChangeDetectorRef);
   _offline = inject(IDEAOfflineService);
   _translate = inject(IDEATranslationsService);
 
@@ -128,6 +129,8 @@ export class IDEAttachmentsComponent implements OnInit {
       this.uploadErrors.push(name);
       this.removeAttachment(attachment);
       this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+    } finally {
+      this._cd.markForCheck(); // zoneless: re-check after the awaited upload settles
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef, input } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import {
@@ -149,6 +149,7 @@ export class IDEASignatureComponent {
   private _modal = inject(ModalController);
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
+  private _cd = inject(ChangeDetectorRef);
 
   /**
    * An existing signature to use.
@@ -202,6 +203,7 @@ export class IDEASignatureComponent {
     });
     modal.onDidDismiss().then(res => {
       if (res && res.data && res.data.value) this.signature.signatory = res.data.value;
+      this._cd.markForCheck(); // zoneless: re-check so the picked signatory is rendered
     });
     modal.present();
   }

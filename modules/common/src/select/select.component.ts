@@ -5,6 +5,7 @@ import {
   OnChanges,
   inject,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   output,
   input
 } from '@angular/core';
@@ -22,6 +23,7 @@ import { IDEASuggestionsComponent } from './suggestions.component';
 })
 export class IDEASelectComponent implements OnChanges {
   private _modal = inject(ModalController);
+  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The description to show in the field.
@@ -220,6 +222,7 @@ export class IDEASelectComponent implements OnChanges {
       if (this.clearValueAfterSelection()) this.description = '';
       else if (data.name) this.description = data.name;
       else this.description = data.value;
+      this._cd.markForCheck(); // zoneless: re-check so the new selection is rendered
     });
     modal.present();
     this.isOpening = false;

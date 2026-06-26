@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -70,6 +70,7 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   private _alert = inject(AlertController);
   private _modal = inject(ModalController);
   private _message = inject(IDEAMessageService);
+  private _cd = inject(ChangeDetectorRef);
   _translate = inject(IDEATranslationsService);
 
   /**
@@ -108,6 +109,7 @@ export class IDEACustomFieldMetaComponent implements OnInit {
     const modal = await this._modal.create({ component: IDEAIconsComponent });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) this._field.icon = data;
+      this._cd.markForCheck(); // zoneless: re-check so the picked icon is rendered
     });
     await modal.present();
   }
@@ -120,6 +122,7 @@ export class IDEACustomFieldMetaComponent implements OnInit {
       const e = this._field.enum[index];
       if (this._field.enumLabels) delete this._field.enumLabels[e];
       this._field.enum.splice(index, 1);
+      this._cd.markForCheck(); // zoneless: re-check after the alert handler removes the option
     };
     const buttons = [
       { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
@@ -142,6 +145,7 @@ export class IDEACustomFieldMetaComponent implements OnInit {
       if (!this._field.enum) this._field.enum = new Array<string>();
       // add the enum and configure the enumLabel
       this._field.enum.push(data.enum);
+      this._cd.markForCheck(); // zoneless: re-check after the alert handler adds the option
       this.editEnumLabel(data.enum);
     };
 

@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, ChangeDetectorRef, output, input } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Check } from 'idea-toolbox';
 
@@ -92,6 +92,7 @@ import { IDEAChecksComponent } from './checks.component';
 export class IDEACheckerComponent {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
+  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The checks to show.
@@ -219,6 +220,8 @@ export class IDEACheckerComponent {
         this.openChecker();
       } catch (error) {
         this.data = [];
+      } finally {
+        this._cd.markForCheck(); // zoneless: re-check after the awaited data provider settles
       }
     } else this.openChecker();
   }
@@ -241,7 +244,10 @@ export class IDEACheckerComponent {
         previewTextKey: this.previewTextKey()
       }
     });
-    modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
+    modal.onDidDismiss().then(({ data }): void => {
+      if (data) this.change.emit();
+      this._cd.markForCheck(); // zoneless: re-check so the preview reflects the new selection
+    });
     modal.present();
     this.isOpening = false;
   }

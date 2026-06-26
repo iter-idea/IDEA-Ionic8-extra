@@ -1,4 +1,13 @@
-import { Component, inject, Input, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  output,
+  viewChild,
+  input
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -154,6 +163,7 @@ export class IDEAAttachmentsComponent {
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
   private _attachments = inject(IDEAAttachmentsService);
+  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The array of attachments to display and manage.
@@ -216,6 +226,8 @@ export class IDEAAttachmentsComponent {
       this.uploadErrors.push({ file: attachment.name, error: err.message });
       this.removeAttachment(attachment);
       this._message.error(err.message, { dontTranslate: true });
+    } finally {
+      this._cd.markForCheck(); // zoneless: re-check after the awaited upload settles
     }
   }
 

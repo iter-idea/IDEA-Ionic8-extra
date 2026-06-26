@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, viewChild, Input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, viewChild, Input } from '@angular/core';
 import {
   AlertController,
   ModalController,
@@ -103,6 +103,7 @@ export class IDEAListElementsComponent implements OnInit {
   private _modal = inject(ModalController);
   private _alert = inject(AlertController);
   private _translate = inject(IDEATranslationsService);
+  private _cd = inject(ChangeDetectorRef);
 
   /**
    * It should be read only until the component closure.
@@ -186,6 +187,7 @@ export class IDEAListElementsComponent implements OnInit {
               this.workingData.push(element);
               const searchbar = this.searchbar();
               this.search(searchbar ? searchbar.value : '');
+              this._cd.markForCheck(); // zoneless: re-check so the new element is rendered
             }
           }
         }
@@ -202,7 +204,8 @@ export class IDEAListElementsComponent implements OnInit {
     });
     modal.onDidDismiss().then((): void => {
       const searchbar = this.searchbar();
-      return this.search(searchbar ? searchbar.value : '');
+      this.search(searchbar ? searchbar.value : '');
+      this._cd.markForCheck(); // zoneless: re-check so the edited label is rendered
     });
     modal.present();
   }

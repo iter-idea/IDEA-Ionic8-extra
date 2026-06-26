@@ -1,4 +1,13 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  output,
+  input
+} from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Label, Languages, mdToHtml, StringVariable } from 'idea-toolbox';
 
@@ -92,6 +101,7 @@ import { IDEALabelerComponent } from './labeler.component';
 export class IDEALabelComponent implements OnInit {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
+  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The label to manage.
@@ -184,6 +194,7 @@ export class IDEALabelComponent implements OnInit {
       if (!data) return;
       this.calcHTMLContent();
       this.change.emit();
+      this._cd.markForCheck(); // zoneless: re-check so the updated content is rendered
     });
     modal.present();
     this.isOpening = false;

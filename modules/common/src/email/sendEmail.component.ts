@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -180,6 +180,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
 export class IDEASendEmailComponent implements OnInit {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
+  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The content and receivers of the email.
@@ -244,6 +245,7 @@ export class IDEASendEmailComponent implements OnInit {
     });
     modal.onDidDismiss().then(res => {
       if (res && res.data && res.data.value && !list.includes(res.data.value)) list.push(res.data.value);
+      this._cd.markForCheck(); // zoneless: re-check so the added address is rendered
     });
     modal.present();
   }

@@ -1,5 +1,5 @@
 import heic2any from 'heic2any';
-import { Component, inject, Input, OnInit, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Platform } from '@ionic/angular';
 import { IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSpinner } from '@ionic/angular/standalone';
@@ -149,6 +149,7 @@ export class IDEAOldAttachmentsComponent implements OnInit {
   private _message = inject(IDEAMessageService);
   private _tc = inject(IDEATinCanService);
   private _api = inject(IDEAAWSAPIService);
+  private _cd = inject(ChangeDetectorRef);
   _offline = inject(IDEAOfflineService);
   _translate = inject(IDEATranslationsService);
 
@@ -256,6 +257,8 @@ export class IDEAOldAttachmentsComponent implements OnInit {
       this.uploadErrors.push(name);
       this.removeAttachment(attachment);
       this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+    } finally {
+      this._cd.markForCheck(); // zoneless: re-check after the awaited upload settles
     }
   }
 

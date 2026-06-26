@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -69,6 +69,7 @@ export class IDEACustomSectionMetaComponent implements OnInit {
   private _alert = inject(AlertController);
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
+  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The CustomSectionMeta to manage.
@@ -145,6 +146,7 @@ export class IDEACustomSectionMetaComponent implements OnInit {
         this._section.displayTemplate.forEach(
           (row, i, arr): string[] => (arr[i] = row.filter(el => this._section.fieldsLegend.some(field => field === el)))
         );
+      this._cd.markForCheck(); // zoneless: re-check after the alert handler mutates the section
     };
     const header = this._translate._('COMMON.ARE_YOU_SURE');
     const buttons = [
@@ -173,6 +175,7 @@ export class IDEACustomSectionMetaComponent implements OnInit {
       // add the field to the section
       this._section.fields[key] = field;
       this._section.fieldsLegend.push(key);
+      this._cd.markForCheck(); // zoneless: re-check after the alert handler adds the field
       // open the field to configure it
       this.openField(key);
     };
@@ -214,6 +217,7 @@ export class IDEACustomSectionMetaComponent implements OnInit {
     modal.onDidDismiss().then(selection => {
       const field = selection && selection.data ? selection.data.value : null;
       if (field) this._section.displayTemplate[row].push(field);
+      this._cd.markForCheck(); // zoneless: re-check so the added field is rendered
     });
     await modal.present();
   }

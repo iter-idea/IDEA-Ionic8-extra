@@ -1,4 +1,13 @@
-import { Component, OnChanges, SimpleChanges, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  SimpleChanges,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  output,
+  input
+} from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
 import { IonItem, IonSpinner, IonBadge } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
@@ -34,6 +43,7 @@ export class IDEASentimentComponent implements OnChanges {
   protected _env = inject(IDEAEnvironment);
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
+  private _cd = inject(ChangeDetectorRef);
   _offline = inject(IDEAOfflineService);
 
   /**
@@ -74,6 +84,7 @@ export class IDEASentimentComponent implements OnChanges {
         this.sentiment = null;
       }
     }
+    this._cd.markForCheck(); // zoneless: re-check after the awaited detection settles
   }
 
   getColorBySentiment(sentiment?: Sentiment | string): string {
