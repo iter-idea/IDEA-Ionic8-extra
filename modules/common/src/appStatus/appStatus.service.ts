@@ -25,15 +25,22 @@ export class IDEAAppStatusService {
   statusFileURL: string;
 
   constructor() {
-    this.storageKey == (this._env.idea.project || 'app').concat('_LAST_MESSAGE');
-    this.statusFileURL = `${window.location.hostname === 'localhost' ? '' : window.location.origin}/assets/status.json`;
+    this.storageKey = (this._env.idea.project || 'app').concat('_LAST_MESSAGE');
+    this.statusFileURL =
+      this._env.idea.app?.statusFileURL ??
+      `${window.location.hostname === 'localhost' ? '' : window.location.origin}/assets/status.json`;
   }
 
   /**
    * Check the app's status and take according actions.
    */
   async check(options: { viaApi?: boolean; toastColor?: string; toastPosition?: string } = {}): Promise<AppStatus> {
-    const appStatus = await this.getStatus(options.viaApi);
+    let appStatus: AppStatus;
+    try {
+      appStatus = await this.getStatus(options.viaApi);
+    } catch (error) {
+      return new AppStatus({ version: this._env.idea.app.version, latestVersion: this._env.idea.app.version });
+    }
     if (appStatus.inMaintenance || appStatus.mustUpdate) await this._nav.navigateRoot(['app-status']);
     else await this.presentToast(appStatus, { color: options.toastColor, position: options.toastPosition });
     return appStatus;

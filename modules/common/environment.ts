@@ -18,6 +18,7 @@ export interface IDEAEnvironmentConfiguration {
       appleStoreURL?: string;
       googleStoreURL?: string;
       maxFileUploadSizeMB?: number;
+      statusFileURL?: string;
     };
     api?: {
       url: string;
