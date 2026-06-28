@@ -98,7 +98,7 @@
     },
     "EMAIL": {
       "ATTACHMENTS": "Attachments",
-      "BCC": "Bbc",
+      "BCC": "Bcc",
       "CC": "Cc",
       "CHOOSE_OR_ADD_AN_ADDRESS": "Choose or add an email address",
       "CONTENT": "Content",
@@ -184,7 +184,7 @@
     },
     "SIGNATURE": {
       "CANCEL": "Cancel",
-      "CHOOSE_FROM_CONTACTS": "Scegli dai contatti",
+      "CHOOSE_FROM_CONTACTS": "Choose from contacts",
       "CLEAR_SIGNATURE": "Clear the signature",
       "NAME_AND_SURNAME": "Name and surname",
       "SAVE_SIGNATURE": "Save the signature",

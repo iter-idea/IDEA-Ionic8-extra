@@ -2,15 +2,15 @@
   "IDEA_UNCOMMON": {
     "ADDRESS": {
       "ADDRESS": "Dirección",
-      "ADDRESS2": "Información de dirección suplementaria  ",
+      "ADDRESS2": "Información de dirección suplementaria",
       "ADDRESS2_HINT": "Apartamento, bloque, edificio, piso, etc.",
       "ADDRESS_HINT": "Codigo postal, buzón, nombre de la compaía, c/o",
       "CITY": "Ciudad",
       "CITY_HINT": "Ciudad",
-      "COMPLETE_ADDRESS": "Dirección ",
+      "COMPLETE_ADDRESS": "Dirección",
       "COMPLETE_ADDRESS_HINT": "Completa tu dirección; tap para más detalles",
       "CONTACT": "Nombre completo",
-      "CONTACT_HINT": "Nombre completo del contacto/receptor ",
+      "CONTACT_HINT": "Nombre completo del contacto/receptor",
       "COUNTRY": "País",
       "COUNTRY_HINT": "País",
       "EMAIL": "Correo electrónico",
@@ -59,7 +59,7 @@
       "AM": "Mañana",
       "FROM": "De",
       "MINUTES_PREFERENCE": "Minutos de preferencia",
-      "PERIOD": "Período ",
+      "PERIOD": "Período",
       "PM": "Tarde",
       "TO": "Para"
     },
@@ -67,7 +67,7 @@
       "CLOSE_WITHOUT_SAVING": "Cerrar sin guardar",
       "SAVE_AND_CLOSE": "Guardar y cerrar",
       "TITLE": "Editor de rebajas",
-      "TOOLBAR": { "BOLD": "Negrita", "ITALIC": "Italic", "STRIKE": "Huelga" },
+      "TOOLBAR": { "BOLD": "Negrita", "ITALIC": "Cursiva", "STRIKE": "Tachado" },
       "VARIABLES": "Variables"
     },
     "OFFLINE": {
@@ -89,7 +89,7 @@
       "NEVER": "Nunca",
       "NOW": "Ahora",
       "NO_ELEMENTS_TO_UPLOAD": "No hay elementos para cargar",
-      "OFFLINE_MANAGER": "Administrador sin conexión\n",
+      "OFFLINE_MANAGER": "Administrador sin conexión",
       "REQUEST_FAILED_EXPLANATION_I": "La carga para este recurso falló; inténtelo de nuevo.",
       "REQUEST_FAILED_EXPLANATION_II": "Si el error persiste, cancelar la solicitud para continuar.",
       "REQUEST_FAILED_EXPLANATION_III": "Puedes solicitar un registro del error para un análisis adicional.",
@@ -100,8 +100,8 @@
       "YOU_ARE_OFFLINE": "Está fuera de línea"
     },
     "SENTIMENT": {
-      "RESULT": { "MIXED": "Mezclado", "NEGATIVE": "Negativo", "NEUTRAL": "Neutral ", "POSITIVE": "Positivo" },
-      "RESULT_HINT": "Detectamos un sentimiento de {{sentimiento}} general del texto"
+      "RESULT": { "MIXED": "Mezclado", "NEGATIVE": "Negativo", "NEUTRAL": "Neutral", "POSITIVE": "Positivo" },
+      "RESULT_HINT": "Detectamos un sentimiento de {{sentiment}} general del texto"
     }
   }
 }

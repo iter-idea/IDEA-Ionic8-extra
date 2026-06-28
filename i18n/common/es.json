@@ -1,5 +1,35 @@
 {
   "IDEA_COMMON": {
+    "APP_STATUS": {
+      "UPDATE": "Actualizar",
+      "NEW_VERSION": "Nueva versión disponible: {{newVersion}}",
+      "MUST_UPDATE": "Actualización necesaria",
+      "MAINTENANCE": "La aplicación está en modo de mantenimiento",
+      "GOT_IT": "Entendido",
+      "EVERYTHING_IS_OK": "¡Todo en orden!"
+    },
+    "ATTACHMENTS": {
+      "ATTACHMENTS": "Adjuntos",
+      "ERROR_UPLOADING_ATTACHMENT": "Error al subir el adjunto",
+      "HIDE_ERROR": "Ocultar el error",
+      "DOWNLOAD_ATTACHMENT": "Descargar adjunto",
+      "REMOVE_ATTACHMENT": "Eliminar adjunto",
+      "TAP_TO_ADD_ATTACHMENT": "Pulsa para añadir un adjunto...",
+      "ALLOWED_FORMATS_AND_SIZE": "Formatos permitidos: {{formats}}; tamaño máximo del archivo: {{size}}MB.",
+      "UPLOADING": "Subiendo...",
+      "FILE_IS_TOO_BIG": "El archivo es demasiado grande (máx: {{maxSize}} MB)",
+      "NO_ATTACHMENTS": "Ningún adjunto",
+      "ADD_SECTION": "Añadir una sección",
+      "ADD_SECTION_HINT": "Elige un nombre para la nueva sección",
+      "DUPLICATED_KEY": "Ya existe una sección con ese nombre",
+      "SECTION_NAME": "Nombre",
+      "SECTION_NAME_P": "El nombre para identificar la sección",
+      "SECTION_DESCRIPTION": "Descripción",
+      "SECTION_DESCRIPTION_P": "Explicación de la sección para los usuarios",
+      "NO_ELEMENTS": "Ningún elemento",
+      "DELETE_EMPTY_SECTION": "Antes de eliminar la sección, debes eliminar todos sus adjuntos.",
+      "MANAGE_SECTION": "Gestionar sección"
+    },
     "CHECKER": {
       "ALL": "Todos",
       "CLOSE_WITHOUT_SELECTING": "Cerrar sin seleccionar nada",
@@ -68,9 +98,9 @@
     },
     "EMAIL": {
       "ATTACHMENTS": "Archivos adjuntos",
-      "BCC": "Bbc",
+      "BCC": "Cco",
       "CC": "Cc",
-      "CHOOSE_OR_ADD_AN_ADDRESS": "Elige u añade una dirección de correo electrónico ",
+      "CHOOSE_OR_ADD_AN_ADDRESS": "Elige u añade una dirección de correo electrónico",
       "CONTENT": "Contenido",
       "EMAIL_DATA": "Datos del correo",
       "NO_ADDRESSES": "Ninguna dirección",
@@ -112,7 +142,7 @@
       "BREADCRUMB_II": "Puede navegar por las áreas internas de la plantilla tocándolas.",
       "CHOOSE_WHERE_TO_MOVE_FIELD": "Elegir dónde mover el campo",
       "COMPLEX_FIELD": "Campo complejo",
-      "EDIT_SECTIONS": "Editar las secciones ",
+      "EDIT_SECTIONS": "Editar las secciones",
       "EDIT_TEMPLATE": "Editar la plantilla",
       "HEADER": "Encabezado",
       "HEADER_I": "Fila de encabezado, para separar dos áreas de la plantilla",
@@ -133,8 +163,8 @@
       "REMOVE_SECTION": "Eliminar la sección de la plantilla",
       "REPEATED_INNER_SECTION": "Sección interna repetida",
       "REPEATED_INNER_SECTION_I": "Sección secundaria de la actual; se utiliza para administrar campos de un contexto interno. Sobre la base de los datos disponibles, podría repetirse más veces cuando se imprima.",
-      "SECTION": "Sección ",
-      "SECTIONS": "Secciones ",
+      "SECTION": "Sección",
+      "SECTIONS": "Secciones",
       "SIMPLE_FIELD": "Campo simple",
       "SIZE": "Tamaño",
       "WHAT_DO_YOU_WANT_TO_DO_WITH_FIELD": "¿Qué quieres hacer con el campo?",
@@ -148,13 +178,13 @@
       "NO_ELEMENTS_FOUND": "No se encontraron elementos",
       "NO_ELEMENTS_FOUND_START_TYPING_TO_ADD_ONE": "No se encontraron elementos; comienza a escribir para agregar uno nuevo.",
       "SEARCH": "Buscar",
-      "SELECT_": "Seleccione {{sugerencia}}",
+      "SELECT_": "Seleccione {{suggestion}}",
       "SHOW_DETAILS": "Mostrar detalles",
       "TAP_TO_FILTER": "Seleccionar para filtrar"
     },
     "SIGNATURE": {
       "CANCEL": "Cancelar",
-      "CHOOSE_FROM_CONTACTS": "Eligir de los contactos",
+      "CHOOSE_FROM_CONTACTS": "Elegir de los contactos",
       "CLEAR_SIGNATURE": "Borrar la firma",
       "NAME_AND_SURNAME": "Nombre y apellidos",
       "SAVE_SIGNATURE": "Guardar la firma",
@@ -163,6 +193,9 @@
       "SIGNATURE_EXPLANATION": "Firme abajo",
       "SIGNATURE_IS_TOO_COMPLEX": "La firma es demasiado compleja; por favor, firma de nuevo",
       "VERIFY_SIGNATORY_AND_SIGNATURE": "Verifica la firma y el firmante"
+    },
+    "TOOLTIP": {
+      "LEARN_MORE": "Más información"
     }
   }
 }

@@ -26,8 +26,6 @@
       "COMMON_PASSWORD_INTERNAL": "Evita caratteri da liste di password non sicure (database interno).",
       "COMMON_PASSWORD_EXTERNAL": "Evita caratteri da liste di password non sicure (database esterno)."
     },
-    "PASSWORD_POLICY_TITLE": "Regole password",
-    "PASSWORD_POLICY_DEFAULT": "La password deve contenere almeno 8 caratteri.",
     "CHOOSE_A_PASSWORD": "Scegli una password",
     "CONFIRMATION_LINK_SENT": "Codice di conferma inviato",
     "CONFIRM_ACCOUNT": "Conferma account",

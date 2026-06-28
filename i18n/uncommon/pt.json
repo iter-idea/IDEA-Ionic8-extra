@@ -31,12 +31,14 @@
       "YEAR": "Ano"
     },
     "CONTACTS": {
+      "CALL": "Ligar",
       "EMAIL": "E-mail",
       "EMAIL_HINT": "Endereço de correio eletronico",
       "NAME": "Nome",
       "NAME_HINT": "Nome completo do contacto",
       "PHONE": "Número de telemóvel",
-      "PHONE_HINT": "Numero de telemóvel"
+      "PHONE_HINT": "Numero de telemóvel",
+      "SEND_EMAIL": "Enviar email"
     },
     "DURATION": { "HH": "hh", "HOURS": "Horas", "MINUTES": "Minutos", "MM": "mm", "SECONDS": "Segundos", "SS": "ss" },
     "ECHO": {
@@ -46,12 +48,20 @@
       "EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS": "A conta externa já está ligada. Volte para a página dos calendários para completar a configuração",
       "GITHUB_SOURCE_INTEGRATION_ERROR": "Erro ao integrar o GitHub; tente outra vez",
       "GITHUB_SOURCE_INTEGRATION_SUCCESS": "O GitHub foi conectado. Agora pode completar a configuração",
-      "GO_TO_HOME_HINT": "Clique para ir para a página inicial do serviço",
-      "HOMEPAGE": "Voltar à página inicial",
+      "INVALID_ACTION": "Ação inválida",
       "REQUEST_FAILED": "O pedido falhou; tente outra vez.",
       "TEAM_JOINED": "Você juntou-se à equipa com sucesso.",
       "TRELLO_SOURCE_INTEGRATION_ERROR": "Erro ao integrar o Trello; tente outra vez",
-      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copie e cole o objeto seguinte na pagina anterior para completar a configuração: {{token}}"
+      "TRELLO_SOURCE_INTEGRATION_SUCCESS": "Copie e cole o objeto seguinte na pagina anterior para completar a configuração: {{token}}",
+      "YOU_CAN_CLOSE_THE_PAGE": "Já pode fechar esta página."
+    },
+    "FTTT": {
+      "AM": "AM",
+      "FROM": "Das",
+      "MINUTES_PREFERENCE": "Preferência de minutos",
+      "PERIOD": "Período",
+      "PM": "PM",
+      "TO": "Às"
     },
     "MDE": {
       "CLOSE_WITHOUT_SAVING": "Fechar sem gravar",
@@ -61,24 +71,37 @@
       "VARIABLES": "Variaveis"
     },
     "OFFLINE": {
+      "ADVANCED_ACTIONS": "Ações avançadas",
+      "CANCEL_REQUEST": "Cancelar o pedido",
       "DELETION_IS_IRREVERSIBLE": "A eliminação é irreversivel",
+      "DONT_EXIT_APP_DISCLAIMER": "Por favor, não saia da aplicação durante a sincronização",
       "DOWNLOAD": "Descarregar",
+      "DOWNLOAD_LOG": "Descarregar um registo do pedido falhado",
       "DOWNLOAD_RESOURCES_EXPLANATION": "Lista dos recursos disponíveis offline",
+      "ERROR_CODE": "Código de erro",
       "ERROR_DURING_LAST_SYNC": "Houve um erro durante a última sincronização; por favor tente outra vez",
       "FEATURES_REDUCED_CONTENTS_NOT_UP_TO_DATE": "Funcionalidade reduzida e conteúdo pode não estar atualizada",
       "FORCE_FULL_SYNC": "Forçar sincronização total",
+      "FULL_SYNC_DISCLAIMER": "Todos os dados offline serão eliminados e a operação pode demorar vários minutos",
       "HUGE_SYNC_NEED_MANUAL_CONFIRMATION": "Há muita informação por sincronizar. Confirme para continuar",
       "LAST_SYNC": "Ultima sincronização",
       "LOADING": "Carregando...",
+      "NEVER": "Nunca",
       "NOW": "Agora",
       "NO_ELEMENTS_TO_UPLOAD": "Sem elementos de carregar",
       "OFFLINE_MANAGER": "Gestor offline",
-      "REQUEST_FAILED": "Pedido falhado; tente outra vez ou cancele o pedido",
+      "REQUEST_FAILED_EXPLANATION_I": "Falhou o carregamento deste recurso; por favor, tente outra vez.",
+      "REQUEST_FAILED_EXPLANATION_II": "Se o erro persistir, cancele o pedido para continuar.",
+      "REQUEST_FAILED_EXPLANATION_III": "Pode solicitar um registo do erro para análise adicional.",
       "SYNC_IN_PROGRESS": "Sincronização em progresso",
-      "SYNC_NOW": "Sincronizar\n",
+      "SYNC_NOW": "Sincronizar",
       "UPLOAD": "Carregar",
       "UPLOAD_QUEUE_REQUESTS_EXPLANATION": "Recursos criados offline precisam de ser carregados online",
       "YOU_ARE_OFFLINE": "Estás offline"
+    },
+    "SENTIMENT": {
+      "RESULT": { "MIXED": "Misto", "NEGATIVE": "Negativo", "NEUTRAL": "Neutro", "POSITIVE": "Positivo" },
+      "RESULT_HINT": "Detetámos um sentimento geralmente {{sentiment}} no texto"
     }
   }
 }
