@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -45,10 +45,10 @@ import { IDEAAuthService } from './auth.service';
             <ion-card-subtitle>{{ 'IDEA_AUTH.ENTER_OTP_CODE_I' | translate }}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
-            @if (errorMsg) {
+            @if (errorMsg()) {
               <p testId="mfachallenge.error" class="errorBox">
                 <b>{{ 'IDEA_AUTH.ERROR' | translate }}.</b>
-                {{ errorMsg }}
+                {{ errorMsg() }}
               </p>
             }
             <ion-item>
@@ -98,7 +98,7 @@ export class IDEAMFAChallengePage implements OnInit {
   private _translate = inject(IDEATranslationsService);
 
   otpCode: string;
-  errorMsg: string;
+  errorMsg = signal<string>(null);
 
   ngOnInit(): void {
     if (!this._auth.challengeUsername) this.goToAuth();
@@ -106,13 +106,13 @@ export class IDEAMFAChallengePage implements OnInit {
 
   async completeMFAChallenge(): Promise<void> {
     try {
-      this.errorMsg = null;
+      this.errorMsg.set(null);
       await this._loading.show();
       await this._auth.completeMFAChallenge(this.otpCode);
       window.location.assign('');
     } catch (error) {
-      this.errorMsg = this._translate._('IDEA_AUTH.INVALID_OTP_CODE');
-      this._message.error(this.errorMsg, { dontTranslate: true });
+      this.errorMsg.set(this._translate._('IDEA_AUTH.INVALID_OTP_CODE'));
+      this._message.error(this.errorMsg(), { dontTranslate: true });
     } finally {
       this._loading.hide();
     }

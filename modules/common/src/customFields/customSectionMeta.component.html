@@ -22,8 +22,8 @@
         @if (disabled) {
           <ion-list-header>
             <ion-label>
-              <h2>{{ _section.name | label }}</h2>
-              <p>{{ _section.description | label }}</p>
+              <h2>{{ _section().name | label }}</h2>
+              <p>{{ _section().description | label }}</p>
             </ion-label>
           </ion-list-header>
         }
@@ -33,7 +33,7 @@
               type="text"
               readonly="true"
               labelPlacement="stacked"
-              [value]="_section.name | label"
+              [value]="_section().name | label"
               [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.SECTION_NAME_HINT' | translate"
             >
               <div slot="label">
@@ -61,7 +61,7 @@
               readonly="true"
               labelPlacement="stacked"
               [label]="'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate"
-              [value]="_section.description | label"
+              [value]="_section().description | label"
               [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.SECTION_DESCRIPTION_HINT' | translate"
             />
             <ion-button
@@ -81,7 +81,7 @@
           </ion-label>
         </ion-list-header>
       }
-      @if (!_section.fieldsLegend.length) {
+      @if (!_section().fieldsLegend.length) {
         <ion-item lines="none">
           <ion-label>
             <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
@@ -89,20 +89,20 @@
         </ion-item>
       }
       <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderFieldsLegend($event)">
-        @for (f of _section.fieldsLegend; track f) {
+        @for (f of _section().fieldsLegend; track f) {
           <ion-item [button]="true" [lines]="lines" (click)="openField(f)">
             @if (!disabled) {
               <ion-reorder slot="start" />
             }
             <ion-label>
-              {{ _section.fields[f].name | label }}
-              @if (_section.fields[f].obligatory) {
+              {{ _section().fields[f].name | label }}
+              @if (_section().fields[f].obligatory) {
                 <ion-text class="obligatoryDot" />
               }
-              <p>{{ _section.fields[f].description | label }}</p>
+              <p>{{ _section().fields[f].description | label }}</p>
             </ion-label>
             <ion-badge slot="end" color="medium">
-              {{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _section.fields[f].type | translate }}
+              {{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _section().fields[f].type | translate }}
             </ion-badge>
             @if (!disabled) {
               <ion-button slot="end" fill="clear" color="danger" (click)="removeField(f, $event)">
@@ -130,7 +130,7 @@
             <p>{{ 'IDEA_COMMON.CUSTOM_FIELDS.DISPLAY_TEMPLATE_I' | translate }}</p>
           </ion-label>
         </ion-list-header>
-        @if (!_section.displayTemplate.length) {
+        @if (!_section().displayTemplate.length) {
           <ion-item lines="none">
             <ion-label>
               <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
@@ -138,7 +138,7 @@
           </ion-item>
         }
         <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderDisplayTemplateRows($event)">
-          @for (row of _section.displayTemplate; track row; let rowIndex = $index) {
+          @for (row of _section().displayTemplate; track row; let rowIndex = $index) {
             <div class="displayTemplateRow">
               <ion-item-divider>{{ 'IDEA_COMMON.CUSTOM_FIELDS.ROW' | translate }} {{ rowIndex + 1 }} </ion-item-divider>
               <ion-item [lines]="lines">
@@ -158,7 +158,7 @@
                         @if (!disabled) {
                           <ion-icon icon="close" slot="start" />
                         }
-                        {{ _section.fields[field].name | label }}
+                        {{ _section().fields[field].name | label }}
                       </ion-button>
                     </div>
                   }

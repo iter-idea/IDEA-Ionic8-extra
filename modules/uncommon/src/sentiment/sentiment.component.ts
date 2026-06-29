@@ -4,9 +4,9 @@ import {
   SimpleChanges,
   inject,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   output,
-  input
+  input,
+  signal
 } from '@angular/core';
 import { Sentiment } from 'idea-toolbox';
 import { IonItem, IonSpinner, IonBadge } from '@ionic/angular/standalone';
@@ -22,17 +22,17 @@ import { IDEAOfflineService } from '../offline/offline.service';
   template: `
     @if (text() && _offline.isOnline()) {
       <ion-item [lines]="lines()" [color]="color()">
-        @if (!sentiment) {
+        @if (!sentiment()) {
           <ion-spinner slot="end" size="small" />
         }
-        @if (sentiment) {
+        @if (sentiment()) {
           <ion-badge
             slot="end"
             size="small"
             [color]="getColorBySentiment()"
-            [title]="'IDEA_UNCOMMON.SENTIMENT.RESULT_HINT' | translate: { sentiment: sentiment }"
+            [title]="'IDEA_UNCOMMON.SENTIMENT.RESULT_HINT' | translate: { sentiment: sentiment() }"
           >
-            {{ 'IDEA_UNCOMMON.SENTIMENT.RESULT.' + sentiment | translate }}
+            {{ 'IDEA_UNCOMMON.SENTIMENT.RESULT.' + sentiment() | translate }}
           </ion-badge>
         }
       </ion-item>
@@ -43,13 +43,12 @@ export class IDEASentimentComponent implements OnChanges {
   protected _env = inject(IDEAEnvironment);
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
-  private _cd = inject(ChangeDetectorRef);
   _offline = inject(IDEAOfflineService);
 
   /**
    * The sentiment detected from the input text.
    */
-  sentiment: Sentiment;
+  sentiment = signal<Sentiment>(null);
   /**
    * The input text.
    */
@@ -71,24 +70,23 @@ export class IDEASentimentComponent implements OnChanges {
     if (changes.text.previousValue !== changes.text.currentValue) this.detectSentiment(changes.text.currentValue);
   }
   private async detectSentiment(text: string): Promise<void> {
-    if (!text || this._offline.isOffline()) this.sentiment = null;
+    if (!text || this._offline.isOffline()) this.sentiment.set(null);
     else {
       try {
         const { sentiment } = await this._API.postResource('sentiment', {
           idea: true,
           body: { project: this._env.idea.project, language: this._translate.getCurrentLang(), text: this.text() }
         });
-        this.sentiment = sentiment;
-        this.change.emit(this.sentiment);
+        this.sentiment.set(sentiment);
+        this.change.emit(this.sentiment());
       } catch (error) {
-        this.sentiment = null;
+        this.sentiment.set(null);
       }
     }
-    this._cd.markForCheck(); // zoneless: re-check after the awaited detection settles
   }
 
   getColorBySentiment(sentiment?: Sentiment | string): string {
-    sentiment = sentiment || this.sentiment;
+    sentiment = sentiment || this.sentiment();
     switch (sentiment) {
       case Sentiment.POSITIVE:
         return 'success';

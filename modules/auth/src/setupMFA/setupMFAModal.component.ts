@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -51,20 +51,20 @@ import { IDEAAuthService } from '../auth.service';
             <ion-icon name="close-circle-outline" slot="icon-only" />
           </ion-button>
         </ion-buttons>
-        <ion-title>{{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.SETUP_MFA') | translate }}</ion-title>
+        <ion-title>{{ (isMFAEnabled() ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.SETUP_MFA') | translate }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
       <ion-list class="aList">
         <ion-list-header>
           <ion-label class="ion-text-center">
-            <h2>{{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA_I' : 'IDEA_AUTH.SETUP_MFA_I') | translate }}</h2>
-            <p>{{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA_II' : 'IDEA_AUTH.SETUP_MFA_II') | translate }}</p>
+            <h2>{{ (isMFAEnabled() ? 'IDEA_AUTH.DISABLE_MFA_I' : 'IDEA_AUTH.SETUP_MFA_I') | translate }}</h2>
+            <p>{{ (isMFAEnabled() ? 'IDEA_AUTH.DISABLE_MFA_II' : 'IDEA_AUTH.SETUP_MFA_II') | translate }}</p>
           </ion-label>
         </ion-list-header>
         <ion-card color="white">
           <ion-card-content>
-            @if (!isMFAEnabled) {
+            @if (!isMFAEnabled()) {
               <div id="qrCodeContainer"></div>
             }
             <ion-item color="light">
@@ -76,8 +76,8 @@ import { IDEAAuthService } from '../auth.service';
                 [(ngModel)]="otpCode"
               />
             </ion-item>
-            <ion-button expand="block" class="ion-margin-top" [disabled]="!otpCode" (click)="setMFA(!isMFAEnabled)">
-              {{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.ENABLE_MFA') | translate }}
+            <ion-button expand="block" class="ion-margin-top" [disabled]="!otpCode" (click)="setMFA(!isMFAEnabled())">
+              {{ (isMFAEnabled() ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.ENABLE_MFA') | translate }}
             </ion-button>
           </ion-card-content>
         </ion-card>
@@ -107,13 +107,13 @@ export class IDEASetupMFAModalComponent implements OnInit {
   private _auth = inject(IDEAAuthService);
 
   otpCode: string;
-  isMFAEnabled: boolean;
+  isMFAEnabled = signal<boolean>(undefined);
 
   async ngOnInit(): Promise<void> {
     try {
       await this._loading.show();
-      this.isMFAEnabled = await this._auth.checkIfUserHasMFAEnabled(true);
-      if (!this.isMFAEnabled) {
+      this.isMFAEnabled.set(await this._auth.checkIfUserHasMFAEnabled(true));
+      if (!this.isMFAEnabled()) {
         const url = await this._auth.getURLForEnablingMFA();
         await this.generateQRCodeCanvasByURL(url);
       }
@@ -144,7 +144,7 @@ export class IDEASetupMFAModalComponent implements OnInit {
       await this._loading.show();
       if (enable) await this._auth.enableMFA(this.otpCode);
       else await this._auth.disableMFA(this.otpCode);
-      this.isMFAEnabled = enable;
+      this.isMFAEnabled.set(enable);
       this._message.success('COMMON.OPERATION_COMPLETED');
       this._modal.dismiss({ enabled: enable });
     } catch (error) {

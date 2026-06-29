@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Network } from '@capacitor/network';
 
@@ -11,7 +11,7 @@ export class IDEAOfflineService {
   /**
    * True/false if the platform is offline/online.
    */
-  protected _isOffline: boolean;
+  protected _isOffline = signal<boolean>(typeof navigator === 'undefined' ? false : !navigator.onLine);
   /**
    * The observable for subscribing to online/offline status changes.
    */
@@ -22,20 +22,17 @@ export class IDEAOfflineService {
   protected listenerHandler: any;
 
   constructor() {
-    // get an instant status
-    this._isOffline = !navigator.onLine;
     if (Network) {
       // set the basic listener for changes
-      this.listenerHandler = Network.addListener(
-        'networkStatusChange',
-        status => (this._isOffline = !status.connected)
+      this.listenerHandler = Network.addListener('networkStatusChange', status =>
+        this._isOffline.set(!status.connected)
       );
       // create the observable to subscribe to the network changes; note: it won't run until subscribed
       this.observable = new Observable(observer => {
         // remove the basic listener add add one that supports a subscription
         Network.removeAllListeners();
         this.listenerHandler = Network.addListener('networkStatusChange', status => {
-          this._isOffline = !status.connected;
+          this._isOffline.set(!status.connected);
           if (observer) observer.next(status.connected);
         });
       });
@@ -52,13 +49,13 @@ export class IDEAOfflineService {
    * Quickly check the connection status.
    */
   isOnline(): boolean {
-    return !this._isOffline;
+    return !this._isOffline();
   }
   /**
    * Quickly check the connection status.
    */
   isOffline(): boolean {
-    return this._isOffline;
+    return this._isOffline();
   }
 
   /**
@@ -68,7 +65,7 @@ export class IDEAOfflineService {
     if (!Network) return false;
 
     const status = await Network.getStatus();
-    this._isOffline = !status.connected;
+    this._isOffline.set(!status.connected);
     return status.connected;
   }
 }

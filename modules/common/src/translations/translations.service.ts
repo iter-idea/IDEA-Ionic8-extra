@@ -10,6 +10,7 @@ import {
 } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
+import { refreshVisibleIonicPages } from '../cdRefresh';
 
 /**
  * Translations service.
@@ -148,9 +149,15 @@ export class IDEATranslationsService {
           // resolve
           resolve();
         })
-        // the native `fetch` settles outside the Angular zone; force a global tick on the next macrotask
-        // so the new dictionaries render on Zone-based apps. See IDEAApiService.
-        .finally(() => setTimeout(() => this._appRef.tick()));
+        // the native `fetch` settles outside the Angular zone; on the next macrotask refresh the visible
+        // Ionic page(s) and tick the app shell so the new dictionaries render on Zone-based apps. See
+        // IDEAApiService.
+        .finally(() =>
+          setTimeout(() => {
+            refreshVisibleIonicPages();
+            this._appRef.tick();
+          })
+        );
     });
   }
 

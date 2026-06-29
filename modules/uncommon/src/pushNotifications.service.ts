@@ -8,6 +8,10 @@ import { IDEAErrorReportingService } from './errorReporting.service';
 
 /**
  * To subscribe push notifications events.
+ *
+ * These are `Observable` streams fed by native Capacitor listeners (outside the Angular zone). On a
+ * zoneless consumer, render any state you derive from them reactively (signals or the `async` pipe);
+ * a plain field assigned inside `.subscribe(...)` won't schedule change detection.
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAPushNotificationsService {

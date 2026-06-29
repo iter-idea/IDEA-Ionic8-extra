@@ -1,13 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  inject,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
-  viewChild,
-  input
-} from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, input, signal } from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
@@ -87,19 +78,19 @@ const MAX_PAGE_SIZE = 24;
         <ion-refresher-content />
       </ion-refresher>
       <ion-list class="aList">
-        @if (!filteredFolders) {
+        @if (!filteredFolders()) {
           <ion-item>
             <ion-label>
               <ion-skeleton-text animated style="width: 50%" />
             </ion-label>
           </ion-item>
         }
-        @if (filteredFolders && !filteredFolders.length) {
+        @if (filteredFolders() && !filteredFolders().length) {
           <ion-item class="noElements">
             <ion-label>{{ 'COMMON.NO_ELEMENT_FOUND' | translate }}</ion-label>
           </ion-item>
         }
-        @for (folder of filteredFolders; track folder) {
+        @for (folder of filteredFolders(); track folder) {
           <ion-item button (click)="openFolder(folder)">
             <ion-label>{{ folder.name }}</ion-label>
             <ion-button
@@ -140,13 +131,10 @@ export class IDEARCFoldersComponent implements OnInit {
   private _translate = inject(IDEATranslationsService);
   private _API = inject(IDEAAWSAPIService);
   _offline = inject(IDEAOfflineService);
-  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() teamId: string;
   /**
    * Whether the user has permissions to manage the resource center.
@@ -154,7 +142,7 @@ export class IDEARCFoldersComponent implements OnInit {
   readonly admin = input<boolean>();
 
   folders: RCFolder[];
-  filteredFolders: RCFolder[];
+  filteredFolders = signal<RCFolder[]>(undefined);
   currentPage: number;
 
   readonly searchbar = viewChild<IonSearchbar>('searchbar');
@@ -172,7 +160,6 @@ export class IDEARCFoldersComponent implements OnInit {
       this.folders = folders.map(f => new RCFolder(f));
       const searchbar = this.searchbar();
       this.search(searchbar ? searchbar.value : null);
-      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST');
     }
@@ -181,7 +168,7 @@ export class IDEARCFoldersComponent implements OnInit {
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
-    this.filteredFolders = (this.folders || [])
+    const filteredFolders = (this.folders || [])
       .filter(m =>
         toSearch.split(' ').every(searchTerm => [m.name].filter(f => f).some(f => f.toLowerCase().includes(searchTerm)))
       )
@@ -189,12 +176,12 @@ export class IDEARCFoldersComponent implements OnInit {
 
     if (scrollToNextPage) this.currentPage++;
     else this.currentPage = 0;
-    this.filteredFolders = this.filteredFolders.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+    this.filteredFolders.set(filteredFolders.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE));
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
   doRefresh(refresher?: HTMLIonRefresherElement): void {
-    this.filteredFolders = null;
+    this.filteredFolders.set(null);
     setTimeout((): void => {
       this.loadFolders(Boolean(refresher));
       if (refresher) refresher.complete();

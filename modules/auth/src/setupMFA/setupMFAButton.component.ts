@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, output, input, signal } from '@angular/core';
 import { ModalController, IonButton } from '@ionic/angular/standalone';
 import { IDEATranslatePipe } from '@idea-ionic/common';
 
@@ -10,9 +10,9 @@ import { IDEAAuthService } from '../auth.service';
   imports: [IDEATranslatePipe, IonButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (isMFAEnabled !== undefined) {
+    @if (isMFAEnabled() !== undefined) {
       <ion-button [color]="color()" [fill]="fill()" (click)="openMFAModal()">
-        {{ (isMFAEnabled ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.SETUP_MFA') | translate }}
+        {{ (isMFAEnabled() ? 'IDEA_AUTH.DISABLE_MFA' : 'IDEA_AUTH.SETUP_MFA') | translate }}
       </ion-button>
     }
   `
@@ -34,17 +34,17 @@ export class IDEASetupMFAButtonComponent implements OnInit {
    */
   readonly change = output<boolean>();
 
-  isMFAEnabled: boolean;
+  isMFAEnabled = signal<boolean>(undefined);
 
   async ngOnInit(): Promise<void> {
-    this.isMFAEnabled = await this._auth.checkIfUserHasMFAEnabled(true);
+    this.isMFAEnabled.set(await this._auth.checkIfUserHasMFAEnabled(true));
   }
 
   async openMFAModal(): Promise<void> {
     const modal = await this._modal.create({ component: IDEASetupMFAModalComponent, backdropDismiss: false });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) {
-        this.isMFAEnabled = data.enabled;
+        this.isMFAEnabled.set(data.enabled);
         this.change.emit(data.enabled);
       }
     });

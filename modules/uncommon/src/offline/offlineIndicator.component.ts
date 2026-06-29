@@ -11,7 +11,8 @@ import { IDEAOfflineDataService } from './offlineData.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (
-      _platform.is('mobile') && (_offline.isOffline() || _offline.synchronizing || _offline.requiresManualConfirmation)
+      _platform.is('mobile') &&
+      (_offline.isOffline() || _offline.synchronizing() || _offline.requiresManualConfirmation())
     ) {
       <ion-fab [vertical]="vertical()" [horizontal]="horizontal()" [edge]="edge()">
         <ion-fab-button color="dark" size="small" (click)="showStatus()">
@@ -20,11 +21,11 @@ import { IDEAOfflineDataService } from './offlineData.service';
             <ion-icon name="airplane" />
           }
           <!-- SYNCHRONISING -->
-          @if (_offline.isOnline() && _offline.synchronizing) {
+          @if (_offline.isOnline() && _offline.synchronizing()) {
             <ion-icon name="sync" />
           }
           <!-- NEED MANAL SYNCHRONISATION -->
-          @if (_offline.isOnline() && _offline.requiresManualConfirmation) {
+          @if (_offline.isOnline() && _offline.requiresManualConfirmation()) {
             <ion-icon name="pause" />
           }
         </ion-fab-button>

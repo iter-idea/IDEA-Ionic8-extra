@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, signal, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonInfiniteScroll,
@@ -103,22 +103,22 @@ const MAX_PAGE_SIZE = 24;
               <ion-button
                 color="light"
                 size="small"
-                [class.strong]="category1"
-                (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
+                [class.strong]="category1()"
+                (click)="category1() ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
               >
-                <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
-                {{ category1 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+                <ion-icon [icon]="category1() ? 'close' : 'filter'" slot="start" />
+                {{ category1() || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
               </ion-button>
             }
             @if (activeCategories2?.size) {
               <ion-button
                 color="light"
                 size="small"
-                [class.strong]="category2"
-                (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
+                [class.strong]="category2()"
+                (click)="category2() ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
               >
-                <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
-                {{ category2 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+                <ion-icon [icon]="category2() ? 'close' : 'filter'" slot="start" />
+                {{ category2() || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
               </ion-button>
             }
           </div>
@@ -127,14 +127,14 @@ const MAX_PAGE_SIZE = 24;
     </ion-header>
     <ion-content>
       <ion-list class="checksList">
-        @if (!filteredChecks.length) {
+        @if (!filteredChecks().length) {
           <ion-item lines="none">
             <ion-label>
               <i>{{ noElementsFoundText || ('IDEA_COMMON.CHECKER.NO_ELEMENTS_FOUND' | translate) }}</i>
             </ion-label>
           </ion-item>
         }
-        @for (check of filteredChecks; track check.value) {
+        @for (check of filteredChecks(); track check.value) {
           <ion-item class="check">
             @if (showAvatars) {
               <ion-avatar slot="start">
@@ -233,7 +233,6 @@ export class IDEAChecksComponent implements OnInit {
    * Limit the number of selectable elements to the value provided.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() limitSelectionToNum: number;
   /**
    * Whether to allow the select/deselect-all buttons.
@@ -242,15 +241,11 @@ export class IDEAChecksComponent implements OnInit {
   /**
    * A pre-filter for the category1.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() category1: string;
+  category1 = model<string>();
   /**
    * A pre-filter for the category2.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() category2: string;
+  category2 = model<string>();
   /**
    * Whether tho show the categories filters.
    */
@@ -261,7 +256,7 @@ export class IDEAChecksComponent implements OnInit {
   @Input() previewTextKey = 'IDEA_COMMON.CHECKER.NUM_ELEMENTS_SELECTED';
 
   workingData: Check[];
-  filteredChecks: Check[];
+  filteredChecks = signal<Check[]>(new Array<Check>());
   currentPage: number;
   activeCategories1: Set<string>;
   activeCategories2: Set<string>;
@@ -270,7 +265,7 @@ export class IDEAChecksComponent implements OnInit {
 
   ngOnInit(): void {
     this.workingData = JSON.parse(JSON.stringify(this.data || new Array<Check>()));
-    this.filteredChecks = new Array<Check>();
+    this.filteredChecks.set(new Array<Check>());
     if (this.sortData) this.workingData = this.workingData.sort((a, b): number => a.name.localeCompare(b.name));
     this.loadActiveCategories();
     this.search();
@@ -297,9 +292,11 @@ export class IDEAChecksComponent implements OnInit {
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
-    this.filteredChecks = this.workingData
-      .filter(x => !this.category1 || x.category1 === this.category1)
-      .filter(x => !this.category2 || x.category2 === this.category2)
+    const category1 = this.category1();
+    const category2 = this.category2();
+    let filteredChecks = this.workingData
+      .filter(x => !category1 || x.category1 === category1)
+      .filter(x => !category2 || x.category2 === category2)
       .filter(x => !x.hidden)
       .filter(x =>
         toSearch
@@ -311,7 +308,8 @@ export class IDEAChecksComponent implements OnInit {
 
     if (scrollToNextPage) this.currentPage++;
     else this.currentPage = 0;
-    this.filteredChecks = this.filteredChecks.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+    filteredChecks = filteredChecks.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+    this.filteredChecks.set(filteredChecks);
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
@@ -324,8 +322,8 @@ export class IDEAChecksComponent implements OnInit {
     });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) {
-        if (whichCategory === 2) this.category2 = data.value;
-        else this.category1 = data.value;
+        if (whichCategory === 2) this.category2.set(data.value);
+        else this.category1.set(data.value);
         const searchbar = this.searchbar();
         this.search(searchbar ? searchbar.value : null);
       }
@@ -333,8 +331,8 @@ export class IDEAChecksComponent implements OnInit {
     modal.present();
   }
   resetFilterCategoryN(whichCategory: number): void {
-    if (whichCategory === 2) this.category2 = null;
-    else this.category1 = null;
+    if (whichCategory === 2) this.category2.set(null);
+    else this.category1.set(null);
     const searchbar = this.searchbar();
     this.search(searchbar ? searchbar.value : null);
   }

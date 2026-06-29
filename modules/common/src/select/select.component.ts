@@ -5,9 +5,9 @@ import {
   OnChanges,
   inject,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   output,
-  input
+  input,
+  signal
 } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Suggestion } from 'idea-toolbox';
@@ -23,27 +23,23 @@ import { IDEASuggestionsComponent } from './suggestions.component';
 })
 export class IDEASelectComponent implements OnChanges {
   private _modal = inject(ModalController);
-  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The description to show in the field.
    * Set the property so it detects changes.
    */
-  protected _description: string;
+  protected _description = signal<string>(undefined);
   get description(): string {
-    return this._description;
+    return this._description();
   }
-  // TODO: Skipped for migration because:
   //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set description(description: string) {
-    this._description = description;
+    this._description.set(description);
   }
 
   /**
    * The suggestions to show.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() data: Suggestion[] = [];
   /**
    * @deprecated Alternative to the case above; function that returns a Promise<Array<Suggestion>>.
@@ -52,12 +48,10 @@ export class IDEASelectComponent implements OnChanges {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
@@ -78,7 +72,6 @@ export class IDEASelectComponent implements OnChanges {
   /**
    * If true, the component is disabled.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.
@@ -153,7 +146,7 @@ export class IDEASelectComponent implements OnChanges {
    */
   readonly selectWhenDisabled = output<void>();
 
-  isOpening = false;
+  isOpening = signal<boolean>(false);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.avoidAutoSelection() && (changes['data'] || changes['category1'] || changes['category2'])) {
@@ -192,8 +185,8 @@ export class IDEASelectComponent implements OnChanges {
     );
   }
   private async openSuggestions(): Promise<void> {
-    if (this.disabled || this.isOpening) return;
-    this.isOpening = true;
+    if (this.disabled || this.isOpening()) return;
+    this.isOpening.set(true);
     this.convertDataInSuggestions();
     const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
@@ -222,10 +215,9 @@ export class IDEASelectComponent implements OnChanges {
       if (this.clearValueAfterSelection()) this.description = '';
       else if (data.name) this.description = data.name;
       else this.description = data.value;
-      this._cd.markForCheck(); // zoneless: re-check so the new selection is rendered
     });
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   doSelectWhenDisabled(): void {

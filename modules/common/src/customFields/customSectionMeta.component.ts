@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, Input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -69,7 +69,6 @@ export class IDEACustomSectionMetaComponent implements OnInit {
   private _alert = inject(AlertController);
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
-  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The CustomSectionMeta to manage.
@@ -92,14 +91,15 @@ export class IDEACustomSectionMetaComponent implements OnInit {
    */
   @Input() lines?: string;
 
-  _section: CustomSectionMeta;
+  _section = signal<CustomSectionMeta>(null);
   errors = new Set<string>();
   DISPLAY_TEMPLATE_MAX_NUM_FIELD_PER_ROW = 3;
 
   ngOnInit(): void {
-    this._section = new CustomSectionMeta(this.section, this._translate.languages());
+    const section = new CustomSectionMeta(this.section, this._translate.languages());
     // ensure backwards compatibility
-    if (this.useDisplayTemplate && !this._section.displayTemplate) this._section.displayTemplate = [];
+    if (this.useDisplayTemplate && !section.displayTemplate) section.displayTemplate = [];
+    this._section.set(section);
   }
 
   hasFieldAnError(field: string): boolean {
@@ -108,19 +108,25 @@ export class IDEACustomSectionMetaComponent implements OnInit {
 
   async editName(): Promise<void> {
     // since the name is optional, set it if it's requested but not set
-    if (!this._section.name) {
-      this._section.name = new Label(null, this._translate.languages());
-      this._section.name[this._translate.getDefaultLang()] = '-';
+    if (!this._section().name) {
+      this._section.update(section => {
+        section.name = new Label(null, this._translate.languages());
+        section.name[this._translate.getDefaultLang()] = '-';
+        return section;
+      });
     }
-    await this.editLabel(this._translate._('IDEA_COMMON.CUSTOM_FIELDS.NAME'), this._section.name);
+    await this.editLabel(this._translate._('IDEA_COMMON.CUSTOM_FIELDS.NAME'), this._section().name);
   }
   async editDescription(): Promise<void> {
     // since the description is optional, set it if it's requested but not set
-    if (!this._section.description) {
-      this._section.description = new Label(null, this._translate.languages());
-      this._section.description[this._translate.getDefaultLang()] = '-';
+    if (!this._section().description) {
+      this._section.update(section => {
+        section.description = new Label(null, this._translate.languages());
+        section.description[this._translate.getDefaultLang()] = '-';
+        return section;
+      });
     }
-    await this.editLabel(this._translate._('IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION'), this._section.description);
+    await this.editLabel(this._translate._('IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION'), this._section().description);
   }
   private async editLabel(title: string, label: Label): Promise<void> {
     const componentProps = { title, label, obligatory: true };
@@ -128,10 +134,13 @@ export class IDEACustomSectionMetaComponent implements OnInit {
     await modal.present();
   }
   reorderFieldsLegend(ev: any): void {
-    this._section.fieldsLegend = ev.detail.complete(this._section.fieldsLegend);
+    this._section.update(section => {
+      section.fieldsLegend = ev.detail.complete(section.fieldsLegend);
+      return section;
+    });
   }
   async openField(f: string): Promise<void> {
-    const componentProps = { field: this._section.fields[f], disabled: this.disabled, lines: this.lines };
+    const componentProps = { field: this._section().fields[f], disabled: this.disabled, lines: this.lines };
     const modal = await this._modal.create({ component: IDEACustomFieldMetaComponent, componentProps });
     await modal.present();
   }
@@ -139,14 +148,16 @@ export class IDEACustomSectionMetaComponent implements OnInit {
     if (ev) ev.stopPropagation();
 
     const doRemoveField = (): void => {
-      this._section.fieldsLegend.splice(this._section.fieldsLegend.indexOf(f), 1);
-      delete this._section.fields[f];
-      // filter out of the displayTemplate the fields which aren't in the fieldsLegend
-      if (this._section.displayTemplate)
-        this._section.displayTemplate.forEach(
-          (row, i, arr): string[] => (arr[i] = row.filter(el => this._section.fieldsLegend.some(field => field === el)))
-        );
-      this._cd.markForCheck(); // zoneless: re-check after the alert handler mutates the section
+      this._section.update(section => {
+        section.fieldsLegend.splice(section.fieldsLegend.indexOf(f), 1);
+        delete section.fields[f];
+        // filter out of the displayTemplate the fields which aren't in the fieldsLegend
+        if (section.displayTemplate)
+          section.displayTemplate.forEach(
+            (row, i, arr): string[] => (arr[i] = row.filter(el => section.fieldsLegend.some(field => field === el)))
+          );
+        return section;
+      });
     };
     const header = this._translate._('COMMON.ARE_YOU_SURE');
     const buttons = [
@@ -165,7 +176,7 @@ export class IDEACustomSectionMetaComponent implements OnInit {
       const key = name.replace(/[^\w]/g, '');
       if (!key.trim()) return;
       // check wheter the key is unique
-      if (this._section.fieldsLegend.some(x => x === key))
+      if (this._section().fieldsLegend.some(x => x === key))
         return this._message.error('IDEA_COMMON.CUSTOM_FIELDS.DUPLICATED_KEY');
       // initialize a new field
       const field = new CustomFieldMeta(null, this._translate.languages());
@@ -173,9 +184,11 @@ export class IDEACustomSectionMetaComponent implements OnInit {
       field.name = new Label(null, this._translate.languages());
       field.name[this._translate.getDefaultLang()] = name;
       // add the field to the section
-      this._section.fields[key] = field;
-      this._section.fieldsLegend.push(key);
-      this._cd.markForCheck(); // zoneless: re-check after the alert handler adds the field
+      this._section.update(section => {
+        section.fields[key] = field;
+        section.fieldsLegend.push(key);
+        return section;
+      });
       // open the field to configure it
       this.openField(key);
     };
@@ -195,18 +208,24 @@ export class IDEACustomSectionMetaComponent implements OnInit {
   }
 
   reorderDisplayTemplateRows(ev: any): void {
-    this._section.displayTemplate = ev.detail.complete(this._section.displayTemplate);
+    this._section.update(section => {
+      section.displayTemplate = ev.detail.complete(section.displayTemplate);
+      return section;
+    });
   }
   isDisplayTemplateRowFull(row: number): boolean {
-    return this._section.displayTemplate[row].length === this.DISPLAY_TEMPLATE_MAX_NUM_FIELD_PER_ROW;
+    return this._section().displayTemplate[row].length === this.DISPLAY_TEMPLATE_MAX_NUM_FIELD_PER_ROW;
   }
   addNewDisplayTemplateRow(): void {
-    this._section.displayTemplate.push([]);
+    this._section.update(section => {
+      section.displayTemplate.push([]);
+      return section;
+    });
   }
   async addFieldToDisplayTemplateRow(row: number): Promise<void> {
     const componentProps = {
-      data: this._section.fieldsLegend.map(
-        x => new Suggestion({ value: x, name: this._translate._label(this._section.fields[x].name) })
+      data: this._section().fieldsLegend.map(
+        x => new Suggestion({ value: x, name: this._translate._label(this._section().fields[x].name) })
       ),
       searchPlaceholder: this._translate._('IDEA_COMMON.CUSTOM_FIELDS.ADD_FIELD'),
       hideIdFromUI: true,
@@ -216,26 +235,35 @@ export class IDEACustomSectionMetaComponent implements OnInit {
     const modal = await this._modal.create({ component: IDEASuggestionsComponent, componentProps });
     modal.onDidDismiss().then(selection => {
       const field = selection && selection.data ? selection.data.value : null;
-      if (field) this._section.displayTemplate[row].push(field);
-      this._cd.markForCheck(); // zoneless: re-check so the added field is rendered
+      if (field)
+        this._section.update(section => {
+          section.displayTemplate[row].push(field);
+          return section;
+        });
     });
     await modal.present();
   }
 
   removeFieldToDisplayTemplateRow(row: number, field: string): void {
-    this._section.displayTemplate[row].splice(this._section.displayTemplate[row].indexOf(field), 1);
+    this._section.update(section => {
+      section.displayTemplate[row].splice(section.displayTemplate[row].indexOf(field), 1);
+      return section;
+    });
   }
   private cleanEmptyDisplayTemplateRows(): void {
-    this._section.displayTemplate = this._section.displayTemplate.filter(r => r.length);
+    this._section.update(section => {
+      section.displayTemplate = section.displayTemplate.filter(r => r.length);
+      return section;
+    });
   }
 
   save(): Promise<void> {
-    this.errors = new Set(this._section.validate(this._translate.languages()));
+    this.errors = new Set(this._section().validate(this._translate.languages()));
     if (this.errors.size) return this._message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
 
     if (this.useDisplayTemplate) this.cleanEmptyDisplayTemplateRows();
 
-    this.section.load(this._section, this._translate.languages());
+    this.section.load(this._section(), this._translate.languages());
     this.close();
   }
 

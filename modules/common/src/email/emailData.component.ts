@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, output, input, signal } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { EmailData, StringVariable } from 'idea-toolbox';
 
@@ -18,7 +18,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
     <ion-item
       class="emailDataItem"
       button
-      [disabled]="isOpening"
+      [disabled]="isOpening()"
       [color]="color()"
       [lines]="lines()"
       [title]="placeholder() || ''"
@@ -160,7 +160,7 @@ export class IDEAEmailDataComponent implements OnInit {
    */
   variablesPlain: string[];
 
-  isOpening = false;
+  isOpening = signal<boolean>(false);
 
   ngOnInit(): void {
     // create a plain list of variable codes
@@ -168,8 +168,8 @@ export class IDEAEmailDataComponent implements OnInit {
   }
 
   async openEmailDataConfiguration(): Promise<void> {
-    if (this.isOpening) return;
-    this.isOpening = true;
+    if (this.isOpening()) return;
+    this.isOpening.set(true);
     const modal = await this._modal.create({
       component: IDEAEmailDataConfigurationComponent,
       componentProps: {
@@ -182,7 +182,7 @@ export class IDEAEmailDataComponent implements OnInit {
     });
     modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   doIconSelect(event: any): void {

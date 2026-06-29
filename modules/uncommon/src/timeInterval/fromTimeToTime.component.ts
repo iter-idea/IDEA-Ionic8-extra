@@ -53,8 +53,6 @@ export class IDEAFromTimeToTimeComponent implements OnInit {
   /**
    * Whether we should start picking the time displaying the afternoon (PM) or the morning (AM, default).
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() period: Periods = Periods.AM;
   /**
    * A time to use as lower limit for the possible choices.

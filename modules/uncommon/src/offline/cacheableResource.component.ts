@@ -13,13 +13,13 @@ import { IDEAOfflineDataService, CacheableResource } from './offlineData.service
       @if (resource().error) {
         <ion-icon slot="end" name="alert-circle" color="danger" />
       }
-      @if (!resource().error && _offline.synchronizing && resource().synchronizing) {
+      @if (!resource().error && _offline.synchronizing() && resource().synchronizing) {
         <ion-spinner slot="end" name="dots" />
       }
-      @if (!resource().error && !resource().synchronizing && !_offline.requiresManualConfirmation) {
+      @if (!resource().error && !resource().synchronizing && !_offline.requiresManualConfirmation()) {
         <ion-icon slot="end" name="checkmark" color="success" />
       }
-      @if (!resource().error && !resource().synchronizing && _offline.requiresManualConfirmation) {
+      @if (!resource().error && !resource().synchronizing && _offline.requiresManualConfirmation()) {
         <ion-icon slot="end" name="pause" color="dark" />
       }
     </ion-item>

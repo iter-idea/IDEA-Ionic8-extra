@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Delta, DeltaRecord, DeltaResources, epochDateTime } from 'idea-toolbox';
 import { IDEAStorageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -74,19 +74,19 @@ export class IDEAOfflineDataService {
   /**
    * True when running a synchronization.
    */
-  synchronizing: boolean;
+  synchronizing = signal<boolean>(undefined);
   /**
    * The timestamp of the last synchronization.
    */
-  lastSyncAt: epochDateTime;
+  lastSyncAt = signal<epochDateTime>(undefined);
   /**
    * True if an error happened in the last synchronization.
    */
-  errorInLastSync: boolean;
+  errorInLastSync = signal<boolean>(undefined);
   /**
    * True if the synchronisation is too vast and so require a manual action of the user.
    */
-  requiresManualConfirmation: boolean;
+  requiresManualConfirmation = signal<boolean>(undefined);
   /**
    * If false, ignore the entire upload scenario.
    */
@@ -126,7 +126,7 @@ export class IDEAOfflineDataService {
     this._offline.subscribe(isOnline => {
       if (isOnline) {
         // try a synchronization if needed or if the last one failed
-        if (this.errorInLastSync) this.synchronize();
+        if (this.errorInLastSync()) this.synchronize();
         else this.synchronizeIfNeeded();
       }
     });
@@ -196,8 +196,8 @@ export class IDEAOfflineDataService {
   protected loadLastSyncAt(): Promise<number> {
     return new Promise(resolve => {
       this._storage.get(this.lastSyncKey).then((lastSyncAt: number): void => {
-        this.lastSyncAt = lastSyncAt ? Number(lastSyncAt) : null;
-        resolve(this.lastSyncAt);
+        this.lastSyncAt.set(lastSyncAt ? Number(lastSyncAt) : null);
+        resolve(this.lastSyncAt());
       });
     });
   }
@@ -205,7 +205,7 @@ export class IDEAOfflineDataService {
    * Update last sync at info in the local storage.
    */
   protected saveLastSyncAt(lastSyncAt: number): Promise<void> {
-    this.lastSyncAt = lastSyncAt;
+    this.lastSyncAt.set(lastSyncAt);
     return this._storage.set(this.lastSyncKey, lastSyncAt);
   }
   /**
@@ -330,20 +330,20 @@ export class IDEAOfflineDataService {
             // synchronize the delta records; note: the executuion inside a resource must go in series
             cr.synchronizing = true;
             const success = await this.syncResourceDeltaRecords(resource, delta.records[resource]);
-            if (!success) this.errorInLastSync = true;
+            if (!success) this.errorInLastSync.set(true);
           }
         })
       );
       // if there were error of if there is nothing left to sync, we are done
-      if (this.errorInLastSync || !delta.next) return done();
+      if (this.errorInLastSync() || !delta.next) return done();
       // otherwise, get the next page of the delta and go recursive until we are done
       const params: any = { next: delta.next, limit: NUM_ELEMENTS_WITH_MANUAL_SYNC };
-      if (this.lastSyncAt) params.since = this.lastSyncAt;
+      if (this.lastSyncAt()) params.since = this.lastSyncAt();
       const newDelta = await this._API.getResource(this.teamId ? `teams/${this.teamId}/delta` : 'delta', { params });
       this.syncDeltaRecords(newDelta, done);
     } catch (err) {
       // if something went wrong, stops the operation, since we need to make sure the entire flow is consistent
-      this.errorInLastSync = true;
+      this.errorInLastSync.set(true);
       return done();
     }
   }
@@ -417,7 +417,7 @@ export class IDEAOfflineDataService {
         (): Promise<void> =>
           this.loadQueueAPIRequest()
             .then((): void => {
-              if (this.queueAPIRequests.length || Date.now() > this.lastSyncAt + SYNC_EXPIRATION_INTERVAL)
+              if (this.queueAPIRequests.length || Date.now() > this.lastSyncAt() + SYNC_EXPIRATION_INTERVAL)
                 this.synchronize();
               resolve();
             })
@@ -431,10 +431,10 @@ export class IDEAOfflineDataService {
    */
   synchronize(manualConfirmation?: boolean): Promise<void> {
     return new Promise((resolve, reject): void => {
-      if (!this.isAllowed() || this.synchronizing) return resolve();
-      this.synchronizing = true;
-      this.errorInLastSync = false;
-      this.requiresManualConfirmation = false;
+      if (!this.isAllowed() || this.synchronizing()) return resolve();
+      this.synchronizing.set(true);
+      this.errorInLastSync.set(false);
+      this.requiresManualConfirmation.set(false);
       // load the lastSyncAt information
       this.loadLastSyncAt().then(
         (): Promise<void> =>
@@ -445,20 +445,20 @@ export class IDEAOfflineDataService {
               const now = Date.now();
               // prepare a first "short" Delta request, to see if there is a lot of data to process
               const params: any = { limit: NUM_ELEMENTS_WITHOUT_MANUAL_SYNC };
-              if (this.lastSyncAt) params.since = this.lastSyncAt;
+              if (this.lastSyncAt()) params.since = this.lastSyncAt();
               this._API
                 .getResource(this.teamId ? `teams/${this.teamId}/delta` : 'delta', { params })
                 .then((delta: Delta): void => {
                   // decide if to proceed with the sync: in case there is another page, it requires a manual confirmation
                   if (delta.next && !manualConfirmation) {
-                    this.requiresManualConfirmation = true;
-                    this.synchronizing = false;
+                    this.requiresManualConfirmation.set(true);
+                    this.synchronizing.set(false);
                     return resolve();
                   }
                   // save the records in the delta and request possible new pages
                   this.syncDeltaRecords(delta, (): void => {
-                    if (this.errorInLastSync) {
-                      this.synchronizing = false;
+                    if (this.errorInLastSync()) {
+                      this.synchronizing.set(false);
                       resolve();
                     } else {
                       // all the resources are succesfully in sync
@@ -466,13 +466,13 @@ export class IDEAOfflineDataService {
                       // update the timestamp of last sync
                       this.saveLastSyncAt(now)
                         .then((): void => {
-                          this.synchronizing = false;
+                          this.synchronizing.set(false);
                           resolve();
                         })
                         .catch((): void => {
                           // we couldn't save the last sync info
-                          this.errorInLastSync = true;
-                          this.synchronizing = false;
+                          this.errorInLastSync.set(true);
+                          this.synchronizing.set(false);
                           reject();
                         });
                     }
@@ -480,15 +480,15 @@ export class IDEAOfflineDataService {
                 })
                 .catch((): void => {
                   // we couldn't acquire new information (Delta)
-                  this.errorInLastSync = true;
-                  this.synchronizing = false;
+                  this.errorInLastSync.set(true);
+                  this.synchronizing.set(false);
                   reject();
                 });
             })
             .catch((): void => {
               // we stop, since we don't want backend data to override local info not yet uploaded
-              this.errorInLastSync = true;
-              this.synchronizing = false;
+              this.errorInLastSync.set(true);
+              this.synchronizing.set(false);
               reject();
             })
       );

@@ -5,10 +5,10 @@ import {
   OnDestroy,
   OnChanges,
   inject,
-  ChangeDetectorRef,
   ChangeDetectionStrategy,
   output,
-  input
+  input,
+  signal
 } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
@@ -28,7 +28,7 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
       [lines]="lines()"
       [title]="placeholder() || label() || ''"
       [button]="!disabled()"
-      [disabled]="isOpening"
+      [disabled]="isOpening()"
       [class.withLabel]="label()"
       (click)="openCalendarPicker()"
     >
@@ -52,12 +52,12 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
         </ion-label>
       }
       <ion-label class="value" [class.selectable]="!disabled()">
-        @if (!valueToDisplay && !disabled()) {
+        @if (!valueToDisplay() && !disabled()) {
           <ion-text class="placeholder" [class.selectable]="!disabled()">
             {{ placeholder() }}
           </ion-text>
         }
-        {{ valueToDisplay }}
+        {{ valueToDisplay() }}
       </ion-label>
       @if (!disabled()) {
         <ion-icon slot="end" icon="caret-down" class="selectIcon" [class.selectable]="!disabled()" />
@@ -107,7 +107,6 @@ import { IDEACalendarPickerComponent } from './calendarPicker.component';
 export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
-  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The date to show/pick.
@@ -173,27 +172,26 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
   readonly dateChange = output<epochDateTime | epochISOString | null | any>();
   readonly iconSelect = output<void>();
 
-  valueToDisplay: string;
+  valueToDisplay = signal<string>('');
   private langChangeSubscription: Subscription;
 
-  isOpening = false;
+  isOpening = signal(false);
 
   ngOnInit(): void {
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
-      this.valueToDisplay = this.getValueToDisplay(this.date());
-      this._cdr.markForCheck();
+      this.valueToDisplay.set(this.getValueToDisplay(this.date()));
     });
   }
   ngOnDestroy(): void {
     if (this.langChangeSubscription) this.langChangeSubscription.unsubscribe();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.date || changes.timePicker) this.valueToDisplay = this.getValueToDisplay(this.date());
+    if (changes.date || changes.timePicker) this.valueToDisplay.set(this.getValueToDisplay(this.date()));
   }
 
   async openCalendarPicker(): Promise<void> {
-    if (this.disabled() || this.isOpening) return;
-    this.isOpening = true;
+    if (this.disabled() || this.isOpening()) return;
+    this.isOpening.set(true);
     const modal = await this._modal.create({
       component: IDEACalendarPickerComponent,
       componentProps: {
@@ -213,7 +211,7 @@ export class IDEADateTimeComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   private getValueToDisplay(date: epochDateTime | epochISOString): string {

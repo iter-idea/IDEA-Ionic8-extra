@@ -1,12 +1,13 @@
 import {
   Component,
   HostListener,
-  Input,
   OnInit,
   inject,
-  ChangeDetectorRef,
   ChangeDetectionStrategy,
-  viewChild
+  viewChild,
+  signal,
+  input,
+  model
 } from '@angular/core';
 import {
   IonInfiniteScroll,
@@ -64,110 +65,104 @@ export class IDEASuggestionsComponent implements OnInit {
   private _platform = inject(Platform);
   private _modal = inject(ModalController);
   private _storage = inject(IDEAStorageService);
-  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The suggestions to show.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() data: Suggestion[] = [];
+  data = model<Suggestion[]>([]);
   /**
    * If true, sort the suggestions alphabetically.
    */
-  @Input() sortData?: boolean;
+  sortData = input<boolean>();
   /**
    * A placeholder for the searchbar.
    */
-  @Input() searchPlaceholder?: string;
+  searchPlaceholder = input<string>();
   /**
    * Text to show when there isn't a result.
    */
-  @Input() noElementsFoundText?: string;
+  noElementsFoundText = input<string>();
   /**
    * If true, allows to select a new custom value (outside the suggestions).
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
-  @Input() allowUnlistedValues: boolean;
+  allowUnlistedValues = input<boolean>();
   /**
    * If `allowUnlistedValues` is set, show this to help users understanding what happens by selecting the unlisted val.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
-  @Input() allowUnlistedValuesPrefix: string;
+  allowUnlistedValuesPrefix = input<string>();
   /**
    * If true, doesn't show the id in the UI.
    */
-  @Input() hideIdFromUI?: boolean;
+  hideIdFromUI = input<boolean>();
   /**
    * If true, doesn't show the clear button in the header.
    */
-  @Input() hideClearButton?: boolean;
+  hideClearButton = input<boolean>();
   /**
    * If true, the user doesn't have the option to cancel the selection: an option must be chosen.
    */
-  @Input() mustChoose?: boolean;
+  mustChoose = input<boolean>();
   /**
    * A pre-filter for the category1.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() category1: string;
+  category1 = model<string>();
   /**
    * A pre-filter for the category2.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() category2: string;
+  category2 = model<string>();
   /**
    * Whether tho show the categories filters.
    */
-  @Input() showCategoriesFilters?: boolean;
+  showCategoriesFilters = input<boolean>();
   /**
    * An arbitrary number of elements to show in each page; suggested: a multiple of 2, 3 and 4 (good for any UI size).
    */
-  @Input() numPerPage?: number;
+  numPerPage = input<number>();
 
-  suggestions: Suggestion[] = [];
+  suggestions = signal<Suggestion[]>([]);
   currentPage: number;
-  activeCategories1: Set<string>;
-  activeCategories2: Set<string>;
+  activeCategories1 = signal<Set<string>>(null);
+  activeCategories2 = signal<Set<string>>(null);
   readonly searchbar = viewChild(IonSearchbar);
-  shouldShowDetails: boolean;
-  detailsAreAvailable: boolean;
+  shouldShowDetails = signal<boolean>(undefined);
+  detailsAreAvailable = signal<boolean>(undefined);
 
   async ngOnInit(): Promise<void> {
-    if (this.sortData)
-      this.data = this.data.sort((a, b): number =>
-        a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
+    if (this.sortData())
+      this.data.set(
+        this.data().sort((a, b): number =>
+          a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
+        )
       );
 
     this.loadActiveCategories();
-    this.detailsAreAvailable = this.data.some(
-      x => (x.name && !this.hideIdFromUI) || x.category1 || x.category2 || x.description
+    this.detailsAreAvailable.set(
+      this.data().some(x => (x.name && !this.hideIdFromUI()) || x.category1 || x.category2 || x.description)
     );
 
-    if (!this.detailsAreAvailable) this.shouldShowDetails = false;
+    if (!this.detailsAreAvailable()) this.shouldShowDetails.set(false);
     else {
       try {
-        this.shouldShowDetails = !(await this._storage.get(SHOULD_HIDE_DETAILS_STORAGE_KEY));
+        this.shouldShowDetails.set(!(await this._storage.get(SHOULD_HIDE_DETAILS_STORAGE_KEY)));
       } catch (error) {
-        this.shouldShowDetails = false;
+        this.shouldShowDetails.set(false);
       }
     }
     this.search();
-    this._cdr.markForCheck();
   }
   ionViewDidEnter(): void {
     if (this._platform.is('desktop')) this.searchbar().setFocus();
   }
 
   private loadActiveCategories(): void {
-    this.activeCategories1 = new Set<string>();
-    this.activeCategories2 = new Set<string>();
-    this.data.forEach(a => {
-      if (a.category1) this.activeCategories1.add(a.category1);
-      if (a.category2) this.activeCategories2.add(a.category2);
+    const activeCategories1 = new Set<string>();
+    const activeCategories2 = new Set<string>();
+    this.data().forEach(a => {
+      if (a.category1) activeCategories1.add(a.category1);
+      if (a.category2) activeCategories2.add(a.category2);
     });
+    this.activeCategories1.set(activeCategories1);
+    this.activeCategories2.set(activeCategories2);
   }
   private mapIntoSuggestions(set: Set<string>): Suggestion[] {
     return Array.from(set)
@@ -177,9 +172,9 @@ export class IDEASuggestionsComponent implements OnInit {
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
-    this.suggestions = (this.data || [])
-      .filter(x => !this.category1 || x.category1 === this.category1)
-      .filter(x => !this.category2 || x.category2 === this.category2)
+    let suggestions = (this.data() || [])
+      .filter(x => !this.category1() || x.category1 === this.category1())
+      .filter(x => !this.category2() || x.category2 === this.category2())
       .filter(x =>
         toSearch
           .split(' ')
@@ -192,21 +187,22 @@ export class IDEASuggestionsComponent implements OnInit {
 
     if (scrollToNextPage) this.currentPage++;
     else this.currentPage = 0;
-    this.suggestions = this.suggestions.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+    suggestions = suggestions.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+    this.suggestions.set(suggestions);
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
 
   async setFilterCategoryN(whichCategory: number): Promise<void> {
-    const categories = whichCategory === 2 ? this.activeCategories2 : this.activeCategories1;
+    const categories = whichCategory === 2 ? this.activeCategories2() : this.activeCategories1();
     const modal = await this._modal.create({
       component: IDEASuggestionsComponent,
       componentProps: { data: this.mapIntoSuggestions(categories) }
     });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) {
-        if (whichCategory === 2) this.category2 = data.value;
-        else this.category1 = data.value;
+        if (whichCategory === 2) this.category2.set(data.value);
+        else this.category1.set(data.value);
         const searchbar = this.searchbar();
         this.search(searchbar ? searchbar.value : null);
       }
@@ -214,8 +210,8 @@ export class IDEASuggestionsComponent implements OnInit {
     modal.present();
   }
   resetFilterCategoryN(whichCategory: number): void {
-    if (whichCategory === 2) this.category2 = null;
-    else this.category1 = null;
+    if (whichCategory === 2) this.category2.set(null);
+    else this.category1.set(null);
     const searchbar = this.searchbar();
     this.search(searchbar ? searchbar.value : null);
   }
@@ -243,7 +239,7 @@ export class IDEASuggestionsComponent implements OnInit {
         if (suggestionsList && suggestionsList.getElementsByClassName('selected').length) {
           if (suggestionsList.getElementsByClassName('selected')[0].getElementsByClassName('key').length)
             this.select(
-              this.data.find(
+              this.data().find(
                 x =>
                   String(x.value) ===
                   suggestionsList
@@ -252,9 +248,9 @@ export class IDEASuggestionsComponent implements OnInit {
                     .innerHTML.trim()
               )
             ); // selected || loose value
-        } else if (this.suggestions.length === 0) this.select();
+        } else if (this.suggestions().length === 0) this.select();
         // cancel
-        else this.select(this.suggestions[0]); // first element
+        else this.select(this.suggestions()[0]); // first element
         break;
       case 'ArrowUp':
       case 'ArrowDown':
@@ -282,8 +278,8 @@ export class IDEASuggestionsComponent implements OnInit {
   }
 
   toggleDetailsVisibilityPreference(): void {
-    if (!this.detailsAreAvailable) return;
-    this.shouldShowDetails = !this.shouldShowDetails;
-    this._storage.set(SHOULD_HIDE_DETAILS_STORAGE_KEY, !this.shouldShowDetails);
+    if (!this.detailsAreAvailable()) return;
+    this.shouldShowDetails.set(!this.shouldShowDetails());
+    this._storage.set(SHOULD_HIDE_DETAILS_STORAGE_KEY, !this.shouldShowDetails());
   }
 }

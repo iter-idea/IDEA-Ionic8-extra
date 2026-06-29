@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy, viewChild } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, signal } from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
@@ -107,12 +107,12 @@ const MAX_PAGE_SIZE = 24;
         <ion-refresher-content />
       </ion-refresher>
       <ion-list class="aList">
-        @if (uploadErrors?.length) {
+        @if (uploadErrors()?.length) {
           <ion-card color="danger">
             <ion-card-content>
               <b>{{ 'IDEA_TEAMS.RESOURCE_CENTER.THE_FOLLOWING_FILES_FAILED_UPLOAD' | translate }}:</b>
               <ul>
-                @for (err of uploadErrors; track err) {
+                @for (err of uploadErrors(); track err) {
                   <li>{{ err }}</li>
                 }
               </ul>
@@ -124,19 +124,19 @@ const MAX_PAGE_SIZE = 24;
             <h2>{{ folder.name }}</h2>
           </ion-label>
         </ion-list-header>
-        @if (!filteredResources) {
+        @if (!filteredResources()) {
           <ion-item>
             <ion-label>
               <ion-skeleton-text animated style="width: 50%" />
             </ion-label>
           </ion-item>
         }
-        @if (filteredResources && !filteredResources.length) {
+        @if (filteredResources() && !filteredResources().length) {
           <ion-item class="noElements">
             <ion-label>{{ 'COMMON.NO_ELEMENT_FOUND' | translate }}</ion-label>
           </ion-item>
         }
-        @for (r of filteredResources; track r) {
+        @for (r of filteredResources(); track r) {
           <ion-item>
             <ion-button
               slot="start"
@@ -193,13 +193,10 @@ export class IDEARCResourcesComponent implements OnInit {
   private _translate = inject(IDEATranslationsService);
   private _API = inject(IDEAAWSAPIService);
   _offline = inject(IDEAOfflineService);
-  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() teamId: string;
   /**
    * The Resource Center's folder of which to show the resources.
@@ -211,12 +208,12 @@ export class IDEARCResourcesComponent implements OnInit {
   @Input() admin?: boolean;
 
   resources: RCResource[];
-  filteredResources: RCResource[];
+  filteredResources = signal<RCResource[]>(null);
   currentPage: number;
 
   readonly searchbar = viewChild<IonSearchbar>('searchbar');
 
-  uploadErrors: string[];
+  uploadErrors = signal<string[]>([]);
 
   ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
@@ -234,7 +231,6 @@ export class IDEARCResourcesComponent implements OnInit {
       this.resources = resources.map(r => new RCResource(r));
       const searchbar = this.searchbar();
       this.search(searchbar ? searchbar.value : null);
-      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST');
     }
@@ -243,7 +239,7 @@ export class IDEARCResourcesComponent implements OnInit {
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
-    this.filteredResources = (this.resources || [])
+    const filtered = (this.resources || [])
       .filter(m =>
         toSearch
           .split(' ')
@@ -253,12 +249,12 @@ export class IDEARCResourcesComponent implements OnInit {
 
     if (scrollToNextPage) this.currentPage++;
     else this.currentPage = 0;
-    this.filteredResources = this.filteredResources.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+    this.filteredResources.set(filtered.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE));
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
   doRefresh(refresher?: HTMLIonRefresherElement): void {
-    this.filteredResources = null;
+    this.filteredResources.set(null);
     setTimeout((): void => {
       this.loadResources(Boolean(refresher));
       if (refresher) refresher.complete();
@@ -321,7 +317,7 @@ export class IDEARCResourcesComponent implements OnInit {
     document.getElementById(res.resourceId.concat('_picker')).click();
   }
   async updateResource(res: RCResource, ev: any): Promise<void> {
-    this.uploadErrors = new Array<string>();
+    this.uploadErrors.set(new Array<string>());
     // identify the file to upload (consider only the first file selected)
     const fileList: FileList = ev.target ? ev.target.files : {};
     const file = fileList.item(0);
@@ -329,7 +325,7 @@ export class IDEARCResourcesComponent implements OnInit {
     await this._loading.show();
     await this.uploadFile(file);
     this._loading.hide();
-    if (this.uploadErrors.length) this._message.error('IDEA_TEAMS.RESOURCE_CENTER.ONE_OR_MORE_FILE_UPLOAD_FAILED');
+    if (this.uploadErrors().length) this._message.error('IDEA_TEAMS.RESOURCE_CENTER.ONE_OR_MORE_FILE_UPLOAD_FAILED');
     else this._message.success('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_COMPLETED');
   }
   async renameResource(res: RCResource): Promise<void> {
@@ -397,7 +393,7 @@ export class IDEARCResourcesComponent implements OnInit {
     document.getElementById('newResourcePicker').click();
   }
   async uploadNewResources(ev: any): Promise<void> {
-    this.uploadErrors = new Array<string>();
+    this.uploadErrors.set(new Array<string>());
     // gather the files to upload
     const fileList: FileList = ev.target ? ev.target.files : {};
     const files = new Array<File>();
@@ -406,7 +402,7 @@ export class IDEARCResourcesComponent implements OnInit {
     await this._loading.show();
     files.forEach(async file => await this.uploadFile(file));
     this._loading.hide();
-    if (this.uploadErrors.length) this._message.error('IDEA_TEAMS.RESOURCE_CENTER.ONE_OR_MORE_FILE_UPLOAD_FAILED');
+    if (this.uploadErrors().length) this._message.error('IDEA_TEAMS.RESOURCE_CENTER.ONE_OR_MORE_FILE_UPLOAD_FAILED');
     else this._message.success('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_COMPLETED');
     // reload the resources (force update cache)
     this.loadResources(true);
@@ -423,13 +419,19 @@ export class IDEARCResourcesComponent implements OnInit {
     } else resource = new RCResource({ name, format });
 
     if (!loopStringEnumValues(RCResourceFormats).some(x => x === format)) {
-      this.uploadErrors.push(this._translate._('IDEA_TEAMS.RESOURCE_CENTER.INVALID_FORMAT_FILE_', { name }));
+      this.uploadErrors.update(errors => [
+        ...errors,
+        this._translate._('IDEA_TEAMS.RESOURCE_CENTER.INVALID_FORMAT_FILE_', { name })
+      ]);
       return;
     }
 
     const sizeMB = Number((file.size / 1024 / 1024).toFixed(4));
     if (sizeMB > FILE_SIZE_LIMIT_MB) {
-      this.uploadErrors.push(this._translate._('IDEA_TEAMS.RESOURCE_CENTER.INVALID_SIZE_FILE_', { name }));
+      this.uploadErrors.update(errors => [
+        ...errors,
+        this._translate._('IDEA_TEAMS.RESOURCE_CENTER.INVALID_SIZE_FILE_', { name })
+      ]);
       return;
     }
 
@@ -446,10 +448,16 @@ export class IDEARCResourcesComponent implements OnInit {
         });
         await this._API.rawRequest().put(url, file).toPromise();
       } catch (error) {
-        this.uploadErrors.push(this._translate._('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_ERROR_FILE', { name }));
+        this.uploadErrors.update(errors => [
+          ...errors,
+          this._translate._('IDEA_TEAMS.RESOURCE_CENTER.UPLOAD_ERROR_FILE', { name })
+        ]);
       }
     } catch (error) {
-      this.uploadErrors.push(this._translate._('IDEA_TEAMS.RESOURCE_CENTER.ERROR_CREATING_RESOURCE_FILE', { name }));
+      this.uploadErrors.update(errors => [
+        ...errors,
+        this._translate._('IDEA_TEAMS.RESOURCE_CENTER.ERROR_CREATING_RESOURCE_FILE', { name })
+      ]);
     }
   }
 

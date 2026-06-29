@@ -6,6 +6,7 @@ import { IDEAEnvironment } from '../../environment';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAApiService } from '../api.service';
 import { IDEAStorageService } from '../storage.service';
+import { refreshVisibleIonicPages } from '../cdRefresh';
 
 /**
  * Check whether the app has some status message or update to handle.
@@ -67,9 +68,13 @@ export class IDEAAppStatusService {
         latestVersion: statusFromS3.latestVersion
       });
     } finally {
-      // The native `fetch` settles outside the Angular zone; force a global tick on the next macrotask
-      // so the caller's post-`await` state change renders on Zone-based apps. See IDEAApiService.
-      setTimeout(() => this._appRef.tick());
+      // The native `fetch` settles outside the Angular zone; on the next macrotask refresh the visible
+      // Ionic page(s) and tick the app shell so the caller's post-`await` state change renders on
+      // Zone-based apps. See IDEAApiService.
+      setTimeout(() => {
+        refreshVisibleIonicPages();
+        this._appRef.tick();
+      });
     }
   }
   private async presentToast(appStatus: AppStatus, options: { color?: string; position?: string } = {}): Promise<void> {

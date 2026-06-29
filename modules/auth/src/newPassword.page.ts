@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -53,10 +53,10 @@ import { IDEAAuthService } from './auth.service';
             <ion-card-subtitle>{{ 'IDEA_AUTH.YOU_NEED_TO_CHOOSE_A_NEW_PASSWORD' | translate }}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
-            @if (errorMsg) {
+            @if (errorMsg()) {
               <p testId="newpassword.error" class="errorBox">
                 <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
-                {{ errorMsg }}
+                {{ errorMsg() }}
               </p>
             }
             <ion-item>
@@ -123,7 +123,7 @@ export class IDEANewPasswordPage implements OnInit {
 
   newPassword: string;
   passwordPolicy: any;
-  errorMsg: string;
+  errorMsg = signal<string>(null);
 
   constructor() {
     this.passwordPolicy = this._env.idea.auth.passwordPolicy;
@@ -135,22 +135,24 @@ export class IDEANewPasswordPage implements OnInit {
   async confirmNewPassword(): Promise<void> {
     try {
       await this._loading.show();
-      this.errorMsg = null;
+      this.errorMsg.set(null);
       const errors = this._auth.validatePasswordAgainstPolicy(this.newPassword);
       if (errors.length === 0 && this.passwordPolicy.advancedPasswordCheck)
         errors.push(...(await this._auth.validatePasswordAgainstDatabases(this.newPassword)));
       if (errors.length)
-        this.errorMsg = [
-          this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
-          ...errors.map(x =>
-            this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
-          )
-        ].join(' ');
-      if (this.errorMsg) return this._message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
+        this.errorMsg.set(
+          [
+            this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
+            ...errors.map(x =>
+              this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
+            )
+          ].join(' ')
+        );
+      if (this.errorMsg()) return this._message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
       await this._auth.confirmNewPassword(this.newPassword);
       window.location.assign('');
     } catch (error) {
-      this.errorMsg = (error as any).message;
+      this.errorMsg.set((error as any).message);
       this._message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
     } finally {
       this._loading.hide();

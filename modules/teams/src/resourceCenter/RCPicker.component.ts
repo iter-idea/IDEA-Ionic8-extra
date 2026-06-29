@@ -1,4 +1,13 @@
-import { Component, inject, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, input } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectionStrategy,
+  input,
+  signal
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Browser } from '@capacitor/browser';
 import { IonItem, IonButton, IonIcon, IonInput, IonLabel, IonText } from '@ionic/angular/standalone';
@@ -48,7 +57,7 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
           <ion-label>
             {{ r.name }}
             <p>{{ r.originalName }}.{{ r.format }}</p>
-            @if (resources && isResourceNewerVersionAvailable(r)) {
+            @if (resources() && isResourceNewerVersionAvailable(r)) {
               <p class="ion-text-wrap oldVersionAlert">
                 {{ 'IDEA_TEAMS.RESOURCE_CENTER.VERSION_ATTACHED_IS_OLDER' | translate }}.
                 @if (_offline.isOnline()) {
@@ -82,9 +91,9 @@ import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-
       </ion-item>
     }
     <!----->
-    @if (editMode() && resourcesSuggestions) {
+    @if (editMode() && resourcesSuggestions()) {
       <idea-select
-        [data]="resourcesSuggestions"
+        [data]="resourcesSuggestions()"
         [placeholder]="'IDEA_TEAMS.RESOURCE_CENTER.TAP_TO_ADD_A_RESOURCE' | translate"
         [searchPlaceholder]="'IDEA_TEAMS.RESOURCE_CENTER.RESOURCES_AVAILABLE' | translate"
         [lines]="'none'"
@@ -133,8 +142,6 @@ export class IDEARCPickerComponent implements OnChanges {
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() team: string;
   /**
    * The folder of which to load the resources.
@@ -153,8 +160,8 @@ export class IDEARCPickerComponent implements OnChanges {
    */
   readonly lines = input('none');
 
-  resources: RCResource[];
-  resourcesSuggestions: Suggestion[];
+  resources = signal<RCResource[]>(undefined);
+  resourcesSuggestions = signal<Suggestion[]>(undefined);
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes.team || changes.folder) {
@@ -163,9 +170,9 @@ export class IDEARCPickerComponent implements OnChanges {
       try {
         const url = `teams/${this.team}/folders/${this.folder().folderId}/resources`;
         const resources: RCResource[] = await this._API.getResource(url);
-        this.resources = resources;
-        this.resourcesSuggestions = resources.map(
-          x => new Suggestion({ value: x.resourceId, name: `${x.name}.${x.format}` })
+        this.resources.set(resources);
+        this.resourcesSuggestions.set(
+          resources.map(x => new Suggestion({ value: x.resourceId, name: `${x.name}.${x.format}` }))
         );
       } catch (error) {
         this._message.error('COMMON.COULDNT_LOAD_LIST');
@@ -174,7 +181,7 @@ export class IDEARCPickerComponent implements OnChanges {
   }
 
   addResource(resourceId: string): void {
-    const resource = this.resources.find(r => r.resourceId === resourceId);
+    const resource = this.resources().find(r => r.resourceId === resourceId);
     if (resource) this.attachedResources().push(new RCAttachedResource(resource));
   }
 
@@ -212,7 +219,7 @@ export class IDEARCPickerComponent implements OnChanges {
   }
 
   isResourceNewerVersionAvailable(attachedResource: RCAttachedResource): boolean {
-    const latestRes = this.resources.find(x => x.resourceId === attachedResource.resourceId);
+    const latestRes = this.resources().find(x => x.resourceId === attachedResource.resourceId);
     return latestRes && latestRes.version > attachedResource.version;
   }
 }

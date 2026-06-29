@@ -50,9 +50,9 @@
             (select)="$event ? (calendarWC.color = $event) : null"
           />
         }
-        @if (membershipsChecks && calendarWC.isShared() && advancedPermissions) {
+        @if (membershipsChecks() && calendarWC.isShared() && advancedPermissions) {
           <idea-checker
-            [data]="membershipsChecks"
+            [data]="membershipsChecks()"
             [label]="'IDEA_AGENDA.CALENDARS.USERS_ALLOWED_TO_MANAGE_APPOINTMENTS' | translate"
             [searchPlaceholder]="'IDEA_AGENDA.CALENDARS.WHO_CAN_MANAGE_APPOINTMENTS' | translate"
             [noneText]="'IDEA_AGENDA.CALENDARS.NOBODY' | translate"

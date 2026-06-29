@@ -93,9 +93,9 @@ export class IDEABarcodeCameraReaderComponent {
   }
 
   private setBackgroundVisibility(visible: boolean): void {
-    // @todo to fix
+    // TODO to fix
     if (visible) (BarcodeScanner as any).showBackground();
-    // @todo to fix
+    // TODO to fix
     else (BarcodeScanner as any).hideBackground();
 
     document.body.style.background = visible ? '' : 'transparent';

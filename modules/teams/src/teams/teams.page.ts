@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   NavController,
   IonHeader,
@@ -73,7 +73,7 @@ import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
             </ion-label>
           </ion-list-header>
         }
-        @for (team of teams; track team) {
+        @for (team of teams(); track team) {
           <ion-item
             [title]="'IDEA_TEAMS.TEAMS.SELECT_TEAM_' | translate: { team: team.name }"
             [button]="true"
@@ -123,10 +123,9 @@ export class IDEATeamsPage implements OnInit {
   private _message = inject(IDEAMessageService);
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
-  private _cdr = inject(ChangeDetectorRef);
 
   user: User;
-  teams: Team[];
+  teams = signal<Team[]>([]);
   project: string;
 
   ngOnInit(): void {
@@ -139,8 +138,7 @@ export class IDEATeamsPage implements OnInit {
     try {
       await this._loading.show();
       const teams: Team[] = await this._API.getResource('teams', { idea: true, params: { project: this.project } });
-      this.teams = teams.map(t => new Team(t));
-      this._cdr.markForCheck();
+      this.teams.set(teams.map(t => new Team(t)));
     } catch (error) {
       this._nav.navigateRoot(['auth']);
     } finally {

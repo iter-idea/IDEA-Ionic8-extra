@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { epochDateTime } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../environment';
+import { refreshVisibleIonicPages } from './cdRefresh';
 
 /**
  * To communicate with an AWS API Gateway websocket istance.
@@ -105,7 +106,13 @@ export class IDEAWebSocketApiService {
       if (this.options.debug) console.log('WEBSOCKET INCOMING MESSAGE', event);
       try {
         const data = JSON.parse(event.data || {});
-        if (this.options.onMessage) this.options.onMessage(data);
+        if (this.options.onMessage) {
+          this.options.onMessage(data);
+          // A WebSocket message settles outside the Angular zone, so on a Zone-based (and zoneless) app
+          // the state the handler assigns wouldn't render. Refresh the visible Ionic page on the next
+          // macrotask — opt out with `refreshOnMessage: false` for high-frequency streams. See IDEAApiService.
+          if (this.options.refreshOnMessage !== false) setTimeout(refreshVisibleIonicPages);
+        }
       } catch (err) {
         // IGNORE: it probably comes from a keep-alive ping-pong message
       }
@@ -214,6 +221,12 @@ export interface IDEAWebSocketApiServiceOpenOptions {
    * Action to execute when a message is delivered from the server.
    */
   onMessage?: (event: any) => void;
+  /**
+   * Whether to refresh the visible Ionic page after each message so the `onMessage` state renders on
+   * Zone-based and zoneless consumers without app-side change detection. Defaults to `true`; set to
+   * `false` for high-frequency streams where you handle rendering yourself (e.g. via signals).
+   */
+  refreshOnMessage?: boolean;
   /**
    * Action to execute when an error occurs.
    */

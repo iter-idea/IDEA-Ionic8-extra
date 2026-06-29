@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, ChangeDetectorRef, output, input } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, output, input, model, signal } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Check } from 'idea-toolbox';
 
@@ -17,7 +17,7 @@ import { IDEAChecksComponent } from './checks.component';
       [lines]="lines()"
       [title]="searchPlaceholder() || null"
       [button]="!disabled"
-      [disabled]="isOpening"
+      [disabled]="isOpening()"
       [class.withLabel]="label"
       (click)="fetchDataAndOpenModal()"
     >
@@ -92,14 +92,11 @@ import { IDEAChecksComponent } from './checks.component';
 export class IDEACheckerComponent {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
-  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The checks to show.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() data: Check[] = [];
+  readonly data = model<Check[]>([]);
   /**
    * @deprecated Alternative to the case above; function that returns a Promise<Array<Check>>.
    */
@@ -107,12 +104,10 @@ export class IDEACheckerComponent {
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
@@ -157,7 +152,6 @@ export class IDEACheckerComponent {
   /**
    * If true, the component is disabled.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() disabled: boolean;
   /**
    * If true, the field has a tappable effect when disabled.
@@ -209,29 +203,27 @@ export class IDEACheckerComponent {
    */
   readonly iconSelect = output<void>();
 
-  isOpening = false;
+  isOpening = signal<boolean>(false);
 
   async fetchDataAndOpenModal(): Promise<void> {
     if (this.disabled) return;
     const dataProvider = this.dataProvider();
     if (typeof dataProvider === 'function') {
       try {
-        this.data = await dataProvider();
+        this.data.set(await dataProvider());
         this.openChecker();
       } catch (error) {
-        this.data = [];
-      } finally {
-        this._cd.markForCheck(); // zoneless: re-check after the awaited data provider settles
+        this.data.set([]);
       }
     } else this.openChecker();
   }
   private async openChecker(): Promise<void> {
-    if (this.disabled || this.isOpening) return;
-    this.isOpening = true;
+    if (this.disabled || this.isOpening()) return;
+    this.isOpening.set(true);
     const modal = await this._modal.create({
       component: IDEAChecksComponent,
       componentProps: {
-        data: this.data,
+        data: this.data(),
         sortData: this.sortData(),
         searchPlaceholder: this.searchPlaceholder(),
         noElementsFoundText: this.noElementsFoundText(),
@@ -246,25 +238,28 @@ export class IDEACheckerComponent {
     });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) this.change.emit();
-      this._cd.markForCheck(); // zoneless: re-check so the preview reflects the new selection
+      // the modal mutates the checks in place (same array reference), so set a fresh array
+      // to notify the signal and let the preview reflect the new selection
+      this.data.update(checks => [...checks]);
     });
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   getPreview(): string {
-    if (!this.data || !this.data.length) return null;
+    const data = this.data();
+    if (!data || !data.length) return null;
     const noPreviewText = this.noPreviewText();
     if (noPreviewText) return noPreviewText;
     const allText = this.allText();
-    if (allText && (this.data.every(x => x.checked) || (this.data.every(x => !x.checked) && this.noneEqualsAll())))
+    if (allText && (data.every(x => x.checked) || (data.every(x => !x.checked) && this.noneEqualsAll())))
       return allText;
     else {
-      const checked = this.data.filter(x => x.checked);
+      const checked = data.filter(x => x.checked);
       const noneText = this.noneText();
       if (noneText && checked.length === 0) return noneText;
       if (checked.length <= this.numMaxElementsInPreview())
-        return this.data
+        return data
           .filter(x => x.checked)
           .slice(0, this.numMaxElementsInPreview())
           .map(x => x.name)

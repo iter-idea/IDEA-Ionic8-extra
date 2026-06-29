@@ -10,7 +10,7 @@ const MODULES_FOLDER = 'modules';
 // MAIN
 //
 
-// @todo add services (as of today we only have components)
+// TODO add services (as of today we only have components)
 main()
   .then(() => console.log('Docs generated'))
   .catch(err => {

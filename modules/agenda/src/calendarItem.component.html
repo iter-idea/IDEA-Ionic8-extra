@@ -1,25 +1,25 @@
-@if (calendar) {
+@if (calendar()) {
   <ion-item
     class="calendarItem"
     [button]="!disabled()"
     [title]="'IDEA_AGENDA.CALENDARS.EDIT_CALENDAR' | translate"
-    (click)="calendar.external && !calendar.external.calendarId ? linkExtCalendarOrDelete() : manageCalendar()"
+    (click)="calendar().external && !calendar().external.calendarId ? linkExtCalendarOrDelete() : manageCalendar()"
   >
     @if (!hideColor()) {
-      <ion-avatar slot="start" class="colorCircle" [style.background-color]="calendar.color" />
+      <ion-avatar slot="start" class="colorCircle" [style.background-color]="calendar().color" />
     }
     <ion-label>
-      {{ calendar.name }}
+      {{ calendar().name }}
       <p>
-        @if (calendar.external && !calendar.external.calendarId) {
+        @if (calendar().external && !calendar().external.calendarId) {
           <ion-text color="danger">
             {{ 'IDEA_AGENDA.CALENDARS.TAP_TO_CONFIGURE' | translate }}
           </ion-text>
         }
-        {{ calendar.description }}
+        {{ calendar().description }}
       </p>
     </ion-label>
-    @if (calendar.external && !calendar.external.calendarId) {
+    @if (calendar().external && !calendar().external.calendarId) {
       <ion-icon
         slot="end"
         color="danger"
@@ -27,14 +27,14 @@
         [title]="'IDEA_AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED_HINT' | translate"
       />
     }
-    @if (calendar.external?.service) {
+    @if (calendar().external?.service) {
       <ion-icon
         slot="end"
-        [name]="_calendars.getServiceIcon(calendar.external.service)"
+        [name]="_calendars.getServiceIcon(calendar().external.service)"
         [title]="
           ('IDEA_AGENDA.CALENDARS.LINKED_TO' | translate) +
           ' ' +
-          ('IDEA_AGENDA.CALENDARS.SERVICES.' + calendar.external.service | translate)
+          ('IDEA_AGENDA.CALENDARS.SERVICES.' + calendar().external.service | translate)
         "
       />
     }

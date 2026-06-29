@@ -17,27 +17,27 @@
 </ion-header>
 <ion-content>
   <ion-list class="aList">
-    @if (!_offline.synchronizing && _offline.requiresManualConfirmation) {
+    @if (!_offline.synchronizing() && _offline.requiresManualConfirmation()) {
       <ion-list-header>
         <ion-label>
           <h2>{{ 'IDEA_UNCOMMON.OFFLINE.HUGE_SYNC_NEED_MANUAL_CONFIRMATION' | translate }}</h2>
         </ion-label>
       </ion-list-header>
     }
-    @if (!_offline.synchronizing) {
+    @if (!_offline.synchronizing()) {
       <ion-list-header>
         <ion-label class="ion-text-wrap">
           <h3 class="lastSyncAt">
             {{ 'IDEA_UNCOMMON.OFFLINE.LAST_SYNC' | translate }}:
             <ion-text>
               {{
-                _offline.lastSyncAt
-                  ? (_offline.lastSyncAt | dateLocale: 'medium')
+                _offline.lastSyncAt()
+                  ? (_offline.lastSyncAt() | dateLocale: 'medium')
                   : ('IDEA_UNCOMMON.OFFLINE.NEVER' | translate)
               }}
             </ion-text>
           </h3>
-          @if (_offline.errorInLastSync) {
+          @if (_offline.errorInLastSync()) {
             <p>
               <ion-text color="danger">
                 <b>{{ 'IDEA_UNCOMMON.OFFLINE.ERROR_DURING_LAST_SYNC' | translate }}</b>
@@ -48,7 +48,7 @@
         <ion-button
           size="small"
           fill="solid"
-          [color]="_offline.errorInLastSync ? 'danger' : 'dark'"
+          [color]="_offline.errorInLastSync() ? 'danger' : 'dark'"
           [disabled]="_offline.isOffline()"
           (click)="sync()"
         >
@@ -57,7 +57,7 @@
       </ion-list-header>
     }
   </ion-list>
-  @if (_offline.synchronizing) {
+  @if (_offline.synchronizing()) {
     <ion-list class="aList">
       <ion-item>
         <ion-label class="ion-text-center">
@@ -118,7 +118,7 @@
               <ion-icon slot="icon-only" name="download" />
             </ion-button>
           }
-          @if (_offline.synchronizing) {
+          @if (_offline.synchronizing()) {
             <ion-spinner slot="end" name="dots" />
           }
         </ion-item>

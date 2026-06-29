@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, signal, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -56,7 +56,7 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-content>
-      @if (newAccountRegistered) {
+      @if (newAccountRegistered()) {
         <ion-card color="warning">
           <ion-card-content>{{ 'IDEA_AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN' | translate }}</ion-card-content>
         </ion-card>
@@ -77,9 +77,9 @@ import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
               }
             </ion-card-header>
             <ion-card-content>
-              @if (errorMsg) {
+              @if (errorMsg()) {
                 <p testId="signin.error" class="errorBox">
-                  <b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg }}
+                  <b>{{ 'IDEA_AUTH.WARNING' | translate }}.</b> {{ errorMsg() }}
                 </p>
               }
               <ion-item>
@@ -264,11 +264,11 @@ export class IDEASignInPage {
   externalProviders: { type: string; name: string; emailDomains: string[] }[];
   doneExternalProviderCheck = false;
 
-  email: string;
+  email = model<string>();
   password: string;
   agreementsCheck = true;
-  newAccountRegistered = false;
-  errorMsg: string;
+  newAccountRegistered = signal<boolean>(false);
+  errorMsg = signal<string>(null);
   darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   constructor() {
@@ -280,28 +280,28 @@ export class IDEASignInPage {
   }
   ionViewDidEnter(): void {
     // manage the scenario in which we just created a new account (show a explanatory message: email must be confirmed)
-    this.newAccountRegistered = !!this._auth.getNewAccountJustRegistered();
-    if (this.newAccountRegistered) this.email = this._auth.getNewAccountJustRegistered();
+    this.newAccountRegistered.set(!!this._auth.getNewAccountJustRegistered());
+    if (this.newAccountRegistered()) this.email.set(this._auth.getNewAccountJustRegistered());
   }
 
   async login(): Promise<void> {
     if (!this.agreementsCheck) return;
     try {
-      this.errorMsg = null;
+      this.errorMsg.set(null);
       await this._loading.show();
-      const loginAction = await this._auth.login(this.email, this.password);
+      const loginAction = await this._auth.login(this.email(), this.password);
       if (loginAction === LoginOutcomeActions.NEW_PASSWORD) this._nav.navigateForward(['auth', 'new-password']);
       else if (loginAction === LoginOutcomeActions.MFA_CHALLENGE) this._nav.navigateForward(['auth', 'mfa-challenge']);
       else if (loginAction === LoginOutcomeActions.MFA_SETUP) this._nav.navigateForward(['auth', 'setup-mfa']);
       else window.location.assign('');
     } catch (err) {
       if ((err as any).name === 'UserNotConfirmedException')
-        this.errorMsg = this._translate._('IDEA_AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN');
+        this.errorMsg.set(this._translate._('IDEA_AUTH.CONFIRM_YOUR_EMAIL_TO_LOGIN'));
       else if (
         (err as any).name === 'UserLambdaValidationException' &&
         (err as any).message?.includes('@IDEA_COGNITO_TRANSITION')
       )
-        this.errorMsg = this._translate._('IDEA_AUTH.CHANGE_YOUR_PASSWORD_TO_LOGIN');
+        this.errorMsg.set(this._translate._('IDEA_AUTH.CHANGE_YOUR_PASSWORD_TO_LOGIN'));
       this._message.error('IDEA_AUTH.AUTHENTICATION_FAILED');
     } finally {
       this._loading.hide();
@@ -309,8 +309,8 @@ export class IDEASignInPage {
   }
 
   checkForExternalProviderEmail(): void {
-    if (isEmpty(this.email, 'email')) return;
-    const emailDomain = this.email.split('@')[1];
+    if (isEmpty(this.email(), 'email')) return;
+    const emailDomain = this.email().split('@')[1];
     this.doneExternalProviderCheck = true;
     const provider = this.externalProviders.find(p => p.emailDomains.includes(emailDomain));
     if (provider)

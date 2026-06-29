@@ -1,4 +1,14 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+  output,
+  viewChild,
+  input,
+  signal
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -39,7 +49,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       [class.active]="active"
       [class.inactive]="!active"
       [color]="active ? color() : inactiveColor()"
-      [disabled]="disabled() || isOpening"
+      [disabled]="disabled() || isOpening()"
       (click)="openChecker($event)"
       (keyup.enter)="openChecker($event)"
     >
@@ -90,7 +100,6 @@ export class IDEAChipCheckerComponent {
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
@@ -170,11 +179,11 @@ export class IDEAChipCheckerComponent {
    */
   readonly change = output<string[]>();
 
-  isOpening = false;
+  isOpening = signal<boolean>(false);
 
   async openChecker(event: Event): Promise<void> {
-    if (this.disabled() || this.isOpening) return;
-    this.isOpening = true;
+    if (this.disabled() || this.isOpening()) return;
+    this.isOpening.set(true);
     const component = IDEAChipChecksComponent;
     const componentProps = {
       data: this.data(),
@@ -198,7 +207,7 @@ export class IDEAChipCheckerComponent {
       this.change.emit(checkValues);
     });
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   getPreview(): string {
@@ -397,8 +406,6 @@ class IDEAChipChecksComponent implements OnInit {
   /**
    * The data to show.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() data: Check[];
   /**
    * If true, sort alphabetically the data (by name or, fallback, by value).
@@ -425,7 +432,6 @@ class IDEAChipChecksComponent implements OnInit {
    * If this number is forced to `1`, the component turns into a single selection.
    * Note: if this attribute is active, `allowSelectDeselectAll` will be ignored.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() limitSelectionToNum: number;
   /**
    * Whether to allow the select/deselect-all buttons.

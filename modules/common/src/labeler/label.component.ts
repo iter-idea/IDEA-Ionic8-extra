@@ -1,13 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  inject,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  output,
-  input
-} from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, input, signal } from '@angular/core';
 import { ModalController, IonItem, IonLabel, IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { Label, Languages, mdToHtml, StringVariable } from 'idea-toolbox';
 
@@ -28,7 +19,7 @@ import { IDEALabelerComponent } from './labeler.component';
     <ion-item
       class="labelItem"
       button
-      [disabled]="isOpening"
+      [disabled]="isOpening()"
       [color]="color()"
       [lines]="lines()"
       [title]="placeholder() || ''"
@@ -55,11 +46,15 @@ import { IDEALabelerComponent } from './labeler.component';
         </ion-label>
       }
       <div class="description">
-        @if (!htmlContent) {
+        @if (!htmlContent()) {
           <div class="placeholder">{{ placeholder() }}</div>
         }
-        @if (htmlContent) {
-          <div class="innerContent" [class.md]="markdown()" [innerHTML]="htmlContent | highlight: variableCodes"></div>
+        @if (htmlContent()) {
+          <div
+            class="innerContent"
+            [class.md]="markdown()"
+            [innerHTML]="htmlContent() | highlight: variableCodes"
+          ></div>
         }
       </div>
       <ion-icon slot="end" icon="chevron-forward" class="selectIcon" />
@@ -101,7 +96,6 @@ import { IDEALabelerComponent } from './labeler.component';
 export class IDEALabelComponent implements OnInit {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
-  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The label to manage.
@@ -111,8 +105,6 @@ export class IDEALabelComponent implements OnInit {
   /**
    * The languages preferences; if not set, it fallbacks to IDEATranslationsService's ones.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() languages: Languages;
   /**
    * Whether to display the label in textareas instead of text fields.
@@ -129,12 +121,10 @@ export class IDEALabelComponent implements OnInit {
   /**
    * The title (label) for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The color of the icon.
@@ -165,9 +155,9 @@ export class IDEALabelComponent implements OnInit {
   readonly iconSelect = output<void>();
 
   variableCodes: string[];
-  htmlContent: string;
+  htmlContent = signal<string>(undefined);
 
-  isOpening = false;
+  isOpening = signal<boolean>(false);
 
   ngOnInit(): void {
     this.languages = this.languages || this._translate.languages();
@@ -176,8 +166,8 @@ export class IDEALabelComponent implements OnInit {
   }
 
   async edit(): Promise<void> {
-    if (this.isOpening) return;
-    this.isOpening = true;
+    if (this.isOpening()) return;
+    this.isOpening.set(true);
     const componentProps = {
       label: this.content(),
       languages: this.languages,
@@ -194,15 +184,14 @@ export class IDEALabelComponent implements OnInit {
       if (!data) return;
       this.calcHTMLContent();
       this.change.emit();
-      this._cd.markForCheck(); // zoneless: re-check so the updated content is rendered
     });
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   private calcHTMLContent(): void {
     const str = this.content().translate(this.languages.default, this.languages);
-    this.htmlContent = str && this.markdown() ? mdToHtml(str) : str;
+    this.htmlContent.set(str && this.markdown() ? mdToHtml(str) : str);
   }
 
   doIconSelect(event: any): void {

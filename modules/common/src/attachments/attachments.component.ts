@@ -1,13 +1,4 @@
-import {
-  Component,
-  inject,
-  Input,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  output,
-  viewChild,
-  input
-} from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, viewChild, input, model, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -50,7 +41,7 @@ import { IDEAAttachmentsService } from './attachments.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-reorder-group [disabled]="disabled()" (ionItemReorder)="reorderAttachments($event)">
-      @for (att of attachments; track att.attachmentId) {
+      @for (att of attachments(); track att.attachmentId) {
         <ion-item class="attachmentItem" [color]="color()" [lines]="!disabled() ? 'inset' : 'none'">
           @if (!disabled()) {
             <ion-reorder slot="start" />
@@ -112,7 +103,7 @@ import { IDEAAttachmentsService } from './attachments.service';
           <i>{{ 'IDEA_COMMON.ATTACHMENTS.TAP_TO_ADD_ATTACHMENT' | translate }}</i>
         </ion-label>
       </ion-item>
-      @for (err of uploadErrors; track $index) {
+      @for (err of uploadErrors(); track $index) {
         <ion-item class="attachmentItem error" [color]="color()">
           <ion-label color="danger" class="ion-text-wrap">
             {{ err.file }}
@@ -163,14 +154,11 @@ export class IDEAAttachmentsComponent {
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
   private _attachments = inject(IDEAAttachmentsService);
-  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The array of attachments to display and manage.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() attachments: Attachment[];
+  readonly attachments = model<Attachment[]>([]);
   /**
    * The API path to the entity for which we want to manage the attachments.
    */
@@ -198,14 +186,14 @@ export class IDEAAttachmentsComponent {
 
   readonly attachmentPicker = viewChild<any>('filePicker');
 
-  uploadErrors: UploadError[] = [];
+  uploadErrors = signal<UploadError[]>([]);
   maxSize = this._env.idea.app.maxFileUploadSizeMB;
 
   async browseFiles(): Promise<void> {
     this.attachmentPicker().nativeElement.click();
   }
   addAttachmentsFromPicker(target: HTMLInputElement): void {
-    this.uploadErrors = [];
+    this.uploadErrors.set([]);
     for (let i = 0; i < target.files.length; i++) {
       const file = target.files.item(i);
       const fullName = file.name.split('.');
@@ -218,29 +206,41 @@ export class IDEAAttachmentsComponent {
   }
   private async addAttachmentToListAndUpload(attachment: Attachment, file: File): Promise<void> {
     try {
-      this.attachments.push(attachment);
+      this.attachments.update(attachments => {
+        attachments.push(attachment);
+        return attachments;
+      });
       attachment.attachmentId = await this._attachments.uploadAndGetId(file, this.entityPath());
+      // re-set a fresh array so the in-place attachmentId mutation is rendered (spinner removal)
+      this.attachments.update(attachments => [...attachments]);
     } catch (err: any) {
       if (err.message === 'File is too big')
         err.message = this._translate._('IDEA_COMMON.ATTACHMENTS.FILE_IS_TOO_BIG', { maxSize: this.maxSize });
-      this.uploadErrors.push({ file: attachment.name, error: err.message });
+      this.uploadErrors.update(uploadErrors => {
+        uploadErrors.push({ file: attachment.name, error: err.message });
+        return uploadErrors;
+      });
       this.removeAttachment(attachment);
       this._message.error(err.message, { dontTranslate: true });
-    } finally {
-      this._cd.markForCheck(); // zoneless: re-check after the awaited upload settles
     }
   }
 
   removeAttachment(attachment: Attachment): void {
-    this.attachments.splice(this.attachments.indexOf(attachment), 1);
+    this.attachments.update(attachments => {
+      attachments.splice(attachments.indexOf(attachment), 1);
+      return [...attachments];
+    });
   }
   removeErrorFromList(err: UploadError): void {
-    const indexErr = this.uploadErrors.indexOf(err);
-    if (indexErr !== -1) this.uploadErrors.splice(this.uploadErrors.indexOf(err), 1);
+    this.uploadErrors.update(uploadErrors => {
+      const indexErr = uploadErrors.indexOf(err);
+      if (indexErr !== -1) uploadErrors.splice(indexErr, 1);
+      return [...uploadErrors];
+    });
   }
 
   reorderAttachments(ev: any): void {
-    this.attachments = ev.detail.complete(this.attachments);
+    this.attachments.set(ev.detail.complete(this.attachments()));
   }
 
   async downloadAttachment(attachment: Attachment): Promise<void> {

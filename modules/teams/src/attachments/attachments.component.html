@@ -54,7 +54,7 @@
 <!----->
 @if (editMode) {
   <div>
-    @for (err of uploadErrors; track err) {
+    @for (err of uploadErrors(); track err) {
       <ion-item class="attachments" [lines]="lines()">
         <ion-icon name="alert-circle" slot="start" color="danger" />
         <ion-label color="danger">
@@ -66,7 +66,7 @@
           color="danger"
           fill="clear"
           [title]="'IDEA_TEAMS.ATTACHMENTS.HIDE_ERROR' | translate"
-          (click)="uploadErrors.splice(uploadErrors.indexOf(err), 1)"
+          (click)="uploadErrors.set(uploadErrors().filter(e => e !== err))"
         >
           <ion-icon name="close" slot="icon-only" />
         </ion-button>

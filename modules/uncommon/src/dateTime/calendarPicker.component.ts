@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -62,10 +62,10 @@ export class IDEACalendarPickerComponent implements OnInit {
   @Input() min?: epochDateTime | epochISOString;
   @Input() max?: epochDateTime | epochISOString;
 
-  refDate: Date;
+  refDate = signal<Date>(undefined);
   selectedDate: Date;
   today: Date;
-  calendarGrid: Date[][];
+  calendarGrid = signal<Date[][]>(undefined);
   hour: number;
   minute: number;
   hours: string[];
@@ -77,8 +77,8 @@ export class IDEACalendarPickerComponent implements OnInit {
   ngOnInit(): void {
     this.today = new Date();
     const inputDate = this.inputDate;
-    this.refDate = inputDate ? new Date(inputDate) : new Date(this.today);
-    this.selectedDate = new Date(this.refDate);
+    this.refDate.set(inputDate ? new Date(inputDate) : new Date(this.today));
+    this.selectedDate = new Date(this.refDate());
     this.hour = 12; // to endure timezones
     this.minute = 0;
     const manualTimePicker = this.manualTimePicker;
@@ -91,7 +91,7 @@ export class IDEACalendarPickerComponent implements OnInit {
         this.selectedDate.setMinutes(this.minute);
       }
     }
-    this.buildCalendarGrid(this.refDate);
+    this.buildCalendarGrid(this.refDate());
     this.hours = Array.from(Array(24).keys()).map(i => '0'.concat(i.toString()).slice(-2));
     this.minutes = Array.from(Array(12).keys()).map(i => '0'.concat((i * 5).toString()).slice(-2));
     // build the weekdays based on the current locale
@@ -126,46 +126,59 @@ export class IDEACalendarPickerComponent implements OnInit {
     let haventFoundFirstDay = true;
     // index used to build the dates of the month, starting from the first one
     let index = 1;
-    this.calendarGrid = new Array<Date[]>();
+    const calendarGrid = new Array<Date[]>();
     for (let i = 0; i < 6; i++) {
-      this.calendarGrid[i] = new Array<Date>();
+      calendarGrid[i] = new Array<Date>();
       for (let j = 0; j < 7; j++) {
         if (haventFoundFirstDay) {
           if (this.getLocalisedDay(firstDateOfMonth) === j) {
             // note: considers Sunday
             haventFoundFirstDay = false;
-            this.calendarGrid[i][j] = new Date(firstDateOfMonth);
+            calendarGrid[i][j] = new Date(firstDateOfMonth);
             // now the I've found the first date of the month I can fill the calendar
             // the dates fromt the previous month, until there's space in the grid
             for (let y = this.getLocalisedDay(firstDateOfMonth); y >= 0; y--) {
               const d = new Date(firstDateOfMonth);
               d.setDate(firstDateOfMonth.getDate() - y);
-              this.calendarGrid[i][this.getLocalisedDay(firstDateOfMonth) - y] = d;
+              calendarGrid[i][this.getLocalisedDay(firstDateOfMonth) - y] = d;
             }
           }
         } else {
           // fill the following dates until there's space in the grid
           const d = new Date(firstDateOfMonth);
           d.setDate(firstDateOfMonth.getDate() + index++);
-          this.calendarGrid[i][j] = d;
+          calendarGrid[i][j] = d;
         }
       }
     }
+    this.calendarGrid.set(calendarGrid);
   }
 
   addYears(offset: number): void {
-    this.refDate.setFullYear(this.refDate.getFullYear() + offset);
-    this.buildCalendarGrid(this.refDate);
+    this.refDate.update(d => {
+      const refDate = new Date(d);
+      refDate.setFullYear(refDate.getFullYear() + offset);
+      return refDate;
+    });
+    this.buildCalendarGrid(this.refDate());
   }
   setYear(year: string | number): void {
     if (!year) return;
 
-    this.refDate.setFullYear(Number(year));
-    this.buildCalendarGrid(this.refDate);
+    this.refDate.update(d => {
+      const refDate = new Date(d);
+      refDate.setFullYear(Number(year));
+      return refDate;
+    });
+    this.buildCalendarGrid(this.refDate());
   }
   addMonths(offset: number): void {
-    this.refDate.setMonth(this.refDate.getMonth() + offset);
-    this.buildCalendarGrid(this.refDate);
+    this.refDate.update(d => {
+      const refDate = new Date(d);
+      refDate.setMonth(refDate.getMonth() + offset);
+      return refDate;
+    });
+    this.buildCalendarGrid(this.refDate());
   }
   async showMonths(): Promise<void> {
     const buttons = [];
@@ -176,7 +189,7 @@ export class IDEACalendarPickerComponent implements OnInit {
         type: 'radio',
         label: month.toLocaleDateString(this._translate.getCurrentLang(), { month: 'long' }),
         value: i.toString(),
-        checked: i === this.refDate.getMonth() + 1
+        checked: i === this.refDate().getMonth() + 1
       });
       month.setMonth(month.getMonth() + 1);
     }
@@ -184,8 +197,12 @@ export class IDEACalendarPickerComponent implements OnInit {
     buttons.push({
       text: this._translate._('COMMON.SELECT'),
       handler: (m: string): void => {
-        this.refDate.setMonth(parseInt(m, 10) - 1);
-        this.buildCalendarGrid(this.refDate);
+        this.refDate.update(d => {
+          const refDate = new Date(d);
+          refDate.setMonth(parseInt(m, 10) - 1);
+          return refDate;
+        });
+        this.buildCalendarGrid(this.refDate());
       }
     });
 

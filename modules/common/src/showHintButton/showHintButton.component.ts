@@ -37,7 +37,6 @@ export class IDEAShowHintButtonComponent {
   get translate(): boolean | string {
     return this._shouldTranslate;
   }
-  // TODO: Skipped for migration because:
   //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set translate(input: boolean | string) {
     this._shouldTranslate = String(input) !== 'false';

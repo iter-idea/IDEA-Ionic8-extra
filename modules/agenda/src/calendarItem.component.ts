@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, input, model } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular/standalone';
 import { Calendar } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -25,9 +25,7 @@ export class IDEACalendarItemComponent {
   /**
    * The calendar to show.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() calendar: Calendar;
+  readonly calendar = model<Calendar>();
   /**
    * Whether the component is disabled.
    */
@@ -54,7 +52,7 @@ export class IDEACalendarItemComponent {
     const modal = await this._modal.create({
       component: IDEACalendarComponent,
       componentProps: {
-        calendar: this.calendar,
+        calendar: this.calendar(),
         advancedPermissions: this.advancedPermissions(),
         hideColor: this.hideColor()
       }
@@ -62,9 +60,9 @@ export class IDEACalendarItemComponent {
     modal.onDidDismiss().then(res => {
       const cal = res.data;
       if (cal === undefined) return;
-      else if (cal === null) this.calendar = null;
-      else this.calendar.load(cal);
-      this.somethingChanged.emit(this.calendar);
+      else if (cal === null) this.calendar.set(null);
+      else this.calendar.update(c => new Calendar({ ...c, ...cal }));
+      this.somethingChanged.emit(this.calendar());
     });
     modal.present();
   }
@@ -72,27 +70,27 @@ export class IDEACalendarItemComponent {
   async linkExtCalendarOrDelete(): Promise<void> {
     if (this.disabled()) return;
     try {
-      const cal = await this._calendars.chooseAndSetExternalCalendar(this.calendar);
+      const cal = await this._calendars.chooseAndSetExternalCalendar(this.calendar());
       if (!cal) throw new Error('NO_EXTERNAL_CALENDAR_CHOSEN');
-      this.calendar.load(cal);
+      this.calendar.update(c => new Calendar({ ...c, ...cal }));
       this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_LINKED');
       try {
         await this._loading.show(this._translate._('IDEA_AGENDA.CALENDARS.FIRST_SYNC_MAY_TAKE_A_WHILE'));
-        await this._calendars.syncCalendar(this.calendar);
+        await this._calendars.syncCalendar(this.calendar());
         this._message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED');
       } catch (error) {
         this._message.error('COMMON.OPERATION_FAILED');
       } finally {
         this._loading.hide();
-        this.somethingChanged.emit(this.calendar);
+        this.somethingChanged.emit(this.calendar());
       }
     } catch (error) {
       const doDelete = async (): Promise<void> => {
         try {
           await this._loading.show();
-          await this._calendars.deleteCalendar(this.calendar);
+          await this._calendars.deleteCalendar(this.calendar());
           this._message.success('COMMON.OPERATION_COMPLETED');
-          this.somethingChanged.emit(this.calendar);
+          this.somethingChanged.emit(this.calendar());
         } catch (error) {
           this._message.error('COMMON.OPERATION_FAILED');
         } finally {
@@ -101,7 +99,7 @@ export class IDEACalendarItemComponent {
       };
       const doLink = async (): Promise<void> => {
         try {
-          await this._calendars.linkExtService(this.calendar, this.baseURL());
+          await this._calendars.linkExtService(this.calendar(), this.baseURL());
           this.linkExtCalendarOrDelete();
         } catch (error) {
           this._message.error('COMMON.OPERATION_FAILED');

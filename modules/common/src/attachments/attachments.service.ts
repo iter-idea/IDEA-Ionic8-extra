@@ -3,6 +3,7 @@ import { Attachment } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
 import { IDEAApiService } from '../api.service';
+import { refreshVisibleIonicPages } from '../cdRefresh';
 
 @Injectable({ providedIn: 'root' })
 export class IDEAAttachmentsService {
@@ -26,9 +27,13 @@ export class IDEAAttachmentsService {
       await fetch(url, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
       return id;
     } finally {
-      // The raw S3 `fetch` PUT settles outside the Angular zone; force a global tick on the next
-      // macrotask so the caller's post-`await` state change renders on Zone-based apps. See IDEAApiService.
-      setTimeout(() => this._appRef.tick());
+      // The raw S3 `fetch` PUT settles outside the Angular zone; on the next macrotask refresh the
+      // visible Ionic page(s) and tick the app shell so the caller's post-`await` state change renders
+      // on Zone-based apps. See IDEAApiService.
+      setTimeout(() => {
+        refreshVisibleIonicPages();
+        this._appRef.tick();
+      });
     }
   }
 

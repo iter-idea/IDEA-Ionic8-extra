@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, output, input, signal } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
@@ -16,7 +16,7 @@ import { IDEAListElementsComponent } from './listElements.component';
       [color]="color()"
       [lines]="lines()"
       [button]="!disabled()"
-      [disabled]="isOpening"
+      [disabled]="isOpening()"
       [title]="placeholder() || ''"
       [class.withLabel]="label()"
       (click)="openList()"
@@ -158,11 +158,11 @@ export class IDEAListComponent {
    */
   readonly iconSelect = output<void>();
 
-  isOpening = false;
+  isOpening = signal<boolean>(false);
 
   async openList(): Promise<void> {
-    if (this.disabled() || this.isOpening) return;
-    this.isOpening = true;
+    if (this.disabled() || this.isOpening()) return;
+    this.isOpening.set(true);
     const modal = await this._modal.create({
       component: IDEAListElementsComponent,
       componentProps: {
@@ -174,7 +174,7 @@ export class IDEAListComponent {
     });
     modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   getPreview(): string {

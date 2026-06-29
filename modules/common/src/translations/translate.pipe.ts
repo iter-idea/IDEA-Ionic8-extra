@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Injectable, OnDestroy, Pipe, PipeTransform, inject } from '@angular/core';
-import { Subscription } from 'rxjs'; // @todo replace rxjs with something else?
+import { Subscription } from 'rxjs'; // TODO replace rxjs with something else?
 
 import { IDEATranslationsService } from '../translations/translations.service';
 

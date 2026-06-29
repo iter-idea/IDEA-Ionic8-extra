@@ -109,8 +109,6 @@ export class IDEAMDEComponent implements OnInit {
   /**
    * Id to identify this specific Markdown Editor (default: 'mde').
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() id: string;
   /**
    * The title of the modal.
@@ -119,18 +117,14 @@ export class IDEAMDEComponent implements OnInit {
   /**
    * The header text content.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() header: string;
   /**
    * The sub-header description.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() description: string;
   /**
    * A series of text variables to substitute with values.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() variables: string[];
   /**
    * If set, will customize the initial value of the editor.

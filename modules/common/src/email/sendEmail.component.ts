@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -65,20 +65,20 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
             <h2>{{ 'IDEA_COMMON.EMAIL.TO' | translate }}</h2>
           </ion-label>
           @if (!disableChangeOfAddresses()) {
-            <ion-button color="dark" (click)="addAddressToList(emailWC.to)">
+            <ion-button color="dark" (click)="addAddressToList(emailWC().to)">
               <ion-icon slot="icon-only" name="add-circle" />
             </ion-button>
           }
         </ion-list-header>
-        @if (!emailWC.to.length) {
+        @if (!emailWC().to.length) {
           <ion-item>
             <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
           </ion-item>
         }
-        @for (x of emailWC.to; track x) {
+        @for (x of emailWC().to; track x) {
           <ion-item>
             @if (!disableChangeOfAddresses()) {
-              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.to, x)">
+              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC().to, x)">
                 <ion-icon slot="icon-only" name="remove" />
               </ion-button>
             }
@@ -90,20 +90,20 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
             <h2>{{ 'IDEA_COMMON.EMAIL.CC' | translate }}</h2>
           </ion-label>
           @if (!disableChangeOfAddresses()) {
-            <ion-button color="dark" (click)="addAddressToList(emailWC.cc)">
+            <ion-button color="dark" (click)="addAddressToList(emailWC().cc)">
               <ion-icon slot="icon-only" name="add-circle" />
             </ion-button>
           }
         </ion-list-header>
-        @if (!emailWC.cc.length) {
+        @if (!emailWC().cc.length) {
           <ion-item>
             <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
           </ion-item>
         }
-        @for (x of emailWC.cc; track x) {
+        @for (x of emailWC().cc; track x) {
           <ion-item>
             @if (!disableChangeOfAddresses()) {
-              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.cc, x)">
+              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC().cc, x)">
                 <ion-icon slot="icon-only" name="remove" />
               </ion-button>
             }
@@ -115,20 +115,20 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
             <h2>{{ 'IDEA_COMMON.EMAIL.BCC' | translate }}</h2>
           </ion-label>
           @if (!disableChangeOfAddresses()) {
-            <ion-button color="dark" (click)="addAddressToList(emailWC.bcc)">
+            <ion-button color="dark" (click)="addAddressToList(emailWC().bcc)">
               <ion-icon slot="icon-only" name="add-circle" />
             </ion-button>
           }
         </ion-list-header>
-        @if (!emailWC.bcc.length) {
+        @if (!emailWC().bcc.length) {
           <ion-item>
             <i>{{ 'IDEA_COMMON.EMAIL.NO_ADDRESSES' | translate }}</i>
           </ion-item>
         }
-        @for (x of emailWC.bcc; track x) {
+        @for (x of emailWC().bcc; track x) {
           <ion-item>
             @if (!disableChangeOfAddresses()) {
-              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC.bcc, x)">
+              <ion-button fill="clear" slot="start" (click)="removeAddressFromList(emailWC().bcc, x)">
                 <ion-icon slot="icon-only" name="remove" />
               </ion-button>
             }
@@ -141,7 +141,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
           </ion-label>
         </ion-list-header>
         <ion-item [lines]="lines()">
-          <ion-input type="text" [(ngModel)]="emailWC.subject" />
+          <ion-input type="text" [(ngModel)]="emailWC().subject" />
         </ion-item>
         <ion-list-header>
           <ion-label>
@@ -149,7 +149,7 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
           </ion-label>
         </ion-list-header>
         <ion-item [lines]="lines()">
-          <ion-textarea [rows]="13" [(ngModel)]="emailWC.content" />
+          <ion-textarea [rows]="13" [(ngModel)]="emailWC().content" />
         </ion-item>
         <ion-list-header>
           <ion-label>
@@ -180,7 +180,6 @@ import { IDEASuggestionsComponent } from '../select/suggestions.component';
 export class IDEASendEmailComponent implements OnInit {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
-  private _cd = inject(ChangeDetectorRef);
 
   /**
    * The content and receivers of the email.
@@ -193,14 +192,10 @@ export class IDEASendEmailComponent implements OnInit {
   /**
    * The variables the user can use for subject and content.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() variables: StringVariable[];
   /**
    * A map of the values to substitute to the variables.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() values: { [variable: string]: string | number };
   /**
    * The suggested contacts for the email composer.
@@ -215,20 +210,21 @@ export class IDEASendEmailComponent implements OnInit {
    */
   readonly disableChangeOfAddresses = input(false);
 
-  emailWC: EmailData;
+  emailWC = signal<EmailData>(undefined);
 
   ngOnInit(): void {
-    this.emailWC = new EmailData(this.email());
+    const emailWC = new EmailData(this.email());
     if (!this.variables) this.variables = new Array<StringVariable>();
     if (!this.values) this.values = {};
     this.variables.forEach(v => {
       if (this.values[v.code]) {
-        if (this.emailWC.subject)
-          this.emailWC.subject = this.emailWC.subject.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
-        if (this.emailWC.content)
-          this.emailWC.content = this.emailWC.content.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
+        if (emailWC.subject)
+          emailWC.subject = emailWC.subject.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
+        if (emailWC.content)
+          emailWC.content = emailWC.content.replace(new RegExp(v.code, 'g'), String(this.values[v.code]));
       }
     });
+    this.emailWC.set(emailWC);
   }
 
   async addAddressToList(list: string[]): Promise<void> {
@@ -245,20 +241,21 @@ export class IDEASendEmailComponent implements OnInit {
     });
     modal.onDidDismiss().then(res => {
       if (res && res.data && res.data.value && !list.includes(res.data.value)) list.push(res.data.value);
-      this._cd.markForCheck(); // zoneless: re-check so the added address is rendered
+      this.emailWC.set(new EmailData(this.emailWC()));
     });
     modal.present();
   }
   removeAddressFromList(list: string[], address: string): void {
     if (this.disableChangeOfAddresses()) return;
     list.splice(list.indexOf(address), 1);
+    this.emailWC.set(new EmailData(this.emailWC()));
   }
 
   canSend(): boolean {
-    return Boolean(this.emailWC.to.length && this.emailWC.subject && this.emailWC.content);
+    return Boolean(this.emailWC().to.length && this.emailWC().subject && this.emailWC().content);
   }
   send(): void {
-    this.email().load(this.emailWC);
+    this.email().load(this.emailWC());
     this._modal.dismiss(this.email());
   }
 

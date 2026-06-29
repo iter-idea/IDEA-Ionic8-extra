@@ -1,13 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  inject,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
-  output,
-  input
-} from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, input, signal } from '@angular/core';
 import { RCConfiguredFolder, RCFolder, Suggestion } from 'idea-toolbox';
 import { IDEAMessageService, IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
@@ -18,7 +9,7 @@ import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <idea-select
-      [data]="foldersSuggestions"
+      [data]="foldersSuggestions()"
       [description]="folder()?.name || 'IDEA_TEAMS.RESOURCE_CENTER.NO_FOLDER_SELECTED' | translate"
       [label]="label()"
       [placeholder]="'IDEA_TEAMS.RESOURCE_CENTER.SELECT_FOLDER' | translate"
@@ -38,13 +29,10 @@ export class IDEARCConfiguratorComponent implements OnInit {
   private _message = inject(IDEAMessageService);
   private _tc = inject(IDEATinCanService);
   private _API = inject(IDEAAWSAPIService);
-  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() team: string;
   /**
    * The folder we want to configure with the Resource Center folder.
@@ -76,7 +64,7 @@ export class IDEARCConfiguratorComponent implements OnInit {
   readonly iconSelect = output<void>();
 
   folders: RCFolder[];
-  foldersSuggestions: Suggestion[];
+  foldersSuggestions = signal<Suggestion[]>([]);
 
   async ngOnInit(): Promise<void> {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
@@ -84,8 +72,7 @@ export class IDEARCConfiguratorComponent implements OnInit {
     try {
       const folders: RCFolder[] = await this._API.getResource(`teams/${this.team}/folders`);
       this.folders = folders;
-      this.foldersSuggestions = folders.map(x => new Suggestion({ value: x.folderId, name: x.name }));
-      this._cdr.markForCheck();
+      this.foldersSuggestions.set(folders.map(x => new Suggestion({ value: x.folderId, name: x.name })));
     } catch (error) {
       this._message.error('COMMON.COULDNT_LOAD_LIST');
     }

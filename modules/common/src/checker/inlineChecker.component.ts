@@ -1,4 +1,14 @@
-import { Component, inject, Input, OnInit, ChangeDetectionStrategy, output, viewChild, input } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnInit,
+  ChangeDetectionStrategy,
+  output,
+  viewChild,
+  input,
+  signal
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonCheckbox,
@@ -37,7 +47,7 @@ const PAGINATION_MAX_PAGE_SIZE = 24;
       [color]="color()"
       [lines]="lines()"
       [button]="!disabled()"
-      [disabled]="disabled() || isOpening"
+      [disabled]="disabled() || isOpening()"
       [class.placeholder]="getPreview() === placeholder()"
       (click)="openChecker($event)"
     >
@@ -129,11 +139,11 @@ export class IDEAInlineCheckerComponent {
    */
   readonly change = output<void>();
 
-  isOpening = false;
+  isOpening = signal<boolean>(false);
 
   async openChecker(theEvent: Event): Promise<void> {
-    if (this.disabled() || this.isOpening) return;
-    this.isOpening = true;
+    if (this.disabled() || this.isOpening()) return;
+    this.isOpening.set(true);
     const component = IDEAInlineChecksComponent;
     const componentProps = {
       data: this.data(),
@@ -150,7 +160,7 @@ export class IDEAInlineCheckerComponent {
     const modal = await this._popover.create({ component, componentProps, event, cssClass });
     modal.onDidDismiss().then((): void => this.change.emit());
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   getPreview(): string {

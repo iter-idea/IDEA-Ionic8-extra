@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, input } from '@angular/core';
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy, input, model, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Platform, IonItem, IonButton, IonIcon, IonInput, IonLabel, IonSpinner } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
@@ -21,15 +21,12 @@ export class IDEAttachmentsComponent implements OnInit {
   private _message = inject(IDEAMessageService);
   private _tc = inject(IDEATinCanService);
   private _api = inject(IDEAAWSAPIService);
-  private _cd = inject(ChangeDetectorRef);
   _offline = inject(IDEAOfflineService);
   _translate = inject(IDEATranslationsService);
 
   /**
    * The team from which we want to load the resources. Default: try to guess current team.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() team: string | null = null;
   /**
    * The path to the online API resource, as an array. Don't include the team. E.g. `['entities', entityId]`.
@@ -38,11 +35,10 @@ export class IDEAttachmentsComponent implements OnInit {
   /**
    * The array in which we want to add/remove attachments.
    */
-  readonly attachments = input<Attachment[] | null>(null);
+  readonly attachments = model<Attachment[] | null>(null);
   /**
    * Regulate the mode (view/edit).
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() editMode = false;
   /**
    * Show errors as reported from the parent component.
@@ -60,7 +56,7 @@ export class IDEAttachmentsComponent implements OnInit {
   /**
    * Stack of errors from the last upload.
    */
-  uploadErrors: string[] = [];
+  uploadErrors = signal<string[]>([]);
 
   ngOnInit(): void {
     // if the team isn't specified, try to guess it in the usual IDEA's paths
@@ -83,7 +79,7 @@ export class IDEAttachmentsComponent implements OnInit {
     document.getElementById('attachmentPicker').click();
   }
   addAttachmentFromFile(ev: any): void {
-    this.uploadErrors = new Array<string>();
+    this.uploadErrors.set([]);
     const files: FileList = ev.target ? ev.target.files : {};
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i);
@@ -118,7 +114,7 @@ export class IDEAttachmentsComponent implements OnInit {
       content = await heic2any({ blob: content, toType: 'image/jpeg' });
     }
     const attachment = new Attachment({ name, format });
-    this.attachments().push(attachment);
+    this.attachments.update(a => [...(a ?? []), attachment]);
     try {
       const signedURL = await this._api.patchResource(this.requestURL, {
         body: { action: 'ATTACHMENTS_PUT', attachmentId: attachment.attachmentId }
@@ -126,17 +122,14 @@ export class IDEAttachmentsComponent implements OnInit {
       await this._api.rawRequest().put(signedURL.url, content).toPromise();
       attachment.attachmentId = signedURL.id;
     } catch (error) {
-      this.uploadErrors.push(name);
+      this.uploadErrors.update(e => [...e, name]);
       this.removeAttachment(attachment);
       this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
-    } finally {
-      this._cd.markForCheck(); // zoneless: re-check after the awaited upload settles
     }
   }
 
   removeAttachment(attachment: Attachment): void {
-    const index = this.attachments().indexOf(attachment);
-    if (index !== -1) this.attachments().splice(index, 1);
+    this.attachments.update(a => (a ?? []).filter(x => x !== attachment));
   }
 
   async openAttachment(attachment: Attachment): Promise<void> {

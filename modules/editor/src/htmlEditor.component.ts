@@ -7,10 +7,10 @@ import {
   inject,
   SecurityContext,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   output,
   viewChild,
-  input
+  input,
+  signal
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController, IonIcon } from '@ionic/angular/standalone';
@@ -31,7 +31,7 @@ import { IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '
         (dragover)="onDragOver($event)"
         (drop)="onDrop($event)"
         (paste)="cleanHTMLCode()"
-        [(ngModel)]="text"
+        [ngModel]="text()"
         (ngModelChange)="onTextChange($event)"
       >
         <ng-template #customButtons>
@@ -47,12 +47,11 @@ import { IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '
         </ng-template>
       </angular-editor>
     } @else {
-      <div class="view" [innerHTML]="sanitizedHtml"></div>
+      <div class="view" [innerHTML]="sanitizedHtml()"></div>
     }
   `
 })
 export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
-  private _cdr = inject(ChangeDetectorRef);
   private _sanitizer = inject(DomSanitizer);
   private _alert = inject(AlertController);
   private _translate = inject(IDEATranslationsService);
@@ -73,7 +72,7 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
 
   readonly editor = viewChild<AngularEditorComponent>('editor');
 
-  text: string;
+  text = signal<string>(undefined);
 
   lastDropPosition: Range | null = null;
 
@@ -86,32 +85,28 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
     toolbarHiddenButtons: [['customClasses', 'insertVideo', 'insertHorizontalRule', 'removeFormat', 'toggleEditorMode']]
   };
 
-  sanitizedHtml: string;
+  sanitizedHtml = signal<string>(undefined);
 
   ngOnInit(): void {
-    this.text = this.content();
-    this.sanitizedHtml = this._sanitizer.sanitize(SecurityContext.HTML, this.content());
+    this.text.set(this.content());
+    this.sanitizedHtml.set(this._sanitizer.sanitize(SecurityContext.HTML, this.content()));
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.content) {
-      this.text = this.content();
-      this.sanitizedHtml = this._sanitizer.sanitize(SecurityContext.HTML, this.content());
-      this._cdr.markForCheck();
+      this.text.set(this.content());
+      this.sanitizedHtml.set(this._sanitizer.sanitize(SecurityContext.HTML, this.content()));
     }
-    if (changes.editMode) this._cdr.markForCheck();
   }
 
   onTextChange(text: string): void {
-    this.text = text;
+    this.text.set(text);
     this.contentChange.emit(text);
-    this._cdr.markForCheck();
   }
 
   cleanHTMLCode(): void {
     setTimeout((): void => {
-      this.text = docsSoap(this.text);
-      this.contentChange.emit(this.text);
-      this._cdr.markForCheck();
+      this.text.set(docsSoap(this.text()));
+      this.contentChange.emit(this.text());
     }, 100);
   }
 
@@ -124,7 +119,6 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
         else img.removeAttribute('width');
       });
       this.contentChange.emit(this.editor().textArea.nativeElement.innerHTML);
-      this._cdr.markForCheck();
     };
     const header = this._translate._('IDEA_EDITOR.SELECT_SIZE_FOR_IMAGE');
     const inputs: any = [
@@ -191,7 +185,6 @@ export class IDEAHTMLEditorComponent implements OnInit, OnChanges {
       const imagesSelected = editor.querySelectorAll('img');
       if (imagesSelected.length === 1) imagesSelected[0].removeAttribute('width');
       this.contentChange.emit(editorValue.textArea.nativeElement.innerHTML);
-      this._cdr.markForCheck();
     }
   }
   private moveCursorToDropPosition(event: DragEvent): void {

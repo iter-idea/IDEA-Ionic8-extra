@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -159,7 +159,7 @@ import { IDEAMessageService } from '../message.service';
     `
   ]
 })
-export class IDEALabelerComponent {
+export class IDEALabelerComponent implements OnInit {
   private _platform = inject(Platform);
   private _modal = inject(ModalController);
   private _message = inject(IDEAMessageService);
@@ -172,14 +172,10 @@ export class IDEALabelerComponent {
   /**
    * The languages preferences; if not set, it fallbacks to IDEATranslationsService's ones.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() languages: Languages;
   /**
    * The optional title for the component.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() title: string;
   /**
    * Whether to display the label in textareas instead of text fields.
@@ -192,7 +188,6 @@ export class IDEALabelerComponent {
   /**
    * The variables the user can use for the label content.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() variables: (StringVariable | LabelVariable)[];
   /**
    * If true, the component is disabled.
@@ -206,7 +201,7 @@ export class IDEALabelerComponent {
   _label: Label;
   errors = new Set<string>();
 
-  ionViewDidEnter(): void {
+  ngOnInit(): void {
     this.title = this.title || this._translate._('IDEA_COMMON.LABELER.MANAGE_LABEL');
     this.languages = this.languages || this._translate.languages();
     this._label = new Label(this.label, this.languages);

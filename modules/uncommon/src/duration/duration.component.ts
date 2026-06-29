@@ -94,18 +94,14 @@ export class IDEADurationComponent implements OnChanges {
   /**
    * The default number of seconds, to build the duration.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() default: number;
   /**
    * The label for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() label: string;
   /**
    * The icon (alternative to the label) for the field.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() icon: string;
   /**
    * The title (hint) for the field.

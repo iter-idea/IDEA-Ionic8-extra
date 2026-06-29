@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, viewChild, Input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, signal, viewChild, Input } from '@angular/core';
 import {
   AlertController,
   ModalController,
@@ -66,14 +66,14 @@ const MAX_PAGE_SIZE = 24;
     </ion-header>
     <ion-content>
       <ion-list class="listElements">
-        @if (!filteredList.length) {
+        @if (!filteredList().length) {
           <ion-item lines="none">
             <ion-label>
               <i>{{ noElementsFoundText || ('IDEA_COMMON.LIST.NO_ELEMENTS_FOUND' | translate) }}</i>
             </ion-label>
           </ion-item>
         }
-        @for (element of filteredList; track element) {
+        @for (element of filteredList(); track element) {
           <ion-item class="listElement">
             <ion-label>{{ getElementName(element) }}</ion-label>
             @if (labelElements) {
@@ -103,7 +103,6 @@ export class IDEAListElementsComponent implements OnInit {
   private _modal = inject(ModalController);
   private _alert = inject(AlertController);
   private _translate = inject(IDEATranslationsService);
-  private _cd = inject(ChangeDetectorRef);
 
   /**
    * It should be read only until the component closure.
@@ -123,7 +122,7 @@ export class IDEAListElementsComponent implements OnInit {
   @Input() noElementsFoundText?: string;
 
   workingData: (Label | string)[];
-  filteredList: (Label | string)[];
+  filteredList = signal<(Label | string)[]>([]);
   currentPage: number;
 
   readonly searchbar = viewChild<IonSearchbar>('searchbar');
@@ -142,7 +141,7 @@ export class IDEAListElementsComponent implements OnInit {
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
-    this.filteredList = (this.workingData || [])
+    let filtered = (this.workingData || [])
       .filter(x =>
         toSearch
           .split(' ')
@@ -152,7 +151,8 @@ export class IDEAListElementsComponent implements OnInit {
 
     if (scrollToNextPage) this.currentPage++;
     else this.currentPage = 0;
-    this.filteredList = this.filteredList.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+    filtered = filtered.slice(0, (this.currentPage + 1) * MAX_PAGE_SIZE);
+    this.filteredList.set(filtered);
 
     if (scrollToNextPage) setTimeout((): Promise<void> => scrollToNextPage.complete(), 100);
   }
@@ -187,7 +187,6 @@ export class IDEAListElementsComponent implements OnInit {
               this.workingData.push(element);
               const searchbar = this.searchbar();
               this.search(searchbar ? searchbar.value : '');
-              this._cd.markForCheck(); // zoneless: re-check so the new element is rendered
             }
           }
         }
@@ -205,7 +204,6 @@ export class IDEAListElementsComponent implements OnInit {
     modal.onDidDismiss().then((): void => {
       const searchbar = this.searchbar();
       this.search(searchbar ? searchbar.value : '');
-      this._cd.markForCheck(); // zoneless: re-check so the edited label is rendered
     });
     modal.present();
   }

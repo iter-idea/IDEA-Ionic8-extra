@@ -5,10 +5,10 @@ import {
   OnDestroy,
   OnChanges,
   inject,
-  ChangeDetectorRef,
   ChangeDetectionStrategy,
   output,
-  input
+  input,
+  signal
 } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
@@ -27,8 +27,8 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
       [color]="color()"
       [lines]="lines()"
       [button]="!disabled()"
-      [disabled]="isOpening"
-      [title]="placeholder() || valueToDisplay || ''"
+      [disabled]="isOpening()"
+      [title]="placeholder() || valueToDisplay() || ''"
       [class.withLabel]="label()"
       (click)="disabled() ? doSelectWhenDisabled() : pickTimeInterval()"
     >
@@ -52,12 +52,12 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
         </ion-label>
       }
       <ion-label class="description" [class.selectable]="!disabled() || tappableWhenDisabled()">
-        @if (!valueToDisplay && !disabled()) {
+        @if (!valueToDisplay() && !disabled()) {
           <ion-text class="placeholder" [class.selectable]="!disabled()">
             {{ placeholder() }}
           </ion-text>
         }
-        {{ valueToDisplay }}
+        {{ valueToDisplay() }}
       </ion-label>
       @if (!disabled()) {
         <ion-icon slot="end" name="caret-down" class="selectIcon" [class.selectable]="!disabled()" />
@@ -104,7 +104,6 @@ import { IDEAFromTimeToTimeComponent, Periods } from './fromTimeToTime.component
 export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   private _modal = inject(ModalController);
   private _translate = inject(IDEATranslationsService);
-  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The time interval to set.
@@ -171,23 +170,22 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
    */
   readonly selectWhenDisabled = output<void>();
 
-  valueToDisplay: string;
+  valueToDisplay = signal<string>('');
   private langChangeSubscription: Subscription;
 
-  isOpening = false;
+  isOpening = signal<boolean>(false);
 
   ngOnInit(): void {
     // when the language changes, set the locale
     this.langChangeSubscription = this._translate.onLangChange.subscribe((): void => {
-      this.valueToDisplay = this.getValueToDisplay(this.timeInterval());
-      this._cdr.markForCheck();
+      this.valueToDisplay.set(this.getValueToDisplay(this.timeInterval()));
     });
   }
   ngOnDestroy(): void {
     if (this.langChangeSubscription) this.langChangeSubscription.unsubscribe();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.timeInterval) this.valueToDisplay = this.getValueToDisplay(changes.timeInterval.currentValue);
+    if (changes.timeInterval) this.valueToDisplay.set(this.getValueToDisplay(changes.timeInterval.currentValue));
   }
 
   private getValueToDisplay(timeInterval: TimeInterval): string {
@@ -206,8 +204,8 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async pickTimeInterval(): Promise<void> {
-    if (this.isOpening) return;
-    this.isOpening = true;
+    if (this.isOpening()) return;
+    this.isOpening.set(true);
     const modal = await this._modal.create({
       component: IDEAFromTimeToTimeComponent,
       componentProps: {
@@ -221,13 +219,12 @@ export class IDEATimeIntervalComponent implements OnInit, OnDestroy, OnChanges {
     modal.onDidDismiss().then((res: any): void => {
       // if the content changed, update the internal values and notify the parent component
       if (res.data === true || res.data === false) {
-        this.valueToDisplay = this.getValueToDisplay(this.timeInterval());
+        this.valueToDisplay.set(this.getValueToDisplay(this.timeInterval()));
         this.select.emit();
-        this._cdr.markForCheck();
       }
     });
     modal.present();
-    this.isOpening = false;
+    this.isOpening.set(false);
   }
 
   doSelectWhenDisabled(): void {

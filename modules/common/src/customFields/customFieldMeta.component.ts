@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, Input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -70,7 +70,6 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   private _alert = inject(AlertController);
   private _modal = inject(ModalController);
   private _message = inject(IDEAMessageService);
-  private _cd = inject(ChangeDetectorRef);
   _translate = inject(IDEATranslationsService);
 
   /**
@@ -86,13 +85,15 @@ export class IDEACustomFieldMetaComponent implements OnInit {
    */
   @Input() lines?: string;
 
-  _field: CustomFieldMeta;
+  // the held instance is mutated in place (so [(ngModel)] keeps a stable reference); `equal: () => false`
+  // forces every update()/set() to notify, which is what schedules CD in both Zone and zoneless modes
+  _field = signal<CustomFieldMeta>(undefined, { equal: () => false });
   errors = new Set<string>();
   FIELD_TYPES: string[] = Object.keys(CustomFieldTypes);
   CFT = CustomFieldTypes;
 
   ngOnInit(): void {
-    this._field = new CustomFieldMeta(this.field, this._translate.languages());
+    this._field.set(new CustomFieldMeta(this.field, this._translate.languages()));
   }
 
   hasFieldAnError(field: string): boolean {
@@ -108,21 +109,28 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   async editIcon(): Promise<void> {
     const modal = await this._modal.create({ component: IDEAIconsComponent });
     modal.onDidDismiss().then(({ data }): void => {
-      if (data) this._field.icon = data;
-      this._cd.markForCheck(); // zoneless: re-check so the picked icon is rendered
+      this._field.update(f => {
+        if (data) f.icon = data;
+        return f;
+      });
     });
     await modal.present();
   }
 
   reorderOptions(ev: any): void {
-    this._field.enum = ev.detail.complete(this._field.enum);
+    this._field.update(f => {
+      f.enum = ev.detail.complete(f.enum);
+      return f;
+    });
   }
   async removeOptionByIndex(index: number): Promise<void> {
     const doRemoveByIndex = (): void => {
-      const e = this._field.enum[index];
-      if (this._field.enumLabels) delete this._field.enumLabels[e];
-      this._field.enum.splice(index, 1);
-      this._cd.markForCheck(); // zoneless: re-check after the alert handler removes the option
+      this._field.update(f => {
+        const e = f.enum[index];
+        if (f.enumLabels) delete f.enumLabels[e];
+        f.enum.splice(index, 1);
+        return f;
+      });
     };
     const buttons = [
       { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
@@ -139,13 +147,15 @@ export class IDEACustomFieldMetaComponent implements OnInit {
       const label = new Label(null, this._translate.languages());
       // set the translation in the default (obligatory) language
       label[this._translate.getDefaultLang()] = data.enum;
-      // ensure backwards compatibility
-      if (!this._field.enumLabels) this._field.enumLabels = {};
-      this._field.enumLabels[data.enum] = label;
-      if (!this._field.enum) this._field.enum = new Array<string>();
-      // add the enum and configure the enumLabel
-      this._field.enum.push(data.enum);
-      this._cd.markForCheck(); // zoneless: re-check after the alert handler adds the option
+      this._field.update(f => {
+        // ensure backwards compatibility
+        if (!f.enumLabels) f.enumLabels = {};
+        f.enumLabels[data.enum] = label;
+        if (!f.enum) f.enum = new Array<string>();
+        // add the enum and configure the enumLabel
+        f.enum.push(data.enum);
+        return f;
+      });
       this.editEnumLabel(data.enum);
     };
 
@@ -165,21 +175,21 @@ export class IDEACustomFieldMetaComponent implements OnInit {
   }
 
   editEnumLabel(theEnum: string): void {
+    const field = this._field();
     // ensere backwards compatibility
-    if (!this._field.enumLabels) this._field.enumLabels = {};
-    if (!this._field.enumLabels[theEnum])
-      this._field.enumLabels[theEnum] = new Label(null, this._translate.languages());
+    if (!field.enumLabels) field.enumLabels = {};
+    if (!field.enumLabels[theEnum]) field.enumLabels[theEnum] = new Label(null, this._translate.languages());
     // set the translation in the default (obligatory) language
-    const label = this._field.enumLabels[theEnum];
+    const label = field.enumLabels[theEnum];
     if (!label[this._translate.getDefaultLang()]) label[this._translate.getDefaultLang()] = theEnum;
 
     this.editLabel(theEnum, label);
   }
 
   save(): Promise<void> {
-    this.errors = new Set(this._field.validate(this._translate.languages()));
+    this.errors = new Set(this._field().validate(this._translate.languages()));
     if (this.errors.size) return this._message.error('COMMON.FORM_HAS_ERROR_TO_CHECK');
-    this.field.load(this._field, this._translate.languages());
+    this.field.load(this._field(), this._translate.languages());
     this.close(true);
   }
 

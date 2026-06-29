@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -62,10 +62,10 @@ import { IDEAAuthService } from './auth.service';
             <ion-card-subtitle>{{ 'IDEA_AUTH.REGISTER_A_NEW_ACCOUNT_TO_THE_SYSTEM' | translate }}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
-            @if (errorMsg) {
+            @if (errorMsg()) {
               <p testId="signup.error" class="errorBox">
                 <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
-                {{ errorMsg }}
+                {{ errorMsg() }}
               </p>
             }
             <ion-item>
@@ -205,7 +205,7 @@ export class IDEASignUpPage implements OnInit {
   password: string;
   agreementsCheck = false;
   passwordPolicy: any;
-  errorMsg: string;
+  errorMsg = signal<string>(null);
 
   constructor() {
     this.passwordPolicy = this._env.idea.auth.passwordPolicy;
@@ -222,8 +222,8 @@ export class IDEASignUpPage implements OnInit {
   async register(): Promise<void> {
     try {
       await this._loading.show();
-      this.errorMsg = null;
-      if (isEmpty(this.email, 'email')) this.errorMsg = this._translate._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
+      this.errorMsg.set(null);
+      if (isEmpty(this.email, 'email')) this.errorMsg.set(this._translate._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY'));
       else {
         const errors = this._auth.validatePasswordAgainstPolicy(this.password);
         if (errors.length === 0 && this.passwordPolicy.advancedPasswordCheck) {
@@ -231,19 +231,21 @@ export class IDEASignUpPage implements OnInit {
           errors.push(...(await this._auth.validatePasswordAgainstDatabases(this.password, emailParts)));
         }
         if (errors.length)
-          this.errorMsg = [
-            this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
-            ...errors.map(x =>
-              this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
-            )
-          ].join(' ');
+          this.errorMsg.set(
+            [
+              this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW'),
+              ...errors.map(x =>
+                this._translate._('IDEA_AUTH.PASSWORD_REQUIREMENTS.'.concat(x), { n: this.passwordPolicy.minLength })
+              )
+            ].join(' ')
+          );
       }
-      if (this.errorMsg) return this._message.error('IDEA_AUTH.REGISTRATION_FAILED');
+      if (this.errorMsg()) return this._message.error('IDEA_AUTH.REGISTRATION_FAILED');
       await this._auth.register(this.email, this.password);
       this._message.success('IDEA_AUTH.REGISTRATION_COMPLETED');
       this.goToAuth();
     } catch (err) {
-      this.errorMsg = (err as any).message;
+      this.errorMsg.set((err as any).message);
       this._message.error('IDEA_AUTH.REGISTRATION_FAILED');
     } finally {
       this._loading.hide();

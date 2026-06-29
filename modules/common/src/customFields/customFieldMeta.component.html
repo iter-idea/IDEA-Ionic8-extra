@@ -21,29 +21,36 @@
       <ion-list-header>
         <ion-label>
           <h2>
-            {{ _field.name | label }}
-            @if (_field.obligatory) {
+            {{ _field().name | label }}
+            @if (_field().obligatory) {
               <ion-text class="obligatoryDot" />
             }
           </h2>
-          <ion-badge color="dark">{{ 'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _field.type | translate }}</ion-badge>
+          <ion-badge color="dark">{{
+            'IDEA_COMMON.CUSTOM_FIELDS.FIELDS_TYPES.' + _field().type | translate
+          }}</ion-badge>
           @if (
-            _field.default && (_field.type === CFT.STRING || _field.type === CFT.NUMBER || _field.type === CFT.ENUM)
+            _field().default &&
+            (_field().type === CFT.STRING || _field().type === CFT.NUMBER || _field().type === CFT.ENUM)
           ) {
             <ion-badge color="medium">
-              {{ 'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT' | translate }}: {{ _field.default }}
+              {{ 'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT' | translate }}: {{ _field().default }}
             </ion-badge>
           }
-          @if (_field.type === CFT.NUMBER) {
-            <ion-badge color="medium"> {{ 'IDEA_COMMON.CUSTOM_FIELDS.MIN' | translate }}: {{ _field.min }} </ion-badge>
+          @if (_field().type === CFT.NUMBER) {
+            <ion-badge color="medium">
+              {{ 'IDEA_COMMON.CUSTOM_FIELDS.MIN' | translate }}: {{ _field().min }}
+            </ion-badge>
           }
-          @if (_field.type === CFT.NUMBER) {
-            <ion-badge color="medium"> {{ 'IDEA_COMMON.CUSTOM_FIELDS.MAX' | translate }}: {{ _field.max }} </ion-badge>
+          @if (_field().type === CFT.NUMBER) {
+            <ion-badge color="medium">
+              {{ 'IDEA_COMMON.CUSTOM_FIELDS.MAX' | translate }}: {{ _field().max }}
+            </ion-badge>
           }
-          <p>{{ _field.description | label }}</p>
+          <p>{{ _field().description | label }}</p>
         </ion-label>
-        @if (_field.icon) {
-          <ion-icon [name]="_field.icon" />
+        @if (_field().icon) {
+          <ion-icon [name]="_field().icon" />
         }
       </ion-list-header>
     }
@@ -54,7 +61,7 @@
             type="text"
             readonly="true"
             labelPlacement="stacked"
-            [value]="_field.name | label"
+            [value]="_field().name | label"
             [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.NAME_HINT' | translate"
           >
             <div slot="label">
@@ -66,7 +73,7 @@
             fill="clear"
             class="marginTop"
             [title]="'COMMON.EDIT' | translate"
-            (click)="editLabel(_translate._('IDEA_COMMON.CUSTOM_FIELDS.NAME'), _field.name)"
+            (click)="editLabel(_translate._('IDEA_COMMON.CUSTOM_FIELDS.NAME'), _field().name)"
           >
             <ion-icon slot="icon-only" icon="pencil" />
           </ion-button>
@@ -77,7 +84,7 @@
             readonly="true"
             labelPlacement="stacked"
             [label]="'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION' | translate"
-            [value]="_field.description | label"
+            [value]="_field().description | label"
             [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION_HINT' | translate"
           />
           <ion-button
@@ -85,7 +92,7 @@
             fill="clear"
             class="marginTop"
             [title]="'COMMON.EDIT' | translate"
-            (click)="editLabel(_translate._('IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION'), _field.description)"
+            (click)="editLabel(_translate._('IDEA_COMMON.CUSTOM_FIELDS.DESCRIPTION'), _field().description)"
           >
             <ion-icon slot="icon-only" icon="pencil" />
           </ion-button>
@@ -96,12 +103,12 @@
             readonly="true"
             labelPlacement="stacked"
             [label]="'IDEA_COMMON.CUSTOM_FIELDS.ICON' | translate"
-            [value]="_field.icon"
+            [value]="_field().icon"
             [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.ICON_HINT' | translate"
           />
-          @if (_field.icon) {
+          @if (_field().icon) {
             <ion-badge slot="end" color="dark" class="marginTop">
-              <ion-icon [name]="_field.icon" />
+              <ion-icon [name]="_field().icon" />
             </ion-badge>
           }
           <ion-button
@@ -118,7 +125,7 @@
           <ion-select
             labelPlacement="stacked"
             [label]="'IDEA_COMMON.CUSTOM_FIELDS.TYPE' | translate"
-            [(ngModel)]="_field.type"
+            [(ngModel)]="_field().type"
           >
             @for (t of FIELD_TYPES; track t) {
               <ion-select-option [value]="t">
@@ -127,54 +134,54 @@
             }
           </ion-select>
         </ion-item>
-        @if (_field.type === CFT.STRING || _field.type === CFT.NUMBER) {
+        @if (_field().type === CFT.STRING || _field().type === CFT.NUMBER) {
           <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('default')">
             <ion-input
               type="text"
               labelPlacement="stacked"
               [label]="'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT' | translate"
               [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT_HINT' | translate"
-              [(ngModel)]="_field.default"
+              [(ngModel)]="_field().default"
             />
           </ion-item>
         }
-        @if (_field.type === CFT.ENUM) {
+        @if (_field().type === CFT.ENUM) {
           <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('default')">
             <ion-select
               labelPlacement="stacked"
               [label]="'IDEA_COMMON.CUSTOM_FIELDS.DEFAULT_CHOICE' | translate"
-              [(ngModel)]="_field.default"
+              [(ngModel)]="_field().default"
             >
               <ion-select-option [value]="null">
                 {{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_DEFAULT_CHOICE' | translate }}
               </ion-select-option>
-              @for (e of _field.enum; track e) {
+              @for (e of _field().enum; track e) {
                 <ion-select-option [value]="e">
-                  {{ _field.getEnumElement(e, _translate.getCurrentLang(), _translate.languages()) }}
+                  {{ _field().getEnumElement(e, _translate.getCurrentLang(), _translate.languages()) }}
                 </ion-select-option>
               }
             </ion-select>
           </ion-item>
         }
-        @if (_field.type === CFT.NUMBER) {
+        @if (_field().type === CFT.NUMBER) {
           <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('min')">
             <ion-input
               type="number"
               labelPlacement="stacked"
               [label]="'IDEA_COMMON.CUSTOM_FIELDS.MIN' | translate"
               [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.MIN_HINT' | translate"
-              [(ngModel)]="_field.min"
+              [(ngModel)]="_field().min"
             />
           </ion-item>
         }
-        @if (_field.type === CFT.NUMBER) {
+        @if (_field().type === CFT.NUMBER) {
           <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('max')">
             <ion-input
               type="number"
               labelPlacement="stacked"
               [label]="'IDEA_COMMON.CUSTOM_FIELDS.MAX' | translate"
               [placeholder]="'IDEA_COMMON.CUSTOM_FIELDS.MAX_HINT' | translate"
-              [(ngModel)]="_field.max"
+              [(ngModel)]="_field().max"
             />
           </ion-item>
         }
@@ -184,20 +191,20 @@
   @if (!disabled) {
     <ion-list class="obligatoryToggleList">
       <ion-item lines="none">
-        <ion-toggle justify="end" [(ngModel)]="_field.obligatory">
+        <ion-toggle justify="end" [(ngModel)]="_field().obligatory">
           {{ 'IDEA_COMMON.CUSTOM_FIELDS.OBLIGATORY' | translate }}
         </ion-toggle>
       </ion-item>
     </ion-list>
   }
-  @if (_field.type === CFT.ENUM) {
+  @if (_field().type === CFT.ENUM) {
     <ion-list class="aList ion-padding">
       <ion-list-header>
         <ion-label>
           <h3>{{ 'IDEA_COMMON.CUSTOM_FIELDS.OPTIONS' | translate }}</h3>
         </ion-label>
       </ion-list-header>
-      @if (!_field.enum?.length) {
+      @if (!_field().enum?.length) {
         <ion-item lines="none" [class.fieldHasError]="hasFieldAnError('enum')">
           <ion-label>
             <i>{{ 'IDEA_COMMON.CUSTOM_FIELDS.NO_ELEMENTS' | translate }}</i>
@@ -205,12 +212,12 @@
         </ion-item>
       }
       <ion-reorder-group [disabled]="disabled" (ionItemReorder)="reorderOptions($event)">
-        @for (e of _field.enum; track e; let index = $index) {
+        @for (e of _field().enum; track e; let index = $index) {
           <ion-item [lines]="lines" [class.fieldHasError]="hasFieldAnError('enum.' + index)">
             @if (!disabled) {
               <ion-reorder slot="start" />
             }
-            <ion-label>{{ _field.getEnumElement(e, _translate.getCurrentLang(), _translate.languages()) }}</ion-label>
+            <ion-label>{{ _field().getEnumElement(e, _translate.getCurrentLang(), _translate.languages()) }}</ion-label>
             @if (!disabled) {
               <ion-button slot="end" fill="clear" [title]="'COMMON.EDIT' | translate" (click)="editEnumLabel(e)">
                 <ion-icon icon="pencil" slot="icon-only" />

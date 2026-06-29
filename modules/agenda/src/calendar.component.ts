@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular/standalone';
 import { Calendar, Check, Membership } from 'idea-toolbox';
 import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
@@ -23,7 +23,6 @@ export class IDEACalendarComponent implements OnInit {
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
   _calendars = inject(IDEACalendarsService);
-  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The calendar to manage.
@@ -39,7 +38,7 @@ export class IDEACalendarComponent implements OnInit {
   @Input() hideColor?: boolean;
 
   calendarWC: Calendar;
-  membershipsChecks: Check[];
+  membershipsChecks = signal<Check[]>(null);
   membership: Membership;
   errors = new Set<string>();
   DEFAULT_COLOR = '#555';
@@ -49,15 +48,16 @@ export class IDEACalendarComponent implements OnInit {
     this.calendarWC = new Calendar(this.calendar);
     try {
       const memberships: Membership[] = await this._API.getResource(`teams/${this.membership.teamId}/memberships`);
-      this.membershipsChecks = memberships.map(
-        m =>
-          new Check({
-            value: m.userId,
-            name: m.name,
-            checked: (this.calendarWC.usersCanManageAppointments || []).some(x => x === m.userId)
-          })
+      this.membershipsChecks.set(
+        memberships.map(
+          m =>
+            new Check({
+              value: m.userId,
+              name: m.name,
+              checked: (this.calendarWC.usersCanManageAppointments || []).some(x => x === m.userId)
+            })
+        )
       );
-      this._cdr.markForCheck();
     } catch (error) {
       this._message.error('COMMON.COULDNT_LOAD_LIST');
     }
@@ -70,7 +70,7 @@ export class IDEACalendarComponent implements OnInit {
   async save(): Promise<void> {
     if (!this.calendarWC.color) this.calendarWC.color = this.DEFAULT_COLOR;
     if (this.calendarWC.isShared() && this.advancedPermissions)
-      this.calendarWC.usersCanManageAppointments = this.membershipsChecks
+      this.calendarWC.usersCanManageAppointments = this.membershipsChecks()
         .filter(x => x.checked)
         .map(x => String(x.value));
     else delete this.calendarWC.usersCanManageAppointments;

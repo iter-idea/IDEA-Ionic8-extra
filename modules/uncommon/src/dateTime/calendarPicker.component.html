@@ -30,7 +30,7 @@
             <ion-input
               type="text"
               [placeholder]="'IDEA_UNCOMMON.CALENDAR.YEAR' | translate"
-              [value]="refDate.getFullYear()"
+              [value]="refDate().getFullYear()"
               (ionFocus)="$event.target.value = ''"
               (ionChange)="setYear($event?.target?.value)"
             >
@@ -51,7 +51,7 @@
             </ion-button>
           </ion-col>
           <ion-col class="ion-text-center ion-no-padding tappable" [size]="6" (click)="showMonths()">
-            {{ refDate | dateLocale: 'MMMM' }}
+            {{ refDate() | dateLocale: 'MMMM' }}
           </ion-col>
           <ion-col class="ion-text-left ion-no-padding" [size]="3">
             <ion-button fill="clear" color="dark" (click)="addMonths(+1)">
@@ -68,7 +68,7 @@
         </ion-col>
       }
     </ion-row>
-    @for (row of calendarGrid; track row; let i = $index) {
+    @for (row of calendarGrid(); track row; let i = $index) {
       <ion-row class="ion-align-items-center">
         @for (col of row; track col; let j = $index) {
           <ion-col class="ion-text-center ion-no-padding">
@@ -76,23 +76,23 @@
               size="small"
               shape="round"
               [color]="
-                isSameDay(calendarGrid[i][j], today) || isSameDay(calendarGrid[i][j], selectedDate)
+                isSameDay(calendarGrid()[i][j], today) || isSameDay(calendarGrid()[i][j], selectedDate)
                   ? 'primary'
-                  : isSameMonth(calendarGrid[i][j], refDate)
+                  : isSameMonth(calendarGrid()[i][j], refDate())
                     ? 'dark'
                     : 'medium'
               "
               [fill]="
-                isSameDay(calendarGrid[i][j], selectedDate)
+                isSameDay(calendarGrid()[i][j], selectedDate)
                   ? 'solid'
-                  : isSameDay(calendarGrid[i][j], today)
+                  : isSameDay(calendarGrid()[i][j], today)
                     ? 'outline'
                     : 'clear'
               "
-              [disabled]="!isDateSelectable(calendarGrid[i][j])"
-              (click)="selectDate(calendarGrid[i][j])"
+              [disabled]="!isDateSelectable(calendarGrid()[i][j])"
+              (click)="selectDate(calendarGrid()[i][j])"
             >
-              {{ calendarGrid[i][j] | date: 'd' }}
+              {{ calendarGrid()[i][j] | date: 'd' }}
             </ion-button>
           </ion-col>
         }

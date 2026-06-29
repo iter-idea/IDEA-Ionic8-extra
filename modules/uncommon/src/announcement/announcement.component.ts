@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal, model, ChangeDetectionStrategy } from '@angular/core';
 import { IonCard, IonCardContent, IonButton } from '@ionic/angular/standalone';
 import { Announcement, mdToHtml } from 'idea-toolbox';
 import { IDEAEnvironment, IDEAStorageService, IDEATranslatePipe } from '@idea-ionic/common';
@@ -13,10 +13,10 @@ import { IDEATinCanService } from '../tinCan.service';
   imports: [IDEATranslatePipe, IonButton, IonCardContent, IonCard],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (htmlContent) {
-      <ion-card class="announcementCard" [color]="color">
+    @if (htmlContent()) {
+      <ion-card class="announcementCard" [color]="color()">
         <ion-card-content>
-          <p class="htmlContent" [innerHTML]="htmlContent"></p>
+          <p class="htmlContent" [innerHTML]="htmlContent()"></p>
           <p class="ion-text-right">
             <ion-button color="primary" (click)="markAsRead()">
               {{ 'COMMON.GOT_IT' | translate }}
@@ -31,36 +31,31 @@ export class IDEAAnnouncementComponent implements OnInit {
   protected _env = inject(IDEAEnvironment);
   private _tc = inject(IDEATinCanService);
   private _storage = inject(IDEAStorageService);
-  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The color for the announcement card.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() color: string;
+  color = model<string>('dark');
 
   announcement: Announcement;
-  htmlContent: string;
+  htmlContent = signal<string>(null);
   storageKey: string;
 
   constructor() {
     this.storageKey = (this._env.idea.project || 'app').concat('_LAST_ANNOUNCEMENT');
-    this.color = 'dark';
   }
   async ngOnInit(): Promise<void> {
     // standard IDEA: the announcement is read in the Init Guard
     this.announcement = this._tc.get('idea-announcement');
     if (this.announcement && this.announcement.content) {
       const lastRead: string = await this._storage.get(this.storageKey);
-      if (!lastRead || this.announcement.content !== lastRead) this.htmlContent = mdToHtml(this.announcement.content);
-      this._cdr.markForCheck();
+      if (!lastRead || this.announcement.content !== lastRead)
+        this.htmlContent.set(mdToHtml(this.announcement.content));
     }
   }
 
   async markAsRead(): Promise<void> {
     await this._storage.set(this.storageKey, this.announcement.content);
-    this.htmlContent = null;
-    this._cdr.markForCheck();
+    this.htmlContent.set(null);
   }
 }

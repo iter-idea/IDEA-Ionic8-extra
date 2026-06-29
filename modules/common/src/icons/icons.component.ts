@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input, OnInit } from '@angular/core';
 import {
   ModalController,
   IonHeader,
@@ -16,7 +16,7 @@ import { Ionicons, loopStringEnumValues } from 'idea-toolbox';
 
 import { IDEATranslatePipe } from '../translations/translate.pipe';
 
-// @todo add pagination to grid
+// TODO add pagination to grid
 @Component({
   selector: 'idea-icons',
   imports: [
@@ -70,7 +70,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
     `
   ]
 })
-export class IDEAIconsComponent {
+export class IDEAIconsComponent implements OnInit {
   private _modal = inject(ModalController);
 
   /**
@@ -85,8 +85,7 @@ export class IDEAIconsComponent {
    */
   shouldShowIcon: { [icon: string]: boolean } = {};
 
-  ionViewDidEnter(): void {
-    // note: it will take a while for the icons to draw in the UI; @idea to improve
+  ngOnInit(): void {
     this.icons = loopStringEnumValues(Ionicons) as Ionicons[];
     this.search();
   }

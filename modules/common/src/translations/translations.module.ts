@@ -8,7 +8,7 @@ import { IDEALanguagePickerComponent } from './languagePicker.component';
 
 /**
  * @deprecated use standalone imports instead
- * @todo to remove in future releases
+ * TODO to remove in future releases
  */
 @NgModule({
   imports: [IDEATranslatePipe, IDEALocalizedDatePipe, IDEALocalizedLabelPipe, IDEALanguagePickerComponent],

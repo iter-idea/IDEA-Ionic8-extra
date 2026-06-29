@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
@@ -46,10 +46,10 @@ import { IDEAAuthService } from './auth.service';
             <ion-card-subtitle>{{ 'IDEA_AUTH.RESEND_CONFIRMATION_LINK_HINT' | translate }}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
-            @if (errorMsg) {
+            @if (errorMsg()) {
               <p testId="resendlink.error" class="errorBox">
                 <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
-                {{ errorMsg }}
+                {{ errorMsg() }}
               </p>
             }
             <ion-item>
@@ -104,12 +104,12 @@ export class IDEAResendLinkPage {
   private _translate = inject(IDEATranslationsService);
 
   email: string;
-  errorMsg: string;
+  errorMsg = signal<string>(null);
 
   async resendConfirmationLink(): Promise<void> {
-    this.errorMsg = null;
+    this.errorMsg.set(null);
     if (!this.email) {
-      this.errorMsg = this._translate._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY');
+      this.errorMsg.set(this._translate._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY'));
       this._message.error('IDEA_AUTH.SENDING_FAILED');
       return;
     }
@@ -119,7 +119,7 @@ export class IDEAResendLinkPage {
       this._message.success('IDEA_AUTH.CONFIRMATION_LINK_SENT');
       this.goToAuth();
     } catch (error) {
-      this.errorMsg = this._translate._('IDEA_AUTH.IS_THE_EMAIL_CORRECT');
+      this.errorMsg.set(this._translate._('IDEA_AUTH.IS_THE_EMAIL_CORRECT'));
       this._message.error('IDEA_AUTH.SENDING_FAILED');
     } finally {
       this._loading.hide();

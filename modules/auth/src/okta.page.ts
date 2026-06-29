@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonButton,
@@ -16,7 +16,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
   imports: [IDEATranslatePipe, IonContent, IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardContent, IonButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (!code && !go) {
+    @if (!code() && !go()) {
       <ion-content>
         <div class="flexBox">
           <ion-card class="authCard">
@@ -30,7 +30,7 @@ import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
               </ion-card-header>
             }
             <ion-card-content>
-              @if (identityProvider) {
+              @if (identityProvider()) {
                 <ion-button expand="block" [title]="'IDEA_AUTH.SIGN_IN_HINT' | translate" (click)="startLogin()">
                   {{ 'IDEA_AUTH.SIGN_IN' | translate }}
                 </ion-button>
@@ -52,9 +52,9 @@ export class IDEAOktaPage {
   private _router = inject(Router);
   private _env = inject(IDEAEnvironment);
 
-  identityProvider: string;
-  code: string;
-  go = false;
+  identityProvider = signal<string>(null);
+  code = signal<string>(null);
+  go = signal<boolean>(false);
 
   domain = this._env.aws.cognito.domain;
   clientId = this._env.aws.cognito.userPoolClientId;
@@ -65,18 +65,18 @@ export class IDEAOktaPage {
   darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   ionViewWillEnter(): void {
-    this.identityProvider = this._route.snapshot.queryParamMap.get('provider');
-    this.code = this._route.snapshot.queryParamMap.get('code');
-    this.go = !!this._route.snapshot.queryParamMap.get('go');
+    this.identityProvider.set(this._route.snapshot.queryParamMap.get('provider'));
+    this.code.set(this._route.snapshot.queryParamMap.get('code'));
+    this.go.set(!!this._route.snapshot.queryParamMap.get('go'));
     this._router.navigate([], { queryParams: {}, replaceUrl: true });
-    if (this.code) this.endLogin();
-    else if (this.identityProvider && this.go) this.startLogin();
+    if (this.code()) this.endLogin();
+    else if (this.identityProvider() && this.go()) this.startLogin();
   }
 
   startLogin(): void {
     const url = `https://${this.domain}/oauth2/authorize`;
     const params = new URLSearchParams();
-    params.append('identity_provider', this.identityProvider);
+    params.append('identity_provider', this.identityProvider());
     params.append('redirect_uri', this.redirectURI);
     params.append('response_type', 'code');
     params.append('client_id', this.clientId);
@@ -88,7 +88,7 @@ export class IDEAOktaPage {
   private async endLogin(): Promise<void> {
     const url = `https://${this.domain}/oauth2/token`;
     const params = new URLSearchParams();
-    params.append('code', this.code);
+    params.append('code', this.code());
     params.append('grant_type', 'authorization_code');
     params.append('redirect_uri', this.redirectURI);
     params.append('client_id', this.clientId);

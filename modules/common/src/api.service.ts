@@ -2,6 +2,7 @@ import { ApplicationRef, Injectable, inject } from '@angular/core';
 import { Platform } from '@ionic/angular/standalone';
 
 import { IDEAEnvironment } from '../environment';
+import { refreshVisibleIonicPages } from './cdRefresh';
 
 /**
  * To communicate with an AWS API Gateway istance.
@@ -98,8 +99,12 @@ export class IDEAApiService {
     } finally {
       // A native `fetch` settles outside the Angular zone, so on a Zone-based app the value the caller
       // assigns after `await` would not trigger change detection (the UI stays stale until the next user
-      // interaction). Force a global tick on the next macrotask — after the caller's assignment has run.
-      setTimeout(() => this._appRef.tick());
+      // interaction). On the next macrotask — after the caller's assignment has run — refresh the visible
+      // Ionic page(s) (a global tick can't reach them) and tick the app shell as a safety net.
+      setTimeout(() => {
+        refreshVisibleIonicPages();
+        this._appRef.tick();
+      });
     }
   }
 

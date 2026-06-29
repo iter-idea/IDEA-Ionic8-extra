@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input, signal } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import {
@@ -83,7 +83,8 @@ const SIGNATURE_SIZE_LIMIT = 80 * 1000; // 80 K
             [placeholder]="'IDEA_COMMON.SIGNATURE.NAME_AND_SURNAME' | translate"
             [disabled]="!canEdit()"
             [class.fieldHasError]="signatoryError"
-            [(ngModel)]="signature.signatory"
+            [ngModel]="signature().signatory"
+            (ngModelChange)="setSignatory($event)"
           />
           @if (contacts().length && canEdit()) {
             <ion-button
@@ -149,7 +150,6 @@ export class IDEASignatureComponent {
   private _modal = inject(ModalController);
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
-  private _cd = inject(ChangeDetectorRef);
 
   /**
    * An existing signature to use.
@@ -164,7 +164,7 @@ export class IDEASignatureComponent {
    */
   readonly contacts = input<string[]>();
 
-  signature = new Signature();
+  signature = signal<Signature>(new Signature());
   canvas: HTMLCanvasElement | null = null;
   pad: SignaturePad | null = null;
   signatoryError: boolean;
@@ -178,14 +178,21 @@ export class IDEASignatureComponent {
     // in case a signature already exists, show it
     const existingSignature = this.existingSignature();
     if (existingSignature) {
-      this.signature.load(existingSignature);
-      this.pad.fromDataURL(this.signature.pngURL);
+      this.signature.update(s => {
+        s.load(existingSignature);
+        return new Signature(s);
+      });
+      this.pad.fromDataURL(this.signature().pngURL);
       if (this.canEdit()) this.pad.on();
       else this.pad.off();
     }
     // pre-load the first contact, if any (and the signatory isn't already filled out)
     const contacts = this.contacts();
-    if (contacts.length && !this.signature.signatory) this.signature.signatory = contacts[0];
+    if (contacts.length && !this.signature().signatory)
+      this.signature.update(s => {
+        s.signatory = contacts[0];
+        return new Signature(s);
+      });
   }
 
   canEdit(): boolean {
@@ -202,10 +209,20 @@ export class IDEASignatureComponent {
       }
     });
     modal.onDidDismiss().then(res => {
-      if (res && res.data && res.data.value) this.signature.signatory = res.data.value;
-      this._cd.markForCheck(); // zoneless: re-check so the picked signatory is rendered
+      if (res && res.data && res.data.value)
+        this.signature.update(s => {
+          s.signatory = res.data.value;
+          return new Signature(s);
+        });
     });
     modal.present();
+  }
+
+  setSignatory(signatory: string): void {
+    this.signature.update(s => {
+      s.signatory = signatory;
+      return new Signature(s);
+    });
   }
 
   clear(): void {
@@ -213,22 +230,24 @@ export class IDEASignatureComponent {
   }
 
   save(): Promise<void> {
+    const signature = this.signature();
     // check whether the fields are empty
-    this.signatoryError = !this.signature.signatory?.trim();
+    this.signatoryError = !signature.signatory?.trim();
     this.signatureError = this.pad.isEmpty();
     if (this.signatoryError || this.signatureError)
       return this._message.warning('IDEA_COMMON.SIGNATURE.VERIFY_SIGNATORY_AND_SIGNATURE');
     // load the signature URL
-    this.signature.pngURL = this.pad.toDataURL('image/png');
+    signature.pngURL = this.pad.toDataURL('image/png');
     // check whether the signature size is acceptable
-    this.signatureError = this.signature.pngURL.length > SIGNATURE_SIZE_LIMIT;
+    this.signatureError = signature.pngURL.length > SIGNATURE_SIZE_LIMIT;
     if (this.signatureError) return this._message.warning('IDEA_COMMON.SIGNATURE.SIGNATURE_IS_TOO_COMPLEX');
     // clean the signatory string
-    this.signature.signatory = this.signature.signatory.trim();
+    signature.signatory = signature.signatory.trim();
     // update the timestamp
-    this.signature.timestamp = Date.now();
+    signature.timestamp = Date.now();
+    this.signature.set(signature);
     // close the modal
-    this._modal.dismiss(this.signature);
+    this._modal.dismiss(signature);
   }
 
   undo(): void {

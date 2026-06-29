@@ -1,13 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  Input,
-  OnInit,
-  ChangeDetectorRef,
-  inject,
-  output,
-  input
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnInit, inject, output, input, model } from '@angular/core';
 import { IonContent, Platform } from '@ionic/angular/standalone';
 import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
 import {
@@ -31,16 +22,13 @@ import { IDEATranslationsService } from '@idea-ionic/common';
   styleUrls: ['agenda.component.scss']
 })
 export class IDEAAgendaComponent implements OnInit {
-  private _cdr = inject(ChangeDetectorRef);
   private _platform = inject(Platform);
   _translate = inject(IDEATranslationsService);
 
   /**
    * The events to display in the calendar.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() events: AgendaEvent[] = [];
+  readonly events = model<AgendaEvent[]>([]);
   /**
    * An array of day indexes (0 = sunday, 1 = monday, etc.) that will be hidden on the view.
    */
@@ -60,19 +48,14 @@ export class IDEAAgendaComponent implements OnInit {
   /**
    * Whether to open the current day's details right away in month view.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() activeDayIsOpen = false;
   /**
    * The view mode for the agenda.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() view: CalendarView = CalendarView.Week;
   /**
    * The allowed view mode for the agenda.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() allowedViews = [CalendarView.Day, CalendarView.Week, CalendarView.Month];
   /**
    * Whether to block any day/slot in the past.
@@ -81,7 +64,6 @@ export class IDEAAgendaComponent implements OnInit {
   /**
    * Some notes to show underneath the calendar's header.
    */
-  // TODO: Skipped for migration because: This input is used in a control flow expression (e.g. `@if` or `*ngIf`) and migrating would break narrowing currently.
   @Input() titleNotes: string;
   /**
    * The template for new events created by drag&drop.
@@ -206,7 +188,7 @@ export class IDEAAgendaComponent implements OnInit {
   eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
     event.start = newStart;
     event.end = newEnd;
-    this.events = this.events.slice();
+    this.events.set(this.events().slice());
     this.changeEvent.emit(event);
   }
 
@@ -250,7 +232,7 @@ export class IDEAAgendaComponent implements OnInit {
     if (parentContent) parentContent.scrollY = false;
 
     const eventByDragAndDrop: AgendaEvent = { ...this.newEventTemplate(), start: segmentDate };
-    this.events = [...this.events, eventByDragAndDrop];
+    this.events.set([...this.events(), eventByDragAndDrop]);
 
     const segmentPosition = segmentElement.getBoundingClientRect();
     const endOfView = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
@@ -279,8 +261,7 @@ export class IDEAAgendaComponent implements OnInit {
     };
 
     const refreshView = (): void => {
-      this.events = [...this.events];
-      this._cdr.detectChanges();
+      this.events.set([...this.events()]);
     };
 
     if (event.type === 'touchstart') {

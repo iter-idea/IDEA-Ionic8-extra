@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   IonContent,
@@ -26,20 +26,20 @@ import { IDEATinCanService } from '../tinCan.service';
           <ion-img [src]="'assets/icons/icon-auth.svg'" />
           <ion-card-header>
             <ion-card-title>
-              @if (success === true) {
+              @if (success() === true) {
                 <ion-icon testId="echoSuccess" color="success" name="checkmark" />
               }
-              @if (success === false) {
+              @if (success() === false) {
                 <ion-icon testId="echoFailure" color="danger" name="close" />
               }
             </ion-card-title>
           </ion-card-header>
           <ion-card-content class="selectable">
-            {{ content }}
-            @if (htmlContent) {
-              <div class="htmlContent" [innerHTML]="htmlContent"></div>
+            {{ content() }}
+            @if (htmlContent()) {
+              <div class="htmlContent" [innerHTML]="htmlContent()"></div>
             }
-            @if (success === false || success === true) {
+            @if (success() === false || success() === true) {
               <p class="youCanCloseMe">
                 <i>{{ 'IDEA_UNCOMMON.ECHO.YOU_CAN_CLOSE_THE_PAGE' | translate }}</i>
               </p>
@@ -82,9 +82,9 @@ export class IDEAEchoPage implements OnInit {
   private _API = inject(IDEAAWSAPIService);
   private _translate = inject(IDEATranslationsService);
 
-  content: string;
-  htmlContent: string;
-  success: boolean;
+  content = signal<string>(undefined);
+  htmlContent = signal<string>(undefined);
+  success = signal<boolean>(undefined);
 
   ngOnInit(): void {
     const request: EchoRequests =
@@ -118,15 +118,15 @@ export class IDEAEchoPage implements OnInit {
         this.endExternalCalendarsIntegrationFlow(ExternalCalendarSources.GOOGLE, code, state);
         break;
       default:
-        this.success = false;
-        this.content = this._translate._('IDEA_UNCOMMON.ECHO.INVALID_ACTION');
+        this.success.set(false);
+        this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.INVALID_ACTION'));
         break;
     }
   }
 
   maintenanceMode(): void {
     const announcement = this._tc.get('idea-announcement');
-    if (announcement && announcement.content) this.htmlContent = mdToHtml(announcement.content);
+    if (announcement && announcement.content) this.htmlContent.set(mdToHtml(announcement.content));
   }
 
   async followRegistrationLink(code: string, user: string): Promise<void> {
@@ -141,11 +141,11 @@ export class IDEAEchoPage implements OnInit {
           cognitoUserPoolClientId: this._env.aws.cognito.userPoolClientId
         }
       });
-      this.success = true;
-      this.content = this._translate._('IDEA_UNCOMMON.ECHO.ACCOUNT_CONFIRMED');
+      this.success.set(true);
+      this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.ACCOUNT_CONFIRMED'));
     } catch (error) {
-      this.success = false;
-      this.content = this._translate._('IDEA_UNCOMMON.ECHO.REQUEST_FAILED');
+      this.success.set(false);
+      this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.REQUEST_FAILED'));
     } finally {
       this._loading.hide();
     }
@@ -154,11 +154,11 @@ export class IDEAEchoPage implements OnInit {
     try {
       await this._loading.show();
       await this._API.getResource('invitations', { idea: true, resourceId: code });
-      this.success = true;
-      this.content = this._translate._('IDEA_UNCOMMON.ECHO.TEAM_JOINED');
+      this.success.set(true);
+      this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.TEAM_JOINED'));
     } catch (error) {
-      this.success = false;
-      this.content = this._translate._('IDEA_UNCOMMON.ECHO.REQUEST_FAILED');
+      this.success.set(false);
+      this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.REQUEST_FAILED'));
     } finally {
       this._loading.hide();
     }
@@ -171,26 +171,30 @@ export class IDEAEchoPage implements OnInit {
         resourceId: code,
         params: { project: this._env.idea.project }
       });
-      this.success = true;
-      this.content = this._translate._('IDEA_UNCOMMON.ECHO.EMAIL_CHANGED');
+      this.success.set(true);
+      this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.EMAIL_CHANGED'));
     } catch (error) {
-      this.success = false;
-      this.content = this._translate._('IDEA_UNCOMMON.ECHO.REQUEST_FAILED');
+      this.success.set(false);
+      this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.REQUEST_FAILED'));
     } finally {
       this._loading.hide();
     }
   }
   endGitHubIntegrationFlow(success: boolean): void {
-    this.success = success;
-    this.content = success
-      ? this._translate._('IDEA_UNCOMMON.ECHO.GITHUB_SOURCE_INTEGRATION_SUCCESS')
-      : this._translate._('IDEA_UNCOMMON.ECHO.GITHUB_SOURCE_INTEGRATION_ERROR');
+    this.success.set(success);
+    this.content.set(
+      success
+        ? this._translate._('IDEA_UNCOMMON.ECHO.GITHUB_SOURCE_INTEGRATION_SUCCESS')
+        : this._translate._('IDEA_UNCOMMON.ECHO.GITHUB_SOURCE_INTEGRATION_ERROR')
+    );
   }
   endTrelloIntegrationFlow(token: string): void {
-    this.success = Boolean(token);
-    this.content = token
-      ? this._translate._('IDEA_UNCOMMON.ECHO.TRELLO_SOURCE_INTEGRATION_SUCCESS', { token })
-      : this._translate._('IDEA_UNCOMMON.ECHO.TRELLO_SOURCE_INTEGRATION_ERROR');
+    this.success.set(Boolean(token));
+    this.content.set(
+      token
+        ? this._translate._('IDEA_UNCOMMON.ECHO.TRELLO_SOURCE_INTEGRATION_SUCCESS', { token })
+        : this._translate._('IDEA_UNCOMMON.ECHO.TRELLO_SOURCE_INTEGRATION_ERROR')
+    );
   }
   async endExternalCalendarsIntegrationFlow(
     service: ExternalCalendarSources,
@@ -203,11 +207,11 @@ export class IDEAEchoPage implements OnInit {
         idea: true,
         body: { action: 'SET_EXTERNAL_INTEGRATION', service, code, calendarId, project: this._env.idea.project }
       });
-      this.success = true;
-      this.content = this._translate._('IDEA_UNCOMMON.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS');
+      this.success.set(true);
+      this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_SUCCESS'));
     } catch (error) {
-      this.success = false;
-      this.content = this._translate._('IDEA_UNCOMMON.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR');
+      this.success.set(false);
+      this.content.set(this._translate._('IDEA_UNCOMMON.ECHO.EXTERNAL_CALENDARS_SOURCE_INTEGRATION_ERROR'));
     } finally {
       this._loading.hide();
     }

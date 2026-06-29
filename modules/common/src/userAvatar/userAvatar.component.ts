@@ -82,8 +82,6 @@ export class IDEAUserAvatarComponent implements OnInit {
   /**
    * The link to the avatar media to show.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() src?: string;
   /**
    * The full name of the user (to use as fallback in case the media isn't available).
@@ -96,8 +94,6 @@ export class IDEAUserAvatarComponent implements OnInit {
   /**
    * The HEX color of the avatar's background.
    */
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
   @Input() color?: string;
 
   initials: string;
