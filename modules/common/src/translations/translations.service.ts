@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, inject, PendingTasks } from '@angular/core';
+import { ApplicationRef, Injectable, EventEmitter, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import {
   getStringEnumKeyByValue,
@@ -17,7 +17,7 @@ import { IDEAEnvironment } from '../../environment';
 @Injectable({ providedIn: 'root' })
 export class IDEATranslationsService {
   protected _env = inject(IDEAEnvironment);
-  private _pendingTasks = inject(PendingTasks);
+  private _appRef = inject(ApplicationRef);
 
   /**
    * Base folder containing the translations.
@@ -138,9 +138,6 @@ export class IDEATranslationsService {
       if (!changed && !force) return;
       // check whether the language is among the available ones; otherwise, fallback to default
       if (!this.langs.includes(lang)) lang = this.defaultLang;
-      // track the load as an Angular pending task so change detection runs once the dictionaries are
-      // in (the native `fetch` settles outside the Angular zone on Zone-based apps).
-      const removePendingTask = this._pendingTasks.add();
       // load translations
       this.loadTranlations(lang)
         .then((): void => {
@@ -151,7 +148,9 @@ export class IDEATranslationsService {
           // resolve
           resolve();
         })
-        .finally(removePendingTask);
+        // the native `fetch` settles outside the Angular zone; force a global tick on the next macrotask
+        // so the new dictionaries render on Zone-based apps. See IDEAApiService.
+        .finally(() => setTimeout(() => this._appRef.tick()));
     });
   }
 

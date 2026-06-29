@@ -1,4 +1,4 @@
-import { Injectable, inject, PendingTasks } from '@angular/core';
+import { ApplicationRef, Injectable, inject } from '@angular/core';
 import { Platform } from '@ionic/angular/standalone';
 
 import { IDEAEnvironment } from '../environment';
@@ -11,7 +11,7 @@ import { IDEAEnvironment } from '../environment';
 export class IDEAApiService {
   protected _env = inject(IDEAEnvironment);
   private _platform = inject(Platform);
-  private _pendingTasks = inject(PendingTasks);
+  private _appRef = inject(ApplicationRef);
 
   /**
    * The base URL to which to make requests.
@@ -58,9 +58,6 @@ export class IDEAApiService {
     method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
     options: ApiRequestOptions = {}
   ): Promise<any> {
-    // Track the request as an Angular pending task so the change-detection scheduler ticks when it
-    // settles — otherwise on a Zone-based app the native `fetch` resolves off-zone and the UI stays stale.
-    const removePendingTask = this._pendingTasks.add();
     try {
       const url = this.baseURL.concat('/', Array.isArray(path) ? path.join('/') : path);
 
@@ -99,7 +96,10 @@ export class IDEAApiService {
       }
       throw new Error(errMessage);
     } finally {
-      removePendingTask();
+      // A native `fetch` settles outside the Angular zone, so on a Zone-based app the value the caller
+      // assigns after `await` would not trigger change detection (the UI stays stale until the next user
+      // interaction). Force a global tick on the next macrotask — after the caller's assignment has run.
+      setTimeout(() => this._appRef.tick());
     }
   }
 

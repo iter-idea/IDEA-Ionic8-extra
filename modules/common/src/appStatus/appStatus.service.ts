@@ -1,4 +1,4 @@
-import { Injectable, inject, PendingTasks } from '@angular/core';
+import { ApplicationRef, Injectable, inject } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular/standalone';
 import { AppStatus, markdown } from 'idea-toolbox';
 
@@ -18,7 +18,7 @@ export class IDEAAppStatusService {
   private _translate = inject(IDEATranslationsService);
   private _api = inject(IDEAApiService);
   private _storage = inject(IDEAStorageService);
-  private _pendingTasks = inject(PendingTasks);
+  private _appRef = inject(ApplicationRef);
 
   appStatus: AppStatus;
 
@@ -55,9 +55,6 @@ export class IDEAAppStatusService {
     return new AppStatus(await this._api.getResource(['status']));
   }
   private async getStatusFromAsset(): Promise<AppStatus> {
-    // Track as an Angular pending task so change detection runs after the awaited result (the native
-    // `fetch` settles outside the Angular zone on Zone-based apps)
-    const removePendingTask = this._pendingTasks.add();
     try {
       const res = await fetch(this.statusFileURL, { method: 'GET', cache: 'no-cache' });
       if (res.status !== 200) throw new Error('Status not found');
@@ -70,7 +67,9 @@ export class IDEAAppStatusService {
         latestVersion: statusFromS3.latestVersion
       });
     } finally {
-      removePendingTask();
+      // The native `fetch` settles outside the Angular zone; force a global tick on the next macrotask
+      // so the caller's post-`await` state change renders on Zone-based apps. See IDEAApiService.
+      setTimeout(() => this._appRef.tick());
     }
   }
   private async presentToast(appStatus: AppStatus, options: { color?: string; position?: string } = {}): Promise<void> {
