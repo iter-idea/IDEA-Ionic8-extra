@@ -1,13 +1,12 @@
 import {
   Component,
   HostListener,
+  Input,
   OnInit,
   inject,
   ChangeDetectionStrategy,
   viewChild,
-  signal,
-  input,
-  model
+  signal
 } from '@angular/core';
 import {
   IonInfiniteScroll,
@@ -69,55 +68,55 @@ export class IDEASuggestionsComponent implements OnInit {
   /**
    * The suggestions to show.
    */
-  data = model<Suggestion[]>([]);
+  @Input() data: Suggestion[] = [];
   /**
    * If true, sort the suggestions alphabetically.
    */
-  sortData = input<boolean>();
+  @Input() sortData?: boolean;
   /**
    * A placeholder for the searchbar.
    */
-  searchPlaceholder = input<string>();
+  @Input() searchPlaceholder?: string;
   /**
    * Text to show when there isn't a result.
    */
-  noElementsFoundText = input<string>();
+  @Input() noElementsFoundText?: string;
   /**
    * If true, allows to select a new custom value (outside the suggestions).
    */
-  allowUnlistedValues = input<boolean>();
+  @Input() allowUnlistedValues?: boolean;
   /**
    * If `allowUnlistedValues` is set, show this to help users understanding what happens by selecting the unlisted val.
    */
-  allowUnlistedValuesPrefix = input<string>();
+  @Input() allowUnlistedValuesPrefix?: string;
   /**
    * If true, doesn't show the id in the UI.
    */
-  hideIdFromUI = input<boolean>();
+  @Input() hideIdFromUI?: boolean;
   /**
    * If true, doesn't show the clear button in the header.
    */
-  hideClearButton = input<boolean>();
+  @Input() hideClearButton?: boolean;
   /**
    * If true, the user doesn't have the option to cancel the selection: an option must be chosen.
    */
-  mustChoose = input<boolean>();
+  @Input() mustChoose?: boolean;
   /**
    * A pre-filter for the category1.
    */
-  category1 = model<string>();
+  @Input() category1?: string;
   /**
    * A pre-filter for the category2.
    */
-  category2 = model<string>();
+  @Input() category2?: string;
   /**
    * Whether tho show the categories filters.
    */
-  showCategoriesFilters = input<boolean>();
+  @Input() showCategoriesFilters?: boolean;
   /**
    * An arbitrary number of elements to show in each page; suggested: a multiple of 2, 3 and 4 (good for any UI size).
    */
-  numPerPage = input<number>();
+  @Input() numPerPage?: number;
 
   suggestions = signal<Suggestion[]>([]);
   currentPage: number;
@@ -128,16 +127,14 @@ export class IDEASuggestionsComponent implements OnInit {
   detailsAreAvailable = signal<boolean>(undefined);
 
   async ngOnInit(): Promise<void> {
-    if (this.sortData())
-      this.data.set(
-        this.data().sort((a, b): number =>
-          a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
-        )
+    if (this.sortData)
+      this.data = (this.data || []).sort((a, b): number =>
+        a.name && b.name ? a.name.localeCompare(b.name) : String(a.value).localeCompare(String(b.value))
       );
 
     this.loadActiveCategories();
     this.detailsAreAvailable.set(
-      this.data().some(x => (x.name && !this.hideIdFromUI()) || x.category1 || x.category2 || x.description)
+      this.data.some(x => (x.name && !this.hideIdFromUI) || x.category1 || x.category2 || x.description)
     );
 
     if (!this.detailsAreAvailable()) this.shouldShowDetails.set(false);
@@ -157,7 +154,7 @@ export class IDEASuggestionsComponent implements OnInit {
   private loadActiveCategories(): void {
     const activeCategories1 = new Set<string>();
     const activeCategories2 = new Set<string>();
-    this.data().forEach(a => {
+    this.data.forEach(a => {
       if (a.category1) activeCategories1.add(a.category1);
       if (a.category2) activeCategories2.add(a.category2);
     });
@@ -172,9 +169,9 @@ export class IDEASuggestionsComponent implements OnInit {
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
-    let suggestions = (this.data() || [])
-      .filter(x => !this.category1() || x.category1 === this.category1())
-      .filter(x => !this.category2() || x.category2 === this.category2())
+    let suggestions = (this.data || [])
+      .filter(x => !this.category1 || x.category1 === this.category1)
+      .filter(x => !this.category2 || x.category2 === this.category2)
       .filter(x =>
         toSearch
           .split(' ')
@@ -201,8 +198,8 @@ export class IDEASuggestionsComponent implements OnInit {
     });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) {
-        if (whichCategory === 2) this.category2.set(data.value);
-        else this.category1.set(data.value);
+        if (whichCategory === 2) this.category2 = data.value;
+        else this.category1 = data.value;
         const searchbar = this.searchbar();
         this.search(searchbar ? searchbar.value : null);
       }
@@ -210,8 +207,8 @@ export class IDEASuggestionsComponent implements OnInit {
     modal.present();
   }
   resetFilterCategoryN(whichCategory: number): void {
-    if (whichCategory === 2) this.category2.set(null);
-    else this.category1.set(null);
+    if (whichCategory === 2) this.category2 = null;
+    else this.category1 = null;
     const searchbar = this.searchbar();
     this.search(searchbar ? searchbar.value : null);
   }
@@ -239,7 +236,7 @@ export class IDEASuggestionsComponent implements OnInit {
         if (suggestionsList && suggestionsList.getElementsByClassName('selected').length) {
           if (suggestionsList.getElementsByClassName('selected')[0].getElementsByClassName('key').length)
             this.select(
-              this.data().find(
+              this.data.find(
                 x =>
                   String(x.value) ===
                   suggestionsList

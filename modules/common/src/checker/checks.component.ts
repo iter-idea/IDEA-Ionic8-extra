@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, signal, model } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonInfiniteScroll,
@@ -103,22 +103,22 @@ const MAX_PAGE_SIZE = 24;
               <ion-button
                 color="light"
                 size="small"
-                [class.strong]="category1()"
-                (click)="category1() ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
+                [class.strong]="category1"
+                (click)="category1 ? resetFilterCategoryN(1) : setFilterCategoryN(1)"
               >
-                <ion-icon [icon]="category1() ? 'close' : 'filter'" slot="start" />
-                {{ category1() || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+                <ion-icon [icon]="category1 ? 'close' : 'filter'" slot="start" />
+                {{ category1 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
               </ion-button>
             }
             @if (activeCategories2?.size) {
               <ion-button
                 color="light"
                 size="small"
-                [class.strong]="category2()"
-                (click)="category2() ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
+                [class.strong]="category2"
+                (click)="category2 ? resetFilterCategoryN(2) : setFilterCategoryN(2)"
               >
-                <ion-icon [icon]="category2() ? 'close' : 'filter'" slot="start" />
-                {{ category2() || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
+                <ion-icon [icon]="category2 ? 'close' : 'filter'" slot="start" />
+                {{ category2 || ('IDEA_COMMON.SELECT.TAP_TO_FILTER' | translate) }}
               </ion-button>
             }
           </div>
@@ -241,11 +241,11 @@ export class IDEAChecksComponent implements OnInit {
   /**
    * A pre-filter for the category1.
    */
-  category1 = model<string>();
+  @Input() category1?: string;
   /**
    * A pre-filter for the category2.
    */
-  category2 = model<string>();
+  @Input() category2?: string;
   /**
    * Whether tho show the categories filters.
    */
@@ -292,8 +292,8 @@ export class IDEAChecksComponent implements OnInit {
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
     toSearch = toSearch ? toSearch.toLowerCase() : '';
 
-    const category1 = this.category1();
-    const category2 = this.category2();
+    const category1 = this.category1;
+    const category2 = this.category2;
     let filteredChecks = this.workingData
       .filter(x => !category1 || x.category1 === category1)
       .filter(x => !category2 || x.category2 === category2)
@@ -322,8 +322,8 @@ export class IDEAChecksComponent implements OnInit {
     });
     modal.onDidDismiss().then(({ data }): void => {
       if (data) {
-        if (whichCategory === 2) this.category2.set(data.value);
-        else this.category1.set(data.value);
+        if (whichCategory === 2) this.category2 = data.value;
+        else this.category1 = data.value;
         const searchbar = this.searchbar();
         this.search(searchbar ? searchbar.value : null);
       }
@@ -331,8 +331,8 @@ export class IDEAChecksComponent implements OnInit {
     modal.present();
   }
   resetFilterCategoryN(whichCategory: number): void {
-    if (whichCategory === 2) this.category2.set(null);
-    else this.category1.set(null);
+    if (whichCategory === 2) this.category2 = null;
+    else this.category1 = null;
     const searchbar = this.searchbar();
     this.search(searchbar ? searchbar.value : null);
   }
