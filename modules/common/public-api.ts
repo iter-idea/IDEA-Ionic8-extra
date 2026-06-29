@@ -55,6 +55,7 @@ export * from './src/translations/translations.service';
 export * from './src/userAvatar/userAvatar.component';
 
 export * from './src/api.service';
+export * from './src/cdRefresh';
 export * from './src/boldPrefix.pipe';
 export * from './src/highlightedVariables.pipe';
 export * from './src/linkify.pipe';
