@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, PendingTasks } from '@angular/core';
 import { Attachment } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
@@ -8,6 +8,7 @@ import { IDEAApiService } from '../api.service';
 export class IDEAAttachmentsService {
   protected _env = inject(IDEAEnvironment);
   protected _api = inject(IDEAApiService);
+  private _pendingTasks = inject(PendingTasks);
 
   /**
    * Upload a new attachment related to an entity and return the `attachmentId`.
@@ -17,12 +18,19 @@ export class IDEAAttachmentsService {
     entityPath: string | string[],
     options: { customAction?: string } = {}
   ): Promise<string> {
-    const { maxFileUploadSizeMB } = this._env.idea.app;
-    if (maxFileUploadSizeMB && bytesToMegaBytes(file.size) > maxFileUploadSizeMB) throw new Error('File is too big');
-    const body = { action: options.customAction || 'GET_ATTACHMENT_UPLOAD_URL' };
-    const { url, id } = await this._api.patchResource(entityPath, { body });
-    await fetch(url, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
-    return id;
+    // Track the upload as an Angular pending task, so change detection runs after the awaited result
+    // (the raw S3 `fetch` PUT settles outside the Angular zone on Zone-based apps).
+    const removePendingTask = this._pendingTasks.add();
+    try {
+      const { maxFileUploadSizeMB } = this._env.idea.app;
+      if (maxFileUploadSizeMB && bytesToMegaBytes(file.size) > maxFileUploadSizeMB) throw new Error('File is too big');
+      const body = { action: options.customAction || 'GET_ATTACHMENT_UPLOAD_URL' };
+      const { url, id } = await this._api.patchResource(entityPath, { body });
+      await fetch(url, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
+      return id;
+    } finally {
+      removePendingTask();
+    }
   }
 
   /**

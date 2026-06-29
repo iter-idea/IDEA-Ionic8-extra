@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, PendingTasks } from '@angular/core';
 import { Platform } from '@ionic/angular/standalone';
 
 import { IDEAEnvironment } from '../environment';
@@ -11,6 +11,7 @@ import { IDEAEnvironment } from '../environment';
 export class IDEAApiService {
   protected _env = inject(IDEAEnvironment);
   private _platform = inject(Platform);
+  private _pendingTasks = inject(PendingTasks);
 
   /**
    * The base URL to which to make requests.
@@ -57,42 +58,49 @@ export class IDEAApiService {
     method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
     options: ApiRequestOptions = {}
   ): Promise<any> {
-    const url = this.baseURL.concat('/', Array.isArray(path) ? path.join('/') : path);
-
-    const builtInHeaders: any = {};
-    if (this.authToken) {
-      if (typeof this.authToken === 'function') builtInHeaders.Authorization = await this.authToken();
-      else builtInHeaders.Authorization = this.authToken;
-    }
-    if (this.apiKey) builtInHeaders['X-API-Key'] = this.apiKey;
-
-    const headers: any = { ...builtInHeaders, ...this.defaultHeaders, ...options.headers };
-
-    const searchParams = new URLSearchParams();
-    searchParams.append('_v', this.appVersion);
-    searchParams.append('_p', this._platform.platforms().join(' '));
-    if (this.appBundle) searchParams.append('_b', this.appBundle);
-    if (options.params) {
-      for (const paramName in options.params) {
-        const param = options.params[paramName];
-        if (Array.isArray(param)) for (const arrayElement of param) searchParams.append(paramName, arrayElement);
-        else searchParams.append(paramName, param as string);
-      }
-    }
-
-    let body: any = null;
-    if (options.body) body = JSON.stringify(options.body);
-
-    const res = await fetch(url.concat('?', searchParams.toString()), { method, headers, body });
-    if (res.status === 200) return await res.json();
-
-    let errMessage: string;
+    // Track the request as an Angular pending task so the change-detection scheduler ticks when it
+    // settles — otherwise on a Zone-based app the native `fetch` resolves off-zone and the UI stays stale.
+    const removePendingTask = this._pendingTasks.add();
     try {
-      errMessage = (await res.json()).message;
-    } catch (err) {
-      errMessage = 'Operation failed';
+      const url = this.baseURL.concat('/', Array.isArray(path) ? path.join('/') : path);
+
+      const builtInHeaders: any = {};
+      if (this.authToken) {
+        if (typeof this.authToken === 'function') builtInHeaders.Authorization = await this.authToken();
+        else builtInHeaders.Authorization = this.authToken;
+      }
+      if (this.apiKey) builtInHeaders['X-API-Key'] = this.apiKey;
+
+      const headers: any = { ...builtInHeaders, ...this.defaultHeaders, ...options.headers };
+
+      const searchParams = new URLSearchParams();
+      searchParams.append('_v', this.appVersion);
+      searchParams.append('_p', this._platform.platforms().join(' '));
+      if (this.appBundle) searchParams.append('_b', this.appBundle);
+      if (options.params) {
+        for (const paramName in options.params) {
+          const param = options.params[paramName];
+          if (Array.isArray(param)) for (const arrayElement of param) searchParams.append(paramName, arrayElement);
+          else searchParams.append(paramName, param as string);
+        }
+      }
+
+      let body: any = null;
+      if (options.body) body = JSON.stringify(options.body);
+
+      const res = await fetch(url.concat('?', searchParams.toString()), { method, headers, body });
+      if (res.status === 200) return await res.json();
+
+      let errMessage: string;
+      try {
+        errMessage = (await res.json()).message;
+      } catch (err) {
+        errMessage = 'Operation failed';
+      }
+      throw new Error(errMessage);
+    } finally {
+      removePendingTask();
     }
-    throw new Error(errMessage);
   }
 
   /**

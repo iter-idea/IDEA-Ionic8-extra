@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, PendingTasks } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular/standalone';
 import { AppStatus, markdown } from 'idea-toolbox';
 
@@ -18,6 +18,7 @@ export class IDEAAppStatusService {
   private _translate = inject(IDEATranslationsService);
   private _api = inject(IDEAApiService);
   private _storage = inject(IDEAStorageService);
+  private _pendingTasks = inject(PendingTasks);
 
   appStatus: AppStatus;
 
@@ -54,16 +55,23 @@ export class IDEAAppStatusService {
     return new AppStatus(await this._api.getResource(['status']));
   }
   private async getStatusFromAsset(): Promise<AppStatus> {
-    const res = await fetch(this.statusFileURL, { method: 'GET', cache: 'no-cache' });
-    if (res.status !== 200) throw new Error('Status not found');
-    const statusFromS3: InternalAppVersionStatusViaAsset = await res.json();
-    return new AppStatus({
-      version: this._env.idea.app.version,
-      inMaintenance: statusFromS3.maintenance,
-      mustUpdate: statusFromS3.minVersion ? statusFromS3.minVersion > this._env.idea.app.version : false,
-      content: statusFromS3.messages[this._env.idea.app.version],
-      latestVersion: statusFromS3.latestVersion
-    });
+    // Track as an Angular pending task so change detection runs after the awaited result (the native
+    // `fetch` settles outside the Angular zone on Zone-based apps)
+    const removePendingTask = this._pendingTasks.add();
+    try {
+      const res = await fetch(this.statusFileURL, { method: 'GET', cache: 'no-cache' });
+      if (res.status !== 200) throw new Error('Status not found');
+      const statusFromS3: InternalAppVersionStatusViaAsset = await res.json();
+      return new AppStatus({
+        version: this._env.idea.app.version,
+        inMaintenance: statusFromS3.maintenance,
+        mustUpdate: statusFromS3.minVersion ? statusFromS3.minVersion > this._env.idea.app.version : false,
+        content: statusFromS3.messages[this._env.idea.app.version],
+        latestVersion: statusFromS3.latestVersion
+      });
+    } finally {
+      removePendingTask();
+    }
   }
   private async presentToast(appStatus: AppStatus, options: { color?: string; position?: string } = {}): Promise<void> {
     let message = appStatus.content || '';
