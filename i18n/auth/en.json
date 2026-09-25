@@ -92,7 +92,7 @@
     "SETUP_MFA": "Setup MFA",
     "SETUP_MFA_I": "Scan the QR code with your authenticator app",
     "SETUP_MFA_II": "If you set up multi-factor authentication (MFA), whenever you sign in, you'll be prompted to type a dynamically generated One-Time Password (OTP) provided by your authenticator app.",
-    "MFA_IS_MANDATORY": "It is mandatory to enable multi-factor authentication in this app. Press the button to proceed.",
+    "MFA_IS_MANDATORY": "Multi-factor authentication (MFA) is required to access this app. Press the button to set it up with your authenticator app.",
     "ENABLE_MFA": "Enable MFA",
     "DISABLE_MFA": "Disable MFA",
     "DISABLE_MFA_I": "Disable MFA or change your authenticator app",

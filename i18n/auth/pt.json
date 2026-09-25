@@ -92,7 +92,7 @@
     "SETUP_MFA": "Configurar MFA",
     "SETUP_MFA_I": "Lê o código QR com a tua aplicação de autenticação",
     "SETUP_MFA_II": "Se configurares a autenticação multifator (MFA), sempre que iniciares sessão ser-te-á pedido que introduzas uma palavra-passe de uso único (OTP) gerada dinamicamente pela tua aplicação de autenticação.",
-    "MFA_IS_MANDATORY": "É obrigatório ativar a autenticação multifator nesta aplicação. Prime o botão para continuar.",
+    "MFA_IS_MANDATORY": "A autenticação multifator (MFA) é necessária para aceder a esta aplicação. Prime o botão para a configurares com a tua aplicação de autenticação.",
     "ENABLE_MFA": "Ativar MFA",
     "DISABLE_MFA": "Desativar MFA",
     "DISABLE_MFA_I": "Desativa o MFA ou muda a tua aplicação de autenticação",
