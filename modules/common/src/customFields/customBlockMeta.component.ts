@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, input, ChangeDetectorRef } from '@angular/core';
 import {
   ModalController,
   AlertController,
@@ -39,6 +39,7 @@ import { IDEACustomSectionMetaComponent } from './customSectionMeta.component';
   styleUrls: ['customBlockMeta.component.scss']
 })
 export class IDEACustomBlockMetaComponent {
+  private _cdr = inject(ChangeDetectorRef);
   private _modal = inject(ModalController);
   private _alert = inject(AlertController);
   private _message = inject(IDEAMessageService);
@@ -74,6 +75,8 @@ export class IDEACustomBlockMetaComponent {
     };
     const modal = await this._modal.create({ component: IDEACustomSectionMetaComponent, componentProps });
     await modal.present();
+    await modal.onDidDismiss();
+    this._cdr.markForCheck();
   }
 
   async removeSection(s: string, ev: any): Promise<void> {
@@ -83,6 +86,7 @@ export class IDEACustomBlockMetaComponent {
       const block = this.block();
       this.block().sectionsLegend.splice(block.sectionsLegend.indexOf(s), 1);
       delete block.sections[s];
+      this._cdr.markForCheck();
     };
     const buttons = [
       { text: this._translate._('COMMON.CANCEL'), role: 'cancel' },
@@ -113,6 +117,7 @@ export class IDEACustomBlockMetaComponent {
       // add the section to the block
       block.sections[key] = section;
       block.sectionsLegend.push(key);
+      this._cdr.markForCheck();
       // open the section to configure it
       this.openSection(key);
     };
