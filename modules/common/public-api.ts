@@ -1,6 +1,7 @@
 export * from './src/actionSheet/actionSheet.component';
 export * from './src/actionSheet/actionSheetController.service';
 
+export * from './src/appStatus/appStatus.guard';
 export * from './src/appStatus/appStatus.page';
 export * from './src/appStatus/appStatus.routes';
 export * from './src/appStatus/appStatus.service';

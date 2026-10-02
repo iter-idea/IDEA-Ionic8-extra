@@ -42,10 +42,29 @@ export class IDEAApiService {
    */
   defaultHeaders: Record<string, string | number> = {};
 
+  private serverErrorListeners: (() => void)[] = [];
+
   constructor() {
     this.baseURL = 'https://'.concat([this._env.idea.api?.url, this._env.idea.api?.stage].filter(x => x).join('/'));
     this.appVersion = this._env.idea.app?.version || '?';
     this.appBundle = this._env.idea.app?.bundle;
+  }
+
+  /**
+   * Be told when a request fails on the back-end's side (a 5xx, or an error the back-end didn't handle) or doesn't
+   * reach it at all — e.g. the app status reads itself again, since a back-end that fails may be one in maintenance.
+   */
+  onServerError(listener: () => void): void {
+    this.serverErrorListeners.push(listener);
+  }
+  private notifyServerError(): void {
+    for (const listener of this.serverErrorListeners) {
+      try {
+        listener();
+      } catch (error) {
+        // a listener's failure is not the request's
+      }
+    }
   }
 
   /**
@@ -86,7 +105,13 @@ export class IDEAApiService {
       let body: any = null;
       if (options.body) body = JSON.stringify(options.body);
 
-      const res = await fetch(url.concat('?', searchParams.toString()), { method, headers, body });
+      let res: Response;
+      try {
+        res = await fetch(url.concat('?', searchParams.toString()), { method, headers, body });
+      } catch (error) {
+        this.notifyServerError();
+        throw error;
+      }
       if (res.status === 200) return await res.json();
 
       let errMessage: string;
@@ -95,7 +120,12 @@ export class IDEAApiService {
       } catch (err) {
         errMessage = 'Operation failed';
       }
-      throw new Error(errMessage);
+      // an IDEA back-end answers an error it didn't handle with a 400 "Operation failed", not with a 5xx
+      if (res.status >= 500 || (res.status === 400 && errMessage === 'Operation failed')) this.notifyServerError();
+
+      const error: IDEAApiError = new Error(errMessage);
+      error.status = res.status;
+      throw error;
     } finally {
       // A native `fetch` settles outside the Angular zone, so on a Zone-based app the value the caller
       // assigns after `await` would not trigger change detection (the UI stays stale until the next user
@@ -162,4 +192,13 @@ interface ApiRequestOptions {
    * The body of the request.
    */
   body?: any;
+}
+
+/**
+ * The error of a request the back-end answered: `status` is the HTTP status of the answer, so that a caller can tell a
+ * refusal (e.g. 401/403: the credentials aren't valid) from a failure. A request that didn't reach the back-end throws
+ * the `fetch`'s own error (a `TypeError`), without a status.
+ */
+export interface IDEAApiError extends Error {
+  status?: number;
 }

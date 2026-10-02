@@ -6,7 +6,10 @@
       "MUST_UPDATE": "Aggiornamento necessario",
       "MAINTENANCE": "L'app è in modalità di manutenzione",
       "GOT_IT": "Ho capito",
-      "EVERYTHING_IS_OK": "Tutto ok!"
+      "EVERYTHING_IS_OK": "Tutto ok!",
+      "TRY_AGAIN": "Riprova",
+      "CHECKS_BY_ITSELF": "Questa pagina ricontrolla da sola: rientrerai appena sarà finita.",
+      "GO_TO_APP": "Vai all'app"
     },
     "ATTACHMENTS": {
       "ATTACHMENTS": "Allegati",
