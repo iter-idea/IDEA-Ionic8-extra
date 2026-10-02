@@ -25,10 +25,10 @@ export class IDEAMessageService {
    * @param options the options of the message
    */
   private show(message: string, kind: IDEANoticeKind, options: IDEAMessageOptions = {}): void {
-    const { dontTranslate, serverMessage, requestId } = options;
+    const { dontTranslate, serverMessage, requestId, persistent, closeText, onClose } = options;
     message = message || '';
     if (!dontTranslate) message = this._translate._(message);
-    this.getNotices().add({ kind, message, serverMessage, requestId });
+    this.getNotices().add({ kind, message, serverMessage, requestId, persistent, closeText, onClose });
   }
   private getNotices(): IDEANoticesComponent {
     if (!this.notices) {
@@ -93,4 +93,16 @@ export interface IDEAMessageOptions {
    * With it, `serverMessage` isn't shown: it would be the back-end's generic message.
    */
   requestId?: string;
+  /**
+   * Whether the message stays until the user closes it (e.g. an announcement), instead of closing by itself.
+   */
+  persistent?: boolean;
+  /**
+   * The label of the button that closes the message (i18n key), in place of the ✕: e.g. "Got it" for an announcement.
+   */
+  closeText?: string;
+  /**
+   * Called when the user closes the message.
+   */
+  onClose?: () => void;
 }

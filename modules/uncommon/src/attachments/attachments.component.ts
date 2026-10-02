@@ -6,7 +6,13 @@ import { IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSpinner } from '@io
 import { Browser } from '@capacitor/browser';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Attachment } from 'idea-toolbox';
-import { IDEALoadingService, IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
+import {
+  IDEAApiError,
+  IDEALoadingService,
+  IDEAMessageService,
+  IDEATranslatePipe,
+  IDEATranslationsService
+} from '@idea-ionic/common';
 
 import { IDEAAWSAPIService } from '../AWSAPI.service';
 import { IDEAOfflineService } from '../offline/offline.service';
@@ -254,7 +260,9 @@ export class IDEAOldAttachmentsComponent implements OnInit {
     } catch (error) {
       this.uploadErrors.update(errors => [...errors, name]);
       this.removeAttachment(attachment);
-      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT', {
+        requestId: (error as IDEAApiError).requestId
+      });
     }
   }
 
@@ -274,7 +282,9 @@ export class IDEAOldAttachmentsComponent implements OnInit {
       });
       await Browser.open({ url });
     } catch (error) {
-      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT');
+      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT', {
+        requestId: (error as IDEAApiError).requestId
+      });
     } finally {
       this._loading.hide();
     }

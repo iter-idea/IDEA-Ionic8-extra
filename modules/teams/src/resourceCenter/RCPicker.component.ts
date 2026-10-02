@@ -13,6 +13,7 @@ import { Browser } from '@capacitor/browser';
 import { IonItem, IonButton, IonIcon, IonInput, IonLabel, IonText } from '@ionic/angular/standalone';
 import { RCAttachedResource, RCConfiguredFolder, RCResource, RCResourceFormats, Suggestion } from 'idea-toolbox';
 import {
+  IDEAApiError,
   IDEALoadingService,
   IDEAMessageService,
   IDEASelectComponent,
@@ -175,7 +176,7 @@ export class IDEARCPickerComponent implements OnChanges {
           resources.map(x => new Suggestion({ value: x.resourceId, name: `${x.name}.${x.format}` }))
         );
       } catch (error) {
-        this._message.error('COMMON.COULDNT_LOAD_LIST');
+        this._message.error('COMMON.COULDNT_LOAD_LIST', { requestId: (error as IDEAApiError).requestId });
       }
     }
   }
@@ -199,7 +200,9 @@ export class IDEARCPickerComponent implements OnChanges {
       const { url } = await this._API.patchResource(request, { resourceId: resource.resourceId, body });
       await Browser.open({ url });
     } catch (error) {
-      this._message.error('IDEA_TEAMS.RESOURCE_CENTER.ERROR_OPENING_RESOURCE');
+      this._message.error('IDEA_TEAMS.RESOURCE_CENTER.ERROR_OPENING_RESOURCE', {
+        requestId: (error as IDEAApiError).requestId
+      });
     } finally {
       this._loading.hide();
     }

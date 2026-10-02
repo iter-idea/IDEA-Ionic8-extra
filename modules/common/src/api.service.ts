@@ -204,7 +204,7 @@ export interface IDEAApiError extends Error {
   status?: number;
   /**
    * The id of the request, when the back-end failed with an error it didn't handle (its message is a generic one, e.g.
-   * "Operation failed"): it's the reference to find the cause in the back-end's logs. Pass it to the error toast
+   * "Operation failed"): it's the reference to find the cause in the back-end's logs. Pass it to the error message
    * (`requestId` of `IDEAMessageService.error`), so that the user can report it.
    */
   requestId?: string;

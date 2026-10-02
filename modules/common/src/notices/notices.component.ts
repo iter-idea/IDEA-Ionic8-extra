@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import {
   alertCircleOutline,
@@ -11,6 +11,7 @@ import {
 } from 'ionicons/icons';
 
 import { IDEATranslatePipe } from '../translations/translate.pipe';
+import { IDEATranslationsService } from '../translations/translations.service';
 
 /**
  * How many notices can be on screen together: a new one closes the oldest.
@@ -29,11 +30,12 @@ const LEAVE_DURATION_MS = 160;
   imports: [IonIcon, IDEATranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <div class="announcer" aria-live="polite">{{ announcements.polite() }}</div>
+    <div class="announcer" aria-live="assertive">{{ announcements.assertive() }}</div>
     @for (notice of notices(); track notice.id) {
       <section
         class="notice"
         [attr.data-kind]="notice.kind"
-        [attr.role]="notice.kind === 'error' || notice.kind === 'warning' ? 'alert' : 'status'"
         [class.compact]="!notice.detail && !notice.requestId"
         [class.withCode]="!!notice.requestId"
         [class.paused]="notice.paused()"
@@ -54,14 +56,21 @@ const LEAVE_DURATION_MS = 160;
               <p class="hint">{{ 'IDEA_COMMON.MESSAGE.CODE_HINT' | translate }}</p>
             }
           </div>
-          <button
-            type="button"
-            class="close"
-            [attr.aria-label]="'IDEA_COMMON.MESSAGE.CLOSE' | translate"
-            (click)="dismiss(notice)"
-          >
-            <ion-icon aria-hidden="true" [icon]="icons.close" />
-          </button>
+          @if (notice.closeText) {
+            <button type="button" class="closeText" (mousedown)="$event.preventDefault()" (click)="close(notice)">
+              {{ notice.closeText | translate }}
+            </button>
+          } @else {
+            <button
+              type="button"
+              class="close"
+              [attr.aria-label]="'IDEA_COMMON.MESSAGE.CLOSE' | translate"
+              (mousedown)="$event.preventDefault()"
+              (click)="close(notice)"
+            >
+              <ion-icon aria-hidden="true" [icon]="icons.close" />
+            </button>
+          }
         </div>
         @if (notice.requestId) {
           <div class="code" [class.copied]="notice.copied()">
@@ -76,6 +85,7 @@ const LEAVE_DURATION_MS = 160;
               [attr.aria-label]="
                 (notice.copied() ? 'IDEA_COMMON.MESSAGE.CODE_COPIED' : 'IDEA_COMMON.MESSAGE.COPY_CODE') | translate
               "
+              (mousedown)="$event.preventDefault()"
               (click)="copy(notice)"
             >
               <ion-icon aria-hidden="true" [icon]="notice.copied() ? icons.copied : icons.copy" />
@@ -85,7 +95,7 @@ const LEAVE_DURATION_MS = 160;
             </button>
           </div>
         }
-        @if (!notice.copied()) {
+        @if (!notice.copied() && !notice.persistent) {
           <div class="timer" [style.animation-duration.ms]="notice.duration"></div>
         }
       </section>
@@ -106,6 +116,15 @@ const LEAVE_DURATION_MS = 160;
           calc(12px + var(--ion-safe-area-left, 0px));
         pointer-events: none;
       }
+      /* read by screen readers, out of sight */
+      .announcer {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
       @media (min-width: 768px) {
         :host {
           left: auto;
@@ -120,6 +139,9 @@ const LEAVE_DURATION_MS = 160;
         --notice-muted: color-mix(in srgb, var(--notice-text) 64%, transparent);
         --notice-action: color-mix(in srgb, var(--ion-color-primary, #0054e9) 82%, var(--notice-text));
         --notice-success: color-mix(in srgb, var(--ion-color-success, #2dd55b) 82%, var(--notice-text));
+        /* the same colours for a text, darker so that it reads */
+        --notice-action-text: color-mix(in srgb, var(--ion-color-primary, #0054e9) 62%, var(--notice-text));
+        --notice-success-text: color-mix(in srgb, var(--ion-color-success, #2dd55b) 62%, var(--notice-text));
         --notice-kind: var(--ion-color-danger, #c5000f);
         position: relative;
         box-sizing: border-box;
@@ -162,7 +184,7 @@ const LEAVE_DURATION_MS = 160;
       }
       .icon {
         flex: none;
-        font-size: 22px;
+        font-size: 1.375rem;
         margin-top: 1px;
         color: var(--notice-kind);
       }
@@ -176,20 +198,27 @@ const LEAVE_DURATION_MS = 160;
         flex-direction: column;
         gap: 4px;
       }
+      .compact .text {
+        padding: 6px 0;
+      }
       p {
         margin: 0;
       }
       .message {
-        font-size: 15px;
+        font-size: 0.9375rem;
         font-weight: 600;
         line-height: 1.35;
+      }
+      .message,
+      .detail {
+        overflow-wrap: anywhere;
       }
       .compact .message {
         font-weight: 500;
       }
       .detail,
       .hint {
-        font-size: 13.5px;
+        font-size: 0.84375rem;
         line-height: 1.45;
         color: var(--notice-muted);
       }
@@ -218,11 +247,22 @@ const LEAVE_DURATION_MS = 160;
         border-radius: 50%;
         color: var(--notice-muted);
       }
-      .compact .close {
+      .closeText {
+        flex: none;
+        height: 44px;
+        margin-top: -11px;
+        padding: 0 12px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--notice-action-text);
+      }
+      .compact .close,
+      .compact .closeText {
         margin-top: 0;
       }
       .close ion-icon {
-        font-size: 20px;
+        font-size: 1.25rem;
       }
       .code {
         display: flex;
@@ -243,17 +283,17 @@ const LEAVE_DURATION_MS = 160;
       code {
         flex: 1;
         min-width: 0;
-        display: flex;
-        flex-wrap: wrap;
-        column-gap: 0.45em;
-        row-gap: 2px;
+        display: block;
         font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Roboto Mono', monospace;
-        font-size: 16px;
+        font-size: 1rem;
         line-height: 1.4;
         -webkit-user-select: all;
         user-select: all;
       }
+      /* inline blocks, not flex items: a block would add a line break to the copied text */
       code span {
+        display: inline-block;
+        margin-inline-end: 0.45em;
         white-space: nowrap;
       }
       .copy {
@@ -263,15 +303,15 @@ const LEAVE_DURATION_MS = 160;
         gap: 6px;
         height: 44px;
         padding: 0 14px 0 10px;
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 600;
-        color: var(--notice-action);
+        color: var(--notice-action-text);
       }
       .copied .copy {
-        color: var(--notice-success);
+        color: var(--notice-success-text);
       }
       .copy ion-icon {
-        font-size: 18px;
+        font-size: 1.125rem;
       }
       /* the time left before the notice closes by itself */
       .timer {
@@ -318,10 +358,16 @@ const LEAVE_DURATION_MS = 160;
   ]
 })
 export class IDEANoticesComponent {
+  private _translate = inject(IDEATranslationsService);
+
   /**
    * The notices on screen, the newest last.
    */
   readonly notices = signal<Notice[]>([]);
+  /**
+   * What screen readers announce: regions kept on the page, since one added together with its text is often not read.
+   */
+  readonly announcements = { polite: signal(''), assertive: signal('') };
 
   readonly icons = {
     success: checkmarkCircleOutline,
@@ -337,10 +383,19 @@ export class IDEANoticesComponent {
 
   /**
    * Show a new notice. With a `requestId`, the server's message is the generic one of an error the back-end didn't
-   * handle: the notice shows the code instead, for longer, and stays once the user has copied it.
+   * handle: the notice shows the code instead, for longer, and stays once the user has copied it. A `persistent` notice
+   * stays until the user closes it (with `closeText` in place of the ✕, if any), and `onClose` is called then.
    */
-  add(options: { kind: IDEANoticeKind; message: string; serverMessage?: string; requestId?: string }): void {
-    const { kind, message, serverMessage, requestId } = options;
+  add(options: {
+    kind: IDEANoticeKind;
+    message: string;
+    serverMessage?: string;
+    requestId?: string;
+    persistent?: boolean;
+    closeText?: string;
+    onClose?: () => void;
+  }): void {
+    const { kind, message, serverMessage, requestId, persistent, closeText, onClose } = options;
     const notice: Notice = {
       id: ++this.lastId,
       kind,
@@ -348,6 +403,9 @@ export class IDEANoticesComponent {
       detail: requestId ? undefined : serverMessage,
       requestId,
       codeGroups: requestId ? groupCode(requestId) : undefined,
+      persistent: !!persistent,
+      closeText,
+      onClose,
       duration: requestId ? 10000 : kind === 'error' || kind === 'warning' ? 5000 : 3000,
       remaining: 0,
       holds: new Set(),
@@ -358,26 +416,38 @@ export class IDEANoticesComponent {
     notice.remaining = notice.duration;
 
     // the same message again (e.g. from a loop) doesn't stack: it takes the place of the one on screen, with its time
-    // anew (unless the user is on it)
+    // anew (unless the user is on it, or it stays anyway)
     if (!requestId) {
       const same = this.notices().find(
         x => !x.leaving() && !x.requestId && x.kind === kind && x.message === message && x.detail === serverMessage
       );
-      if (same?.holds.size) return;
+      if (same?.holds.size || same?.persistent) return;
       if (same) {
         clearTimeout(same.timeout);
         this.notices.update(notices => notices.filter(x => x !== same));
       }
     }
 
+    // a notice that stays (e.g. an announcement) isn't pushed away by the passing ones
     const onScreen = this.notices().filter(x => !x.leaving());
-    if (onScreen.length >= MAX_NOTICES) this.dismiss(onScreen[0]);
+    if (onScreen.length >= MAX_NOTICES) this.dismiss(onScreen.find(x => !x.persistent) ?? onScreen[0]);
 
     this.notices.update(notices => [...notices, notice]);
     this.schedule(notice);
+
+    const hint = requestId ? this._translate._('IDEA_COMMON.MESSAGE.CODE_HINT') : undefined;
+    this.announce([message, notice.detail, hint].filter(x => x).join(' '), kind === 'error' || kind === 'warning');
   }
 
-  dismiss(notice: Notice): void {
+  /**
+   * The user closes a notice.
+   */
+  close(notice: Notice): void {
+    if (notice.leaving()) return;
+    notice.onClose?.();
+    this.dismiss(notice);
+  }
+  private dismiss(notice: Notice): void {
     if (notice.leaving()) return;
     clearTimeout(notice.timeout);
     notice.leaving.set(true);
@@ -402,6 +472,7 @@ export class IDEANoticesComponent {
     this.schedule(notice);
   }
   private schedule(notice: Notice): void {
+    if (notice.persistent) return;
     notice.startedAt = Date.now();
     notice.timeout = setTimeout((): void => this.dismiss(notice), notice.remaining);
   }
@@ -422,6 +493,15 @@ export class IDEANoticesComponent {
     clearTimeout(notice.timeout);
     notice.timeout = null;
     notice.copied.set(true);
+    this.announce(this._translate._('IDEA_COMMON.MESSAGE.CODE_COPIED'));
+  }
+  /**
+   * Have screen readers read a text; emptied first, so that the same text is read again.
+   */
+  private announce(text: string, assertive = false): void {
+    const region = assertive ? this.announcements.assertive : this.announcements.polite;
+    region.set('');
+    setTimeout((): void => region.set(text), 100);
   }
 }
 
@@ -437,6 +517,13 @@ interface Notice {
   detail?: string;
   requestId?: string;
   codeGroups?: string[];
+  /**
+   * Whether the notice stays until the user closes it; the label of its close button, in place of the ✕; what to do
+   * when the user closes it.
+   */
+  persistent: boolean;
+  closeText?: string;
+  onClose?: () => void;
   /**
    * How long the notice stays on screen by itself, and how much of it is left.
    */

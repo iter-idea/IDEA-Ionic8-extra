@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, inject, ChangeDetectionStrategy, output, input, signal } from '@angular/core';
 import { RCConfiguredFolder, RCFolder, Suggestion } from 'idea-toolbox';
-import { IDEAMessageService, IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
+import { IDEAApiError, IDEAMessageService, IDEASelectComponent, IDEATranslatePipe } from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
@@ -74,7 +74,7 @@ export class IDEARCConfiguratorComponent implements OnInit {
       this.folders = folders;
       this.foldersSuggestions.set(folders.map(x => new Suggestion({ value: x.folderId, name: x.name })));
     } catch (error) {
-      this._message.error('COMMON.COULDNT_LOAD_LIST');
+      this._message.error('COMMON.COULDNT_LOAD_LIST', { requestId: (error as IDEAApiError).requestId });
     }
   }
 

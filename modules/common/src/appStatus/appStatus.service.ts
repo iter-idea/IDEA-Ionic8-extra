@@ -1,12 +1,13 @@
 import { ApplicationRef, Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController, ToastController } from '@ionic/angular/standalone';
+import { NavController } from '@ionic/angular/standalone';
 import { Capacitor } from '@capacitor/core';
 import { AppStatus, markdown, mdToHtml } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAApiService } from '../api.service';
+import { IDEAMessageService } from '../message.service';
 import { IDEAStorageService } from '../storage.service';
 import { refreshVisibleIonicPages } from '../cdRefresh';
 import { compareVersions } from '../versions';
@@ -37,10 +38,10 @@ export class IDEAAppStatusService {
   protected _env = inject(IDEAEnvironment);
   private _nav = inject(NavController);
   private _router = inject(Router);
-  private _toast = inject(ToastController);
   private _translate = inject(IDEATranslationsService);
   private _api = inject(IDEAApiService);
   private _storage = inject(IDEAStorageService);
+  private _message = inject(IDEAMessageService);
   private _appRef = inject(ApplicationRef);
 
   /**
@@ -71,11 +72,9 @@ export class IDEAAppStatusService {
   returnURL: string;
 
   private viaApi = false;
-  private toastOptions: { color?: string; position?: string } = {};
   private reading: Promise<AppStatus>;
   private lastReadAt = 0;
   private watching = false;
-  private toastOnScreen: string;
 
   constructor() {
     this.storageKey = (this._env.idea.project || 'app').concat('_LAST_MESSAGE');
@@ -92,19 +91,19 @@ export class IDEAAppStatusService {
   /**
    * Check the app's status and take according actions: the status page when the status is blocking, otherwise the
    * message for the user, if any. Then keep the status current, unless `watch` is `false`.
+   * `toastColor` and `toastPosition` are deprecated and ignored: the message is a notice of `IDEAMessageService`.
    */
   async check(
     options: { viaApi?: boolean; toastColor?: string; toastPosition?: string; watch?: boolean } = {}
   ): Promise<AppStatus> {
     this.viaApi = !!options.viaApi;
-    this.toastOptions = { color: options.toastColor, position: options.toastPosition };
 
     const appStatus = await this.load();
 
     // not awaited: `check` usually runs inside the app's start-up guard, and the status page is usually guarded by the
     // same start-up — waiting here for the navigation would mean waiting for ourselves, and the app would never start
     if (this.isBlocking(appStatus)) this.goToStatusPage();
-    else await this.presentToast(appStatus);
+    else await this.presentMessage(appStatus);
 
     if (options.watch !== false) this.watch();
 
@@ -147,7 +146,7 @@ export class IDEAAppStatusService {
     if (this.isBlocking(appStatus)) {
       if (!this.isOnStatusPage()) this.goToStatusPage();
     } else if (wasBlocking && this.isOnStatusPage()) this.leaveStatusPage();
-    else await this.presentToast(appStatus);
+    else await this.presentMessage(appStatus);
 
     return appStatus;
   }
@@ -270,30 +269,23 @@ export class IDEAAppStatusService {
     );
   }
 
-  private async presentToast(appStatus: AppStatus): Promise<void> {
+  private async presentMessage(appStatus: AppStatus): Promise<void> {
     let message = appStatus.content ? markdownToPlainText(appStatus.content) : '';
     if (!message && compareVersions(this._env.idea.app.version, appStatus.latestVersion) < 0)
       message = this._translate._('IDEA_COMMON.APP_STATUS.NEW_VERSION', { newVersion: appStatus.latestVersion });
-
-    // the status is read again while the app is open: a message still on screen mustn't pile up on itself
-    if (!message || message === this.toastOnScreen) return;
+    if (!message) return;
 
     const messageAlreadyRead = await this._storage.get(this.storageKey);
     if (messageAlreadyRead === message) return; // user already saw this message
 
-    const dismissMessage = (): Promise<void> => this._storage.set(this.storageKey, message);
-    const buttons: any = [
-      { text: this._translate._('IDEA_COMMON.APP_STATUS.GOT_IT'), role: 'cancel', handler: dismissMessage }
-    ];
-    const color = this.toastOptions.color || 'dark';
-    const position: any = this.toastOptions.position || 'bottom';
-
-    const toast = await this._toast.create({ message, buttons, position, color });
-    this.toastOnScreen = message;
-    toast.onDidDismiss().then((): void => {
-      this.toastOnScreen = null;
+    // it stays until the user says they read it; the status is read again while the app is open, and the same message
+    // still on screen doesn't pile up on itself
+    this._message.info(message, {
+      dontTranslate: true,
+      persistent: true,
+      closeText: 'IDEA_COMMON.APP_STATUS.GOT_IT',
+      onClose: (): Promise<void> => this._storage.set(this.storageKey, message)
     });
-    await toast.present();
   }
 }
 
@@ -373,7 +365,7 @@ const isMessage = (x: any): boolean =>
 const isStatusPageURL = (url: string): boolean => (url ?? '').split(/[?#]/)[0].endsWith(`/${STATUS_PAGE_PATH}`);
 
 /**
- * A toast shows plain text: `**bold**` would reach the user as asterisks. The message is parsed into an inert
+ * A message shows plain text: `**bold**` would reach the user as asterisks. The message is parsed into an inert
  * document, so nothing in it (an image, a handler) is loaded or run.
  */
 const markdownToPlainText = (message: markdown): string =>

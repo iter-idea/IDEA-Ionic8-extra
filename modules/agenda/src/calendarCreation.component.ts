@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
 import { Calendar, ExternalCalendarInfo, ExternalCalendarSources, Membership, Team } from 'idea-toolbox';
-import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAApiError, IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
 import { IDEATinCanService } from '@idea-ionic/uncommon';
 
 import { IDEACalendarsService } from './calendars.service';
@@ -95,16 +95,16 @@ export class IDEACalendarCreationComponent implements OnInit {
           await this._calendars.syncCalendar(this.calendar);
           await this._message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED');
         } catch (error) {
-          await this._message.error('COMMON.OPERATION_FAILED');
+          await this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
         } finally {
           await this._modal.dismiss(this.calendar);
         }
       } catch (error) {
-        await this._message.error('COMMON.OPERATION_FAILED');
+        await this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
         await this._modal.dismiss(this.calendar);
       }
     } catch (error) {
-      await this._message.error('COMMON.OPERATION_FAILED');
+      await this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
     } finally {
       await this._loading.hide();
     }

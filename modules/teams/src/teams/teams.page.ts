@@ -16,6 +16,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Team, User } from 'idea-toolbox';
 import {
+  IDEAApiError,
   IDEAEnvironment,
   IDEALoadingService,
   IDEAMessageService,
@@ -156,7 +157,7 @@ export class IDEATeamsPage implements OnInit {
       });
       window.location.assign('');
     } catch (error) {
-      this._message.error('COMMON.OPERATION_FAILED');
+      this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
     } finally {
       this._loading.hide();
     }

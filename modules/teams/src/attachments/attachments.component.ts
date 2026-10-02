@@ -5,7 +5,13 @@ import { Browser } from '@capacitor/browser';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import heic2any from 'heic2any';
 import { Attachment } from 'idea-toolbox';
-import { IDEALoadingService, IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
+import {
+  IDEAApiError,
+  IDEALoadingService,
+  IDEAMessageService,
+  IDEATranslatePipe,
+  IDEATranslationsService
+} from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 @Component({
@@ -124,7 +130,9 @@ export class IDEAttachmentsComponent implements OnInit {
     } catch (error) {
       this.uploadErrors.update(e => [...e, name]);
       this.removeAttachment(attachment);
-      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT');
+      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_UPLOADING_ATTACHMENT', {
+        requestId: (error as IDEAApiError).requestId
+      });
     }
   }
 
@@ -140,7 +148,9 @@ export class IDEAttachmentsComponent implements OnInit {
       });
       await Browser.open({ url });
     } catch (error) {
-      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT');
+      this._message.error('IDEA_TEAMS.ATTACHMENTS.ERROR_OPENING_ATTACHMENT', {
+        requestId: (error as IDEAApiError).requestId
+      });
     } finally {
       this._loading.hide();
     }

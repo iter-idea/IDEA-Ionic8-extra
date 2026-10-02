@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular/standalone';
 import { Calendar, Check, Membership } from 'idea-toolbox';
-import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAApiError, IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
 import { IDEAAWSAPIService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 import { IDEACalendarsService } from './calendars.service';
@@ -59,7 +59,7 @@ export class IDEACalendarComponent implements OnInit {
         )
       );
     } catch (error) {
-      this._message.error('COMMON.COULDNT_LOAD_LIST');
+      this._message.error('COMMON.COULDNT_LOAD_LIST', { requestId: (error as IDEAApiError).requestId });
     }
   }
 
@@ -85,7 +85,7 @@ export class IDEACalendarComponent implements OnInit {
       this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_SAVED');
       this._modal.dismiss(this.calendar);
     } catch (error) {
-      this._message.error('COMMON.OPERATION_FAILED');
+      this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
     } finally {
       this._loading.hide();
     }
@@ -99,7 +99,7 @@ export class IDEACalendarComponent implements OnInit {
         this._message.success('IDEA_AGENDA.CALENDARS.CALENDAR_DELETED');
         this._modal.dismiss(true);
       } catch (error) {
-        this._message.error('COMMON.OPERATION_FAILED');
+        this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
       } finally {
         this._loading.hide();
       }

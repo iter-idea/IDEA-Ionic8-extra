@@ -1,7 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy, output, input, model } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular/standalone';
 import { Calendar } from 'idea-toolbox';
-import { IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
+import { IDEAApiError, IDEALoadingService, IDEAMessageService, IDEATranslationsService } from '@idea-ionic/common';
 
 import { IDEACalendarComponent } from './calendar.component';
 import { IDEACalendarsService } from './calendars.service';
@@ -79,7 +79,7 @@ export class IDEACalendarItemComponent {
         await this._calendars.syncCalendar(this.calendar());
         this._message.success('IDEA_AGENDA.CALENDARS.FIRST_SYNC_COMPLETED');
       } catch (error) {
-        this._message.error('COMMON.OPERATION_FAILED');
+        this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
       } finally {
         this._loading.hide();
         this.somethingChanged.emit(this.calendar());
@@ -92,7 +92,7 @@ export class IDEACalendarItemComponent {
           this._message.success('COMMON.OPERATION_COMPLETED');
           this.somethingChanged.emit(this.calendar());
         } catch (error) {
-          this._message.error('COMMON.OPERATION_FAILED');
+          this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
         } finally {
           this._loading.hide();
         }
@@ -102,7 +102,7 @@ export class IDEACalendarItemComponent {
           await this._calendars.linkExtService(this.calendar(), this.baseURL());
           this.linkExtCalendarOrDelete();
         } catch (error) {
-          this._message.error('COMMON.OPERATION_FAILED');
+          this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
         }
       };
       const header = this._translate._('IDEA_AGENDA.CALENDARS.CALENDAR_NOT_YET_LINKED');

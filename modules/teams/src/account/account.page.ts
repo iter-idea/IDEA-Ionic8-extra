@@ -19,6 +19,7 @@ import {
 } from '@ionic/angular/standalone';
 import { User } from 'idea-toolbox';
 import {
+  IDEAApiError,
   IDEAEnvironment,
   IDEALoadingService,
   IDEAMessageService,
@@ -182,7 +183,9 @@ export class IDEAAccountPage implements OnInit {
         });
         alert.present();
       } catch (error) {
-        this._message.error('IDEA_TEAMS.ACCOUNT.OPERATION_FAILED_PASSWORD');
+        this._message.error('IDEA_TEAMS.ACCOUNT.OPERATION_FAILED_PASSWORD', {
+          requestId: (error as IDEAApiError).requestId
+        });
       } finally {
         this._loading.hide();
       }
@@ -215,7 +218,9 @@ export class IDEAAccountPage implements OnInit {
           await this._API.patchResource('users', { idea: true, resourceId: this.user.userId, body });
           this._message.success('IDEA_TEAMS.ACCOUNT.PASSWORD_UPDATED');
         } catch (error) {
-          this._message.error('IDEA_TEAMS.ACCOUNT.OPERATION_FAILED_PASSWORD');
+          this._message.error('IDEA_TEAMS.ACCOUNT.OPERATION_FAILED_PASSWORD', {
+            requestId: (error as IDEAApiError).requestId
+          });
         } finally {
           this._loading.hide();
         }
@@ -247,7 +252,7 @@ export class IDEAAccountPage implements OnInit {
         });
         window.location.assign('');
       } catch (error) {
-        this._message.error('COMMON.OPERATION_FAILED');
+        this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
       } finally {
         this._loading.hide();
       }

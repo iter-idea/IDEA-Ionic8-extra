@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Platform } from '@ionic/angular/standalone';
-import { IDEAEnvironment, IDEAStorageService } from '@idea-ionic/common';
+import { IDEAApiError, IDEAEnvironment, IDEAStorageService } from '@idea-ionic/common';
 
 import { IDEAErrorReportingService } from './errorReporting.service';
 import { IDEATinCanService } from './tinCan.service';
@@ -141,7 +141,10 @@ export class IDEAAWSAPIService {
     } catch (_) {
       e = {};
     }
-    reject(new Error(e.message || 'Unknown error!'));
+    // the id of the request of an error the back-end didn't handle, to show as a code to report
+    const error: IDEAApiError = new Error(e.message || 'Unknown error!');
+    if (e.requestId) error.requestId = e.requestId;
+    reject(error);
   }
 
   /**

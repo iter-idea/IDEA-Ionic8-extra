@@ -19,7 +19,13 @@ import {
   IonSkeletonText
 } from '@ionic/angular/standalone';
 import { RCFolder } from 'idea-toolbox';
-import { IDEALoadingService, IDEAMessageService, IDEATranslatePipe, IDEATranslationsService } from '@idea-ionic/common';
+import {
+  IDEAApiError,
+  IDEALoadingService,
+  IDEAMessageService,
+  IDEATranslatePipe,
+  IDEATranslationsService
+} from '@idea-ionic/common';
 import { CacheModes, IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 
 import { IDEARCResourcesComponent } from './RCResources.component';
@@ -161,7 +167,9 @@ export class IDEARCFoldersComponent implements OnInit {
       const searchbar = this.searchbar();
       this.search(searchbar ? searchbar.value : null);
     } catch (error) {
-      this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST');
+      this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST', {
+        requestId: (error as IDEAApiError).requestId
+      });
     }
   }
 
@@ -208,7 +216,7 @@ export class IDEARCFoldersComponent implements OnInit {
       } catch (err: any) {
         if (err.message === 'FOLDER_WITH_SAME_NAME_ALREADY_EXISTS')
           this._message.error('IDEA_TEAMS.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
-        else this._message.error('COMMON.OPERATION_FAILED');
+        else this._message.error('COMMON.OPERATION_FAILED', { requestId: err.requestId });
       } finally {
         this._loading.hide();
       }
@@ -243,7 +251,7 @@ export class IDEARCFoldersComponent implements OnInit {
       } catch (err: any) {
         if (err.message === 'FOLDER_WITH_SAME_NAME_ALREADY_EXISTS')
           this._message.error('IDEA_TEAMS.RESOURCE_CENTER.FOLDER_WITH_SAME_NAME_ALREADY_EXISTS');
-        else this._message.error('COMMON.OPERATION_FAILED');
+        else this._message.error('COMMON.OPERATION_FAILED', { requestId: err.requestId });
       } finally {
         this._loading.hide();
       }

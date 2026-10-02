@@ -26,12 +26,13 @@ import {
 import { Browser } from '@capacitor/browser';
 import { loopStringEnumValues, RCFolder, RCResource, RCResourceFormats } from 'idea-toolbox';
 import {
-  IDEALoadingService,
-  IDEAMessageService,
-  IDEATranslationsService,
   IDEAActionSheetController,
+  IDEAApiError,
+  IDEALoadingService,
+  IDEALocalizedDatePipe,
+  IDEAMessageService,
   IDEATranslatePipe,
-  IDEALocalizedDatePipe
+  IDEATranslationsService
 } from '@idea-ionic/common';
 import { CacheModes, IDEAAWSAPIService, IDEAOfflineService, IDEATinCanService } from '@idea-ionic/uncommon';
 
@@ -232,7 +233,9 @@ export class IDEARCResourcesComponent implements OnInit {
       const searchbar = this.searchbar();
       this.search(searchbar ? searchbar.value : null);
     } catch (error) {
-      this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST');
+      this._message.error('IDEA_TEAMS.RESOURCE_CENTER.COULDNT_LOAD_LIST', {
+        requestId: (error as IDEAApiError).requestId
+      });
     }
   }
 
@@ -269,7 +272,7 @@ export class IDEARCResourcesComponent implements OnInit {
       const { url } = await this._API.patchResource(request, { resourceId: resource.resourceId, body });
       Browser.open({ url });
     } catch (error) {
-      this._message.error('COMMON.OPERATION_FAILED');
+      this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
     } finally {
       this._loading.hide();
     }
@@ -343,7 +346,7 @@ export class IDEARCResourcesComponent implements OnInit {
       } catch (err) {
         if ((err as any).message === 'RESOURCE_WITH_SAME_NAME_ALREADY_EXISTS')
           this._message.error('IDEA_TEAMS.RESOURCE_CENTER.RESOURCE_WITH_SAME_NAME_ALREADY_EXISTS');
-        else this._message.error('COMMON.OPERATION_FAILED');
+        else this._message.error('COMMON.OPERATION_FAILED', { requestId: (err as IDEAApiError).requestId });
       } finally {
         this._loading.hide();
       }
@@ -371,7 +374,7 @@ export class IDEARCResourcesComponent implements OnInit {
         // full-refresh to be sure we update the cache
         this.loadResources(true);
       } catch (error) {
-        this._message.error('COMMON.OPERATION_FAILED');
+        this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
       } finally {
         this._loading.hide();
       }

@@ -21,6 +21,7 @@ import { IDEALoadingService } from '../loading.service';
 import { IDEAMessageService } from '../message.service';
 import { IDEATranslationsService } from '../translations/translations.service';
 import { IDEAAttachmentsService } from './attachments.service';
+import { IDEAApiError } from '../api.service';
 
 @Component({
   imports: [
@@ -221,7 +222,8 @@ export class IDEAAttachmentsComponent {
         return uploadErrors;
       });
       this.removeAttachment(attachment);
-      this._message.error(err.message, { dontTranslate: true });
+      if (err.requestId) this._message.error('COMMON.OPERATION_FAILED', { requestId: err.requestId });
+      else this._message.error(err.message, { dontTranslate: true });
     }
   }
 
@@ -249,7 +251,7 @@ export class IDEAAttachmentsComponent {
       const url = await this._attachments.getDownloadURL(attachment, this.entityPath());
       this.download.emit(url);
     } catch (error) {
-      this._message.error('COMMON.OPERATION_FAILED');
+      this._message.error('COMMON.OPERATION_FAILED', { requestId: (error as IDEAApiError).requestId });
     } finally {
       this._loading.hide();
     }
