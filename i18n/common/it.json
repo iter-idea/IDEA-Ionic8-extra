@@ -135,7 +135,13 @@
       "NUM_ELEMENTS_": "{{num}} elementi nella lista",
       "SAVE_AND_CLOSE": "Salva e chiudi"
     },
-    "LOADING": { "PLEASE_WAIT": "Attendere prego..." },
+    "LOADING": {
+      "PLEASE_WAIT": "Attendere prego...",
+      "TAKING_LONGER": "Ci sta mettendo più del solito…",
+      "CANCEL": "Annulla",
+      "CLOSE": "Chiudi",
+      "PROGRESS": "{{done}} di {{total}}"
+    },
     "MESSAGE": {
       "CLOSE": "Chiudi",
       "COPY": "Copia",

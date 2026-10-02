@@ -39,6 +39,7 @@
 - [idea-labeler](modules/common/src/labeler/labeler.component.md). A component for filling in an Label.
 - [idea-list](modules/common/src/list/list.component.md)
 - [idea-list-elements](modules/common/src/list/listElements.component.md)
+- [idea-loading](modules/common/src/loading/loading.component.md). The wait of `IDEALoadingService`: created and driven by the service, not to use directly.
 - [idea-notices](modules/common/src/notices/notices.component.md). The notices of `IDEAMessageService`: created and filled by the service, not to use directly.
 - [idea-pdf-template](modules/common/src/pdfTemplate/pdfTemplate.component.md)
 - [idea-picker](modules/common/src/picker/picker.component.md)

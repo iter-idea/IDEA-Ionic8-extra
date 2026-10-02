@@ -107,9 +107,10 @@ export class IDEAApiService {
 
       let res: Response;
       try {
-        res = await fetch(url.concat('?', searchParams.toString()), { method, headers, body });
+        res = await fetch(url.concat('?', searchParams.toString()), { method, headers, body, signal: options.signal });
       } catch (error) {
-        this.notifyServerError();
+        // a request the caller cancelled didn't fail on the back-end's side
+        if ((error as Error)?.name !== 'AbortError') this.notifyServerError();
         throw error;
       }
       if (res.status === 200) return await res.json();
@@ -118,6 +119,8 @@ export class IDEAApiService {
       try {
         ({ message: errMessage, requestId } = await res.json());
       } catch (err) {
+        // cancelled while reading the error: it's still a cancelled request
+        if (options.signal?.aborted) throw err;
         errMessage = 'Operation failed';
       }
       // an IDEA back-end answers an error it didn't handle with a 400 "Operation failed", not with a 5xx
@@ -193,6 +196,11 @@ interface ApiRequestOptions {
    * The body of the request.
    */
   body?: any;
+  /**
+   * A signal to cancel the request (e.g. `IDEALoadingTask.cancelled`, when the user cancels a wait): a cancelled
+   * request fails with the `AbortError` of `fetch`.
+   */
+  signal?: AbortSignal;
 }
 
 /**

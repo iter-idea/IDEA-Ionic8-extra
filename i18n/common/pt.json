@@ -135,7 +135,13 @@
       "NUM_ELEMENTS_": "{{num}} elementos na lista",
       "SAVE_AND_CLOSE": "Grava e fecha"
     },
-    "LOADING": { "PLEASE_WAIT": "Por favor, aguarde..." },
+    "LOADING": {
+      "PLEASE_WAIT": "Por favor, aguarde...",
+      "TAKING_LONGER": "Está a demorar mais do que o habitual…",
+      "CANCEL": "Cancelar",
+      "CLOSE": "Fechar",
+      "PROGRESS": "{{done}} de {{total}}"
+    },
     "MESSAGE": {
       "CLOSE": "Fechar",
       "COPY": "Copiar",

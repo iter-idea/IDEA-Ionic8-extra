@@ -112,9 +112,14 @@ const LEAVE_DURATION_MS = 160;
         display: flex;
         flex-direction: column;
         gap: 8px;
-        padding: 0 calc(12px + var(--ion-safe-area-right, 0px)) calc(12px + var(--ion-safe-area-bottom, 0px))
+        padding: 0 calc(12px + var(--ion-safe-area-right, 0px))
+          calc(12px + var(--ion-safe-area-bottom, 0px) + var(--idea-loading-offset, 0px))
           calc(12px + var(--ion-safe-area-left, 0px));
         pointer-events: none;
+        /* above the wait of IDEALoadingService, which sets the offset while it's on screen */
+        transition:
+          padding-bottom 180ms ease-out,
+          bottom 180ms ease-out;
       }
       /* read by screen readers, out of sight */
       .announcer {
@@ -129,7 +134,7 @@ const LEAVE_DURATION_MS = 160;
         :host {
           left: auto;
           right: calc(24px + var(--ion-safe-area-right, 0px));
-          bottom: calc(24px + var(--ion-safe-area-bottom, 0px));
+          bottom: calc(24px + var(--ion-safe-area-bottom, 0px) + var(--idea-loading-offset, 0px));
           width: var(--idea-notice-width, 400px);
           padding: 0;
         }
@@ -353,6 +358,9 @@ const LEAVE_DURATION_MS = 160;
         .timer {
           display: none;
         }
+        :host {
+          transition: none;
+        }
       }
     `
   ]
@@ -481,15 +489,7 @@ export class IDEANoticesComponent {
    * Copy the code of the notice; once copied, the notice stays until the user closes it.
    */
   async copy(notice: Notice): Promise<void> {
-    let copied: boolean;
-    try {
-      await navigator.clipboard.writeText(notice.requestId);
-      copied = true;
-    } catch (error) {
-      // e.g. a non-secure context, or a webview inside another app
-      copied = copyBySelection(notice.requestId);
-    }
-    if (!copied) return;
+    if (!(await copyText(notice.requestId))) return;
     clearTimeout(notice.timeout);
     notice.timeout = null;
     notice.copied.set(true);
@@ -544,12 +544,24 @@ interface Notice {
  * Split a request id into groups that are easy to read back: the parts of a UUID (REST APIs), keeping their hyphens,
  * or blocks of 4 characters (HTTP APIs).
  */
-const groupCode = (code: string): string[] => {
+export const groupCode = (code: string): string[] => {
   if (!code.includes('-')) return code.match(/.{1,4}/g);
   const parts = code.split('-');
   return parts.map((part, index) => (index < parts.length - 1 ? part.concat('-') : part));
 };
 
+/**
+ * Copy a text: through the clipboard, or by selecting it where the clipboard can't be used.
+ */
+export const copyText = async (text: string): Promise<boolean> => {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (error) {
+    // e.g. a non-secure context, or a webview inside another app
+    return copyBySelection(text);
+  }
+};
 /**
  * Copy by selecting the text in a field kept out of sight, and asking the document to copy the selection.
  */
