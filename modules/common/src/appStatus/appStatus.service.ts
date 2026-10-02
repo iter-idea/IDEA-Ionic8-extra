@@ -1,7 +1,6 @@
 import { ApplicationRef, Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular/standalone';
-import { Capacitor } from '@capacitor/core';
 import { AppStatus, markdown, mdToHtml } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
@@ -13,14 +12,15 @@ import { refreshVisibleIonicPages } from '../cdRefresh';
 import { compareVersions } from '../versions';
 
 /**
- * How often the status is read again while the app is visible.
- */
-const WATCH_INTERVAL_MS = 5 * 60 * 1000;
-/**
  * The minimum time between two readings caused by an event (the app visible again, a failed request): a back-end in
  * maintenance fails every request, and each one must not turn into a download of the status.
  */
 const MIN_REFRESH_INTERVAL_MS = 30 * 1000;
+/**
+ * A status file slow to answer mustn't hold the start-up, nor the readings that join it: past this time it counts as
+ * unreadable.
+ */
+const READ_TIMEOUT_MS = 10 * 1000;
 /**
  * The path of the status page, as every app registers it.
  */
@@ -29,9 +29,10 @@ const STATUS_PAGE_PATH = 'app-status';
 /**
  * Check whether the app has some status message or update to handle.
  *
- * The status is read when the app starts, and then kept current — when the app becomes visible again, every few
- * minutes while it's visible, and when a request to the back-end fails — so that a maintenance or a forced update
- * reaches whoever is already inside, not only whoever opens the app; and so that it lets them go when it's over.
+ * The status is read when the app starts, and again when something happens — the app becomes visible again, a request
+ * to the back-end fails — so that a maintenance reaches whoever is already inside at their next step, not only whoever
+ * opens the app. Never on a timer while the user works: a forced update mustn't take them away from what they're
+ * doing. The status page lets them go when it's over.
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAAppStatusService {
@@ -59,7 +60,8 @@ export class IDEAAppStatusService {
   }
   /**
    * The status file as last read — including the keys an app adds for its own purposes, so that the app doesn't need
-   * to download it a second time. `undefined` with the API method, or while the file couldn't be read.
+   * to download it a second time. `undefined` with the API method, or until a file has been read; a reading that fails
+   * leaves the last one.
    */
   statusFile: IDEAAppStatusFile;
 
@@ -91,6 +93,8 @@ export class IDEAAppStatusService {
   /**
    * Check the app's status and take according actions: the status page when the status is blocking, otherwise the
    * message for the user, if any. Then keep the status current, unless `watch` is `false`.
+   * Meanwhile, the app's own guards mustn't send the user elsewhere while the status blocks: e.g. an auth guard whose
+   * requests the API refuses during a maintenance leaves them on the status page, instead of the sign-in page.
    * `toastColor` and `toastPosition` are deprecated and ignored: the message is a notice of `IDEAMessageService`.
    */
   async check(
@@ -152,14 +156,16 @@ export class IDEAAppStatusService {
   }
 
   /**
-   * Leave the status page for where the user was going. On the web the app is loaded again, so that it also picks up
-   * any version published in the meantime: a maintenance often comes with a release.
+   * Leave the status page for where the user was going, loading the app again — on the web as in a native app: it
+   * starts from scratch (start-up, user, latest version) instead of reaching a page whose guards settled on a start-up
+   * that couldn't complete (e.g. no user loaded while the API was closed). On the web it also picks up any version
+   * published in the meantime: a maintenance often comes with a release.
    */
   leaveStatusPage(): void {
+    // the return URL stays, as the app loads again anyway: two readings ending together (the page's polling, "Try
+    // again") leave for the same place, where the second one would otherwise find no URL and go to the home page
     const url = this.returnURL && !isStatusPageURL(this.returnURL) ? this.returnURL : '/';
-    this.returnURL = null;
-    if (Capacitor.isNativePlatform()) this._nav.navigateRoot(url);
-    else window.location.assign(url);
+    window.location.assign(url);
   }
 
   private goToStatusPage(): void {
@@ -177,9 +183,6 @@ export class IDEAAppStatusService {
     document.addEventListener('visibilitychange', (): void => {
       if (document.visibilityState === 'visible') this.refresh();
     });
-    setInterval((): void => {
-      if (document.visibilityState === 'visible') this.refresh({ force: true });
-    }, WATCH_INTERVAL_MS);
     // a back-end that fails may be a back-end in maintenance (an app with its own API service may lack the hook)
     this._api.onServerError?.((): void => {
       this.refresh();
@@ -200,8 +203,12 @@ export class IDEAAppStatusService {
     return new AppStatus(await this._api.getResource(['status']));
   }
   private async readFromAsset(): Promise<AppStatus> {
+    // a timer rather than `AbortSignal.timeout`, which older web views (e.g. iOS 15) lack: there, the reading itself
+    // would throw, and the app would never see its status
+    const abort = new AbortController();
+    const timeout = setTimeout((): void => abort.abort(), READ_TIMEOUT_MS);
     try {
-      const res = await fetch(this.statusFileURL, { method: 'GET', cache: 'no-cache' });
+      const res = await fetch(this.statusFileURL, { method: 'GET', cache: 'no-cache', signal: abort.signal });
       if (res.status !== 200) throw new Error(`HTTP ${res.status}`);
       const statusFile: IDEAAppStatusFile = await res.json();
 
@@ -214,6 +221,7 @@ export class IDEAAppStatusService {
       console.error(`[IDEA app status] ${this.statusFileURL} couldn't be read:`, error);
       throw error;
     } finally {
+      clearTimeout(timeout);
       // The native `fetch` settles outside the Angular zone; on the next macrotask refresh the visible
       // Ionic page(s) and tick the app shell so the caller's post-`await` state change renders on
       // Zone-based apps. See IDEAApiService.
