@@ -57,6 +57,11 @@ export class IDEALoadingService {
   private slowTimeout: ReturnType<typeof setTimeout>;
   private closeTimeout: ReturnType<typeof setTimeout>;
   /**
+   * Whether a notice came while the waits were open: the notice has taken their place, so they leave the screen at the
+   * last `hide()`, without staying for their minimum time.
+   */
+  private noticeDuringWait = false;
+  /**
    * While blocking: the app made inert, and the element that had the focus before (the element itself, and the one
    * of the page that contains it, e.g. an `ion-button` and its button).
    */
@@ -110,13 +115,26 @@ export class IDEALoadingService {
     return true;
   }
 
+  /**
+   * A notice takes the place of a wait that would stay only to be seen: the minimum time on screen is there against a
+   * flash, and a notice in the same spot is none. After the last `hide()`, the wait leaves at once; before it, as in the
+   * usual `try { …; success() } finally { hide() }`, the wait stays open, and leaves at once at its last `hide()`. The
+   * panel of a task stays: its ticks are there to be seen. Called by `IDEAMessageService`.
+   */
+  yieldToNotice(): void {
+    if (this.task) return;
+    if (this.isActive()) this.noticeDuringWait = true;
+    else if (this.closeTimeout) this.close(false);
+  }
+
   private open(text: string | null): void {
     this.getView();
-    // the first wait open: the time before it says it's taking longer starts now
+    // the first wait open: the time before it says it's taking longer starts now, and no notice has come yet
     if (!this.texts.length) {
       clearTimeout(this.slowTimeout);
       this.view.slow.set(false);
       this.slowTimeout = setTimeout((): void => this.view.slow.set(true), SLOW_AFTER_MS);
+      this.noticeDuringWait = false;
     }
     this.texts.push(text);
     // still on screen after the last one was closed: it stays, for the new one (a task that ended gives way)
@@ -148,7 +166,7 @@ export class IDEALoadingService {
     if (this.appearTimeout) return this.close();
     this.unblock(true);
     clearTimeout(this.slowTimeout);
-    let left = Math.max(0, MIN_ON_SCREEN_MS - (Date.now() - this.shownAt));
+    let left = this.noticeDuringWait ? 0 : Math.max(0, MIN_ON_SCREEN_MS - (Date.now() - this.shownAt));
     if (this.task) {
       this.task.ended = true;
       // a cancelled task isn't done: no ticks

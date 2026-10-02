@@ -1,6 +1,7 @@
 import { ApplicationRef, EnvironmentInjector, Injectable, createComponent, inject } from '@angular/core';
 
 import { IDEATranslationsService } from './translations/translations.service';
+import { IDEALoadingService } from './loading.service';
 import { IDEANoticeKind, IDEANoticesComponent } from './notices/notices.component';
 
 /**
@@ -10,6 +11,7 @@ import { IDEANoticeKind, IDEANoticesComponent } from './notices/notices.componen
 @Injectable({ providedIn: 'root' })
 export class IDEAMessageService {
   private _translate = inject(IDEATranslationsService);
+  private _loading = inject(IDEALoadingService);
   private _appRef = inject(ApplicationRef);
   private _injector = inject(EnvironmentInjector);
 
@@ -28,6 +30,8 @@ export class IDEAMessageService {
     const { dontTranslate, serverMessage, requestId, persistent, closeText, onClose } = options;
     message = message || '';
     if (!dontTranslate) message = this._translate._(message);
+    // a wait that only stays to be seen gives the notice its place, instead of sharing it (e.g. a quick save)
+    this._loading.yieldToNotice();
     this.getNotices().add({ kind, message, serverMessage, requestId, persistent, closeText, onClose });
   }
   private getNotices(): IDEANoticesComponent {
