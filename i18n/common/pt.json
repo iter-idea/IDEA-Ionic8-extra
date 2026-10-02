@@ -136,6 +136,14 @@
       "SAVE_AND_CLOSE": "Grava e fecha"
     },
     "LOADING": { "PLEASE_WAIT": "Por favor, aguarde..." },
+    "MESSAGE": {
+      "CLOSE": "Fechar",
+      "COPY": "Copiar",
+      "COPIED": "Copiado",
+      "COPY_CODE": "Copiar o código",
+      "CODE_COPIED": "Código copiado",
+      "CODE_HINT": "Se o erro se repetir, comunique-o indicando este código."
+    },
     "PDF_TEMPLATE": {
       "ADD_A_SECTION": "Adicionar uma nova secção ao modelo",
       "BLANK_ROW": "Linha vazia",

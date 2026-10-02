@@ -136,6 +136,14 @@
       "SAVE_AND_CLOSE": "Save and close"
     },
     "LOADING": { "PLEASE_WAIT": "Please wait..." },
+    "MESSAGE": {
+      "CLOSE": "Close",
+      "COPY": "Copy",
+      "COPIED": "Copied",
+      "COPY_CODE": "Copy the code",
+      "CODE_COPIED": "Code copied",
+      "CODE_HINT": "If the error happens again, report it along with this code."
+    },
     "PDF_TEMPLATE": {
       "ADD_A_SECTION": "Add a new section to the template",
       "BLANK_ROW": "Blank row",

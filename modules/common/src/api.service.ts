@@ -114,9 +114,9 @@ export class IDEAApiService {
       }
       if (res.status === 200) return await res.json();
 
-      let errMessage: string;
+      let errMessage: string, requestId: string;
       try {
-        errMessage = (await res.json()).message;
+        ({ message: errMessage, requestId } = await res.json());
       } catch (err) {
         errMessage = 'Operation failed';
       }
@@ -125,6 +125,7 @@ export class IDEAApiService {
 
       const error: IDEAApiError = new Error(errMessage);
       error.status = res.status;
+      if (requestId) error.requestId = requestId;
       throw error;
     } finally {
       // A native `fetch` settles outside the Angular zone, so on a Zone-based app the value the caller
@@ -201,4 +202,10 @@ interface ApiRequestOptions {
  */
 export interface IDEAApiError extends Error {
   status?: number;
+  /**
+   * The id of the request, when the back-end failed with an error it didn't handle (its message is a generic one, e.g.
+   * "Operation failed"): it's the reference to find the cause in the back-end's logs. Pass it to the error toast
+   * (`requestId` of `IDEAMessageService.error`), so that the user can report it.
+   */
+  requestId?: string;
 }

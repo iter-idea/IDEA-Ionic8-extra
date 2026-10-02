@@ -136,6 +136,14 @@
       "SAVE_AND_CLOSE": "Guardar y cerrar"
     },
     "LOADING": { "PLEASE_WAIT": "Espera por favor..." },
+    "MESSAGE": {
+      "CLOSE": "Cerrar",
+      "COPY": "Copiar",
+      "COPIED": "Copiado",
+      "COPY_CODE": "Copiar el código",
+      "CODE_COPIED": "Código copiado",
+      "CODE_HINT": "Si el error se repite, infórmelo indicando este código."
+    },
     "PDF_TEMPLATE": {
       "ADD_A_SECTION": "Añadir una nueva sección a la plantilla",
       "BLANK_ROW": "Fila en blanco",
