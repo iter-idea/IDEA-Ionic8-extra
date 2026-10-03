@@ -136,7 +136,8 @@ export class IDEATranslationsService {
   use(lang: string, force?: boolean): Promise<void> {
     return new Promise(resolve => {
       const changed = lang !== this.currentLang;
-      if (!changed && !force) return;
+      // already in use: settle at once, or whoever awaits it would wait forever
+      if (!changed && !force) return resolve();
       // check whether the language is among the available ones; otherwise, fallback to default
       if (!this.langs.includes(lang)) lang = this.defaultLang;
       // load translations
@@ -241,17 +242,23 @@ export class IDEATranslationsService {
     });
   }
   /**
-   * Load a file into the translations.
+   * Load a file into the translations. A file that can't be read is skipped, as one that isn't found: the loading
+   * would otherwise never settle, and an app awaiting it would never start.
    */
   private async loadTranslationFileHelper(path: string, lang: string): Promise<void> {
-    const res = await fetch(`${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`, {
-      method: 'GET',
-      cache: 'no-cache' // to avoid issues upon releases
-    });
-    if (res.status !== 200) return;
+    const url = `${path.slice(-1) === '/' ? path : path.concat('/')}${lang}.json`;
+    try {
+      const res = await fetch(url, {
+        method: 'GET',
+        cache: 'no-cache' // to avoid issues upon releases
+      });
+      if (res.status !== 200) return;
 
-    const obj = await res.json();
-    for (const key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
+      const obj = await res.json();
+      for (const key in obj) if (obj[key]) this.translations[lang][key] = obj[key];
+    } catch (error) {
+      console.error(`[IDEA translations] ${url} couldn't be read:`, error);
+    }
   }
 
   /**
