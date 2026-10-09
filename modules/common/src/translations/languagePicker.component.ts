@@ -9,15 +9,20 @@ import { IDEATranslatePipe } from './translate.pipe';
 //   1. flags, containing the pngs of each country's flags
 //   2. i18n, containing the json of each country's translation
 
+/**
+ * How many pickers were created: each one's trigger gets its own id from it.
+ */
+let instances = 0;
+
 @Component({
   selector: 'idea-language-picker',
   imports: [IonButton, IonPopover, IonList, IonListHeader, IonItem, IonLabel, IDEATranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ion-button id="click-trigger" [fill]="fill()" [title]="'IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE' | translate">
+    <ion-button [id]="triggerId" [fill]="fill()" [title]="'IDEA_COMMON.LANGUAGE_PICKER.CHANGE_LANGUAGE' | translate">
       <img [src]="getFlagURL()" />
     </ion-button>
-    <ion-popover #popover trigger="click-trigger" triggerAction="click">
+    <ion-popover #popover [trigger]="triggerId" triggerAction="click">
       <ng-template>
         <ion-list>
           <ion-list-header>
@@ -52,6 +57,11 @@ export class IDEALanguagePickerComponent implements OnInit {
   readonly fill = input<string>();
 
   languages: { value: string; name: string }[] = [];
+  /**
+   * The popover looks for its trigger by id in the whole document: with one id for every picker, a page left in the
+   * navigation stack (still in the DOM, under the one on screen) took the popover of the page on top.
+   */
+  triggerId = `idea-language-picker-${++instances}`;
 
   ngOnInit(): void {
     this.languages = this._translate
