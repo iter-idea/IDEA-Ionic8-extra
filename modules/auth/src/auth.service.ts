@@ -49,6 +49,8 @@ export class IDEAAuthService {
 
   private passwordPolicy: any;
 
+  private loginInProgress: Promise<LoginOutcomeActions>;
+
   constructor() {
     this.deviceKeyAttribute = 'custom:'.concat(this._env.idea.project);
     Amplify.configure({
@@ -67,7 +69,15 @@ export class IDEAAuthService {
   /**
    * Perform a login through username and password.
    */
-  async login(username: string, password: string): Promise<LoginOutcomeActions> {
+  login(username: string, password: string): Promise<LoginOutcomeActions> {
+    // a second sign-in while one runs (e.g. a password manager that submits twice) would sign the first one out: it
+    // waits for the same outcome instead
+    this.loginInProgress ??= this.signInWithPassword(username, password).finally(
+      (): void => (this.loginInProgress = null)
+    );
+    return this.loginInProgress;
+  }
+  private async signInWithPassword(username: string, password: string): Promise<LoginOutcomeActions> {
     this.challengeUsername = null;
     // Amplify refuses to sign in over a stored session (e.g. one refused by the post-auth checks): the new sign-in
     // replaces it

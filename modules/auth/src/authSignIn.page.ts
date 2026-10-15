@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   Injector,
   afterNextRender,
   inject,
@@ -41,7 +42,7 @@ import { IDEAAuthPasswordFieldComponent } from './authPasswordField.component';
             <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.SIGN_IN_TO_CONTINUE' | translate }}</p>
           </div>
           <idea-auth-notice [notice]="notice()" />
-          <div class="idea-auth-form">
+          <form class="idea-auth-form" novalidate (submit)="$event.preventDefault(); continue()">
             <div class="idea-auth-field">
               <label id="idea-auth-sign-in-email" class="idea-auth-label" (click)="emailInput()?.setFocus()">
                 {{ 'IDEA_AUTH.EMAIL' | translate }}
@@ -61,7 +62,19 @@ import { IDEAAuthPasswordFieldComponent } from './authPasswordField.component';
                 (keyup.enter)="continue()"
               />
             </div>
-          </div>
+            <!-- for the password managers, which fill a sign-in form at once: then the sign-in goes on at once too -->
+            <input
+              #autofilledPassword
+              class="idea-auth-visually-hidden"
+              type="password"
+              autocomplete="current-password"
+              tabindex="-1"
+              aria-hidden="true"
+              [value]="password()"
+              (input)="password.set(autofilledPassword.value)"
+              (change)="password.set(autofilledPassword.value)"
+            />
+          </form>
           <div class="idea-auth-actions">
             <ion-button testId="continueButton" class="idea-auth-button" expand="block" (click)="continue()">
               {{ 'IDEA_AUTH.CONTINUE' | translate }}
@@ -88,7 +101,7 @@ import { IDEAAuthPasswordFieldComponent } from './authPasswordField.component';
             </p>
           </div>
           <idea-auth-notice [notice]="notice()" />
-          <div class="idea-auth-form">
+          <form class="idea-auth-form" novalidate (submit)="$event.preventDefault(); signIn()">
             <!-- the email, for the password managers: the pair they save is this one -->
             <input
               class="idea-auth-visually-hidden"
@@ -120,7 +133,7 @@ import { IDEAAuthPasswordFieldComponent } from './authPasswordField.component';
                 (enter)="signIn()"
               />
             </div>
-          </div>
+          </form>
           <div class="idea-auth-actions">
             @if (showAgreements) {
               <p class="idea-auth-agreements">
@@ -177,6 +190,10 @@ export class IDEAAuthSignInPage {
 
   emailInput = viewChild(IonInput);
   passwordField = viewChild(IDEAAuthPasswordFieldComponent);
+  autofilledPassword = viewChild<ElementRef<HTMLInputElement>>('autofilledPassword');
+
+  // a password manager may submit twice (e.g. Enter, then a click on the button): one sign-in at a time
+  private signingIn = false;
 
   ionViewWillEnter(): void {
     this.notice.set(this._flow.takeNotice());
@@ -206,7 +223,11 @@ export class IDEAAuthSignInPage {
       this._nav.navigateForward(['auth', provider.type], { queryParams: { provider: provider.name, go: true } });
       return;
     }
+    // filled by a password manager (read from the field too: not every fill raises an event)
+    const autofilled = this.autofilledPassword()?.nativeElement.value;
+    if (autofilled) this.password.set(autofilled);
     this.step.set('password');
+    if (this.password()) return void this.signIn();
     afterNextRender((): void => void this.passwordField()?.focus(), { injector: this._injector });
   }
   editEmail(): void {
@@ -225,6 +246,9 @@ export class IDEAAuthSignInPage {
   }
 
   async signIn(): Promise<void> {
+    if (this.signingIn) return;
+    this.signingIn = true;
+    let reloading = false;
     this.notice.set(null);
     try {
       await this._loading.show();
@@ -232,10 +256,15 @@ export class IDEAAuthSignInPage {
       if (outcome === LoginOutcomeActions.NEW_PASSWORD) this._nav.navigateForward(['auth', 'new-password']);
       else if (outcome === LoginOutcomeActions.MFA_CHALLENGE) this._nav.navigateForward(['auth', 'mfa-challenge']);
       else if (outcome === LoginOutcomeActions.MFA_SETUP) this._nav.navigateForward(['auth', 'setup-mfa']);
-      else window.location.assign('');
+      else {
+        reloading = true;
+        window.location.assign('');
+      }
     } catch (err) {
       this.notice.set({ kind: 'error', message: this.signInErrorMessage(err as Error) });
     } finally {
+      // until the app reloads, no other sign-in
+      if (!reloading) this.signingIn = false;
       this._loading.hide();
     }
   }
