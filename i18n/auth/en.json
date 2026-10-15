@@ -119,6 +119,7 @@
     "MFA_SECRET_HINT": "Can't scan it? Enter this key in the app:",
     "MFA_ALREADY_ENABLED": "Multi-factor authentication (MFA) is already active on your account.",
     "REQUIREMENT_MET": "met",
-    "REQUIREMENT_NOT_MET": "not met yet"
+    "REQUIREMENT_NOT_MET": "not met yet",
+    "INTRO_LINK": "Website"
   }
 }

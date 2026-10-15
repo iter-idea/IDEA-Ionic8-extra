@@ -66,7 +66,7 @@ import { IDEAEnvironment, IDEATranslationsService, IDEATranslatePipe } from '@id
             </a>
           }
           @if (hasIntroPage) {
-            <button type="button" (click)="goToIntro()">{{ 'IDEA_AUTH.BACK_TO_INTRO' | translate }}</button>
+            <button type="button" (click)="goToIntro()">{{ introLink | translate }}</button>
           }
         </nav>
       </footer>
@@ -85,6 +85,10 @@ export class IDEAAuthShellComponent {
   title: string = this._env.idea.auth.title;
   website: string = this._env.idea.auth.website;
   hasIntroPage: boolean = this._env.idea.auth.hasIntroPage;
+  // the app's own name for the link to its intro page, if it has one
+  introLink = this.translationExists('IDEA_VARIABLES.INTRO_LINK')
+    ? 'IDEA_VARIABLES.INTRO_LINK'
+    : 'IDEA_AUTH.INTRO_LINK';
 
   translationExists(key: string): boolean {
     return !!this._translate._(key);

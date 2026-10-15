@@ -119,6 +119,7 @@
     "MFA_SECRET_HINT": "¿No puede escanearlo? Introduzca esta clave en la aplicación:",
     "MFA_ALREADY_ENABLED": "La autenticación multifactor (MFA) ya está activa en su cuenta.",
     "REQUIREMENT_MET": "cumplido",
-    "REQUIREMENT_NOT_MET": "por cumplir"
+    "REQUIREMENT_NOT_MET": "por cumplir",
+    "INTRO_LINK": "Sitio web"
   }
 }

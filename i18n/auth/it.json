@@ -119,6 +119,7 @@
     "MFA_SECRET_HINT": "Non riesci a scansionarlo? Inserisci questa chiave nell'app:",
     "MFA_ALREADY_ENABLED": "L'autenticazione a più fattori (MFA) è già attiva sul tuo account.",
     "REQUIREMENT_MET": "soddisfatto",
-    "REQUIREMENT_NOT_MET": "da soddisfare"
+    "REQUIREMENT_NOT_MET": "da soddisfare",
+    "INTRO_LINK": "Sito web"
   }
 }

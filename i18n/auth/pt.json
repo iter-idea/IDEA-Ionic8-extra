@@ -119,6 +119,7 @@
     "MFA_SECRET_HINT": "Não consegues ler o código? Introduz esta chave na aplicação:",
     "MFA_ALREADY_ENABLED": "A autenticação multifator (MFA) já está ativa na tua conta.",
     "REQUIREMENT_MET": "cumprido",
-    "REQUIREMENT_NOT_MET": "por cumprir"
+    "REQUIREMENT_NOT_MET": "por cumprir",
+    "INTRO_LINK": "Site"
   }
 }

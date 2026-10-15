@@ -46,7 +46,7 @@ In `environment.idea.auth`, besides the current ones (`title`, `website`, `hasIn
 
 - `logo`: `{ light: string; dark?: string }`, the paths of the logo, the dark one shown with the system's dark mode; default `assets/icons/icon-auth.svg` and `assets/icons/icon-auth-alt.svg`.
 
-The header shows the logo, the `title` and the `IDEA_VARIABLES.TAGLINE` term, if any; the footer the terms (`IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL`, `IDEA_VARIABLES.PRIVACY_POLICY_URL`), the link back to the intro page and, with `website`, ITER IDEA's logo: the app's `assets/icons/idea.png` (`idea-alt.png` with the system's dark mode).
+The header shows the logo, the `title` and the `IDEA_VARIABLES.TAGLINE` term, if any; the footer the terms (`IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL`, `IDEA_VARIABLES.PRIVACY_POLICY_URL`), the link to the intro page (with `hasIntroPage`: "Website", or the `IDEA_VARIABLES.INTRO_LINK` term, e.g. "Discover AIRP") and, with `website`, ITER IDEA's logo: the app's `assets/icons/idea.png` (`idea-alt.png` with the system's dark mode).
 
 A page that's always dark (e.g. a dark brand, also with the system's light mode) gives only `logo.light`, in its version for a dark background, and puts the light version of ITER IDEA's logo in both files.
 
