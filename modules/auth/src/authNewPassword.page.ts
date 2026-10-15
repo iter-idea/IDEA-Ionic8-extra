@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild
 import { NavController, IonButton } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { IDEAAuthService } from '../auth.service';
+import { IDEAAuthService } from './auth.service';
 import { IDEAAuthFlowService, IDEAAuthNotice } from './authFlow.service';
 import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';

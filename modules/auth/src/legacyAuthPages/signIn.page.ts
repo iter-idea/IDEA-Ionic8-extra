@@ -29,7 +29,7 @@ import {
   IDEATranslatePipe
 } from '@idea-ionic/common';
 
-import { IDEAAuthService, LoginOutcomeActions } from './auth.service';
+import { IDEAAuthService, LoginOutcomeActions } from '../auth.service';
 
 @Component({
   selector: 'idea-sign-in',

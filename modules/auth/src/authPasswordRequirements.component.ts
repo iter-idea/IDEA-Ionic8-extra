@@ -3,7 +3,7 @@ import { IonIcon } from '@ionic/angular/standalone';
 import { checkmarkCircle, ellipseOutline } from 'ionicons/icons';
 import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { IDEAAuthService } from '../auth.service';
+import { IDEAAuthService } from './auth.service';
 
 /**
  * The requirements of the project's password policy, each one ticked as soon as the password typed meets it.

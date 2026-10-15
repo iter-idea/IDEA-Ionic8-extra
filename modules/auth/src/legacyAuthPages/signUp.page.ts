@@ -29,7 +29,7 @@ import {
 } from '@idea-ionic/common';
 
 import { IDEAPasswordPolicyComponent } from './passwordPolicy.component';
-import { IDEAAuthService } from './auth.service';
+import { IDEAAuthService } from '../auth.service';
 
 @Component({
   selector: 'idea-sign-up',

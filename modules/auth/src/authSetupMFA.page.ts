@@ -12,7 +12,7 @@ import { NavController, IonButton, IonInput } from '@ionic/angular/standalone';
 import { toCanvas } from 'qrcode';
 import { IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { IDEAAuthService } from '../auth.service';
+import { IDEAAuthService } from './auth.service';
 import { IDEAAuthNotice } from './authFlow.service';
 import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';

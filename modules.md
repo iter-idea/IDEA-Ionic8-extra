@@ -9,9 +9,9 @@
 
 ## auth
 
-- [idea-password-policy](modules/auth/src/passwordPolicy.component.md)
-- [idea-setup-mfa-button](modules/auth/src/setupMFA/setupMFAButton.component.md)
-- [idea-setup-mfa-modal](modules/auth/src/setupMFA/setupMFAModal.component.md)
+- [idea-password-policy](modules/auth/src/legacyAuthPages/passwordPolicy.component.md)
+- [idea-setup-mfa-button](modules/auth/src/mfaSettings/setupMFAButton.component.md)
+- [idea-setup-mfa-modal](modules/auth/src/mfaSettings/setupMFAModal.component.md)
 
 ## barcode
 

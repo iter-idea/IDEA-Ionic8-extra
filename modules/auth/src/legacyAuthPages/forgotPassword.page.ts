@@ -16,7 +16,7 @@ import {
 } from '@ionic/angular/standalone';
 import { IDEAMessageService, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { IDEAAuthService } from './auth.service';
+import { IDEAAuthService } from '../auth.service';
 
 @Component({
   selector: 'idea-forgot-password',

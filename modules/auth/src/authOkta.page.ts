@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, IonButton } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { storeCognitoSession } from '../okta.helpers';
+import { storeCognitoSession } from './okta.helpers';
 import { IDEAAuthNotice } from './authFlow.service';
 import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';

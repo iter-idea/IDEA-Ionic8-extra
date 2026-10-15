@@ -1,37 +1,38 @@
-import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NavController,
   IonContent,
+  IonIcon,
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonCardSubtitle,
-  IonItem,
   IonCardContent,
+  IonCardSubtitle,
+  IonInput,
+  IonItem,
   IonLabel,
-  IonIcon,
-  IonButton,
-  IonInput
+  IonButton
 } from '@ionic/angular/standalone';
 import { IDEAMessageService, IDEALoadingService, IDEATranslationsService, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { IDEAAuthService } from './auth.service';
+import { IDEAAuthService } from '../auth.service';
 
 @Component({
-  selector: 'idea-mfa-challenge',
+  selector: 'idea-resend-link',
   imports: [
     FormsModule,
     IDEATranslatePipe,
     IonButton,
-    IonIcon,
     IonLabel,
-    IonCardContent,
     IonItem,
+    IonInput,
     IonCardSubtitle,
+    IonCardContent,
     IonCardTitle,
     IonCardHeader,
     IonCard,
+    IonIcon,
     IonContent,
     IonInput
   ],
@@ -41,37 +42,42 @@ import { IDEAAuthService } from './auth.service';
       <form class="flexBox">
         <ion-card class="authCard">
           <ion-card-header>
-            <ion-card-title color="primary">{{ 'IDEA_AUTH.ENTER_OTP_CODE' | translate }}</ion-card-title>
-            <ion-card-subtitle>{{ 'IDEA_AUTH.ENTER_OTP_CODE_I' | translate }}</ion-card-subtitle>
+            <ion-card-title color="primary">{{ 'IDEA_AUTH.CONFIRM_ACCOUNT' | translate }}</ion-card-title>
+            <ion-card-subtitle>{{ 'IDEA_AUTH.RESEND_CONFIRMATION_LINK_HINT' | translate }}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
             @if (errorMsg()) {
-              <p testId="mfachallenge.error" class="errorBox">
-                <b>{{ 'IDEA_AUTH.ERROR' | translate }}.</b>
+              <p testId="resendlink.error" class="errorBox">
+                <b> {{ 'IDEA_AUTH.ERROR' | translate }}. </b>
                 {{ errorMsg() }}
               </p>
             }
             <ion-item>
               <ion-label position="inline">
-                <ion-icon name="key" color="primary" />
+                <ion-icon name="person-circle" color="primary" />
               </ion-label>
               <ion-input
-                testId="mfachallenge.otpcode"
-                inputmode="numeric"
-                [placeholder]="'IDEA_AUTH.OTP_CODE' | translate"
-                [title]="'IDEA_AUTH.ENTER_OTP_CODE' | translate"
+                testId="resendlink.email"
+                type="email"
+                inputmode="email"
+                pattern="[A-Za-z0-9._%+\\-]{2,}@[a-zA-Z\\-_.]{2,}[.]{1}[a-zA-Z]{2,}"
+                spellcheck="false"
+                autocorrect="off"
+                autocomplete="email"
+                [placeholder]="'IDEA_AUTH.EMAIL' | translate"
+                [title]="'IDEA_AUTH.EMAIL_HINT' | translate"
                 [ngModelOptions]="{ standalone: true }"
-                [(ngModel)]="otpCode"
-                (keyup.enter)="completeMFAChallenge()"
+                [(ngModel)]="email"
+                (keyup.enter)="resendConfirmationLink()"
               />
             </ion-item>
             <ion-button
-              testId="confirmOTPCodeButton"
+              testId="resendLinkButton"
               expand="block"
-              [title]="'IDEA_AUTH.CONFIRM_OTP_CODE_HINT' | translate"
-              (click)="completeMFAChallenge()"
+              [title]="'IDEA_AUTH.RESEND_LINK_HINT' | translate"
+              (click)="resendConfirmationLink()"
             >
-              {{ 'IDEA_AUTH.CONFIRM_OTP_CODE' | translate }}
+              {{ 'IDEA_AUTH.RESEND_LINK' | translate }}
             </ion-button>
             <ion-button
               testId="backToSignInButton"
@@ -90,34 +96,31 @@ import { IDEAAuthService } from './auth.service';
   `,
   styleUrls: ['auth.scss']
 })
-export class IDEAMFAChallengePage implements OnInit {
+export class IDEAResendLinkPage {
   private _nav = inject(NavController);
   private _message = inject(IDEAMessageService);
   private _loading = inject(IDEALoadingService);
   private _auth = inject(IDEAAuthService);
   private _translate = inject(IDEATranslationsService);
 
-  otpCode: string;
+  email: string;
   errorMsg = signal<string>(null);
 
-  ngOnInit(): void {
-    if (!this._auth.challengeUsername) this.goToAuth();
-  }
-
-  async completeMFAChallenge(): Promise<void> {
+  async resendConfirmationLink(): Promise<void> {
+    this.errorMsg.set(null);
+    if (!this.email) {
+      this.errorMsg.set(this._translate._('IDEA_AUTH.VALID_EMAIL_OBLIGATORY'));
+      this._message.error('IDEA_AUTH.SENDING_FAILED');
+      return;
+    }
     try {
-      this.errorMsg.set(null);
       await this._loading.show();
-      await this._auth.completeMFAChallenge(this.otpCode);
-      window.location.assign('');
+      await this._auth.resendConfirmationCode(this.email);
+      this._message.success('IDEA_AUTH.CONFIRMATION_LINK_SENT');
+      this.goToAuth();
     } catch (error) {
-      // the time to answer the sign-in's challenge is over: only a new sign-in can go on
-      if (!this._auth.challengeUsername) {
-        this._message.error('IDEA_AUTH.SIGN_IN_SESSION_EXPIRED');
-        return this.goToAuth();
-      }
-      this.errorMsg.set(this._translate._('IDEA_AUTH.INVALID_OTP_CODE'));
-      this._message.error(this.errorMsg(), { dontTranslate: true });
+      this.errorMsg.set(this._translate._('IDEA_AUTH.IS_THE_EMAIL_CORRECT'));
+      this._message.error('IDEA_AUTH.SENDING_FAILED');
     } finally {
       this._loading.hide();
     }

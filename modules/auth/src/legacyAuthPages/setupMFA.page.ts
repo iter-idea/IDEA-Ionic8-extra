@@ -11,7 +11,7 @@ import {
 } from '@ionic/angular/standalone';
 import { IDEATranslatePipe } from '@idea-ionic/common';
 
-import { IDEASetupMFAButtonComponent } from './setupMFA/setupMFAButton.component';
+import { IDEASetupMFAButtonComponent } from '../mfaSettings/setupMFAButton.component';
 
 @Component({
   selector: 'idea-mfa-setup',

@@ -4,7 +4,7 @@ import { NavController, IonButton, IonInput } from '@ionic/angular/standalone';
 import { isEmpty } from 'idea-toolbox';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { IDEAAuthService } from '../auth.service';
+import { IDEAAuthService } from './auth.service';
 import { IDEAAuthFlowService, IDEAAuthNotice } from './authFlow.service';
 import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';
