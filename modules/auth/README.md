@@ -31,12 +31,12 @@ Modern pages for every flow (sign-in with the email first, new password, MFA, pa
 To switch, mount `IDEAAuthRoutes` in place of `routes`, on the same path (URLs, guards and links stay the same):
 
 ```ts
-{
-  path: 'auth',
-  loadChildren: (): Promise<any> => import('@idea-ionic/auth').then(m => m.IDEAAuthRoutes),
-  canActivate: [initGuard]
-}
+import { IDEAAuthRoutes } from '@idea-ionic/auth';
+
+{ path: 'auth', children: IDEAAuthRoutes, canActivate: [initGuard] }
 ```
+
+Import them, rather than lazy-loading them with `loadChildren`: the app's guards bring the module into the start-up bundle anyway, where a dynamic `import()` would keep all of it, the old pages included; a static import lets the build drop what the app doesn't use. The same goes for `IDEAAppStatusRoutes` of `@idea-ionic/common`.
 
 Then delete the app's CSS aimed at the old pages (`.authCard`, `.flexBox`, `idea-sign-in`, …): it no longer applies.
 
