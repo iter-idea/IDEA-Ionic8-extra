@@ -167,8 +167,10 @@ ion-input.idea-auth-input {
   --border-radius: var(--_field-radius);
   --border-width: 0px;
   --highlight-height: 0px;
-  --padding-start: 14px;
-  --padding-end: 14px;
+  // the native field fills the box, with the box's padding: the browser's colour for an autofilled field covers it all
+  --padding-start: 0px;
+  --padding-end: 0px;
+  overflow: hidden;
   box-sizing: border-box;
   min-height: var(--_field-height);
   border: 1px solid var(--_field-border-color);
@@ -187,10 +189,19 @@ ion-input.idea-auth-input.has-focus {
 ion-input.idea-auth-input.ion-touched.ion-invalid {
   border-color: var(--_danger);
 }
-ion-input.idea-auth-input.idea-auth-password {
-  --padding-end: 2px;
+ion-input.idea-auth-input .native-input {
+  padding-inline: 14px;
+}
+// the button to show the password lies over the native field, which goes on beneath it
+ion-input.idea-auth-input.idea-auth-password .native-input {
+  padding-inline-end: 46px;
 }
 :where(.idea-auth-password-toggle) {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 2px;
+  z-index: 2;
+  margin-block: auto;
   width: 44px;
   height: 44px;
   padding: 0;

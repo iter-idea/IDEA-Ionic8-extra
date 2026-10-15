@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewEncapsulation, inject } from '@angular/core';
 import { NavController } from '@ionic/angular/standalone';
 import { Browser } from '@capacitor/browser';
 import { IDEAEnvironment, IDEATranslationsService, IDEATranslatePipe } from '@idea-ionic/common';
@@ -90,6 +90,19 @@ export class IDEAAuthShellComponent {
   introLink = this.translationExists('IDEA_VARIABLES.INTRO_LINK')
     ? 'IDEA_VARIABLES.INTRO_LINK'
     : 'IDEA_AUTH.INTRO_LINK';
+
+  constructor() {
+    // the focus of a field stops here, before Ionic's scroll assist (iOS) gets it on the `ion-input`: it swaps the field
+    // for a copy while it scrolls, and a password manager that reads the page in that moment (1Password) fills nothing;
+    // Safari keeps the focused field in sight by itself
+    (inject(ElementRef).nativeElement as HTMLElement).addEventListener(
+      'focusin',
+      (event: FocusEvent): void => {
+        if ((event.target as HTMLElement).closest('ion-input')) event.stopPropagation();
+      },
+      true
+    );
+  }
 
   translationExists(key: string): boolean {
     return !!this._translate._(key);
