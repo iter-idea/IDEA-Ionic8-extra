@@ -1,6 +1,6 @@
 {
   "name": "idea-ionic-extra",
-  "version": "8.15.1",
+  "version": "8.15.2",
   "engines": {
     "node": ">=24.15.0"
   },
