@@ -9,6 +9,14 @@
 
 ## auth
 
+- [idea-auth-notice](modules/auth/src/authNotice.component.md). A notice in a page of `IDEAAuthRoutes`, next to what it refers to. An error is announced at once (`alert`); the
+  others through a live region always in the page, since screen readers announce what changes in one, not a new one.
+- [idea-auth-password-field](modules/auth/src/authPasswordField.component.md). A password field of the pages of `IDEAAuthRoutes`, with the button to show or hide what's typed.
+  Its label is the page's own, tied through `labelledBy`.
+- [idea-auth-password-requirements](modules/auth/src/authPasswordRequirements.component.md). The requirements of the project's password policy, each one ticked as soon as the password typed meets it.
+- [idea-auth-shell](modules/auth/src/authShell.component.md). The frame of the pages of `IDEAAuthRoutes`: the app's logo and name, the page's column, the footer's links. It sits
+  in the page's `<ion-content class="idea-auth">`, the page's root as Ionic's transitions expect, and carries the
+  pages' styles and tokens (see the module's README).
 - [idea-password-policy](modules/auth/src/legacyAuthPages/passwordPolicy.component.md)
 - [idea-setup-mfa-button](modules/auth/src/mfaSettings/setupMFAButton.component.md)
 - [idea-setup-mfa-modal](modules/auth/src/mfaSettings/setupMFAModal.component.md)
