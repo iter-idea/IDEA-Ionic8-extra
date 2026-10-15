@@ -59,6 +59,7 @@ export class IDEAAuthService {
         }
       }
     });
+    removeUserDataCachedByEarlierVersions(this._env.aws.cognito.userPoolClientId);
     this.mfaProjectName = this._env.idea.auth.title || this._env.idea.project;
     this.passwordPolicy = this._env.idea.auth.passwordPolicy;
   }
@@ -68,8 +69,8 @@ export class IDEAAuthService {
    */
   async login(username: string, password: string): Promise<LoginOutcomeActions> {
     this.challengeUsername = null;
-    // Amplify refuses to sign in over a session still stored (e.g. one refused by the post-auth checks): as before, the
-    // new sign-in replaces it
+    // Amplify refuses to sign in over a stored session (e.g. one refused by the post-auth checks): the new sign-in
+    // replaces it
     await signOut();
     const { nextStep } = await withErrorCode(signIn({ username, password }));
     switch (nextStep.signInStep) {
@@ -81,7 +82,7 @@ export class IDEAAuthService {
       case 'CONFIRM_SIGN_IN_WITH_TOTP_CODE':
         this.challengeUsername = username;
         return LoginOutcomeActions.MFA_CHALLENGE;
-      // Amplify turns these refusals of Cognito into steps: they stay errors, as they've always been
+      // Amplify reports these refusals of Cognito as steps: the apps expect errors, named after the Cognito exception
       case 'CONFIRM_SIGN_UP':
         throw cognitoError('UserNotConfirmedException', 'User is not confirmed.');
       case 'RESET_PASSWORD':
@@ -153,6 +154,7 @@ export class IDEAAuthService {
   }
   /**
    * Logout the currently signed-in user.
+   * With `global`, the other sessions end only if Cognito can be reached; the local one ends anyway.
    */
   async logout(options?: { global: boolean }): Promise<void> {
     options = Object.assign({ global: false }, options);
@@ -163,7 +165,6 @@ export class IDEAAuthService {
     const { tokens } = await fetchAuthSession().catch((): AuthSession => ({}));
     // if the session is active and a reference to the device was saved, forget it
     if (tokens && this._env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
-    removeUserDataCachedByEarlierVersions(this._env.aws.cognito.userPoolClientId);
     // sign-out from the pool (terminate the current session or all the sessions); the local session is removed anyway
     await signOut({ global: options.global });
   }
@@ -397,8 +398,8 @@ const SHA1 = async (str: string): Promise<string | null> => {
 };
 
 /**
- * Amplify names its errors after Cognito's exceptions: like the earlier lib, the name is also set as `code`, which the
- * apps read (e.g. to tell a Cognito out of reach, `NetworkError`, from refused credentials).
+ * Amplify names its errors after Cognito's exceptions: the name is also set as `code`, which the apps read (e.g. to
+ * tell a Cognito out of reach, `NetworkError`, from refused credentials).
  */
 const withErrorCode = async <T>(request: Promise<T>): Promise<T> => {
   try {
@@ -416,7 +417,7 @@ const cognitoError = (name: string, message: string): Error => Object.assign(new
 
 /**
  * Remove the user's data that the earlier versions (on `amazon-cognito-identity-js`) cached next to the session's
- * tokens: Amplify doesn't know it, so it wouldn't go away with the sign-out.
+ * tokens: Amplify never reads nor clears it. It runs at start-up, while the key of the last user still points to it.
  */
 const removeUserDataCachedByEarlierVersions = (userPoolClientId: string): void => {
   const keyPrefix = 'CognitoIdentityServiceProvider.'.concat(userPoolClientId);
