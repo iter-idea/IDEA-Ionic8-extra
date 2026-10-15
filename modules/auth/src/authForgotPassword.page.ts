@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
-import { NavController, IonButton, IonInput } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonInput, IonContent } from '@ionic/angular/standalone';
 import { isEmpty } from 'idea-toolbox';
 import { IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
@@ -13,48 +13,50 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
  */
 @Component({
   selector: 'idea-auth-forgot-password',
-  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonInput],
+  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonInput, IonContent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <idea-auth-shell>
-      <div class="idea-auth-heading">
-        <h1 class="idea-auth-title">{{ 'IDEA_AUTH.PASSWORD_RESET' | translate }}</h1>
-        <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.PASSWORD_RESET_HINT' | translate }}</p>
-      </div>
-      <idea-auth-notice [notice]="notice()" />
-      <div class="idea-auth-form">
-        <div class="idea-auth-field">
-          <label id="idea-auth-forgot-password-email" class="idea-auth-label" (click)="emailInput()?.setFocus()">
-            {{ 'IDEA_AUTH.EMAIL' | translate }}
-          </label>
-          <ion-input
-            testId="forgotpassword.email"
-            class="idea-auth-input"
-            type="email"
-            inputmode="email"
-            autocomplete="username"
-            spellcheck="false"
-            autocapitalize="off"
-            enterkeyhint="send"
-            aria-labelledby="idea-auth-forgot-password-email"
-            [value]="email()"
-            (ionInput)="email.set($event.detail.value)"
-            (keyup.enter)="requestReset()"
-          />
+    <ion-content class="idea-auth">
+      <idea-auth-shell>
+        <div class="idea-auth-heading">
+          <h1 class="idea-auth-title">{{ 'IDEA_AUTH.PASSWORD_RESET' | translate }}</h1>
+          <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.PASSWORD_RESET_HINT' | translate }}</p>
         </div>
-      </div>
-      <div class="idea-auth-actions">
-        <ion-button testId="resetPasswordButton" class="idea-auth-button" expand="block" (click)="requestReset()">
-          {{ 'IDEA_AUTH.RESET_MY_PASSWORD' | translate }}
-        </ion-button>
-        <button testId="insertResetCodeButton" type="button" class="idea-auth-link" (click)="goToConfirmPassword()">
-          {{ 'IDEA_AUTH.ALREADY_HAVE_A_RESET_CODE' | translate }}
-        </button>
-        <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
-          {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
-        </button>
-      </div>
-    </idea-auth-shell>
+        <idea-auth-notice [notice]="notice()" />
+        <div class="idea-auth-form">
+          <div class="idea-auth-field">
+            <label id="idea-auth-forgot-password-email" class="idea-auth-label" (click)="emailInput()?.setFocus()">
+              {{ 'IDEA_AUTH.EMAIL' | translate }}
+            </label>
+            <ion-input
+              testId="forgotpassword.email"
+              class="idea-auth-input"
+              type="email"
+              inputmode="email"
+              autocomplete="username"
+              spellcheck="false"
+              autocapitalize="off"
+              enterkeyhint="send"
+              aria-labelledby="idea-auth-forgot-password-email"
+              [value]="email()"
+              (ionInput)="email.set($event.detail.value)"
+              (keyup.enter)="requestReset()"
+            />
+          </div>
+        </div>
+        <div class="idea-auth-actions">
+          <ion-button testId="resetPasswordButton" class="idea-auth-button" expand="block" (click)="requestReset()">
+            {{ 'IDEA_AUTH.RESET_MY_PASSWORD' | translate }}
+          </ion-button>
+          <button testId="insertResetCodeButton" type="button" class="idea-auth-link" (click)="goToConfirmPassword()">
+            {{ 'IDEA_AUTH.ALREADY_HAVE_A_RESET_CODE' | translate }}
+          </button>
+          <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
+            {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+          </button>
+        </div>
+      </idea-auth-shell>
+    </ion-content>
   `
 })
 export class IDEAAuthForgotPasswordPage {

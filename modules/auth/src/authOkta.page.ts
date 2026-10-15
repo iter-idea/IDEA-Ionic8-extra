@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, IonButton } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonContent } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
 import { storeCognitoSession } from './okta.helpers';
@@ -13,27 +13,29 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
  */
 @Component({
   selector: 'idea-auth-okta',
-  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton],
+  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonContent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <idea-auth-shell>
-      @if (!redirecting()) {
-        <div class="idea-auth-heading">
-          <h1 class="idea-auth-title">{{ 'IDEA_AUTH.SIGN_IN' | translate }}</h1>
-        </div>
-        <idea-auth-notice [notice]="notice()" />
-        <div class="idea-auth-actions">
-          @if (identityProvider() && !notice()) {
-            <ion-button class="idea-auth-button" expand="block" (click)="startLogin()">
-              {{ 'IDEA_AUTH.SIGN_IN' | translate }}
-            </ion-button>
-          }
-          <button type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
-            {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
-          </button>
-        </div>
-      }
-    </idea-auth-shell>
+    <ion-content class="idea-auth">
+      <idea-auth-shell>
+        @if (!redirecting()) {
+          <div class="idea-auth-heading">
+            <h1 class="idea-auth-title">{{ 'IDEA_AUTH.SIGN_IN' | translate }}</h1>
+          </div>
+          <idea-auth-notice [notice]="notice()" />
+          <div class="idea-auth-actions">
+            @if (identityProvider() && !notice()) {
+              <ion-button class="idea-auth-button" expand="block" (click)="startLogin()">
+                {{ 'IDEA_AUTH.SIGN_IN' | translate }}
+              </ion-button>
+            }
+            <button type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
+              {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+            </button>
+          </div>
+        }
+      </idea-auth-shell>
+    </ion-content>
   `
 })
 export class IDEAAuthOktaPage {

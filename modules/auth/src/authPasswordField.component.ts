@@ -22,7 +22,6 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
       [value]="value()"
       [attr.aria-labelledby]="labelledBy()"
       [attr.aria-describedby]="describedBy()"
-      [attr.aria-invalid]="invalid() || null"
       (ionInput)="value.set($event.detail.value)"
       (keyup.enter)="enter.emit()"
     >
@@ -31,7 +30,6 @@ import { IDEATranslatePipe } from '@idea-ionic/common';
         type="button"
         class="idea-auth-password-toggle"
         [attr.aria-label]="(visible() ? 'IDEA_AUTH.HIDE_PASSWORD' : 'IDEA_AUTH.SHOW_PASSWORD') | translate"
-        [attr.aria-pressed]="visible()"
         (click)="visible.set(!visible())"
       >
         <ion-icon aria-hidden="true" [icon]="visible() ? icons.hide : icons.show" />
@@ -52,10 +50,6 @@ export class IDEAAuthPasswordFieldComponent {
    * Whether the browser should suggest the saved password, or a new one.
    */
   readonly autocomplete = input<'current-password' | 'new-password'>('current-password');
-  /**
-   * Whether to mark the field as invalid.
-   */
-  readonly invalid = input(false);
   /**
    * The password typed.
    */

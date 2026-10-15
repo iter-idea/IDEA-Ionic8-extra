@@ -1,8 +1,6 @@
-// The pages of `IDEAAuthRoutes`. An app brands them with the `--idea-auth-*` tokens (all optional, defaulting to its
-// Ionic theme), set where it sets its theme. Every rule has no specificity (`:where`), but the fields' (see below):
-// where a token isn't enough, an app's plain selector on the documented classes applies, with no `:root` or `!important`.
-// The elements that Ionic styles globally by tag (`h1`, `a`) take the tag's specificity, to beat those rules (these
-// styles come later): still less than an app's class.
+// The pages of `IDEAAuthRoutes` (tokens and classes: the module's README). Zero specificity (`:where`), so an app's
+// plain class wins; where Ionic or the apps style first, the rules match it: `ion-input`, `ion-button` and
+// `ion-checkbox` by class, `h1` and `a` by tag, the background on `ion-content`'s part.
 
 :where(ion-content.idea-auth) {
   --_background: var(--idea-auth-background, var(--ion-background-color, #ffffff));
@@ -34,19 +32,17 @@
   --_notice-color: var(--idea-auth-notice-color, var(--_color));
   --_logo-height: var(--idea-auth-logo-height, 40px);
   --_tagline-color: var(--idea-auth-tagline-color, var(--_color-muted));
-
-  --background: var(--_background);
-  --color: var(--_color);
-  font-family: var(--_font-family);
 }
 @media (prefers-color-scheme: dark) {
   :where(ion-content.idea-auth) {
     --_success: var(--idea-auth-success-color, #4ade80);
   }
 }
+:where(ion-content.idea-auth)::part(background) {
+  background: var(--_background);
+}
 
-// the shell lets its `ion-content` be the page's own, as Ionic expects; the other components lay out their content
-// as the page's (an empty notice takes no room)
+// no box of their own: their content lays out as the page's (an empty notice takes no room)
 :where(idea-auth-shell, idea-auth-notice, idea-auth-password-field, idea-auth-password-requirements) {
   display: contents;
 }
@@ -58,6 +54,8 @@
   display: flex;
   flex-direction: column;
   padding: 0 max(20px, var(--ion-safe-area-right, 0px)) 0 max(20px, var(--ion-safe-area-left, 0px));
+  color: var(--_color);
+  font-family: var(--_font-family);
 }
 :where(.idea-auth-header) {
   display: flex;
@@ -153,6 +151,7 @@ ion-input.idea-auth-input {
   min-height: var(--_field-height);
   border: 1px solid var(--_field-border-color);
   border-radius: var(--_field-radius);
+  font-family: var(--_font-family);
   font-size: 16px;
   transition:
     border-color 0.15s,
@@ -162,7 +161,8 @@ ion-input.idea-auth-input.has-focus {
   border-color: var(--_field-focus-color);
   box-shadow: 0 0 0 3px var(--_field-focus-ring);
 }
-ion-input.idea-auth-input[aria-invalid='true'] {
+// Ionic's invalid state: it also sets the native input's `aria-invalid`
+ion-input.idea-auth-input.ion-touched.ion-invalid {
   border-color: var(--_danger);
 }
 ion-input.idea-auth-input.idea-auth-password {
@@ -199,7 +199,7 @@ ion-input.idea-auth-input.idea-auth-code {
   text-align: center;
 }
 
-// the email already given, with the way back to change it: on the page's background, as its text and link colors are
+// the email already given, with the link to change it: no fill, so the page's text and link colours stay readable
 :where(.idea-auth-chip) {
   align-self: flex-start;
   max-width: 100%;
@@ -229,17 +229,23 @@ ion-input.idea-auth-input.idea-auth-code {
   flex-direction: column;
   gap: 12px;
 }
-:where(ion-button.idea-auth-button) {
+ion-button.idea-auth-button {
   --background: var(--_accent);
   --color: var(--_accent-contrast);
   --border-radius: var(--_button-radius);
   --box-shadow: none;
   height: var(--_button-height);
   margin: 0;
+  font-family: var(--_font-family);
   font-size: 16px;
   font-weight: var(--_button-font-weight);
   letter-spacing: normal;
   text-transform: var(--_button-text-transform);
+}
+// flat when pressed too, whatever press effect the app gives its buttons
+ion-button.idea-auth-button:active {
+  --box-shadow: none;
+  transform: none;
 }
 :where(.idea-auth-link) {
   align-self: flex-start;
@@ -274,7 +280,7 @@ ion-input.idea-auth-input.idea-auth-code {
   color: var(--_color);
   text-underline-offset: 3px;
 }
-:where(.idea-auth-checkbox) {
+ion-checkbox.idea-auth-checkbox {
   --checkbox-background-checked: var(--_accent);
   --border-color-checked: var(--_accent);
   --checkmark-color: var(--_accent-contrast);

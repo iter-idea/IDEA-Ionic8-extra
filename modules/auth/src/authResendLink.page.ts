@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
-import { NavController, IonButton, IonInput } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonInput, IonContent } from '@ionic/angular/standalone';
 import { isEmpty } from 'idea-toolbox';
 import { IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
@@ -13,46 +13,48 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
  */
 @Component({
   selector: 'idea-auth-resend-link',
-  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonInput],
+  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonInput, IonContent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <idea-auth-shell>
-      <div class="idea-auth-heading">
-        <h1 class="idea-auth-title">{{ 'IDEA_AUTH.CONFIRM_ACCOUNT' | translate }}</h1>
-        <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.RESEND_CONFIRMATION_LINK_HINT' | translate }}</p>
-      </div>
-      <idea-auth-notice [notice]="notice()" />
-      <div class="idea-auth-form">
-        <div class="idea-auth-field">
-          <label id="idea-auth-resend-link-email" class="idea-auth-label" (click)="emailField.setFocus()">
-            {{ 'IDEA_AUTH.EMAIL' | translate }}
-          </label>
-          <ion-input
-            #emailField
-            testId="resendlink.email"
-            class="idea-auth-input"
-            type="email"
-            inputmode="email"
-            autocomplete="email"
-            spellcheck="false"
-            autocapitalize="off"
-            enterkeyhint="send"
-            aria-labelledby="idea-auth-resend-link-email"
-            [value]="email()"
-            (ionInput)="email.set($event.detail.value)"
-            (keyup.enter)="resend()"
-          />
+    <ion-content class="idea-auth">
+      <idea-auth-shell>
+        <div class="idea-auth-heading">
+          <h1 class="idea-auth-title">{{ 'IDEA_AUTH.CONFIRM_ACCOUNT' | translate }}</h1>
+          <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.RESEND_CONFIRMATION_LINK_HINT' | translate }}</p>
         </div>
-      </div>
-      <div class="idea-auth-actions">
-        <ion-button testId="resendLinkButton" class="idea-auth-button" expand="block" (click)="resend()">
-          {{ 'IDEA_AUTH.RESEND_LINK' | translate }}
-        </ion-button>
-        <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
-          {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
-        </button>
-      </div>
-    </idea-auth-shell>
+        <idea-auth-notice [notice]="notice()" />
+        <div class="idea-auth-form">
+          <div class="idea-auth-field">
+            <label id="idea-auth-resend-link-email" class="idea-auth-label" (click)="emailField.setFocus()">
+              {{ 'IDEA_AUTH.EMAIL' | translate }}
+            </label>
+            <ion-input
+              #emailField
+              testId="resendlink.email"
+              class="idea-auth-input"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              spellcheck="false"
+              autocapitalize="off"
+              enterkeyhint="send"
+              aria-labelledby="idea-auth-resend-link-email"
+              [value]="email()"
+              (ionInput)="email.set($event.detail.value)"
+              (keyup.enter)="resend()"
+            />
+          </div>
+        </div>
+        <div class="idea-auth-actions">
+          <ion-button testId="resendLinkButton" class="idea-auth-button" expand="block" (click)="resend()">
+            {{ 'IDEA_AUTH.RESEND_LINK' | translate }}
+          </ion-button>
+          <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
+            {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+          </button>
+        </div>
+      </idea-auth-shell>
+    </ion-content>
   `
 })
 export class IDEAAuthResendLinkPage {

@@ -54,37 +54,37 @@ A page that's always dark (e.g. a dark brand, also with the system's light mode)
 
 Set where the app sets its theme (light and dark); all optional, they default to the app's Ionic theme.
 
-| Token                               | Default                                                                  |
-| ----------------------------------- | ------------------------------------------------------------------------ |
-| `--idea-auth-background`            | `var(--ion-background-color)`; any `background`: color, gradient, image  |
-| `--idea-auth-color`                 | `var(--ion-text-color)`                                                  |
-| `--idea-auth-color-muted`           | `var(--ion-color-medium)`                                                |
-| `--idea-auth-column-width`          | `380px`                                                                  |
-| `--idea-auth-accent`                | `var(--ion-color-primary)`                                               |
-| `--idea-auth-accent-contrast`       | `var(--ion-color-primary-contrast)`                                      |
-| `--idea-auth-link-color`            | the accent                                                               |
-| `--idea-auth-font-family`           | `var(--ion-font-family)`                                                 |
-| `--idea-auth-title-font-family`     | the font family                                                          |
-| `--idea-auth-title-font-size`       | `32px`                                                                   |
-| `--idea-auth-title-font-weight`     | `600`                                                                    |
-| `--idea-auth-radius`                | `12px`                                                                   |
-| `--idea-auth-field-radius`          | the radius                                                               |
-| `--idea-auth-button-radius`         | the radius                                                               |
-| `--idea-auth-field-background`      | `transparent`                                                            |
-| `--idea-auth-field-color`           | the color                                                                |
-| `--idea-auth-field-border-color`    | the text color at 55% (3:1 on the background, for the fields to be seen) |
-| `--idea-auth-field-focus-color`     | the accent                                                               |
-| `--idea-auth-field-focus-ring`      | the primary color at 25%                                                 |
-| `--idea-auth-field-height`          | `48px`                                                                   |
-| `--idea-auth-button-height`         | `48px`                                                                   |
-| `--idea-auth-button-font-weight`    | `600`                                                                    |
-| `--idea-auth-button-text-transform` | `none`                                                                   |
-| `--idea-auth-danger-color`          | `var(--ion-color-danger)`                                                |
-| `--idea-auth-success-color`         | a green readable in light and dark mode                                  |
-| `--idea-auth-notice-background`     | the text color at 6%                                                     |
-| `--idea-auth-notice-color`          | the color                                                                |
-| `--idea-auth-logo-height`           | `40px`                                                                   |
-| `--idea-auth-tagline-color`         | the muted color                                                          |
+| Token                               | Default                                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `--idea-auth-background`            | `var(--ion-background-color)`; any `background`: color, gradient, image                                       |
+| `--idea-auth-color`                 | `var(--ion-text-color)`                                                                                       |
+| `--idea-auth-color-muted`           | `var(--ion-color-medium)`                                                                                     |
+| `--idea-auth-column-width`          | `380px`                                                                                                       |
+| `--idea-auth-accent`                | `var(--ion-color-primary)`                                                                                    |
+| `--idea-auth-accent-contrast`       | `var(--ion-color-primary-contrast)`                                                                           |
+| `--idea-auth-link-color`            | the accent                                                                                                    |
+| `--idea-auth-font-family`           | `var(--ion-font-family)`                                                                                      |
+| `--idea-auth-title-font-family`     | the font family                                                                                               |
+| `--idea-auth-title-font-size`       | `32px`                                                                                                        |
+| `--idea-auth-title-font-weight`     | `600`                                                                                                         |
+| `--idea-auth-radius`                | `12px`                                                                                                        |
+| `--idea-auth-field-radius`          | the radius                                                                                                    |
+| `--idea-auth-button-radius`         | the radius                                                                                                    |
+| `--idea-auth-field-background`      | `transparent`                                                                                                 |
+| `--idea-auth-field-color`           | the color                                                                                                     |
+| `--idea-auth-field-border-color`    | the text color at 55% (3:1 on the background, for the fields to be seen)                                      |
+| `--idea-auth-field-focus-color`     | the accent                                                                                                    |
+| `--idea-auth-field-focus-ring`      | the primary color at 25%                                                                                      |
+| `--idea-auth-field-height`          | `48px`                                                                                                        |
+| `--idea-auth-button-height`         | `48px`                                                                                                        |
+| `--idea-auth-button-font-weight`    | `600`                                                                                                         |
+| `--idea-auth-button-text-transform` | `none`                                                                                                        |
+| `--idea-auth-danger-color`          | `var(--ion-color-danger)`                                                                                     |
+| `--idea-auth-success-color`         | a green readable in light and dark mode (it follows the system's mode: an app without a dark palette sets it) |
+| `--idea-auth-notice-background`     | the text color at 6%                                                                                          |
+| `--idea-auth-notice-color`          | the color                                                                                                     |
+| `--idea-auth-logo-height`           | `40px`                                                                                                        |
+| `--idea-auth-tagline-color`         | the muted color                                                                                               |
 
 ```scss
 :root {
@@ -97,8 +97,8 @@ Set where the app sets its theme (light and dark); all optional, they default to
 
 ### Where a token isn't enough
 
-The pages' rules have no specificity: an app's plain selector on these classes applies, without `:root` or `!important`. The fields are the exception: Ionic sets the defaults of an `ion-input` with a class, so the module's own rules are `ion-input.idea-auth-input`; to restyle a field beyond its tokens, use one class more (e.g. `.idea-auth ion-input.idea-auth-input`).
+The pages' rules have no specificity: an app's plain selector on these classes applies, without `:root` or `!important`. The exceptions are the components that Ionic styles with a class and the apps often by tag: the module's rules are `ion-input.idea-auth-input`, `ion-button.idea-auth-button` and `ion-checkbox.idea-auth-checkbox`, which an app's `ion-input`, `ion-button` or `ion-checkbox` rules don't reach; to restyle one beyond its tokens, use one class more (e.g. `.idea-auth ion-button.idea-auth-button`). The page's background is painted on the `background` part of its `ion-content`, out of reach of an app's `ion-content { --background }`: `.idea-auth::part(background)` restyles it.
 
-`.idea-auth` (the page's `ion-content`), `.idea-auth-header`, `.idea-auth-logo`, `.idea-auth-app-name`, `.idea-auth-tagline`, `.idea-auth-main`, `.idea-auth-column`, `.idea-auth-heading`, `.idea-auth-title`, `.idea-auth-subtitle`, `.idea-auth-form`, `.idea-auth-field`, `.idea-auth-label`, `.idea-auth-input` (the `ion-input`), `.idea-auth-hint`, `.idea-auth-chip`, `.idea-auth-notice`, `.idea-auth-requirements`, `.idea-auth-actions`, `.idea-auth-button` (the `ion-button`), `.idea-auth-link`, `.idea-auth-agreements`, `.idea-auth-footer`.
+`.idea-auth` (the page's `ion-content`), `.idea-auth-header`, `.idea-auth-logo`, `.idea-auth-app-name`, `.idea-auth-tagline`, `.idea-auth-main`, `.idea-auth-column`, `.idea-auth-heading`, `.idea-auth-title`, `.idea-auth-subtitle`, `.idea-auth-form`, `.idea-auth-field`, `.idea-auth-label`, `.idea-auth-input` (the `ion-input`), `.idea-auth-hint`, `.idea-auth-chip`, `.idea-auth-notice`, `.idea-auth-requirements`, `.idea-auth-actions`, `.idea-auth-button` (the `ion-button`), `.idea-auth-link`, `.idea-auth-agreements`, `.idea-auth-checkbox` (the `ion-checkbox`), `.idea-auth-footer`.
 
 E.g. `.idea-auth-app-name { display: none; }` when the logo already carries the app's name.

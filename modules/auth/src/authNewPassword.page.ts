@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
-import { NavController, IonButton } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonContent } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
 import { IDEAAuthService } from './auth.service';
@@ -20,50 +20,53 @@ import { IDEAAuthPasswordRequirementsComponent } from './authPasswordRequirement
     IDEAAuthNoticeComponent,
     IDEAAuthPasswordFieldComponent,
     IDEAAuthPasswordRequirementsComponent,
-    IonButton
+    IonButton,
+    IonContent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <idea-auth-shell>
-      <div class="idea-auth-heading">
-        <h1 class="idea-auth-title">{{ 'IDEA_AUTH.CHOOSE_A_PASSWORD' | translate }}</h1>
-        <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.FIRST_ACCESS_HINT' | translate }}</p>
-      </div>
-      <idea-auth-notice [notice]="notice()" />
-      <div class="idea-auth-form">
-        <div class="idea-auth-field">
-          <label id="idea-auth-new-password" class="idea-auth-label" (click)="passwordField()?.focus()">
-            {{ 'IDEA_AUTH.NEW_PASSWORD' | translate }}
-          </label>
-          <idea-auth-password-field
-            testId="newpassword.password"
-            labelledBy="idea-auth-new-password"
-            describedBy="idea-auth-new-password-requirements"
-            autocomplete="new-password"
-            [(value)]="password"
-            (enter)="confirm()"
-          />
+    <ion-content class="idea-auth">
+      <idea-auth-shell>
+        <div class="idea-auth-heading">
+          <h1 class="idea-auth-title">{{ 'IDEA_AUTH.CHOOSE_A_PASSWORD' | translate }}</h1>
+          <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.FIRST_ACCESS_HINT' | translate }}</p>
         </div>
-        <idea-auth-password-requirements listId="idea-auth-new-password-requirements" [password]="password()" />
-        @if (advancedPasswordCheck) {
-          <p class="idea-auth-hint">{{ 'IDEA_AUTH.COMMON_PASSWORDS_CHECK_HINT' | translate }}</p>
-        }
-      </div>
-      <div class="idea-auth-actions">
-        <ion-button
-          testId="confirmNewPaswordButton"
-          class="idea-auth-button"
-          expand="block"
-          [disabled]="!policyMet()"
-          (click)="confirm()"
-        >
-          {{ 'IDEA_AUTH.CONFIRM_NEW_PASSWORD' | translate }}
-        </ion-button>
-        <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
-          {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
-        </button>
-      </div>
-    </idea-auth-shell>
+        <idea-auth-notice [notice]="notice()" />
+        <div class="idea-auth-form">
+          <div class="idea-auth-field">
+            <label id="idea-auth-new-password" class="idea-auth-label" (click)="passwordField()?.focus()">
+              {{ 'IDEA_AUTH.NEW_PASSWORD' | translate }}
+            </label>
+            <idea-auth-password-field
+              testId="newpassword.password"
+              labelledBy="idea-auth-new-password"
+              describedBy="idea-auth-new-password-requirements"
+              autocomplete="new-password"
+              [(value)]="password"
+              (enter)="confirm()"
+            />
+          </div>
+          <idea-auth-password-requirements listId="idea-auth-new-password-requirements" [password]="password()" />
+          @if (advancedPasswordCheck) {
+            <p class="idea-auth-hint">{{ 'IDEA_AUTH.COMMON_PASSWORDS_CHECK_HINT' | translate }}</p>
+          }
+        </div>
+        <div class="idea-auth-actions">
+          <ion-button
+            testId="confirmNewPaswordButton"
+            class="idea-auth-button"
+            expand="block"
+            [disabled]="!policyMet()"
+            (click)="confirm()"
+          >
+            {{ 'IDEA_AUTH.CONFIRM_NEW_PASSWORD' | translate }}
+          </ion-button>
+          <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
+            {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+          </button>
+        </div>
+      </idea-auth-shell>
+    </ion-content>
   `
 })
 export class IDEAAuthNewPasswordPage {

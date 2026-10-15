@@ -8,7 +8,7 @@ import {
   signal,
   viewChild
 } from '@angular/core';
-import { NavController, IonButton, IonInput } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonInput, IonContent } from '@ionic/angular/standalone';
 import { toCanvas } from 'qrcode';
 import { IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
@@ -22,65 +22,67 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
  */
 @Component({
   selector: 'idea-auth-setup-mfa',
-  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonInput],
+  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonInput, IonContent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <idea-auth-shell>
-      <div class="idea-auth-heading">
-        <h1 class="idea-auth-title">{{ 'IDEA_AUTH.SETUP_MFA' | translate }}</h1>
-        <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.MFA_REQUIRED_SETUP_HINT' | translate }}</p>
-      </div>
-      <idea-auth-notice [notice]="notice()" />
-      @if (status() === 'setup') {
-        <div class="idea-auth-form">
-          <p class="idea-auth-hint">{{ 'IDEA_AUTH.SETUP_MFA_I' | translate }}</p>
-          <div #qrCode class="idea-auth-qr" role="img" [attr.aria-label]="'IDEA_AUTH.SETUP_MFA_I' | translate"></div>
-          <p class="idea-auth-hint">
-            {{ 'IDEA_AUTH.MFA_SECRET_HINT' | translate }}
-            <span class="idea-auth-secret">{{ secret() }}</span>
-          </p>
-          <div class="idea-auth-field">
-            <label id="idea-auth-setup-mfa-code" class="idea-auth-label" (click)="codeInput()?.setFocus()">
-              {{ 'IDEA_AUTH.OTP_CODE' | translate }}
-            </label>
-            <ion-input
-              testId="setupmfa.otpcode"
-              class="idea-auth-input idea-auth-code"
-              type="text"
-              inputmode="numeric"
-              autocomplete="one-time-code"
-              enterkeyhint="done"
-              [maxlength]="6"
-              aria-labelledby="idea-auth-setup-mfa-code"
-              [attr.aria-invalid]="codeInvalid() || null"
-              [value]="code()"
-              (ionInput)="onCode($event.detail.value)"
-              (keyup.enter)="enable()"
-            />
-          </div>
+    <ion-content class="idea-auth">
+      <idea-auth-shell>
+        <div class="idea-auth-heading">
+          <h1 class="idea-auth-title">{{ 'IDEA_AUTH.SETUP_MFA' | translate }}</h1>
+          <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.MFA_REQUIRED_SETUP_HINT' | translate }}</p>
         </div>
-      }
-      <div class="idea-auth-actions">
+        <idea-auth-notice [notice]="notice()" />
         @if (status() === 'setup') {
-          <ion-button
-            testId="enableMFAButton"
-            class="idea-auth-button"
-            expand="block"
-            [disabled]="code().length !== 6"
-            (click)="enable()"
-          >
-            {{ 'IDEA_AUTH.ENABLE_MFA' | translate }}
-          </ion-button>
-        } @else if (status() === 'enabled') {
-          <ion-button class="idea-auth-button" expand="block" (click)="reloadApp()">
-            {{ 'IDEA_AUTH.CONTINUE' | translate }}
-          </ion-button>
+          <div class="idea-auth-form">
+            <p class="idea-auth-hint">{{ 'IDEA_AUTH.SETUP_MFA_I' | translate }}</p>
+            <div #qrCode class="idea-auth-qr" role="img" [attr.aria-label]="'IDEA_AUTH.SETUP_MFA_I' | translate"></div>
+            <p class="idea-auth-hint">
+              {{ 'IDEA_AUTH.MFA_SECRET_HINT' | translate }}
+              <span class="idea-auth-secret">{{ secret() }}</span>
+            </p>
+            <div class="idea-auth-field">
+              <label id="idea-auth-setup-mfa-code" class="idea-auth-label" (click)="codeInput()?.setFocus()">
+                {{ 'IDEA_AUTH.OTP_CODE' | translate }}
+              </label>
+              <ion-input
+                testId="setupmfa.otpcode"
+                class="idea-auth-input idea-auth-code"
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                enterkeyhint="done"
+                aria-labelledby="idea-auth-setup-mfa-code"
+                [class.ion-touched]="codeInvalid()"
+                [class.ion-invalid]="codeInvalid()"
+                [value]="code()"
+                (ionInput)="onCode($event.detail.value)"
+                (keyup.enter)="enable()"
+              />
+            </div>
+          </div>
         }
-        <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
-          {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
-        </button>
-      </div>
-    </idea-auth-shell>
+        <div class="idea-auth-actions">
+          @if (status() === 'setup') {
+            <ion-button
+              testId="enableMFAButton"
+              class="idea-auth-button"
+              expand="block"
+              [disabled]="code().length !== 6"
+              (click)="enable()"
+            >
+              {{ 'IDEA_AUTH.ENABLE_MFA' | translate }}
+            </ion-button>
+          } @else if (status() === 'enabled') {
+            <ion-button class="idea-auth-button" expand="block" (click)="reloadApp()">
+              {{ 'IDEA_AUTH.CONTINUE' | translate }}
+            </ion-button>
+          }
+          <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
+            {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+          </button>
+        </div>
+      </idea-auth-shell>
+    </ion-content>
   `
 })
 export class IDEAAuthSetupMFAPage {
@@ -138,7 +140,11 @@ export class IDEAAuthSetupMFAPage {
   }
 
   onCode(value: string): void {
-    this.code.set((value ?? '').replace(/\D/g, '').slice(0, 6));
+    const code = (value ?? '').replace(/\D/g, '').slice(0, 6);
+    // back to the field too, which would keep a letter or a space when the code doesn't change
+    const input = this.codeInput();
+    if (input) input.value = code;
+    this.code.set(code);
     this.codeInvalid.set(false);
   }
 

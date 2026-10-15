@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
-import { NavController, IonButton, IonInput } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonInput, IonContent } from '@ionic/angular/standalone';
 import { IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
 import { IDEAAuthService } from './auth.service';
@@ -12,53 +12,55 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
  */
 @Component({
   selector: 'idea-auth-mfa-challenge',
-  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonInput],
+  imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonInput, IonContent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <idea-auth-shell>
-      <div class="idea-auth-heading">
-        <h1 class="idea-auth-title">{{ 'IDEA_AUTH.ENTER_OTP_CODE' | translate }}</h1>
-        <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.ENTER_OTP_CODE_I' | translate }}</p>
-      </div>
-      <idea-auth-notice [notice]="notice()" />
-      <div class="idea-auth-form">
-        <div class="idea-auth-field">
-          <label id="idea-auth-mfa-challenge-code" class="idea-auth-label" (click)="codeInput()?.setFocus()">
-            {{ 'IDEA_AUTH.OTP_CODE' | translate }}
-          </label>
-          <ion-input
-            testId="mfachallenge.otpcode"
-            class="idea-auth-input idea-auth-code"
-            type="text"
-            inputmode="numeric"
-            autocomplete="one-time-code"
-            enterkeyhint="done"
-            [maxlength]="6"
-            aria-labelledby="idea-auth-mfa-challenge-code"
-            aria-describedby="idea-auth-mfa-challenge-hint"
-            [attr.aria-invalid]="codeInvalid() || null"
-            [value]="code()"
-            (ionInput)="onCode($event.detail.value)"
-            (keyup.enter)="confirm()"
-          />
-          <p id="idea-auth-mfa-challenge-hint" class="idea-auth-hint">{{ 'IDEA_AUTH.OTP_CODE_HINT' | translate }}</p>
+    <ion-content class="idea-auth">
+      <idea-auth-shell>
+        <div class="idea-auth-heading">
+          <h1 class="idea-auth-title">{{ 'IDEA_AUTH.ENTER_OTP_CODE' | translate }}</h1>
+          <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.ENTER_OTP_CODE_I' | translate }}</p>
         </div>
-      </div>
-      <div class="idea-auth-actions">
-        <ion-button
-          testId="confirmOTPCodeButton"
-          class="idea-auth-button"
-          expand="block"
-          [disabled]="code().length !== 6"
-          (click)="confirm()"
-        >
-          {{ 'IDEA_AUTH.CONFIRM_OTP_CODE' | translate }}
-        </ion-button>
-        <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
-          {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
-        </button>
-      </div>
-    </idea-auth-shell>
+        <idea-auth-notice [notice]="notice()" />
+        <div class="idea-auth-form">
+          <div class="idea-auth-field">
+            <label id="idea-auth-mfa-challenge-code" class="idea-auth-label" (click)="codeInput()?.setFocus()">
+              {{ 'IDEA_AUTH.OTP_CODE' | translate }}
+            </label>
+            <ion-input
+              testId="mfachallenge.otpcode"
+              class="idea-auth-input idea-auth-code"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              enterkeyhint="done"
+              aria-labelledby="idea-auth-mfa-challenge-code"
+              aria-describedby="idea-auth-mfa-challenge-hint"
+              [class.ion-touched]="codeInvalid()"
+              [class.ion-invalid]="codeInvalid()"
+              [value]="code()"
+              (ionInput)="onCode($event.detail.value)"
+              (keyup.enter)="confirm()"
+            />
+            <p id="idea-auth-mfa-challenge-hint" class="idea-auth-hint">{{ 'IDEA_AUTH.OTP_CODE_HINT' | translate }}</p>
+          </div>
+        </div>
+        <div class="idea-auth-actions">
+          <ion-button
+            testId="confirmOTPCodeButton"
+            class="idea-auth-button"
+            expand="block"
+            [disabled]="code().length !== 6"
+            (click)="confirm()"
+          >
+            {{ 'IDEA_AUTH.CONFIRM_OTP_CODE' | translate }}
+          </ion-button>
+          <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
+            {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+          </button>
+        </div>
+      </idea-auth-shell>
+    </ion-content>
   `
 })
 export class IDEAAuthMFAChallengePage {
@@ -86,7 +88,11 @@ export class IDEAAuthMFAChallengePage {
   }
 
   onCode(value: string): void {
-    this.code.set((value ?? '').replace(/\D/g, '').slice(0, 6));
+    const code = (value ?? '').replace(/\D/g, '').slice(0, 6);
+    // back to the field too, which would keep a letter or a space when the code doesn't change
+    const input = this.codeInput();
+    if (input) input.value = code;
+    this.code.set(code);
     this.codeInvalid.set(false);
     // the code is complete (typed or filled in by the device): no need to press the button
     if (this.code().length === 6) this.confirm();

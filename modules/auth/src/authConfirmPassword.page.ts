@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, IonButton, IonInput } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonInput, IonContent } from '@ionic/angular/standalone';
 import { isEmpty } from 'idea-toolbox';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
@@ -23,96 +23,99 @@ import { IDEAAuthPasswordRequirementsComponent } from './authPasswordRequirement
     IDEAAuthPasswordFieldComponent,
     IDEAAuthPasswordRequirementsComponent,
     IonButton,
-    IonInput
+    IonInput,
+    IonContent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <idea-auth-shell>
-      <div class="idea-auth-heading">
-        <h1 class="idea-auth-title">{{ 'IDEA_AUTH.CHANGE_THE_PASSWORD' | translate }}</h1>
-      </div>
-      <idea-auth-notice [notice]="notice()" />
-      <div class="idea-auth-form">
-        <div class="idea-auth-field">
-          <label id="idea-auth-confirm-password-email" class="idea-auth-label" (click)="emailField.setFocus()">
-            {{ 'IDEA_AUTH.EMAIL' | translate }}
-          </label>
-          <ion-input
-            #emailField
-            testId="confirmpassword.email"
-            class="idea-auth-input"
-            type="email"
-            inputmode="email"
-            autocomplete="username"
-            spellcheck="false"
-            autocapitalize="off"
-            aria-labelledby="idea-auth-confirm-password-email"
-            [value]="email()"
-            (ionInput)="email.set($event.detail.value)"
-          />
+    <ion-content class="idea-auth">
+      <idea-auth-shell>
+        <div class="idea-auth-heading">
+          <h1 class="idea-auth-title">{{ 'IDEA_AUTH.CHANGE_THE_PASSWORD' | translate }}</h1>
         </div>
-        <div class="idea-auth-field">
-          <label id="idea-auth-confirm-password-code" class="idea-auth-label" (click)="codeField.setFocus()">
-            {{ 'IDEA_AUTH.RESET_CODE' | translate }}
-          </label>
-          <ion-input
-            #codeField
-            testId="confirmpassword.code"
-            class="idea-auth-input"
-            type="text"
-            inputmode="numeric"
-            autocomplete="one-time-code"
-            spellcheck="false"
-            aria-labelledby="idea-auth-confirm-password-code"
-            aria-describedby="idea-auth-confirm-password-code-hint"
-            [value]="code()"
-            (ionInput)="code.set($event.detail.value)"
-          />
-          <p id="idea-auth-confirm-password-code-hint" class="idea-auth-hint">
-            {{ 'IDEA_AUTH.RESET_CODE_HINT' | translate }}
-          </p>
+        <idea-auth-notice [notice]="notice()" />
+        <div class="idea-auth-form">
+          <div class="idea-auth-field">
+            <label id="idea-auth-confirm-password-email" class="idea-auth-label" (click)="emailField.setFocus()">
+              {{ 'IDEA_AUTH.EMAIL' | translate }}
+            </label>
+            <ion-input
+              #emailField
+              testId="confirmpassword.email"
+              class="idea-auth-input"
+              type="email"
+              inputmode="email"
+              autocomplete="username"
+              spellcheck="false"
+              autocapitalize="off"
+              aria-labelledby="idea-auth-confirm-password-email"
+              [value]="email()"
+              (ionInput)="email.set($event.detail.value)"
+            />
+          </div>
+          <div class="idea-auth-field">
+            <label id="idea-auth-confirm-password-code" class="idea-auth-label" (click)="codeField.setFocus()">
+              {{ 'IDEA_AUTH.RESET_CODE' | translate }}
+            </label>
+            <ion-input
+              #codeField
+              testId="confirmpassword.code"
+              class="idea-auth-input"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              spellcheck="false"
+              aria-labelledby="idea-auth-confirm-password-code"
+              aria-describedby="idea-auth-confirm-password-code-hint"
+              [value]="code()"
+              (ionInput)="code.set($event.detail.value)"
+            />
+            <p id="idea-auth-confirm-password-code-hint" class="idea-auth-hint">
+              {{ 'IDEA_AUTH.RESET_CODE_HINT' | translate }}
+            </p>
+          </div>
+          <div class="idea-auth-field">
+            <label id="idea-auth-confirm-password-password" class="idea-auth-label" (click)="passwordField()?.focus()">
+              {{ 'IDEA_AUTH.NEW_PASSWORD' | translate }}
+            </label>
+            <idea-auth-password-field
+              testId="confirmpassword.password"
+              labelledBy="idea-auth-confirm-password-password"
+              describedBy="idea-auth-confirm-password-requirements"
+              autocomplete="new-password"
+              [(value)]="password"
+              (enter)="confirm()"
+            />
+          </div>
+          <idea-auth-password-requirements listId="idea-auth-confirm-password-requirements" [password]="password()" />
+          @if (advancedPasswordCheck) {
+            <p class="idea-auth-hint">{{ 'IDEA_AUTH.COMMON_PASSWORDS_CHECK_HINT' | translate }}</p>
+          }
         </div>
-        <div class="idea-auth-field">
-          <label id="idea-auth-confirm-password-password" class="idea-auth-label" (click)="passwordField()?.focus()">
-            {{ 'IDEA_AUTH.NEW_PASSWORD' | translate }}
-          </label>
-          <idea-auth-password-field
-            testId="confirmpassword.password"
-            labelledBy="idea-auth-confirm-password-password"
-            describedBy="idea-auth-confirm-password-requirements"
-            autocomplete="new-password"
-            [(value)]="password"
-            (enter)="confirm()"
-          />
+        <div class="idea-auth-actions">
+          <ion-button
+            testId="changePasswordButton"
+            class="idea-auth-button"
+            expand="block"
+            [disabled]="!policyMet()"
+            (click)="confirm()"
+          >
+            {{ 'IDEA_AUTH.CHANGE_MY_PASSWORD' | translate }}
+          </ion-button>
+          <button
+            testId="haventReceivedResetCodeButton"
+            type="button"
+            class="idea-auth-link"
+            (click)="goToForgotPassword()"
+          >
+            {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_A_RESET_CODE' | translate }}
+          </button>
+          <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
+            {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+          </button>
         </div>
-        <idea-auth-password-requirements listId="idea-auth-confirm-password-requirements" [password]="password()" />
-        @if (advancedPasswordCheck) {
-          <p class="idea-auth-hint">{{ 'IDEA_AUTH.COMMON_PASSWORDS_CHECK_HINT' | translate }}</p>
-        }
-      </div>
-      <div class="idea-auth-actions">
-        <ion-button
-          testId="changePasswordButton"
-          class="idea-auth-button"
-          expand="block"
-          [disabled]="!policyMet()"
-          (click)="confirm()"
-        >
-          {{ 'IDEA_AUTH.CHANGE_MY_PASSWORD' | translate }}
-        </ion-button>
-        <button
-          testId="haventReceivedResetCodeButton"
-          type="button"
-          class="idea-auth-link"
-          (click)="goToForgotPassword()"
-        >
-          {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_A_RESET_CODE' | translate }}
-        </button>
-        <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
-          {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
-        </button>
-      </div>
-    </idea-auth-shell>
+      </idea-auth-shell>
+    </ion-content>
   `
 })
 export class IDEAAuthConfirmPasswordPage {
@@ -145,7 +148,6 @@ export class IDEAAuthConfirmPasswordPage {
     this.code.set(params.get('code') || '');
   }
   ionViewDidEnter(): void {
-    // the focus goes to the first field still to fill
     if (!this.email()) this.emailInput()?.setFocus();
     else if (!this.code()) this.codeInput()?.setFocus();
     else this.passwordField()?.focus();

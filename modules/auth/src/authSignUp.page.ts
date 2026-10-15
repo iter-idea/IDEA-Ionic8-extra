@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
-import { NavController, IonButton, IonCheckbox, IonInput } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonCheckbox, IonInput, IonContent } from '@ionic/angular/standalone';
 import { isEmpty } from 'idea-toolbox';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslationsService, IDEATranslatePipe } from '@idea-ionic/common';
 
@@ -23,98 +23,101 @@ import { IDEAAuthPasswordRequirementsComponent } from './authPasswordRequirement
     IDEAAuthPasswordRequirementsComponent,
     IonButton,
     IonCheckbox,
-    IonInput
+    IonInput,
+    IonContent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <idea-auth-shell>
-      <div class="idea-auth-heading">
-        <h1 class="idea-auth-title">{{ 'IDEA_AUTH.NEW_ACCOUNT' | translate }}</h1>
-        <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.REGISTER_A_NEW_ACCOUNT_TO_THE_SYSTEM' | translate }}</p>
-      </div>
-      <idea-auth-notice [notice]="notice()" />
-      <div class="idea-auth-form">
-        <div class="idea-auth-field">
-          <label id="idea-auth-sign-up-email" class="idea-auth-label" (click)="emailField.setFocus()">
-            {{ 'IDEA_AUTH.EMAIL' | translate }}
-          </label>
-          <ion-input
-            #emailField
-            testId="signup.email"
-            class="idea-auth-input"
-            type="email"
-            inputmode="email"
-            autocomplete="email"
-            spellcheck="false"
-            autocapitalize="off"
-            aria-labelledby="idea-auth-sign-up-email"
-            [value]="email()"
-            (ionInput)="email.set($event.detail.value)"
-          />
+    <ion-content class="idea-auth">
+      <idea-auth-shell>
+        <div class="idea-auth-heading">
+          <h1 class="idea-auth-title">{{ 'IDEA_AUTH.NEW_ACCOUNT' | translate }}</h1>
+          <p class="idea-auth-subtitle">{{ 'IDEA_AUTH.REGISTER_A_NEW_ACCOUNT_TO_THE_SYSTEM' | translate }}</p>
         </div>
-        <div class="idea-auth-field">
-          <label id="idea-auth-sign-up-password" class="idea-auth-label" (click)="passwordField.focus()">
-            {{ 'IDEA_AUTH.PASSWORD' | translate }}
-          </label>
-          <idea-auth-password-field
-            #passwordField
-            testId="signup.password"
-            labelledBy="idea-auth-sign-up-password"
-            describedBy="idea-auth-sign-up-requirements"
-            autocomplete="new-password"
-            [(value)]="password"
-            (enter)="register()"
-          />
-        </div>
-        <idea-auth-password-requirements listId="idea-auth-sign-up-requirements" [password]="password()" />
-        @if (hasAgreements) {
-          <div class="idea-auth-agreements">
-            <ion-checkbox
-              class="idea-auth-checkbox"
-              labelPlacement="end"
-              justify="start"
-              [checked]="agreementsAccepted()"
-              (ionChange)="agreementsAccepted.set($event.detail.checked)"
-            >
-              {{ 'IDEA_AUTH.AGREEMENTS_CHECK_REGISTRATION' | translate }}:
-            </ion-checkbox>
-            @if (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
-              <a target="_blank" rel="noopener" [href]="'IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL' | translate">{{
-                'IDEA_AUTH.TERMS_AND_CONDITIONS' | translate
-              }}</a>
-            }
-            @if (
-              translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') &&
-              translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')
-            ) {
-              {{ 'IDEA_AUTH.AND' | translate }}
-            }
-            @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
-              <a target="_blank" rel="noopener" [href]="'IDEA_VARIABLES.PRIVACY_POLICY_URL' | translate">{{
-                'IDEA_AUTH.PRIVACY_POLICY' | translate
-              }}</a>
-            }
+        <idea-auth-notice [notice]="notice()" />
+        <div class="idea-auth-form">
+          <div class="idea-auth-field">
+            <label id="idea-auth-sign-up-email" class="idea-auth-label" (click)="emailField.setFocus()">
+              {{ 'IDEA_AUTH.EMAIL' | translate }}
+            </label>
+            <ion-input
+              #emailField
+              testId="signup.email"
+              class="idea-auth-input"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              spellcheck="false"
+              autocapitalize="off"
+              aria-labelledby="idea-auth-sign-up-email"
+              [value]="email()"
+              (ionInput)="email.set($event.detail.value)"
+            />
           </div>
-        }
-      </div>
-      <div class="idea-auth-actions">
-        <ion-button
-          testId="signUpButton"
-          class="idea-auth-button"
-          expand="block"
-          [disabled]="!canRegister()"
-          (click)="register()"
-        >
-          {{ 'IDEA_AUTH.CREATE_AN_ACCOUNT' | translate }}
-        </ion-button>
-        <button testId="resendLinkButton" type="button" class="idea-auth-link" (click)="goToResendLink()">
-          {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_CONFIRMATION_LINK' | translate }}
-        </button>
-        <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
-          {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
-        </button>
-      </div>
-    </idea-auth-shell>
+          <div class="idea-auth-field">
+            <label id="idea-auth-sign-up-password" class="idea-auth-label" (click)="passwordField.focus()">
+              {{ 'IDEA_AUTH.PASSWORD' | translate }}
+            </label>
+            <idea-auth-password-field
+              #passwordField
+              testId="signup.password"
+              labelledBy="idea-auth-sign-up-password"
+              describedBy="idea-auth-sign-up-requirements"
+              autocomplete="new-password"
+              [(value)]="password"
+              (enter)="register()"
+            />
+          </div>
+          <idea-auth-password-requirements listId="idea-auth-sign-up-requirements" [password]="password()" />
+          @if (hasAgreements) {
+            <div class="idea-auth-agreements">
+              <ion-checkbox
+                class="idea-auth-checkbox"
+                labelPlacement="end"
+                justify="start"
+                [checked]="agreementsAccepted()"
+                (ionChange)="agreementsAccepted.set($event.detail.checked)"
+              >
+                {{ 'IDEA_AUTH.AGREEMENTS_CHECK_REGISTRATION' | translate }}:
+              </ion-checkbox>
+              @if (translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL')) {
+                <a target="_blank" rel="noopener" [href]="'IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL' | translate">{{
+                  'IDEA_AUTH.TERMS_AND_CONDITIONS' | translate
+                }}</a>
+              }
+              @if (
+                translationExists('IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL') &&
+                translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')
+              ) {
+                {{ 'IDEA_AUTH.AND' | translate }}
+              }
+              @if (translationExists('IDEA_VARIABLES.PRIVACY_POLICY_URL')) {
+                <a target="_blank" rel="noopener" [href]="'IDEA_VARIABLES.PRIVACY_POLICY_URL' | translate">{{
+                  'IDEA_AUTH.PRIVACY_POLICY' | translate
+                }}</a>
+              }
+            </div>
+          }
+        </div>
+        <div class="idea-auth-actions">
+          <ion-button
+            testId="signUpButton"
+            class="idea-auth-button"
+            expand="block"
+            [disabled]="!canRegister()"
+            (click)="register()"
+          >
+            {{ 'IDEA_AUTH.CREATE_AN_ACCOUNT' | translate }}
+          </ion-button>
+          <button testId="resendLinkButton" type="button" class="idea-auth-link" (click)="goToResendLink()">
+            {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_CONFIRMATION_LINK' | translate }}
+          </button>
+          <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
+            {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
+          </button>
+        </div>
+      </idea-auth-shell>
+    </ion-content>
   `
 })
 export class IDEAAuthSignUpPage {

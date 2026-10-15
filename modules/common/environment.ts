@@ -39,6 +39,8 @@ export interface IDEAEnvironmentConfiguration {
       registrationIsPossible: boolean;
       singleSimultaneousSession: boolean;
       forceLoginWithMFA: boolean;
+      // the logo of the pages of `IDEAAuthRoutes`; the dark one with the system's dark mode
+      logo?: { light: string; dark?: string };
       // note: the passwordPolicy should be set matching the configuration of the Cognito User Pool
       passwordPolicy?: {
         minLength: number;
