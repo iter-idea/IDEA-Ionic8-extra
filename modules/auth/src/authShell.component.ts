@@ -47,7 +47,7 @@ import { IDEAEnvironment, IDEATranslationsService, IDEATranslatePipe } from '@id
             [title]="'IDEA_AUTH.IDEA_TAGLINE' | translate"
             (click)="openLink(website)"
           >
-            <span>{{ 'IDEA_AUTH.PRODUCT_BY' | translate }}</span>
+            <span>{{ madeBy | translate }}</span>
             <picture>
               <source media="(prefers-color-scheme: dark)" srcset="assets/icons/idea-alt.png" />
               <img src="assets/icons/idea.png" alt="ITER IDEA" />
@@ -85,7 +85,8 @@ export class IDEAAuthShellComponent {
   title: string = this._env.idea.auth.title;
   website: string = this._env.idea.auth.website;
   hasIntroPage: boolean = this._env.idea.auth.hasIntroPage;
-  // the app's own name for the link to its intro page, if it has one
+  // the app's own terms for the credit and for the link to its intro page, if it has them
+  madeBy = this.translationExists('IDEA_VARIABLES.MADE_BY') ? 'IDEA_VARIABLES.MADE_BY' : 'IDEA_AUTH.MADE_BY';
   introLink = this.translationExists('IDEA_VARIABLES.INTRO_LINK')
     ? 'IDEA_VARIABLES.INTRO_LINK'
     : 'IDEA_AUTH.INTRO_LINK';

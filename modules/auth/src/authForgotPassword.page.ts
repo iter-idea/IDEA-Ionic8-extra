@@ -25,9 +25,19 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
         <idea-auth-notice [notice]="notice()" />
         <div class="idea-auth-form">
           <div class="idea-auth-field">
-            <label id="idea-auth-forgot-password-email" class="idea-auth-label" (click)="emailInput()?.setFocus()">
-              {{ 'IDEA_AUTH.EMAIL' | translate }}
-            </label>
+            <div class="idea-auth-label-row">
+              <label id="idea-auth-forgot-password-email" class="idea-auth-label" (click)="emailInput()?.setFocus()">
+                {{ 'IDEA_AUTH.EMAIL' | translate }}
+              </label>
+              <button
+                testId="insertResetCodeButton"
+                type="button"
+                class="idea-auth-link"
+                (click)="goToConfirmPassword()"
+              >
+                {{ 'IDEA_AUTH.ALREADY_HAVE_A_RESET_CODE' | translate }}
+              </button>
+            </div>
             <ion-input
               testId="forgotpassword.email"
               class="idea-auth-input"
@@ -48,9 +58,6 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
           <ion-button testId="resetPasswordButton" class="idea-auth-button" expand="block" (click)="requestReset()">
             {{ 'IDEA_AUTH.RESET_MY_PASSWORD' | translate }}
           </ion-button>
-          <button testId="insertResetCodeButton" type="button" class="idea-auth-link" (click)="goToConfirmPassword()">
-            {{ 'IDEA_AUTH.ALREADY_HAVE_A_RESET_CODE' | translate }}
-          </button>
           <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
             {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
           </button>

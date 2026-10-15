@@ -46,7 +46,7 @@ In `environment.idea.auth`, besides the current ones (`title`, `website`, `hasIn
 
 - `logo`: `{ light: string; dark?: string }`, the paths of the logo, the dark one shown with the system's dark mode; default `assets/icons/icon-auth.svg` and `assets/icons/icon-auth-alt.svg`.
 
-The header shows the logo, the `title` and the `IDEA_VARIABLES.TAGLINE` term, if any; the footer the terms (`IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL`, `IDEA_VARIABLES.PRIVACY_POLICY_URL`), the link to the intro page (with `hasIntroPage`: "Website", or the `IDEA_VARIABLES.INTRO_LINK` term, e.g. "Discover AIRP") and, with `website`, ITER IDEA's logo: the app's `assets/icons/idea.png` (`idea-alt.png` with the system's dark mode).
+The header shows the logo, the `title` and the `IDEA_VARIABLES.TAGLINE` term, if any; the footer the terms (`IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL`, `IDEA_VARIABLES.PRIVACY_POLICY_URL`), the link to the intro page (with `hasIntroPage`: "Website", or the `IDEA_VARIABLES.INTRO_LINK` term, e.g. "Discover AIRP") and, with `website`, ITER IDEA's logo after "Made by" (or the `IDEA_VARIABLES.MADE_BY` term): the app's `assets/icons/idea.png` (`idea-alt.png` with the system's dark mode). Without `website`, which only these pages use, no credit.
 
 A page that's always dark (e.g. a dark brand, also with the system's light mode) gives only `logo.light`, in its version for a dark background, and puts the light version of ITER IDEA's logo in both files.
 
@@ -85,6 +85,11 @@ Set where the app sets its theme (light and dark); all optional, they default to
 | `--idea-auth-notice-color`          | the color                                                                                                     |
 | `--idea-auth-logo-height`           | `40px`                                                                                                        |
 | `--idea-auth-tagline-color`         | the muted color                                                                                               |
+| `--idea-auth-app-name-color`        | the color                                                                                                     |
+| `--idea-auth-app-name-font-weight`  | `700`                                                                                                         |
+| `--idea-auth-app-name-font-size`    | `16px`                                                                                                        |
+| `--idea-auth-app-name-separator`    | none; a line between the logo and the name, as a border (e.g. `1px solid #6bc3e2`)                            |
+| `--idea-auth-header-gap`            | 35% of the logo's height                                                                                      |
 
 ```scss
 :root {
@@ -99,6 +104,6 @@ Set where the app sets its theme (light and dark); all optional, they default to
 
 The pages' rules have no specificity: an app's plain selector on these classes applies, without `:root` or `!important`. The exceptions are the components that Ionic styles with a class and the apps often by tag: the module's rules are `ion-input.idea-auth-input`, `ion-button.idea-auth-button` and `ion-checkbox.idea-auth-checkbox`, which an app's `ion-input`, `ion-button` or `ion-checkbox` rules don't reach; to restyle one beyond its tokens, use one class more (e.g. `.idea-auth ion-button.idea-auth-button`). The page's background is painted on the `background` part of its `ion-content`, out of reach of an app's `ion-content { --background }`: `.idea-auth::part(background)` restyles it.
 
-`.idea-auth` (the page's `ion-content`), `.idea-auth-header`, `.idea-auth-logo`, `.idea-auth-app-name`, `.idea-auth-tagline`, `.idea-auth-main`, `.idea-auth-column`, `.idea-auth-heading`, `.idea-auth-title`, `.idea-auth-subtitle`, `.idea-auth-form`, `.idea-auth-field`, `.idea-auth-label`, `.idea-auth-input` (the `ion-input`), `.idea-auth-hint`, `.idea-auth-chip`, `.idea-auth-notice`, `.idea-auth-requirements`, `.idea-auth-actions`, `.idea-auth-button` (the `ion-button`), `.idea-auth-link`, `.idea-auth-agreements`, `.idea-auth-checkbox` (the `ion-checkbox`), `.idea-auth-footer`.
+`.idea-auth` (the page's `ion-content`), `.idea-auth-header`, `.idea-auth-logo`, `.idea-auth-app-name`, `.idea-auth-tagline`, `.idea-auth-main`, `.idea-auth-column`, `.idea-auth-heading`, `.idea-auth-title`, `.idea-auth-subtitle`, `.idea-auth-form`, `.idea-auth-field`, `.idea-auth-label`, `.idea-auth-input` (the `ion-input`), `.idea-auth-hint`, `.idea-auth-account`, `.idea-auth-notice`, `.idea-auth-requirements`, `.idea-auth-actions`, `.idea-auth-button` (the `ion-button`), `.idea-auth-link`, `.idea-auth-agreements`, `.idea-auth-checkbox` (the `ion-checkbox`), `.idea-auth-footer`.
 
 E.g. `.idea-auth-app-name { display: none; }` when the logo already carries the app's name.

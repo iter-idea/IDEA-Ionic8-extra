@@ -32,6 +32,11 @@
   --_notice-color: var(--idea-auth-notice-color, var(--_color));
   --_logo-height: var(--idea-auth-logo-height, 40px);
   --_tagline-color: var(--idea-auth-tagline-color, var(--_color-muted));
+  --_app-name-color: var(--idea-auth-app-name-color, var(--_color));
+  --_app-name-font-weight: var(--idea-auth-app-name-font-weight, 700);
+  --_app-name-font-size: var(--idea-auth-app-name-font-size, 16px);
+  --_app-name-separator: var(--idea-auth-app-name-separator, none);
+  --_header-gap: var(--idea-auth-header-gap, calc(var(--_logo-height) * 0.35));
 }
 @media (prefers-color-scheme: dark) {
   :where(ion-content.idea-auth) {
@@ -60,7 +65,8 @@
 :where(.idea-auth-header) {
   display: flex;
   align-items: center;
-  gap: 12px;
+  // the space after the logo grows with it
+  gap: var(--_header-gap);
   padding: calc(var(--ion-safe-area-top, 0px) + 24px) 0 8px;
 }
 :where(.idea-auth-logo) {
@@ -69,12 +75,24 @@
   width: auto;
 }
 :where(.idea-auth-app-name) {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 16px;
-  font-weight: 700;
+  color: var(--_app-name-color);
+  font-size: var(--_app-name-font-size);
+  font-weight: var(--_app-name-font-weight);
   line-height: 1.2;
+}
+// the line between the logo and the name, if any: in the middle of the space between them, out of the layout
+:where(.idea-auth-app-name)::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(var(--_header-gap) / -2);
+  height: calc(var(--_logo-height) * 0.4);
+  border-left: var(--_app-name-separator);
+  transform: translateY(-50%);
 }
 :where(.idea-auth-tagline) {
   font-size: 13px;
@@ -95,10 +113,12 @@
   flex-direction: column;
   gap: 28px;
 }
+// the title, with what goes with it, set apart from the form below
 :where(.idea-auth-heading) {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 12px;
 }
 h1:where(.idea-auth-title) {
   margin: 0;
@@ -139,7 +159,9 @@ h1:where(.idea-auth-title) {
 // an `ion-input` with no fill, the same in both modes: its box is drawn on the host, through its public variables.
 // Not in `:where`: as a scoped component, Ionic sets its defaults on the host with a class, which this has to beat
 ion-input.idea-auth-input {
-  --background: var(--_field-background);
+  // the background on the host, under its border: Ionic paints `--background` inside it, with the corners open
+  --background: transparent;
+  background: var(--_field-background);
   --color: var(--_field-color);
   --placeholder-color: var(--_field-color);
   --border-radius: var(--_field-radius);
@@ -199,28 +221,23 @@ ion-input.idea-auth-input.idea-auth-code {
   text-align: center;
 }
 
-// the email already given, with the link to change it: no fill, so the page's text and link colours stay readable
-:where(.idea-auth-chip) {
-  align-self: flex-start;
-  max-width: 100%;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 2px 2px 14px;
-  border: 1px solid var(--_field-border-color);
-  border-radius: 999px;
-  font-size: 15px;
+// the email already given, under the title, with the link to change it
+:where(.idea-auth-account) {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-size: 16px;
+  line-height: 1.5;
 }
-:where(.idea-auth-chip-email) {
+:where(.idea-auth-account-email) {
+  min-width: 0;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-// a margin, as Ionic's global rule on the buttons (`button { padding: 0 }`) beats `:where`
-:where(.idea-auth-chip .idea-auth-link) {
-  flex: 0 0 auto;
-  margin: 0 12px 0 8px;
+  font-weight: 500;
 }
 
 // actions: the primary one, and the links
@@ -270,6 +287,19 @@ ion-button.idea-auth-button:active {
 :where(.idea-auth-link[data-muted]) {
   color: var(--_color-muted);
 }
+// the way back, under the main action: a step further from it
+:where(.idea-auth-actions > .idea-auth-link[data-muted]) {
+  margin-top: 8px;
+}
+// a link in a line of text (the account's, a field's label) or in a field: on its baseline, as tall as the AA target
+// size (24px)
+:where(.idea-auth-account .idea-auth-link, .idea-auth-label-row .idea-auth-link, .idea-auth-field > .idea-auth-link) {
+  align-self: baseline;
+  min-height: 24px;
+}
+:where(.idea-auth-account .idea-auth-link) {
+  font-size: 16px;
+}
 :where(.idea-auth-agreements) {
   margin: 0;
   font-size: 13px;
@@ -293,18 +323,27 @@ ion-checkbox.idea-auth-checkbox {
   align-items: flex-start;
   gap: 10px;
   padding: 12px 14px;
+  border: 1px solid var(--_field-border-color);
   border-radius: var(--_radius);
   background: var(--_notice-background);
   color: var(--_notice-color);
   font-size: 15px;
   line-height: 1.45;
 }
+:where(.idea-auth-notice[data-kind='error']) {
+  border-color: var(--_danger);
+}
+:where(.idea-auth-notice[data-kind='success']) {
+  border-color: var(--_success);
+}
 // tinted with the tokens' colors, where the browser can mix them (elsewhere, the neutral background)
 @supports (color: color-mix(in srgb, white, black)) {
   :where(.idea-auth-notice[data-kind='error']) {
+    border-color: color-mix(in srgb, var(--_danger) 55%, transparent);
     background: color-mix(in srgb, var(--_danger) 10%, transparent);
   }
   :where(.idea-auth-notice[data-kind='success']) {
+    border-color: color-mix(in srgb, var(--_success) 55%, transparent);
     background: color-mix(in srgb, var(--_success) 14%, transparent);
   }
 }
@@ -419,18 +458,4 @@ ion-checkbox.idea-auth-checkbox {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
-}
-
-// on a phone the column takes the whole height, and the actions go down, where the thumb is
-@media only screen and (max-width: 600px) {
-  :where(.idea-auth-main) {
-    align-items: stretch;
-    padding-top: 24px;
-  }
-  :where(.idea-auth-column) {
-    flex: 1 0 auto;
-  }
-  :where(.idea-auth-column > .idea-auth-actions) {
-    margin-top: auto;
-  }
 }

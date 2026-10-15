@@ -73,6 +73,14 @@ import { IDEAAuthPasswordRequirementsComponent } from './authPasswordRequirement
             <p id="idea-auth-confirm-password-code-hint" class="idea-auth-hint">
               {{ 'IDEA_AUTH.RESET_CODE_HINT' | translate }}
             </p>
+            <button
+              testId="haventReceivedResetCodeButton"
+              type="button"
+              class="idea-auth-link"
+              (click)="goToForgotPassword()"
+            >
+              {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_A_RESET_CODE' | translate }}
+            </button>
           </div>
           <div class="idea-auth-field">
             <label id="idea-auth-confirm-password-password" class="idea-auth-label" (click)="passwordField()?.focus()">
@@ -102,14 +110,6 @@ import { IDEAAuthPasswordRequirementsComponent } from './authPasswordRequirement
           >
             {{ 'IDEA_AUTH.CHANGE_MY_PASSWORD' | translate }}
           </ion-button>
-          <button
-            testId="haventReceivedResetCodeButton"
-            type="button"
-            class="idea-auth-link"
-            (click)="goToForgotPassword()"
-          >
-            {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_A_RESET_CODE' | translate }}
-          </button>
           <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
             {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
           </button>

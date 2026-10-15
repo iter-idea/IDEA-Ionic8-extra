@@ -75,17 +75,17 @@ import { IDEAAuthPasswordFieldComponent } from './authPasswordField.component';
         } @else {
           <div class="idea-auth-heading">
             <h1 class="idea-auth-title">{{ 'IDEA_AUTH.ENTER_YOUR_PASSWORD' | translate }}</h1>
-          </div>
-          <div class="idea-auth-chip">
-            <span class="idea-auth-chip-email">{{ email() }}</span>
-            <button
-              type="button"
-              class="idea-auth-link"
-              [title]="'IDEA_AUTH.EDIT_EMAIL' | translate"
-              (click)="editEmail()"
-            >
-              {{ 'IDEA_AUTH.CHANGE_EMAIL' | translate }}
-            </button>
+            <p class="idea-auth-account">
+              <span class="idea-auth-account-email">{{ email() }}</span>
+              <button
+                type="button"
+                class="idea-auth-link"
+                [title]="'IDEA_AUTH.EDIT_EMAIL' | translate"
+                (click)="editEmail()"
+              >
+                {{ 'IDEA_AUTH.CHANGE_EMAIL' | translate }}
+              </button>
+            </p>
           </div>
           <idea-auth-notice [notice]="notice()" />
           <div class="idea-auth-form">
@@ -100,23 +100,25 @@ import { IDEAAuthPasswordFieldComponent } from './authPasswordField.component';
               [value]="email()"
             />
             <div class="idea-auth-field">
-              <label id="idea-auth-sign-in-password" class="idea-auth-label" (click)="passwordField()?.focus()">
-                {{ 'IDEA_AUTH.PASSWORD' | translate }}
-              </label>
+              <div class="idea-auth-label-row">
+                <label id="idea-auth-sign-in-password" class="idea-auth-label" (click)="passwordField()?.focus()">
+                  {{ 'IDEA_AUTH.PASSWORD' | translate }}
+                </label>
+                <button
+                  testId="forgotPasswordButton"
+                  type="button"
+                  class="idea-auth-link"
+                  (click)="goTo('forgot-password')"
+                >
+                  {{ 'IDEA_AUTH.I_FORGOT_MY_PASSWORD' | translate }}
+                </button>
+              </div>
               <idea-auth-password-field
                 testId="signin.password"
                 labelledBy="idea-auth-sign-in-password"
                 [(value)]="password"
                 (enter)="signIn()"
               />
-              <button
-                testId="forgotPasswordButton"
-                type="button"
-                class="idea-auth-link"
-                (click)="goTo('forgot-password')"
-              >
-                {{ 'IDEA_AUTH.I_FORGOT_MY_PASSWORD' | translate }}
-              </button>
             </div>
           </div>
           <div class="idea-auth-actions">

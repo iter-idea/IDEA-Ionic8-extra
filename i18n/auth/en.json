@@ -111,7 +111,7 @@
     "HIDE_PASSWORD": "Hide password",
     "BY_SIGNING_IN_YOU_ACCEPT": "By signing in, you accept:",
     "AND": "and",
-    "PRODUCT_BY": "A product by",
+    "MADE_BY": "Made by",
     "FIRST_ACCESS_HINT": "It's your first sign-in: choose the password you'll use from now on.",
     "COMMON_PASSWORDS_CHECK_HINT": "When you confirm, we also check that it isn't among the most common passwords.",
     "OTP_CODE_HINT": "The code changes every 30 seconds.",

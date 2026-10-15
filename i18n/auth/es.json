@@ -111,7 +111,7 @@
     "HIDE_PASSWORD": "Ocultar la contraseña",
     "BY_SIGNING_IN_YOU_ACCEPT": "Al iniciar sesión, acepta:",
     "AND": "y",
-    "PRODUCT_BY": "Un producto de",
+    "MADE_BY": "Desarrollado por",
     "FIRST_ACCESS_HINT": "Es su primer acceso: elija la contraseña que usará a partir de ahora.",
     "COMMON_PASSWORDS_CHECK_HINT": "Al confirmar, también comprobamos que no esté entre las contraseñas más comunes.",
     "OTP_CODE_HINT": "El código cambia cada 30 segundos.",
