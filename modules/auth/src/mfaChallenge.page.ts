@@ -111,6 +111,11 @@ export class IDEAMFAChallengePage implements OnInit {
       await this._auth.completeMFAChallenge(this.otpCode);
       window.location.assign('');
     } catch (error) {
+      // the time to answer the sign-in's challenge is over: only a new sign-in can go on
+      if (!this._auth.challengeUsername) {
+        this._message.error('IDEA_AUTH.SIGN_IN_SESSION_EXPIRED');
+        return this.goToAuth();
+      }
       this.errorMsg.set(this._translate._('IDEA_AUTH.INVALID_OTP_CODE'));
       this._message.error(this.errorMsg(), { dontTranslate: true });
     } finally {

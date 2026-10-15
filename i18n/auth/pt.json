@@ -100,6 +100,7 @@
     "EDIT_EMAIL": "Editar endereço de e-mail",
     "CONTINUE": "Continuar",
     "CONTINUE_HINT": "Continua o início de sessão com o e-mail selecionado",
-    "UNKNOWN_PROVIDER": "Fornecedor de início de sessão desconhecido"
+    "UNKNOWN_PROVIDER": "Fornecedor de início de sessão desconhecido",
+    "SIGN_IN_SESSION_EXPIRED": "O tempo para concluir o início de sessão esgotou-se: inicia sessão de novo"
   }
 }

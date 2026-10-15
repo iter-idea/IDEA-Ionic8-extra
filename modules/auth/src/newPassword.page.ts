@@ -152,6 +152,11 @@ export class IDEANewPasswordPage implements OnInit {
       await this._auth.confirmNewPassword(this.newPassword);
       window.location.assign('');
     } catch (error) {
+      // the time to answer the sign-in's challenge is over: only a new sign-in can go on
+      if (!this._auth.challengeUsername) {
+        this._message.error('IDEA_AUTH.SIGN_IN_SESSION_EXPIRED');
+        return this.goToAuth();
+      }
       this.errorMsg.set((error as any).message);
       this._message.error('IDEA_AUTH.PASSWORD_REQUIREMENTS_FOLLOW');
     } finally {

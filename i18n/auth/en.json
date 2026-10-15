@@ -100,6 +100,7 @@
     "EDIT_EMAIL": "Edit email address",
     "CONTINUE": "Continue",
     "CONTINUE_HINT": "Continue the sign-in with the selected email",
-    "UNKNOWN_PROVIDER": "Unknown sign-in provider"
+    "UNKNOWN_PROVIDER": "Unknown sign-in provider",
+    "SIGN_IN_SESSION_EXPIRED": "The time to complete the sign-in has run out: please sign in again"
   }
 }

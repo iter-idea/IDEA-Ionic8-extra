@@ -4,5 +4,5 @@
   "lib": {
     "entryFile": "public-api.ts"
   },
-  "allowedNonPeerDependencies": ["amazon-cognito-identity-js"]
+  "allowedNonPeerDependencies": ["aws-amplify"]
 }

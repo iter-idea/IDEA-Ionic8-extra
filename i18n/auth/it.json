@@ -100,6 +100,7 @@
     "EDIT_EMAIL": "Modifica indirizzo email",
     "CONTINUE": "Continua",
     "CONTINUE_HINT": "Continua l'accesso con l'email selezionata",
-    "UNKNOWN_PROVIDER": "Provider di accesso sconosciuto"
+    "UNKNOWN_PROVIDER": "Provider di accesso sconosciuto",
+    "SIGN_IN_SESSION_EXPIRED": "Il tempo per completare l'accesso è scaduto: accedi di nuovo"
   }
 }

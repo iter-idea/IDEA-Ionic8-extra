@@ -1,14 +1,23 @@
 import { Injectable, inject } from '@angular/core';
+import { Amplify } from 'aws-amplify';
 import {
-  AuthenticationDetails,
-  CognitoUser,
-  CognitoUserAttribute,
-  CognitoUserPool,
-  CognitoRefreshToken,
-  CognitoUserSession,
-  ISignUpResult,
-  ChallengeName
-} from 'amazon-cognito-identity-js';
+  AuthSession,
+  confirmResetPassword,
+  confirmSignIn,
+  confirmSignUp,
+  fetchAuthSession,
+  fetchMFAPreference,
+  fetchUserAttributes,
+  resendSignUpCode,
+  resetPassword,
+  setUpTOTP,
+  signIn,
+  signOut,
+  signUp,
+  updateMFAPreference,
+  updateUserAttributes as updateCognitoUserAttributes,
+  verifyTOTPSetup
+} from 'aws-amplify/auth';
 import { IDEAEnvironment, IDEAStorageService, IDEATranslationsService } from '@idea-ionic/common';
 
 import { COMMON_PASSWORDS_TOP_1000 } from './commonPasswords.model';
@@ -29,10 +38,10 @@ export class IDEAAuthService {
    */
   protected deviceKeyAttribute: string;
 
-  private userPool: CognitoUserPool;
-
+  /**
+   * The user signing in, while the sign-in waits for the answer to a challenge (new password, MFA code).
+   */
   challengeUsername: string;
-  private challengePassword: string;
 
   private newAccountJustRegistered: string;
 
@@ -42,125 +51,87 @@ export class IDEAAuthService {
 
   constructor() {
     this.deviceKeyAttribute = 'custom:'.concat(this._env.idea.project);
-    this.userPool = new CognitoUserPool({
-      UserPoolId: this._env.aws.cognito.userPoolId,
-      ClientId: this._env.aws.cognito.userPoolClientId
+    Amplify.configure({
+      Auth: {
+        Cognito: {
+          userPoolId: this._env.aws.cognito.userPoolId,
+          userPoolClientId: this._env.aws.cognito.userPoolClientId
+        }
+      }
     });
     this.mfaProjectName = this._env.idea.auth.title || this._env.idea.project;
     this.passwordPolicy = this._env.idea.auth.passwordPolicy;
   }
 
   /**
-   * Prepare the necessary structure to get authorized in Cognito.
-   */
-  private prepareAuthDetails(username: string, pwd: string): AuthenticationDetails {
-    return new AuthenticationDetails({ Username: username, Password: pwd });
-  }
-  /**
-   * Prepare the necessary structure to identify a Cognito user.
-   */
-  prepareCognitoUser(username: string): CognitoUser {
-    return new CognitoUser({ Username: username, Pool: this.userPool });
-  }
-  /**
-   * Prepare a user attribute (they are all strings) in Cognito's format.
-   */
-  private prepareUserAttribute(name: string, value: string): CognitoUserAttribute {
-    return new CognitoUserAttribute({ Name: name, Value: value });
-  }
-
-  /**
    * Perform a login through username and password.
    */
-  login(username: string, password: string): Promise<LoginOutcomeActions> {
-    return new Promise((resolve, reject): void => {
-      const user = this.prepareCognitoUser(username);
-      user.authenticateUser(this.prepareAuthDetails(username, password), {
-        onSuccess: (): void =>
-          resolve(this._env.idea.auth.forceLoginWithMFA ? LoginOutcomeActions.MFA_SETUP : LoginOutcomeActions.NONE),
-        onFailure: (err: Error): void => reject(err),
-        newPasswordRequired: (): void => {
-          this.challengeUsername = username;
-          this.challengePassword = password;
-          resolve(LoginOutcomeActions.NEW_PASSWORD);
-        },
-        totpRequired: (): void => {
-          this.challengeUsername = username;
-          this.challengePassword = password;
-          resolve(LoginOutcomeActions.MFA_CHALLENGE);
-        }
-      });
-    });
+  async login(username: string, password: string): Promise<LoginOutcomeActions> {
+    this.challengeUsername = null;
+    // Amplify refuses to sign in over a session still stored (e.g. one refused by the post-auth checks): as before, the
+    // new sign-in replaces it
+    await signOut();
+    const { nextStep } = await withErrorCode(signIn({ username, password }));
+    switch (nextStep.signInStep) {
+      case 'DONE':
+        return this._env.idea.auth.forceLoginWithMFA ? LoginOutcomeActions.MFA_SETUP : LoginOutcomeActions.NONE;
+      case 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED':
+        this.challengeUsername = username;
+        return LoginOutcomeActions.NEW_PASSWORD;
+      case 'CONFIRM_SIGN_IN_WITH_TOTP_CODE':
+        this.challengeUsername = username;
+        return LoginOutcomeActions.MFA_CHALLENGE;
+      // Amplify turns these refusals of Cognito into steps: they stay errors, as they've always been
+      case 'CONFIRM_SIGN_UP':
+        throw cognitoError('UserNotConfirmedException', 'User is not confirmed.');
+      case 'RESET_PASSWORD':
+        throw cognitoError('PasswordResetRequiredException', 'Password reset required for the user.');
+      default:
+        throw cognitoError('UnsupportedSignInStep', 'Sign-in step not supported: '.concat(nextStep.signInStep));
+    }
   }
   /**
    * Complete the new password flow in the authentication.
    */
-  confirmNewPassword(newPassword: string): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      const user = this.prepareCognitoUser(this.challengeUsername);
-      user.authenticateUser(this.prepareAuthDetails(this.challengeUsername, this.challengePassword), {
-        onSuccess: (): void => resolve(),
-        onFailure: (err: Error): void => reject(err),
-        newPasswordRequired: (): void =>
-          user.completeNewPasswordChallenge(
-            newPassword,
-            {},
-            {
-              onSuccess: (): void => {
-                this.challengeUsername = null;
-                this.challengePassword = null;
-                resolve();
-              },
-              onFailure: (err: Error): void => reject(err)
-            }
-          )
-      });
-    });
+  async confirmNewPassword(newPassword: string): Promise<void> {
+    await this.answerSignInChallenge(newPassword);
   }
   /**
    *  Complete the MFA challenge flow in the authentication.
    */
-  completeMFAChallenge(otpCode: string): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      const user = this.prepareCognitoUser(this.challengeUsername);
-      user.authenticateUser(this.prepareAuthDetails(this.challengeUsername, this.challengePassword), {
-        onSuccess: (): void => resolve(),
-        onFailure: (err: Error): void => reject(err),
-        totpRequired: (challengeName: ChallengeName): void =>
-          user.sendMFACode(
-            otpCode,
-            {
-              onSuccess: (): void => {
-                this.challengeUsername = null;
-                this.challengePassword = null;
-                resolve();
-              },
-              onFailure: err => reject(err)
-            },
-            challengeName
-          )
-      });
-    });
+  async completeMFAChallenge(otpCode: string): Promise<void> {
+    await this.answerSignInChallenge(otpCode);
+  }
+  /**
+   * Answer the challenge that the sign-in in progress waits for (a wrong answer can be given again).
+   * Its session lasts only a few minutes (3, by default): once it's over, the `challengeUsername` is cleared, since only
+   * a new sign-in can go on.
+   */
+  private async answerSignInChallenge(challengeResponse: string): Promise<void> {
+    try {
+      const { nextStep } = await withErrorCode(confirmSignIn({ challengeResponse }));
+      if (nextStep.signInStep !== 'DONE')
+        throw cognitoError('UnsupportedSignInStep', 'Sign-in step not supported: '.concat(nextStep.signInStep));
+      this.challengeUsername = null;
+    } catch (err) {
+      const sessionIsOver = ['SignInException', 'NotAuthorizedException'].includes((err as Error)?.name);
+      if (sessionIsOver) this.challengeUsername = null;
+      throw err;
+    }
   }
   /**
    * Register a new user a set its default attributes.
    */
-  register(username: string, password: string, attributes?: any): Promise<CognitoUser> {
+  async register(username: string, password: string, attributes?: any): Promise<void> {
     attributes = attributes || {};
-    return new Promise((resolve, reject): void => {
-      // add attributes like the email address and the fullname
-      const attrs = [];
-      for (const prop in attributes)
-        if (attributes[prop]) attrs.push(this.prepareUserAttribute(prop, attributes[prop]));
-      // add the email, which is equal to the username for most of our Pools
-      if (!attributes.email) attrs.push(this.prepareUserAttribute('email', username));
-      // register the new user to the pool
-      this.userPool.signUp(username, password, attrs, null, (err: Error, res: ISignUpResult): void => {
-        if (err) return reject(err);
-        this.newAccountJustRegistered = username;
-        resolve(res.user);
-      });
-    });
+    // add attributes like the email address and the fullname
+    const userAttributes: Record<string, string> = {};
+    for (const prop in attributes) if (attributes[prop]) userAttributes[prop] = attributes[prop];
+    // add the email, which is equal to the username for most of our Pools
+    if (!attributes.email) userAttributes.email = username;
+    // register the new user to the pool
+    await withErrorCode(signUp({ username, password, options: { userAttributes } }));
+    this.newAccountJustRegistered = username;
   }
   /**
    * In case a new account has just been registered, return the username.
@@ -171,227 +142,121 @@ export class IDEAAuthService {
   /**
    * Confirm a new registration through the confirmation code sent by Cognito.
    */
-  confirmRegistration(username: string, code: string): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      this.prepareCognitoUser(username).confirmRegistration(code, true, (err: Error): void =>
-        err ? reject(err) : resolve()
-      );
-    });
+  async confirmRegistration(username: string, code: string): Promise<void> {
+    await withErrorCode(confirmSignUp({ username, confirmationCode: code, options: { forceAliasCreation: true } }));
   }
   /**
    * Send again a confirmation code for a new registration.
    */
-  resendConfirmationCode(username: string): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      this.prepareCognitoUser(username).resendConfirmationCode((err: Error): void => (err ? reject(err) : resolve()));
-    });
+  async resendConfirmationCode(username: string): Promise<void> {
+    await withErrorCode(resendSignUpCode({ username }));
   }
   /**
    * Logout the currently signed-in user.
    */
-  logout(options?: { global: boolean }): Promise<void> {
+  async logout(options?: { global: boolean }): Promise<void> {
     options = Object.assign({ global: false }, options);
-    return new Promise((resolve, reject): void => {
-      // remove the refresh token previosly saved
-      this._storage.remove('AuthRefreshToken').then(
-        (): Promise<void> =>
-          // remove the optional auth details
-          this._storage.remove('AuthUserDetails').then((): void => {
-            // get the user and the session
-            const user = this.userPool.getCurrentUser();
-            user.getSession(async (err: Error): Promise<void> => {
-              // if the session is active, run the online sign-out; otherwise, only the local data has been deleted
-              if (err) return resolve();
-              // if a reference to the device was saved, forget it
-              if (this._env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
-              // sign-out from the pool (terminate the current session or all the sessions)
-              if (options.global)
-                user.globalSignOut({ onSuccess: (): void => resolve(), onFailure: err => reject(err) });
-              else {
-                user.signOut();
-                resolve();
-              }
-            });
-          })
-      );
-    });
+    // remove the optional auth details (and the copy of the refresh token that the earlier versions saved)
+    await this._storage.remove('AuthUserDetails');
+    await this._storage.remove('AuthRefreshToken');
+    // get the session, refreshed if needed (the global sign-out needs a valid one)
+    const { tokens } = await fetchAuthSession().catch((): AuthSession => ({}));
+    // if the session is active and a reference to the device was saved, forget it
+    if (tokens && this._env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
+    removeUserDataCachedByEarlierVersions(this._env.aws.cognito.userPoolClientId);
+    // sign-out from the pool (terminate the current session or all the sessions); the local session is removed anyway
+    await signOut({ global: options.global });
   }
   /**
    * Send a password reset request.
    */
-  forgotPassword(username: string): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      this.prepareCognitoUser(username).forgotPassword({
-        onSuccess: (): void => resolve(),
-        onFailure: (err: Error): void => reject(err)
-      });
-    });
+  async forgotPassword(username: string): Promise<void> {
+    await withErrorCode(resetPassword({ username }));
   }
   /**
    * Confirm a new password after a password reset request.
    */
-  confirmPassword(username: string, code: string, newPwd: string): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      this.prepareCognitoUser(username).confirmPassword(code, newPwd, {
-        onSuccess: (): void => resolve(),
-        onFailure: (err: Error): void => reject(err)
-      });
-    });
+  async confirmPassword(username: string, code: string, newPwd: string): Promise<void> {
+    await withErrorCode(confirmResetPassword({ username, confirmationCode: code, newPassword: newPwd }));
   }
   /**
    * Gets the URL for enabling MFA. This URL can be used to generate a QR Code to read with an authenticator app.
    */
-  getURLForEnablingMFA(): Promise<string> {
-    return new Promise((resolve, reject): void => {
-      const user = this.userPool.getCurrentUser();
-      if (!user) return reject();
-      user.getSession((err: Error): void => {
-        if (err) return reject(err);
-        user.associateSoftwareToken({
-          associateSecretCode: (secretCode: string): void =>
-            resolve(`otpauth://totp/${encodeURI(this.mfaProjectName)}?secret=${secretCode}`),
-          onFailure: (err: any): void => reject(err)
-        });
-      });
-    });
+  async getURLForEnablingMFA(): Promise<string> {
+    const { sharedSecret } = await withErrorCode(setUpTOTP());
+    return `otpauth://totp/${encodeURI(this.mfaProjectName)}?secret=${sharedSecret}`;
   }
   /**
    * Check whether the user has MFA enabled.
+   * Note: the setting is always read from Cognito; `bypassCache` remains only for compatibility.
    */
-  checkIfUserHasMFAEnabled(bypassCache = false): Promise<boolean> {
-    return new Promise((resolve, reject): void => {
-      const user = this.userPool.getCurrentUser();
-      if (!user) return reject();
-      user.getSession((err: Error): void => {
-        if (err) return reject(err);
-        user.getUserData(
-          (err, data): void => {
-            if (err) return reject(err);
-            const isMFAEnabled = !!(data.UserMFASettingList && data.UserMFASettingList.includes('SOFTWARE_TOKEN_MFA'));
-            resolve(isMFAEnabled);
-          },
-          { bypassCache }
-        );
-      });
-    });
+  async checkIfUserHasMFAEnabled(bypassCache = false): Promise<boolean> {
+    const { enabled } = await withErrorCode(fetchMFAPreference());
+    return !!enabled?.includes('TOTP');
   }
   /**
    * Configure a MFA device for the user.
    */
-  private setMFADevice(otp: string, mfaDeviceName: string, enabled = true, preferred = true): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      const user = this.userPool.getCurrentUser();
-      if (!user) return reject();
-      user.getSession((err: Error): void => {
-        if (err) return reject(err);
-        user.verifySoftwareToken(otp, mfaDeviceName, {
-          onSuccess: (): void =>
-            user.setUserMfaPreference(null, { Enabled: enabled, PreferredMfa: preferred }, (err: Error): void =>
-              err ? reject(err) : resolve()
-            ),
-          onFailure: (err): void => reject(err)
-        });
-      });
-    });
+  private async setMFADevice(otp: string, mfaDeviceName: string, enabled = true): Promise<void> {
+    await withErrorCode(verifyTOTPSetup({ code: otp, options: { friendlyDeviceName: mfaDeviceName } }));
+    await withErrorCode(updateMFAPreference({ totp: enabled ? 'PREFERRED' : 'DISABLED' }));
   }
   /**
    * Enable a new MFA device for the user by inserting an OTP code generated by it.
    */
   enableMFA(otp: string, mfaDeviceName = 'default'): Promise<void> {
-    return this.setMFADevice(otp, mfaDeviceName, true, true);
+    return this.setMFADevice(otp, mfaDeviceName, true);
   }
   /**
    * Disable MFA for a user by inserting an OTP code generated by it.
    */
   disableMFA(otp: string, mfaDeviceName = 'default'): Promise<void> {
-    return this.setMFADevice(otp, mfaDeviceName, false, false);
+    return this.setMFADevice(otp, mfaDeviceName, false);
   }
   /**
    * Check if a user is currently authenticated.
    * @param offlineAllowed if set and if offline, skip authentication and retrieve data locally
    * @param getFreshIdTokenOnExp cb function to execute when the idToken is refreshed
    */
-  isAuthenticated(offlineAllowed: boolean, getFreshIdTokenOnExp?: (freshIdToken: string) => void): Promise<any> {
-    return new Promise((resolve, reject): void => {
-      if (offlineAllowed && !navigator.onLine) {
-        this._storage.get('AuthUserDetails').then(userDetails => resolve({ idToken: null, userDetails }));
-        // re-execute the method when back online, so that you can retrieve a token to make requests
-        window.addEventListener(
-          'online',
-          (): Promise<void> =>
-            this.isAuthenticated(true, getFreshIdTokenOnExp)
-              // set the new token as if it was refreshed
-              .then(result => getFreshIdTokenOnExp(result.idToken))
-        );
-      } else {
-        const user = this.userPool.getCurrentUser();
-        if (!user) return reject();
-        user.getSession((err: Error, session: CognitoUserSession): void => {
-          if (err) return reject(err);
-          user.getUserData(
-            (err, data): void => {
-              if (err) return reject(err);
-              const isMFAEnabled = !!(
-                data.UserMFASettingList && data.UserMFASettingList.includes('SOFTWARE_TOKEN_MFA')
-              );
-              if (!isMFAEnabled && this._env.idea.auth.forceLoginWithMFA)
-                return reject(new Error(LoginOutcomeActions.MFA_SETUP));
-              user.getUserAttributes((e: Error, attributes: CognitoUserAttribute[]): void => {
-                if (e) return reject(e);
-                // remap user attributes
-                const userDetails: any = {};
-                attributes.forEach((a: CognitoUserAttribute): string => (userDetails[a.getName()] = a.getValue()));
-                // add the user's groups to the attributes
-                const sessionInfo = session.getAccessToken().decodePayload();
-                const groups: string[] = sessionInfo['cognito:groups'] || [];
-                userDetails['groups'] = groups;
-                // run some checks considering the user's groups and devices (based on the project's configuration)
-                this.runPostAuthChecks(userDetails, err => {
-                  // in case some check failed, reject the authorisation flow
-                  if (err) return reject(err);
-                  // (async) save the refresh token so it can be accessed by other procedures
-                  this._storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
-                  // set a timer to manage the autorefresh of the idToken (through the refreshToken)
-                  setTimeout(
-                    (): void => this.refreshSession(user, session.getRefreshToken().getToken(), getFreshIdTokenOnExp),
-                    15 * 60 * 1000
-                  ); // every 15 minutes
-                  // (async) if offlineAllowed, save data locally, to use it next time we'll be offline
-                  if (offlineAllowed) this._storage.set('AuthUserDetails', userDetails);
-                  // return the idToken (to use with API)
-                  resolve({ idToken: session.getIdToken().getJwtToken(), userDetails });
-                });
-              });
-            },
-            { bypassCache: true }
-          );
-        });
-      }
-    });
+  async isAuthenticated(offlineAllowed: boolean, getFreshIdTokenOnExp?: (freshIdToken: string) => void): Promise<any> {
+    if (offlineAllowed && !navigator.onLine) {
+      // re-execute the method when back online, so that you can retrieve a token to make requests
+      window.addEventListener(
+        'online',
+        (): Promise<void> =>
+          this.isAuthenticated(true, getFreshIdTokenOnExp)
+            // set the new token as if it was refreshed
+            .then(result => getFreshIdTokenOnExp(result.idToken))
+      );
+      return { idToken: null, userDetails: await this._storage.get('AuthUserDetails') };
+    }
+    // get the session, refreshed if needed
+    const { tokens } = await withErrorCode(fetchAuthSession());
+    if (!tokens?.idToken) throw cognitoError('UserUnAuthenticatedException', 'User needs to be authenticated.');
+    if (this._env.idea.auth.forceLoginWithMFA && !(await this.checkIfUserHasMFAEnabled()))
+      throw new Error(LoginOutcomeActions.MFA_SETUP);
+    const userDetails: any = await withErrorCode(fetchUserAttributes());
+    // add the user's groups to the attributes
+    userDetails['groups'] = tokens.accessToken.payload['cognito:groups'] || [];
+    // run some checks considering the user's groups and devices (based on the project's configuration)
+    await this.runPostAuthChecks(userDetails);
+    // set a timer to manage the autorefresh of the idToken (through the refreshToken)
+    setTimeout((): Promise<void> => this.refreshSession(getFreshIdTokenOnExp), 15 * 60 * 1000); // every 15 minutes
+    // (async) if offlineAllowed, save data locally, to use it next time we'll be offline
+    if (offlineAllowed) this._storage.set('AuthUserDetails', userDetails);
+    // return the idToken (to use with API)
+    return { idToken: tokens.idToken.toString(), userDetails };
   }
   /**
    * Helper to refresh the session every N minutes.
    */
-  private refreshSession(user: CognitoUser, refreshToken: string, callback: (freshIdToken: string) => void): void {
-    user.refreshSession(
-      new CognitoRefreshToken({ RefreshToken: refreshToken }),
-      (err: Error, session: CognitoUserSession): void => {
-        if (err) {
-          // try again in 1 minute
-          setTimeout((): void => this.refreshSession(user, refreshToken, callback), 1 * 60 * 1000);
-        } else {
-          // (async) save the refresh token so it can be accessed by other procedures
-          this._storage.set('AuthRefreshToken', session.getRefreshToken().getToken());
-          // repeat every 15 minutes
-          setTimeout(
-            (): void => this.refreshSession(user, session.getRefreshToken().getToken(), callback),
-            15 * 60 * 1000
-          );
-          // run the callback action, if set
-          if (callback) callback(session.getIdToken().getJwtToken());
-        }
-      }
-    );
+  private async refreshSession(callback: (freshIdToken: string) => void): Promise<void> {
+    const { tokens } = await fetchAuthSession({ forceRefresh: true }).catch((): AuthSession => ({}));
+    const freshIdToken = tokens?.idToken?.toString();
+    // repeat every 15 minutes; in case of error, try again in 1 minute
+    setTimeout((): Promise<void> => this.refreshSession(callback), (freshIdToken ? 15 : 1) * 60 * 1000);
+    // run the callback action, if set
+    if (freshIdToken && callback) callback(freshIdToken);
   }
   /**
    * Run some post-auth checks, based on the users groups and on the app's configuration:
@@ -399,23 +264,21 @@ export class IDEAAuthService {
    *  - users in the Cognito's "robots" group can't sign-into front-ends (they serve only back-end purposes).
    *  - if `env.idea.auth.singleSimultaneousSession` is on, make sure there is only one active session per user.
    */
-  private runPostAuthChecks(userDetails: any, callback: (err?: Error) => void): void | Promise<void> {
+  private async runPostAuthChecks(userDetails: any): Promise<void> {
     const groups: string[] = userDetails['groups'];
     // skip checks if the user is in the "admins" group
     const isAdmin = groups.some(x => x === 'admins');
-    if (isAdmin) return callback();
+    if (isAdmin) return;
     // users in the "robots" group can't sign-into front-ends (they serve only back-end purposes)
     const isRobot = groups.some(x => x === 'robots');
-    if (isRobot) return callback(new Error('ROBOT_USER'));
+    if (isRobot) throw new Error('ROBOT_USER');
     // in case the project limits each account to only one simultaneous session, run a check
-    if (this._env.idea.auth.singleSimultaneousSession) return this.checkForSimultaneousSessions(userDetails, callback);
-    // otherwise, we're done
-    callback();
+    if (this._env.idea.auth.singleSimultaneousSession) await this.checkForSimultaneousSessions(userDetails);
   }
   /**
    * Check whether the user signed-into multiple devices.
    */
-  private async checkForSimultaneousSessions(userDetails: any, callback: (err?: Error) => void): Promise<void> {
+  private async checkForSimultaneousSessions(userDetails: any): Promise<void> {
     // get or create a key for the current device (~random)
     let currentDeviceKey = await this._storage.get('AuthDeviceKey');
     if (!currentDeviceKey) {
@@ -425,15 +288,16 @@ export class IDEAAuthService {
     }
     // check whether the last device to sign-into this project (if any) is the current one
     const lastDeviceToSignIntoThisProject = userDetails[this.deviceKeyAttribute];
-    // if it's the first user's device to sign-in, save the reference in Cognito and resolve
+    // if it's the first user's device to sign-in, save the reference in Cognito
     if (!lastDeviceToSignIntoThisProject) {
-      this.setCurrentDeviceForProject(currentDeviceKey)
-        .then((): void => callback())
-        .catch((): void => callback(new Error('CANT_SET_DEVICE')));
-      // if the device didn't change, resolve
-    } else if (lastDeviceToSignIntoThisProject === currentDeviceKey) callback();
-    // othwerwise, report there is more than one simultaneous session
-    else callback(new Error('SIMULTANEOUS_SESSION'));
+      try {
+        await this.setCurrentDeviceForProject(currentDeviceKey);
+      } catch (err) {
+        throw new Error('CANT_SET_DEVICE');
+      }
+    }
+    // if the device changed, report there is more than one simultaneous session
+    else if (lastDeviceToSignIntoThisProject !== currentDeviceKey) throw new Error('SIMULTANEOUS_SESSION');
   }
   /**
    * Set (or reset) the current user's device (by key) in the current project (stored in Cognito).
@@ -447,20 +311,11 @@ export class IDEAAuthService {
   /**
    * Update the currently logged in user's attributes.
    */
-  updateUserAttributes(attributes: any): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      // prepare the attributes we want to change
-      const attrs = new Array<any>();
-      for (const prop in attributes)
-        if (attributes[prop] !== undefined) attrs.push(this.prepareUserAttribute(prop, attributes[prop]));
-      const user = this.userPool.getCurrentUser();
-      if (!user) return reject();
-      // we need to get the session before to make changes
-      user.getSession((err: Error): void => {
-        if (err) reject(err);
-        else user.updateAttributes(attrs, (e: Error): void => (e ? reject(e) : resolve()));
-      });
-    });
+  async updateUserAttributes(attributes: any): Promise<void> {
+    // prepare the attributes we want to change
+    const userAttributes: Record<string, string> = {};
+    for (const prop in attributes) if (attributes[prop] !== undefined) userAttributes[prop] = attributes[prop];
+    await withErrorCode(updateCognitoUserAttributes({ userAttributes }));
   }
 
   /**
@@ -539,4 +394,32 @@ const SHA1 = async (str: string): Promise<string | null> => {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   return hashHex.toUpperCase();
+};
+
+/**
+ * Amplify names its errors after Cognito's exceptions: like the earlier lib, the name is also set as `code`, which the
+ * apps read (e.g. to tell a Cognito out of reach, `NetworkError`, from refused credentials).
+ */
+const withErrorCode = async <T>(request: Promise<T>): Promise<T> => {
+  try {
+    return await request;
+  } catch (err) {
+    if (err instanceof Error && !(err as any).code) (err as any).code = err.name;
+    throw err;
+  }
+};
+
+/**
+ * An error shaped like Cognito's, for what Amplify doesn't report as an error.
+ */
+const cognitoError = (name: string, message: string): Error => Object.assign(new Error(message), { name, code: name });
+
+/**
+ * Remove the user's data that the earlier versions (on `amazon-cognito-identity-js`) cached next to the session's
+ * tokens: Amplify doesn't know it, so it wouldn't go away with the sign-out.
+ */
+const removeUserDataCachedByEarlierVersions = (userPoolClientId: string): void => {
+  const keyPrefix = 'CognitoIdentityServiceProvider.'.concat(userPoolClientId);
+  const lastAuthUser = localStorage.getItem(keyPrefix.concat('.LastAuthUser'));
+  if (lastAuthUser) localStorage.removeItem([keyPrefix, lastAuthUser, 'userData'].join('.'));
 };
