@@ -103,6 +103,22 @@
     "UNKNOWN_PROVIDER": "Unknown sign-in provider",
     "SIGN_IN_SESSION_EXPIRED": "The time to complete the sign-in has run out: please sign in again",
     "WARNING": "Warning",
-    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Before signing in, you have to update your password: you've received the instructions at your email address; check your inbox or the SPAM folder."
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Before signing in, you have to update your password: you've received the instructions at your email address; check your inbox or the SPAM folder.",
+    "SIGN_IN_TO_CONTINUE": "Enter the email of your account to continue.",
+    "ENTER_YOUR_PASSWORD": "Enter your password",
+    "CHANGE_EMAIL": "Change",
+    "SHOW_PASSWORD": "Show password",
+    "HIDE_PASSWORD": "Hide password",
+    "BY_SIGNING_IN_YOU_ACCEPT": "By signing in, you accept:",
+    "AND": "and",
+    "PRODUCT_BY": "A product by",
+    "FIRST_ACCESS_HINT": "It's your first sign-in: choose the password you'll use from now on.",
+    "COMMON_PASSWORDS_CHECK_HINT": "When you confirm, we also check that it isn't among the most common passwords.",
+    "OTP_CODE_HINT": "The code changes every 30 seconds.",
+    "MFA_REQUIRED_SETUP_HINT": "Multi-factor authentication (MFA) is required to sign in to this app: set it up with your authenticator app.",
+    "MFA_SECRET_HINT": "Can't scan it? Enter this key in the app:",
+    "MFA_ALREADY_ENABLED": "Multi-factor authentication (MFA) is already active on your account.",
+    "REQUIREMENT_MET": "met",
+    "REQUIREMENT_NOT_MET": "not met yet"
   }
 }

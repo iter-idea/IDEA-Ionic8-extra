@@ -103,6 +103,22 @@
     "UNKNOWN_PROVIDER": "Fornecedor de início de sessão desconhecido",
     "SIGN_IN_SESSION_EXPIRED": "O tempo para concluir o início de sessão esgotou-se: inicia sessão de novo",
     "WARNING": "Atenção",
-    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Antes de entrar, é necessário atualizar a sua palavra-chave: recebeu as instruções no seu endereço de e-mail; verifique a sua caixa de entrada ou a caixa de SPAM."
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Antes de entrar, é necessário atualizar a sua palavra-chave: recebeu as instruções no seu endereço de e-mail; verifique a sua caixa de entrada ou a caixa de SPAM.",
+    "SIGN_IN_TO_CONTINUE": "Introduz o e-mail da tua conta para continuar.",
+    "ENTER_YOUR_PASSWORD": "Introduz a tua palavra-chave",
+    "CHANGE_EMAIL": "Alterar",
+    "SHOW_PASSWORD": "Mostrar a palavra-chave",
+    "HIDE_PASSWORD": "Ocultar a palavra-chave",
+    "BY_SIGNING_IN_YOU_ACCEPT": "Ao iniciar sessão, aceitas:",
+    "AND": "e",
+    "PRODUCT_BY": "Um produto",
+    "FIRST_ACCESS_HINT": "É o teu primeiro acesso: escolhe a palavra-chave que vais usar a partir de agora.",
+    "COMMON_PASSWORDS_CHECK_HINT": "Ao confirmar, verificamos também que não está entre as palavras-chave mais comuns.",
+    "OTP_CODE_HINT": "O código muda a cada 30 segundos.",
+    "MFA_REQUIRED_SETUP_HINT": "A autenticação multifator (MFA) é necessária para aceder a esta aplicação: configura-a com a tua aplicação de autenticação.",
+    "MFA_SECRET_HINT": "Não consegues ler o código? Introduz esta chave na aplicação:",
+    "MFA_ALREADY_ENABLED": "A autenticação multifator (MFA) já está ativa na tua conta.",
+    "REQUIREMENT_MET": "cumprido",
+    "REQUIREMENT_NOT_MET": "por cumprir"
   }
 }

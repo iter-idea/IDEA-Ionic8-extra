@@ -23,3 +23,82 @@ Finally, add in the environments desired the variables you find in the `environm
 Additionaly, if you want to allow only one simultaneous session per account, [implement what is suggested in this document](https://www.notion.so/iter-idea/894fbfce395f4bdeb0a85b3a217bc86b?pvs=4).
 
 Additionaly, if you want to configure OKTA integration, [follow this guide](https://www.notion.so/iter-idea/18445eea580780349282e1120e7c444f?pvs=4).
+
+## New sign-in pages (`IDEAAuthRoutes`)
+
+Modern pages for every flow (sign-in with the email first, new password, MFA, password reset, sign-up, Okta), that an app brands with tokens and settings only: no override of their internals is needed. The pages of `routes` stay exactly as they are, for the apps that don't switch.
+
+To switch, mount `IDEAAuthRoutes` in place of `routes`, on the same path (URLs, guards and links stay the same):
+
+```ts
+{
+  path: 'auth',
+  loadChildren: (): Promise<any> => import('@idea-ionic/auth').then(m => m.IDEAAuthRoutes),
+  canActivate: [initGuard]
+}
+```
+
+Then delete the app's CSS aimed at the old pages (`.authCard`, `.flexBox`, `idea-sign-in`, …): it no longer applies.
+
+### Settings
+
+In `environment.idea.auth`, besides the current ones (`title`, `website`, `hasIntroPage`, `registrationIsPossible`, `passwordPolicy`, …):
+
+- `logo`: `{ light: string; dark?: string }`, the paths of the logo, the dark one shown with the system's dark mode; default `assets/icons/icon-auth.svg` and `assets/icons/icon-auth-alt.svg`.
+
+The header shows the logo, the `title` and the `IDEA_VARIABLES.TAGLINE` term, if any; the footer the terms (`IDEA_VARIABLES.TERMS_AND_CONDITIONS_URL`, `IDEA_VARIABLES.PRIVACY_POLICY_URL`), the link back to the intro page and, with `website`, ITER IDEA's logo: the app's `assets/icons/idea.png` (`idea-alt.png` with the system's dark mode).
+
+A page that's always dark (e.g. a dark brand, also with the system's light mode) gives only `logo.light`, in its version for a dark background, and puts the light version of ITER IDEA's logo in both files.
+
+### Tokens
+
+Set where the app sets its theme (light and dark); all optional, they default to the app's Ionic theme.
+
+| Token                               | Default                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------ |
+| `--idea-auth-background`            | `var(--ion-background-color)`; any `background`: color, gradient, image  |
+| `--idea-auth-color`                 | `var(--ion-text-color)`                                                  |
+| `--idea-auth-color-muted`           | `var(--ion-color-medium)`                                                |
+| `--idea-auth-column-width`          | `380px`                                                                  |
+| `--idea-auth-accent`                | `var(--ion-color-primary)`                                               |
+| `--idea-auth-accent-contrast`       | `var(--ion-color-primary-contrast)`                                      |
+| `--idea-auth-link-color`            | the accent                                                               |
+| `--idea-auth-font-family`           | `var(--ion-font-family)`                                                 |
+| `--idea-auth-title-font-family`     | the font family                                                          |
+| `--idea-auth-title-font-size`       | `32px`                                                                   |
+| `--idea-auth-title-font-weight`     | `600`                                                                    |
+| `--idea-auth-radius`                | `12px`                                                                   |
+| `--idea-auth-field-radius`          | the radius                                                               |
+| `--idea-auth-button-radius`         | the radius                                                               |
+| `--idea-auth-field-background`      | `transparent`                                                            |
+| `--idea-auth-field-color`           | the color                                                                |
+| `--idea-auth-field-border-color`    | the text color at 55% (3:1 on the background, for the fields to be seen) |
+| `--idea-auth-field-focus-color`     | the accent                                                               |
+| `--idea-auth-field-focus-ring`      | the primary color at 25%                                                 |
+| `--idea-auth-field-height`          | `48px`                                                                   |
+| `--idea-auth-button-height`         | `48px`                                                                   |
+| `--idea-auth-button-font-weight`    | `600`                                                                    |
+| `--idea-auth-button-text-transform` | `none`                                                                   |
+| `--idea-auth-danger-color`          | `var(--ion-color-danger)`                                                |
+| `--idea-auth-success-color`         | a green readable in light and dark mode                                  |
+| `--idea-auth-notice-background`     | the text color at 6%                                                     |
+| `--idea-auth-notice-color`          | the color                                                                |
+| `--idea-auth-logo-height`           | `40px`                                                                   |
+| `--idea-auth-tagline-color`         | the muted color                                                          |
+
+```scss
+:root {
+  --idea-auth-background: var(--app-brand-navy);
+  --idea-auth-color: #ffffff;
+  --idea-auth-field-background: #ffffff;
+  --idea-auth-field-color: var(--app-brand-navy);
+}
+```
+
+### Where a token isn't enough
+
+The pages' rules have no specificity: an app's plain selector on these classes applies, without `:root` or `!important`. The fields are the exception: Ionic sets the defaults of an `ion-input` with a class, so the module's own rules are `ion-input.idea-auth-input`; to restyle a field beyond its tokens, use one class more (e.g. `.idea-auth ion-input.idea-auth-input`).
+
+`.idea-auth` (the page's `ion-content`), `.idea-auth-header`, `.idea-auth-logo`, `.idea-auth-app-name`, `.idea-auth-tagline`, `.idea-auth-main`, `.idea-auth-column`, `.idea-auth-heading`, `.idea-auth-title`, `.idea-auth-subtitle`, `.idea-auth-form`, `.idea-auth-field`, `.idea-auth-label`, `.idea-auth-input` (the `ion-input`), `.idea-auth-hint`, `.idea-auth-chip`, `.idea-auth-notice`, `.idea-auth-requirements`, `.idea-auth-actions`, `.idea-auth-button` (the `ion-button`), `.idea-auth-link`, `.idea-auth-agreements`, `.idea-auth-footer`.
+
+E.g. `.idea-auth-app-name { display: none; }` when the logo already carries the app's name.

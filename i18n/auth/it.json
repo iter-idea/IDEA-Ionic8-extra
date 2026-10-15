@@ -103,6 +103,22 @@
     "UNKNOWN_PROVIDER": "Provider di accesso sconosciuto",
     "SIGN_IN_SESSION_EXPIRED": "Il tempo per completare l'accesso è scaduto: accedi di nuovo",
     "WARNING": "Attenzione",
-    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Per effettuare l'accesso devi prima aggiornare la tua password: hai ricevuto le istruzioni al tuo indirizzo email; controlla nella tua posta in arrivo o nello SPAM."
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Per effettuare l'accesso devi prima aggiornare la tua password: hai ricevuto le istruzioni al tuo indirizzo email; controlla nella tua posta in arrivo o nello SPAM.",
+    "SIGN_IN_TO_CONTINUE": "Inserisci l'email del tuo account per continuare.",
+    "ENTER_YOUR_PASSWORD": "Inserisci la password",
+    "CHANGE_EMAIL": "Modifica",
+    "SHOW_PASSWORD": "Mostra la password",
+    "HIDE_PASSWORD": "Nascondi la password",
+    "BY_SIGNING_IN_YOU_ACCEPT": "Accedendo, accetti:",
+    "AND": "e",
+    "PRODUCT_BY": "Un prodotto",
+    "FIRST_ACCESS_HINT": "È il tuo primo accesso: scegli la password che userai d'ora in poi.",
+    "COMMON_PASSWORDS_CHECK_HINT": "Alla conferma controlliamo anche che non sia tra le password più diffuse.",
+    "OTP_CODE_HINT": "Il codice cambia ogni 30 secondi.",
+    "MFA_REQUIRED_SETUP_HINT": "L'autenticazione a più fattori (MFA) è richiesta per accedere a questa app: configurala con la tua app di autenticazione.",
+    "MFA_SECRET_HINT": "Non riesci a scansionarlo? Inserisci questa chiave nell'app:",
+    "MFA_ALREADY_ENABLED": "L'autenticazione a più fattori (MFA) è già attiva sul tuo account.",
+    "REQUIREMENT_MET": "soddisfatto",
+    "REQUIREMENT_NOT_MET": "da soddisfare"
   }
 }

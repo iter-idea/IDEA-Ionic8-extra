@@ -1,0 +1,430 @@
+// The pages of `IDEAAuthRoutes`. An app brands them with the `--idea-auth-*` tokens (all optional, defaulting to its
+// Ionic theme), set where it sets its theme. Every rule has no specificity (`:where`), but the fields' (see below):
+// where a token isn't enough, an app's plain selector on the documented classes applies, with no `:root` or `!important`.
+// The elements that Ionic styles globally by tag (`h1`, `a`) take the tag's specificity, to beat those rules (these
+// styles come later): still less than an app's class.
+
+:where(ion-content.idea-auth) {
+  --_background: var(--idea-auth-background, var(--ion-background-color, #ffffff));
+  --_color: var(--idea-auth-color, var(--ion-text-color, #000000));
+  --_color-muted: var(--idea-auth-color-muted, var(--ion-color-medium, #636469));
+  --_column-width: var(--idea-auth-column-width, 380px);
+  --_accent: var(--idea-auth-accent, var(--ion-color-primary, #0054e9));
+  --_accent-contrast: var(--idea-auth-accent-contrast, var(--ion-color-primary-contrast, #ffffff));
+  --_link-color: var(--idea-auth-link-color, var(--_accent));
+  --_font-family: var(--idea-auth-font-family, var(--ion-font-family, inherit));
+  --_title-font-family: var(--idea-auth-title-font-family, var(--_font-family));
+  --_title-font-size: var(--idea-auth-title-font-size, 32px);
+  --_title-font-weight: var(--idea-auth-title-font-weight, 600);
+  --_radius: var(--idea-auth-radius, 12px);
+  --_field-radius: var(--idea-auth-field-radius, var(--_radius));
+  --_button-radius: var(--idea-auth-button-radius, var(--_radius));
+  --_field-background: var(--idea-auth-field-background, transparent);
+  --_field-color: var(--idea-auth-field-color, var(--_color));
+  --_field-border-color: var(--idea-auth-field-border-color, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.55));
+  --_field-focus-color: var(--idea-auth-field-focus-color, var(--_accent));
+  --_field-focus-ring: var(--idea-auth-field-focus-ring, rgba(var(--ion-color-primary-rgb, 0, 84, 233), 0.25));
+  --_field-height: var(--idea-auth-field-height, 48px);
+  --_button-height: var(--idea-auth-button-height, 48px);
+  --_button-font-weight: var(--idea-auth-button-font-weight, 600);
+  --_button-text-transform: var(--idea-auth-button-text-transform, none);
+  --_danger: var(--idea-auth-danger-color, var(--ion-color-danger, #c5000f));
+  --_success: var(--idea-auth-success-color, #1a7f37);
+  --_notice-background: var(--idea-auth-notice-background, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.06));
+  --_notice-color: var(--idea-auth-notice-color, var(--_color));
+  --_logo-height: var(--idea-auth-logo-height, 40px);
+  --_tagline-color: var(--idea-auth-tagline-color, var(--_color-muted));
+
+  --background: var(--_background);
+  --color: var(--_color);
+  font-family: var(--_font-family);
+}
+@media (prefers-color-scheme: dark) {
+  :where(ion-content.idea-auth) {
+    --_success: var(--idea-auth-success-color, #4ade80);
+  }
+}
+
+// the shell lets its `ion-content` be the page's own, as Ionic expects; the other components lay out their content
+// as the page's (an empty notice takes no room)
+:where(idea-auth-shell, idea-auth-notice, idea-auth-password-field, idea-auth-password-requirements) {
+  display: contents;
+}
+
+// the page: header, the column (in the middle of the screen) and footer
+:where(.idea-auth-page) {
+  box-sizing: border-box;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 max(20px, var(--ion-safe-area-right, 0px)) 0 max(20px, var(--ion-safe-area-left, 0px));
+}
+:where(.idea-auth-header) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(var(--ion-safe-area-top, 0px) + 24px) 0 8px;
+}
+:where(.idea-auth-logo) {
+  display: block;
+  height: var(--_logo-height);
+  width: auto;
+}
+:where(.idea-auth-app-name) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+:where(.idea-auth-tagline) {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--_tagline-color);
+}
+:where(.idea-auth-main) {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0 40px;
+}
+:where(.idea-auth-column) {
+  width: 100%;
+  max-width: var(--_column-width);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+:where(.idea-auth-heading) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+h1:where(.idea-auth-title) {
+  margin: 0;
+  font-family: var(--_title-font-family);
+  font-size: var(--_title-font-size);
+  font-weight: var(--_title-font-weight);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+:where(.idea-auth-subtitle) {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--_color-muted);
+}
+
+// fields
+:where(.idea-auth-form) {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+:where(.idea-auth-field) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+:where(.idea-auth-label-row) {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+:where(.idea-auth-label) {
+  font-size: 14px;
+  font-weight: 500;
+}
+// an `ion-input` with no fill, the same in both modes: its box is drawn on the host, through its public variables.
+// Not in `:where`: as a scoped component, Ionic sets its defaults on the host with a class, which this has to beat
+ion-input.idea-auth-input {
+  --background: var(--_field-background);
+  --color: var(--_field-color);
+  --placeholder-color: var(--_field-color);
+  --border-radius: var(--_field-radius);
+  --border-width: 0px;
+  --highlight-height: 0px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  box-sizing: border-box;
+  min-height: var(--_field-height);
+  border: 1px solid var(--_field-border-color);
+  border-radius: var(--_field-radius);
+  font-size: 16px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+ion-input.idea-auth-input.has-focus {
+  border-color: var(--_field-focus-color);
+  box-shadow: 0 0 0 3px var(--_field-focus-ring);
+}
+ion-input.idea-auth-input[aria-invalid='true'] {
+  border-color: var(--_danger);
+}
+ion-input.idea-auth-input.idea-auth-password {
+  --padding-end: 2px;
+}
+:where(.idea-auth-password-toggle) {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--_field-color);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+:where(.idea-auth-password-toggle ion-icon) {
+  opacity: 0.7;
+}
+:where(.idea-auth-hint) {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--_color-muted);
+}
+// the one field of an MFA code: its 6 digits spaced out
+ion-input.idea-auth-input.idea-auth-code {
+  min-height: calc(var(--_field-height) + 8px);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-align: center;
+}
+
+// the email already given, with the way back to change it: on the page's background, as its text and link colors are
+:where(.idea-auth-chip) {
+  align-self: flex-start;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 2px 2px 14px;
+  border: 1px solid var(--_field-border-color);
+  border-radius: 999px;
+  font-size: 15px;
+}
+:where(.idea-auth-chip-email) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+// a margin, as Ionic's global rule on the buttons (`button { padding: 0 }`) beats `:where`
+:where(.idea-auth-chip .idea-auth-link) {
+  flex: 0 0 auto;
+  margin: 0 12px 0 8px;
+}
+
+// actions: the primary one, and the links
+:where(.idea-auth-actions) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+:where(ion-button.idea-auth-button) {
+  --background: var(--_accent);
+  --color: var(--_accent-contrast);
+  --border-radius: var(--_button-radius);
+  --box-shadow: none;
+  height: var(--_button-height);
+  margin: 0;
+  font-size: 16px;
+  font-weight: var(--_button-font-weight);
+  letter-spacing: normal;
+  text-transform: var(--_button-text-transform);
+}
+:where(.idea-auth-link) {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--_link-color);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+:where(.idea-auth-link:hover) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+:where(.idea-auth-link[data-muted]) {
+  color: var(--_color-muted);
+}
+:where(.idea-auth-agreements) {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--_color-muted);
+}
+:where(.idea-auth-agreements) a {
+  color: var(--_color);
+  text-underline-offset: 3px;
+}
+:where(.idea-auth-checkbox) {
+  --checkbox-background-checked: var(--_accent);
+  --border-color-checked: var(--_accent);
+  --checkmark-color: var(--_accent-contrast);
+  font-size: 14px;
+}
+
+// notices in the page: errors, information, success
+:where(.idea-auth-notice) {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--_radius);
+  background: var(--_notice-background);
+  color: var(--_notice-color);
+  font-size: 15px;
+  line-height: 1.45;
+}
+// tinted with the tokens' colors, where the browser can mix them (elsewhere, the neutral background)
+@supports (color: color-mix(in srgb, white, black)) {
+  :where(.idea-auth-notice[data-kind='error']) {
+    background: color-mix(in srgb, var(--_danger) 10%, transparent);
+  }
+  :where(.idea-auth-notice[data-kind='success']) {
+    background: color-mix(in srgb, var(--_success) 14%, transparent);
+  }
+}
+:where(.idea-auth-notice ion-icon) {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  font-size: 20px;
+}
+:where(.idea-auth-notice[data-kind='error'] ion-icon) {
+  color: var(--_danger);
+}
+:where(.idea-auth-notice[data-kind='success'] ion-icon) {
+  color: var(--_success);
+}
+:where(.idea-auth-notice p) {
+  margin: 0;
+}
+:where(.idea-auth-notice-detail) {
+  margin-top: 2px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+// the requirements of a new password, checked while it's typed
+:where(.idea-auth-requirements) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+:where(.idea-auth-requirement) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--_color-muted);
+}
+:where(.idea-auth-requirement[data-met='true']) {
+  color: var(--_success);
+}
+:where(.idea-auth-requirement ion-icon) {
+  flex: 0 0 auto;
+  font-size: 18px;
+}
+
+// MFA setup
+:where(.idea-auth-qr) {
+  align-self: center;
+  box-sizing: content-box;
+  width: 180px;
+  height: 180px;
+  padding: 12px;
+  border-radius: var(--_radius);
+  background: #ffffff;
+}
+:where(.idea-auth-secret) {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  word-break: break-all;
+  user-select: all;
+}
+
+// footer
+:where(.idea-auth-footer) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 24px;
+  padding: 12px 0 calc(var(--ion-safe-area-bottom, 0px) + 16px);
+  font-size: 13px;
+  color: var(--_color-muted);
+}
+:where(.idea-auth-footer-links) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+}
+:where(.idea-auth-footer-links a, .idea-auth-footer-links button, .idea-auth-product) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+:where(.idea-auth-footer-links) a {
+  color: inherit;
+}
+:where(.idea-auth-footer-links a:hover, .idea-auth-footer-links button:hover) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+:where(.idea-auth-product img) {
+  display: block;
+  height: 22px;
+  width: auto;
+}
+
+:where(.idea-auth-visually-hidden) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+// on a phone the column takes the whole height, and the actions go down, where the thumb is
+@media only screen and (max-width: 600px) {
+  :where(.idea-auth-main) {
+    align-items: stretch;
+    padding-top: 24px;
+  }
+  :where(.idea-auth-column) {
+    flex: 1 0 auto;
+  }
+  :where(.idea-auth-column > .idea-auth-actions) {
+    margin-top: auto;
+  }
+}
