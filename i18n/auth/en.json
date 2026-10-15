@@ -101,6 +101,8 @@
     "CONTINUE": "Continue",
     "CONTINUE_HINT": "Continue the sign-in with the selected email",
     "UNKNOWN_PROVIDER": "Unknown sign-in provider",
-    "SIGN_IN_SESSION_EXPIRED": "The time to complete the sign-in has run out: please sign in again"
+    "SIGN_IN_SESSION_EXPIRED": "The time to complete the sign-in has run out: please sign in again",
+    "WARNING": "Warning",
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Before signing in, you have to update your password: you've received the instructions at your email address; check your inbox or the SPAM folder."
   }
 }

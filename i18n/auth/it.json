@@ -101,6 +101,8 @@
     "CONTINUE": "Continua",
     "CONTINUE_HINT": "Continua l'accesso con l'email selezionata",
     "UNKNOWN_PROVIDER": "Provider di accesso sconosciuto",
-    "SIGN_IN_SESSION_EXPIRED": "Il tempo per completare l'accesso è scaduto: accedi di nuovo"
+    "SIGN_IN_SESSION_EXPIRED": "Il tempo per completare l'accesso è scaduto: accedi di nuovo",
+    "WARNING": "Attenzione",
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Per effettuare l'accesso devi prima aggiornare la tua password: hai ricevuto le istruzioni al tuo indirizzo email; controlla nella tua posta in arrivo o nello SPAM."
   }
 }

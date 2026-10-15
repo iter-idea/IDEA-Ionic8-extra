@@ -101,6 +101,8 @@
     "CONTINUE": "Continúa",
     "CONTINUE_HINT": "Continúe el acceso con el correo electrónico seleccionado",
     "UNKNOWN_PROVIDER": "Proveedor de acceso desconocido",
-    "SIGN_IN_SESSION_EXPIRED": "Se ha agotado el tiempo para completar el acceso: vuelva a iniciar sesión"
+    "SIGN_IN_SESSION_EXPIRED": "Se ha agotado el tiempo para completar el acceso: vuelva a iniciar sesión",
+    "WARNING": "Atención",
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Antes de iniciar sesión, debe actualizar su contraseña: ha recibido las instrucciones en su dirección de correo electrónico; verifique en su bandeja de entrada o en la carpeta SPAM."
   }
 }

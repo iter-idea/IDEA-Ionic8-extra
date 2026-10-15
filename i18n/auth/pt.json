@@ -101,6 +101,8 @@
     "CONTINUE": "Continuar",
     "CONTINUE_HINT": "Continua o início de sessão com o e-mail selecionado",
     "UNKNOWN_PROVIDER": "Fornecedor de início de sessão desconhecido",
-    "SIGN_IN_SESSION_EXPIRED": "O tempo para concluir o início de sessão esgotou-se: inicia sessão de novo"
+    "SIGN_IN_SESSION_EXPIRED": "O tempo para concluir o início de sessão esgotou-se: inicia sessão de novo",
+    "WARNING": "Atenção",
+    "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Antes de entrar, é necessário atualizar a sua palavra-chave: recebeu as instruções no seu endereço de e-mail; verifique a sua caixa de entrada ou a caixa de SPAM."
   }
 }
