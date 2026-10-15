@@ -14,13 +14,13 @@ import { IDEAAppStatusService } from './appStatus.service';
  * (idea-aws ≥ 4.8.0, with `APP_STATUS_URL`).
  *
  * Put it on every route but `app-status` itself, after the app's initialization guard:
- * `canActivate: [initGuard, ideaAppStatusGuard, authGuard]`. It only reads the status, and the redirection is the
+ * `canActivate: [initGuard, IDEAAppStatusGuard, authGuard]`. It only reads the status, and the redirection is the
  * router's, never a navigation of its own: it can't end up waiting for the app's start-up, nor the start-up for it.
  *
  * Not for an app that reads its status through the API (`check({ viaApi: true })`): the guard may read before
  * `check()` does, and it would read the asset, keeping that status until the next refresh.
  */
-export const ideaAppStatusGuard: CanActivateFn = async (_route, state): Promise<boolean | UrlTree> => {
+export const IDEAAppStatusGuard: CanActivateFn = async (_route, state): Promise<boolean | UrlTree> => {
   const _appStatus = inject(IDEAAppStatusService);
   const _router = inject(Router);
 
@@ -32,3 +32,7 @@ export const ideaAppStatusGuard: CanActivateFn = async (_route, state): Promise<
   _appStatus.returnURL ??= state.url;
   return _router.parseUrl('/app-status');
 };
+/**
+ * @deprecated use `IDEAAppStatusGuard`.
+ */
+export const ideaAppStatusGuard = IDEAAppStatusGuard;
