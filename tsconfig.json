@@ -21,12 +21,7 @@
     "module": "ES2022",
     "paths": {
       "@idea-ionic/common": ["./dist/common"],
-      "@idea-ionic/uncommon": ["./dist/uncommon"],
-      "agenda": ["./dist/agenda"],
-      "auth": ["./dist/auth"],
-      "common": ["./dist/common"],
-      "teams": ["./dist/teams"],
-      "uncommon": ["./dist/uncommon"]
+      "@idea-ionic/uncommon": ["./dist/uncommon"]
     }
   },
   "angularCompilerOptions": {}

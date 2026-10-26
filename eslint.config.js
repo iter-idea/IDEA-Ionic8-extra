@@ -2,7 +2,7 @@ const { defineConfig, globalIgnores } = require('eslint/config');
 const angular = require('angular-eslint');
 
 module.exports = defineConfig([
-  globalIgnores(['projects/**/*', 'dist/**/*']),
+  globalIgnores(['dist/**/*']),
   {
     files: ['**/*.ts'],
     languageOptions: {
