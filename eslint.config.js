@@ -1,5 +1,4 @@
 const { defineConfig, globalIgnores } = require('eslint/config');
-const globals = require('globals');
 const angular = require('angular-eslint');
 
 module.exports = defineConfig([
@@ -7,7 +6,6 @@ module.exports = defineConfig([
   {
     files: ['**/*.ts'],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
       sourceType: 'module',
       parserOptions: { project: ['tsconfig.json'] }
     },

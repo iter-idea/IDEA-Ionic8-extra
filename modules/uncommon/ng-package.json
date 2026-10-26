@@ -4,6 +4,6 @@
   "lib": {
     "entryFile": "public-api.ts"
   },
-  "allowedNonPeerDependencies": ["heic2any"],
+  "allowedNonPeerDependencies": [],
   "assets": ["./css/*.scss"]
 }

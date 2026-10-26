@@ -20,13 +20,9 @@
   "peerDependencies": {
     "@angular/common": "^22.0.2",
     "@angular/core": "^22.0.2",
-    "@angular/forms": "^22.0.2",
-    "@angular/platform-browser": "^22.0.2",
-    "@angular/platform-browser-dynamic": "^22.0.2",
     "@angular/router": "^22.0.2",
     "@auth0/auth0-angular": "^2.9.0",
     "@capacitor/browser": "^8.0.3",
-    "@capacitor/core": "^8.4.1",
     "@idea-ionic/common": "^8.x.x",
     "@ionic/angular": "^8.8.11",
     "idea-toolbox": "^7.x.x",
