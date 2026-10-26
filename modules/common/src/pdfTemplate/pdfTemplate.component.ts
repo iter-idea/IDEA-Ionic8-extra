@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -76,18 +76,19 @@ export class IDEAPDFTemplateComponent implements OnInit {
   private _message = inject(IDEAMessageService);
   private _translate = inject(IDEATranslationsService);
 
+  // opened as a modal: Ionic sets `componentProps` with `Object.assign`, which would overwrite a signal input
   /**
    * The blueprint to define the allowed sections and fields for this PDF template.
    */
-  readonly blueprint = input<PDFTemplateBlueprint>();
+  @Input() blueprint?: PDFTemplateBlueprint;
   /**
    * The PDF template to manage, as list of sections.
    */
-  readonly template = input<PDFTemplateSection[]>();
+  @Input() template?: PDFTemplateSection[];
   /**
    * Language preferences.
    */
-  readonly languages = input<Languages>();
+  @Input() languages?: Languages;
   /**
    * If true, the component is disabled.
    */
@@ -109,9 +110,9 @@ export class IDEAPDFTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     // work on a copy
-    this._template = (this.template() || []).map(section => new PDFTemplateSection(section, this.languages()));
+    this._template = (this.template || []).map(section => new PDFTemplateSection(section, this.languages));
     // prepare the stack (base level, i.e. the main template), to view and manage inner sections
-    this.stack = [{ blueprint: this.blueprint(), template: this._template }];
+    this.stack = [{ blueprint: this.blueprint, template: this._template }];
   }
 
   getCurrentLayer(): PDFTemplateLayer {
@@ -154,22 +155,22 @@ export class IDEAPDFTemplateComponent implements OnInit {
     buttons.push({
       text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.NORMAL_ROW'),
       icon: 'apps',
-      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.ROW }, this.languages()))
+      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.ROW }, this.languages))
     });
     buttons.push({
       text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.HEADER'),
       icon: 'bookmark',
-      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.HEADER }, this.languages()))
+      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.HEADER }, this.languages))
     });
     buttons.push({
       text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.BLANK_ROW'),
       icon: 'code',
-      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.BLANK_ROW }, this.languages()))
+      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.BLANK_ROW }, this.languages))
     });
     buttons.push({
       text: this._translate._('IDEA_COMMON.PDF_TEMPLATE.PAGE_BREAK'),
       icon: 'code-slash',
-      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.PAGE_BREAK }, this.languages()))
+      handler: (): void => this.addSectionHelper(new PDFTemplateSection({ type: this.ST.PAGE_BREAK }, this.languages))
     });
 
     // add the inner and repeated sections, based on the blueprint
@@ -183,7 +184,7 @@ export class IDEAPDFTemplateComponent implements OnInit {
             this.addSectionHelper(
               new PDFTemplateSection(
                 { type: ib.type, description: ib.description, context: ib.context },
-                this.languages()
+                this.languages
               )
             )
         });
@@ -199,7 +200,7 @@ export class IDEAPDFTemplateComponent implements OnInit {
     // complete the section, based on its type
     switch (section.type) {
       case this.ST.HEADER:
-        section.title[this.languages().default] = this._translate._('IDEA_COMMON.PDF_TEMPLATE.NEW_HEADER');
+        section.title[this.languages.default] = this._translate._('IDEA_COMMON.PDF_TEMPLATE.NEW_HEADER');
         break;
     }
     // add the new section to the current template
@@ -301,15 +302,15 @@ export class IDEAPDFTemplateComponent implements OnInit {
   private addSimpleField(section: PDFTemplateSection, colIndex: number): void {
     // let the user pick a variable from the list available on this layer, and add a simple field to the desired column
     this.pickVariableFromList(
-      variable => (section.columns[colIndex] = new PDFTemplateSimpleField(variable, this.languages()))
+      variable => (section.columns[colIndex] = new PDFTemplateSimpleField(variable, this.languages))
     );
   }
   private addComplexField(section: PDFTemplateSection, colIndex: number): void {
     // init the content of a new complex field
-    const content = new Label(null, this.languages());
-    content[this.languages().default] = '--';
+    const content = new Label(null, this.languages);
+    content[this.languages.default] = '--';
     // set the field in the chosen column of the section
-    section.columns[colIndex] = new PDFTemplateComplexField({ content }, this.languages());
+    section.columns[colIndex] = new PDFTemplateComplexField({ content }, this.languages);
     // directly open the field
     this.openField(section, colIndex);
   }
@@ -493,7 +494,7 @@ export class IDEAPDFTemplateComponent implements OnInit {
   private checkErrorsOnCurrentLayer(): void {
     this.errors = new Set<string>();
     this.getCurrentLayer().template.forEach((s, i): void => {
-      s.validate(this.languages(), this.getCurrentLayer().blueprint.variables).forEach(e => {
+      s.validate(this.languages, this.getCurrentLayer().blueprint.variables).forEach(e => {
         // highlight a specific column of a section of type ROW
         if (e.startsWith('columns[')) this.errors.add(`s[${i}].${e}`);
         // highlight the entire section
@@ -507,8 +508,8 @@ export class IDEAPDFTemplateComponent implements OnInit {
     this.checkErrorsOnCurrentLayer();
     if (this.errors.size) return this._message.error('IDEA_COMMON.PDF_TEMPLATE.ONE_OR_MORE_SECTIONS_HAVE_ERRORS');
     // save changes (without losing reference of the original array) and close
-    this.template().splice(0, this.template().length);
-    this._template.forEach(section => this.template().push(new PDFTemplateSection(section, this.languages())));
+    this.template.splice(0, this.template.length);
+    this._template.forEach(section => this.template.push(new PDFTemplateSection(section, this.languages)));
     this.close();
   }
   close(): void {

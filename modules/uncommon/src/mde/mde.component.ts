@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ModalController,
@@ -42,7 +42,7 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
           </ion-button>
         </ion-buttons>
         <ion-title>
-          {{ title() || ('IDEA_UNCOMMON.MDE.TITLE' | translate) }}
+          {{ title || ('IDEA_UNCOMMON.MDE.TITLE' | translate) }}
         </ion-title>
         <ion-buttons slot="end">
           <ion-button [title]="'IDEA_UNCOMMON.MDE.SAVE_AND_CLOSE' | translate" (click)="confirm()">
@@ -72,7 +72,7 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
           }
         </p>
       }
-      <ion-textarea rows="12" [id]="id" [placeholder]="placeholder()" [(ngModel)]="value" />
+      <ion-textarea rows="12" [id]="id" [placeholder]="placeholder" [(ngModel)]="value" />
       <idea-mde-toolbar />
     </ion-content>
   `,
@@ -106,6 +106,7 @@ import { IDEAMDEToolbarComponent } from './mdeToolbar.component';
 export class IDEAMDEComponent implements OnInit {
   private _modal = inject(ModalController);
 
+  // opened as a modal: Ionic sets `componentProps` with `Object.assign`, which would overwrite a signal input
   /**
    * Id to identify this specific Markdown Editor (default: 'mde').
    */
@@ -113,7 +114,7 @@ export class IDEAMDEComponent implements OnInit {
   /**
    * The title of the modal.
    */
-  readonly title = input<string>();
+  @Input() title?: string;
   /**
    * The header text content.
    */
@@ -129,18 +130,18 @@ export class IDEAMDEComponent implements OnInit {
   /**
    * If set, will customize the initial value of the editor.
    */
-  readonly initialValue = input<string>();
+  @Input() initialValue?: string;
   /**
    * Custom placeholder that should be displayed.
    */
-  readonly placeholder = input<string>();
+  @Input() placeholder?: string;
 
   value: string;
 
   ngOnInit(): void {
     this.id = this.id || 'mde';
     this.variables = this.variables || new Array<string>();
-    this.value = this.initialValue();
+    this.value = this.initialValue;
   }
 
   close(): void {

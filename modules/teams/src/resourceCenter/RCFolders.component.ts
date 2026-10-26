@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, input, signal } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy, viewChild, signal } from '@angular/core';
 import {
   IonInfiniteScroll,
   AlertController,
@@ -67,7 +67,7 @@ const MAX_PAGE_SIZE = 24;
           (ionInput)="search($event.target ? $event.target.value : '')"
         />
         <ion-buttons slot="end">
-          @if (admin()) {
+          @if (admin) {
             <ion-button
               [disabled]="_offline.isOffline()"
               [title]="'IDEA_TEAMS.RESOURCE_CENTER.CREATE_NEW_FOLDER' | translate"
@@ -138,6 +138,7 @@ export class IDEARCFoldersComponent implements OnInit {
   private _API = inject(IDEAAWSAPIService);
   _offline = inject(IDEAOfflineService);
 
+  // opened as a modal: Ionic sets `componentProps` with `Object.assign`, which would overwrite a signal input
   /**
    * The id of the team from which we want to load the resources. Default: try to guess current team.
    */
@@ -145,7 +146,7 @@ export class IDEARCFoldersComponent implements OnInit {
   /**
    * Whether the user has permissions to manage the resource center.
    */
-  readonly admin = input<boolean>();
+  @Input() admin?: boolean;
 
   folders: RCFolder[];
   filteredFolders = signal<RCFolder[]>(undefined);
@@ -198,11 +199,11 @@ export class IDEARCFoldersComponent implements OnInit {
 
   openFolder(folder: RCFolder): void {
     this._modal
-      .create({ component: IDEARCResourcesComponent, componentProps: { folder, admin: this.admin() } })
+      .create({ component: IDEARCResourcesComponent, componentProps: { folder, admin: this.admin } })
       .then(modal => modal.present());
   }
   async newFolder(): Promise<void> {
-    if (!this.admin()) return;
+    if (!this.admin) return;
 
     const doCreate = async ({ name }: any): Promise<void> => {
       if (!name) return;
@@ -236,7 +237,7 @@ export class IDEARCFoldersComponent implements OnInit {
 
   async renameFolder(folder: RCFolder, event?: any): Promise<void> {
     if (event) event.stopPropagation();
-    if (!this.admin()) return;
+    if (!this.admin) return;
 
     const doRemove = async ({ name }: any): Promise<void> => {
       if (!name) return;
@@ -272,7 +273,7 @@ export class IDEARCFoldersComponent implements OnInit {
   }
   async deleteFolder(folder: RCFolder, event?: any): Promise<void> {
     if (event) event.stopPropagation();
-    if (!this.admin()) return;
+    if (!this.admin) return;
 
     const doDelete = async (): Promise<void> => {
       try {

@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, input, OnInit } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import {
   ModalController,
   IonHeader,
@@ -42,7 +42,7 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
           </ion-button>
         </ion-buttons>
         <ion-searchbar
-          [placeholder]="searchPlaceholder() || ('COMMON.SEARCH' | translate)"
+          [placeholder]="searchPlaceholder || ('COMMON.SEARCH' | translate)"
           [debounce]="100"
           (ionInput)="search($event.target ? $event.target.value : '')"
         />
@@ -73,10 +73,11 @@ import { IDEATranslatePipe } from '../translations/translate.pipe';
 export class IDEAIconsComponent implements OnInit {
   private _modal = inject(ModalController);
 
+  // opened as a modal: Ionic sets `componentProps` with `Object.assign`, which would overwrite a signal input
   /**
    * A placeholder for the searchbar.
    */
-  readonly searchPlaceholder = input<string>();
+  @Input() searchPlaceholder?: string;
 
   icons: Ionicons[];
   /**
