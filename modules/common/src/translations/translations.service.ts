@@ -145,6 +145,9 @@ export class IDEATranslationsService {
         .then((): void => {
           // set the lang
           this.currentLang = lang;
+          // the page says the language it shows: screen readers read it with the right voice, and the browsers don't
+          // take it for another language (index.html's) and offer to translate it
+          if (typeof document !== 'undefined') document.documentElement.lang = lang;
           // emit the change
           if (changed) this.onLangChange.emit(lang);
           // resolve
