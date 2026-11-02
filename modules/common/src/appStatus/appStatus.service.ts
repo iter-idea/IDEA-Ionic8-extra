@@ -1,6 +1,6 @@
 import { ApplicationRef, Injectable, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular/standalone';
+import { NavigationEnd, NavigationError, Router } from '@angular/router';
+import { NavController, Platform } from '@ionic/angular/standalone';
 import { AppStatus, markdown, mdToHtml } from 'idea-toolbox';
 
 import { IDEAEnvironment } from '../../environment';
@@ -25,14 +25,31 @@ const READ_TIMEOUT_MS = 10 * 1000;
  * The path of the status page, as every app registers it.
  */
 const STATUS_PAGE_PATH = 'app-status';
+/**
+ * How often the status is read while the app is visible, for whoever stays on the same page.
+ */
+const TELL_INTERVAL_MS = 15 * 60 * 1000;
+/**
+ * How long "Later" puts off the invitation to reload: it comes back at the first reading after it.
+ */
+const RELOAD_LATER_MS = 30 * 60 * 1000;
+/**
+ * The platforms (Ionic's names) of an app that runs the code of its package: it can't load a new version by reloading.
+ */
+const PACKAGED_APP_PLATFORMS = ['capacitor', 'cordova', 'hybrid', 'electron'];
 
 /**
  * Check whether the app has some status message or update to handle.
  *
- * The status is read when the app starts, and again when something happens — the app becomes visible again, a request
- * to the back-end fails — so that a maintenance reaches whoever is already inside at their next step, not only whoever
- * opens the app. Never on a timer while the user works: a forced update mustn't take them away from what they're
- * doing. The status page lets them go when it's over.
+ * The status is read when the app starts, and again when something happens — the app becomes visible again, the user
+ * changes page, a request to the back-end fails — so that a maintenance reaches whoever is already inside at their next
+ * step, not only whoever opens the app. A timer reads it too while the app is visible, but only to tell (a new version,
+ * a maintenance): it never takes the user away from what they're doing, as the status page would. The status page lets
+ * them go when it's over.
+ *
+ * On the web, a new version takes a reload: the app invites the user to save and reload, and again a while after
+ * "Later", since the page keeps the code of the previous version until then. An app that runs the code of its package
+ * (native) isn't invited: its stores update it, and `minVersion` forces it.
  */
 @Injectable({ providedIn: 'root' })
 export class IDEAAppStatusService {
@@ -44,6 +61,7 @@ export class IDEAAppStatusService {
   private _storage = inject(IDEAStorageService);
   private _message = inject(IDEAMessageService);
   private _appRef = inject(ApplicationRef);
+  private _platform = inject(Platform);
 
   /**
    * The last status known; `undefined` until the first reading.
@@ -77,6 +95,8 @@ export class IDEAAppStatusService {
   private reading: Promise<AppStatus>;
   private lastReadAt = 0;
   private watching = false;
+  private reloadLaterUntil = 0;
+  private maintenanceTold = false;
 
   constructor() {
     this.storageKey = (this._env.idea.project || 'app').concat('_LAST_MESSAGE');
@@ -138,17 +158,24 @@ export class IDEAAppStatusService {
 
   /**
    * Read the status again and act on what changed: to the status page if it became blocking, back into the app if it
-   * stopped being so, the message for the user otherwise. Without `force`, a reading too close to the last one is
+   * stopped being so, the message for the user otherwise. With `onlyTell`, a blocking status is only told, and the user
+   * stays where they are (e.g. in a form they're filling in). Without `force`, a reading too close to the last one is
    * skipped.
    */
-  async refresh(options: { force?: boolean } = {}): Promise<AppStatus> {
-    if (!options.force && Date.now() - this.lastReadAt < MIN_REFRESH_INTERVAL_MS) return this.status();
+  async refresh(options: { force?: boolean; onlyTell?: boolean } = {}): Promise<AppStatus> {
+    if (!options.force && Date.now() - this.lastReadAt < MIN_REFRESH_INTERVAL_MS) {
+      // a status just read and already blocking still takes the user to its page at this step
+      if (!options.onlyTell && this.isBlocking() && !this.isOnStatusPage()) this.goToStatusPage();
+      return this.status();
+    }
 
     const wasBlocking = this.isBlocking();
     const appStatus = await this.load({ refresh: true });
+    if (!appStatus.inMaintenance) this.maintenanceTold = false;
 
     if (this.isBlocking(appStatus)) {
-      if (!this.isOnStatusPage()) this.goToStatusPage();
+      if (options.onlyTell) this.tellMaintenance(appStatus);
+      else if (!this.isOnStatusPage()) this.goToStatusPage();
     } else if (wasBlocking && this.isOnStatusPage()) this.leaveStatusPage();
     else await this.presentMessage(appStatus);
 
@@ -183,10 +210,72 @@ export class IDEAAppStatusService {
     document.addEventListener('visibilitychange', (): void => {
       if (document.visibilityState === 'visible') this.refresh();
     });
+    // a new page is a moment the user isn't in the middle of something: the status may take them to its page
+    this._router.events.subscribe((event): void => {
+      if (event instanceof NavigationEnd) this.refresh();
+      else if (event instanceof NavigationError && isFailedLoad(event.error)) this.tellFailedLoad();
+    });
+    setInterval((): void => {
+      if (document.visibilityState === 'visible') this.refresh({ onlyTell: true });
+    }, TELL_INTERVAL_MS);
+    // e.g. Ionic's page transition, loaded at the first navigation that animates: the page shows, empty, and nothing
+    // but this rejection says why
+    window.addEventListener('unhandledrejection', (event): void => {
+      if (isFailedLoad(event.reason)) this.tellFailedLoad();
+    });
     // a back-end that fails may be a back-end in maintenance (an app with its own API service may lack the hook)
     this._api.onServerError?.((): void => {
       this.refresh();
     });
+  }
+
+  /**
+   * Whether the app runs the code of its package (a native app): a new version reaches it from its store.
+   */
+  private isPackagedApp(): boolean {
+    return this._platform.platforms().some(platform => PACKAGED_APP_PLATFORMS.includes(platform));
+  }
+  private isOutdated(appStatus: AppStatus = this.status()): boolean {
+    return !!appStatus && compareVersions(this._env.idea.app.version, appStatus.latestVersion) < 0;
+  }
+  private reload(): void {
+    window.location.reload();
+  }
+
+  /**
+   * On the web, a version newer than the installed one takes a reload: the user is invited to save and reload, and
+   * invited again a while after "Later".
+   */
+  private inviteToReload(appStatus: AppStatus): void {
+    if (this.isPackagedApp() || !this.isOutdated(appStatus) || Date.now() < this.reloadLaterUntil) return;
+    this._message.info('IDEA_COMMON.APP_STATUS.NEW_VERSION_RELOAD', {
+      persistent: true,
+      closeText: 'IDEA_COMMON.APP_STATUS.LATER',
+      onClose: (): void => {
+        this.reloadLaterUntil = Date.now() + RELOAD_LATER_MS;
+      },
+      action: { text: 'IDEA_COMMON.APP_STATUS.RELOAD', handler: (): void => this.reload() }
+    });
+  }
+  /**
+   * A piece of the app couldn't be loaded: usually, a release replaced it while the page was open.
+   */
+  private async tellFailedLoad(): Promise<void> {
+    const appStatus = await this.load({ refresh: true });
+    const replaced = !this.isPackagedApp() && this.isOutdated(appStatus);
+    this._message.warning(
+      replaced ? 'IDEA_COMMON.APP_STATUS.FAILED_LOAD_NEW_VERSION' : 'IDEA_COMMON.APP_STATUS.FAILED_LOAD',
+      { persistent: true, action: { text: 'IDEA_COMMON.APP_STATUS.RELOAD', handler: (): void => this.reload() } }
+    );
+  }
+  /**
+   * A maintenance found by a reading that only tells: the user stays where they are, and the status page comes at their
+   * next step (e.g. the next request, which the back-end refuses).
+   */
+  private tellMaintenance(appStatus: AppStatus): void {
+    if (!appStatus.inMaintenance || this.maintenanceTold) return;
+    this.maintenanceTold = true;
+    this._message.warning('IDEA_COMMON.APP_STATUS.MAINTENANCE_CANT_SAVE', { persistent: true });
   }
 
   private async read(): Promise<AppStatus> {
@@ -200,7 +289,10 @@ export class IDEAAppStatusService {
     return this.status();
   }
   private async readFromApi(): Promise<AppStatus> {
-    return new AppStatus(await this._api.getResource(['status']));
+    const appStatus = new AppStatus(await this._api.getResource(['status']));
+    // as from the asset: on the web a reload is all an update takes
+    if (!this.isPackagedApp()) appStatus.mustUpdate = false;
+    return appStatus;
   }
   private async readFromAsset(): Promise<AppStatus> {
     // a timer rather than `AbortSignal.timeout`, which older web views (e.g. iOS 15) lack: there, the reading itself
@@ -242,7 +334,8 @@ export class IDEAAppStatusService {
 
     const inMaintenance = file.maintenance === true;
     const minVersion = typeof file.minVersion === 'string' ? file.minVersion : null;
-    const mustUpdate = !!minVersion && compareVersions(minVersion, version) > 0;
+    // on the web a reload is all an update takes, and the app invites to it: `minVersion` is the stores'
+    const mustUpdate = this.isPackagedApp() && !!minVersion && compareVersions(minVersion, version) > 0;
 
     // the maintenance has a message of its own, never shown outside of it: left in the file once it's over, it greets
     // nobody; the version's message remains its fallback, as it was the only one there was
@@ -278,9 +371,9 @@ export class IDEAAppStatusService {
   }
 
   private async presentMessage(appStatus: AppStatus): Promise<void> {
-    let message = appStatus.content ? markdownToPlainText(appStatus.content) : '';
-    if (!message && compareVersions(this._env.idea.app.version, appStatus.latestVersion) < 0)
-      message = this._translate._('IDEA_COMMON.APP_STATUS.NEW_VERSION', { newVersion: appStatus.latestVersion });
+    this.inviteToReload(appStatus);
+
+    const message = appStatus.content ? markdownToPlainText(appStatus.content) : '';
     if (!message) return;
 
     const messageAlreadyRead = await this._storage.get(this.storageKey);
@@ -317,11 +410,12 @@ export interface IDEAAppStatusFile {
    */
   maintenanceMessage?: MultiLanguageMarkdown;
   /**
-   * The latest version of the app.
+   * The latest version of the app: on the web, an older one is invited to reload.
    */
   latestVersion: string;
   /**
-   * The minimum required version to access the app.
+   * The minimum version required to an app that runs the code of its package (native): an older one gets the blocking
+   * "update required" page, with its store's button. Ignored on the web, where a reload is all an update takes.
    */
   minVersion: string;
   /**
@@ -371,6 +465,14 @@ const isMessage = (x: any): boolean =>
   (!!x && typeof x === 'object' && !Array.isArray(x) && Object.values(x).every(m => typeof m === 'string'));
 
 const isStatusPageURL = (url: string): boolean => (url ?? '').split(/[?#]/)[0].endsWith(`/${STATUS_PAGE_PATH}`);
+
+/**
+ * Whether an error is a piece of the app that couldn't be loaded (a lazy chunk), as each browser words it.
+ */
+const isFailedLoad = (error: any): boolean =>
+  /ChunkLoadError|Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|Loading chunk \S+ failed/i.test(
+    `${error?.name ?? ''} ${error?.message ?? error ?? ''}`
+  );
 
 /**
  * A message shows plain text: `**bold**` would reach the user as asterisks. The message is parsed into an inert

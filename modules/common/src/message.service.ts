@@ -27,12 +27,12 @@ export class IDEAMessageService {
    * @param options the options of the message
    */
   private show(message: string, kind: IDEANoticeKind, options: IDEAMessageOptions = {}): void {
-    const { dontTranslate, serverMessage, requestId, persistent, closeText, onClose } = options;
+    const { dontTranslate, serverMessage, requestId, persistent, closeText, onClose, action } = options;
     message = message || '';
     if (!dontTranslate) message = this._translate._(message);
     // a wait that only stays to be seen gives the notice its place, instead of sharing it (e.g. a quick save)
     this._loading.yieldToNotice();
-    this.getNotices().add({ kind, message, serverMessage, requestId, persistent, closeText, onClose });
+    this.getNotices().add({ kind, message, serverMessage, requestId, persistent, closeText, onClose, action });
   }
   private getNotices(): IDEANoticesComponent {
     if (!this.notices) {
@@ -109,4 +109,18 @@ export interface IDEAMessageOptions {
    * Called when the user closes the message.
    */
   onClose?: () => void;
+  /**
+   * A button that does something, in a row of its own under the message, with the close button beside it (e.g.
+   * "Reload", with "Later" as `closeText`): `text` is an i18n key, and `handler` runs when the user clicks it, then the
+   * message closes, without `onClose`.
+   */
+  action?: IDEAMessageAction;
+}
+
+/**
+ * The button of a message that does something: see `IDEAMessageOptions.action`.
+ */
+export interface IDEAMessageAction {
+  text: string;
+  handler: () => void;
 }

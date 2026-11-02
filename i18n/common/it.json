@@ -2,7 +2,12 @@
   "IDEA_COMMON": {
     "APP_STATUS": {
       "UPDATE": "Aggiorna",
-      "NEW_VERSION": "Nuova versione disponibile: {{newVersion}}",
+      "NEW_VERSION_RELOAD": "È disponibile una nuova versione dell'app. Quando puoi, salva quello che stai facendo e ricarica la pagina.",
+      "FAILED_LOAD_NEW_VERSION": "Questa parte dell'app non si è caricata perché nel frattempo è uscita una nuova versione. Ricarica la pagina, per favore.",
+      "FAILED_LOAD": "Questa parte dell'app non si è caricata. Controlla la connessione e ricarica la pagina, per favore.",
+      "MAINTENANCE_CANT_SAVE": "L'app è in manutenzione e per ora non è possibile salvare. Riprova tra poco, per favore.",
+      "RELOAD": "Ricarica",
+      "LATER": "Più tardi",
       "MUST_UPDATE": "Aggiornamento necessario",
       "MAINTENANCE": "L'app è in modalità di manutenzione",
       "GOT_IT": "Ho capito",

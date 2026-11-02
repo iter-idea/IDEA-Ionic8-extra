@@ -36,7 +36,8 @@ const LEAVE_DURATION_MS = 160;
       <section
         class="notice"
         [attr.data-kind]="notice.kind"
-        [class.compact]="!notice.detail && !notice.requestId"
+        [class.compact]="!notice.detail && !notice.requestId && !notice.action"
+        [class.closesBelow]="!!notice.action && !!notice.closeText"
         [class.withCode]="!!notice.requestId"
         [class.paused]="notice.paused()"
         [class.leaving]="notice.leaving()"
@@ -57,9 +58,11 @@ const LEAVE_DURATION_MS = 160;
             }
           </div>
           @if (notice.closeText) {
-            <button type="button" class="closeText" (mousedown)="$event.preventDefault()" (click)="close(notice)">
-              {{ notice.closeText | translate }}
-            </button>
+            @if (!notice.action) {
+              <button type="button" class="closeText" (mousedown)="$event.preventDefault()" (click)="close(notice)">
+                {{ notice.closeText | translate }}
+              </button>
+            }
           } @else {
             <button
               type="button"
@@ -72,6 +75,18 @@ const LEAVE_DURATION_MS = 160;
             </button>
           }
         </div>
+        @if (notice.action) {
+          <div class="actions">
+            @if (notice.closeText) {
+              <button type="button" class="closeText" (mousedown)="$event.preventDefault()" (click)="close(notice)">
+                {{ notice.closeText | translate }}
+              </button>
+            }
+            <button type="button" class="actionText" (mousedown)="$event.preventDefault()" (click)="act(notice)">
+              {{ notice.action.text | translate }}
+            </button>
+          </div>
+        }
         @if (notice.requestId) {
           <div class="code" [class.copied]="notice.copied()">
             <code>
@@ -184,6 +199,10 @@ const LEAVE_DURATION_MS = 160;
         align-items: center;
         padding: 6px 4px 6px 16px;
       }
+      /* no close button beside the message: it's with the action, under it */
+      .closesBelow .row {
+        padding-right: 16px;
+      }
       .withCode .row {
         padding-bottom: 12px;
       }
@@ -265,6 +284,31 @@ const LEAVE_DURATION_MS = 160;
       .compact .close,
       .compact .closeText {
         margin-top: 0;
+      }
+      /* the action last, as the primary button of a dialog */
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: -6px;
+        padding: 0 12px 12px;
+      }
+      .actions .closeText {
+        margin-top: 0;
+      }
+      .actionText {
+        flex: none;
+        height: 44px;
+        padding: 0 16px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: var(--ion-color-primary, #0054e9);
+        color: var(--ion-color-primary-contrast, #fff);
+      }
+      .actionText:focus-visible {
+        outline-color: var(--notice-text);
+        outline-offset: 2px;
       }
       .close ion-icon {
         font-size: 1.25rem;
@@ -392,7 +436,8 @@ export class IDEANoticesComponent {
   /**
    * Show a new notice. With a `requestId`, the server's message is the generic one of an error the back-end didn't
    * handle: the notice shows the code instead, for longer, and stays once the user has copied it. A `persistent` notice
-   * stays until the user closes it (with `closeText` in place of the ✕, if any), and `onClose` is called then.
+   * stays until the user closes it (with `closeText` in place of the ✕, if any), and `onClose` is called then. An
+   * `action` is a button under the message, beside the close one: it runs its handler, then the notice closes.
    */
   add(options: {
     kind: IDEANoticeKind;
@@ -402,8 +447,9 @@ export class IDEANoticesComponent {
     persistent?: boolean;
     closeText?: string;
     onClose?: () => void;
+    action?: { text: string; handler: () => void };
   }): void {
-    const { kind, message, serverMessage, requestId, persistent, closeText, onClose } = options;
+    const { kind, message, serverMessage, requestId, persistent, closeText, onClose, action } = options;
     const notice: Notice = {
       id: ++this.lastId,
       kind,
@@ -414,6 +460,7 @@ export class IDEANoticesComponent {
       persistent: !!persistent,
       closeText,
       onClose,
+      action,
       duration: requestId ? 10000 : kind === 'error' || kind === 'warning' ? 5000 : 3000,
       remaining: 0,
       holds: new Set(),
@@ -454,6 +501,17 @@ export class IDEANoticesComponent {
     if (notice.leaving()) return;
     notice.onClose?.();
     this.dismiss(notice);
+  }
+  /**
+   * The user clicks the action of a notice: it isn't a close, so `onClose` isn't called.
+   */
+  act(notice: Notice): void {
+    if (notice.leaving()) return;
+    try {
+      notice.action?.handler();
+    } finally {
+      this.dismiss(notice);
+    }
   }
   private dismiss(notice: Notice): void {
     if (notice.leaving()) return;
@@ -524,6 +582,10 @@ interface Notice {
   persistent: boolean;
   closeText?: string;
   onClose?: () => void;
+  /**
+   * A button under the message that does something, beside the close one.
+   */
+  action?: { text: string; handler: () => void };
   /**
    * How long the notice stays on screen by itself, and how much of it is left.
    */

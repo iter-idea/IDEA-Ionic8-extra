@@ -9,9 +9,9 @@ import { IDEAAppStatusService } from './appStatus.service';
  * already known: no request per navigation.
  *
  * Only for a native app that may force an update: the API is open, and nothing else keeps an old version out (the
- * app's own navigation at start-up, the back button). A web app doesn't need it: it always runs its latest version,
- * and during a maintenance whoever gets around the status page goes back there when the API refuses their requests
- * (idea-aws ≥ 4.8.0, with `APP_STATUS_URL`).
+ * app's own navigation at start-up, the back button). A web app doesn't need it: `minVersion` doesn't apply to it (a
+ * new version is an invitation to reload, never a block), and during a maintenance whoever gets around the status
+ * page goes back there when the API refuses their requests (idea-aws ≥ 4.8.0, with `APP_STATUS_URL`).
  *
  * Put it on every route but `app-status` itself, after the app's initialization guard:
  * `canActivate: [initGuard, IDEAAppStatusGuard, authGuard]`. It only reads the status, and the redirection is the
