@@ -60,7 +60,7 @@ const MAINTENANCE_POLLING_MS = 30 * 1000;
             <ion-card-content class="ion-align-items-center">
               <ion-img class="logo" [src]="appIconURI" (ionError)="$event.target.style.display = 'none'" />
               @if (htmlContent()) {
-                <p class="htmlContent" [innerHTML]="htmlContent()"></p>
+                <div class="htmlContent" [innerHTML]="htmlContent()"></div>
               }
               @if (status.mustUpdate) {
                 <ion-grid>
@@ -115,9 +115,11 @@ const MAINTENANCE_POLLING_MS = 30 * 1000;
         margin: 0 auto;
         margin-bottom: 24px;
       }
-      p.htmlContent {
+      /* not a paragraph: the Markdown brings its own */
+      div.htmlContent {
         margin: 0 0 24px 0;
-        padding: 20px;
+        padding: 0 20px;
+        text-align: center;
       }
       p.hint {
         margin: 0 0 16px 0;
