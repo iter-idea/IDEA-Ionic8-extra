@@ -62,7 +62,8 @@
 
 ## editor
 
-- [idea-html-editor](modules/editor/src/htmlEditor.component.md)
+- [idea-html-editor](modules/editor/src/htmlEditor.component.md). An editor of formatted text, on Tiptap (ProseMirror): it edits and shows HTML, and holds only what its profile
+  allows, whatever is loaded or pasted. Security, styles and the migration from 8.15 are in the module's README.
 
 ## teams
 

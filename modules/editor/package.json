@@ -20,14 +20,22 @@
   "peerDependencies": {
     "@angular/common": "^22.0.2",
     "@angular/core": "^22.0.2",
-    "@angular/forms": "^22.0.2",
     "@angular/platform-browser": "^22.0.2",
     "@idea-ionic/common": "^8.x.x",
     "@ionic/angular": "^8.8.11"
   },
   "dependencies": {
-    "@kolkov/angular-editor": "^3.0.5",
-    "docs-soap": "^1.2.1",
+    "@tiptap/core": "^3.32.2",
+    "@tiptap/extension-image": "^3.32.2",
+    "@tiptap/extension-list": "^3.32.2",
+    "@tiptap/extension-paragraph": "^3.32.2",
+    "@tiptap/extension-subscript": "^3.32.2",
+    "@tiptap/extension-superscript": "^3.32.2",
+    "@tiptap/extension-table": "^3.32.2",
+    "@tiptap/extensions": "^3.32.2",
+    "@tiptap/pm": "^3.32.2",
+    "@tiptap/starter-kit": "^3.32.2",
+    "dompurify": "^3.4.17",
     "tslib": "^2.4.1"
   },
   "sideEffects": false

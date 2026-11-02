@@ -4,6 +4,6 @@
   "lib": {
     "entryFile": "public-api.ts"
   },
-  "allowedNonPeerDependencies": ["@kolkov/angular-editor", "docs-soap"],
+  "allowedNonPeerDependencies": ["@tiptap/", "dompurify"],
   "assets": ["./css/*.scss"]
 }
