@@ -175,7 +175,7 @@ export class IDEAAuthSignInPage {
   private _flow = inject(IDEAAuthFlowService);
 
   registrationIsPossible: boolean = this._env.idea.auth.registrationIsPossible;
-  externalProviders: { type: string; name: string; emailDomains: string[] }[] =
+  externalProviders: { type?: string; name: string; emailDomains: string[] }[] =
     this._env.aws.cognito?.externalProviders || [];
   // who can register accepted the agreements when registering
   showAgreements =
@@ -220,7 +220,9 @@ export class IDEAAuthSignInPage {
     const domain = email.split('@')[1].toLowerCase();
     const provider = this.externalProviders.find(p => p.emailDomains.some(d => d.toLowerCase() === domain));
     if (provider) {
-      this._nav.navigateForward(['auth', provider.type], { queryParams: { provider: provider.name, go: true } });
+      // `type` is deprecated: an app that still sets it keeps its route
+      const path = ['auth', provider.type ?? 'sso'];
+      this._nav.navigateForward(path, { queryParams: { provider: provider.name, go: true } });
       return;
     }
     // filled by a password manager (read from the field too: not every fill raises an event)

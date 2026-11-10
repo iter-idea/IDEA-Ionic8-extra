@@ -3,16 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, IonButton, IonContent } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { storeCognitoSession } from './okta.helpers';
+import { storeCognitoSession } from './sso.helpers';
 import { IDEAAuthNotice } from './authFlow.service';
 import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';
 
 /**
- * The sign-in through an external provider (Okta) of Cognito's hosted UI: there and back with a code for the tokens.
+ * The sign-in through an external provider (SSO), whatever its protocol, on Cognito's hosted UI: there and back with a
+ * code for the tokens.
  */
 @Component({
-  selector: 'idea-auth-okta',
+  selector: 'idea-auth-sso',
   imports: [IDEATranslatePipe, IDEAAuthShellComponent, IDEAAuthNoticeComponent, IonButton, IonContent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -38,7 +39,7 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
     </ion-content>
   `
 })
-export class IDEAAuthOktaPage {
+export class IDEAAuthSSOPage {
   private _env = inject(IDEAEnvironment);
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
@@ -58,11 +59,26 @@ export class IDEAAuthOktaPage {
     const params = this._route.snapshot.queryParamMap;
     const code = params.get('code');
     const go = !!params.get('go');
-    this.identityProvider.set(params.get('provider'));
+    const provider = params.get('provider');
+    // a link can be around before its provider is on (e.g. the icon in a company's portal): it opens the app instead
+    if (!code && provider && !this.isProviderOn(provider)) {
+      this.redirecting.set(true);
+      this._nav.navigateRoot(['']);
+      return;
+    }
+    this.identityProvider.set(provider);
     this.notice.set(code || this.identityProvider() ? null : { kind: 'error', message: 'IDEA_AUTH.UNKNOWN_PROVIDER' });
     this._router.navigate([], { queryParams: {}, replaceUrl: true });
     if (code) this.endLogin(code);
     else if (this.identityProvider() && go) this.startLogin();
+  }
+
+  /**
+   * An app that lists its providers signs in only through them.
+   */
+  private isProviderOn(provider: string): boolean {
+    const providers: { name: string }[] = this._env.aws.cognito.externalProviders;
+    return !providers || providers.some(p => p.name === provider);
   }
 
   startLogin(): void {
@@ -107,3 +123,8 @@ export class IDEAAuthOktaPage {
     this._nav.navigateBack(['auth', 'sign-in']);
   }
 }
+
+/**
+ * @deprecated the page serves every provider: use `IDEAAuthSSOPage`.
+ */
+export const IDEAAuthOktaPage = IDEAAuthSSOPage;

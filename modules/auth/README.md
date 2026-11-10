@@ -26,7 +26,7 @@ Additionaly, if you want to configure OKTA integration, [follow this guide](http
 
 ## New sign-in pages (`IDEAAuthRoutes`)
 
-Modern pages for every flow (sign-in with the email first, new password, MFA, password reset, sign-up, Okta), that an app brands with tokens and settings only: no override of their internals is needed. The pages of `routes` stay exactly as they are, for the apps that don't switch.
+Modern pages for every flow (sign-in with the email first, new password, MFA, password reset, sign-up, SSO), that an app brands with tokens and settings only: no override of their internals is needed. The pages of `routes` stay exactly as they are, for the apps that don't switch.
 
 To switch, mount `IDEAAuthRoutes` in place of `routes`, on the same path (URLs, guards and links stay the same):
 
@@ -39,6 +39,12 @@ import { IDEAAuthRoutes } from '@idea-ionic/auth';
 Import them, rather than lazy-loading them with `loadChildren`: the app's guards bring the module into the start-up bundle anyway, where a dynamic `import()` would keep all of it, the old pages included; a static import lets the build drop what the app doesn't use. The same goes for `IDEAAppStatusRoutes` of `@idea-ionic/common`.
 
 Then delete the app's CSS aimed at the old pages (`.authCard`, `.flexBox`, `idea-sign-in`, …): it no longer applies.
+
+### External providers (SSO)
+
+`env.aws.cognito.externalProviders` lists the app's providers, each `{ name, emailDomains }`. Whoever types an email of one of those domains goes to `auth/sso?provider=<name>&go=true`, whatever the provider's protocol on Cognito (SAML or OIDC); the same link can be the app's icon in the company's portal. Cognito's client must have the page as a callback. An app that lists its providers signs in only through them: a link naming another one (e.g. one not yet on in that stage) opens the app.
+
+A provider with `type` (deprecated) goes to `auth/<type>`, and `auth/okta` stays mounted on the same page for the links already handed out.
 
 ### Settings
 

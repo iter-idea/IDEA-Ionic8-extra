@@ -8,7 +8,7 @@ import { IDEAAuthSetupMFAPage } from './authSetupMFA.page';
 import { IDEAAuthResendLinkPage } from './authResendLink.page';
 import { IDEAAuthForgotPasswordPage } from './authForgotPassword.page';
 import { IDEAAuthConfirmPasswordPage } from './authConfirmPassword.page';
-import { IDEAAuthOktaPage } from './authOkta.page';
+import { IDEAAuthSSOPage } from './authSSO.page';
 
 /**
  * The sign-in pages, brandable with tokens and settings (see the module's README). They take the place of `routes`,
@@ -24,5 +24,7 @@ export const IDEAAuthRoutes: Routes = [
   { path: 'resend-link', component: IDEAAuthResendLinkPage },
   { path: 'forgot-password', component: IDEAAuthForgotPasswordPage },
   { path: 'confirm-password', component: IDEAAuthConfirmPasswordPage },
-  { path: 'okta', component: IDEAAuthOktaPage }
+  { path: 'sso', component: IDEAAuthSSOPage },
+  // deprecated: for the links already handed out (e.g. an app's icon in Okta's portal) and the providers with a `type`
+  { path: 'okta', component: IDEAAuthSSOPage }
 ];

@@ -18,7 +18,7 @@ export * from './src/authSetupMFA.page';
 export * from './src/authResendLink.page';
 export * from './src/authForgotPassword.page';
 export * from './src/authConfirmPassword.page';
-export * from './src/authOkta.page';
+export * from './src/authSSO.page';
 
 export * from './src/legacyAuthPages/auth.routes';
 export * from './src/legacyAuthPages/confirmPassword.page';

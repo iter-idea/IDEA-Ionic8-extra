@@ -11,7 +11,7 @@ import {
 } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { storeCognitoSession } from '../okta.helpers';
+import { storeCognitoSession } from '../sso.helpers';
 
 @Component({
   selector: 'okta',
