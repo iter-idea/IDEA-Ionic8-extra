@@ -3,14 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, IonButton, IonContent } from '@ionic/angular/standalone';
 import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
-import { storeCognitoSession } from './sso.helpers';
+import { getPKCEChallenge, startSSOFlow, storeCognitoSession, takeSSOFlow } from './sso.helpers';
 import { IDEAAuthNotice } from './authFlow.service';
 import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';
 
 /**
  * The sign-in through an external provider (SSO), whatever its protocol, on Cognito's hosted UI: there and back with a
- * code for the tokens.
+ * code for the tokens, with `state` and PKCE.
  */
 @Component({
   selector: 'idea-auth-sso',
@@ -58,6 +58,7 @@ export class IDEAAuthSSOPage {
   ionViewWillEnter(): void {
     const params = this._route.snapshot.queryParamMap;
     const code = params.get('code');
+    const state = params.get('state');
     const go = !!params.get('go');
     const provider = params.get('provider');
     // a link can be around before its provider is on (e.g. the icon in a company's portal): it opens the app instead
@@ -69,7 +70,7 @@ export class IDEAAuthSSOPage {
     this.identityProvider.set(provider);
     this.notice.set(code || this.identityProvider() ? null : { kind: 'error', message: 'IDEA_AUTH.UNKNOWN_PROVIDER' });
     this._router.navigate([], { queryParams: {}, replaceUrl: true });
-    if (code) this.endLogin(code);
+    if (code) this.endLogin(code, state);
     else if (this.identityProvider() && go) this.startLogin();
   }
 
@@ -81,19 +82,35 @@ export class IDEAAuthSSOPage {
     return !providers || providers.some(p => p.name === provider);
   }
 
-  startLogin(): void {
+  async startLogin(): Promise<void> {
     this.redirecting.set(true);
-    const params = new URLSearchParams();
-    params.append('identity_provider', this.identityProvider());
-    params.append('redirect_uri', this.redirectURI);
-    params.append('response_type', 'code');
-    params.append('client_id', this.clientId);
-    params.append('scope', this.scope);
-    window.location.assign(`https://${this.domain}/oauth2/authorize?${params.toString()}`);
+    try {
+      const flow = startSSOFlow();
+      const params = new URLSearchParams();
+      params.append('identity_provider', this.identityProvider());
+      params.append('redirect_uri', this.redirectURI);
+      params.append('response_type', 'code');
+      params.append('client_id', this.clientId);
+      params.append('scope', this.scope);
+      params.append('state', flow.state);
+      params.append('code_challenge', await getPKCEChallenge(flow.verifier));
+      params.append('code_challenge_method', 'S256');
+      window.location.assign(`https://${this.domain}/oauth2/authorize?${params.toString()}`);
+    } catch (err) {
+      this.notice.set({ kind: 'error', message: 'IDEA_AUTH.AUTHENTICATION_FAILED' });
+      this.redirecting.set(false);
+    }
   }
 
-  private async endLogin(code: string): Promise<void> {
+  private async endLogin(code: string, state: string): Promise<void> {
     this.redirecting.set(true);
+    // a code this tab didn't ask for (e.g. one planted by a link) signs nobody in
+    const flow = takeSSOFlow();
+    if (!flow || flow.state !== state) {
+      this.notice.set({ kind: 'error', message: 'IDEA_AUTH.AUTHENTICATION_FAILED' });
+      this.redirecting.set(false);
+      return;
+    }
     try {
       await this._loading.show();
       const params = new URLSearchParams();
@@ -101,6 +118,7 @@ export class IDEAAuthSSOPage {
       params.append('grant_type', 'authorization_code');
       params.append('redirect_uri', this.redirectURI);
       params.append('client_id', this.clientId);
+      params.append('code_verifier', flow.verifier);
       const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
       const response = await fetch(`https://${this.domain}/oauth2/token`, {
         method: 'POST',

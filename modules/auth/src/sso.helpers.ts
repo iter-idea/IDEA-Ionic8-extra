@@ -25,3 +25,48 @@ const decodeJWTToken = (token: string): any => {
     return null;
   }
 };
+
+/**
+ * What a sign-in through an external provider needs when it comes back: the `state` it must bring back, and the PKCE
+ * verifier that only this page knows.
+ */
+export interface SSOFlow {
+  state: string;
+  verifier: string;
+}
+
+const SSO_FLOW_KEY = 'idea-auth-sso-flow';
+
+/**
+ * Start a sign-in through an external provider: its `state` and PKCE verifier, kept in the tab until it comes back.
+ */
+export const startSSOFlow = (): SSOFlow => {
+  const flow: SSOFlow = { state: randomURLSafeString(), verifier: randomURLSafeString() };
+  window.sessionStorage.setItem(SSO_FLOW_KEY, JSON.stringify(flow));
+  return flow;
+};
+/**
+ * The sign-in through an external provider started in this tab, once: a return can't be used twice.
+ */
+export const takeSSOFlow = (): SSOFlow | null => {
+  try {
+    const flow: SSOFlow = JSON.parse(window.sessionStorage.getItem(SSO_FLOW_KEY));
+    window.sessionStorage.removeItem(SSO_FLOW_KEY);
+    return flow?.state && flow?.verifier ? flow : null;
+  } catch (_) {
+    return null;
+  }
+};
+/**
+ * The PKCE challenge of a verifier, with the method `S256`.
+ */
+export const getPKCEChallenge = async (verifier: string): Promise<string> =>
+  toBase64URL(new Uint8Array(await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))));
+
+const randomURLSafeString = (bytes = 32): string => toBase64URL(window.crypto.getRandomValues(new Uint8Array(bytes)));
+const toBase64URL = (bytes: Uint8Array): string =>
+  window
+    .btoa(String.fromCharCode(...bytes))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
