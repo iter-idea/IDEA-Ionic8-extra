@@ -105,6 +105,8 @@
     "WARNING": "Atención",
     "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Antes de iniciar sesión, debe actualizar su contraseña: ha recibido las instrucciones en su dirección de correo electrónico; verifique en su bandeja de entrada o en la carpeta SPAM.",
     "SIGN_IN_TO_CONTINUE": "Introduzca el correo electrónico de su cuenta para continuar.",
+    "PASSWORD_OF_COMPANY_ACCOUNT": "Con este correo electrónico accede con la cuenta de su empresa: aquí no hay ninguna contraseña que restablecer. Para cambiar la contraseña de la cuenta de su empresa, siga el procedimiento de su empresa.",
+    "SIGN_IN_WITH_COMPANY_ACCOUNT": "Acceda con la cuenta de su empresa",
     "ENTER_YOUR_PASSWORD": "Introduzca su contraseña",
     "CHANGE_EMAIL": "Cambiar",
     "SHOW_PASSWORD": "Mostrar la contraseña",

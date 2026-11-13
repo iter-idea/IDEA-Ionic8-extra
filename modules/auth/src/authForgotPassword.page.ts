@@ -1,15 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { NavController, IonButton, IonInput, IonContent } from '@ionic/angular/standalone';
 import { isEmpty } from 'idea-toolbox';
-import { IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
+import { IDEAEnvironment, IDEALoadingService, IDEATranslatePipe } from '@idea-ionic/common';
 
 import { IDEAAuthService } from './auth.service';
 import { IDEAAuthFlowService, IDEAAuthNotice } from './authFlow.service';
 import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';
+import { ExternalProvider, getExternalProviderOfEmail, getExternalProviderSignInRoute } from './sso.helpers';
 
 /**
- * The request of a password reset: Cognito sends a code to the email.
+ * The request of a password reset: Cognito sends a code to the email. An email of an external provider's domain gets
+ * no code (its account has no password of the app, or one it can't use): the page says so and offers the provider's
+ * sign-in instead.
  */
 @Component({
   selector: 'idea-auth-forgot-password',
@@ -46,17 +49,23 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
               autocomplete="username"
               spellcheck="false"
               autocapitalize="off"
-              enterkeyhint="send"
               aria-labelledby="idea-auth-forgot-password-email"
+              [enterkeyhint]="provider() ? 'go' : 'send'"
               [value]="email()"
-              (ionInput)="email.set($event.detail.value)"
-              (keyup.enter)="requestReset()"
+              (ionInput)="onEmailInput($event.detail.value)"
+              (keyup.enter)="submit()"
             />
           </div>
         </div>
         <div class="idea-auth-actions">
-          <ion-button testId="resetPasswordButton" class="idea-auth-button" expand="block" (click)="requestReset()">
-            {{ 'IDEA_AUTH.RESET_MY_PASSWORD' | translate }}
+          <!-- one button that changes, so that the keyboard's focus stays on it -->
+          <ion-button
+            class="idea-auth-button"
+            expand="block"
+            [attr.testId]="provider() ? 'signInWithCompanyAccountButton' : 'resetPasswordButton'"
+            (click)="submit()"
+          >
+            {{ (provider() ? 'IDEA_AUTH.SIGN_IN_WITH_COMPANY_ACCOUNT' : 'IDEA_AUTH.RESET_MY_PASSWORD') | translate }}
           </ion-button>
           <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
             {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
@@ -67,22 +76,42 @@ import { IDEAAuthNoticeComponent } from './authNotice.component';
   `
 })
 export class IDEAAuthForgotPasswordPage {
+  private _env = inject(IDEAEnvironment);
   private _nav = inject(NavController);
   private _loading = inject(IDEALoadingService);
   private _auth = inject(IDEAAuthService);
   private _flow = inject(IDEAAuthFlowService);
 
+  externalProviders: ExternalProvider[] = this._env.aws.cognito?.externalProviders || [];
+
   email = signal<string>('');
   notice = signal<IDEAAuthNotice>(null);
+  /**
+   * The external provider of the email requested, whose sign-in the page offers instead of a reset.
+   */
+  provider = signal<ExternalProvider>(null);
 
   emailInput = viewChild(IonInput);
 
   ionViewWillEnter(): void {
     this.notice.set(this._flow.takeNotice());
     this.email.set(this._flow.email() ?? '');
+    this.provider.set(null);
   }
   ionViewDidEnter(): void {
     if (!this.email()) this.emailInput()?.setFocus();
+  }
+
+  onEmailInput(email: string): void {
+    this.email.set(email);
+    // another email may have a password to reset: the explanation was about the previous one
+    if (!this.provider()) return;
+    this.provider.set(null);
+    this.notice.set(null);
+  }
+  submit(): void {
+    if (this.provider()) this.signInWithCompanyAccount();
+    else void this.requestReset();
   }
 
   async requestReset(): Promise<void> {
@@ -90,6 +119,12 @@ export class IDEAAuthForgotPasswordPage {
     const email = (this.email() ?? '').trim();
     if (isEmpty(email, 'email')) {
       this.notice.set({ kind: 'error', message: 'IDEA_AUTH.VALID_EMAIL_OBLIGATORY' });
+      return;
+    }
+    const provider = getExternalProviderOfEmail(this.externalProviders, email);
+    if (provider) {
+      this.provider.set(provider);
+      this.notice.set({ kind: 'info', message: 'IDEA_AUTH.PASSWORD_OF_COMPANY_ACCOUNT' });
       return;
     }
     try {
@@ -107,6 +142,12 @@ export class IDEAAuthForgotPasswordPage {
     } finally {
       this._loading.hide();
     }
+  }
+
+  signInWithCompanyAccount(): void {
+    this._flow.email.set(this.email().trim());
+    const { path, queryParams } = getExternalProviderSignInRoute(this.provider());
+    this._nav.navigateForward(path, { queryParams });
   }
 
   goToConfirmPassword(): void {

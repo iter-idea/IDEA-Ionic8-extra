@@ -1,4 +1,37 @@
 /**
+ * An external provider of the app (`aws.cognito.externalProviders` of the environment).
+ */
+export interface ExternalProvider {
+  name: string;
+  emailDomains: string[];
+  /**
+   * @deprecated every provider signs in on `auth/sso`: an app that still sets it keeps its route.
+   */
+  type?: string;
+}
+
+/**
+ * The external provider that signs in the people of an email's domain, if any: their password is the provider's.
+ */
+export const getExternalProviderOfEmail = (
+  providers: ExternalProvider[],
+  email: string
+): ExternalProvider | undefined => {
+  const domain = email.split('@')[1]?.toLowerCase();
+  if (!domain) return undefined;
+  return providers.find(p => p.emailDomains.some(d => d.toLowerCase() === domain));
+};
+/**
+ * Where the sign-in through an external provider starts at once.
+ */
+export const getExternalProviderSignInRoute = (
+  provider: ExternalProvider
+): { path: string[]; queryParams: { provider: string; go: boolean } } => ({
+  path: ['auth', provider.type ?? 'sso'],
+  queryParams: { provider: provider.name, go: true }
+});
+
+/**
  * Store the tokens and the info needed by Cognito's front-end lib to authenticate.
  */
 export const storeCognitoSession = (idToken: string, accessToken: string, refreshToken: string): void => {

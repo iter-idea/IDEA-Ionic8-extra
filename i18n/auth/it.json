@@ -105,6 +105,8 @@
     "WARNING": "Attenzione",
     "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Per effettuare l'accesso devi prima aggiornare la tua password: hai ricevuto le istruzioni al tuo indirizzo email; controlla nella tua posta in arrivo o nello SPAM.",
     "SIGN_IN_TO_CONTINUE": "Inserisci l'email del tuo account per continuare.",
+    "PASSWORD_OF_COMPANY_ACCOUNT": "Con questa email accedi con l'account aziendale: qui non c'è una password da resettare. Per cambiare la password dell'account aziendale, segui la procedura della tua azienda.",
+    "SIGN_IN_WITH_COMPANY_ACCOUNT": "Accedi con l'account aziendale",
     "ENTER_YOUR_PASSWORD": "Inserisci la password",
     "CHANGE_EMAIL": "Modifica",
     "SHOW_PASSWORD": "Mostra la password",

@@ -17,6 +17,7 @@ import { IDEAAuthFlowService, IDEAAuthNotice } from './authFlow.service';
 import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';
 import { IDEAAuthPasswordFieldComponent } from './authPasswordField.component';
+import { ExternalProvider, getExternalProviderOfEmail, getExternalProviderSignInRoute } from './sso.helpers';
 
 /**
  * The sign-in: the email first, then the password (or the page of the email's external provider).
@@ -175,8 +176,7 @@ export class IDEAAuthSignInPage {
   private _flow = inject(IDEAAuthFlowService);
 
   registrationIsPossible: boolean = this._env.idea.auth.registrationIsPossible;
-  externalProviders: { type?: string; name: string; emailDomains: string[] }[] =
-    this._env.aws.cognito?.externalProviders || [];
+  externalProviders: ExternalProvider[] = this._env.aws.cognito?.externalProviders || [];
   // who can register accepted the agreements when registering
   showAgreements =
     !this.registrationIsPossible &&
@@ -217,12 +217,10 @@ export class IDEAAuthSignInPage {
     }
     this.email.set(email);
     this._flow.email.set(email);
-    const domain = email.split('@')[1].toLowerCase();
-    const provider = this.externalProviders.find(p => p.emailDomains.some(d => d.toLowerCase() === domain));
+    const provider = getExternalProviderOfEmail(this.externalProviders, email);
     if (provider) {
-      // `type` is deprecated: an app that still sets it keeps its route
-      const path = ['auth', provider.type ?? 'sso'];
-      this._nav.navigateForward(path, { queryParams: { provider: provider.name, go: true } });
+      const { path, queryParams } = getExternalProviderSignInRoute(provider);
+      this._nav.navigateForward(path, { queryParams });
       return;
     }
     // filled by a password manager (read from the field too: not every fill raises an event)

@@ -42,7 +42,7 @@ Then delete the app's CSS aimed at the old pages (`.authCard`, `.flexBox`, `idea
 
 ### External providers (SSO)
 
-`env.aws.cognito.externalProviders` lists the app's providers, each `{ name, emailDomains }`. Whoever types an email of one of those domains goes to `auth/sso?provider=<name>&go=true`, whatever the provider's protocol on Cognito (SAML or OIDC); the same link can be the app's icon in the company's portal. Cognito's client must have the page as a callback. An app that lists its providers signs in only through them: a link naming another one (e.g. one not yet on in that stage) opens the app. The flow carries a `state` and PKCE (`S256`), kept in the tab's `sessionStorage`: a return to another tab, or with a code the tab didn't ask for, signs nobody in.
+`env.aws.cognito.externalProviders` lists the app's providers, each `{ name, emailDomains }`. Whoever types an email of one of those domains goes to `auth/sso?provider=<name>&go=true`, whatever the provider's protocol on Cognito (SAML or OIDC); the same link can be the app's icon in the company's portal. Cognito's client must have the page as a callback. An app that lists its providers signs in only through them: a link naming another one (e.g. one not yet on in that stage) opens the app. The flow carries a `state` and PKCE (`S256`), kept in the tab's `sessionStorage`: a return to another tab, or with a code the tab didn't ask for, signs nobody in. The password reset asks Cognito nothing for such an email (its account has no password of the app, or one it can't use): the page says so and offers the provider's sign-in instead.
 
 A provider with `type` (deprecated) goes to `auth/<type>`, and `auth/okta` stays mounted on the same page for the links already handed out.
 

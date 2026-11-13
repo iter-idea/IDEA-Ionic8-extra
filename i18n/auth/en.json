@@ -105,6 +105,8 @@
     "WARNING": "Warning",
     "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Before signing in, you have to update your password: you've received the instructions at your email address; check your inbox or the SPAM folder.",
     "SIGN_IN_TO_CONTINUE": "Enter the email of your account to continue.",
+    "PASSWORD_OF_COMPANY_ACCOUNT": "With this email you sign in through your company account: there's no password to reset here. To change your company account's password, follow your company's procedure.",
+    "SIGN_IN_WITH_COMPANY_ACCOUNT": "Sign in with your company account",
     "ENTER_YOUR_PASSWORD": "Enter your password",
     "CHANGE_EMAIL": "Change",
     "SHOW_PASSWORD": "Show password",

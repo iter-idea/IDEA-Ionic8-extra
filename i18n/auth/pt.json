@@ -105,6 +105,8 @@
     "WARNING": "Atenção",
     "CHANGE_YOUR_PASSWORD_TO_LOGIN": "Antes de entrar, é necessário atualizar a sua palavra-chave: recebeu as instruções no seu endereço de e-mail; verifique a sua caixa de entrada ou a caixa de SPAM.",
     "SIGN_IN_TO_CONTINUE": "Introduz o e-mail da tua conta para continuar.",
+    "PASSWORD_OF_COMPANY_ACCOUNT": "Com este e-mail inicias sessão com a conta da tua empresa: aqui não há nenhuma palavra-chave para repor. Para mudar a palavra-chave da conta da tua empresa, segue o procedimento da tua empresa.",
+    "SIGN_IN_WITH_COMPANY_ACCOUNT": "Iniciar sessão com a conta da tua empresa",
     "ENTER_YOUR_PASSWORD": "Introduz a tua palavra-chave",
     "CHANGE_EMAIL": "Alterar",
     "SHOW_PASSWORD": "Mostrar a palavra-chave",
