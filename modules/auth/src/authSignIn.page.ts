@@ -198,10 +198,11 @@ export class IDEAAuthSignInPage {
   ionViewWillEnter(): void {
     this.notice.set(this._flow.takeNotice());
     this.password.set('');
-    // coming from another page of the flow, the email is known: the sign-in goes on from the password
+    // coming from another page of the flow, the email is known: the sign-in goes on from the password, unless the email
+    // signs in through a provider, where the email step sends it
     const email = this._flow.email();
     if (email) this.email.set(email);
-    this.step.set(email ? 'password' : 'email');
+    this.step.set(email && !getExternalProviderOfEmail(this.externalProviders, email) ? 'password' : 'email');
   }
   ionViewDidEnter(): void {
     // no focus on the email at the first visit (on a phone the keyboard would cover the page): only on the password

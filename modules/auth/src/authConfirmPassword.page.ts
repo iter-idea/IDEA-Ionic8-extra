@@ -10,9 +10,11 @@ import { IDEAAuthShellComponent } from './authShell.component';
 import { IDEAAuthNoticeComponent } from './authNotice.component';
 import { IDEAAuthPasswordFieldComponent } from './authPasswordField.component';
 import { IDEAAuthPasswordRequirementsComponent } from './authPasswordRequirements.component';
+import { ExternalProvider, getExternalProviderOfEmail, getExternalProviderSignInRoute } from './sso.helpers';
 
 /**
- * The new password after a reset request, with the code received by email.
+ * The new password after a reset request, with the code received by email. An email of an external provider's domain
+ * has no password of the app to set: the page says so and offers the provider's sign-in instead.
  */
 @Component({
   selector: 'idea-auth-confirm-password',
@@ -33,7 +35,7 @@ import { IDEAAuthPasswordRequirementsComponent } from './authPasswordRequirement
         <div class="idea-auth-heading">
           <h1 class="idea-auth-title">{{ 'IDEA_AUTH.CHANGE_THE_PASSWORD' | translate }}</h1>
         </div>
-        <idea-auth-notice [notice]="notice()" />
+        <idea-auth-notice [notice]="provider() ? companyAccountNotice : notice()" />
         <div class="idea-auth-form">
           <div class="idea-auth-field">
             <label id="idea-auth-confirm-password-email" class="idea-auth-label" (click)="emailField.setFocus()">
@@ -49,66 +51,74 @@ import { IDEAAuthPasswordRequirementsComponent } from './authPasswordRequirement
               spellcheck="false"
               autocapitalize="off"
               aria-labelledby="idea-auth-confirm-password-email"
+              [enterkeyhint]="provider() ? 'go' : undefined"
               [value]="email()"
               (ionInput)="email.set($event.detail.value)"
+              (keyup.enter)="provider() && confirm()"
             />
           </div>
-          <div class="idea-auth-field">
-            <label id="idea-auth-confirm-password-code" class="idea-auth-label" (click)="codeField.setFocus()">
-              {{ 'IDEA_AUTH.RESET_CODE' | translate }}
-            </label>
-            <ion-input
-              #codeField
-              testId="confirmpassword.code"
-              class="idea-auth-input"
-              type="text"
-              inputmode="numeric"
-              autocomplete="one-time-code"
-              spellcheck="false"
-              aria-labelledby="idea-auth-confirm-password-code"
-              aria-describedby="idea-auth-confirm-password-code-hint"
-              [value]="code()"
-              (ionInput)="code.set($event.detail.value)"
-            />
-            <p id="idea-auth-confirm-password-code-hint" class="idea-auth-hint">
-              {{ 'IDEA_AUTH.RESET_CODE_HINT' | translate }}
-            </p>
-            <button
-              testId="haventReceivedResetCodeButton"
-              type="button"
-              class="idea-auth-link"
-              (click)="goToForgotPassword()"
-            >
-              {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_A_RESET_CODE' | translate }}
-            </button>
-          </div>
-          <div class="idea-auth-field">
-            <label id="idea-auth-confirm-password-password" class="idea-auth-label" (click)="passwordField()?.focus()">
-              {{ 'IDEA_AUTH.NEW_PASSWORD' | translate }}
-            </label>
-            <idea-auth-password-field
-              testId="confirmpassword.password"
-              labelledBy="idea-auth-confirm-password-password"
-              describedBy="idea-auth-confirm-password-requirements"
-              autocomplete="new-password"
-              [(value)]="password"
-              (enter)="confirm()"
-            />
-          </div>
-          <idea-auth-password-requirements listId="idea-auth-confirm-password-requirements" [password]="password()" />
-          @if (advancedPasswordCheck) {
-            <p class="idea-auth-hint">{{ 'IDEA_AUTH.COMMON_PASSWORDS_CHECK_HINT' | translate }}</p>
+          @if (!provider()) {
+            <div class="idea-auth-field">
+              <label id="idea-auth-confirm-password-code" class="idea-auth-label" (click)="codeField.setFocus()">
+                {{ 'IDEA_AUTH.RESET_CODE' | translate }}
+              </label>
+              <ion-input
+                #codeField
+                testId="confirmpassword.code"
+                class="idea-auth-input"
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                spellcheck="false"
+                aria-labelledby="idea-auth-confirm-password-code"
+                aria-describedby="idea-auth-confirm-password-code-hint"
+                [value]="code()"
+                (ionInput)="code.set($event.detail.value)"
+              />
+              <p id="idea-auth-confirm-password-code-hint" class="idea-auth-hint">
+                {{ 'IDEA_AUTH.RESET_CODE_HINT' | translate }}
+              </p>
+              <button
+                testId="haventReceivedResetCodeButton"
+                type="button"
+                class="idea-auth-link"
+                (click)="goToForgotPassword()"
+              >
+                {{ 'IDEA_AUTH.HAVEN_T_RECEIVED_A_RESET_CODE' | translate }}
+              </button>
+            </div>
+            <div class="idea-auth-field">
+              <label
+                id="idea-auth-confirm-password-password"
+                class="idea-auth-label"
+                (click)="passwordField()?.focus()"
+              >
+                {{ 'IDEA_AUTH.NEW_PASSWORD' | translate }}
+              </label>
+              <idea-auth-password-field
+                testId="confirmpassword.password"
+                labelledBy="idea-auth-confirm-password-password"
+                describedBy="idea-auth-confirm-password-requirements"
+                autocomplete="new-password"
+                [(value)]="password"
+                (enter)="confirm()"
+              />
+            </div>
+            <idea-auth-password-requirements listId="idea-auth-confirm-password-requirements" [password]="password()" />
+            @if (advancedPasswordCheck) {
+              <p class="idea-auth-hint">{{ 'IDEA_AUTH.COMMON_PASSWORDS_CHECK_HINT' | translate }}</p>
+            }
           }
         </div>
         <div class="idea-auth-actions">
           <ion-button
-            testId="changePasswordButton"
             class="idea-auth-button"
             expand="block"
-            [disabled]="!policyMet()"
+            [attr.testId]="provider() ? 'signInWithCompanyAccountButton' : 'changePasswordButton'"
+            [disabled]="!provider() && !policyMet()"
             (click)="confirm()"
           >
-            {{ 'IDEA_AUTH.CHANGE_MY_PASSWORD' | translate }}
+            {{ (provider() ? 'IDEA_AUTH.SIGN_IN_WITH_COMPANY_ACCOUNT' : 'IDEA_AUTH.CHANGE_MY_PASSWORD') | translate }}
           </ion-button>
           <button testId="backToSignInButton" type="button" class="idea-auth-link" data-muted (click)="backToSignIn()">
             {{ 'IDEA_AUTH.BACK_TO_SIGN_IN' | translate }}
@@ -127,12 +137,18 @@ export class IDEAAuthConfirmPasswordPage {
   private _flow = inject(IDEAAuthFlowService);
 
   advancedPasswordCheck: boolean = this._env.idea.auth.passwordPolicy?.advancedPasswordCheck;
+  externalProviders: ExternalProvider[] = this._env.aws.cognito?.externalProviders || [];
+  companyAccountNotice: IDEAAuthNotice = { kind: 'info', message: 'IDEA_AUTH.PASSWORD_OF_COMPANY_ACCOUNT' };
 
   email = signal<string>('');
   code = signal<string>('');
   password = signal<string>('');
   notice = signal<IDEAAuthNotice>(null);
   policyMet = computed((): boolean => this._auth.validatePasswordAgainstPolicy(this.password()).length === 0);
+  /**
+   * The external provider of the email, whose sign-in the page offers instead of a new password.
+   */
+  provider = computed(() => getExternalProviderOfEmail(this.externalProviders, (this.email() ?? '').trim()));
 
   emailInput = viewChild<IonInput>('emailField');
   codeInput = viewChild<IonInput>('codeField');
@@ -148,12 +164,15 @@ export class IDEAAuthConfirmPasswordPage {
     this.code.set(params.get('code') || '');
   }
   ionViewDidEnter(): void {
+    // the fields to focus would leave the view at its next render
+    if (this.provider()) return;
     if (!this.email()) this.emailInput()?.setFocus();
     else if (!this.code()) this.codeInput()?.setFocus();
     else this.passwordField()?.focus();
   }
 
   async confirm(): Promise<void> {
+    if (this.provider()) return this.signInWithCompanyAccount();
     if (!this.policyMet()) return;
     this.notice.set(null);
     const email = (this.email() ?? '').trim();
@@ -180,6 +199,12 @@ export class IDEAAuthConfirmPasswordPage {
     } finally {
       this._loading.hide();
     }
+  }
+
+  signInWithCompanyAccount(): void {
+    this._flow.email.set(this.email().trim());
+    const { path, queryParams } = getExternalProviderSignInRoute(this.provider());
+    this._nav.navigateForward(path, { queryParams });
   }
 
   goToForgotPassword(): void {
