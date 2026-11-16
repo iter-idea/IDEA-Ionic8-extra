@@ -1,4 +1,13 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef, output, input, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  output,
+  input,
+  signal
+} from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { EmailData, StringVariable } from 'idea-toolbox';
 
