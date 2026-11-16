@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, output, input, signal } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef, output, input, signal } from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonLabel, IonText } from '@ionic/angular/standalone';
 import { Label } from 'idea-toolbox';
 
@@ -91,6 +91,7 @@ import { IDEAListElementsComponent } from './listElements.component';
 })
 export class IDEAListComponent {
   private _modal = inject(ModalController);
+  private _cdr = inject(ChangeDetectorRef);
   private _translate = inject(IDEATranslationsService);
 
   /**
@@ -172,7 +173,12 @@ export class IDEAListComponent {
         noElementsFoundText: this.noElementsFoundText()
       }
     });
-    modal.onDidDismiss().then(({ data }): void => (data ? this.change.emit() : null));
+    modal.onDidDismiss().then(({ data }): void => {
+      if (!data) return;
+      // the list is updated in place (same reference): the input doesn't change, so refresh the preview
+      this._cdr.markForCheck();
+      this.change.emit();
+    });
     modal.present();
     this.isOpening.set(false);
   }

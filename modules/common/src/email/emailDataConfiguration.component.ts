@@ -177,7 +177,8 @@ export class IDEAEmailDataConfigurationComponent implements OnInit {
 
   save(): void {
     this.emailData.load(this.emailDataWC);
-    this.close();
+    // dismiss with data, so that the caller knows the email data changed
+    this._modal.dismiss(true);
   }
 
   close(): void {

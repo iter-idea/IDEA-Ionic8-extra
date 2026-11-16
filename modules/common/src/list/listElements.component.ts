@@ -122,6 +122,10 @@ export class IDEAListElementsComponent implements OnInit {
   @Input() noElementsFoundText?: string;
 
   workingData: (Label | string)[];
+  /**
+   * The labels edited while the list is open, by the element each one replaces: the list takes them on save.
+   */
+  private editedLabels = new Map<Label, Label>();
   filteredList = signal<(Label | string)[]>([]);
   currentPage: number;
 
@@ -134,8 +138,11 @@ export class IDEAListElementsComponent implements OnInit {
 
   getElementName(x: Label | string): any {
     return this.labelElements
-      ? (x as Label).translate(this._translate.getCurrentLang(), this._translate.languages())
+      ? this.getLabel(x as Label).translate(this._translate.getCurrentLang(), this._translate.languages())
       : x;
+  }
+  private getLabel(element: Label): Label {
+    return this.editedLabels.get(element) ?? element;
   }
 
   search(toSearch?: string, scrollToNextPage?: HTMLIonInfiniteScrollElement): void {
@@ -170,6 +177,7 @@ export class IDEAListElementsComponent implements OnInit {
   }
   removeElement(element: Label | string): void {
     this.workingData.splice(this.workingData.indexOf(element), 1);
+    this.editedLabels.delete(element as Label);
     const searchbar = this.searchbar();
     this.search(searchbar ? searchbar.value : '');
   }
@@ -197,11 +205,14 @@ export class IDEAListElementsComponent implements OnInit {
     if (firstInput) firstInput.focus();
   }
   async editLabel(label: Label): Promise<void> {
+    // edited in a copy: the list's label must not change if the list is then cancelled
+    const edited = new Label(this.getLabel(label), this._translate.languages());
     const modal = await this._modal.create({
       component: IDEALabelerComponent,
-      componentProps: { label, obligatory: true }
+      componentProps: { label: edited, obligatory: true }
     });
-    modal.onDidDismiss().then((): void => {
+    modal.onDidDismiss().then(({ data }): void => {
+      if (data) this.editedLabels.set(label, edited);
       const searchbar = this.searchbar();
       this.search(searchbar ? searchbar.value : '');
     });
@@ -212,6 +223,8 @@ export class IDEAListElementsComponent implements OnInit {
     // empty and refill the array without losing the reference
     const data = this.data;
     if (save) {
+      const languages = this._translate.languages();
+      this.editedLabels.forEach((edited, label) => label.load(edited, languages));
       data.length = 0;
       this.workingData.sort().forEach(x => this.data.push(x));
     }

@@ -1,4 +1,13 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, output, input, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  output,
+  input,
+  signal
+} from '@angular/core';
 import { ModalController, IonItem, IonButton, IonIcon, IonText, IonLabel } from '@ionic/angular/standalone';
 import { EmailData, StringVariable } from 'idea-toolbox';
 
@@ -110,6 +119,7 @@ import { IDEAEmailDataConfigurationComponent } from './emailDataConfiguration.co
 })
 export class IDEAEmailDataComponent implements OnInit {
   private _modal = inject(ModalController);
+  private _cdr = inject(ChangeDetectorRef);
 
   /**
    * The email data to manage.
@@ -180,7 +190,12 @@ export class IDEAEmailDataComponent implements OnInit {
         lines: this.lines()
       }
     });
-    modal.onDidDismiss().then(res => (res && res.data ? this.change.emit() : null));
+    modal.onDidDismiss().then(res => {
+      if (!res?.data) return;
+      // the email data is updated in place (same reference): the input doesn't change, so refresh the preview
+      this._cdr.markForCheck();
+      this.change.emit();
+    });
     modal.present();
     this.isOpening.set(false);
   }
