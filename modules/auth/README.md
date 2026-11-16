@@ -24,6 +24,10 @@ Additionaly, if you want to allow only one simultaneous session per account, [im
 
 Additionaly, if you want to configure OKTA integration, [follow this guide](https://www.notion.so/iter-idea/18445eea580780349282e1120e7c444f?pvs=4).
 
+## The session (`isAuthenticated`)
+
+`isAuthenticated(offlineAllowed, getFreshIdTokenOnExp?, onSessionOver?)` reads the session, refreshed if needed, and rejects with `UserUnAuthenticatedException` when there's none. While the app runs, one timer then refreshes the session's tokens every 15 minutes (after 1, when Cognito can't be reached), however many times the app calls it (e.g. its guard, at the start and at every resume, and some of its pages): each fresh ID token goes to every `getFreshIdTokenOnExp` received, e.g. to update the API client's. The last `onSessionOver` received learns that the session ended while the app ran: its refresh token expired or was revoked, the user signed out in another tab, or another user signed in there (the refresh never hands another user's tokens over). The refresh stops there, as at the logout and at a new sign-in, and the app can lead the user to the sign-in page instead of sending requests the API would refuse. `onSessionOver` can come together with the rejection of a call in flight, after the app has already ended the session on such a rejection, and more than once: its handler must stand it. A call that finds another user's session starts over: what was registered for the previous one is dropped, without `onSessionOver`.
+
 ## New sign-in pages (`IDEAAuthRoutes`)
 
 Modern pages for every flow (sign-in with the email first, new password, MFA, password reset, sign-up, SSO), that an app brands with tokens and settings only: no override of their internals is needed. The pages of `routes` stay exactly as they are, for the apps that don't switch.

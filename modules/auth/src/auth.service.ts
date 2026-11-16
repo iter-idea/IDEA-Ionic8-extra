@@ -22,6 +22,9 @@ import { IDEAEnvironment, IDEAStorageService, IDEATranslationsService } from '@i
 
 import { COMMON_PASSWORDS_TOP_1000 } from './commonPasswords.model';
 
+const SESSION_REFRESH_EVERY_MS = 15 * 60 * 1000;
+const SESSION_REFRESH_RETRY_MS = 60 * 1000;
+
 /**
  * Cognito wrapper to manage the authentication flow.
  *
@@ -50,6 +53,12 @@ export class IDEAAuthService {
   private passwordPolicy: any;
 
   private loginInProgress: Promise<LoginOutcomeActions>;
+
+  /**
+   * The refresh of the session's tokens while the app runs: one timer, for every `getFreshIdTokenOnExp` received and
+   * the last `onSessionOver`, as long as the session is of the same user (`sub`).
+   */
+  private sessionRefresh: SessionRefresh = { onFreshIdToken: new Set() };
 
   constructor() {
     this.deviceKeyAttribute = 'custom:'.concat(this._env.idea.project);
@@ -80,7 +89,8 @@ export class IDEAAuthService {
   private async signInWithPassword(username: string, password: string): Promise<LoginOutcomeActions> {
     this.challengeUsername = null;
     // Amplify refuses to sign in over a stored session (e.g. one refused by the post-auth checks): the new sign-in
-    // replaces it
+    // replaces it, and the refresh of the old one stops without reporting it over
+    this.stopSessionRefresh();
     await signOut();
     const { nextStep } = await withErrorCode(signIn({ username, password }));
     switch (nextStep.signInStep) {
@@ -175,6 +185,8 @@ export class IDEAAuthService {
     const { tokens } = await fetchAuthSession().catch((): AuthSession => ({}));
     // if the session is active and a reference to the device was saved, forget it
     if (tokens && this._env.idea.auth.singleSimultaneousSession) await this.setCurrentDeviceForProject(null);
+    // the session ends here: nothing left to refresh, nor to report as over
+    this.stopSessionRefresh();
     // sign-out from the pool (terminate the current session or all the sessions); the local session is removed anyway
     await signOut({ global: options.global });
   }
@@ -226,16 +238,25 @@ export class IDEAAuthService {
   }
   /**
    * Check if a user is currently authenticated.
+   * While the app runs, the session's tokens are then refreshed every 15 minutes (after 1, when Cognito can't be
+   * reached), by one timer for all the calls, until the session is over.
    * @param offlineAllowed if set and if offline, skip authentication and retrieve data locally
-   * @param getFreshIdTokenOnExp cb function to execute when the idToken is refreshed
+   * @param getFreshIdTokenOnExp cb function to execute when the idToken is refreshed (each one received is)
+   * @param onSessionOver cb function to execute (the last one received) when the session turns out to be over while
+   * the app runs: the refresh stops until the next call that finds a session. It can come with the rejection of a call
+   * in flight, after it, and more than once: its handler must stand it (the README says when)
    */
-  async isAuthenticated(offlineAllowed: boolean, getFreshIdTokenOnExp?: (freshIdToken: string) => void): Promise<any> {
+  async isAuthenticated(
+    offlineAllowed: boolean,
+    getFreshIdTokenOnExp?: (freshIdToken: string) => void,
+    onSessionOver?: () => void
+  ): Promise<any> {
     if (offlineAllowed && !navigator.onLine) {
       // re-execute the method when back online, so that you can retrieve a token to make requests
       window.addEventListener(
         'online',
         (): Promise<void> =>
-          this.isAuthenticated(true, getFreshIdTokenOnExp)
+          this.isAuthenticated(true, getFreshIdTokenOnExp, onSessionOver)
             // set the new token as if it was refreshed
             .then(result => getFreshIdTokenOnExp(result.idToken))
       );
@@ -243,7 +264,11 @@ export class IDEAAuthService {
     }
     // get the session, refreshed if needed
     const { tokens } = await withErrorCode(fetchAuthSession());
-    if (!tokens?.idToken) throw cognitoError('UserUnAuthenticatedException', 'User needs to be authenticated.');
+    if (!tokens?.idToken) {
+      // the caller learns it from the error: the refresh has nothing left to report
+      this.stopSessionRefresh();
+      throw cognitoError('UserUnAuthenticatedException', 'User needs to be authenticated.');
+    }
     if (this._env.idea.auth.forceLoginWithMFA && !(await this.checkIfUserHasMFAEnabled()))
       throw new Error(LoginOutcomeActions.MFA_SETUP);
     const userDetails: any = await withErrorCode(fetchUserAttributes());
@@ -251,23 +276,66 @@ export class IDEAAuthService {
     userDetails['groups'] = tokens.accessToken.payload['cognito:groups'] || [];
     // run some checks considering the user's groups and devices (based on the project's configuration)
     await this.runPostAuthChecks(userDetails);
-    // set a timer to manage the autorefresh of the idToken (through the refreshToken)
-    setTimeout((): Promise<void> => this.refreshSession(getFreshIdTokenOnExp), 15 * 60 * 1000); // every 15 minutes
+    // another user's session: the callbacks gathered so far were for the one that ended
+    const sub = tokens.idToken.payload.sub;
+    if (this.sessionRefresh.sub && this.sessionRefresh.sub !== sub) this.stopSessionRefresh();
+    this.sessionRefresh.sub = sub;
+    if (getFreshIdTokenOnExp) this.sessionRefresh.onFreshIdToken.add(getFreshIdTokenOnExp);
+    if (onSessionOver) this.sessionRefresh.onSessionOver = onSessionOver;
+    // a refresh already planned keeps its time: calls more frequent than it would put it off for good
+    if (!this.sessionRefresh.timer) this.scheduleSessionRefresh(SESSION_REFRESH_EVERY_MS);
     // (async) if offlineAllowed, save data locally, to use it next time we'll be offline
     if (offlineAllowed) this._storage.set('AuthUserDetails', userDetails);
     // return the idToken (to use with API)
     return { idToken: tokens.idToken.toString(), userDetails };
   }
   /**
-   * Helper to refresh the session every N minutes.
+   * Refresh the session's tokens and plan the next refresh; none once the session is over, which no retry brings back.
    */
-  private async refreshSession(callback: (freshIdToken: string) => void): Promise<void> {
-    const { tokens } = await fetchAuthSession({ forceRefresh: true }).catch((): AuthSession => ({}));
-    const freshIdToken = tokens?.idToken?.toString();
-    // repeat every 15 minutes; in case of error, try again in 1 minute
-    setTimeout((): Promise<void> => this.refreshSession(callback), (freshIdToken ? 15 : 1) * 60 * 1000);
-    // run the callback action, if set
-    if (freshIdToken && callback) callback(freshIdToken);
+  private async refreshSession(): Promise<void> {
+    const watched = this.sessionRefresh;
+    let tokens: AuthSession['tokens'];
+    try {
+      ({ tokens } = await fetchAuthSession({ forceRefresh: true }));
+    } catch (err) {
+      // no connection, or Cognito failed or throttled: the session may still be valid; a refusal that Amplify throws
+      // (e.g. UserNotFoundException) leaves no tokens, and the next attempt ends there
+      if (this.sessionRefresh === watched) this.scheduleSessionRefresh(SESSION_REFRESH_RETRY_MS);
+      return;
+    }
+    // stopped while the refresh was in flight (a logout, a new sign-in, a session over): nothing left to do
+    if (this.sessionRefresh !== watched) return;
+    if (!tokens?.idToken || tokens.idToken.payload.sub !== watched.sub) {
+      // Amplify answers without tokens, and forgets them, once Cognito refuses the refresh token (expired or revoked);
+      // there are none either after a sign-out in another tab, and another user's after a sign-in there
+      this.stopSessionRefresh();
+      watched.onSessionOver?.();
+      return;
+    }
+    this.scheduleSessionRefresh(SESSION_REFRESH_EVERY_MS);
+    const freshIdToken = tokens.idToken.toString();
+    for (const callback of watched.onFreshIdToken) {
+      try {
+        callback(freshIdToken);
+      } catch (error) {
+        // a callback's failure is not the others': it's thrown apart, where the app's error handling sees it
+        queueMicrotask((): void => {
+          throw error;
+        });
+      }
+    }
+  }
+  private scheduleSessionRefresh(inMs: number): void {
+    clearTimeout(this.sessionRefresh.timer);
+    const planned = this.sessionRefresh;
+    planned.timer = setTimeout((): Promise<void> => {
+      planned.timer = undefined;
+      return this.refreshSession();
+    }, inMs);
+  }
+  private stopSessionRefresh(): void {
+    clearTimeout(this.sessionRefresh.timer);
+    this.sessionRefresh = { onFreshIdToken: new Set() };
   }
   /**
    * Run some post-auth checks, based on the users groups and on the app's configuration:
@@ -393,6 +461,13 @@ export enum LoginOutcomeActions {
   NEW_PASSWORD = 'newPassword',
   MFA_CHALLENGE = 'mfaChallenge',
   MFA_SETUP = 'mfaSetup'
+}
+
+interface SessionRefresh {
+  sub?: string;
+  timer?: ReturnType<typeof setTimeout>;
+  onFreshIdToken: Set<(freshIdToken: string) => void>;
+  onSessionOver?: () => void;
 }
 
 /**
